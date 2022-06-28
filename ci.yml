@@ -16,5 +16,4 @@ jobs:
                 dotnet-version: '4.8.x' # SDK Version to use;
 
             - name: Build
-              run: |
-                dotnet build
+              run: dotnet build
