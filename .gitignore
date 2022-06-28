@@ -11,6 +11,9 @@ obj/
 /wwwroot/node_modules
 
 ### VisualStudioCode ###
+.vs/*
+
+### VisualStudioCode ###
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
