@@ -1,0 +1,6 @@
+C:\Users\Usuario\Documents\GitHub\NtCode\Nt.Core\bin\Debug\Nt.Core.dll
+C:\Users\Usuario\Documents\GitHub\NtCode\Nt.Core\bin\Debug\Nt.Core.pdb
+C:\Users\Usuario\Documents\GitHub\NtCode\Nt.Core\obj\Debug\Nt.Core.csprojAssemblyReference.cache
+C:\Users\Usuario\Documents\GitHub\NtCode\Nt.Core\obj\Debug\Nt.Core.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Documents\GitHub\NtCode\Nt.Core\obj\Debug\Nt.Core.dll
+C:\Users\Usuario\Documents\GitHub\NtCode\Nt.Core\obj\Debug\Nt.Core.pdb
