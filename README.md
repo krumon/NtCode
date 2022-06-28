@@ -1,3 +1,3 @@
-# NT CODE FOR INDICATORS AND STRATEGIES
+# NT CODE BY KRUMON
 
 The code is currently being developed.
