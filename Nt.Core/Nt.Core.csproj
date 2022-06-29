@@ -56,5 +56,11 @@
     <Compile Include="Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Caches\" />
+    <Folder Include="Sessions\" />
+    <Folder Include="TimeZones\" />
+    <Folder Include="Time\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
