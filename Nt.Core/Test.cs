@@ -19,8 +19,17 @@ namespace Nt.Core
 
         protected override void OnBarUpdate()
         {
+
             base.OnBarUpdate();
+
+            var high = High[0];
+            var low = Low[0];
+            var close = Close[0];
+            var open = Open[0];
+
         }
+
+        
         
         #endregion
 

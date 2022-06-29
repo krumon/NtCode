@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32616.157
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NtConsole", "Nt.Console\NtConsole.csproj", "{B1E2972B-D95F-4367-988D-49BFADFC0787}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nt.Console", "Nt.Console\Nt.Console.csproj", "{B1E2972B-D95F-4367-988D-49BFADFC0787}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nt.Core", "Nt.Core\Nt.Core.csproj", "{3A644626-5B81-4EE5-9D67-6B77D5BA4940}"
 EndProject
