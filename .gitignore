@@ -435,3 +435,4 @@ FodyWeavers.xsd
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,visualstudiocode,visualstudio
 .vs/NtCode/v16/.suo
 Nt.Console/obj/Debug/Nt.Console.csprojAssemblyReference.cache
+.vs/NtCode/v16/.suo
