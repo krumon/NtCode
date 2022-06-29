@@ -7,35 +7,37 @@ namespace NtCore
 {
     public class TimeTarget
     {
+        #region Private members
+
+        /// <summary>
+        /// Gets or sets the source time zone info of the <see cref="TimeTarget"/>.
+        /// </summary>
+        private TimeZoneInfo designTargetTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+
+        #endregion
 
         #region Public properties
 
         /// <summary>
         /// Gets or sets the source time zone info of the <see cref="TimeTarget"/>.
         /// </summary>
-        TimeZoneInfo SourceTimeZone { get; set; } = TimeZoneInfo.Local;
-
-        /// <summary>
-        /// Gets or sets the source time zone info of the <see cref="TimeTarget"/>.
-        /// </summary>
-        TimeZoneInfo TargetTimeZone { get; set; } = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
-
-        /// <summary>
-        /// Gets or sets the date of the <see cref="TimeTarget"/>.
-        /// </summary>
-        DateTime TargetDate { get; set; } = new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day,0,0,0,DateTimeKind.Local);
+        public TimeZoneInfo SourceTimeZone { get; set; } = TimeZoneInfo.Local;
 
         /// <summary>
         /// Gets or sets the time of the <see cref="TimeTarget"/>.
         /// </summary>
-        TimeSpan TargetTime { get; set; } = new TimeSpan(17, 32, 0);
+        public TimeSpan TargetTime { get; set; } = new TimeSpan(17, 32, 0);
+
+        public DateTime CurrentDate { get; set; } = DateTime.Now;
+        public TimeSpan CurrentTime { get; set; }
+
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Default instance of <see cref="TimeTarget"/> object.
+        /// Create default instance of <see cref="TimeTarget"/> object.
         /// </summary>
         public TimeTarget()
         {
@@ -45,9 +47,17 @@ namespace NtCore
 
         #region Public methods
 
-        public DateTime GetTime()
+        /// <summary>
+        /// Gets the target 
+        /// </summary>
+        /// <param name="targetTimeZoneInfo"></param>
+        /// <returns></returns>
+        public DateTime GetTime(TimeZoneInfo targetTimeZoneInfo = null)
         {
-            return TimeZoneInfo.ConvertTime(TargetDate + TargetTime,SourceTimeZone, TargetTimeZone);
+            if (targetTimeZoneInfo == null)
+                return TimeZoneInfo.ConvertTime(CurrentDate + TargetTime, SourceTimeZone, designTargetTimeZone);
+            else
+                return TimeZoneInfo.ConvertTime(CurrentDate + TargetTime, SourceTimeZone, targetTimeZoneInfo);
         }
 
 
