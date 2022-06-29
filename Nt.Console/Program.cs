@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NtCore;
+using System;
 
 namespace NtConsole
 {
     internal class Program
     {
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello world!!!");
+            TimeTarget time = new TimeTarget();
+            Console.WriteLine(time.GetTime().ToString());
+
+            //Console.WriteLine("Hello world");
+
             Console.ReadKey();
         }
     }

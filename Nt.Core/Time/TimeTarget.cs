@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NinjaTrader.Core;
+using NinjaTrader.Data;
+using NinjaTrader.NinjaScript;
+using System;
 
-namespace NtCore.Time
+namespace NtCore
 {
     public class TimeTarget
     {
@@ -12,14 +11,24 @@ namespace NtCore.Time
         #region Public properties
 
         /// <summary>
-        /// Gets or sets the time zone info of the <see cref="TimeTarget"/>.
+        /// Gets or sets the source time zone info of the <see cref="TimeTarget"/>.
         /// </summary>
-        TimeZoneInfo TimeZone { get; set; }
+        TimeZoneInfo SourceTimeZone { get; set; } = TimeZoneInfo.Local;
+
+        /// <summary>
+        /// Gets or sets the source time zone info of the <see cref="TimeTarget"/>.
+        /// </summary>
+        TimeZoneInfo TargetTimeZone { get; set; } = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+
+        /// <summary>
+        /// Gets or sets the date of the <see cref="TimeTarget"/>.
+        /// </summary>
+        DateTime TargetDate { get; set; } = new DateTime(DateTime.Now.Year,DateTime.Now.Month,DateTime.Now.Day,0,0,0,DateTimeKind.Local);
 
         /// <summary>
         /// Gets or sets the time of the <see cref="TimeTarget"/>.
         /// </summary>
-        DateTime Time { get; set; }
+        TimeSpan TargetTime { get; set; } = new TimeSpan(17, 32, 0);
 
         #endregion
 
@@ -34,7 +43,15 @@ namespace NtCore.Time
 
         #endregion
 
+        #region Public methods
 
+        public DateTime GetTime()
+        {
+            return TimeZoneInfo.ConvertTime(TargetDate + TargetTime,SourceTimeZone, TargetTimeZone);
+        }
+
+
+        #endregion
 
     }
 }
