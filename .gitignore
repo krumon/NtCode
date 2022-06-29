@@ -1,19 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/dotnetcore,visualstudiocode,visualstudio
-# Edit at https://www.toptal.com/developers/gitignore?templates=dotnetcore,visualstudiocode,visualstudio
-
-### DotnetCore ###
-# .NET Core build folders
-bin/
-obj/
-
-# Common node modules locations
-/node_modules
-/wwwroot/node_modules
-
-### VisualStudioCode ###
-.vs
-.vs/
-.vs/*
+# Created by https://www.toptal.com/developers/gitignore/api/windows,visualstudio,visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=windows,visualstudio,visualstudiocode
 
 ### VisualStudioCode ###
 .vscode/*
@@ -39,6 +25,32 @@ obj/
 
 # Ignore code-workspaces
 *.code-workspace
+
+### Windows ###
+# Windows thumbnail cache files
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# Dump file
+*.stackdump
+
+# Folder config file
+[Dd]esktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
 
 ### VisualStudio ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -422,11 +434,6 @@ FodyWeavers.xsd
 # Local History for Visual Studio Code
 
 # Windows Installer files from build outputs
-*.cab
-*.msi
-*.msix
-*.msm
-*.msp
 
 # JetBrains Rider
 *.sln.iml
@@ -434,14 +441,4 @@ FodyWeavers.xsd
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
 
-# End of https://www.toptal.com/developers/gitignore/api/dotnetcore,visualstudiocode,visualstudio
-.vs/NtCode/v16/.suo
-Nt.Console/obj/Debug/Nt.Console.csprojAssemblyReference.cache
-.vs/NtCode/v16/.suo
-Nt.Console/bin/Debug/Nt.Console.exe
-Nt.Console/bin/Debug/Nt.Console.exe
-Nt.Console/bin/Debug/Nt.Console.pdb
-Nt.Console/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-Nt.Console/obj/Debug/Nt.Console.csproj.FileListAbsolute.txt
-Nt.Console/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
-Nt.Console/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+# End of https://www.toptal.com/developers/gitignore/api/windows,visualstudio,visualstudiocode
