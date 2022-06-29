@@ -11,6 +11,7 @@ obj/
 /wwwroot/node_modules
 
 ### VisualStudioCode ###
+.vs/
 .vs/*
 
 ### VisualStudioCode ###
