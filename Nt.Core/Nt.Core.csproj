@@ -45,6 +45,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,14 +54,46 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include=".Base\NtElement.cs" />
+    <Compile Include="Bars\Bar.cs" />
+    <Compile Include="Bars\SwingLevel.cs" />
+    <Compile Include="Bars\SwingPoint.cs" />
+    <Compile Include="Bars\BarsCache.cs" />
+    <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
+    <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
+    <Compile Include="Caches\BaseCache.cs" />
+    <Compile Include="Sessions\SessionStats.cs" />
+    <Compile Include="Sessions\Holiday.cs" />
+    <Compile Include="Sessions\PartialHoliday.cs" />
+    <Compile Include="Sessions\Session.cs" />
+    <Compile Include="TradingHours\TradingHours.cs" />
+    <Compile Include="Bars\BarType.cs" />
+    <Compile Include="Caches\CacheSearchMode.cs" />
+    <Compile Include="Patterns\ChartPattern.cs" />
+    <Compile Include="Drawing\ArrowBaseType.cs" />
+    <Compile Include="Drawing\ArrowHeadType.cs" />
+    <Compile Include="Drawing\ArrowType.cs" />
+    <Compile Include="Drawing\HorizontalAlignment.cs" />
+    <Compile Include="Drawing\LabelArrowPlacement.cs" />
+    <Compile Include="Drawing\LabelLineType.cs" />
+    <Compile Include="Drawing\LabelPlacement.cs" />
+    <Compile Include="Drawing\VerticalAlignment.cs" />
+    <Compile Include="Patterns\Swing\SwingLevelCalculateMode.cs" />
+    <Compile Include="Patterns\Swing\SwingType.cs" />
+    <Compile Include="Prices\CandleStickPrice.cs" />
+    <Compile Include="Prices\PriceType.cs" />
+    <Compile Include="TradingHours\TradingHourType.cs" />
+    <Compile Include="Files\XmlFileItem.cs" />
+    <Compile Include="Helpers\ISeriesHelpers.cs" />
+    <Compile Include="Helpers\LabelLineHelpers.cs" />
+    <Compile Include="Helpers\StringHelpers.cs" />
+    <Compile Include="Drawing\Margin.cs" />
+    <Compile Include="Resources\Resources.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Time\TimeTarget.cs" />
+    <Compile Include="TradingHours\TimeTarget.cs" />
+    <Compile Include="TradingHours\TradingHour.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Caches\" />
-    <Folder Include="Sessions\" />
-    <Folder Include="TimeZones\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

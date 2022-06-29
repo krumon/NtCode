@@ -8,7 +8,7 @@ using NinjaTrader.Gui.Chart;
 using NinjaTrader.NinjaScript;
 using NinjaTrader.NinjaScript.DrawingTools;
 
-namespace Nt.Core
+namespace NtCore
 {
     public class Test : NinjaScriptBase
     {
