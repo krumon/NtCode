@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nt.Console
+namespace NtConsole
 {
     internal class Program
     {
         static void Main(string[] args)
         {
+            Console.WriteLine("Hello world!!!");
+            Console.ReadKey();
         }
     }
 }

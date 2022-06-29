@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B1E2972B-D95F-4367-988D-49BFADFC0787}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Nt.Console</RootNamespace>
+    <RootNamespace>NtConsole</RootNamespace>
     <AssemblyName>Nt.Console</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -48,6 +48,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Nt.Core\Nt.Core.csproj">
+      <Project>{3a644626-5b81-4ee5-9d67-6b77d5ba4940}</Project>
+      <Name>Nt.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
