@@ -2,7 +2,7 @@
 namespace NtCore
 {
     /// <summary>
-    /// The type price of the bar.
+    /// Trading time zone types.
     /// </summary>
     public enum TradingTimeZoneType
     {

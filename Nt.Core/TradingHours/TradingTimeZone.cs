@@ -21,32 +21,35 @@ namespace NtCore
         /// </summary>
         public TradingHour FinalTadingHour { get; set; }
 
-        public TimeZoneInfo TimeZoneInfo { get; set; }
-        public TimeSpan Time { get; set; }
-
         #endregion
 
         #region Constructors
 
-        private TradingTimeZone(TradingHourType type)
+        private TradingTimeZone(TradingHourType initialTradingHourType, TradingHourType finalTradingHourType)
         {
-            this.TimeZoneInfo = type.ToTimeZoneInfo();
-            this.Time = type.ToTimeSpan();
+            this.InitialTadingHour = TradingHour.CreateTradingHourByType(initialTradingHourType);
+            this.FinalTadingHour = TradingHour.CreateTradingHourByType(finalTradingHourType);
+        }
+
+        private TradingTimeZone(TradingTimeZoneType type)
+        {
+            this.InitialTadingHour = type.ToInitialTradingHour();
+            this.FinalTadingHour = type.ToFinalTradingHour();
         }
 
         #endregion
 
         #region Public methods
 
-        public static TradingTimeZone CreateTradingHourByType(NinjaScriptBase ninjaScript, TradingHourType type)
+        public static TradingTimeZone CreateTimeZoneByType(TradingTimeZoneType type)
         {
             return new TradingTimeZone(type);
         }
 
-        public DateTime GetTradingHour(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
-        {
-            return TimeZoneInfo.ConvertTime(currentDate.Date + Time,TimeZoneInfo,targetTimeZoneInfo);
-        }
+        //public DateTime GetInitialTime(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
+        //{
+        //    return TimeZoneInfo.ConvertTime(currentDate.Date + Time,TimeZoneInfo,targetTimeZoneInfo);
+        //}
 
         #endregion
 

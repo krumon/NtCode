@@ -82,7 +82,7 @@
     <Compile Include="Patterns\Swing\SwingType.cs" />
     <Compile Include="Prices\CandleStickPrice.cs" />
     <Compile Include="Prices\PriceType.cs" />
-    <Compile Include="TradingHours\TradingTimeZoneHelpers.cs" />
+    <Compile Include="TradingHours\TradingTimeZoneTypeHelpers.cs" />
     <Compile Include="TradingHours\TradingTimeZone.cs" />
     <Compile Include="TradingHours\TradingTimeZoneType.cs" />
     <Compile Include="TradingHours\TradingHourTypeHelpers.cs" />

@@ -4,7 +4,7 @@ namespace NtCore
 {
 
     /// <summary>
-    /// Helper methods to the label line drawing tool
+    /// Helper methods of <see cref="TradingHourType"/> enum.
     /// </summary>
     public static class TradingHourTypeHelpers
     {
@@ -13,7 +13,6 @@ namespace NtCore
         /// </summary>
         /// <param name="tradingHourName"></param>
         /// <returns><see cref="TimeZoneInfo"/> of the <see cref="TradingHourType"/>.</returns>
-        /// <exception cref="Exception"></exception>
         public static TimeZoneInfo ToTimeZoneInfo(this TradingHourType tradingHourName)
         {
 
@@ -63,7 +62,6 @@ namespace NtCore
         /// </summary>
         /// <param name="tradingHourName"></param>
         /// <returns><see cref="TimeSpan"/> of the <see cref="TradingHourType"/>.</returns>
-        /// <exception cref="Exception"></exception>
         public static TimeSpan ToTimeSpan(this TradingHourType tradingHourName)
         {
             switch (tradingHourName)
@@ -129,7 +127,16 @@ namespace NtCore
                     throw new Exception("The traging hour name doesn't exists.");
 
             }
-
+        }
+        
+        /// <summary>
+        /// Returns <see cref="TradingHour"/> by trading hour type.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns><see cref="TradingHour"/>.</returns>
+        public static TradingHour ToTradingHour(this TradingHourType type)
+        {
+            return TradingHour.CreateTradingHourByType(type);
         }
 
     }
