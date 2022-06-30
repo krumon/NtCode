@@ -13,7 +13,7 @@ namespace NtCore
         /// </summary>
         /// <param name="type"></param>
         /// <returns>Initial <see cref="TradingHour"/> of the <see cref="TradingTimeZoneType"/>.</returns>
-        public static TradingHour ToInitialTradingHour(this TradingTimeZoneType type)
+        public static TradingHour ToBeginTradingHour(this TradingTimeZoneType type)
         {
 
             switch (type)
@@ -59,7 +59,7 @@ namespace NtCore
         /// </summary>
         /// <param name="type"></param>
         /// <returns>Final <see cref="TradingHour"/> of the <see cref="TradingTimeZoneType"/>.</returns>
-        public static TradingHour ToFinalTradingHour(this TradingTimeZoneType type)
+        public static TradingHour ToEndTradingHour(this TradingTimeZoneType type)
         {
 
             switch (type)
@@ -99,5 +99,6 @@ namespace NtCore
                     throw new Exception("The traging time zone doesn't exists.");
             }
         }
+
     }
 }
