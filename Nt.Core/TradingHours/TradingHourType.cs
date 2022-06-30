@@ -8,147 +8,33 @@ namespace NtCore
     public enum TradingHourType
     {
 
-        ETH_Open,
-        ETH_Close,
-        ETH_IB_Open,
-        ETH_IB_Close,
-        ETH_FB_Open,
-        ETH_FB_Close,
+        ETH_Open,           // Electronic Trading Hours - Open 
+        ETH_Close,          // Electronic Trading Hours - Close 
+        ETH_IB_Open,        // Electronic Trading Hours - Initial Balance - Open
+        ETH_IB_Close,       // Electronic Trading Hours - Initial Balance - Close
+        ETH_FB_Open,        // Electronic Trading Hours - Final Balance - Open
+        ETH_FB_Close,       // Electronic Trading Hours - Final Balance - Close
 
-        Asian_Open,
-        Asian_Close,
-        Asian_IB_Open,
-        Asian_IB_Close,
-        Asian_FB_Open,
-        Asian_FB_Close,
+        Asian_Open,         // Asian Trading Hours - Open 
+        Asian_Close,        // Asian Trading Hours - Close 
+        Asian_IB_Open,      // Asian Trading Hours - Initial Balance - Open
+        Asian_IB_Close,     // Asian Trading Hours - Initial Balance - Close
+        Asian_FB_Open,      // Asian Trading Hours - Final Balance - Open
+        Asian_FB_Close,     // Asian Trading Hours - Final Balance - Close
 
-        American_Open,
-        American_Close,
-        American_IB_Open,
-        American_IB_Close,
-        American_FB_Open,
-        American_FB_Close,
+        American_Open,      // American Trading Hours - Open 
+        American_Close,     // American Trading Hours - Close 
+        American_IB_Open,   // American Trading Hours - Initial Balance - Open
+        American_IB_Close,  // American Trading Hours - Initial Balance - Close
+        American_FB_Open,   // American Trading Hours - Final Balance - Open
+        American_FB_Close,  // American Trading Hours - Final Balance - Close
 
-        European_Open,
-        European_Close,
-        European_IB_Open,
-        European_IB_Close,
-        European_FB_Open,
-        European_FB_Close,
-
-    }
-
-    /// <summary>
-    /// Helper methods to the label line drawing tool
-    /// </summary>
-    public static class TradingHourTypeHelpers
-    {
-
-        public static TimeZoneInfo ToTimeZoneInfo(this TradingHourType tradingHourName)
-        {
-
-            switch (tradingHourName)
-            {
-                case (TradingHourType.American_Open):
-                case (TradingHourType.American_Close):
-                case (TradingHourType.American_IB_Open):
-                case (TradingHourType.American_IB_Close):
-                case (TradingHourType.American_FB_Open):
-                case (TradingHourType.American_FB_Close):
-                case (TradingHourType.ETH_Open):
-                case (TradingHourType.ETH_Close):
-                case (TradingHourType.ETH_IB_Open):
-                case (TradingHourType.ETH_IB_Close):
-                case (TradingHourType.ETH_FB_Open):
-                case (TradingHourType.ETH_FB_Close):
-                    return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
-
-                case (TradingHourType.Asian_Open):
-                case (TradingHourType.Asian_Close):
-                case (TradingHourType.Asian_IB_Open):
-                case (TradingHourType.Asian_IB_Close):
-                case (TradingHourType.Asian_FB_Open):
-                case (TradingHourType.Asian_FB_Close):
-                    return TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
-
-                case (TradingHourType.European_Open):
-                case (TradingHourType.European_Close):
-                case (TradingHourType.European_IB_Open):
-                case (TradingHourType.European_IB_Close):
-                case (TradingHourType.European_FB_Open):
-                case (TradingHourType.European_FB_Close):
-                    return TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-
-                default:
-                throw new Exception("The traging hour name doesn't exists.");
-
-            }
-
-        }
-
-        public static TimeSpan ToTimeSpan(this TradingHourType tradingHourName)
-        {
-
-            switch (tradingHourName)
-            {
-                case (TradingHourType.American_Open):
-                    return new TimeSpan(8, 30, 0);
-                case (TradingHourType.American_Close):
-                    return new TimeSpan(16, 0, 0);
-                case (TradingHourType.American_IB_Open):
-                    return new TimeSpan(8, 30, 0);
-                case (TradingHourType.American_IB_Close):
-                    return new TimeSpan(9, 30, 0);
-                case (TradingHourType.American_FB_Open):
-                    return new TimeSpan(15, 30, 0);
-                case (TradingHourType.American_FB_Close):
-                    return new TimeSpan(16, 0, 0);
-
-                case (TradingHourType.ETH_Open):
-                    return new TimeSpan(17, 0, 0);
-                case (TradingHourType.ETH_Close):
-                    return new TimeSpan(16, 0, 0);
-                case (TradingHourType.ETH_IB_Open):
-                    return new TimeSpan(17, 0, 0);
-                case (TradingHourType.ETH_IB_Close):
-                    return new TimeSpan(17, 5, 0);
-                case (TradingHourType.ETH_FB_Open):
-                    return new TimeSpan(15, 45, 0);
-                case (TradingHourType.ETH_FB_Close):
-                    return new TimeSpan(16, 0, 0);
-
-                case (TradingHourType.Asian_Open):
-                    return new TimeSpan(9, 0, 0);
-                case (TradingHourType.Asian_Close):
-                    return new TimeSpan(15, 0, 0);
-                case (TradingHourType.Asian_IB_Open):
-                    return new TimeSpan(9, 0, 0);
-                case (TradingHourType.Asian_IB_Close):
-                    return new TimeSpan(9, 5, 0);
-                case (TradingHourType.Asian_FB_Open):
-                    return new TimeSpan(14, 50, 0);
-                case (TradingHourType.Asian_FB_Close):
-                    return new TimeSpan(15, 0, 0);
-
-                case (TradingHourType.European_Open):
-                    return new TimeSpan(9, 0, 0);
-                case (TradingHourType.European_Close):
-                    return new TimeSpan(17, 30, 0);
-                case (TradingHourType.European_IB_Open):
-                    return new TimeSpan(9, 0, 0);
-                case (TradingHourType.European_IB_Close):
-                    return new TimeSpan(9, 15, 0);
-                case (TradingHourType.European_FB_Open):
-                    return new TimeSpan(17, 15, 0);
-                case (TradingHourType.European_FB_Close):
-                    return new TimeSpan(17, 30, 0);
-
-                default:
-                    throw new Exception("The traging hour name doesn't exists.");
-
-            }
-
-        }
+        European_Open,      // European Trading Hours - Open 
+        European_Close,     // European Trading Hours - Close 
+        European_IB_Open,   // European Trading Hours - Initial Balance - Open
+        European_IB_Close,  // European Trading Hours - Initial Balance - Close
+        European_FB_Open,   // European Trading Hours - Final Balance - Open
+        European_FB_Close,  // European Trading Hours - Final Balance - Close
 
     }
 }
