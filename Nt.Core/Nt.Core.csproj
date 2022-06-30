@@ -62,6 +62,7 @@
     <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
+    <Compile Include="Sessions\TradingSessions.cs" />
     <Compile Include="Sessions\TradingSession.cs" />
     <Compile Include="Sessions\SessionStats.cs" />
     <Compile Include="Sessions\Holiday.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Patterns\Swing\SwingType.cs" />
     <Compile Include="Prices\CandleStickPrice.cs" />
     <Compile Include="Prices\PriceType.cs" />
+    <Compile Include="Sessions\DayTradingSessionType.cs" />
     <Compile Include="TradingHours\TradingTimeZoneTypeHelpers.cs" />
     <Compile Include="TradingHours\TradingTimeZone.cs" />
     <Compile Include="TradingHours\TradingTimeZoneType.cs" />

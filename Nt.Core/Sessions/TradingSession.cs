@@ -1,9 +1,8 @@
-﻿using System;
-
+﻿
 namespace NtCore
 {
     /// <summary>
-    /// Represents the session definition.
+    /// Represents the session definitions.
     /// </summary>
     public class TradingSession
     {

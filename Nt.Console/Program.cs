@@ -8,10 +8,7 @@ namespace NtConsole
 
         static void Main(string[] args)
         {
-            TimeTarget time = new TimeTarget();
-            Console.WriteLine(time.GetTime().ToString());
-
-            //Console.WriteLine("Hello world");
+            Console.WriteLine("Hello world");
 
             Console.ReadKey();
         }
