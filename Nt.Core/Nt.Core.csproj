@@ -62,6 +62,7 @@
     <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
+    <Compile Include="Sessions\TradingSession.cs" />
     <Compile Include="Sessions\SessionStats.cs" />
     <Compile Include="Sessions\Holiday.cs" />
     <Compile Include="Sessions\PartialHoliday.cs" />
@@ -95,7 +96,6 @@
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TradingHours\TimeTarget.cs" />
     <Compile Include="TradingHours\TradingHour.cs" />
   </ItemGroup>
   <ItemGroup />
