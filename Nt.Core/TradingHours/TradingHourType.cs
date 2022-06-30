@@ -15,6 +15,9 @@ namespace NtCore
         ETH_FB_Open,        // Electronic Trading Hours - Final Balance - Open
         ETH_FB_Close,       // Electronic Trading Hours - Final Balance - Close
 
+        OVN_Open,           // Overnight Trading Hours - Open 
+        OVN_Close,          // Overnight Trading Hours - Close 
+
         Asian_Open,         // Asian Trading Hours - Open 
         Asian_Close,        // Asian Trading Hours - Close 
         Asian_IB_Open,      // Asian Trading Hours - Initial Balance - Open

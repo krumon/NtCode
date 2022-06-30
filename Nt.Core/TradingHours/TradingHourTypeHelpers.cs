@@ -31,6 +31,8 @@ namespace NtCore
                 case (TradingHourType.ETH_IB_Close):
                 case (TradingHourType.ETH_FB_Open):
                 case (TradingHourType.ETH_FB_Close):
+                case (TradingHourType.OVN_Open):
+                case (TradingHourType.OVN_Close):
                     return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
 
                 case (TradingHourType.Asian_Open):
@@ -92,6 +94,11 @@ namespace NtCore
                 case (TradingHourType.ETH_FB_Close):
                     return new TimeSpan(16, 0, 0);
 
+                case (TradingHourType.OVN_Open):
+                    return new TimeSpan(16, 0, 0);
+                case (TradingHourType.OVN_Close):
+                    return new TimeSpan(8, 30, 0);
+
                 case (TradingHourType.Asian_Open):
                     return new TimeSpan(9, 0, 0);
                 case (TradingHourType.Asian_Close):
@@ -99,9 +106,9 @@ namespace NtCore
                 case (TradingHourType.Asian_IB_Open):
                     return new TimeSpan(9, 0, 0);
                 case (TradingHourType.Asian_IB_Close):
-                    return new TimeSpan(9, 5, 0);
+                    return new TimeSpan(9, 15, 0);
                 case (TradingHourType.Asian_FB_Open):
-                    return new TimeSpan(14, 50, 0);
+                    return new TimeSpan(14, 45, 0);
                 case (TradingHourType.Asian_FB_Close):
                     return new TimeSpan(15, 0, 0);
 
