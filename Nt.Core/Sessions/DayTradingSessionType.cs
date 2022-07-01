@@ -13,21 +13,23 @@ namespace NtCore
         AsianInitialBalance,
         AsianToEuropean,
         EuropeanInitialBalance,
+        EuropeanAndAsian,
+        AsianFinalBalance,
         EuropeanToAmerican,
         // Day
         AmericanInitialBalance,
         AmericanAndEuropean,
-        AmericanToFinalBalance,
+        American,
         AmericanFinalBalance,
         // Overnight
         ResidualToBreak,
 
         // MAJORS
-        Asian,
-        European,
-        American_European,
-        American,
-        Residual,
+        //Asian,
+        //European,
+        //American_European,
+        //American,
+        //Residual,
 
         // DAY TRADING
         DAY,

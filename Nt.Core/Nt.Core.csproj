@@ -62,7 +62,7 @@
     <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
-    <Compile Include="Sessions\TradingSessions.cs" />
+    <Compile Include="Sessions\DayTradingSession.cs" />
     <Compile Include="Sessions\TradingSession.cs" />
     <Compile Include="Sessions\SessionStats.cs" />
     <Compile Include="Sessions\Holiday.cs" />
