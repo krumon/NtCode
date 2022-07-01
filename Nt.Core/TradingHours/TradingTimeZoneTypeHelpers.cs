@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace NtCore
 {
@@ -100,5 +101,14 @@ namespace NtCore
             }
         }
 
+        public static TradingTimeZone ToTradingTimeZone(this TradingTimeZoneType type)
+        {
+            return TradingTimeZone.CreateTimeZoneByType(type);
+        }
+
+        public static TradingTimeZoneType[] ToArray(this TradingTimeZoneType type)
+        {
+            return Enum.GetValues(typeof(TradingTimeZoneType)).Cast<TradingTimeZoneType>().ToArray();
+        }
     }
 }

@@ -9,7 +9,16 @@ namespace NtCore
     public class TradingTimeZone
     {
 
+        #region Private members
+
+        private TradingTimeZoneType type;
+
+        #endregion
+
         #region Public properties
+
+        public string DisplayName => type.ToString();
+        public string Description { get; set; }
 
         /// <summary>
         /// The initial trading hour.
@@ -33,6 +42,7 @@ namespace NtCore
 
         private TradingTimeZone(TradingTimeZoneType type)
         {
+            this.type = type;
             this.BeginTradingHour = type.ToBeginTradingHour();
             this.EndTradingHour = type.ToEndTradingHour();
         }
@@ -85,6 +95,15 @@ namespace NtCore
         {
             TimeSpan time = GetEndTime(targetTimeZoneInfo);
             return (time.Hours*10000)+(time.Minutes*100)+(time.Seconds);
+        }
+
+        #endregion
+
+        #region Override methods
+
+        public override string ToString()
+        {
+            return String.Format("Time Zone: {0:10} Begin Time: {1:5} End Time: {2}",DisplayName,GetBeginTime(TimeZoneInfo.Local).ToString(),GetEndTime(TimeZoneInfo.Local).ToString());
         }
 
         #endregion
