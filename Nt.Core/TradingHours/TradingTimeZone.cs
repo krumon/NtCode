@@ -67,31 +67,44 @@ namespace NtCore
 
         public DateTime GetBeginDateTime(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
         {
-            return TimeZoneInfo.ConvertTime(currentDate.Date + BeginTradingHour.Time, BeginTradingHour.TimeZoneInfo, targetTimeZoneInfo);
+            return currentDate + (targetTimeZoneInfo.BaseUtcOffset - BeginTradingHour.TimeZoneInfo.BaseUtcOffset) + BeginTradingHour.Time;
         }
 
         public DateTime GetEndDateTime(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
         {
-            return TimeZoneInfo.ConvertTime(currentDate.Date + EndTradingHour.Time, EndTradingHour.TimeZoneInfo, targetTimeZoneInfo);
+            return currentDate + (targetTimeZoneInfo.BaseUtcOffset - EndTradingHour.TimeZoneInfo.BaseUtcOffset) + EndTradingHour.Time;
+        }
+
+        public DateTime GetBeginDateTime(TimeZoneInfo targetTimeZoneInfo)
+        {
+            return GetBeginDateTime(DateTime.Now.Date, targetTimeZoneInfo);
+        }
+
+        public DateTime GetEndDateTime(TimeZoneInfo targetTimeZoneInfo)
+        {
+            var timeSpan = EndTradingHour.Time - BeginTradingHour.Time;
+            if (timeSpan.Hours < 0)
+                timeSpan += TimeSpan.FromHours(24);
+            return GetBeginDateTime(targetTimeZoneInfo) + timeSpan;
         }
 
         public TimeSpan GetBeginTime(TimeZoneInfo targetTimeZoneInfo)
         {
-            return GetBeginDateTime(DateTime.Today,targetTimeZoneInfo).TimeOfDay;
+            return GetBeginDateTime(targetTimeZoneInfo).TimeOfDay;
         }
 
         public TimeSpan GetEndTime(TimeZoneInfo targetTimeZoneInfo)
         {
-            return GetEndDateTime(DateTime.Today, targetTimeZoneInfo).TimeOfDay;
+            return GetEndDateTime(targetTimeZoneInfo).TimeOfDay;
         }
 
-        public int BeginTime(TimeZoneInfo targetTimeZoneInfo)
+        public int BeginTimeToInteger(TimeZoneInfo targetTimeZoneInfo)
         {
             TimeSpan time = GetBeginTime(targetTimeZoneInfo);
             return (time.Hours*10000)+(time.Minutes*100)+(time.Seconds);
         }
 
-        public int EndTime(TimeZoneInfo targetTimeZoneInfo)
+        public int EndTimeToInteger(TimeZoneInfo targetTimeZoneInfo)
         {
             TimeSpan time = GetEndTime(targetTimeZoneInfo);
             return (time.Hours*10000)+(time.Minutes*100)+(time.Seconds);
@@ -103,7 +116,7 @@ namespace NtCore
 
         public override string ToString()
         {
-            return String.Format("Time Zone: {0:10} Begin Time: {1:5} End Time: {2}",DisplayName,GetBeginTime(TimeZoneInfo.Local).ToString(),GetEndTime(TimeZoneInfo.Local).ToString());
+            return String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", DisplayName, "Begin Time: ", GetBeginDateTime(TimeZoneInfo.Local).ToString(), "End Time: ", GetEndDateTime(TimeZoneInfo.Local).ToString());
         }
 
         #endregion

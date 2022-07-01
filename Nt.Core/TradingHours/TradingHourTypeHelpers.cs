@@ -69,15 +69,15 @@ namespace NtCore
                 case (TradingHourType.American_Open):
                     return new TimeSpan(8, 30, 0);
                 case (TradingHourType.American_Close):
-                    return new TimeSpan(16, 0, 0);
+                    return new TimeSpan(15, 0, 0);
                 case (TradingHourType.American_IB_Open):
                     return new TimeSpan(8, 30, 0);
                 case (TradingHourType.American_IB_Close):
                     return new TimeSpan(9, 30, 0);
                 case (TradingHourType.American_FB_Open):
-                    return new TimeSpan(15, 30, 0);
+                    return new TimeSpan(14, 30, 0);
                 case (TradingHourType.American_FB_Close):
-                    return new TimeSpan(16, 0, 0);
+                    return new TimeSpan(15, 0, 0);
 
                 case (TradingHourType.ETH_Open):
                     return new TimeSpan(17, 0, 0);
@@ -88,7 +88,7 @@ namespace NtCore
                 case (TradingHourType.ETH_IB_Close):
                     return new TimeSpan(17, 5, 0);
                 case (TradingHourType.ETH_FB_Open):
-                    return new TimeSpan(15, 45, 0);
+                    return new TimeSpan(15, 55, 0);
                 case (TradingHourType.ETH_FB_Close):
                     return new TimeSpan(16, 0, 0);
 
@@ -111,17 +111,17 @@ namespace NtCore
                     return new TimeSpan(15, 0, 0);
 
                 case (TradingHourType.European_Open):
-                    return new TimeSpan(9, 0, 0);
+                    return new TimeSpan(8, 0, 0);
                 case (TradingHourType.European_Close):
-                    return new TimeSpan(17, 30, 0);
+                    return new TimeSpan(16, 30, 0);
                 case (TradingHourType.European_IB_Open):
-                    return new TimeSpan(9, 0, 0);
+                    return new TimeSpan(8, 0, 0);
                 case (TradingHourType.European_IB_Close):
-                    return new TimeSpan(9, 15, 0);
+                    return new TimeSpan(8, 15, 0);
                 case (TradingHourType.European_FB_Open):
-                    return new TimeSpan(17, 15, 0);
+                    return new TimeSpan(16, 15, 0);
                 case (TradingHourType.European_FB_Close):
-                    return new TimeSpan(17, 30, 0);
+                    return new TimeSpan(16, 30, 0);
 
                 default:
                     throw new Exception("The traging hour name doesn't exists.");
