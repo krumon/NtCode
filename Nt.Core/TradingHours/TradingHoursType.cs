@@ -4,13 +4,14 @@ namespace NtCore
     /// <summary>
     /// Trading time zone types.
     /// </summary>
-    public enum TradingTimeZoneType
+    public enum TradingHoursType
     {
 
         ETH,                // Electronic Trading Hours  
         ETH_IB,             // Electronic Trading Hours - Initial Balance
         ETH_FB,             // Electronic Trading Hours - Final Balance
 
+        REGULAR,            // Regular trading hours.
         OVN,                // Overnight Trading Hours 
 
         Asian,              // Asian Trading Hours 

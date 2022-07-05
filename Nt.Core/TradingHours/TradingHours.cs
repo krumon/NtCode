@@ -1,17 +1,18 @@
-﻿using NinjaTrader.NinjaScript;
-using System;
+﻿using System;
 
 namespace NtCore
 {
     /// <summary>
     /// Contents properties and methods of specific trading time zone.
     /// </summary>
-    public class TradingTimeZone
+    public class TradingHours
     {
 
         #region Private members
 
-        private TradingTimeZoneType type;
+        private TradingHoursType type;
+
+        private InstrumentCode instrumentCode;
 
         #endregion
 
@@ -23,42 +24,47 @@ namespace NtCore
         /// <summary>
         /// The initial trading hour.
         /// </summary>
-        public TradingHour BeginTradingHour { get; set; }
+        public TradingTime BeginTime { get; set; }
 
         /// <summary>
         /// The final trading hour.
         /// </summary>
-        public TradingHour EndTradingHour { get; set; }
+        public TradingTime EndTime { get; set; }
+
+        /// <summary>
+        /// Trading hours sessions.
+        /// </summary>
+        public TradingSessions Sessions { get; set; }
 
         #endregion
 
         #region Constructors
 
-        private TradingTimeZone(TradingHourType beginTradingHourType, TradingHourType endTradingHourType)
+        private TradingHours(TradingTimeType beginTradingHourType, TradingTimeType endTradingHourType)
         {
-            this.BeginTradingHour = TradingHour.CreateTradingHourByType(beginTradingHourType);
-            this.EndTradingHour = TradingHour.CreateTradingHourByType(endTradingHourType);
+            this.BeginTime = TradingTime.CreateTradingHourByType(beginTradingHourType);
+            this.EndTime = TradingTime.CreateTradingHourByType(endTradingHourType);
         }
 
-        private TradingTimeZone(TradingTimeZoneType type)
+        private TradingHours(TradingHoursType type)
         {
             this.type = type;
-            this.BeginTradingHour = type.ToBeginTradingHour();
-            this.EndTradingHour = type.ToEndTradingHour();
+            this.BeginTime = type.ToBeginTradingHour();
+            this.EndTime = type.ToEndTradingHour();
         }
 
         #endregion
 
         #region Instance methods
 
-        public static TradingTimeZone CreateTimeZoneByType(TradingTimeZoneType type)
+        public static TradingHours CreateTimeZoneByType(TradingHoursType type)
         {
-            return new TradingTimeZone(type);
+            return new TradingHours(type);
         }
 
-        public static TradingTimeZone CreateTimeZoneByTradingHoursType(TradingHourType beginTradingHourType, TradingHourType endTradingHourType)
+        public static TradingHours CreateTimeZoneByTradingHoursType(TradingTimeType beginTradingHourType, TradingTimeType endTradingHourType)
         {
-            return new TradingTimeZone(beginTradingHourType, endTradingHourType);
+            return new TradingHours(beginTradingHourType, endTradingHourType);
         }
 
         #endregion
@@ -67,12 +73,12 @@ namespace NtCore
 
         public DateTime GetBeginDateTime(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
         {
-            return currentDate + (targetTimeZoneInfo.BaseUtcOffset - BeginTradingHour.TimeZoneInfo.BaseUtcOffset) + BeginTradingHour.Time;
+            return currentDate + (targetTimeZoneInfo.BaseUtcOffset - BeginTime.TimeZoneInfo.BaseUtcOffset) + BeginTime.Time;
         }
 
         public DateTime GetEndDateTime(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
         {
-            return currentDate + (targetTimeZoneInfo.BaseUtcOffset - EndTradingHour.TimeZoneInfo.BaseUtcOffset) + EndTradingHour.Time;
+            return currentDate + (targetTimeZoneInfo.BaseUtcOffset - EndTime.TimeZoneInfo.BaseUtcOffset) + EndTime.Time;
         }
 
         public DateTime GetBeginDateTime(TimeZoneInfo targetTimeZoneInfo)
@@ -82,7 +88,7 @@ namespace NtCore
 
         public DateTime GetEndDateTime(TimeZoneInfo targetTimeZoneInfo)
         {
-            var timeSpan = EndTradingHour.Time - BeginTradingHour.Time;
+            var timeSpan = EndTime.Time - BeginTime.Time;
             if (timeSpan.Hours < 0)
                 timeSpan += TimeSpan.FromHours(24);
             return GetBeginDateTime(targetTimeZoneInfo) + timeSpan;

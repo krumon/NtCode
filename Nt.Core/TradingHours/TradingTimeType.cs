@@ -5,7 +5,7 @@ namespace NtCore
     /// <summary>
     /// The type price of the bar.
     /// </summary>
-    public enum TradingHourType
+    public enum TradingTimeType
     {
 
         ETH_Open,           // Electronic Trading Hours - Open 

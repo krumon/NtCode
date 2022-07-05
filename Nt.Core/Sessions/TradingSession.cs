@@ -20,10 +20,12 @@ namespace NtCore
 
         #region Public properties
 
+        public string Description { get; set; }
+
         /// <summary>
         /// Represents the session time zone.
         /// </summary>
-        public TradingTimeZone TimeZone { get; set; }
+        public TradingHours TradingHours { get; set; }
 
         /// <summary>
         /// Contents the day trading sessions.

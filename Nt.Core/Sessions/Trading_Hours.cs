@@ -8,7 +8,7 @@ namespace NtCore
     /// <summary>
     /// Represents the Trading Hours information returned from the current bars series. 
     /// </summary>
-    public class TradingHours
+    public class Trading_Hours
     {
 
         /// <summary>

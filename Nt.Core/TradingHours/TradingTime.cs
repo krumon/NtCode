@@ -3,7 +3,7 @@ using System;
 
 namespace NtCore
 {
-    public class TradingHour
+    public class TradingTime
     {
 
         #region Public properties
@@ -23,10 +23,10 @@ namespace NtCore
         #region Constructors
 
         /// <summary>
-        /// Create instance of <see cref="TradingHour"/> class.
+        /// Create instance of <see cref="TradingTime"/> class.
         /// </summary>
         /// <param name="type"></param>
-        private TradingHour(TradingHourType type)
+        private TradingTime(TradingTimeType type)
         {
             this.TimeZoneInfo = type.ToTimeZoneInfo();
             this.Time = type.ToTimeSpan();
@@ -37,13 +37,13 @@ namespace NtCore
         #region Public methods
 
         /// <summary>
-        /// Create default instance of <see cref="TradingHour"/> class.
+        /// Create default instance of <see cref="TradingTime"/> class.
         /// </summary>
         /// <param name="type">The trading hour type for create the instance.</param>
         /// <returns>The trading hour instance.</returns>
-        public static TradingHour CreateTradingHourByType(TradingHourType type)
+        public static TradingTime CreateTradingHourByType(TradingTimeType type)
         {
-            return new TradingHour(type);
+            return new TradingTime(type);
         }
 
         /// <summary>
