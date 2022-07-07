@@ -5,19 +5,9 @@ namespace NtCore
     /// <summary>
     /// The type price of the bar.
     /// </summary>
-    public enum TradingTimeType
+    public enum GeneralTradingTime
     {
-
-        ETH_Open,           // Electronic Trading Hours - Open 
-        ETH_Close,          // Electronic Trading Hours - Close 
-        ETH_IB_Open,        // Electronic Trading Hours - Initial Balance - Open
-        ETH_IB_Close,       // Electronic Trading Hours - Initial Balance - Close
-        ETH_FB_Open,        // Electronic Trading Hours - Final Balance - Open
-        ETH_FB_Close,       // Electronic Trading Hours - Final Balance - Close
-
-        OVN_Open,           // Overnight Trading Hours - Open 
-        OVN_Close,          // Overnight Trading Hours - Close 
-
+        
         Asian_Open,         // Asian Trading Hours - Open 
         Asian_Close,        // Asian Trading Hours - Close 
         Asian_IB_Open,      // Asian Trading Hours - Initial Balance - Open
@@ -38,6 +28,13 @@ namespace NtCore
         European_IB_Close,  // European Trading Hours - Initial Balance - Close
         European_FB_Open,   // European Trading Hours - Final Balance - Open
         European_FB_Close,  // European Trading Hours - Final Balance - Close
+
+        AmericanAndEuropean_Open,      // American and European Trading Hours - Open 
+        AmericanAndEuropean_Close,     // American and European Trading Hours - Close 
+        AmericanAndEuropean_IB_Open,   // American and European Trading Hours - Initial Balance - Open
+        AmericanAndEuropean_IB_Close,  // American and European Trading Hours - Initial Balance - Close
+        AmericanAndEuropean_FB_Open,   // American and European Trading Hours - Final Balance - Open
+        AmericanAndEuropean_FB_Close,  // American and European Trading Hours - Final Balance - Close
 
     }
 }

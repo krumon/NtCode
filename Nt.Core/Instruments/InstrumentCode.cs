@@ -6,7 +6,8 @@ namespace NtCore
     /// </summary>
     public enum InstrumentCode
     {
-        MES = 0,
+        Default = 0,
+        MES     = 1,
 
     }
 }

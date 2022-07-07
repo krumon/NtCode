@@ -14,41 +14,41 @@ namespace NtCore
         /// </summary>
         /// <param name="type"></param>
         /// <returns>Initial <see cref="TradingTime"/> of the <see cref="TradingHoursType"/>.</returns>
-        public static TradingTime ToBeginTradingHour(this TradingHoursType type)
+        public static TradingTime ToBeginTradingHour(this TradingHoursType type, InstrumentCode code = InstrumentCode.Default)
         {
 
             switch (type)
             {
                 case (TradingHoursType.American):
-                    return TradingTimeType.American_Open.ToTradingHour();
+                    return GeneralTradingTime.American_Open.ToTradingHour();
                 case (TradingHoursType.American_IB):
-                    return TradingTimeType.American_IB_Open.ToTradingHour();
+                    return GeneralTradingTime.American_IB_Open.ToTradingHour();
                 case (TradingHoursType.American_FB):
-                    return TradingTimeType.American_FB_Open.ToTradingHour();
+                    return GeneralTradingTime.American_FB_Open.ToTradingHour();
 
-                case (TradingHoursType.ETH):
-                    return TradingTimeType.ETH_Open.ToTradingHour();
-                case (TradingHoursType.ETH_IB):
-                    return TradingTimeType.ETH_IB_Open.ToTradingHour();
-                case (TradingHoursType.ETH_FB):
-                    return TradingTimeType.ETH_FB_Open.ToTradingHour();
+                case (TradingHoursType.Electronic):
+                    return SpecificTradingTime.Electronic_Open.ToTradingHour(code);
+                case (TradingHoursType.Electronic_IB):
+                    return SpecificTradingTime.Electronic_IB_Open.ToTradingHour(code);
+                case (TradingHoursType.Electronic_FB):
+                    return SpecificTradingTime.Electronic_FB_Open.ToTradingHour(code);
 
                 case (TradingHoursType.OVN):
-                    return TradingTimeType.OVN_Open.ToTradingHour();
+                    return SpecificTradingTime.OVN_Open.ToTradingHour(code);
 
                 case (TradingHoursType.Asian):
-                    return TradingTimeType.Asian_Open.ToTradingHour();
+                    return GeneralTradingTime.Asian_Open.ToTradingHour();
                 case (TradingHoursType.Asian_IB):
-                    return TradingTimeType.Asian_IB_Open.ToTradingHour();
+                    return GeneralTradingTime.Asian_IB_Open.ToTradingHour();
                 case (TradingHoursType.Asian_FB):
-                    return TradingTimeType.Asian_FB_Open.ToTradingHour();
+                    return GeneralTradingTime.Asian_FB_Open.ToTradingHour();
 
                 case (TradingHoursType.European):
-                    return TradingTimeType.European_Open.ToTradingHour();
+                    return GeneralTradingTime.European_Open.ToTradingHour();
                 case (TradingHoursType.European_IB):
-                    return TradingTimeType.European_IB_Open.ToTradingHour();
+                    return GeneralTradingTime.European_IB_Open.ToTradingHour();
                 case (TradingHoursType.European_FB):
-                    return TradingTimeType.European_FB_Open.ToTradingHour();
+                    return GeneralTradingTime.European_FB_Open.ToTradingHour();
 
                 default:
                     throw new Exception("The traging time zone doesn't exists.");
@@ -60,41 +60,41 @@ namespace NtCore
         /// </summary>
         /// <param name="type"></param>
         /// <returns>Final <see cref="TradingTime"/> of the <see cref="TradingHoursType"/>.</returns>
-        public static TradingTime ToEndTradingHour(this TradingHoursType type)
+        public static TradingTime ToEndTradingHour(this TradingHoursType type, InstrumentCode code = InstrumentCode.Default)
         {
 
             switch (type)
             {
                 case (TradingHoursType.American):
-                    return TradingTimeType.American_Close.ToTradingHour();
+                    return GeneralTradingTime.American_Close.ToTradingHour();
                 case (TradingHoursType.American_IB):
-                    return TradingTimeType.American_IB_Close.ToTradingHour();
+                    return GeneralTradingTime.American_IB_Close.ToTradingHour();
                 case (TradingHoursType.American_FB):
-                    return TradingTimeType.American_FB_Close.ToTradingHour();
+                    return GeneralTradingTime.American_FB_Close.ToTradingHour();
 
-                case (TradingHoursType.ETH):
-                    return TradingTimeType.ETH_Close.ToTradingHour();
-                case (TradingHoursType.ETH_IB):
-                    return TradingTimeType.ETH_IB_Close.ToTradingHour();
-                case (TradingHoursType.ETH_FB):
-                    return TradingTimeType.ETH_FB_Close.ToTradingHour();
+                case (TradingHoursType.Electronic):
+                    return SpecificTradingTime.Electronic_Close.ToTradingHour(code);
+                case (TradingHoursType.Electronic_IB):
+                    return SpecificTradingTime.Electronic_IB_Close.ToTradingHour(code);
+                case (TradingHoursType.Electronic_FB):
+                    return SpecificTradingTime.Electronic_FB_Close.ToTradingHour(code);
 
                 case (TradingHoursType.OVN):
-                    return TradingTimeType.OVN_Close.ToTradingHour();
+                    return SpecificTradingTime.OVN_Close.ToTradingHour(code);
 
                 case (TradingHoursType.Asian):
-                    return TradingTimeType.Asian_Close.ToTradingHour();
+                    return GeneralTradingTime.Asian_Close.ToTradingHour();
                 case (TradingHoursType.Asian_IB):
-                    return TradingTimeType.Asian_IB_Close.ToTradingHour();
+                    return GeneralTradingTime.Asian_IB_Close.ToTradingHour();
                 case (TradingHoursType.Asian_FB):
-                    return TradingTimeType.Asian_FB_Close.ToTradingHour();
+                    return GeneralTradingTime.Asian_FB_Close.ToTradingHour();
 
                 case (TradingHoursType.European):
-                    return TradingTimeType.European_Close.ToTradingHour();
+                    return GeneralTradingTime.European_Close.ToTradingHour();
                 case (TradingHoursType.European_IB):
-                    return TradingTimeType.European_IB_Close.ToTradingHour();
+                    return GeneralTradingTime.European_IB_Close.ToTradingHour();
                 case (TradingHoursType.European_FB):
-                    return TradingTimeType.European_FB_Close.ToTradingHour();
+                    return GeneralTradingTime.European_FB_Close.ToTradingHour();
 
                 default:
                     throw new Exception("The traging time zone doesn't exists.");
@@ -103,7 +103,7 @@ namespace NtCore
 
         public static TradingHours ToTradingTimeZone(this TradingHoursType type)
         {
-            return TradingHours.CreateTimeZoneByType(type);
+            return TradingHours.CreateTradingHoursByType(type);
         }
 
         public static TradingHoursType[] ToArray(this TradingHoursType type)

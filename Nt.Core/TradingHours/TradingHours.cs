@@ -40,10 +40,10 @@ namespace NtCore
 
         #region Constructors
 
-        private TradingHours(TradingTimeType beginTradingHourType, TradingTimeType endTradingHourType)
+        private TradingHours(GeneralTradingTime beginTradingTime, GeneralTradingTime endTradingTime)
         {
-            this.BeginTime = TradingTime.CreateTradingHourByType(beginTradingHourType);
-            this.EndTime = TradingTime.CreateTradingHourByType(endTradingHourType);
+            this.BeginTime = TradingTime.CreateTradingHourByType(beginTradingTime);
+            this.EndTime = TradingTime.CreateTradingHourByType(endTradingTime);
         }
 
         private TradingHours(TradingHoursType type)
@@ -57,15 +57,25 @@ namespace NtCore
 
         #region Instance methods
 
-        public static TradingHours CreateTimeZoneByType(TradingHoursType type)
+        public static TradingHours CreateTradingHoursByType(TradingHoursType type)
         {
             return new TradingHours(type);
         }
 
-        public static TradingHours CreateTimeZoneByTradingHoursType(TradingTimeType beginTradingHourType, TradingTimeType endTradingHourType)
+        public static TradingHours CreateTradingHoursByTradingTimes(GeneralTradingTime beginTradingTime, GeneralTradingTime endTradingTime)
         {
-            return new TradingHours(beginTradingHourType, endTradingHourType);
+            return new TradingHours(beginTradingTime, endTradingTime);
         }
+
+        //public static TradingHours CreateTradingHoursByTradingTimes(GeneralTradingTime beginTradingTime, SpecificTradingTime endTradingTime, InstrumentCode code = InstrumentCode.Default)
+        //{
+        //    return new TradingHours(beginTradingTime, endTradingTime);
+        //}
+
+        //public static TradingHours CreateTradingHoursByTradingTimes(GeneralTradingTime beginTradingTime, GeneralTradingTime endTradingTime)
+        //{
+        //    return new TradingHours(beginTradingTime, endTradingTime);
+        //}
 
         #endregion
 

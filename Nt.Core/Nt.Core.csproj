@@ -89,11 +89,12 @@
     <Compile Include="Prices\CandleStickPrice.cs" />
     <Compile Include="Prices\PriceType.cs" />
     <Compile Include="Sessions\DayTradingSessionType.cs" />
+    <Compile Include="TradingHours\SpecificTradingTime.cs" />
     <Compile Include="TradingHours\TradingHoursTypeHelpers.cs" />
     <Compile Include="TradingHours\TradingHours.cs" />
     <Compile Include="TradingHours\TradingHoursType.cs" />
-    <Compile Include="TradingHours\TradingTimeTypeHelpers.cs" />
-    <Compile Include="TradingHours\TradingTimeType.cs" />
+    <Compile Include="TradingHours\TradingTimeHelpers.cs" />
+    <Compile Include="TradingHours\GeneralTradingTime.cs" />
     <Compile Include="Files\XmlFileItem.cs" />
     <Compile Include="Helpers\ISeriesHelpers.cs" />
     <Compile Include="Helpers\LabelLineHelpers.cs" />
