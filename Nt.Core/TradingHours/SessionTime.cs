@@ -1,29 +1,39 @@
-﻿using NinjaTrader.NinjaScript;
-using System;
+﻿using System;
 
 namespace NtCore
 {
-    public class TradingTime
+    public class SessionTime
     {
         #region Private members
 
+        /// <summary>
+        /// The unique code of the trading time.
+        /// </summary>
         private readonly string code;
+
+        /// <summary>
+        /// The description of the trading time.
+        /// </summary>
         private readonly string description;
-        protected SpecificTradingTime specificTradingTime;
+
+        /// <summary>
+        /// The specific session time.
+        /// </summary>
+        protected SpecificSessionTime specificSessionTime;
 
         #endregion
 
         #region Public properties
 
         /// <summary>
-        /// The unique code of the trading time.
+        /// Gets the unique code of the trading time.
         /// </summary>
-        public string Code => specificTradingTime == SpecificTradingTime.Custom ? code : specificTradingTime.ToCode();
+        public string Code => specificSessionTime == SpecificSessionTime.Custom ? code : specificSessionTime.ToCode();
 
         /// <summary>
-        /// the description of the trading time.
+        /// Gets the description of the trading time.
         /// </summary>
-        public string Description => specificTradingTime == SpecificTradingTime.Custom ? description : specificTradingTime.ToDescription();
+        public string Description => specificSessionTime == SpecificSessionTime.Custom ? description : specificSessionTime.ToDescription();
 
         /// <summary>
         /// Gets or sets the <see cref="TimeZoneInfo"/> of the trading hour.
@@ -40,26 +50,26 @@ namespace NtCore
         #region Constructors
 
         /// <summary>
-        /// Create instance of <see cref="TradingTime"/> class.
+        /// Create instance of <see cref="SessionTime"/> class.
         /// </summary>
-        /// <param name="type"></param>
-        private TradingTime(SpecificTradingTime type, InstrumentCode code = InstrumentCode.Default)
+        /// <param name="specificSessionTime"></param>
+        private SessionTime(SpecificSessionTime specificSessionTime, InstrumentCode code = InstrumentCode.Default)
         {
-            this.TimeZoneInfo = type.ToTimeZoneInfo(code);
-            this.Time = type.ToTimeSpan(code);
+            this.TimeZoneInfo = specificSessionTime.ToTimeZoneInfo(code);
+            this.Time = specificSessionTime.ToTimeSpan(code);
         }
 
         /// <summary>
-        /// Create instance of <see cref="TradingTime"/> class whith custom values.
+        /// Create instance of <see cref="SessionTime"/> class whith custom values.
         /// </summary>
         /// <param name="timeZoneInfo"></param>
         /// <param name="hour"></param>
         /// <param name="minute"></param>
         /// <param name="code"></param>
         /// <param name="description"></param>
-        private TradingTime(TimeZoneInfo timeZoneInfo, int hour, int minute, int seconds, string code, string description = "")
+        private SessionTime(TimeZoneInfo timeZoneInfo, int hour, int minute, int seconds, string code, string description = "")
         {
-            specificTradingTime = SpecificTradingTime.Custom;
+            specificSessionTime = SpecificSessionTime.Custom;
             this.code = code;
             this.description = description;
             this.TimeZoneInfo = timeZoneInfo;
@@ -71,17 +81,17 @@ namespace NtCore
         #region Public methods
 
         /// <summary>
-        /// Create default instance of <see cref="TradingTime"/> class.
+        /// Create default instance of <see cref="SessionTime"/> class.
         /// </summary>
-        /// <param name="type">The trading hour type for create the instance.</param>
-        /// <returns>The trading hour instance.</returns>
-        public static TradingTime CreateTradingTimeByType(SpecificTradingTime type, InstrumentCode code = InstrumentCode.Default)
+        /// <param name="specificSessionTime">The specific session time to create the instance.</param>
+        /// <returns>The session time instance.</returns>
+        public static SessionTime CreateSessionTimeByType(SpecificSessionTime specificSessionTime, InstrumentCode instrumentCode = InstrumentCode.Default)
         {
-            return new TradingTime(type,code);
+            return new SessionTime(specificSessionTime,instrumentCode);
         }
 
         /// <summary>
-        /// Create default instance of <see cref="TradingTime"/> class whith custom values.
+        /// Create default instance of <see cref="SessionTime"/> class whith custom values.
         /// </summary>
         /// <param name="timeZoneInfo"></param>
         /// <param name="hour"></param>
@@ -90,9 +100,9 @@ namespace NtCore
         /// <param name="code"></param>
         /// <param name="description"></param>
         /// <returns></returns>
-        public static TradingTime CreateCustomTradingTime(TimeZoneInfo timeZoneInfo, int hour, int minute, int seconds, string code, string description = "")
+        public static SessionTime CreateCustomSessionTime(TimeZoneInfo timeZoneInfo, int hour, int minute, int seconds, string code, string description = "")
         {
-            return new TradingTime(timeZoneInfo,hour,minute,seconds,code, description);
+            return new SessionTime(timeZoneInfo,hour,minute,seconds,code, description);
         }
 
         /// <summary>

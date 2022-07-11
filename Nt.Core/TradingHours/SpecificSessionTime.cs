@@ -4,7 +4,7 @@ namespace NtCore
     /// <summary>
     /// The type price of the bar.
     /// </summary>
-    public enum SpecificTradingTime
+    public enum SpecificSessionTime
     {
         Custom,                         // Custom trading time.
 

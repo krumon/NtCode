@@ -25,7 +25,7 @@ namespace NtCore
         /// <summary>
         /// Represents the session time zone.
         /// </summary>
-        public TradingHours TradingHours { get; set; }
+        public SessionHours TradingHours { get; set; }
 
         /// <summary>
         /// Contents the day trading sessions.
