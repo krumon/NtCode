@@ -90,9 +90,9 @@
     <Compile Include="Prices\PriceType.cs" />
     <Compile Include="Sessions\DayTradingSessionType.cs" />
     <Compile Include="TradingHours\SpecificTradingTime.cs" />
-    <Compile Include="TradingHours\TradingHoursTypeHelpers.cs" />
+    <Compile Include="TradingHours\TradingHoursHelpers.cs" />
     <Compile Include="TradingHours\TradingHours.cs" />
-    <Compile Include="TradingHours\TradingHoursType.cs" />
+    <Compile Include="TradingHours\SpecificTradingHours.cs" />
     <Compile Include="TradingHours\TradingTimeHelpers.cs" />
     <Compile Include="TradingHours\GeneralTradingTime.cs" />
     <Compile Include="Files\XmlFileItem.cs" />

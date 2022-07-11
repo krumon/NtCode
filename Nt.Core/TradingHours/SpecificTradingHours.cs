@@ -4,7 +4,7 @@ namespace NtCore
     /// <summary>
     /// Trading time zone types.
     /// </summary>
-    public enum TradingHoursType
+    public enum SpecificTradingHours
     {
 
         Electronic,             // Electronic Trading Hours  

@@ -8,8 +8,8 @@ namespace NtConsole
 
         static void Main(string[] args)
         {
-            foreach(var timeZone in TradingHoursType.Asian.ToArray())
-                Console.WriteLine(timeZone.ToTradingTimeZone().ToString());
+            foreach(var timeZone in SpecificTradingHours.Asian.ToArray())
+                Console.WriteLine(timeZone.ToTradingHours().ToString());
 
             Console.ReadKey();
         }

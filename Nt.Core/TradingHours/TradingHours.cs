@@ -10,9 +10,9 @@ namespace NtCore
 
         #region Private members
 
-        private TradingHoursType type;
+        private SpecificTradingHours type;
 
-        private InstrumentCode instrumentCode;
+        //private InstrumentCode instrumentCode;
 
         #endregion
 
@@ -40,29 +40,29 @@ namespace NtCore
 
         #region Constructors
 
-        private TradingHours(GeneralTradingTime beginTradingTime, GeneralTradingTime endTradingTime)
+        private TradingHours(SpecificTradingTime beginTradingTime, SpecificTradingTime endTradingTime)
         {
-            this.BeginTime = TradingTime.CreateTradingHourByType(beginTradingTime);
-            this.EndTime = TradingTime.CreateTradingHourByType(endTradingTime);
+            this.BeginTime = TradingTime.CreateTradingTimeByType(beginTradingTime);
+            this.EndTime = TradingTime.CreateTradingTimeByType(endTradingTime);
         }
 
-        private TradingHours(TradingHoursType type)
+        private TradingHours(SpecificTradingHours type)
         {
             this.type = type;
-            this.BeginTime = type.ToBeginTradingHour();
-            this.EndTime = type.ToEndTradingHour();
+            this.BeginTime = type.ToBeginTradingTime();
+            this.EndTime = type.ToEndTradingTime();
         }
 
         #endregion
 
         #region Instance methods
 
-        public static TradingHours CreateTradingHoursByType(TradingHoursType type)
+        public static TradingHours CreateTradingHoursByType(SpecificTradingHours type)
         {
             return new TradingHours(type);
         }
 
-        public static TradingHours CreateTradingHoursByTradingTimes(GeneralTradingTime beginTradingTime, GeneralTradingTime endTradingTime)
+        public static TradingHours CreateTradingHoursByTradingTimes(SpecificTradingTime beginTradingTime, SpecificTradingTime endTradingTime)
         {
             return new TradingHours(beginTradingTime, endTradingTime);
         }
