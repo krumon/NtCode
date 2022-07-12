@@ -40,8 +40,12 @@ namespace NtCore
         Residual_AET_Close,             // Residual Trading Time - American Extra time - Close
         Residual_EOD_Open,              // Residual Trading Time - End of day time - Open
         Residual_EOD_Close,             // Residual Trading Time - End of day time - End
-        Residual_NDB_Open,              // Residual Trading Time - New day balance - Open
-        Residual_NDB_Close,             // Residual Trading Time - New day balance - Close
+        Residual_NDIB_Open,             // Residual Trading Time - New day initial balance - Open
+        Residual_NDIB_Close,            // Residual Trading Time - New day initial balance - Close
+        Residual_NDBB_Open,             // Residual Trading Time - Between balances - Open
+        Residual_NDBB_Close,            // Residual Trading Time - Between balances - Close
+        Residual_NDFB_Open,             // Residual Trading Time - New day final balance - Open
+        Residual_NDFB_Close,            // Residual Trading Time - New day final balance - Close
 
         Asian_IB_Open,                  // Asian Trading Time - Initial Balance - Open
         Asian_IB_Close,                 // Asian Trading Time - Initial Balance - Close

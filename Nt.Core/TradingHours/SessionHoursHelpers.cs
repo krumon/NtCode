@@ -53,7 +53,7 @@ namespace NtCore
                     return "RS-AET";
                 case SpecificSessionHours.Residual_EOD:
                     return "RS-EOD";
-                case SpecificSessionHours.Residual_NDB:
+                case SpecificSessionHours.Residual_NDIB:
                     return "RS-NDB";
 
                 case SpecificSessionHours.Asian_IB:
@@ -111,7 +111,7 @@ namespace NtCore
                     return "Extra time of the American session.";
                 case SpecificSessionHours.Residual_EOD:
                     return "End of day session.";
-                case SpecificSessionHours.Residual_NDB:
+                case SpecificSessionHours.Residual_NDIB:
                     return "Initial balance of the new day session.";
 
                 case SpecificSessionHours.Asian_IB:
@@ -192,8 +192,8 @@ namespace NtCore
                                 return SpecificSessionTime.Residual_AET_Open.ToSessionTime();
                             case (SpecificSessionHours.Residual_EOD):
                                 return SpecificSessionTime.Residual_EOD_Open.ToSessionTime();
-                            case (SpecificSessionHours.Residual_NDB):
-                                return SpecificSessionTime.Residual_NDB_Open.ToSessionTime();
+                            case (SpecificSessionHours.Residual_NDIB):
+                                return SpecificSessionTime.Residual_NDIB_Open.ToSessionTime();
 
                             default:
                                 throw new Exception("The specific session hours doesn't exists.");
@@ -273,8 +273,8 @@ namespace NtCore
                                 return SpecificSessionTime.Residual_AET_Close.ToSessionTime();
                             case (SpecificSessionHours.Residual_EOD):
                                 return SpecificSessionTime.Residual_EOD_Close.ToSessionTime();
-                            case (SpecificSessionHours.Residual_NDB):
-                                return SpecificSessionTime.Residual_NDB_Close.ToSessionTime();
+                            case (SpecificSessionHours.Residual_NDIB):
+                                return SpecificSessionTime.Residual_NDIB_Close.ToSessionTime();
 
                             default:
                                 throw new Exception("The specific session hours doesn't exists.");
