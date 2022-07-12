@@ -26,12 +26,12 @@ namespace NtCore
         #region Public properties
 
         /// <summary>
-        /// Gets the unique code of the trading time.
+        /// Gets the unique code of the <see cref="SessionTime"/>.
         /// </summary>
         public string Code => specificSessionTime == SpecificSessionTime.Custom ? code : specificSessionTime.ToCode();
 
         /// <summary>
-        /// Gets the description of the trading time.
+        /// Gets the description of the <see cref="SessionTime"/>.
         /// </summary>
         public string Description => specificSessionTime == SpecificSessionTime.Custom ? description : specificSessionTime.ToDescription();
 

@@ -19,9 +19,15 @@ namespace NtCore
 
         #region Public properties
 
-        // TODO: Create converts in SessionHoursHelpers.
-        public string Code => specificSessionHours.ToString();
-        public string Description => specificSessionHours.ToString();
+        /// <summary>
+        /// Gets the unique code of the <see cref="SessionHours"/>.
+        /// </summary>
+        public string Code => specificSessionHours.ToCode();
+
+        /// <summary>
+        /// Gets the description of the <see cref="SessionHours"/>.
+        /// </summary>
+        public string Description => specificSessionHours.ToDescription();
 
         /// <summary>
         /// The initial <see cref="SessionTime"/>.

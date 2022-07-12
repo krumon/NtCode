@@ -21,8 +21,6 @@ namespace NtCore
         American,                   // American Trading Hours 
 
         // Minor sessions
-
-
         Residual_AET,               // Residual Trading Hours - American Extra Time
         Residual_EOD,               // Residual Trading Hours - End Of Day
         Residual_NDB,               // Residual Trading Hours - New Day Balance
