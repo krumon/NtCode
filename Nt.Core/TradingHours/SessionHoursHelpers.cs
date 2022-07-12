@@ -27,36 +27,18 @@ namespace NtCore
 
                             case (SpecificSessionHours.Electronic):
                                 return SpecificSessionTime.Electronic_Open.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.Electronic_IB):
-                                return SpecificSessionTime.Electronic_IB_Open.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.Electronic_FB):
-                                return SpecificSessionTime.Electronic_FB_Open.ToSessionTime(instrumentCode);
-
-                            case (SpecificSessionHours.DAY):
-                                return SpecificSessionTime.DAY_Open.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.DAY_IB):
-                                return SpecificSessionTime.DAY_IB_Open.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.DAY_FB):
-                                return SpecificSessionTime.DAY_FB_Open.ToSessionTime(instrumentCode);
 
                             case (SpecificSessionHours.Regular):
                                 return SpecificSessionTime.Regular_Open.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.Regular_IB):
-                                return SpecificSessionTime.Regular_IB_Open.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.Regular_FB):
-                                return SpecificSessionTime.Regular_FB_Open.ToSessionTime(instrumentCode);
-
                             case (SpecificSessionHours.OVN):
                                 return SpecificSessionTime.OVN_Open.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.OVN_IB):
-                                return SpecificSessionTime.OVN_IB_Open.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.OVN_FB):
-                                return SpecificSessionTime.Regular_FB_Open.ToSessionTime(instrumentCode);
 
                             case (SpecificSessionHours.American):
                                 return SpecificSessionTime.American_Open.ToSessionTime();
                             case (SpecificSessionHours.American_IB):
                                 return SpecificSessionTime.American_IB_Open.ToSessionTime();
+                            case (SpecificSessionHours.American_BB):
+                                return SpecificSessionTime.American_BB_Open.ToSessionTime();
                             case (SpecificSessionHours.American_FB):
                                 return SpecificSessionTime.American_FB_Open.ToSessionTime();
 
@@ -64,6 +46,8 @@ namespace NtCore
                                 return SpecificSessionTime.AmericanAndEuropean_Open.ToSessionTime();
                             case (SpecificSessionHours.AmericanAndEuropean_IB):
                                 return SpecificSessionTime.AmericanAndEuropean_IB_Open.ToSessionTime();
+                            case (SpecificSessionHours.AmericanAndEuropean_BB):
+                                return SpecificSessionTime.AmericanAndEuropean_BB_Open.ToSessionTime();
                             case (SpecificSessionHours.AmericanAndEuropean_FB):
                                 return SpecificSessionTime.AmericanAndEuropean_FB_Open.ToSessionTime();
 
@@ -71,6 +55,8 @@ namespace NtCore
                                 return SpecificSessionTime.Asian_Open.ToSessionTime();
                             case (SpecificSessionHours.Asian_IB):
                                 return SpecificSessionTime.Asian_IB_Open.ToSessionTime();
+                            case (SpecificSessionHours.Asian_BB):
+                                return SpecificSessionTime.Asian_BB_Open.ToSessionTime();
                             case (SpecificSessionHours.Asian_FB):
                                 return SpecificSessionTime.Asian_FB_Open.ToSessionTime();
 
@@ -78,8 +64,19 @@ namespace NtCore
                                 return SpecificSessionTime.European_Open.ToSessionTime();
                             case (SpecificSessionHours.European_IB):
                                 return SpecificSessionTime.European_IB_Open.ToSessionTime();
+                            case (SpecificSessionHours.European_BB):
+                                return SpecificSessionTime.European_BB_Open.ToSessionTime();
                             case (SpecificSessionHours.European_FB):
                                 return SpecificSessionTime.European_FB_Open.ToSessionTime();
+
+                            case (SpecificSessionHours.Residual):
+                                return SpecificSessionTime.Residual_Open.ToSessionTime();
+                            case (SpecificSessionHours.Residual_AET):
+                                return SpecificSessionTime.Residual_AET_Open.ToSessionTime();
+                            case (SpecificSessionHours.Residual_EOD):
+                                return SpecificSessionTime.Residual_EOD_Open.ToSessionTime();
+                            case (SpecificSessionHours.Residual_NDB):
+                                return SpecificSessionTime.Residual_NDB_Open.ToSessionTime();
 
                             default:
                                 throw new Exception("The specific trading hours doesn't exists.");
@@ -110,36 +107,19 @@ namespace NtCore
 
                             case (SpecificSessionHours.Electronic):
                                 return SpecificSessionTime.Electronic_Close.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.Electronic_IB):
-                                return SpecificSessionTime.Electronic_IB_Close.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.Electronic_FB):
-                                return SpecificSessionTime.Electronic_FB_Close.ToSessionTime(instrumentCode);
-
-                            case (SpecificSessionHours.DAY):
-                                return SpecificSessionTime.DAY_Close.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.DAY_IB):
-                                return SpecificSessionTime.DAY_IB_Close.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.DAY_FB):
-                                return SpecificSessionTime.DAY_FB_Close.ToSessionTime(instrumentCode);
 
                             case (SpecificSessionHours.Regular):
                                 return SpecificSessionTime.Regular_Close.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.Regular_IB):
-                                return SpecificSessionTime.Regular_IB_Close.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.Regular_FB):
-                                return SpecificSessionTime.Regular_FB_Close.ToSessionTime(instrumentCode);
 
                             case (SpecificSessionHours.OVN):
                                 return SpecificSessionTime.OVN_Close.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.OVN_IB):
-                                return SpecificSessionTime.OVN_IB_Close.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.OVN_FB):
-                                return SpecificSessionTime.Regular_FB_Close.ToSessionTime(instrumentCode);
 
                             case (SpecificSessionHours.American):
                                 return SpecificSessionTime.American_Close.ToSessionTime();
                             case (SpecificSessionHours.American_IB):
                                 return SpecificSessionTime.American_IB_Close.ToSessionTime();
+                            case (SpecificSessionHours.American_BB):
+                                return SpecificSessionTime.American_BB_Close.ToSessionTime();
                             case (SpecificSessionHours.American_FB):
                                 return SpecificSessionTime.American_FB_Close.ToSessionTime();
 
@@ -147,6 +127,8 @@ namespace NtCore
                                 return SpecificSessionTime.AmericanAndEuropean_Close.ToSessionTime();
                             case (SpecificSessionHours.AmericanAndEuropean_IB):
                                 return SpecificSessionTime.AmericanAndEuropean_IB_Close.ToSessionTime();
+                            case (SpecificSessionHours.AmericanAndEuropean_BB):
+                                return SpecificSessionTime.AmericanAndEuropean_BB_Close.ToSessionTime();
                             case (SpecificSessionHours.AmericanAndEuropean_FB):
                                 return SpecificSessionTime.AmericanAndEuropean_FB_Close.ToSessionTime();
 
@@ -154,6 +136,8 @@ namespace NtCore
                                 return SpecificSessionTime.Asian_Close.ToSessionTime();
                             case (SpecificSessionHours.Asian_IB):
                                 return SpecificSessionTime.Asian_IB_Close.ToSessionTime();
+                            case (SpecificSessionHours.Asian_BB):
+                                return SpecificSessionTime.Asian_BB_Close.ToSessionTime();
                             case (SpecificSessionHours.Asian_FB):
                                 return SpecificSessionTime.Asian_FB_Close.ToSessionTime();
 
@@ -161,8 +145,19 @@ namespace NtCore
                                 return SpecificSessionTime.European_Close.ToSessionTime();
                             case (SpecificSessionHours.European_IB):
                                 return SpecificSessionTime.European_IB_Close.ToSessionTime();
+                            case (SpecificSessionHours.European_BB):
+                                return SpecificSessionTime.European_BB_Close.ToSessionTime();
                             case (SpecificSessionHours.European_FB):
                                 return SpecificSessionTime.European_FB_Close.ToSessionTime();
+
+                            case (SpecificSessionHours.Residual):
+                                return SpecificSessionTime.Residual_Close.ToSessionTime();
+                            case (SpecificSessionHours.Residual_AET):
+                                return SpecificSessionTime.Residual_AET_Close.ToSessionTime();
+                            case (SpecificSessionHours.Residual_EOD):
+                                return SpecificSessionTime.Residual_EOD_Close.ToSessionTime();
+                            case (SpecificSessionHours.Residual_NDB):
+                                return SpecificSessionTime.Residual_NDB_Close.ToSessionTime();
 
                             default:
                                 throw new Exception("The specific trading hours doesn't exists.");

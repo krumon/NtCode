@@ -47,50 +47,52 @@ namespace NtCore
                         {
                             case (SpecificSessionTime.Electronic_Open):
                             case (SpecificSessionTime.Electronic_Close):
-                            case (SpecificSessionTime.Electronic_IB_Open):
-                            case (SpecificSessionTime.Electronic_IB_Close):
-                            case (SpecificSessionTime.Electronic_FB_Open):
-                            case (SpecificSessionTime.Electronic_FB_Close):
                             case (SpecificSessionTime.Regular_Open):
                             case (SpecificSessionTime.Regular_Close):
-                            case (SpecificSessionTime.Regular_IB_Open):
-                            case (SpecificSessionTime.Regular_IB_Close):
-                            case (SpecificSessionTime.Regular_FB_Open):
-                            case (SpecificSessionTime.Regular_FB_Close):
-                            case (SpecificSessionTime.DAY_Open):
-                            case (SpecificSessionTime.DAY_Close):
-                            case (SpecificSessionTime.DAY_IB_Open):
-                            case (SpecificSessionTime.DAY_IB_Close):
-                            case (SpecificSessionTime.DAY_FB_Open):
-                            case (SpecificSessionTime.DAY_FB_Close):
                             case (SpecificSessionTime.OVN_Open):
                             case (SpecificSessionTime.OVN_Close):
-                            case (SpecificSessionTime.OVN_IB_Open):
-                            case (SpecificSessionTime.OVN_IB_Close):
-                            case (SpecificSessionTime.OVN_FB_Open):
-                            case (SpecificSessionTime.OVN_FB_Close):
                                 return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+
+                            case (SpecificSessionTime.Residual_Open):
+                            case (SpecificSessionTime.Residual_Close):
+                            case (SpecificSessionTime.Residual_AET_Open):
+                            case (SpecificSessionTime.Residual_AET_Close):
+                            case (SpecificSessionTime.Residual_EOD_Open):
+                            case (SpecificSessionTime.Residual_EOD_Close):
+                            case (SpecificSessionTime.Residual_NDB_Open):
+                                return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+
+                            case (SpecificSessionTime.Residual_NDB_Close):
+                                return TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
 
                             case (SpecificSessionTime.American_Open):
                             case (SpecificSessionTime.American_Close):
                             case (SpecificSessionTime.American_IB_Open):
                             case (SpecificSessionTime.American_IB_Close):
+                            case (SpecificSessionTime.American_BB_Open):
+                            case (SpecificSessionTime.American_BB_Close):
                             case (SpecificSessionTime.American_FB_Open):
                             case (SpecificSessionTime.American_FB_Close):
                                 return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
 
                             case (SpecificSessionTime.AmericanAndEuropean_Open):
-                            case (SpecificSessionTime.AmericanAndEuropean_Close):
                             case (SpecificSessionTime.AmericanAndEuropean_IB_Open):
                             case (SpecificSessionTime.AmericanAndEuropean_IB_Close):
+                            case (SpecificSessionTime.AmericanAndEuropean_BB_Open):
+                                return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+
+                            case (SpecificSessionTime.AmericanAndEuropean_Close):
+                            case (SpecificSessionTime.AmericanAndEuropean_BB_Close):
                             case (SpecificSessionTime.AmericanAndEuropean_FB_Open):
                             case (SpecificSessionTime.AmericanAndEuropean_FB_Close):
-                                return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+                                return TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
 
                             case (SpecificSessionTime.Asian_Open):
                             case (SpecificSessionTime.Asian_Close):
                             case (SpecificSessionTime.Asian_IB_Open):
                             case (SpecificSessionTime.Asian_IB_Close):
+                            case (SpecificSessionTime.Asian_BB_Open):
+                            case (SpecificSessionTime.Asian_BB_Close):
                             case (SpecificSessionTime.Asian_FB_Open):
                             case (SpecificSessionTime.Asian_FB_Close):
                                 return TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
@@ -99,6 +101,8 @@ namespace NtCore
                             case (SpecificSessionTime.European_Close):
                             case (SpecificSessionTime.European_IB_Open):
                             case (SpecificSessionTime.European_IB_Close):
+                            case (SpecificSessionTime.European_BB_Open):
+                            case (SpecificSessionTime.European_BB_Close):
                             case (SpecificSessionTime.European_FB_Open):
                             case (SpecificSessionTime.European_FB_Close):
                                 return TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
@@ -137,47 +141,33 @@ namespace NtCore
                                 return new TimeSpan(17, 0, 0);
                             case (SpecificSessionTime.Electronic_Close):
                                 return new TimeSpan(16, 0, 0);
-                            case (SpecificSessionTime.Electronic_IB_Open):
-                                return new TimeSpan(17, 0, 0);
-                            case (SpecificSessionTime.Electronic_IB_Close):
-                                return new TimeSpan(17, 15, 0);
-                            case (SpecificSessionTime.Electronic_FB_Open):
-                                return new TimeSpan(15, 45, 0);
-                            case (SpecificSessionTime.Electronic_FB_Close):
-                                return new TimeSpan(16, 0, 0);
 
                             case (SpecificSessionTime.Regular_Open):
-                            case (SpecificSessionTime.DAY_Open):
                                 return new TimeSpan(8, 30, 0);
                             case (SpecificSessionTime.Regular_Close):
-                            case (SpecificSessionTime.DAY_Close):
                                 return new TimeSpan(15, 0, 0);
-                            case (SpecificSessionTime.Regular_IB_Open):
-                            case (SpecificSessionTime.DAY_IB_Open):
-                                return new TimeSpan(8, 30, 0);
-                            case (SpecificSessionTime.Regular_IB_Close):
-                            case (SpecificSessionTime.DAY_IB_Close):
-                                return new TimeSpan(9, 30, 0);
-                            case (SpecificSessionTime.Regular_FB_Open):
-                            case (SpecificSessionTime.DAY_FB_Open):
-                                return new TimeSpan(14, 30, 0);
-                            case (SpecificSessionTime.Regular_FB_Close):
-                            case (SpecificSessionTime.DAY_FB_Close):
-                                return new TimeSpan(15, 0, 0);
-
 
                             case (SpecificSessionTime.OVN_Open):
                                 return new TimeSpan(15, 0, 0);
                             case (SpecificSessionTime.OVN_Close):
                                 return new TimeSpan(8, 30, 0);
-                            case (SpecificSessionTime.OVN_IB_Open):
+
+                            case (SpecificSessionTime.Residual_Open):
                                 return new TimeSpan(15, 0, 0);
-                            case (SpecificSessionTime.OVN_IB_Close):
+                            case (SpecificSessionTime.Residual_Close):
+                                return SpecificSessionTime.Asian_Open.ToTimeSpan();
+                            case (SpecificSessionTime.Residual_AET_Open):
+                                return new TimeSpan(15, 0, 0); ;
+                            case (SpecificSessionTime.Residual_AET_Close):
                                 return new TimeSpan(15, 15, 0);
-                            case (SpecificSessionTime.OVN_FB_Open):
-                                return new TimeSpan(14, 45, 0);
-                            case (SpecificSessionTime.OVN_FB_Close):
-                                return new TimeSpan(15, 0, 0);
+                            case (SpecificSessionTime.Residual_EOD_Open):
+                                return new TimeSpan(15, 30, 0);
+                            case (SpecificSessionTime.Residual_EOD_Close):
+                                return new TimeSpan(16, 0, 0);
+                            case (SpecificSessionTime.Residual_NDB_Open):
+                                return new TimeSpan(17, 0, 0);
+                            case (SpecificSessionTime.Residual_NDB_Close):
+                                return SpecificSessionTime.Asian_Open.ToTimeSpan();
 
                             case (SpecificSessionTime.American_Open):
                                 return new TimeSpan(8, 30, 0);
@@ -187,6 +177,10 @@ namespace NtCore
                                 return new TimeSpan(8, 30, 0);
                             case (SpecificSessionTime.American_IB_Close):
                                 return new TimeSpan(9, 30, 0);
+                            case (SpecificSessionTime.American_BB_Open):
+                                return SpecificSessionTime.American_IB_Close.ToTimeSpan();
+                            case (SpecificSessionTime.American_BB_Close):
+                                return SpecificSessionTime.American_FB_Open.ToTimeSpan();
                             case (SpecificSessionTime.American_FB_Open):
                                 return new TimeSpan(14, 30, 0);
                             case (SpecificSessionTime.American_FB_Close):
@@ -200,6 +194,10 @@ namespace NtCore
                                 return new TimeSpan(8, 30, 0);
                             case (SpecificSessionTime.AmericanAndEuropean_IB_Close):
                                 return new TimeSpan(9, 30, 0);
+                            case (SpecificSessionTime.AmericanAndEuropean_BB_Open):
+                                return SpecificSessionTime.AmericanAndEuropean_IB_Close.ToTimeSpan();
+                            case (SpecificSessionTime.AmericanAndEuropean_BB_Close):
+                                return SpecificSessionTime.AmericanAndEuropean_FB_Open.ToTimeSpan();
                             case (SpecificSessionTime.AmericanAndEuropean_FB_Open):
                                 return new TimeSpan(10, 15, 0);
                             case (SpecificSessionTime.AmericanAndEuropean_FB_Close):
@@ -213,6 +211,10 @@ namespace NtCore
                                 return new TimeSpan(9, 0, 0);
                             case (SpecificSessionTime.Asian_IB_Close):
                                 return new TimeSpan(9, 15, 0);
+                            case (SpecificSessionTime.Asian_BB_Open):
+                                return SpecificSessionTime.Asian_IB_Close.ToTimeSpan();
+                            case (SpecificSessionTime.Asian_BB_Close):
+                                return SpecificSessionTime.Asian_FB_Open.ToTimeSpan();
                             case (SpecificSessionTime.Asian_FB_Open):
                                 return new TimeSpan(14, 45, 0);
                             case (SpecificSessionTime.Asian_FB_Close):
@@ -226,6 +228,10 @@ namespace NtCore
                                 return new TimeSpan(8, 0, 0);
                             case (SpecificSessionTime.European_IB_Close):
                                 return new TimeSpan(8, 15, 0);
+                            case (SpecificSessionTime.European_BB_Open):
+                                return SpecificSessionTime.European_IB_Close.ToTimeSpan();
+                            case (SpecificSessionTime.European_BB_Close):
+                                return SpecificSessionTime.European_FB_Open.ToTimeSpan();
                             case (SpecificSessionTime.European_FB_Open):
                                 return new TimeSpan(16, 15, 0);
                             case (SpecificSessionTime.European_FB_Close):
