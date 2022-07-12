@@ -7,44 +7,53 @@ namespace NtCore
     public enum SpecificSessionHours
     {
         // Main session
-        Electronic,                 // Electronic Trading Hours  
+        Electronic,                 // Electronic Session  
+        Closed,                     // Session is Closed
 
         // Regular and overnight sessions
-        Regular,                    // Regular session.
-        OVN,                        // Overnight session 
+        Regular,                    // Regular Session.
+        OVN,                        // Overnight Session 
 
         // Major sessions
-        Residual,                   // Residual session 
-        Asian,                      // Asian Trading Hours 
-        European,                   // European Trading Hours 
-        AmericanAndEuropean,        // American and European Trading Hours 
-        American,                   // American Trading Hours 
+        Asian,                      // Asian Session 
+        European,                   // European Session 
+        AmericanAndEuropean,        // American and European Session 
+        American,                   // American Session 
 
-        // Minor sessions
-        Residual_AET,               // Residual Trading Hours - American Extra Time
-        Residual_EOD,               // Residual Trading Hours - End Of Day
-        Residual_NDIB,              // Residual Trading Hours - New Day Initial Balance
-        Residual_NDBB,              // Residual Trading Hours - New Day Between Balances
-        Residual_NDFB,              // Residual Trading Hours - New Day Final Balance
+        // Residual sessions
+        Residual_AM,                // American Residual Session 
+        Residual_AS,                // Asian Residual Session 
 
-        Asian_IB,                   // Asian Trading Hours - Initial Balance
-        Asian_BB,                   // Asian Trading Hours - Between Balances
-        Asian_FB,                   // Asian Trading Hours - Final Balance
+        // Residual Minor sessions
+        Residual_AM_AET,            // American Residual Session - American Extra Time
+        Residual_AM_Break,          // American Residual Session - Break
+        Residual_AM_EOD,            // American Residual Session - End Of Day
+        Residual_AM_NDIB,           // American Residual Session - New Day Initial Balance
+        Residual_AM_NDBB,           // American Residual Session - New Day Between Balances
+        Residual_AM_NDFB,           // American Residual Session - New Day Final Balance
+        Residual_AS_IB,             // American Residual Session - New Day Initial Balance
+        Residual_AS_BB,             // American Residual Session - New Day Between Balances
+        Residual_AS_FB,             // American Residual Session - New Day Final Balance
 
-        European_IB,                // European Trading Hours - Initial Balance
-        European_BB,                // European Trading Hours - Between Balances
-        European_FB,                // European Trading Hours - Final Balance
+        // Asian Minor sessions
+        Asian_IB,                   // Asian Session - Initial Balance
+        Asian_BB,                   // Asian Session - Between Balances
+        Asian_FB,                   // Asian Session - Final Balance
 
-        AmericanAndEuropean_IB,     // American and European Trading Hours - Initial Balance
-        AmericanAndEuropean_BB,     // American and European Trading Hours - Between Balances
-        AmericanAndEuropean_FB,     // American and European Trading Hours - Final Balance
+        // European Minor sessions
+        European_IB,                // European Session - Initial Balance
+        European_BB,                // European Session - Between Balances
+        European_FB,                // European Session - Final Balance
 
-        American_IB,                // American Trading Hours - Initial Balance
-        American_BB,                // American Trading Hours - Between Balances
-        American_FB,                // American Trading Hours - Final Balance
+        // American and European Minor sessions
+        AmericanAndEuropean_IB,     // American and European Session - Initial Balance
+        AmericanAndEuropean_BB,     // American and European Session - Between Balances
+        AmericanAndEuropean_FB,     // American and European Session - Final Balance
 
-        //Break,                      // Break hours.
-        //Closed,                     // Closed hours.
+        // American Minor sessions
+        American_IB,                // American Session - Initial Balance
+        American_BB,                // American Session - Between Balances
+        American_FB,                // American Session - Final Balance
 
     }
 }
