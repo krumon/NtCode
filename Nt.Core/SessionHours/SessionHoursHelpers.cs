@@ -187,13 +187,13 @@ namespace NtCore
                                 return SpecificSessionTime.European_FB_Open.ToSessionTime();
 
                             case (SpecificSessionHours.Residual_AM):
-                                return SpecificSessionTime.Residual_AM_Open.ToSessionTime();
+                                return SpecificSessionTime.American_RS_Open.ToSessionTime();
                             case (SpecificSessionHours.Residual_AM_AET):
-                                return SpecificSessionTime.Residual_AM_AET_Open.ToSessionTime();
+                                return SpecificSessionTime.American_RS_EXT_Open.ToSessionTime();
                             case (SpecificSessionHours.Residual_AM_EOD):
-                                return SpecificSessionTime.Residual_AM_EOD_Open.ToSessionTime();
+                                return SpecificSessionTime.American_RS_EOD_Open.ToSessionTime();
                             case (SpecificSessionHours.Residual_AM_NDIB):
-                                return SpecificSessionTime.Residual_AM_NDIB_Open.ToSessionTime();
+                                return SpecificSessionTime.American_RS_NWD_IB_Open.ToSessionTime();
 
                             default:
                                 throw new Exception("The specific session hours doesn't exists.");
@@ -268,13 +268,13 @@ namespace NtCore
                                 return SpecificSessionTime.European_FB_Close.ToSessionTime();
 
                             case (SpecificSessionHours.Residual_AM):
-                                return SpecificSessionTime.Residual_AM_Close.ToSessionTime();
+                                return SpecificSessionTime.American_RS_Close.ToSessionTime();
                             case (SpecificSessionHours.Residual_AM_AET):
-                                return SpecificSessionTime.Residual_AM_AET_Close.ToSessionTime();
+                                return SpecificSessionTime.American_RS_EXT_Close.ToSessionTime();
                             case (SpecificSessionHours.Residual_AM_EOD):
-                                return SpecificSessionTime.Residual_AM_EOD_Close.ToSessionTime();
+                                return SpecificSessionTime.American_RS_EOD_Close.ToSessionTime();
                             case (SpecificSessionHours.Residual_AM_NDIB):
-                                return SpecificSessionTime.Residual_AM_NDIB_Close.ToSessionTime();
+                                return SpecificSessionTime.American_RS_NWD_IB_Close.ToSessionTime();
 
                             default:
                                 throw new Exception("The specific session hours doesn't exists.");

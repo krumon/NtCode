@@ -18,6 +18,7 @@ namespace NtCore
         {
             switch (specificSessionTime)
             {
+                // MAIN SESSIONS
                 case SpecificSessionTime.Electronic_Open:
                     return "EL-O";
                 case SpecificSessionTime.Electronic_Close:
@@ -30,82 +31,133 @@ namespace NtCore
                     return "OV-O";
                 case SpecificSessionTime.OVN_Close:
                     return "OV-C";
-                case SpecificSessionTime.American_Open:
+
+                // MAJOR SESSIONS
+                case SpecificSessionTime.Asian_Open:
+                    return "AS-O";
+                case SpecificSessionTime.Asian_Close:
+                    return "AS-C";
+                case SpecificSessionTime.Asian_RS_Open:
+                    return "AS-RS-O";
+                case SpecificSessionTime.Asian_RS_Close:
+                    return "AS-RS-C";
+                case SpecificSessionTime.European_Open:
                     return "AM-O";
-                case SpecificSessionTime.American_Close:
+                case SpecificSessionTime.European_Close:
                     return "AM-C";
                 case SpecificSessionTime.AmericanAndEuropean_Open:
                     return "AE-O";
                 case SpecificSessionTime.AmericanAndEuropean_Close:
                     return "AE-C";
-                case SpecificSessionTime.Asian_Open:
-                    return "AS-O";
-                case SpecificSessionTime.Asian_Close:
-                    return "AS-C";
-                case SpecificSessionTime.Residual_AM_Open:
-                    return "RS-O";
-                case SpecificSessionTime.Residual_AM_Close:
-                    return "RS-C";
+                case SpecificSessionTime.American_Open:
+                    return "AM-O";
+                case SpecificSessionTime.American_Close:
+                    return "AM-C";
+                case SpecificSessionTime.American_RS_Open:
+                    return "AM-RS-O";
+                case SpecificSessionTime.American_RS_Close:
+                    return "AM-RS-C";
 
-                case SpecificSessionTime.AmericanAndEuropean_IB_Open:
-                    return "AE-IBO";
-                case SpecificSessionTime.AmericanAndEuropean_IB_Close:
-                    return "AE-IBC";
-                case SpecificSessionTime.AmericanAndEuropean_BB_Open:
-                    return "AE-BBO";
-                case SpecificSessionTime.AmericanAndEuropean_BB_Close:
-                    return "AE-BBC";
-                case SpecificSessionTime.AmericanAndEuropean_FB_Open:
-                    return "AE-FBO";
-                case SpecificSessionTime.AmericanAndEuropean_FB_Close:
-                    return "AE-FBC";
+                // MINOR SESSIONS
+                case SpecificSessionTime.American_RS_EXT_Open:
+                    return "AM-RS-EXT-O";
+                case SpecificSessionTime.American_RS_EXT_Close:
+                    return "AM-RS-EXT-C";
+                case SpecificSessionTime.American_RS_EOD_Open:
+                    return "AM-RS-EOD-O";
+                case SpecificSessionTime.American_RS_EOD_Close:
+                    return "AM-RS-EOD-C";
+                case SpecificSessionTime.American_RS_NWD_Open:
+                    return "AM-RS-NWD-O";
+                case SpecificSessionTime.American_RS_NWD_Close:
+                    return "AM-RS-NWD-C";
+                
+                // BALANCES SESSIONS
+                // -----------------
 
-                case SpecificSessionTime.American_IB_Open:
-                    return "AM-IBO";
-                case SpecificSessionTime.American_IB_Close:
-                    return "AM-IBC";
-                case SpecificSessionTime.American_BB_Open:
-                    return "AM-BBO";
-                case SpecificSessionTime.American_BB_Close:
-                    return "AM-BBC";
-                case SpecificSessionTime.American_FB_Open:
-                    return "AM-FBO";
-                case SpecificSessionTime.American_FB_Close:
-                    return "AM-FBC";
-
-                case SpecificSessionTime.Residual_AM_AET_Open:
-                    return "RS-AET-O";
-                case SpecificSessionTime.Residual_AM_AET_Close:
-                    return "RS-AET-C";
-                case SpecificSessionTime.Residual_AM_EOD_Open:
-                    return "RS-EOD-O";
-                case SpecificSessionTime.Residual_AM_EOD_Close:
-                    return "RS-EOD-C";
-                case SpecificSessionTime.Residual_AM_NDIB_Open:
-                    return "RS-NDIB-O";
-                case SpecificSessionTime.Residual_AM_NDIB_Close:
-                    return "RS-NDIB-C";
-                case SpecificSessionTime.Residual_AM_NDBB_Open:
-                    return "RS-NDBB-O";
-                case SpecificSessionTime.Residual_AM_NDBB_Close:
-                    return "RS-NDBB-C";
-                case SpecificSessionTime.Residual_AM_NDFB_Open:
-                    return "RS-NDFB-O";
-                case SpecificSessionTime.Residual_AM_NDFB_Close:
-                    return "RS-NDFB-C";
-
+                // Asian balances
                 case SpecificSessionTime.Asian_IB_Open:
-                    return "AS-IBO";
+                    return "AS-IB-O";
                 case SpecificSessionTime.Asian_IB_Close:
-                    return "AS-IBC";
+                    return "AS-IB-C";
                 case SpecificSessionTime.Asian_BB_Open:
-                    return "AS-BBO";
+                    return "AS-BB-O";
                 case SpecificSessionTime.Asian_BB_Close:
-                    return "AS-BBC";
+                    return "AS-BB-C";
                 case SpecificSessionTime.Asian_FB_Open:
-                    return "AS-FBO";
+                    return "AS-FB-O";
                 case SpecificSessionTime.Asian_FB_Close:
-                    return "AS-FBC";
+                    return "AS-FB-C";
+
+                // Asian Residual balances
+                case SpecificSessionTime.Asian_RS_IB_Open:
+                    return "AS-RS-IB-O";
+                case SpecificSessionTime.Asian_RS_IB_Close:
+                    return "AS-RS-IB-C";
+                case SpecificSessionTime.Asian_RS_BB_Open:
+                    return "AS-RS-BB-O";
+                case SpecificSessionTime.Asian_RS_BB_Close:
+                    return "AS-RS-BB-C";
+                case SpecificSessionTime.Asian_RS_FB_Open:
+                    return "AS-RS-FB-O";
+                case SpecificSessionTime.Asian_RS_FB_Close:
+                    return "AS-RS-FB-C";
+
+                // American balances.
+                case SpecificSessionTime.European_IB_Open:
+                    return "EU-IB-O";     
+                case SpecificSessionTime.European_IB_Close:
+                    return "EU-IB-C";     
+                case SpecificSessionTime.European_BB_Open:
+                    return "EU-BB-O";     
+                case SpecificSessionTime.European_BB_Close:
+                    return "EU-BB-C";     
+                case SpecificSessionTime.European_FB_Open:
+                    return "EU-FB-O";     
+                case SpecificSessionTime.European_FB_Close:
+                    return "EU-FB-C";
+
+                // American and European balances.
+                case SpecificSessionTime.AmericanAndEuropean_IB_Open:
+                    return "AE-IB-O";
+                case SpecificSessionTime.AmericanAndEuropean_IB_Close:
+                    return "AE-IB-C";
+                case SpecificSessionTime.AmericanAndEuropean_BB_Open:
+                    return "AE-BB-O";
+                case SpecificSessionTime.AmericanAndEuropean_BB_Close:
+                    return "AE-BB-C";
+                case SpecificSessionTime.AmericanAndEuropean_FB_Open:
+                    return "AE-FB-O";
+                case SpecificSessionTime.AmericanAndEuropean_FB_Close:
+                    return "AE-FB-C";
+
+                // American balances.
+                case SpecificSessionTime.American_IB_Open:
+                    return "AM-IB-O";
+                case SpecificSessionTime.American_IB_Close:
+                    return "AM-IB-C";
+                case SpecificSessionTime.American_BB_Open:
+                    return "AM-BB-O";
+                case SpecificSessionTime.American_BB_Close:
+                    return "AM-BB-C";
+                case SpecificSessionTime.American_FB_Open:
+                    return "AM-FB-O";
+                case SpecificSessionTime.American_FB_Close:
+                    return "AM-FB-C";
+
+                // American Residual new day balances
+                case SpecificSessionTime.American_RS_NWD_IB_Open:
+                    return "AM-RS-NWD-IB-O";
+                case SpecificSessionTime.American_RS_NWD_IB_Close:
+                    return "AM-RS-NWD-IB-C";
+                case SpecificSessionTime.American_RS_NWD_BB_Open:
+                    return "AM-RS-NWD-BB-O";
+                case SpecificSessionTime.American_RS_NWD_BB_Close:
+                    return "AM-RS-NWD-BB-C";
+                case SpecificSessionTime.American_RS_NWD_FB_Open:
+                    return "AM-RS-NWD-FB-O";
+                case SpecificSessionTime.American_RS_NWD_FB_Close:
+                    return "AM-RS-NWD-FB-C";
 
                 default:
                     throw new Exception("The specific session time doesn't exists.");
@@ -121,6 +173,7 @@ namespace NtCore
         {
             switch (specificSessionTime)
             {
+                // MAIN SESSIONS
                 case SpecificSessionTime.Electronic_Open:
                     return "Electronic session open time.";
                 case SpecificSessionTime.Electronic_Close:
@@ -133,23 +186,93 @@ namespace NtCore
                     return "Overnight session open time.";
                 case SpecificSessionTime.OVN_Close:
                     return "Overnight session close time.";
-                case SpecificSessionTime.American_Open:
-                    return "American session open time.";
-                case SpecificSessionTime.American_Close:
-                    return "American session close time.";
-                case SpecificSessionTime.AmericanAndEuropean_Open:
-                    return "American and European session open time.";
-                case SpecificSessionTime.AmericanAndEuropean_Close:
-                    return "American and European session close time.";
+
+                // MAJOR SESSIONS
                 case SpecificSessionTime.Asian_Open:
                     return "Asian session open time.";
                 case SpecificSessionTime.Asian_Close:
                     return "Asian session close time.";
-                case SpecificSessionTime.Residual_AM_Open:
-                    return "Residual session open time.";
-                case SpecificSessionTime.Residual_AM_Close:
-                    return "Residual session close time.";
+                case SpecificSessionTime.Asian_RS_Open:
+                    return "Asian residual session open time.";
+                case SpecificSessionTime.Asian_RS_Close:
+                    return "Asian residual session close time.";
+                case SpecificSessionTime.European_Open:
+                    return "European session open time.";
+                case SpecificSessionTime.European_Close:
+                    return "European session close time.";
+                case SpecificSessionTime.AmericanAndEuropean_Open:
+                    return "American and European session open time.";
+                case SpecificSessionTime.AmericanAndEuropean_Close:
+                    return "American and European session close time.";
+                case SpecificSessionTime.American_Open:
+                    return "American session open time.";
+                case SpecificSessionTime.American_Close:
+                    return "American session close time.";
+                case SpecificSessionTime.American_RS_Open:
+                    return "American residual session open time.";
+                case SpecificSessionTime.American_RS_Close:
+                    return "American residual session close time.";
 
+                // MINOR SESSIONS
+                case SpecificSessionTime.American_RS_EXT_Open:
+                    return "Open time of American extra time.";
+                case SpecificSessionTime.American_RS_EXT_Close:
+                    return "Close time of American extra time.";
+                case SpecificSessionTime.American_RS_EOD_Open:
+                    return "End of day open time.";
+                case SpecificSessionTime.American_RS_EOD_Close:
+                    return "End of day close time.";
+                case SpecificSessionTime.American_RS_NWD_Open:
+                    return "New day open time.";
+                case SpecificSessionTime.American_RS_NWD_Close:
+                    return "New day close time.";
+
+                // BALANCES SESSIONS
+                // -----------------
+
+                // Asian balances
+                case SpecificSessionTime.Asian_IB_Open:
+                    return "Open time of Asian initial balance.";
+                case SpecificSessionTime.Asian_IB_Close:
+                    return "Close time of Asian initial balance.";
+                case SpecificSessionTime.Asian_BB_Open:
+                    return "Open time between balance of Asian session.";
+                case SpecificSessionTime.Asian_BB_Close:
+                    return "Close time between balance of Asian session.";
+                case SpecificSessionTime.Asian_FB_Open:
+                    return "Open time of Asian final balance.";
+                case SpecificSessionTime.Asian_FB_Close:
+                    return "Close time of Asian final balance.";
+
+                // Asian Residual new day balances
+                case SpecificSessionTime.Asian_RS_IB_Open:
+                    return "Open time of Asian residual intial balance.";
+                case SpecificSessionTime.Asian_RS_IB_Close:
+                    return "Close time of Asian residual initial balance.";
+                case SpecificSessionTime.Asian_RS_BB_Open:
+                    return "Open time between balance of Asian residual session.";
+                case SpecificSessionTime.Asian_RS_BB_Close:
+                    return "Close time between balances of Asian residual session balance.";
+                case SpecificSessionTime.Asian_RS_FB_Open:
+                    return "Open time of Asian residual final balance.";
+                case SpecificSessionTime.Asian_RS_FB_Close:
+                    return "Close time of Asian residual final balance.";
+
+                // European balances
+                case SpecificSessionTime.European_IB_Open:
+                    return "Open time of European_IB_Open initial balance.";
+                case SpecificSessionTime.European_IB_Close:
+                    return "Close time of European_IB_Open initial balance.";
+                case SpecificSessionTime.European_BB_Open:
+                    return "Open time between balance of European session.";
+                case SpecificSessionTime.European_BB_Close:
+                    return "Close time between balance of European session.";
+                case SpecificSessionTime.European_FB_Open:
+                    return "Open time of European final balance.";
+                case SpecificSessionTime.European_FB_Close:
+                    return "Close time of European final balance.";
+
+                // American and European balances
                 case SpecificSessionTime.AmericanAndEuropean_IB_Open:
                     return "Open time of American and European initial balance.";
                 case SpecificSessionTime.AmericanAndEuropean_IB_Close:
@@ -163,6 +286,7 @@ namespace NtCore
                 case SpecificSessionTime.AmericanAndEuropean_FB_Close:
                     return "Close time of American and European final balance.";
 
+                // American balances
                 case SpecificSessionTime.American_IB_Open:
                     return "Open time of American initial balance.";
                 case SpecificSessionTime.American_IB_Close:
@@ -176,39 +300,19 @@ namespace NtCore
                 case SpecificSessionTime.American_FB_Close:
                     return "Close time of American final balance.";
 
-                case SpecificSessionTime.Residual_AM_AET_Open:
-                    return "Open time of American extra time.";
-                case SpecificSessionTime.Residual_AM_AET_Close:
-                    return "Close time of American extra time.";
-                case SpecificSessionTime.Residual_AM_EOD_Open:
-                    return "Open time of end of day session.";
-                case SpecificSessionTime.Residual_AM_EOD_Close:
-                    return "Close time of end of day session.";
-                case SpecificSessionTime.Residual_AM_NDIB_Open:
+                // American Residual new day balances
+                case SpecificSessionTime.American_RS_NWD_IB_Open:
                     return "Open time of new day intial balance.";
-                case SpecificSessionTime.Residual_AM_NDIB_Close:
+                case SpecificSessionTime.American_RS_NWD_IB_Close:
                     return "Close time of new day initial balance.";
-                case SpecificSessionTime.Residual_AM_NDBB_Open:
+                case SpecificSessionTime.American_RS_NWD_BB_Open:
                     return "Open time between balance of new day session.";
-                case SpecificSessionTime.Residual_AM_NDBB_Close:
+                case SpecificSessionTime.American_RS_NWD_BB_Close:
                     return "Close time between balances of new day session balance.";
-                case SpecificSessionTime.Residual_AM_NDFB_Open:
+                case SpecificSessionTime.American_RS_NWD_FB_Open:
                     return "Open time of new day final balance.";
-                case SpecificSessionTime.Residual_AM_NDFB_Close:
+                case SpecificSessionTime.American_RS_NWD_FB_Close:
                     return "Close time of new day final balance.";
-
-                case SpecificSessionTime.Asian_IB_Open:
-                    return "Open time of Asian initial balance.";
-                case SpecificSessionTime.Asian_IB_Close:
-                    return "Close time of Asian initial balance.";
-                case SpecificSessionTime.Asian_BB_Open:
-                    return "Open time between balance of Asian session.";
-                case SpecificSessionTime.Asian_BB_Close:
-                    return "Close time between balance of Asian session.";
-                case SpecificSessionTime.Asian_FB_Open:
-                    return "Open time of Asian final balance.";
-                case SpecificSessionTime.Asian_FB_Close:
-                    return "Close time of Asian final balance.";
 
                 default:
                     throw new Exception("The specific session time doesn't exists.");
@@ -229,6 +333,7 @@ namespace NtCore
                     {
                         switch (specificSessionTime)
                         {
+
                             case (SpecificSessionTime.Electronic_Open):
                             case (SpecificSessionTime.Electronic_Close):
                             case (SpecificSessionTime.Regular_Open):
@@ -237,20 +342,22 @@ namespace NtCore
                             case (SpecificSessionTime.OVN_Close):
                                 return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
 
-                            case (SpecificSessionTime.Residual_AM_Open):
-                            case (SpecificSessionTime.Residual_AM_Close):
-                            case (SpecificSessionTime.Residual_AM_AET_Open):
-                            case (SpecificSessionTime.Residual_AM_AET_Close):
-                            case (SpecificSessionTime.Residual_AM_EOD_Open):
-                            case (SpecificSessionTime.Residual_AM_EOD_Close):
-                            case (SpecificSessionTime.Residual_AM_NDIB_Open):
-                            case (SpecificSessionTime.Residual_AM_NDIB_Close):
-                            case (SpecificSessionTime.Residual_AM_NDBB_Open):
+                            case (SpecificSessionTime.American_RS_Open):
+                            case (SpecificSessionTime.American_RS_Close):
+                            case (SpecificSessionTime.American_RS_EXT_Open):
+                            case (SpecificSessionTime.American_RS_EXT_Close):
+                            case (SpecificSessionTime.American_RS_EOD_Open):
+                            case (SpecificSessionTime.American_RS_EOD_Close):
+                            case (SpecificSessionTime.American_RS_NWD_Open):
+                            case (SpecificSessionTime.American_RS_NWD_Close):
+                            case (SpecificSessionTime.American_RS_NWD_IB_Open):
+                            case (SpecificSessionTime.American_RS_NWD_IB_Close):
+                            case (SpecificSessionTime.American_RS_NWD_BB_Open):
                                 return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
 
-                            case (SpecificSessionTime.Residual_AM_NDBB_Close):
-                            case (SpecificSessionTime.Residual_AM_NDFB_Open):
-                            case (SpecificSessionTime.Residual_AM_NDFB_Close):
+                            case (SpecificSessionTime.American_RS_NWD_BB_Close):
+                            case (SpecificSessionTime.American_RS_NWD_FB_Open):
+                            case (SpecificSessionTime.American_RS_NWD_FB_Close):
                                 return TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
 
                             case (SpecificSessionTime.American_Open):
@@ -283,6 +390,11 @@ namespace NtCore
                             case (SpecificSessionTime.Asian_BB_Close):
                             case (SpecificSessionTime.Asian_FB_Open):
                             case (SpecificSessionTime.Asian_FB_Close):
+                            case (SpecificSessionTime.Asian_RS_Open):
+                            case (SpecificSessionTime.Asian_RS_IB_Open):
+                            case (SpecificSessionTime.Asian_RS_IB_Close):
+                            case (SpecificSessionTime.Asian_RS_BB_Open):
+
                                 return TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
 
                             case (SpecificSessionTime.European_Open):
@@ -293,6 +405,10 @@ namespace NtCore
                             case (SpecificSessionTime.European_BB_Close):
                             case (SpecificSessionTime.European_FB_Open):
                             case (SpecificSessionTime.European_FB_Close):
+                            case (SpecificSessionTime.Asian_RS_Close):
+                            case (SpecificSessionTime.Asian_RS_BB_Close):
+                            case (SpecificSessionTime.Asian_RS_FB_Open):
+                            case (SpecificSessionTime.Asian_RS_FB_Close):
                                 return TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
 
                             case (SpecificSessionTime.Custom):
@@ -326,19 +442,19 @@ namespace NtCore
                         {
                             // Main hours of sessions
                             case (SpecificSessionTime.Electronic_Open):
-                                return new TimeSpan(17, 0, 0);
+                                return instrumentCode.ToMarketExchange().ToElectronicInitialTime();
                             case (SpecificSessionTime.Electronic_Close):
-                                return new TimeSpan(16, 0, 0);
+                                return instrumentCode.ToMarketExchange().ToElectronicFinalTime();
                             case (SpecificSessionTime.Regular_Open):
-                                return new TimeSpan(8, 30, 0);
+                                return instrumentCode.ToMarketExchange().ToRegularInitialTime();
                             case (SpecificSessionTime.Regular_Close):
-                                return new TimeSpan(15, 0, 0);
+                                return instrumentCode.ToMarketExchange().ToRegularFinalTime();
 
                             // Overnight hours
                             case (SpecificSessionTime.OVN_Open):
-                                return SpecificSessionTime.Regular_Close.ToTimeSpan() + TimeSpan.FromSeconds(1);
+                                return instrumentCode.ToMarketExchange().ToRegularFinalTime() + TimeSpan.FromSeconds(1);
                             case (SpecificSessionTime.OVN_Close):
-                                return SpecificSessionTime.Regular_Open.ToTimeSpan() + TimeSpan.FromSeconds(-1);
+                                return instrumentCode.ToMarketExchange().ToRegularInitialTime() + TimeSpan.FromSeconds(-1);
 
                             //
                             //MAJOR SESSIONS
@@ -361,9 +477,9 @@ namespace NtCore
                                 return new TimeSpan(8, 30, 0);
                             case (SpecificSessionTime.American_Close):
                                 return new TimeSpan(15, 0, 0);
-                            case (SpecificSessionTime.Residual_AM_Open):
+                            case (SpecificSessionTime.American_RS_Open):
                                 return new TimeSpan(15, 0, 0);
-                            case (SpecificSessionTime.Residual_AM_Close):
+                            case (SpecificSessionTime.American_RS_Close):
                                 return SpecificSessionTime.Asian_Open.ToTimeSpan();
 
                             //
@@ -379,25 +495,25 @@ namespace NtCore
                             //
 
                             // American Residual minor sessions.
-                            case (SpecificSessionTime.Residual_AM_AET_Open):
+                            case (SpecificSessionTime.American_RS_EXT_Open):
                                 return SpecificSessionTime.American_Close.ToTimeSpan() + TimeSpan.FromSeconds(1);
-                            case (SpecificSessionTime.Residual_AM_AET_Close):
+                            case (SpecificSessionTime.American_RS_EXT_Close):
                                 return SpecificSessionTime.American_Close.ToTimeSpan() + TimeSpan.FromMinutes(15);
-                            case (SpecificSessionTime.Residual_AM_EOD_Open):
-                                return SpecificSessionTime.Residual_AM_AET_Close.ToTimeSpan() + TimeSpan.FromSeconds(1);
-                            case (SpecificSessionTime.Residual_AM_EOD_Close):
+                            case (SpecificSessionTime.American_RS_EOD_Open):
+                                return SpecificSessionTime.American_RS_EXT_Close.ToTimeSpan() + TimeSpan.FromSeconds(1);
+                            case (SpecificSessionTime.American_RS_EOD_Close):
                                 return SpecificSessionTime.Electronic_Close.ToTimeSpan();
-                            case (SpecificSessionTime.Residual_AM_NDIB_Open):
+                            case (SpecificSessionTime.American_RS_NWD_IB_Open):
                                 return SpecificSessionTime.Electronic_Open.ToTimeSpan();
-                            case (SpecificSessionTime.Residual_AM_NDIB_Close):
+                            case (SpecificSessionTime.American_RS_NWD_IB_Close):
                                 return SpecificSessionTime.Electronic_Open.ToTimeSpan() + TimeSpan.FromMinutes(5);
-                            case (SpecificSessionTime.Residual_AM_NDBB_Open):
+                            case (SpecificSessionTime.American_RS_NWD_BB_Open):
                                 return SpecificSessionTime.Electronic_Open.ToTimeSpan() + TimeSpan.FromMinutes(5) + TimeSpan.FromSeconds(1);
-                            case (SpecificSessionTime.Residual_AM_NDBB_Close):
+                            case (SpecificSessionTime.American_RS_NWD_BB_Close):
                                 return SpecificSessionTime.Asian_Open.ToTimeSpan() + TimeSpan.FromMinutes(-5);
-                            case (SpecificSessionTime.Residual_AM_NDFB_Open):
+                            case (SpecificSessionTime.American_RS_NWD_FB_Open):
                                 return SpecificSessionTime.Asian_Open.ToTimeSpan() + TimeSpan.FromMinutes(-5) + TimeSpan.FromSeconds(1);
-                            case (SpecificSessionTime.Residual_AM_NDFB_Close):
+                            case (SpecificSessionTime.American_RS_NWD_FB_Close):
                                 return SpecificSessionTime.Asian_Open.ToTimeSpan();
                             
                             
