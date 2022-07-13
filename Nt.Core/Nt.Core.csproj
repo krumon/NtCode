@@ -60,19 +60,21 @@
     <Compile Include="Bars\SwingPoint.cs" />
     <Compile Include="Bars\BarsCache.cs" />
     <Compile Include="Instruments\Instrument.cs" />
+    <Compile Include="Instruments\MarketExchange.cs" />
     <Compile Include="Instruments\InstrumentCode.cs" />
     <Compile Include="Instruments\InstrumentCodeHelpers.cs" />
     <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
-    <Compile Include="Sessions\DayTradingSession.cs" />
-    <Compile Include="Sessions\TradingSessions.cs" />
-    <Compile Include="Sessions\TradingSession.cs" />
-    <Compile Include="Sessions\SessionStats.cs" />
-    <Compile Include="Sessions\Holiday.cs" />
-    <Compile Include="Sessions\PartialHoliday.cs" />
-    <Compile Include="Sessions\Session.cs" />
-    <Compile Include="Sessions\Trading_Hours.cs" />
+    <Compile Include="SessionHours\InstrumentSessionHours.cs" />
+    <Compile Include="Session\DayTradingSession.cs" />
+    <Compile Include="Session\TradingSessions.cs" />
+    <Compile Include="Session\TradingSession.cs" />
+    <Compile Include="Session\SessionStats.cs" />
+    <Compile Include="Session\Holiday.cs" />
+    <Compile Include="Session\PartialHoliday.cs" />
+    <Compile Include="Session\Session.cs" />
+    <Compile Include="Session\Trading_Hours.cs" />
     <Compile Include="Bars\BarType.cs" />
     <Compile Include="Caches\CacheSearchMode.cs" />
     <Compile Include="Patterns\ChartPattern.cs" />
@@ -88,12 +90,12 @@
     <Compile Include="Patterns\Swing\SwingType.cs" />
     <Compile Include="Prices\CandleStickPrice.cs" />
     <Compile Include="Prices\PriceType.cs" />
-    <Compile Include="Sessions\DayTradingSessionType.cs" />
-    <Compile Include="TradingHours\SpecificSessionTime.cs" />
-    <Compile Include="TradingHours\SessionHoursHelpers.cs" />
-    <Compile Include="TradingHours\SessionHours.cs" />
-    <Compile Include="TradingHours\SpecificSessionHours.cs" />
-    <Compile Include="TradingHours\SessionTimeHelpers.cs" />
+    <Compile Include="Session\DayTradingSessionType.cs" />
+    <Compile Include="SessionTimes\SpecificSessionTime.cs" />
+    <Compile Include="SessionHours\SessionHoursHelpers.cs" />
+    <Compile Include="SessionHours\SessionHours.cs" />
+    <Compile Include="SessionHours\SpecificSessionHours.cs" />
+    <Compile Include="SessionTimes\SessionTimeHelpers.cs" />
     <Compile Include="Files\XmlFileItem.cs" />
     <Compile Include="Helpers\ISeriesHelpers.cs" />
     <Compile Include="Helpers\LabelLineHelpers.cs" />
@@ -102,7 +104,7 @@
     <Compile Include="Resources\Resources.cs" />
     <Compile Include="Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TradingHours\SessionTime.cs" />
+    <Compile Include="SessionTimes\SessionTime.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

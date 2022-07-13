@@ -14,11 +14,19 @@ namespace NtCore
         public InstrumentCode InstrumentCode { get; set; }
 
         /// <summary>
+        /// The market exchange owner of the instrument.
+        /// </summary>
+        public MarketExchange MarketExchange { get; set; }
+
+        /// <summary>
         /// The instrument description.
         /// </summary>
-        public string Name => InstrumentCode.ToName();
+        public string Description => InstrumentCode.ToDescription();
 
-
+        /// <summary>
+        /// The instrument <see cref="SessionHours"/>.
+        /// </summary>
+        public SessionHours SessionHours { get; set; }
 
         #endregion
 
