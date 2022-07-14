@@ -11,7 +11,7 @@ namespace NtCore
 
         #region Private members
 
-        private readonly SpecificSessionHours specificSessionHours;
+        private readonly TradingSession specificSessionHours;
 
         //private InstrumentCode instrumentCode;
 
@@ -53,17 +53,17 @@ namespace NtCore
         /// </summary>
         /// <param name="beginSessionTime">The initial <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
         /// <param name="endSessionTime">The final <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
-        private SessionHours(SpecificSessionTime beginSessionTime, SpecificSessionTime endSessionTime)
+        private SessionHours(TradingTime beginSessionTime, TradingTime endSessionTime)
         {
             this.BeginSessionTime = SessionTime.CreateSessionTimeByType(beginSessionTime);
             this.EndSessionTime = SessionTime.CreateSessionTimeByType(endSessionTime);
         }
 
         /// <summary>
-        /// Create a new instance of <see cref="SessionHours"/> class with <see cref="SpecificSessionHours"/>.
+        /// Create a new instance of <see cref="SessionHours"/> class with <see cref="TradingSession"/>.
         /// </summary>
-        /// <param name="specificSessionHours">the <see cref="SpecificSessionHours"/> to create the <see cref="SessionHours"/> class.</param>
-        private SessionHours(SpecificSessionHours specificSessionHours)
+        /// <param name="specificSessionHours">the <see cref="TradingSession"/> to create the <see cref="SessionHours"/> class.</param>
+        private SessionHours(TradingSession specificSessionHours)
         {
             this.specificSessionHours = specificSessionHours;
             this.BeginSessionTime = specificSessionHours.ToBeginSessionTime();
@@ -75,11 +75,11 @@ namespace NtCore
         #region Instance methods
 
         /// <summary>
-        /// Create a new instance of <see cref="SessionHours"/> class with <see cref="SpecificSessionHours"/>.
+        /// Create a new instance of <see cref="SessionHours"/> class with <see cref="TradingSession"/>.
         /// </summary>
-        /// <param name="specificSessionHours">the <see cref="SpecificSessionHours"/> to create the <see cref="SessionHours"/> class.</param>
+        /// <param name="specificSessionHours">the <see cref="TradingSession"/> to create the <see cref="SessionHours"/> class.</param>
         /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
-        public static SessionHours CreateSessionHoursByType(SpecificSessionHours specificSessionHours)
+        public static SessionHours CreateSessionHoursByType(TradingSession specificSessionHours)
         {
             return new SessionHours(specificSessionHours);
         }
@@ -90,7 +90,7 @@ namespace NtCore
         /// <param name="beginSessionTime">The initial <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
         /// <param name="endSessionTime">The final <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
         /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
-        public static SessionHours CreateSessionHoursBySessionTimes(SpecificSessionTime beginSessionTime, SpecificSessionTime endSessionTime)
+        public static SessionHours CreateSessionHoursBySessionTimes(TradingTime beginSessionTime, TradingTime endSessionTime)
         {
             return new SessionHours(beginSessionTime, endSessionTime);
         }

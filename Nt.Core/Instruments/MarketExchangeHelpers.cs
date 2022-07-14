@@ -19,7 +19,7 @@ namespace NtCore
             switch (instrumentMarketExchange)
             {
                 case (MarketExchange.American_Future_Indices):
-                    return "CME Future Index market exchange.";
+                    return "American Future Index market exchange.";
                 default:
                     throw new Exception("The market exchange doesn't exists.");
             }

@@ -17,23 +17,28 @@ namespace NtCore
         private readonly string description;
 
         /// <summary>
-        /// The specific session time.
+        /// The trading time type.
         /// </summary>
-        protected SpecificSessionTime specificSessionTime;
+        private readonly TradingTime tradingTime;
 
         #endregion
 
         #region Public properties
 
         /// <summary>
+        /// The trading time type.
+        /// </summary>
+        public TradingTime Type => tradingTime;
+
+        /// <summary>
         /// Gets the unique code of the <see cref="SessionTime"/>.
         /// </summary>
-        public string Code => specificSessionTime == SpecificSessionTime.Custom ? code : specificSessionTime.ToCode();
+        public string Code => tradingTime == TradingTime.Custom ? code : tradingTime.ToCode();
 
         /// <summary>
         /// Gets the description of the <see cref="SessionTime"/>.
         /// </summary>
-        public string Description => specificSessionTime == SpecificSessionTime.Custom ? description : specificSessionTime.ToDescription();
+        public string Description => tradingTime == TradingTime.Custom ? description : tradingTime.ToDescription();
 
         /// <summary>
         /// Gets or sets the <see cref="TimeZoneInfo"/> of the trading hour.
@@ -52,11 +57,25 @@ namespace NtCore
         /// <summary>
         /// Create instance of <see cref="SessionTime"/> class.
         /// </summary>
-        /// <param name="specificSessionTime"></param>
-        private SessionTime(SpecificSessionTime specificSessionTime, InstrumentCode code = InstrumentCode.Default)
+        /// <param name="tradingTime">The trading time type.</param>
+        /// <param name="timeZoneInfo">The time zone info.</param>
+        /// <param name="time">The time.</param>
+        private SessionTime(TradingTime tradingTime, TimeZoneInfo timeZoneInfo, TimeSpan time)
         {
-            this.TimeZoneInfo = specificSessionTime.ToTimeZoneInfo(code);
-            this.Time = specificSessionTime.ToTimeSpan(code);
+            this.tradingTime = tradingTime;
+            this.TimeZoneInfo = timeZoneInfo;
+            this.Time = time;
+        }
+
+        /// <summary>
+        /// Create instance of <see cref="SessionTime"/> class.
+        /// </summary>
+        /// <param name="tradingTime"></param>
+        private SessionTime(TradingTime tradingTime, InstrumentCode code = InstrumentCode.Default)
+        {
+            this.tradingTime = tradingTime;
+            this.TimeZoneInfo = tradingTime.ToTimeZoneInfo(code);
+            this.Time = tradingTime.ToTime(code);
         }
 
         /// <summary>
@@ -69,7 +88,7 @@ namespace NtCore
         /// <param name="description"></param>
         private SessionTime(TimeZoneInfo timeZoneInfo, int hour, int minute, int seconds, string code, string description = "")
         {
-            specificSessionTime = SpecificSessionTime.Custom;
+            tradingTime = TradingTime.Custom;
             this.code = code;
             this.description = description;
             this.TimeZoneInfo = timeZoneInfo;
@@ -78,16 +97,21 @@ namespace NtCore
 
         #endregion
 
-        #region Public methods
+        #region Instance methods
+
+        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, TimeZoneInfo timeZoneInfo, TimeSpan time)
+        {
+            return new SessionTime(tradingTime,timeZoneInfo,time);
+        }
 
         /// <summary>
         /// Create default instance of <see cref="SessionTime"/> class.
         /// </summary>
-        /// <param name="specificSessionTime">The specific session time to create the instance.</param>
+        /// <param name="tradingTime">The specific session time to create the instance.</param>
         /// <returns>The session time instance.</returns>
-        public static SessionTime CreateSessionTimeByType(SpecificSessionTime specificSessionTime, InstrumentCode instrumentCode = InstrumentCode.Default)
+        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default)
         {
-            return new SessionTime(specificSessionTime,instrumentCode);
+            return new SessionTime(tradingTime,instrumentCode);
         }
 
         /// <summary>
@@ -104,6 +128,10 @@ namespace NtCore
         {
             return new SessionTime(timeZoneInfo,hour,minute,seconds,code, description);
         }
+
+        #endregion
+
+        #region Public methods
 
         /// <summary>
         /// Gets the trading time <see cref="DateTime"/>.

@@ -2,41 +2,22 @@
 namespace NtCore
 {
     /// <summary>
-    /// Trading time zone types.
+    /// Instrument session hours types.
     /// </summary>
-    public enum SpecificSessionHours
+    public enum TradingBalance
     {
-        // Main session
-        Electronic,                 // Electronic Session  
 
-        // Regular and overnight sessions
-        Regular,                    // Regular Session.
-        OVN,                        // Overnight Session 
-
-        // Major sessions
-        Asian,                      // Asian Session 
-        Asian_RS,                   // Asian Residual Session 
-        European,                   // European Session 
-        AmericanAndEuropean,        // American and European Session 
-        American,                   // American Session 
-        American_RS,                // American Residual Session 
-
-        // American Minor sessions
-        American_RS_EXT,            // American Residual Session - American Extra Time
-        American_RS_EOD,            // American Residual Session - End Of Day
-        American_RS_NWD,            // American Residual Session - New Day
-        
         // BALANCES
         // --------
         // Regular Balances.
-        Regular_IB,
-        Regular_BB,
-        Regular_FB,
+        Regular_IB,                 // Asian Session - Initial Balance
+        Regular_BB,                 // Asian Session - Between Balances
+        Regular_FB,                 // Asian Session - Final Balance
 
         // Overnight Sessions
-        OVN_IB,
-        OVN_BB,
-        OVN_FB,
+        OVN_IB,                     // Overnight Session - Initial Balance
+        OVN_BB,                     // Overnight Session - Between Balances
+        OVN_FB,                     // Overnight Session - Final Balance
 
         // Asian Balances
         Asian_IB,                   // Asian Session - Initial Balance
@@ -69,9 +50,9 @@ namespace NtCore
         American_RS_FB,             // American Residual Session - New Day Final Balance
 
         // American Residual New Day Balances
-        American_RS_NWD_IB,           // American Residual Session - New Day Initial Balance
-        American_RS_NWD_BB,           // American Residual Session - New Day Between Balances
-        American_RS_NWD_FB,           // American Residual Session - New Day Final Balance
+        American_RS_NWD_IB,         // American Residual Session - New Day Initial Balance
+        American_RS_NWD_BB,         // American Residual Session - New Day Between Balances
+        American_RS_NWD_FB,         // American Residual Session - New Day Final Balance
 
     }
 }

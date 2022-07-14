@@ -18,6 +18,7 @@ namespace NtCore
 
             switch (instrumentCode)
             {
+                case(InstrumentCode.Default):
                 case (InstrumentCode.MES):
                     return "MICRO E-MINI S&P 500 INDEX FUTURES";
                 default:
@@ -34,6 +35,7 @@ namespace NtCore
         {
             switch (instrumentCode)
             {
+                case (InstrumentCode.Default):
                 case (InstrumentCode.MES):
                     return MarketExchange.American_Future_Indices;
                 default:

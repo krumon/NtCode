@@ -29,6 +29,5 @@ namespace NtCore
         public SessionHours SessionHours { get; set; }
 
         #endregion
-
     }
 }
