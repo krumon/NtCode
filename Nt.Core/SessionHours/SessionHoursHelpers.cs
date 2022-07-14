@@ -20,6 +20,7 @@ namespace NtCore
         {
             switch (specificSessionHours)
             {
+                // SESSIONS
                 case SpecificSessionHours.Electronic:
                     return "EL";
                 case SpecificSessionHours.Regular:
@@ -32,15 +33,33 @@ namespace NtCore
                     return "AE";
                 case SpecificSessionHours.Asian:
                     return "AS";
-                case SpecificSessionHours.Residual_AM:
-                    return "RS";
-                
-                case SpecificSessionHours.AmericanAndEuropean_IB:
-                    return "AE-IB";
-                case SpecificSessionHours.AmericanAndEuropean_BB:
-                    return "AE-BB";
-                case SpecificSessionHours.AmericanAndEuropean_FB:
-                    return "AE-FB";
+                case SpecificSessionHours.European:
+                    return "AS";
+                case SpecificSessionHours.American_RS:
+                    return "AM-RS";
+                case SpecificSessionHours.Asian_RS:
+                    return "AS-RS";
+                case SpecificSessionHours.American_RS_EXT:
+                    return "RS-AET";
+                case SpecificSessionHours.American_RS_EOD:
+                    return "RS-EOD";
+                case SpecificSessionHours.American_RS_NWD:
+                    return "RS-NWD";
+
+                // BALANCES
+                case SpecificSessionHours.Regular_IB:
+                    return "RG-IB";
+                case SpecificSessionHours.Regular_BB:
+                    return "RG-BB";
+                case SpecificSessionHours.Regular_FB:
+                    return "RG-FB";
+
+                case SpecificSessionHours.OVN_IB:
+                    return "OV-IB";
+                case SpecificSessionHours.OVN_BB:
+                    return "OV-BB";
+                case SpecificSessionHours.OVN_FB:
+                    return "OV-FB";
 
                 case SpecificSessionHours.American_IB:
                     return "AM-IB";
@@ -49,12 +68,12 @@ namespace NtCore
                 case SpecificSessionHours.American_FB:
                     return "AM-FB";
 
-                case SpecificSessionHours.Residual_AM_AET:
-                    return "RS-AET";
-                case SpecificSessionHours.Residual_AM_EOD:
-                    return "RS-EOD";
-                case SpecificSessionHours.Residual_AM_NDIB:
-                    return "RS-NDB";
+                case SpecificSessionHours.AmericanAndEuropean_IB:
+                    return "AE-IB";
+                case SpecificSessionHours.AmericanAndEuropean_BB:
+                    return "AE-BB";
+                case SpecificSessionHours.AmericanAndEuropean_FB:
+                    return "AE-FB";
 
                 case SpecificSessionHours.Asian_IB:
                     return "AS-IB";
@@ -62,6 +81,34 @@ namespace NtCore
                     return "AS-BB";
                 case SpecificSessionHours.Asian_FB:
                     return "AS-FB";
+
+                case SpecificSessionHours.European_IB:
+                    return "EU-IB";
+                case SpecificSessionHours.European_BB:
+                    return "EU-BB";
+                case SpecificSessionHours.European_FB:
+                    return "EU-FB";
+
+                case SpecificSessionHours.American_RS_IB:
+                    return "AM-RS-IB";
+                case SpecificSessionHours.American_RS_BB:
+                    return "AM-RS-BB";
+                case SpecificSessionHours.American_RS_FB:
+                    return "AM-RS-FB";
+
+                case SpecificSessionHours.Asian_RS_IB:
+                    return "AS-RS-IB";
+                case SpecificSessionHours.Asian_RS_BB:
+                    return "AS-RS-BB";
+                case SpecificSessionHours.Asian_RS_FB:
+                    return "AS-RS-FB";
+
+                case SpecificSessionHours.American_RS_NWD_IB:
+                    return "AM-RS-NWD-IB";
+                case SpecificSessionHours.American_RS_NWD_BB:
+                    return "AM-RS-NWD-BB";
+                case SpecificSessionHours.American_RS_NWD_FB:
+                    return "AM-RS-NWD-FB";
 
                 default:
                     throw new Exception("The specific session hours doesn't exists.");
@@ -78,48 +125,95 @@ namespace NtCore
         {
             switch (specificSessionHours)
             {
+                // SESSIONS
                 case SpecificSessionHours.Electronic:
-                    return "Electronic session.";
+                    return "Electronic Session.";
                 case SpecificSessionHours.Regular:
-                    return "Regular session.";
+                    return "Regular Session.";
                 case SpecificSessionHours.OVN:
-                    return "Overnight session.";
+                    return "Overnight Session.";
                 case SpecificSessionHours.American:
-                    return "American session.";
+                    return "American Session.";
                 case SpecificSessionHours.AmericanAndEuropean:
-                    return "American and European session.";
+                    return "American and European Session.";
                 case SpecificSessionHours.Asian:
-                    return "Asian session.";
-                case SpecificSessionHours.Residual_AM:
-                    return "Residual session.";
-                
-                case SpecificSessionHours.AmericanAndEuropean_IB:
-                    return "Initial balance of the American and European session.";
-                case SpecificSessionHours.AmericanAndEuropean_BB:
-                    return "American and European session between balances.";
-                case SpecificSessionHours.AmericanAndEuropean_FB:
-                    return "Final balance of the American and European session.";
+                    return "Asian Session.";
+                case SpecificSessionHours.European:
+                    return "Asian Session.";
+                case SpecificSessionHours.American_RS:
+                    return "American Residual Session.";
+                case SpecificSessionHours.Asian_RS:
+                    return "Asian Residual Session.";
+                case SpecificSessionHours.American_RS_EXT:
+                    return "American Residual Extra time Session.";
+                case SpecificSessionHours.American_RS_EOD:
+                    return "American Residual End Of Day Session.";
+                case SpecificSessionHours.American_RS_NWD:
+                    return "American Residual New Day Session.";
+
+                // BALANCES
+                case SpecificSessionHours.Regular_IB:
+                    return "Regular Session Initial Balance.";
+                case SpecificSessionHours.Regular_BB:
+                    return "Regular Session Between Balances.";
+                case SpecificSessionHours.Regular_FB:
+                    return "Regular Session Final Balance.";
+
+                case SpecificSessionHours.OVN_IB:
+                    return "Overnight Session Initial Balance.";
+                case SpecificSessionHours.OVN_BB:
+                    return "Overnight Session Between Balances.";
+                case SpecificSessionHours.OVN_FB:
+                    return "Overnight Session Final Balance.";
 
                 case SpecificSessionHours.American_IB:
-                    return "Initial balance of the American session.";
+                    return "American Session Initial Balance.";
                 case SpecificSessionHours.American_BB:
-                    return "American session between balances.";
+                    return "American Session Between Balances.";
                 case SpecificSessionHours.American_FB:
-                    return "Final balance of the American session.";
+                    return "American Session Final Balance.";
 
-                case SpecificSessionHours.Residual_AM_AET:
-                    return "Extra time of the American session.";
-                case SpecificSessionHours.Residual_AM_EOD:
-                    return "End of day session.";
-                case SpecificSessionHours.Residual_AM_NDIB:
-                    return "Initial balance of the new day session.";
+                case SpecificSessionHours.AmericanAndEuropean_IB:
+                    return "American and European Session Initial Balance.";
+                case SpecificSessionHours.AmericanAndEuropean_BB:
+                    return "American and European Session Between Balances.";
+                case SpecificSessionHours.AmericanAndEuropean_FB:
+                    return "American and European Session Final Balance.";
 
                 case SpecificSessionHours.Asian_IB:
-                    return "Initial balance of the Asian session.";
+                    return "Asian Initial Balance.";
                 case SpecificSessionHours.Asian_BB:
-                    return "Asian session between balances.";
+                    return "Asian Between Balances.";
                 case SpecificSessionHours.Asian_FB:
-                    return "Final balance of the Asian session.";
+                    return "Asian Final Balance.";
+
+                case SpecificSessionHours.European_IB:
+                    return "European Initial Balance.";
+                case SpecificSessionHours.European_BB:
+                    return "European Between Balances.";
+                case SpecificSessionHours.European_FB:
+                    return "European Final Balance.";
+
+                case SpecificSessionHours.American_RS_IB:
+                    return "American Residual Initial Balance.";
+                case SpecificSessionHours.American_RS_BB:
+                    return "American Residual Between Balances.";
+                case SpecificSessionHours.American_RS_FB:
+                    return "American Residual Initial Balance";
+
+                case SpecificSessionHours.Asian_RS_IB:
+                    return "Asian Residual Initial Balance.";
+                case SpecificSessionHours.Asian_RS_BB:
+                    return "Asian Residual Between Balances.";
+                case SpecificSessionHours.Asian_RS_FB:
+                    return "Asian Residual Final Balance.";
+
+                case SpecificSessionHours.American_RS_NWD_IB:
+                    return "American Residual New Day Initial Balance.";
+                case SpecificSessionHours.American_RS_NWD_BB:
+                    return "American Residual New Day Between Balances.";
+                case SpecificSessionHours.American_RS_NWD_FB:
+                    return "American Residual New Day Final Balance.";
 
                 default:
                     throw new Exception("The specific session hours doesn't exists.");
@@ -134,76 +228,78 @@ namespace NtCore
         public static SessionTime ToBeginSessionTime(this SpecificSessionHours specificSessionHours, InstrumentCode instrumentCode = InstrumentCode.Default)
         {
 
-            switch (instrumentCode)
-            {
-                case (InstrumentCode.Default):
-                case (InstrumentCode.MES):
-                    {
-                        switch (specificSessionHours)
-                        {
+            //switch (instrumentCode)
+            //{
+            //    case (InstrumentCode.Default):
+            //    case (InstrumentCode.MES):
+            //        {
+            //            switch (specificSessionHours)
+            //            {
 
-                            case (SpecificSessionHours.Electronic):
-                                return SpecificSessionTime.Electronic_Open.ToSessionTime(instrumentCode);
+            //                case (SpecificSessionHours.Electronic):
+            //                    return SpecificSessionTime.Electronic_Open.ToSessionTime(instrumentCode);
 
-                            case (SpecificSessionHours.Regular):
-                                return SpecificSessionTime.Regular_Open.ToSessionTime(instrumentCode);
-                            case (SpecificSessionHours.OVN):
-                                return SpecificSessionTime.OVN_Open.ToSessionTime(instrumentCode);
+            //                case (SpecificSessionHours.Regular):
+            //                    return SpecificSessionTime.Regular_Open.ToSessionTime(instrumentCode);
+            //                case (SpecificSessionHours.OVN):
+            //                    return SpecificSessionTime.OVN_Open.ToSessionTime(instrumentCode);
 
-                            case (SpecificSessionHours.American):
-                                return SpecificSessionTime.American_Open.ToSessionTime();
-                            case (SpecificSessionHours.American_IB):
-                                return SpecificSessionTime.American_IB_Open.ToSessionTime();
-                            case (SpecificSessionHours.American_BB):
-                                return SpecificSessionTime.American_BB_Open.ToSessionTime();
-                            case (SpecificSessionHours.American_FB):
-                                return SpecificSessionTime.American_FB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.American):
+            //                    return SpecificSessionTime.American_Open.ToSessionTime();
+            //                case (SpecificSessionHours.American_IB):
+            //                    return SpecificSessionTime.American_IB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.American_BB):
+            //                    return SpecificSessionTime.American_BB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.American_FB):
+            //                    return SpecificSessionTime.American_FB_Open.ToSessionTime();
 
-                            case (SpecificSessionHours.AmericanAndEuropean):
-                                return SpecificSessionTime.AmericanAndEuropean_Open.ToSessionTime();
-                            case (SpecificSessionHours.AmericanAndEuropean_IB):
-                                return SpecificSessionTime.AmericanAndEuropean_IB_Open.ToSessionTime();
-                            case (SpecificSessionHours.AmericanAndEuropean_BB):
-                                return SpecificSessionTime.AmericanAndEuropean_BB_Open.ToSessionTime();
-                            case (SpecificSessionHours.AmericanAndEuropean_FB):
-                                return SpecificSessionTime.AmericanAndEuropean_FB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.AmericanAndEuropean):
+            //                    return SpecificSessionTime.AmericanAndEuropean_Open.ToSessionTime();
+            //                case (SpecificSessionHours.AmericanAndEuropean_IB):
+            //                    return SpecificSessionTime.AmericanAndEuropean_IB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.AmericanAndEuropean_BB):
+            //                    return SpecificSessionTime.AmericanAndEuropean_BB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.AmericanAndEuropean_FB):
+            //                    return SpecificSessionTime.AmericanAndEuropean_FB_Open.ToSessionTime();
 
-                            case (SpecificSessionHours.Asian):
-                                return SpecificSessionTime.Asian_Open.ToSessionTime();
-                            case (SpecificSessionHours.Asian_IB):
-                                return SpecificSessionTime.Asian_IB_Open.ToSessionTime();
-                            case (SpecificSessionHours.Asian_BB):
-                                return SpecificSessionTime.Asian_BB_Open.ToSessionTime();
-                            case (SpecificSessionHours.Asian_FB):
-                                return SpecificSessionTime.Asian_FB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.Asian):
+            //                    return SpecificSessionTime.Asian_Open.ToSessionTime();
+            //                case (SpecificSessionHours.Asian_IB):
+            //                    return SpecificSessionTime.Asian_IB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.Asian_BB):
+            //                    return SpecificSessionTime.Asian_BB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.Asian_FB):
+            //                    return SpecificSessionTime.Asian_FB_Open.ToSessionTime();
 
-                            case (SpecificSessionHours.European):
-                                return SpecificSessionTime.European_Open.ToSessionTime();
-                            case (SpecificSessionHours.European_IB):
-                                return SpecificSessionTime.European_IB_Open.ToSessionTime();
-                            case (SpecificSessionHours.European_BB):
-                                return SpecificSessionTime.European_BB_Open.ToSessionTime();
-                            case (SpecificSessionHours.European_FB):
-                                return SpecificSessionTime.European_FB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.European):
+            //                    return SpecificSessionTime.European_Open.ToSessionTime();
+            //                case (SpecificSessionHours.European_IB):
+            //                    return SpecificSessionTime.European_IB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.European_BB):
+            //                    return SpecificSessionTime.European_BB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.European_FB):
+            //                    return SpecificSessionTime.European_FB_Open.ToSessionTime();
 
-                            case (SpecificSessionHours.Residual_AM):
-                                return SpecificSessionTime.American_RS_Open.ToSessionTime();
-                            case (SpecificSessionHours.Residual_AM_AET):
-                                return SpecificSessionTime.American_RS_EXT_Open.ToSessionTime();
-                            case (SpecificSessionHours.Residual_AM_EOD):
-                                return SpecificSessionTime.American_RS_EOD_Open.ToSessionTime();
-                            case (SpecificSessionHours.Residual_AM_NDIB):
-                                return SpecificSessionTime.American_RS_NWD_IB_Open.ToSessionTime();
+            //                case (SpecificSessionHours.American_RS):
+            //                    return SpecificSessionTime.American_RS_Open.ToSessionTime();
+            //                case (SpecificSessionHours.American_RS_EXT):
+            //                    return SpecificSessionTime.American_RS_EXT_Open.ToSessionTime();
+            //                case (SpecificSessionHours.American_RS_EOD):
+            //                    return SpecificSessionTime.American_RS_EOD_Open.ToSessionTime();
+            //                case (SpecificSessionHours.American_RS_NWD_IB):
+            //                    return SpecificSessionTime.American_RS_NWD_IB_Open.ToSessionTime();
 
-                            default:
-                                throw new Exception("The specific session hours doesn't exists.");
+            //                default:
+            //                    throw new Exception("The specific session hours doesn't exists.");
 
-                        }
-                    }
+            //            }
+            //        }
 
-                default:
-                    throw new Exception("The instrument code doesn't exists.");
-            }
+            //    default:
+            //        throw new Exception("The instrument code doesn't exists.");
+            //}
+
+            throw new Exception("The instrument code doesn't exists.");
         }
 
         /// <summary>
@@ -214,77 +310,79 @@ namespace NtCore
         public static SessionTime ToEndSessionTime(this SpecificSessionHours specificSessionHours, InstrumentCode instrumentCode = InstrumentCode.Default)
         {
 
-            switch (instrumentCode)
-            {
-                case (InstrumentCode.Default):
-                case (InstrumentCode.MES):
-                    {
-                        switch (specificSessionHours)
-                        {
+            //switch (instrumentCode)
+            //{
+            //    case (InstrumentCode.Default):
+            //    case (InstrumentCode.MES):
+            //        {
+            //            switch (specificSessionHours)
+            //            {
 
-                            case (SpecificSessionHours.Electronic):
-                                return SpecificSessionTime.Electronic_Close.ToSessionTime(instrumentCode);
+            //                case (SpecificSessionHours.Electronic):
+            //                    return SpecificSessionTime.Electronic_Close.ToSessionTime(instrumentCode);
 
-                            case (SpecificSessionHours.Regular):
-                                return SpecificSessionTime.Regular_Close.ToSessionTime(instrumentCode);
+            //                case (SpecificSessionHours.Regular):
+            //                    return SpecificSessionTime.Regular_Close.ToSessionTime(instrumentCode);
 
-                            case (SpecificSessionHours.OVN):
-                                return SpecificSessionTime.OVN_Close.ToSessionTime(instrumentCode);
+            //                case (SpecificSessionHours.OVN):
+            //                    return SpecificSessionTime.OVN_Close.ToSessionTime(instrumentCode);
 
-                            case (SpecificSessionHours.American):
-                                return SpecificSessionTime.American_Close.ToSessionTime();
-                            case (SpecificSessionHours.American_IB):
-                                return SpecificSessionTime.American_IB_Close.ToSessionTime();
-                            case (SpecificSessionHours.American_BB):
-                                return SpecificSessionTime.American_BB_Close.ToSessionTime();
-                            case (SpecificSessionHours.American_FB):
-                                return SpecificSessionTime.American_FB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.American):
+            //                    return SpecificSessionTime.American_Close.ToSessionTime();
+            //                case (SpecificSessionHours.American_IB):
+            //                    return SpecificSessionTime.American_IB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.American_BB):
+            //                    return SpecificSessionTime.American_BB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.American_FB):
+            //                    return SpecificSessionTime.American_FB_Close.ToSessionTime();
 
-                            case (SpecificSessionHours.AmericanAndEuropean):
-                                return SpecificSessionTime.AmericanAndEuropean_Close.ToSessionTime();
-                            case (SpecificSessionHours.AmericanAndEuropean_IB):
-                                return SpecificSessionTime.AmericanAndEuropean_IB_Close.ToSessionTime();
-                            case (SpecificSessionHours.AmericanAndEuropean_BB):
-                                return SpecificSessionTime.AmericanAndEuropean_BB_Close.ToSessionTime();
-                            case (SpecificSessionHours.AmericanAndEuropean_FB):
-                                return SpecificSessionTime.AmericanAndEuropean_FB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.AmericanAndEuropean):
+            //                    return SpecificSessionTime.AmericanAndEuropean_Close.ToSessionTime();
+            //                case (SpecificSessionHours.AmericanAndEuropean_IB):
+            //                    return SpecificSessionTime.AmericanAndEuropean_IB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.AmericanAndEuropean_BB):
+            //                    return SpecificSessionTime.AmericanAndEuropean_BB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.AmericanAndEuropean_FB):
+            //                    return SpecificSessionTime.AmericanAndEuropean_FB_Close.ToSessionTime();
 
-                            case (SpecificSessionHours.Asian):
-                                return SpecificSessionTime.Asian_Close.ToSessionTime();
-                            case (SpecificSessionHours.Asian_IB):
-                                return SpecificSessionTime.Asian_IB_Close.ToSessionTime();
-                            case (SpecificSessionHours.Asian_BB):
-                                return SpecificSessionTime.Asian_BB_Close.ToSessionTime();
-                            case (SpecificSessionHours.Asian_FB):
-                                return SpecificSessionTime.Asian_FB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.Asian):
+            //                    return SpecificSessionTime.Asian_Close.ToSessionTime();
+            //                case (SpecificSessionHours.Asian_IB):
+            //                    return SpecificSessionTime.Asian_IB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.Asian_BB):
+            //                    return SpecificSessionTime.Asian_BB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.Asian_FB):
+            //                    return SpecificSessionTime.Asian_FB_Close.ToSessionTime();
 
-                            case (SpecificSessionHours.European):
-                                return SpecificSessionTime.European_Close.ToSessionTime();
-                            case (SpecificSessionHours.European_IB):
-                                return SpecificSessionTime.European_IB_Close.ToSessionTime();
-                            case (SpecificSessionHours.European_BB):
-                                return SpecificSessionTime.European_BB_Close.ToSessionTime();
-                            case (SpecificSessionHours.European_FB):
-                                return SpecificSessionTime.European_FB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.European):
+            //                    return SpecificSessionTime.European_Close.ToSessionTime();
+            //                case (SpecificSessionHours.European_IB):
+            //                    return SpecificSessionTime.European_IB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.European_BB):
+            //                    return SpecificSessionTime.European_BB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.European_FB):
+            //                    return SpecificSessionTime.European_FB_Close.ToSessionTime();
 
-                            case (SpecificSessionHours.Residual_AM):
-                                return SpecificSessionTime.American_RS_Close.ToSessionTime();
-                            case (SpecificSessionHours.Residual_AM_AET):
-                                return SpecificSessionTime.American_RS_EXT_Close.ToSessionTime();
-                            case (SpecificSessionHours.Residual_AM_EOD):
-                                return SpecificSessionTime.American_RS_EOD_Close.ToSessionTime();
-                            case (SpecificSessionHours.Residual_AM_NDIB):
-                                return SpecificSessionTime.American_RS_NWD_IB_Close.ToSessionTime();
+            //                case (SpecificSessionHours.American_RS):
+            //                    return SpecificSessionTime.American_RS_Close.ToSessionTime();
+            //                case (SpecificSessionHours.American_RS_EXT):
+            //                    return SpecificSessionTime.American_RS_EXT_Close.ToSessionTime();
+            //                case (SpecificSessionHours.American_RS_EOD):
+            //                    return SpecificSessionTime.American_RS_EOD_Close.ToSessionTime();
+            //                case (SpecificSessionHours.American_RS_NWD_IB):
+            //                    return SpecificSessionTime.American_RS_NWD_IB_Close.ToSessionTime();
 
-                            default:
-                                throw new Exception("The specific session hours doesn't exists.");
+            //                default:
+            //                    throw new Exception("The specific session hours doesn't exists.");
 
-                        }
-                    }
+            //            }
+            //        }
 
-                default:
-                    throw new Exception("The instrument code doesn't exists.");
-            }
+            //    default:
+            //        throw new Exception("The instrument code doesn't exists.");
+            //}
+
+            throw new Exception("The instrument code doesn't exists.");
 
         }
 

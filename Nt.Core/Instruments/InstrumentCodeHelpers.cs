@@ -35,7 +35,7 @@ namespace NtCore
             switch (instrumentCode)
             {
                 case (InstrumentCode.MES):
-                    return MarketExchange.CME_Future_Index;
+                    return MarketExchange.American_Future_Indices;
                 default:
                     throw new Exception("The instrument code doesn't exists.");
             }

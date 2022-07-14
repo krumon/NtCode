@@ -18,7 +18,7 @@ namespace NtCore
 
             switch (instrumentMarketExchange)
             {
-                case (MarketExchange.CME_Future_Index):
+                case (MarketExchange.American_Future_Indices):
                     return "CME Future Index market exchange.";
                 default:
                     throw new Exception("The market exchange doesn't exists.");
@@ -35,7 +35,7 @@ namespace NtCore
         {
             switch (instrumentMarketExchange)
             {
-                case (MarketExchange.CME_Future_Index):
+                case (MarketExchange.American_Future_Indices):
                     return new TimeSpan(17,0,0);
                 default:
                     throw new Exception("The market exchange doesn't exists.");
@@ -52,7 +52,7 @@ namespace NtCore
         {
             switch (instrumentMarketExchange)
             {
-                case (MarketExchange.CME_Future_Index):
+                case (MarketExchange.American_Future_Indices):
                     return new TimeSpan(16,0,0);
                 default:
                     throw new Exception("The market exchange doesn't exists.");
@@ -69,7 +69,7 @@ namespace NtCore
         {
             switch (instrumentMarketExchange)
             {
-                case (MarketExchange.CME_Future_Index):
+                case (MarketExchange.American_Future_Indices):
                     return new TimeSpan(8,30,0);
                 default:
                     throw new Exception("The market exchange doesn't exists.");
@@ -86,7 +86,7 @@ namespace NtCore
         {
             switch (instrumentMarketExchange)
             {
-                case (MarketExchange.CME_Future_Index):
+                case (MarketExchange.American_Future_Indices):
                     return new TimeSpan(15,0,0);
                 default:
                     throw new Exception("The market exchange doesn't exists.");
