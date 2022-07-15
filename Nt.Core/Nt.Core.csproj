@@ -72,10 +72,10 @@
     <Compile Include="SessionHours\MajorSession.cs" />
     <Compile Include="SessionHours\InstrumentSession.cs" />
     <Compile Include="SessionStats\SessionStats.cs" />
-    <Compile Include="Session\Holiday.cs" />
-    <Compile Include="Session\PartialHoliday.cs" />
-    <Compile Include="Session\Session.cs" />
-    <Compile Include="Session\TradingHours.cs" />
+    <Compile Include="Sessions\Holiday.cs" />
+    <Compile Include="Sessions\PartialHoliday.cs" />
+    <Compile Include="Sessions\Session.cs" />
+    <Compile Include="Sessions\TradingHours.cs" />
     <Compile Include="Bars\BarType.cs" />
     <Compile Include="Caches\CacheSearchMode.cs" />
     <Compile Include="Patterns\ChartPattern.cs" />

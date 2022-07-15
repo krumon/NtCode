@@ -9,13 +9,11 @@ namespace NtCore
         // Custom session
         Custom,                         // Custom Session.
 
-        // MAIN SESSIONS TIMES
-        Electronic_Open,                // Electronic Session - Open 
-        Electronic_Close,               // Electronic Session - Close 
-        //Regular_Open,                   // Regular Session - Open 
-        //Regular_Close,                  // Regular Session - Close 
-        //OVN_Open,                       // Overnight Session - Open 
-        //OVN_Close,                      // Overnight Session - Close 
+        // MARKET EXCHANGES TIMES
+        CME_FutureIdx_EL_Open,          // CME Future Index Market Exchange - Open 
+        CME_FutureIdx_EL_Close,         // CME Future Index Market Exchange - Close 
+        CME_FutureIdx_RG_Close,         // CME Future Index Market Exchange - Close 
+        CME_FutureIdx_RG_Open,          // CME Future Index Market Exchange - Open 
 
         // MAJOR SESSIONS TIMES
         Asian_Open,                     // Asian Session - Open 

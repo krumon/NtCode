@@ -18,8 +18,24 @@ namespace NtCore
 
             switch (instrumentMarketExchange)
             {
-                case (MarketExchange.American_Future_Indices):
+                case (MarketExchange.CME_Future_Index):
                     return "American Future Index market exchange.";
+                default:
+                    throw new Exception("The market exchange doesn't exists.");
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="MarketExchange"/> to <see cref="TimeZoneInfo"/>
+        /// </summary>
+        /// <param name="instrumentMarketExchange">The instrument market exchange.</param>
+        /// <returns><see cref="TimeZoneInfo"/> value.</returns>
+        public static TimeZoneInfo ToTimeZoneInfo(this MarketExchange instrumentMarketExchange)
+        {
+            switch (instrumentMarketExchange)
+            {
+                case (MarketExchange.CME_Future_Index):
+                    return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
                 default:
                     throw new Exception("The market exchange doesn't exists.");
             }
@@ -35,7 +51,7 @@ namespace NtCore
         {
             switch (instrumentMarketExchange)
             {
-                case (MarketExchange.American_Future_Indices):
+                case (MarketExchange.CME_Future_Index):
                     return new TimeSpan(17,0,0);
                 default:
                     throw new Exception("The market exchange doesn't exists.");
@@ -52,7 +68,7 @@ namespace NtCore
         {
             switch (instrumentMarketExchange)
             {
-                case (MarketExchange.American_Future_Indices):
+                case (MarketExchange.CME_Future_Index):
                     return new TimeSpan(16,0,0);
                 default:
                     throw new Exception("The market exchange doesn't exists.");
@@ -69,7 +85,7 @@ namespace NtCore
         {
             switch (instrumentMarketExchange)
             {
-                case (MarketExchange.American_Future_Indices):
+                case (MarketExchange.CME_Future_Index):
                     return new TimeSpan(8,30,0);
                 default:
                     throw new Exception("The market exchange doesn't exists.");
@@ -86,8 +102,72 @@ namespace NtCore
         {
             switch (instrumentMarketExchange)
             {
-                case (MarketExchange.American_Future_Indices):
+                case (MarketExchange.CME_Future_Index):
                     return new TimeSpan(15,0,0);
+                default:
+                    throw new Exception("The market exchange doesn't exists.");
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="MarketExchange"/> to initial break <see cref="TimeSpan"/>
+        /// </summary>
+        /// <param name="instrumentMarketExchange">The instrument market exchange.</param>
+        /// <returns><see cref="TimeSpan"/> value.</returns>
+        public static TimeSpan ToBreakInitialTime(this MarketExchange instrumentMarketExchange)
+        {
+            switch (instrumentMarketExchange)
+            {
+                case (MarketExchange.CME_Future_Index):
+                    return new TimeSpan(15,15,0);
+                default:
+                    throw new Exception("The market exchange doesn't exists.");
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="MarketExchange"/> to final break <see cref="TimeSpan"/>
+        /// </summary>
+        /// <param name="instrumentMarketExchange">The instrument market exchange.</param>
+        /// <returns><see cref="TimeSpan"/> value.</returns>
+        public static TimeSpan ToBreakFinalTime(this MarketExchange instrumentMarketExchange)
+        {
+            switch (instrumentMarketExchange)
+            {
+                case (MarketExchange.CME_Future_Index):
+                    return new TimeSpan(15,30,0);
+                default:
+                    throw new Exception("The market exchange doesn't exists.");
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="MarketExchange"/> to initial closed <see cref="TimeSpan"/>
+        /// </summary>
+        /// <param name="instrumentMarketExchange">The instrument market exchange.</param>
+        /// <returns><see cref="TimeSpan"/> value.</returns>
+        public static TimeSpan ToClosedInitialTime(this MarketExchange instrumentMarketExchange)
+        {
+            switch (instrumentMarketExchange)
+            {
+                case (MarketExchange.CME_Future_Index):
+                    return instrumentMarketExchange.ToElectronicFinalTime();
+                default:
+                    throw new Exception("The market exchange doesn't exists.");
+            }
+        }
+
+        /// <summary>
+        /// Converts <see cref="MarketExchange"/> to final closed <see cref="TimeSpan"/>
+        /// </summary>
+        /// <param name="instrumentMarketExchange">The instrument market exchange.</param>
+        /// <returns><see cref="TimeSpan"/> value.</returns>
+        public static TimeSpan ToClosedFinalTime(this MarketExchange instrumentMarketExchange)
+        {
+            switch (instrumentMarketExchange)
+            {
+                case (MarketExchange.CME_Future_Index):
+                    return instrumentMarketExchange.ToElectronicInitialTime();
                 default:
                     throw new Exception("The market exchange doesn't exists.");
             }

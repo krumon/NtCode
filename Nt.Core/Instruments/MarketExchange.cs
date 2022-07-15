@@ -6,6 +6,6 @@ namespace NtCore
     /// </summary>
     public enum MarketExchange
     {
-        American_Future_Indices = 0,
+        CME_Future_Index = 0,
     }
 }

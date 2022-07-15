@@ -19,18 +19,14 @@ namespace NtCore
             switch (tradingTime)
             {
                 // MAIN SESSIONS
-                case TradingTime.Electronic_Open:
-                    return "EL-O";
-                case TradingTime.Electronic_Close:
-                    return "EL-C";
-                //case SpecificSessionTime.Regular_Open:
-                //    return "RG-O";
-                //case SpecificSessionTime.Regular_Close:
-                //    return "RG-C";
-                //case SpecificSessionTime.OVN_Open:
-                //    return "OV-O";
-                //case SpecificSessionTime.OVN_Close:
-                //    return "OV-C";
+                case TradingTime.CME_FutureIdx_EL_Open:
+                    return "CME-FT-IDX-EL-O";
+                case TradingTime.CME_FutureIdx_EL_Close:
+                    return "CME-FT-IDX-EL-O";
+                case TradingTime.CME_FutureIdx_RG_Open:
+                    return "CME-FT-IDX-EL-O";
+                case TradingTime.CME_FutureIdx_RG_Close:
+                    return "CME-FT-IDX-EL-O";
 
                 // MAJOR SESSIONS
                 case TradingTime.Asian_Open:
@@ -174,18 +170,14 @@ namespace NtCore
             switch (tradingTime)
             {
                 // MAIN SESSIONS
-                case TradingTime.Electronic_Open:
-                    return "Electronic session open time.";
-                case TradingTime.Electronic_Close:
-                    return "Electronic session close time.";
-                //case SpecificSessionTime.Regular_Open:
-                //    return "Regular session open time.";
-                //case SpecificSessionTime.Regular_Close:
-                //    return "Regular session close time.";
-                //case SpecificSessionTime.OVN_Open:
-                //    return "Overnight session open time.";
-                //case SpecificSessionTime.OVN_Close:
-                //    return "Overnight session close time.";
+                case TradingTime.CME_FutureIdx_EL_Open:
+                    return "CME Future Index Electronic Market Exchange Open Time.";
+                case TradingTime.CME_FutureIdx_EL_Close:
+                    return "CME Future Index Electronic Market Exchange Close Time.";
+                case TradingTime.CME_FutureIdx_RG_Open:
+                    return "CME Future Index Regular Market Exchange Open Time.";
+                case TradingTime.CME_FutureIdx_RG_Close:
+                    return "CME Future Index Regular Market Exchange Close Time.";
 
                 // MAJOR SESSIONS
                 case TradingTime.Asian_Open:
@@ -215,17 +207,17 @@ namespace NtCore
 
                 // MINOR SESSIONS
                 case TradingTime.American_RS_EXT_Open:
-                    return "Open time of American extra time.";
+                    return "American Residual Extra Time Session Open Time.";
                 case TradingTime.American_RS_EXT_Close:
-                    return "Close time of American extra time.";
+                    return "American Residual Extra Time Session Close Time.";
                 case TradingTime.American_RS_EOD_Open:
-                    return "End of day open time.";
+                    return "American Residual End Of Day Session Open Time.";
                 case TradingTime.American_RS_EOD_Close:
-                    return "End of day close time.";
+                    return "American Residual End Of Day Session Close Time.";
                 case TradingTime.American_RS_NWD_Open:
-                    return "New day open time.";
+                    return "American Residual New Day Session Open Time.";
                 case TradingTime.American_RS_NWD_Close:
-                    return "New day close time.";
+                    return "American Residual New Day Session Close Time.";
 
                 // BALANCES SESSIONS
                 // -----------------
@@ -333,57 +325,44 @@ namespace NtCore
                     {
                         switch (tradingTime)
                         {
+                            // MARKET EXCHANGE TIME ZONES
+                            case (TradingTime.CME_FutureIdx_EL_Open):
+                            case (TradingTime.CME_FutureIdx_EL_Close):
+                            case (TradingTime.CME_FutureIdx_RG_Open):
+                            case (TradingTime.CME_FutureIdx_RG_Close):
+                                return instrumentCode.ToMarketExchange().ToTimeZoneInfo();
 
-                            case (TradingTime.Electronic_Open):
-                            case (TradingTime.Electronic_Close):
-                            //case (SpecificSessionTime.Regular_Open):
-                            //case (SpecificSessionTime.Regular_Close):
-                            //case (SpecificSessionTime.OVN_Open):
-                            //case (SpecificSessionTime.OVN_Close):
-                                return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
-
+                            // MAJOR SESSIONS TIME ZONES
+                            case (TradingTime.American_Open):
+                            case (TradingTime.AmericanAndEuropean_Open):
+                            case (TradingTime.American_Close):
                             case (TradingTime.American_RS_Open):
-                            case (TradingTime.American_RS_Close):
                             case (TradingTime.American_RS_EXT_Open):
                             case (TradingTime.American_RS_EXT_Close):
                             case (TradingTime.American_RS_EOD_Open):
                             case (TradingTime.American_RS_EOD_Close):
                             case (TradingTime.American_RS_NWD_Open):
-                            case (TradingTime.American_RS_NWD_Close):
-                            //case (SpecificSessionTime.American_RS_NWD_IB_Open):
-                            //case (SpecificSessionTime.American_RS_NWD_IB_Close):
-                            //case (SpecificSessionTime.American_RS_NWD_BB_Open):
-                                return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
-
-                            //case (SpecificSessionTime.American_RS_NWD_BB_Close):
-                            //case (SpecificSessionTime.American_RS_NWD_FB_Open):
-                            //case (SpecificSessionTime.American_RS_NWD_FB_Close):
-                            //    return TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
-
-                            case (TradingTime.American_Open):
-                            case (TradingTime.American_Close):
                             //case (SpecificSessionTime.American_IB_Open):
                             //case (SpecificSessionTime.American_IB_Close):
                             //case (SpecificSessionTime.American_BB_Open):
                             //case (SpecificSessionTime.American_BB_Close):
                             //case (SpecificSessionTime.American_FB_Open):
                             //case (SpecificSessionTime.American_FB_Close):
+                            //case (SpecificSessionTime.American_RS_NWD_IB_Open):
+                            //case (SpecificSessionTime.American_RS_NWD_IB_Close):
+                            //case (SpecificSessionTime.American_RS_NWD_BB_Open):
+                            //case (SpecificSessionTime.American_RS_NWD_BB_Close):
+                            //case (SpecificSessionTime.American_RS_NWD_FB_Open):
                                 return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
 
-                            case (TradingTime.AmericanAndEuropean_Open):
-                            //case (SpecificSessionTime.AmericanAndEuropean_IB_Open):
-                            //case (SpecificSessionTime.AmericanAndEuropean_IB_Close):
-                            //case (SpecificSessionTime.AmericanAndEuropean_BB_Open):
-                                return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+                            //case (SpecificSessionTime.American_RS_NWD_FB_Close):
+                            //    return TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
 
-                            case (TradingTime.AmericanAndEuropean_Close):
-                            //case (SpecificSessionTime.AmericanAndEuropean_BB_Close):
-                            //case (SpecificSessionTime.AmericanAndEuropean_FB_Open):
-                            //case (SpecificSessionTime.AmericanAndEuropean_FB_Close):
-                                return TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-
+                            case (TradingTime.American_RS_Close):
+                            case (TradingTime.American_RS_NWD_Close):
                             case (TradingTime.Asian_Open):
                             case (TradingTime.Asian_Close):
+                            case (TradingTime.Asian_RS_Open):
                             //case (SpecificSessionTime.Asian_IB_Open):
                             //case (SpecificSessionTime.Asian_IB_Close):
                             //case (SpecificSessionTime.Asian_BB_Open):
@@ -394,11 +373,12 @@ namespace NtCore
                             //case (SpecificSessionTime.Asian_RS_IB_Open):
                             //case (SpecificSessionTime.Asian_RS_IB_Close):
                             //case (SpecificSessionTime.Asian_RS_BB_Open):
-
                                 return TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
 
+                            case (TradingTime.Asian_RS_Close):
                             case (TradingTime.European_Open):
                             case (TradingTime.European_Close):
+                            case (TradingTime.AmericanAndEuropean_Close):
                             //case (SpecificSessionTime.European_IB_Open):
                             //case (SpecificSessionTime.European_IB_Close):
                             //case (SpecificSessionTime.European_BB_Open):
@@ -409,6 +389,12 @@ namespace NtCore
                             //case (SpecificSessionTime.Asian_RS_BB_Close):
                             //case (SpecificSessionTime.Asian_RS_FB_Open):
                             //case (SpecificSessionTime.Asian_RS_FB_Close):
+                            //case (SpecificSessionTime.AmericanAndEuropean_IB_Open):
+                            //case (SpecificSessionTime.AmericanAndEuropean_IB_Close):
+                            //case (SpecificSessionTime.AmericanAndEuropean_BB_Open):
+                            //case (SpecificSessionTime.AmericanAndEuropean_BB_Close):
+                            //case (SpecificSessionTime.AmericanAndEuropean_FB_Open):
+                            //case (SpecificSessionTime.AmericanAndEuropean_FB_Close):
                                 return TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
 
                             case (TradingTime.Custom):
@@ -427,7 +413,7 @@ namespace NtCore
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingTime"/> to <see cref="Time"/>.
+        /// Converts the <see cref="TradingTime"/> type to <see cref="Time"/>.
         /// </summary>
         /// <param name="tradingTime"></param>
         /// <returns><see cref="TimeSpan"/> of the <see cref="TradingTime"/>.</returns>
@@ -440,27 +426,17 @@ namespace NtCore
                     {
                         switch (tradingTime)
                         {
-                            // Main hours of sessions
-                            case (TradingTime.Electronic_Open):
+                            // MARKET EXCHANGE SESSION TIMES.
+                            case (TradingTime.CME_FutureIdx_EL_Open):
                                 return instrumentCode.ToMarketExchange().ToElectronicInitialTime();
-                            case (TradingTime.Electronic_Close):
+                            case (TradingTime.CME_FutureIdx_EL_Close):
                                 return instrumentCode.ToMarketExchange().ToElectronicFinalTime();
-                            //case (SpecificSessionTime.Regular_Open):
-                            //    return instrumentCode.ToMarketExchange().ToRegularInitialTime();
-                            //case (SpecificSessionTime.Regular_Close):
-                            //    return instrumentCode.ToMarketExchange().ToRegularFinalTime();
+                            case (TradingTime.CME_FutureIdx_RG_Open):
+                                return instrumentCode.ToMarketExchange().ToRegularInitialTime();
+                            case (TradingTime.CME_FutureIdx_RG_Close):
+                                return instrumentCode.ToMarketExchange().ToRegularFinalTime();
 
-                            //// Overnight hours
-                            //case (SpecificSessionTime.OVN_Open):
-                            //    return instrumentCode.ToMarketExchange().ToRegularFinalTime() + TimeSpan.FromSeconds(1);
-                            //case (SpecificSessionTime.OVN_Close):
-                            //    return instrumentCode.ToMarketExchange().ToRegularInitialTime() + TimeSpan.FromSeconds(-1);
-
-                            //
-                            //MAJOR SESSIONS
-                            //
-
-                            // Hours of major sessions
+                            // MAJOR SESSIONS TIMES
                             case (TradingTime.Asian_Open):
                                 return new TimeSpan(9, 0, 0);
                             case (TradingTime.Asian_Close):
@@ -469,40 +445,38 @@ namespace NtCore
                                 return new TimeSpan(8, 0, 0);
                             case (TradingTime.European_Close):
                                 return new TimeSpan(16, 30, 0);
-                            case (TradingTime.AmericanAndEuropean_Open):
-                                return new TimeSpan(8, 30, 0);
-                            case (TradingTime.AmericanAndEuropean_Close):
-                                return new TimeSpan(10, 30, 0);
+
                             case (TradingTime.American_Open):
-                                return new TimeSpan(8, 30, 0);
+                                return TradingTime.CME_FutureIdx_RG_Open.ToTime(instrumentCode); ;
                             case (TradingTime.American_Close):
-                                return new TimeSpan(15, 0, 0);
+                                return TradingTime.CME_FutureIdx_RG_Close.ToTime(instrumentCode);
+                            case (TradingTime.AmericanAndEuropean_Open):
+                                return TradingTime.American_Open.ToTime(instrumentCode);
+                            case (TradingTime.AmericanAndEuropean_Close):
+                                return TradingTime.European_Close.ToTime(instrumentCode);
                             case (TradingTime.American_RS_Open):
-                                return new TimeSpan(15, 0, 0);
+                                return TradingTime.American_Close.ToTime(instrumentCode);
                             case (TradingTime.American_RS_Close):
-                                return TradingTime.Asian_Open.ToTime();
+                                return TradingTime.Asian_Open.ToTime(instrumentCode);
+                            case (TradingTime.Asian_RS_Open):
+                                return TradingTime.Asian_Close.ToTime(instrumentCode);
+                            case (TradingTime.Asian_RS_Close):
+                                return TradingTime.European_Open.ToTime(instrumentCode);
 
-                            //
-                            // RESIDUAL SESSIONS
-                            //
-
-                            // AMERICAN RESIDUAL SESSION
-                            // ASIAN RESIDUAL SESSION
-
-
-                            //
-                            // MINOR SESSIONS
-                            //
-
-                            // American Residual minor sessions.
+                            // MINOR SESSIONS TIMES.
                             case (TradingTime.American_RS_EXT_Open):
-                                return TradingTime.American_Close.ToTime() + TimeSpan.FromSeconds(1);
+                                return TradingTime.CME_FutureIdx_RG_Close.ToTime(instrumentCode);
                             case (TradingTime.American_RS_EXT_Close):
-                                return TradingTime.American_Close.ToTime() + TimeSpan.FromMinutes(15);
+                                return instrumentCode.ToMarketExchange().ToBreakInitialTime();
                             case (TradingTime.American_RS_EOD_Open):
-                                return TradingTime.American_RS_EXT_Close.ToTime() + TimeSpan.FromSeconds(1);
+                                return instrumentCode.ToMarketExchange().ToBreakFinalTime();
                             case (TradingTime.American_RS_EOD_Close):
-                                return TradingTime.Electronic_Close.ToTime();
+                                return instrumentCode.ToMarketExchange().ToElectronicFinalTime();
+                            case (TradingTime.American_RS_NWD_Open):
+                                return instrumentCode.ToMarketExchange().ToElectronicInitialTime();
+                            case (TradingTime.American_RS_NWD_Close):
+                                return TradingTime.Asian_Open.ToTime(instrumentCode);
+                            
                             //case (SpecificSessionTime.American_RS_NWD_IB_Open):
                             //    return SpecificSessionTime.Electronic_Open.ToTimeSpan();
                             //case (SpecificSessionTime.American_RS_NWD_IB_Close):
@@ -515,7 +489,7 @@ namespace NtCore
                             //    return SpecificSessionTime.Asian_Open.ToTimeSpan() + TimeSpan.FromMinutes(-5) + TimeSpan.FromSeconds(1);
                             //case (SpecificSessionTime.American_RS_NWD_FB_Close):
                             //    return SpecificSessionTime.Asian_Open.ToTimeSpan();
-                                                       
+
                             //// Asian minor sessions
                             //case (SpecificSessionTime.Asian_IB_Open):
                             //    return new TimeSpan(9, 0, 0);
@@ -557,7 +531,7 @@ namespace NtCore
                             //    return new TimeSpan(10, 15, 0);
                             //case (SpecificSessionTime.AmericanAndEuropean_FB_Close):
                             //    return new TimeSpan(10, 30, 0);
-                            
+
                             //// Eurepan minor sessions
                             //case (SpecificSessionTime.European_IB_Open):
                             //    return new TimeSpan(8, 0, 0);
@@ -595,15 +569,5 @@ namespace NtCore
         {
             return SessionTime.CreateSessionTimeByType(tradingTime, instrumentCode);
         }
-
-        ///// <summary>
-        ///// Returns <see cref="SessionTime"/> by <see cref="TradingTime"/>.
-        ///// </summary>
-        ///// <param name="specificSessionTime"></param>
-        ///// <returns><see cref="SessionTime"/>.</returns>
-        //public static SessionTime ToSessionTime(this TradingTime specificSessionTime, InstrumentCode instrumentCode = InstrumentCode.Default)
-        //{
-        //    return SessionTime.CreateSessionTimeByType(specificSessionTime, instrumentCode);
-        //}
     }
 }
