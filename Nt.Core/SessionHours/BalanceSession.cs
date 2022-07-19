@@ -2,9 +2,9 @@
 namespace NtCore
 {
     /// <summary>
-    /// Instrument session hours types.
+    /// Instrument session balances types.
     /// </summary>
-    public enum TradingBalance
+    public enum BalanceSession
     {
 
         // BALANCES
@@ -55,4 +55,5 @@ namespace NtCore
         American_RS_NWD_FB,         // American Residual Session - New Day Final Balance
 
     }
+
 }

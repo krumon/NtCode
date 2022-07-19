@@ -57,25 +57,12 @@ namespace NtCore
         /// <summary>
         /// Create instance of <see cref="SessionTime"/> class.
         /// </summary>
-        /// <param name="tradingTime">The trading time type.</param>
-        /// <param name="timeZoneInfo">The time zone info.</param>
-        /// <param name="time">The time.</param>
-        private SessionTime(TradingTime tradingTime, TimeZoneInfo timeZoneInfo, TimeSpan time)
-        {
-            this.tradingTime = tradingTime;
-            this.TimeZoneInfo = timeZoneInfo;
-            this.Time = time;
-        }
-
-        /// <summary>
-        /// Create instance of <see cref="SessionTime"/> class.
-        /// </summary>
         /// <param name="tradingTime"></param>
-        private SessionTime(TradingTime tradingTime, InstrumentCode code = InstrumentCode.Default)
+        private SessionTime(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
         {
             this.tradingTime = tradingTime;
-            this.TimeZoneInfo = tradingTime.ToTimeZoneInfo(code);
-            this.Time = tradingTime.ToTime(code);
+            this.TimeZoneInfo = tradingTime.ToTimeZoneInfo(instrumentCode);
+            this.Time = tradingTime.ToTime(instrumentCode, offset);
         }
 
         /// <summary>
@@ -99,19 +86,14 @@ namespace NtCore
 
         #region Instance methods
 
-        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, TimeZoneInfo timeZoneInfo, TimeSpan time)
-        {
-            return new SessionTime(tradingTime,timeZoneInfo,time);
-        }
-
         /// <summary>
         /// Create default instance of <see cref="SessionTime"/> class.
         /// </summary>
         /// <param name="tradingTime">The specific session time to create the instance.</param>
         /// <returns>The session time instance.</returns>
-        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default)
+        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
         {
-            return new SessionTime(tradingTime,instrumentCode);
+            return new SessionTime(tradingTime,instrumentCode,offset);
         }
 
         /// <summary>
@@ -139,10 +121,10 @@ namespace NtCore
         /// <param name="currentDate">The current date to create the date time structure.</param>
         /// <param name="targetTimeZoneInfo">The time zone info to convert the date time structure.</param>
         /// <returns></returns>
-        public DateTime GetTradingTime(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
-        {
-            return TimeZoneInfo.ConvertTime(currentDate.Date + Time,TimeZoneInfo,targetTimeZoneInfo);
-        }
+        //public DateTime GetTradingTime(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
+        //{
+        //    return TimeZoneInfo.ConvertTime(currentDate.Date + Time,TimeZoneInfo,targetTimeZoneInfo);
+        //}
 
         #endregion
 
