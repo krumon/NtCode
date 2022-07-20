@@ -171,9 +171,10 @@ namespace NtCore
         /// <returns>The final <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.</returns>
         public DateTime GetEndDateTime(TimeZoneInfo targetTimeZoneInfo)
         {
-            var timeSpan = EndSessionTime.Time - BeginSessionTime.Time;
+            var timeSpan = EndSessionTime.Time + EndSessionTime.TimeZoneInfo.BaseUtcOffset - BeginSessionTime.Time - BeginSessionTime.TimeZoneInfo.BaseUtcOffset;
             if (timeSpan.Hours < 0)
                 timeSpan += TimeSpan.FromHours(24);
+
             return GetBeginDateTime(targetTimeZoneInfo) + timeSpan;
         }
 
