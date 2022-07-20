@@ -33,8 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NinjaTrader.Client">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\NinjaTrader 8\bin64\NinjaTrader.Client.dll</HintPath>
+    <Reference Include="NinjaTrader.Client, Version=8.0.24.3, Culture=neutral, PublicKeyToken=d159e9ddc93cec0d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\NinjaTrader 8\bin\NinjaTrader.Client.dll</HintPath>
     </Reference>
     <Reference Include="NinjaTrader.Core, Version=8.0.24.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
