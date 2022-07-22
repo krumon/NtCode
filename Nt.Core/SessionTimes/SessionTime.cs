@@ -50,6 +50,32 @@ namespace NtCore
         /// </summary>
         public TimeSpan Time { get; set; }
 
+        /// <summary>
+        /// Converts the Time property to UTC time.
+        /// </summary>
+        public TimeSpan UtcTime
+        {
+            get
+            {
+                if (TimeZoneInfo == null)
+                    throw new ArgumentNullException(nameof(TimeZoneInfo));
+                if (Time == null)
+                    throw new ArgumentNullException(nameof(Time));
+
+                TimeSpan utcTime = Time + TimeZoneInfo.BaseUtcOffset;
+
+                if (utcTime.TotalHours >= 24)
+                {
+                    utcTime -= TimeSpan.FromHours(24);
+                }
+                if (utcTime.TotalHours < 0)
+                {
+                    utcTime += TimeSpan.FromHours(24);
+                }
+                return utcTime;
+            }
+        }
+
         #endregion
 
         #region Constructors
@@ -106,7 +132,7 @@ namespace NtCore
         /// <param name="code"></param>
         /// <param name="description"></param>
         /// <returns></returns>
-        public static SessionTime CreateCustomSessionTime(TimeZoneInfo timeZoneInfo, int hour, int minute, int seconds, string code, string description = "")
+        public static SessionTime CreateCustomSessionTime(TimeZoneInfo timeZoneInfo, int hour, int minute, int seconds, string code="CUSTOM", string description = "")
         {
             return new SessionTime(timeZoneInfo,hour,minute,seconds,code, description);
         }

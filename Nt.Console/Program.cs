@@ -12,10 +12,14 @@ namespace NtConsole
 
         static void Main(string[] args)
         {
-           
+
             PrintTradingSessions();
 
+            //TimeSpanTester();
+
             //ATIConnection();
+
+            Console.ReadKey();
 
         }
 
@@ -23,7 +27,6 @@ namespace NtConsole
         {
             foreach (var timeZone in TradingSession.Asian.ToArray())
                 Console.WriteLine(timeZone.ToSessionHours().ToString());
-            Console.ReadKey();
         }
 
         private static void ATIConnection()
@@ -66,6 +69,16 @@ namespace NtConsole
             double lastPrice = client.MarketData("MES", 0);
 
             Console.WriteLine(string.Format("{0} | Last: {1}", DateTime.Now, lastPrice));
+        }
+
+        private static void TimeSpanTester()
+        {
+            SessionTime sessionTime1 = SessionTime.CreateCustomSessionTime(TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"),22,0,0);
+            SessionTime sessionTime2 = SessionTime.CreateCustomSessionTime(TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"),2,0,0);
+
+            Console.WriteLine(String.Format("Utc Offset: {0}",sessionTime1.TimeZoneInfo.BaseUtcOffset.ToString()));
+            Console.WriteLine(String.Format("Time 1: {0}",sessionTime1.UtcTime.ToString()));
+            Console.WriteLine(String.Format("Time 2: {0}",sessionTime2.UtcTime.ToString()));
         }
 
     }

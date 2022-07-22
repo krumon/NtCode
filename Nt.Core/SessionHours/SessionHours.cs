@@ -136,87 +136,106 @@ namespace NtCore
         /// Gets the begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
         /// <param name="currentDate">The current date time.</param>
-        /// <param name="targetTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
+        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.</returns>
-        public DateTime GetBeginDateTime(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
+        public DateTime GetSessionBeginTime(DateTime currentDate, TimeZoneInfo destinationTimeZoneInfo)
         {
-            return currentDate + (targetTimeZoneInfo.BaseUtcOffset - BeginSessionTime.TimeZoneInfo.BaseUtcOffset) + BeginSessionTime.Time;
+            // return currentDate + (targetTimeZoneInfo.BaseUtcOffset - BeginSessionTime.TimeZoneInfo.BaseUtcOffset) + BeginSessionTime.Time;
+            DateTime convertTime = TimeZoneInfo.ConvertTime(currentDate, BeginSessionTime.TimeZoneInfo);
+            DateTime utcTime = currentDate.ToUniversalTime();
+            DateTime beginTimeZone = convertTime.Date + BeginSessionTime.Time;
+            DateTime convertBeginTime = TimeZoneInfo.ConvertTime(beginTimeZone, destinationTimeZoneInfo);
+            DateTime beginTime = utcTime.Date + BeginSessionTime.UtcTime;
+            DateTime sessionBegin = utcTime < beginTime ? beginTime : beginTime + TimeSpan.FromHours(24);
+            DateTime result = TimeZoneInfo.ConvertTime(sessionBegin, destinationTimeZoneInfo);
+            Console.WriteLine(String.Format("Utc Now: {0} | Original Session Begin: {1} | Convert Session Begin: {2}", utcTime.TimeOfDay, beginTimeZone.TimeOfDay, convertBeginTime.TimeOfDay));
+            return result;
+            //return TimeZoneInfo.ConvertTime(sessionBegin, destinationTimeZoneInfo);
+
         }
 
         /// <summary>
         /// Gets the final <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
         /// <param name="currentDate">The current date time.</param>
-        /// <param name="targetTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
+        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The final <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.</returns>
-        public DateTime GetEndDateTime(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
+        public DateTime GetSessionEndTime(DateTime currentDate, TimeZoneInfo destinationTimeZoneInfo)
         {
-            return currentDate + (targetTimeZoneInfo.BaseUtcOffset - EndSessionTime.TimeZoneInfo.BaseUtcOffset) + EndSessionTime.Time;
+            // return currentDate + (targetTimeZoneInfo.BaseUtcOffset - EndSessionTime.TimeZoneInfo.BaseUtcOffset) + EndSessionTime.Time;
+            DateTime utcTime = currentDate.ToUniversalTime();
+            DateTime endTime = utcTime.Date + EndSessionTime.UtcTime;
+            DateTime sessionEnd = utcTime < endTime ? endTime : endTime + TimeSpan.FromHours(24);
+            DateTime result = TimeZoneInfo.ConvertTime(sessionEnd, destinationTimeZoneInfo);
+            return result;
+            //return TimeZoneInfo.ConvertTime(sessionEnd,targetTimeZoneInfo);
         }
 
         /// <summary>
         /// Gets the begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
-        /// <param name="targetTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
+        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.</returns>
-        public DateTime GetBeginDateTime(TimeZoneInfo targetTimeZoneInfo)
+        public DateTime GetBeginDateTime(TimeZoneInfo destinationTimeZoneInfo)
         {
-            return GetBeginDateTime(DateTime.Now.Date, targetTimeZoneInfo);
+            return GetSessionBeginTime(DateTime.Now, destinationTimeZoneInfo);
         }
 
         /// <summary>
         /// Gets the final <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
-        /// <param name="targetTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
+        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The final <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.</returns>
-        public DateTime GetEndDateTime(TimeZoneInfo targetTimeZoneInfo)
+        public DateTime GetEndDateTime(TimeZoneInfo destinationTimeZoneInfo)
         {
-            var timeSpan = EndSessionTime.Time + EndSessionTime.TimeZoneInfo.BaseUtcOffset - BeginSessionTime.Time - BeginSessionTime.TimeZoneInfo.BaseUtcOffset;
-            if (timeSpan.Hours < 0)
-                timeSpan += TimeSpan.FromHours(24);
+            //var timeSpan = EndSessionTime.Time + EndSessionTime.TimeZoneInfo.BaseUtcOffset - BeginSessionTime.Time - BeginSessionTime.TimeZoneInfo.BaseUtcOffset;
+            //if (timeSpan.Hours < 0)
+            //    timeSpan += TimeSpan.FromHours(24);
 
-            return GetBeginDateTime(targetTimeZoneInfo) + timeSpan;
+            //return GetBeginDateTime(targetTimeZoneInfo) + timeSpan;
+
+            return GetSessionEndTime(DateTime.Now, destinationTimeZoneInfo);
         }
 
         /// <summary>
         /// Gets the begin <see cref="TimeSpan"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
-        /// <param name="targetTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
+        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The begin <see cref="TimeSpan"/> structure of the <see cref="SessionHours"/>.</returns>
-        public TimeSpan GetBeginTime(TimeZoneInfo targetTimeZoneInfo)
+        public TimeSpan GetBeginTime(TimeZoneInfo destinationTimeZoneInfo)
         {
-            return GetBeginDateTime(targetTimeZoneInfo).TimeOfDay;
+            return GetBeginDateTime(destinationTimeZoneInfo).TimeOfDay;
         }
 
         /// <summary>
         /// Gets the final <see cref="TimeSpan"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
-        /// <param name="targetTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
+        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The final <see cref="TimeSpan"/> structure of the <see cref="SessionHours"/>.</returns>
-        public TimeSpan GetEndTime(TimeZoneInfo targetTimeZoneInfo)
+        public TimeSpan GetEndTime(TimeZoneInfo destinationTimeZoneInfo)
         {
-            return GetEndDateTime(targetTimeZoneInfo).TimeOfDay;
+            return GetEndDateTime(destinationTimeZoneInfo).TimeOfDay;
         }
 
         /// <summary>
         /// Converts the begin <see cref="TimeSpan"/> of the <see cref="SessionHours"/> to integer.
         /// </summary>
-        /// <param name="targetTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
+        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The integer that represents the initial <see cref="TimeSpan"/></returns>
-        public int BeginTimeToInteger(TimeZoneInfo targetTimeZoneInfo)
+        public int BeginTimeToInteger(TimeZoneInfo destinationTimeZoneInfo)
         {
-            TimeSpan time = GetBeginTime(targetTimeZoneInfo);
+            TimeSpan time = GetBeginTime(destinationTimeZoneInfo);
             return (time.Hours*10000)+(time.Minutes*100)+(time.Seconds);
         }
 
         /// <summary>
         /// Converts the final <see cref="TimeSpan"/> of the <see cref="SessionHours"/> to integer.
         /// </summary>
-        /// <param name="targetTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
+        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The integer that represents the final <see cref="TimeSpan"/></returns>
-        public int EndTimeToInteger(TimeZoneInfo targetTimeZoneInfo)
+        public int EndTimeToInteger(TimeZoneInfo destinationTimeZoneInfo)
         {
-            TimeSpan time = GetEndTime(targetTimeZoneInfo);
+            TimeSpan time = GetEndTime(destinationTimeZoneInfo);
             return (time.Hours*10000)+(time.Minutes*100)+(time.Seconds);
         }
 
