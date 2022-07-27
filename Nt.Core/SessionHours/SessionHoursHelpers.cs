@@ -237,7 +237,7 @@ namespace NtCore
                 case TradingSession.Asian:
                     return "AS";
                 case TradingSession.European:
-                    return "AS";
+                    return "EU";
                 case TradingSession.American_RS:
                     return "AM-RS";
                 case TradingSession.Asian_RS:
@@ -273,11 +273,11 @@ namespace NtCore
                     return "RG-FB";
 
                 case BalanceSession.OVN_IB:
-                    return "OV-IB";
+                    return "OVN-IB";
                 case BalanceSession.OVN_BB:
-                    return "OV-BB";
+                    return "OVN-BB";
                 case BalanceSession.OVN_FB:
-                    return "OV-FB";
+                    return "OVN-FB";
 
                 case BalanceSession.American_IB:
                     return "AM-IB";

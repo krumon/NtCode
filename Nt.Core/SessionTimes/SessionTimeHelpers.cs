@@ -42,9 +42,9 @@ namespace NtCore
                 case TradingTime.Asian_RS_Close:
                     return "AS-RS-C";
                 case TradingTime.European_Open:
-                    return "AM-O";
+                    return "EU-O";
                 case TradingTime.European_Close:
-                    return "AM-C";
+                    return "EU-C";
                 case TradingTime.AmericanAndEuropean_Open:
                     return "AE-O";
                 case TradingTime.AmericanAndEuropean_Close:
@@ -165,6 +165,71 @@ namespace NtCore
         }
 
         /// <summary>
+        /// Converts the <see cref="TradingTime"/> to unique code.
+        /// </summary>
+        /// <param name="code">The string to convert.</param>
+        /// <returns></returns>
+        public static TradingTime ToTradingTime(this String code)
+        {
+            // MAIN SESSIONS
+            if (code == "EL-O")
+                return TradingTime.Electronic_Open;
+            if (code == "EL-C")
+                return TradingTime.Electronic_Close;
+            if (code == "RG-O")
+                return TradingTime.Regular_Open;
+            if (code == "RG-C")
+                return TradingTime.Regular_Close;
+            if (code == "OVN-O")
+                return TradingTime.OVN_Open;
+            if (code == "OVN-C")
+                return TradingTime.OVN_Close;
+
+            // MAJOR SESSIONS
+            if (code == "AS-O")
+                return TradingTime.Asian_Open;
+            if (code == "AS-C")
+                return TradingTime.Asian_Close;
+            if (code == "AS-RS-O")
+                return TradingTime.Asian_RS_Open;
+            if (code == "AS-RS-C")
+                return TradingTime.Asian_RS_Close;
+            if (code == "EU-O")
+                return TradingTime.European_Open;
+            if (code == "EU-C")
+                return TradingTime.European_Close;
+            if (code == "AE-O")
+                return TradingTime.AmericanAndEuropean_Open;
+            if (code == "AE-C")
+                return TradingTime.AmericanAndEuropean_Close;
+            if (code == "AM-O")
+                return TradingTime.American_Open;
+            if (code == "AM-C")
+                return TradingTime.American_Close;
+            if (code == "AM-RS-O")
+                return TradingTime.American_RS_Open;
+            if (code == "AM-RS-C")
+                return TradingTime.American_RS_Close;
+
+            // MINOR SESSIONS
+            if (code == "AM-RS-EXT-O")
+                return TradingTime.American_RS_EXT_Open;
+            if (code == "AM-RS-EXT-C")
+                return TradingTime.American_RS_EXT_Close;
+            if (code == "AM-RS-EOD-O")
+                return TradingTime.American_RS_EOD_Open;
+            if (code == "AM-RS-EOD-C")
+                return TradingTime.American_RS_EOD_Close;
+            if (code == "AM-RS-NWD-O")
+                return TradingTime.American_RS_NWD_Open;
+            if (code == "AM-RS-NWD-C")
+                return TradingTime.American_RS_NWD_Close;
+
+            throw new Exception("The string value to converts is not a implemented code value.");
+
+        }
+
+        /// <summary>
         /// Converts the <see cref="TradingTime"/> to description.
         /// </summary>
         /// <param name="tradingTime">The specific session time.</param>
@@ -175,57 +240,57 @@ namespace NtCore
             {
                 // MAIN SESSIONS
                 case TradingTime.Electronic_Open:
-                    return "Electronic session open time.";
+                    return "Electronic Session. Open time.";
                 case TradingTime.Electronic_Close:
-                    return "Electronic session close time.";
+                    return "Electronic Session. Close time.";
                 case TradingTime.Regular_Open:
-                    return "Regular session open time.";
+                    return "Regular Session. Open time.";
                 case TradingTime.Regular_Close:
-                    return "Regular session close time.";
+                    return "Regular Session. Close time.";
                 case TradingTime.OVN_Open:
-                    return "Overnight session open time.";
+                    return "Overnight Session. Open time.";
                 case TradingTime.OVN_Close:
-                    return "Overnight session close time.";
+                    return "Overnight Session. Close time.";
 
                 // MAJOR SESSIONS
                 case TradingTime.Asian_Open:
-                    return "Asian session open time.";
+                    return "Asian Session. Open time.";
                 case TradingTime.Asian_Close:
-                    return "Asian session close time.";
+                    return "Asian Session. Close time.";
                 case TradingTime.Asian_RS_Open:
-                    return "Asian residual session open time.";
+                    return "Asian residual Session. Open time.";
                 case TradingTime.Asian_RS_Close:
-                    return "Asian residual session close time.";
+                    return "Asian residual Session. Close time.";
                 case TradingTime.European_Open:
-                    return "European session open time.";
+                    return "European Session. Open time.";
                 case TradingTime.European_Close:
-                    return "European session close time.";
+                    return "European Session. Close time.";
                 case TradingTime.AmericanAndEuropean_Open:
-                    return "American and European session open time.";
+                    return "American and European Session. Open time.";
                 case TradingTime.AmericanAndEuropean_Close:
-                    return "American and European session close time.";
+                    return "American and European Session. Close time.";
                 case TradingTime.American_Open:
-                    return "American session open time.";
+                    return "American Session. Open time.";
                 case TradingTime.American_Close:
-                    return "American session close time.";
+                    return "American Session. Close time.";
                 case TradingTime.American_RS_Open:
-                    return "American residual session open time.";
+                    return "American residual Session. Open time.";
                 case TradingTime.American_RS_Close:
-                    return "American residual session close time.";
+                    return "American residual Session. Close time.";
 
                 // MINOR SESSIONS
                 case TradingTime.American_RS_EXT_Open:
-                    return "American Residual Extra Time Session Open Time.";
+                    return "American Residual Session. Extra Time Open.";
                 case TradingTime.American_RS_EXT_Close:
-                    return "American Residual Extra Time Session Close Time.";
+                    return "American Residual Session. Extra Time Close.";
                 case TradingTime.American_RS_EOD_Open:
-                    return "American Residual End Of Day Session Open Time.";
+                    return "American Residual Session. End Of Day Open.";
                 case TradingTime.American_RS_EOD_Close:
-                    return "American Residual End Of Day Session Close Time.";
+                    return "American Residual Session. End Of Day Close.";
                 case TradingTime.American_RS_NWD_Open:
-                    return "American Residual New Day Session Open Time.";
+                    return "American Residual Session. New Day Open.";
                 case TradingTime.American_RS_NWD_Close:
-                    return "American Residual New Day Session Close Time.";
+                    return "American Residual Session. New Day Close.";
 
                 // BALANCES SESSIONS
                 // -----------------

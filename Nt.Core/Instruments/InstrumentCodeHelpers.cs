@@ -42,5 +42,6 @@ namespace NtCore
                     throw new Exception("The instrument code doesn't exists.");
             }
         }
+
     }
 }

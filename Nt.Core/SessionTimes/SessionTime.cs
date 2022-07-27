@@ -53,7 +53,7 @@ namespace NtCore
         /// <summary>
         /// Converts the Time property to UTC time.
         /// </summary>
-        public TimeSpan UtcTime
+        public TimeSpan ToUtcTime
         {
             get
             {
@@ -62,7 +62,7 @@ namespace NtCore
                 if (Time == null)
                     throw new ArgumentNullException(nameof(Time));
 
-                TimeSpan utcTime = Time + TimeZoneInfo.BaseUtcOffset;
+                TimeSpan utcTime = Time - TimeZoneInfo.BaseUtcOffset;
 
                 if (utcTime.TotalHours >= 24)
                 {
@@ -73,6 +73,32 @@ namespace NtCore
                     utcTime += TimeSpan.FromHours(24);
                 }
                 return utcTime;
+            }
+        }
+
+        /// <summary>
+        /// Converts the Time property to UTC time.
+        /// </summary>
+        public TimeSpan ToLocalTime
+        {
+            get
+            {
+                if (TimeZoneInfo == null)
+                    throw new ArgumentNullException(nameof(TimeZoneInfo));
+                if (Time == null)
+                    throw new ArgumentNullException(nameof(Time));
+
+                TimeSpan localTime = this.ToUtcTime + TimeZoneInfo.Local.BaseUtcOffset;
+
+                if (localTime.TotalHours >= 24)
+                {
+                    localTime -= TimeSpan.FromHours(24);
+                }
+                if (localTime.TotalHours < 0)
+                {
+                    localTime += TimeSpan.FromHours(24);
+                }
+                return localTime;
             }
         }
 
@@ -144,15 +170,37 @@ namespace NtCore
         /// <summary>
         /// Gets the trading time <see cref="DateTime"/>.
         /// </summary>
-        /// <param name="currentDate">The current date to create the date time structure.</param>
-        /// <param name="targetTimeZoneInfo">The time zone info to convert the date time structure.</param>
+        /// <param name="localDateTime">The current date to create the date time structure.</param>
+        /// <param name="destinationTimeZoneInfo">The time zone info to convert the date time structure.</param>
         /// <returns></returns>
-        //public DateTime GetTradingTime(DateTime currentDate, TimeZoneInfo targetTimeZoneInfo)
-        //{
-        //    return TimeZoneInfo.ConvertTime(currentDate.Date + Time,TimeZoneInfo,targetTimeZoneInfo);
-        //}
+        public DateTime GetNextSessionTime(
+            DateTime localDateTime, 
+            InstrumentCode instrumentCode = InstrumentCode.Default, 
+            TimeZoneInfo sourceTimeZoneInfo = null, 
+            TimeZoneInfo destinationTimeZoneInfo = null)
+        {
+
+            if (sourceTimeZoneInfo == null)
+                sourceTimeZoneInfo = instrumentCode.ToMarketExchange().ToTimeZoneInfo();
+
+            if (destinationTimeZoneInfo == null)
+                destinationTimeZoneInfo = TimeZoneInfo.Local;
+
+            DateTime tempCurrentTime = new DateTime(localDateTime.Ticks, DateTimeKind.Unspecified);
+            DateTime tempSessionTime = new DateTime(localDateTime.Year, localDateTime.Month, localDateTime.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
+            
+            DateTime currentDateTime = TimeZoneInfo.ConvertTime(tempCurrentTime, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            DateTime nextDateTime = TimeZoneInfo.ConvertTime(tempSessionTime, this.TimeZoneInfo, destinationTimeZoneInfo);
+
+            if (nextDateTime > currentDateTime)
+                return nextDateTime;
+            else 
+                return nextDateTime + TimeSpan.FromHours(24);
+
+        }
 
         #endregion
+
 
     }
 }

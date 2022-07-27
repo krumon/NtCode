@@ -138,18 +138,23 @@ namespace NtCore
         /// <param name="currentDate">The current date time.</param>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.</returns>
-        public DateTime GetSessionBeginTime(DateTime currentDate, TimeZoneInfo destinationTimeZoneInfo)
+        public DateTime GetSessionBeginTime(
+            DateTime currentDate, 
+            InstrumentCode instrumentCode = InstrumentCode.Default, 
+            TimeZoneInfo sourceTimeZoneInfo = null, 
+            TimeZoneInfo destinationTimeZoneInfo = null)
         {
+            return BeginSessionTime.GetNextSessionTime(currentDate, instrumentCode, sourceTimeZoneInfo, destinationTimeZoneInfo);
             // return currentDate + (targetTimeZoneInfo.BaseUtcOffset - BeginSessionTime.TimeZoneInfo.BaseUtcOffset) + BeginSessionTime.Time;
-            DateTime convertTime = TimeZoneInfo.ConvertTime(currentDate, BeginSessionTime.TimeZoneInfo);
-            DateTime utcTime = currentDate.ToUniversalTime();
-            DateTime beginTimeZone = convertTime.Date + BeginSessionTime.Time;
-            DateTime convertBeginTime = TimeZoneInfo.ConvertTime(beginTimeZone, destinationTimeZoneInfo);
-            DateTime beginTime = utcTime.Date + BeginSessionTime.UtcTime;
-            DateTime sessionBegin = utcTime < beginTime ? beginTime : beginTime + TimeSpan.FromHours(24);
-            DateTime result = TimeZoneInfo.ConvertTime(sessionBegin, destinationTimeZoneInfo);
-            Console.WriteLine(String.Format("Utc Now: {0} | Original Session Begin: {1} | Convert Session Begin: {2}", utcTime.TimeOfDay, beginTimeZone.TimeOfDay, convertBeginTime.TimeOfDay));
-            return result;
+            //DateTime convertTime = TimeZoneInfo.ConvertTime(currentDate, BeginSessionTime.TimeZoneInfo);
+            //DateTime utcTime = currentDate.ToUniversalTime();
+            //DateTime beginTimeZone = convertTime.Date + BeginSessionTime.Time;
+            //DateTime convertBeginTime = TimeZoneInfo.ConvertTime(beginTimeZone, destinationTimeZoneInfo);
+            //DateTime beginTime = utcTime.Date + BeginSessionTime.ToUtcTime;
+            //DateTime sessionBegin = utcTime < beginTime ? beginTime : beginTime + TimeSpan.FromHours(24);
+            //DateTime result = TimeZoneInfo.ConvertTime(sessionBegin, destinationTimeZoneInfo);
+            //Console.WriteLine(String.Format("Utc Now: {0} | Original Session Begin: {1} | Convert Session Begin: {2}", utcTime.TimeOfDay, beginTimeZone.TimeOfDay, convertBeginTime.TimeOfDay));
+            //return result;
             //return TimeZoneInfo.ConvertTime(sessionBegin, destinationTimeZoneInfo);
 
         }
@@ -160,14 +165,19 @@ namespace NtCore
         /// <param name="currentDate">The current date time.</param>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The final <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.</returns>
-        public DateTime GetSessionEndTime(DateTime currentDate, TimeZoneInfo destinationTimeZoneInfo)
+        public DateTime GetSessionEndTime(
+            DateTime currentDate,
+            InstrumentCode instrumentCode = InstrumentCode.Default,
+            TimeZoneInfo sourceTimeZoneInfo = null,
+            TimeZoneInfo destinationTimeZoneInfo = null)
         {
+            return EndSessionTime.GetNextSessionTime(currentDate, instrumentCode, sourceTimeZoneInfo, destinationTimeZoneInfo);
             // return currentDate + (targetTimeZoneInfo.BaseUtcOffset - EndSessionTime.TimeZoneInfo.BaseUtcOffset) + EndSessionTime.Time;
-            DateTime utcTime = currentDate.ToUniversalTime();
-            DateTime endTime = utcTime.Date + EndSessionTime.UtcTime;
-            DateTime sessionEnd = utcTime < endTime ? endTime : endTime + TimeSpan.FromHours(24);
-            DateTime result = TimeZoneInfo.ConvertTime(sessionEnd, destinationTimeZoneInfo);
-            return result;
+            //DateTime utcTime = currentDate.ToUniversalTime();
+            //DateTime endTime = utcTime.Date + EndSessionTime.ToUtcTime;
+            //DateTime sessionEnd = utcTime < endTime ? endTime : endTime + TimeSpan.FromHours(24);
+            //DateTime result = TimeZoneInfo.ConvertTime(sessionEnd, destinationTimeZoneInfo);
+            //return result;
             //return TimeZoneInfo.ConvertTime(sessionEnd,targetTimeZoneInfo);
         }
 
@@ -176,68 +186,68 @@ namespace NtCore
         /// </summary>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.</returns>
-        public DateTime GetBeginDateTime(TimeZoneInfo destinationTimeZoneInfo)
-        {
-            return GetSessionBeginTime(DateTime.Now, destinationTimeZoneInfo);
-        }
+        //public DateTime GetBeginDateTime(TimeZoneInfo destinationTimeZoneInfo)
+        //{
+        //    return GetSessionBeginTime(DateTime.Now, destinationTimeZoneInfo);
+        //}
 
         /// <summary>
         /// Gets the final <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The final <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.</returns>
-        public DateTime GetEndDateTime(TimeZoneInfo destinationTimeZoneInfo)
-        {
-            //var timeSpan = EndSessionTime.Time + EndSessionTime.TimeZoneInfo.BaseUtcOffset - BeginSessionTime.Time - BeginSessionTime.TimeZoneInfo.BaseUtcOffset;
-            //if (timeSpan.Hours < 0)
-            //    timeSpan += TimeSpan.FromHours(24);
+        //public DateTime GetEndDateTime(TimeZoneInfo destinationTimeZoneInfo)
+        //{
+        //    //var timeSpan = EndSessionTime.Time + EndSessionTime.TimeZoneInfo.BaseUtcOffset - BeginSessionTime.Time - BeginSessionTime.TimeZoneInfo.BaseUtcOffset;
+        //    //if (timeSpan.Hours < 0)
+        //    //    timeSpan += TimeSpan.FromHours(24);
 
-            //return GetBeginDateTime(targetTimeZoneInfo) + timeSpan;
+        //    //return GetBeginDateTime(targetTimeZoneInfo) + timeSpan;
 
-            return GetSessionEndTime(DateTime.Now, destinationTimeZoneInfo);
-        }
+        //    return GetSessionEndTime(DateTime.Now, destinationTimeZoneInfo);
+        //}
 
         /// <summary>
         /// Gets the begin <see cref="TimeSpan"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The begin <see cref="TimeSpan"/> structure of the <see cref="SessionHours"/>.</returns>
-        public TimeSpan GetBeginTime(TimeZoneInfo destinationTimeZoneInfo)
-        {
-            return GetBeginDateTime(destinationTimeZoneInfo).TimeOfDay;
-        }
+        //public TimeSpan GetBeginTime(TimeZoneInfo destinationTimeZoneInfo)
+        //{
+        //    return GetBeginDateTime(destinationTimeZoneInfo).TimeOfDay;
+        //}
 
         /// <summary>
         /// Gets the final <see cref="TimeSpan"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The final <see cref="TimeSpan"/> structure of the <see cref="SessionHours"/>.</returns>
-        public TimeSpan GetEndTime(TimeZoneInfo destinationTimeZoneInfo)
-        {
-            return GetEndDateTime(destinationTimeZoneInfo).TimeOfDay;
-        }
+        //public TimeSpan GetEndTime(TimeZoneInfo destinationTimeZoneInfo)
+        //{
+        //    return GetEndDateTime(destinationTimeZoneInfo).TimeOfDay;
+        //}
 
         /// <summary>
         /// Converts the begin <see cref="TimeSpan"/> of the <see cref="SessionHours"/> to integer.
         /// </summary>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The integer that represents the initial <see cref="TimeSpan"/></returns>
-        public int BeginTimeToInteger(TimeZoneInfo destinationTimeZoneInfo)
-        {
-            TimeSpan time = GetBeginTime(destinationTimeZoneInfo);
-            return (time.Hours*10000)+(time.Minutes*100)+(time.Seconds);
-        }
+        //public int BeginTimeToInteger(TimeZoneInfo destinationTimeZoneInfo)
+        //{
+        //    TimeSpan time = GetBeginTime(destinationTimeZoneInfo);
+        //    return (time.Hours*10000)+(time.Minutes*100)+(time.Seconds);
+        //}
 
         /// <summary>
         /// Converts the final <see cref="TimeSpan"/> of the <see cref="SessionHours"/> to integer.
         /// </summary>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The integer that represents the final <see cref="TimeSpan"/></returns>
-        public int EndTimeToInteger(TimeZoneInfo destinationTimeZoneInfo)
-        {
-            TimeSpan time = GetEndTime(destinationTimeZoneInfo);
-            return (time.Hours*10000)+(time.Minutes*100)+(time.Seconds);
-        }
+        //public int EndTimeToInteger(TimeZoneInfo destinationTimeZoneInfo)
+        //{
+        //    TimeSpan time = GetEndTime(destinationTimeZoneInfo);
+        //    return (time.Hours*10000)+(time.Minutes*100)+(time.Seconds);
+        //}
 
         #endregion
 
@@ -249,7 +259,7 @@ namespace NtCore
         /// <returns></returns>
         public override string ToString()
         {
-            return String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", GetBeginDateTime(TimeZoneInfo.Local).ToString(), "End Time: ", GetEndDateTime(TimeZoneInfo.Local).ToString());
+            return String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", GetSessionBeginTime(DateTime.Now).ToString(), "End Time: ", GetSessionEndTime(DateTime.Now).ToString());
         }
 
         #endregion
