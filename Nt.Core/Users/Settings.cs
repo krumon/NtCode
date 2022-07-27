@@ -1,11 +1,15 @@
-﻿
+﻿using System;
+
 namespace NtCore
 {
     /// <summary>
-    /// All paths of the ninjascripts and the application.
+    /// Represents consts, fields and properties of the Ninjatrader user configuration.
     /// </summary>
-    public static class Globals
+    public class Settings
     {
+
+        #region Consts
+
         /// <summary>
         /// The root of all paths
         /// </summary>
@@ -26,39 +30,30 @@ namespace NtCore
         /// </summary>
         public const string NinjatraderExportPath = @"C:\Users\Usuario\Documents\NinjaTrader 8\export";
 
-
-    }
-
-    /// <summary>
-    /// All texts of the ninjascripts
-    /// </summary>
-    public static class Texts
-    {
+        /// <summary>
+        /// Display name for anchor.
+        /// </summary>
+        public const string AnchorDisplayName = "Y";
 
         /// <summary>
         /// Display name for anchor.
         /// </summary>
-        public static string AnchorDisplayName => "Y";
+        public const string AnchorYDisplayName = "Price";
 
         /// <summary>
         /// Display name for anchor.
         /// </summary>
-        public static string AnchorYDisplayName => "Price";
-
-        /// <summary>
-        /// Display name for anchor.
-        /// </summary>
-        public static string AnchorXDisplayName => "Time";
+        public const string AnchorXDisplayName = "Time";
 
         /// <summary>
         /// Display name for start anchor.
         /// </summary>
-        public static string AnchorStartDisplayName => "Start Y";
+        public const string AnchorStartDisplayName = "Start Y";
 
         /// <summary>
         /// Display name for end anchor.
         /// </summary>
-        public static string AnchorEndDisplayName => "End Y";
+        public const string AnchorEndDisplayName = "End Y";
 
         /// <summary>
         /// The root of all paths
@@ -74,6 +69,33 @@ namespace NtCore
         /// The root of all paths
         /// </summary>
         public const string TimeLineDisplayName = "Time Line";
+
+        #endregion
+
+        #region Fields
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// The user <see cref="TimeZoneInfo"/> configure in the platafform.
+        /// </summary>
+        public TimeZoneInfo UserTimeZoneInfo { get; set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Create a default instance of the <see cref="Settings"/> class.
+        /// </summary>
+        public Settings()
+        {
+
+        }
+
+        #endregion
 
     }
 }
