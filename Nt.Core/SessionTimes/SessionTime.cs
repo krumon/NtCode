@@ -168,29 +168,82 @@ namespace NtCore
         #region Public methods
 
         /// <summary>
+        /// Converts the <see cref="Time"/> to integer.
+        /// </summary>
+        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>. The default values is <see cref="TimeZoneInfo.Local"/>.</param>
+        /// <returns>The integer that represents the session <see cref="Time"/></returns>
+        public int ToInteger(TimeZoneInfo destinationTimeZoneInfo = null)
+        {
+            TimeSpan time = GetTime(DateTime.Now, destinationTimeZoneInfo);
+            return (time.Hours * 10000) + (time.Minutes * 100) + (time.Seconds);
+        }
+
+        /// <summary>
         /// Gets the trading time <see cref="DateTime"/>.
         /// </summary>
-        /// <param name="localDateTime">The current date to create the date time structure.</param>
+        /// <param name="currentTime">The current date to create the date time structure.</param>
         /// <param name="destinationTimeZoneInfo">The time zone info to convert the date time structure.</param>
         /// <returns></returns>
+        public DateTime GetDateTime(
+            DateTime currentTime, 
+            TimeZoneInfo destinationTimeZoneInfo = null)
+        {
+
+            if (destinationTimeZoneInfo == null)
+                destinationTimeZoneInfo = TimeZoneInfo.Local;
+
+            DateTime sessionDateTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
+            DateTime sessionTime = TimeZoneInfo.ConvertTime(sessionDateTime, this.TimeZoneInfo, destinationTimeZoneInfo);
+
+            return sessionTime;
+
+        }
+
+        /// <summary>
+        /// Gets the trading time <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="currentTime">The current date to create the date time structure.</param>
+        /// <param name="destinationTimeZoneInfo">The time zone info to convert the date time structure.</param>
+        /// <returns></returns>
+        public TimeSpan GetTime(
+            DateTime currentTime, 
+            TimeZoneInfo destinationTimeZoneInfo = null)
+        {
+            return GetDateTime(currentTime,destinationTimeZoneInfo).TimeOfDay;
+        }
+
+        /// <summary>
+        /// Gets the trading time <see cref="DateTime"/>.
+        /// </summary>
+        /// <param name="currentTime">The current date to create the date time structure.</param>
+        /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
+        /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
+        /// <returns>The <see cref="DateTime"/> of the next session since the <paramref name="currentTime"/></returns>
         public DateTime GetNextSessionTime(
-            DateTime localDateTime, 
-            InstrumentCode instrumentCode = InstrumentCode.Default, 
+            DateTime currentTime, 
             TimeZoneInfo sourceTimeZoneInfo = null, 
             TimeZoneInfo destinationTimeZoneInfo = null)
         {
 
             if (sourceTimeZoneInfo == null)
-                sourceTimeZoneInfo = instrumentCode.ToMarketExchange().ToTimeZoneInfo();
+            {
+                if (currentTime.Kind == DateTimeKind.Local)
+                    sourceTimeZoneInfo = TimeZoneInfo.Local;
+                
+                if (currentTime.Kind == DateTimeKind.Utc)
+                    sourceTimeZoneInfo = TimeZoneInfo.Utc;
+
+                if (currentTime.Kind == DateTimeKind.Unspecified)
+                    throw new ArgumentNullException(nameof(sourceTimeZoneInfo) + "cannot be null if the" + nameof(DateTimeKind) + "is Unnspecified");
+            }
 
             if (destinationTimeZoneInfo == null)
                 destinationTimeZoneInfo = TimeZoneInfo.Local;
 
-            DateTime tempCurrentTime = new DateTime(localDateTime.Ticks, DateTimeKind.Unspecified);
-            DateTime tempSessionTime = new DateTime(localDateTime.Year, localDateTime.Month, localDateTime.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
-            
-            DateTime currentDateTime = TimeZoneInfo.ConvertTime(tempCurrentTime, sourceTimeZoneInfo, destinationTimeZoneInfo);
-            DateTime nextDateTime = TimeZoneInfo.ConvertTime(tempSessionTime, this.TimeZoneInfo, destinationTimeZoneInfo);
+            DateTime sessionTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
+
+            DateTime currentDateTime = TimeZoneInfo.ConvertTime(currentTime, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            DateTime nextDateTime = TimeZoneInfo.ConvertTime(sessionTime, this.TimeZoneInfo, destinationTimeZoneInfo);
 
             if (nextDateTime > currentDateTime)
                 return nextDateTime;
