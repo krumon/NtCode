@@ -55,6 +55,11 @@ namespace NtCore
         /// </summary>
         public List<SessionHours> BalanceSessions { get; set; }
 
+        /// <summary>
+        /// Indicates if the <see cref="SessionHours"/> has sessions.
+        /// </summary>
+        public bool HasSessions => Sessions == null ? false : Sessions.Count < 1 ? false : true;
+
         #endregion
 
         #region Constructors
@@ -128,9 +133,73 @@ namespace NtCore
             return new SessionHours(beginSessionTime, endSessionTime);
         }
 
+        public static SessionHours CreateMundialSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
+        {
+            SessionHours sessionHours = CreateSessionHoursByType(TradingSession.Electronic);
+            // Main Sessions
+            sessionHours.Add(CreateSessionHoursByType(TradingSession.Regular));
+            sessionHours.Add(CreateSessionHoursByType(TradingSession.OVN));
+            // Regular Sessions
+            sessionHours.Sessions[0].Add(CreateSessionHoursByType(TradingSession.AmericanAndEuropean));
+            sessionHours.Sessions[0].Add(CreateSessionHoursByType(TradingSession.American));
+            // Overnight Sessions
+            sessionHours.Sessions[1].Add(CreateSessionHoursByType(TradingSession.American_RS));
+            sessionHours.Sessions[1].Add(CreateSessionHoursByType(TradingSession.Asian));
+            sessionHours.Sessions[1].Add(CreateSessionHoursByType(TradingSession.Asian_RS));
+            sessionHours.Sessions[1].Add(CreateSessionHoursByType(TradingSession.European));
+            // Minor Sessions
+            sessionHours.Sessions[1].Sessions[0].Add(CreateSessionHoursByType(TradingSession.American_RS_EXT));
+            sessionHours.Sessions[1].Sessions[0].Add(CreateSessionHoursByType(TradingSession.American_RS_EOD));
+            sessionHours.Sessions[1].Sessions[0].Add(CreateSessionHoursByType(TradingSession.American_RS_NWD));
+
+            return sessionHours;
+        }
+
         #endregion
 
-        #region Public methods
+        #region Getter Methods
+
+        public SessionHours GetEuropeanSession()
+        {
+            return CreateSessionHoursByType(TradingSession.European);
+        }
+
+        public SessionHours GetAsianSession()
+        {
+            return CreateSessionHoursByType(TradingSession.Asian);
+        }
+
+        public SessionHours GetAmericanSession()
+        {
+            return CreateSessionHoursByType(TradingSession.American);
+        }
+
+        public List<SessionHours> GetAmericanSessions()
+        {
+            List<SessionHours> sessions = new List<SessionHours>
+            {
+                CreateSessionHoursByType(TradingSession.AmericanAndEuropean),
+                CreateSessionHoursByType(TradingSession.American),
+            };
+
+            return sessions;
+        }
+
+        public List<SessionHours> GetAmericanResidualSessions()
+        {
+            List<SessionHours> sessions = new List<SessionHours>
+            {
+                CreateSessionHoursByType(TradingSession.American_RS_EXT),
+                CreateSessionHoursByType(TradingSession.American_RS_EXT),
+                CreateSessionHoursByType(TradingSession.American_RS_NWD)
+            };
+
+            return sessions;
+        }
+
+        #endregion
+
+        #region Session Time Methods
 
         /// <summary>
         /// Gets the begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
@@ -138,7 +207,7 @@ namespace NtCore
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
         /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetSessionBeginDateTime(
+        public DateTime GetNextBeginDateTime(
             DateTime currentDate, 
             TimeZoneInfo sourceTimeZoneInfo = null, 
             TimeZoneInfo destinationTimeZoneInfo = null)
@@ -152,7 +221,7 @@ namespace NtCore
         /// <param name="currentDate">The current date time.</param>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The final <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/>.</returns>
-        public DateTime GetSessionEndDateTime(
+        public DateTime GetNextEndDateTime(
             DateTime currentDate,
             TimeZoneInfo sourceTimeZoneInfo = null,
             TimeZoneInfo destinationTimeZoneInfo = null)
@@ -172,7 +241,7 @@ namespace NtCore
         /// <param name="currentDate">The current date time.</param>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
         /// <returns>The initial and final <see cref="DateTime"/> structures of the next session since the <paramref name="currentTime"/>.</returns>
-        public DateTime[] GetNextSessionDateTimes(
+        public DateTime[] GetNextDateTimes(
             DateTime currentDate,
             TimeZoneInfo sourceTimeZoneInfo = null,
             TimeZoneInfo destinationTimeZoneInfo = null)
@@ -192,6 +261,57 @@ namespace NtCore
 
         #endregion
 
+        #region Session Collection methods
+
+        public void Add(SessionHours sessionHours)
+        {
+            if (sessionHours == null)
+                throw new ArgumentNullException(nameof(sessionHours));
+
+            if (Sessions == null)
+                Sessions = new List<SessionHours>();
+
+            Sessions.Add(sessionHours);
+        }
+
+        public void Remove(SessionHours sessionHours)
+        {
+            if (sessionHours == null)
+                throw new ArgumentNullException(nameof(sessionHours));
+
+            if (Sessions == null)
+                throw new ArgumentNullException(nameof(Sessions));
+
+            Sessions.Remove(sessionHours);
+
+            if (Sessions.Count == 0)
+                Sessions = null;
+
+        }
+
+        public void Clear()
+        {
+            Sessions.Clear();
+
+            Sessions = null;
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        public void Iterator(Action action = null)
+        {
+            if (HasSessions)
+                for (int i=0; i < Sessions.Count; i++)
+                {
+                    action();
+                    Sessions[i].Iterator(action);
+                }
+        }
+
+        #endregion
+
         #region ToString methods
 
         /// <summary>
@@ -200,8 +320,33 @@ namespace NtCore
         /// <returns></returns>
         public override string ToString()
         {
-            DateTime[] sessionDateTimes = GetNextSessionDateTimes(DateTime.Now);
-            return String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
+            DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
+
+            string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
+
+            if (HasSessions)
+                for (int i = 0; i < Sessions.Count; i++)
+                    sessions += Environment.NewLine + Sessions[i].ToString();
+
+            return sessions;
+        }
+
+        /// <summary>
+        /// Converts the <see cref="SessionHours"/> to string.
+        /// </summary>
+        /// <returns></returns>
+        public string ToString(bool onlyActualSession = true)
+        {
+            DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
+            string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
+            if (!onlyActualSession)
+            {
+                if (HasSessions)
+                    for (int i = 0; i < Sessions.Count; i++)
+                        sessions += Environment.NewLine + Sessions[i].ToString(onlyActualSession);
+            }
+
+            return sessions;
         }
 
         /// <summary>
@@ -210,7 +355,7 @@ namespace NtCore
         /// <returns></returns>
         public string ToString(DateTime referenceDateTime)
         {
-            DateTime[] sessionDateTimes = GetNextSessionDateTimes(referenceDateTime);
+            DateTime[] sessionDateTimes = GetNextDateTimes(referenceDateTime);
             return String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
         }
 

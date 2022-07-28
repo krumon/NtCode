@@ -67,6 +67,7 @@
     <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
+    <Compile Include="Sessions\NtSession.cs" />
     <Compile Include="Users\Accounts.cs" />
     <Compile Include="Users\Settings.cs" />
     <Compile Include="Sessions\SessionHours\BalanceSession.cs" />

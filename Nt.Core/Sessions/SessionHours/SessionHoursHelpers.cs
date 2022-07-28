@@ -243,11 +243,11 @@ namespace NtCore
                 case TradingSession.Asian_RS:
                     return "AS-RS";
                 case TradingSession.American_RS_EXT:
-                    return "RS-AET";
+                    return "AM-RS-EXT";
                 case TradingSession.American_RS_EOD:
-                    return "RS-EOD";
+                    return "AM-RS-EOD";
                 case TradingSession.American_RS_NWD:
-                    return "RS-NWD";
+                    return "AM-RS-NWD";
 
                 default:
                     throw new Exception("The specific trading session doesn't exists.");
@@ -587,7 +587,7 @@ namespace NtCore
             if (sessionBalance.IsFinalBalance())
                 return sessionBalance.ToTradingSession().ToEndSessionTime(instrumentCode, 0);
 
-            throw new Exception("Error in ToBeginSessionTime Method.");
+            throw new Exception("Error in ToEndSessionTime Method.");
 
         }
 
@@ -679,5 +679,6 @@ namespace NtCore
         {
             return Enum.GetValues(typeof(TradingSession)).Cast<TradingSession>().ToArray();
         }
+
     }
 }

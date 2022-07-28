@@ -9,13 +9,21 @@ namespace NtConsole
     {
         public static Client client;
         public static Timer timer;
+        public static DateTime lastTime;
+        public static int simulatorVelocity;
 
         static void Main(string[] args)
         {
 
+            NtSessionHoursIteratorTest();
+
+            //SimulationTimer(100);
+
+            //CreateAndPrintNtSession();
+
             //PrintSessionTime();
 
-            PrintTradingSessions();
+            //PrintTradingSessions();
 
             //TimeSpanTester();
 
@@ -23,6 +31,26 @@ namespace NtConsole
 
             Console.ReadKey();
 
+        }
+
+        private static void NtSessionHoursIteratorTest()
+        {
+            NtSession session = new NtSession();
+            session.SessionHours.Iterator(() =>
+            {
+                Console.WriteLine("Estoy dentro del iterador.");
+            });
+        }
+
+        private static void CreateAndPrintNtSession()
+        {
+            // Create
+            NtSession session = new NtSession();
+
+            // Print
+            Console.WriteLine("NINJATRADER SESSION");
+            Console.WriteLine("-------------------");
+            Console.WriteLine(session.SessionHours.ToString());
         }
 
         private static void PrintSessionTime()
@@ -114,7 +142,45 @@ namespace NtConsole
 
         }
 
+        private static void TimeSpanTester()
+        {
+            SessionTime sessionTime1 = SessionTime.CreateCustomSessionTime(TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"),22,0,0);
+            SessionTime sessionTime2 = SessionTime.CreateCustomSessionTime(TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"),2,0,0);
+
+            Console.WriteLine(String.Format("Utc Offset: {0}",sessionTime1.TimeZoneInfo.BaseUtcOffset.ToString()));
+            Console.WriteLine(String.Format("Time 1: {0}",sessionTime1.ToUtcTime.ToString()));
+            Console.WriteLine(String.Format("Time 2: {0}",sessionTime2.ToUtcTime.ToString()));
+        }
+
+        private static void SimulationTimer(int simulatorSpeed = 0)
+        {
+            simulatorVelocity = simulatorSpeed * 1000;
+            timer = new Timer()
+            {
+                Interval = 1000,
+            };
+            lastTime = DateTime.Now;
+
+            timer.Elapsed += Timer_Elapsed;
+            timer.Enabled = true;
+
+            Console.ReadKey();
+
+            timer.Elapsed -= Timer_Elapsed;
+            timer.Enabled = false;
+            timer.Dispose();
+            timer.Close(); // Creo que no es necesario
+
+        }
+
         private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            //ATI_Timer_Elapsed(sender,e)
+            Console.Clear();
+            SimulationTimer_Elapsed(sender, e);
+        }
+
+        private static void ATI_Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (client == null)
                 return;
@@ -124,14 +190,12 @@ namespace NtConsole
             Console.WriteLine(string.Format("{0} | Last: {1}", DateTime.Now, lastPrice));
         }
 
-        private static void TimeSpanTester()
+        private static void SimulationTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            SessionTime sessionTime1 = SessionTime.CreateCustomSessionTime(TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"),22,0,0);
-            SessionTime sessionTime2 = SessionTime.CreateCustomSessionTime(TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"),2,0,0);
-
-            Console.WriteLine(String.Format("Utc Offset: {0}",sessionTime1.TimeZoneInfo.BaseUtcOffset.ToString()));
-            Console.WriteLine(String.Format("Time 1: {0}",sessionTime1.ToUtcTime.ToString()));
-            Console.WriteLine(String.Format("Time 2: {0}",sessionTime2.ToUtcTime.ToString()));
+            lastTime += TimeSpan.FromMilliseconds(simulatorVelocity);
+            Console.WriteLine("\t\t\t\t\t-----------------------------------");
+            Console.WriteLine("\t\t\t\t\t\t" + lastTime.ToString());
+            Console.WriteLine("\t\t\t\t\t-----------------------------------");
         }
 
     }
