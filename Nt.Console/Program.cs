@@ -11,11 +11,17 @@ namespace NtConsole
         public static Timer timer;
         public static DateTime lastTime;
         public static int simulatorVelocity;
+        public static NtSimulator simulator;
 
         static void Main(string[] args)
         {
+            simulator = new NtSimulator(1000,7);
 
-            NtSessionHoursIteratorTest();
+            simulator.Start();
+
+
+
+            //NtSessionHoursIteratorTest();
 
             //SimulationTimer(100);
 
