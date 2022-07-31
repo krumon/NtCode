@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NinjaTrader.Client">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\NinjaTrader 8\bin64\NinjaTrader.Client.dll</HintPath>
+    </Reference>
     <Reference Include="NinjaTrader.Core">
       <HintPath>..\References\NinjaTrader.Core.dll</HintPath>
     </Reference>
@@ -59,6 +62,9 @@
     <Compile Include="Bars\SwingLevel.cs" />
     <Compile Include="Bars\SwingPoint.cs" />
     <Compile Include="Bars\BarsCache.cs" />
+    <Compile Include="Connections\NtApiCommand.cs" />
+    <Compile Include="Connections\NtApiFunction.cs" />
+    <Compile Include="Connections\NtConnection.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\MarketExchangeHelpers.cs" />
     <Compile Include="Instruments\MarketExchange.cs" />
@@ -67,7 +73,7 @@
     <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
-    <Compile Include="Sessions\NtSession.cs" />
+    <Compile Include="Sessions\KrSession.cs" />
     <Compile Include="Simulation\NtSimulator.cs" />
     <Compile Include="Users\Accounts.cs" />
     <Compile Include="Users\Settings.cs" />

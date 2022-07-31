@@ -8,7 +8,7 @@ namespace NtCore
 
         #region Events
 
-        public event Action BarUpdated = () => { };
+        public event Action<Bar> BarUpdated = (currentBar) => { };
 
         #endregion
 
@@ -24,7 +24,10 @@ namespace NtCore
 
         #region Properties
 
-        public bool PrintTimerOnConsole { get; set; } = true;
+        public bool ShowTimeInConsole { get; set; } = true;
+        public bool ShowBarInConsole { get; set; } = true;
+        public string ShowText { get; set; }
+
         public int Interval { get { return interval; } set { interval = value; if (timer != null) timer.Interval = interval; } } 
         public int SpeddFactor { get { return speedFactor; } set { speedFactor = value; } }
         public int Speed => Interval * SpeddFactor;
@@ -62,8 +65,6 @@ namespace NtCore
                 Interval = interval,
             };
 
-            bar = new Bar(1, 0, 0, 0, 0, 0, DateTime.Now);
-
             timer.Elapsed += Timer_Elapsed;
             timer.Enabled = true;
 
@@ -83,19 +84,26 @@ namespace NtCore
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-
-            bar.Time += TimeSpan.FromMilliseconds(Speed);
-
-            if (PrintTimerOnConsole)
-            {
-                PrintTimer();
-            }
+            // Update the bar.
+            BarUpdate();
 
             // Call to listeners
             OnBarUpdate(bar);
 
             // Raise the event
-            BarUpdated?.Invoke();
+            BarUpdated?.Invoke(bar);
+
+
+            Console.Clear();
+
+            if (ShowTimeInConsole)
+                PrintTimer();
+
+            if (ShowBarInConsole)
+                PrintBar();
+
+            PrintToConsole(ShowText);
+
         }
 
         #endregion
@@ -104,19 +112,39 @@ namespace NtCore
 
         public virtual void OnBarUpdate(Bar currentBar)
         {
-            Console.Clear();
-            Console.WriteLine("\t\t\t\t\t-----------------------------------");
-            Console.WriteLine("\t\t\t\t\t\t" + bar.Time.ToString());
-            Console.WriteLine("\t\t\t\t\t-----------------------------------");
         }
 
         #endregion
 
         #region Helper methods
 
+        private void BarUpdate()
+        {
+            if (bar == null)
+                bar = new Bar(0, 0, 0, 0, 0, 0, DateTime.Now);
+            else
+            {
+                bar.Idx++;
+                bar.Time += TimeSpan.FromMilliseconds(Speed);
+                bar.Open += 1;
+            }
+        }
+
         private void PrintTimer()
         {
+            Console.WriteLine("\t\t\t\t\t-----------------------------------");
+            Console.WriteLine("\t\t\t\t\t\t" + bar.Time.ToString());
+            Console.WriteLine("\t\t\t\t\t-----------------------------------");
+        }
 
+        private void PrintBar()
+        {
+            Console.WriteLine(bar.ToString());
+        }
+
+        private void PrintToConsole(string text)
+        {
+            Console.WriteLine(text);
         }
 
         #endregion

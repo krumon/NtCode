@@ -3,7 +3,7 @@
     /// <summary>
     /// Base class for any session in ninjatrader.
     /// </summary>
-    public class NtSession
+    public class KrSession
     {
 
         #region Fields
@@ -23,7 +23,7 @@
 
         #region Constructors
 
-        public NtSession()
+        public KrSession()
         {
             sessionHours = SessionHours.CreateMundialSessions();
         }

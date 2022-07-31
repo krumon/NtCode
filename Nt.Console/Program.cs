@@ -9,39 +9,47 @@ namespace NtConsole
     {
         public static Client client;
         public static Timer timer;
-        public static DateTime lastTime;
-        public static int simulatorVelocity;
         public static NtSimulator simulator;
 
         static void Main(string[] args)
         {
-            simulator = new NtSimulator(1000,7);
+            // Inicializo el simulador con un intervalos de un segundo y un factor de tiempo de un minuto.
+            simulator = new NtSimulator
+            {
+                Interval = 1000,            // Reloj virtual que lanza un evento cada segundo.
+                SpeddFactor = 60,           // Cada segundo hago que pase un minute en el reloj de simulación.
+                ShowTimeInConsole = true,   // Muestro en consola el tiempo.
+                ShowBarInConsole = true,    // Muestro en pantalla los valores de la barra.
+            };
 
+            // Me subscribo al evento BarUpdated para ejecutar las pruebas.
+            simulator.BarUpdated += Simulator_BarUpdated; 
+
+            // Comienzo la simulación.
             simulator.Start();
 
-
-
-            //NtSessionHoursIteratorTest();
-
-            //SimulationTimer(100);
-
-            //CreateAndPrintNtSession();
-
-            //PrintSessionTime();
-
-            //PrintTradingSessions();
-
-            //TimeSpanTester();
-
-            //ATIConnection();
-
+            // Paro el hilo principal de la aplicación para poder ver las pruebas en la consola.
             Console.ReadKey();
 
+            // Libero la memoria.
+            Dispose();
+
+        }
+
+        private static void Simulator_BarUpdated(Bar bar)
+        {
+            simulator.ShowText = string.Format("Index: {0}", bar.Idx.ToString());
+        }
+
+        private static void Dispose()
+        {
+            simulator.BarUpdated -= Simulator_BarUpdated;
+            simulator.Dispose();
         }
 
         private static void NtSessionHoursIteratorTest()
         {
-            NtSession session = new NtSession();
+            KrSession session = new KrSession();
             session.SessionHours.Iterator(() =>
             {
                 Console.WriteLine("Estoy dentro del iterador.");
@@ -51,7 +59,7 @@ namespace NtConsole
         private static void CreateAndPrintNtSession()
         {
             // Create
-            NtSession session = new NtSession();
+            KrSession session = new KrSession();
 
             // Print
             Console.WriteLine("NINJATRADER SESSION");
@@ -131,13 +139,13 @@ namespace NtConsole
                 Interval = 1000
             };
 
-            timer.Elapsed += Timer_Elapsed;
+            timer.Elapsed += ATI_Timer_Elapsed;
             timer.Enabled = true;
 
             Console.ReadKey();
 
             client.UnsubscribeMarketData("MES");
-            timer.Elapsed -= Timer_Elapsed;
+            timer.Elapsed -= ATI_Timer_Elapsed;
             timer.Enabled = false;
             timer.Dispose();
             timer.Close(); // Creo que no es necesario
@@ -158,34 +166,6 @@ namespace NtConsole
             Console.WriteLine(String.Format("Time 2: {0}",sessionTime2.ToUtcTime.ToString()));
         }
 
-        private static void SimulationTimer(int simulatorSpeed = 0)
-        {
-            simulatorVelocity = simulatorSpeed * 1000;
-            timer = new Timer()
-            {
-                Interval = 1000,
-            };
-            lastTime = DateTime.Now;
-
-            timer.Elapsed += Timer_Elapsed;
-            timer.Enabled = true;
-
-            Console.ReadKey();
-
-            timer.Elapsed -= Timer_Elapsed;
-            timer.Enabled = false;
-            timer.Dispose();
-            timer.Close(); // Creo que no es necesario
-
-        }
-
-        private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            //ATI_Timer_Elapsed(sender,e)
-            Console.Clear();
-            SimulationTimer_Elapsed(sender, e);
-        }
-
         private static void ATI_Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (client == null)
@@ -194,14 +174,6 @@ namespace NtConsole
             double lastPrice = client.MarketData("MES", 0);
 
             Console.WriteLine(string.Format("{0} | Last: {1}", DateTime.Now, lastPrice));
-        }
-
-        private static void SimulationTimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            lastTime += TimeSpan.FromMilliseconds(simulatorVelocity);
-            Console.WriteLine("\t\t\t\t\t-----------------------------------");
-            Console.WriteLine("\t\t\t\t\t\t" + lastTime.ToString());
-            Console.WriteLine("\t\t\t\t\t-----------------------------------");
         }
 
     }

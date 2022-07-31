@@ -44,5 +44,14 @@ namespace NtCore
 
         #endregion
 
+        #region ToString Methods
+
+        public override string ToString()
+        {
+            return String.Format("O: {0} | H: {1} | L: {2} | C: {3}", Open.ToString(), High.ToString(),Low.ToString(), Close.ToString());
+        }
+
+        #endregion
+
     }
 }
