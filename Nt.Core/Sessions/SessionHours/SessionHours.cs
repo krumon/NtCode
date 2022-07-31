@@ -60,6 +60,12 @@ namespace NtCore
         /// </summary>
         public bool HasSessions => Sessions == null ? false : Sessions.Count < 1 ? false : true;
 
+        public DateTime CurrentTime { get; set; } = DateTime.MinValue;
+
+        public DateTime NextBeginDateTime { get; set; } = DateTime.MinValue;
+
+        public DateTime NextEndDateTime { get; set; } = DateTime.MinValue;
+        
         #endregion
 
         #region Constructors
@@ -96,6 +102,26 @@ namespace NtCore
             this.tradingSession = balanceSession.ToTradingSession();
             this.BeginSessionTime = balanceSession.ToBeginSessionTime(instrumentCode, balanceMinutes);
             this.EndSessionTime = balanceSession.ToEndSessionTime(instrumentCode,balanceMinutes);
+        }
+
+        #endregion
+
+        #region Handler methods
+
+        public bool IsInSession(DateTime time)
+        {
+            CurrentTime = time;
+
+            if (CurrentTime > NextBeginDateTime)
+            {
+                if (CurrentTime > NextEndDateTime)
+                {
+                    NextBeginDateTime = GetNextBeginDateTime(CurrentTime);
+                    NextEndDateTime = GetNextEndDateTime(CurrentTime);
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion
@@ -259,6 +285,8 @@ namespace NtCore
             return sessionDateTimes;
         }
 
+
+
         #endregion
 
         #region Session Collection methods
@@ -300,14 +328,12 @@ namespace NtCore
 
         #region Helper methods
 
-        public void Iterator(Action action = null)
+        public void Iterator(Action<SessionHours> action = null)
         {
+            action(this);
             if (HasSessions)
                 for (int i=0; i < Sessions.Count; i++)
-                {
-                    action();
                     Sessions[i].Iterator(action);
-                }
         }
 
         #endregion

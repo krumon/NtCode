@@ -230,11 +230,11 @@ namespace NtCore
                 if (currentTime.Kind == DateTimeKind.Local)
                     sourceTimeZoneInfo = TimeZoneInfo.Local;
                 
-                if (currentTime.Kind == DateTimeKind.Utc)
+                else if (currentTime.Kind == DateTimeKind.Utc)
                     sourceTimeZoneInfo = TimeZoneInfo.Utc;
 
-                if (currentTime.Kind == DateTimeKind.Unspecified)
-                    throw new ArgumentNullException(nameof(sourceTimeZoneInfo) + "cannot be null if the" + nameof(DateTimeKind) + "is Unnspecified");
+                else if (currentTime.Kind == DateTimeKind.Unspecified)
+                    throw new ArgumentNullException(nameof(sourceTimeZoneInfo) + " cannot be null if the " + nameof(DateTimeKind) + " is Unnespecified");
             }
 
             if (destinationTimeZoneInfo == null)

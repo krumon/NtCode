@@ -2,14 +2,22 @@
 using System;
 using NinjaTrader.Client;
 using System.Timers;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace NtConsole
 {
     internal class Program
     {
         public static Client client;
-        public static Timer timer;
+        public static System.Timers.Timer timer;
+
         public static NtSimulator simulator;
+        public static KrSession session;
+
+        public static DateTime currentDateTime = DateTime.MinValue;
+        public static DateTime beginDateTime = DateTime.MinValue;
+        public static DateTime endDateTime = DateTime.MinValue;
 
         static void Main(string[] args)
         {
@@ -17,7 +25,7 @@ namespace NtConsole
             simulator = new NtSimulator
             {
                 Interval = 1000,            // Reloj virtual que lanza un evento cada segundo.
-                SpeddFactor = 60,           // Cada segundo hago que pase un minute en el reloj de simulación.
+                SpeddFactor = 300,          // Cada segundo hago que pase un minute en el reloj de simulación.
                 ShowTimeInConsole = true,   // Muestro en consola el tiempo.
                 ShowBarInConsole = true,    // Muestro en pantalla los valores de la barra.
             };
@@ -25,8 +33,18 @@ namespace NtConsole
             // Me subscribo al evento BarUpdated para ejecutar las pruebas.
             simulator.BarUpdated += Simulator_BarUpdated; 
 
+            // Inicializo el indicador maestro de sesiones.
+            session = new KrSession();
+
             // Comienzo la simulación.
             simulator.Start();
+
+            // Pauso el hilo principal para que de tiempo a ejecutar todas las incializaciones antes de comenzar
+            // el método de simulación.
+            Thread.Sleep(3000);
+
+            // Comienzo el método de simulación.
+            NtSessionHoursIteratorTest();
 
             // Paro el hilo principal de la aplicación para poder ver las pruebas en la consola.
             Console.ReadKey();
@@ -38,7 +56,13 @@ namespace NtConsole
 
         private static void Simulator_BarUpdated(Bar bar)
         {
-            simulator.ShowText = string.Format("Index: {0}", bar.Idx.ToString());
+            currentDateTime = bar.Time;
+            session.SessionHours.Iterator((s) =>
+            {
+                if (s.IsInSession(currentDateTime))
+                    simulator.ShowText = s.Description;
+            });
+
         }
 
         private static void Dispose()
@@ -50,9 +74,10 @@ namespace NtConsole
         private static void NtSessionHoursIteratorTest()
         {
             KrSession session = new KrSession();
-            session.SessionHours.Iterator(() =>
+            session.SessionHours.Iterator((s) =>
             {
-                Console.WriteLine("Estoy dentro del iterador.");
+                s.IsInSession(currentDateTime);
+                    //simulator.ShowText += s.Description + Environment.NewLine;
             });
         }
 
@@ -134,7 +159,7 @@ namespace NtConsole
             Console.WriteLine(String.Format("Cash Value: {0}", client.CashValue("")));
             Console.WriteLine(String.Format("Buying Power: {0}", client.BuyingPower("")));
 
-            timer = new Timer()
+            timer = new System.Timers.Timer()
             {
                 Interval = 1000
             };
