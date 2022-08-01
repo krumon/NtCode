@@ -9,6 +9,12 @@ namespace NtCore
     public class SessionHours
     {
 
+        #region Consts
+
+        DateTime TIME_REFERENCE = new DateTime(1978,9,20,0,0,0,DateTimeKind.Local);
+
+        #endregion
+
         #region Private members
 
         private TradingSession sessionType;
@@ -151,15 +157,16 @@ namespace NtCore
         public DateTime GetNextEndDateTime(
             DateTime currentDate,
             TimeZoneInfo sourceTimeZoneInfo = null,
-            TimeZoneInfo destinationTimeZoneInfo = null)
+            TimeZoneInfo destinationTimeZoneInfo = null,
+            bool sessionComplete = false)
         {
-            //DateTime beginDateTime = BeginSessionTime.GetNextSessionTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
-            //DateTime endDateTime = EndSessionTime.GetNextSessionTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            DateTime beginDateTime = BeginSessionTime.GetNextDateTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            DateTime endDateTime = EndSessionTime.GetNextDateTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
 
-            //if (endDateTime > beginDateTime)
-            //    return EndSessionTime.GetNextSessionTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            if (sessionComplete && (endDateTime <= beginDateTime))
+                return EndSessionTime.GetNextDateTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo) + TimeSpan.FromHours(24);
 
-            return EndSessionTime.GetNextDateTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo) + TimeSpan.FromHours(24);
+            return EndSessionTime.GetNextDateTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
         }
 
         /// <summary>
@@ -171,13 +178,14 @@ namespace NtCore
         public DateTime[] GetNextDateTimes(
             DateTime currentDate,
             TimeZoneInfo sourceTimeZoneInfo = null,
-            TimeZoneInfo destinationTimeZoneInfo = null)
+            TimeZoneInfo destinationTimeZoneInfo = null,
+            bool sessionComplete = false)
         {
             DateTime[] sessionDateTimes = new DateTime[2];
             DateTime beginDateTime = BeginSessionTime.GetNextDateTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
             DateTime endDateTime = EndSessionTime.GetNextDateTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
 
-            if (endDateTime <= beginDateTime)
+            if (sessionComplete && (endDateTime <= beginDateTime))
                 endDateTime += TimeSpan.FromHours(24);
 
             sessionDateTimes[0] = beginDateTime;
@@ -309,17 +317,17 @@ namespace NtCore
             return sessions;
         }
 
-        // TODO: Codificar el método "Add" para añadir sesiones conforme al enum TradingSession
-        //       y organizando según queramos que se vean las sesiones.
-        public void Add(SessionHours sessionHours)
+        public void AddSession(
+            TradingSession sessionType, 
+            InstrumentCode instrumentCode = InstrumentCode.Default, 
+            int includeInitialBalance = 0, 
+            int includeFinalBalance = 0)
         {
-            if (sessionHours == null)
-                throw new ArgumentNullException(nameof(sessionHours));
 
             if (Sessions == null)
                 Sessions = new List<SessionHours>();
 
-            Sessions.Add(sessionHours);
+            Add(sessionType.ToSessionHours(instrumentCode, includeInitialBalance));
         }
 
         public void Remove(SessionHours sessionHours)
@@ -352,9 +360,42 @@ namespace NtCore
                     Sessions[i].Iterator(action);
         }
 
+        //public bool IsBetween(DateTime currentDateTime, DateTime minorDateTime, DateTime majorDateTime)
+        //{
+        //    if (minorDateTime >= majorDateTime)
+        //        throw new Exception("The monor date time cannot be bigger than major date time.");
+
+        //    DateTime[] nextTimes = GetNextDateTimes(currentDateTime,null,null,true);
+
+        //    return true;
+        //}
+
         #endregion
 
         #region Private methods
+
+        // TODO: Codificar el método "Add" para añadir sesiones conforme al enum TradingSession
+        //       y organizando según queramos que se vean las sesiones.
+        private void Add(SessionHours session)
+        {
+            if (session == null)
+                throw new ArgumentNullException(nameof(session));
+
+            //if (HasSessions)
+            //{
+            //    DateTime[] nextDateTimes = session.GetNextDateTimes(DateTime.Now);
+            //    foreach (var s in Sessions)
+            //    {
+            //        session.IsInnerSession(s);
+            //    }
+            //}
+            //else
+            //    Sessions.Add(session);
+
+            Sessions.Add(session);
+        }
+
+
 
         #endregion
 

@@ -193,9 +193,9 @@ namespace NtCore
                 destinationTimeZoneInfo = TimeZoneInfo.Local;
 
             DateTime sessionDateTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
-            DateTime sessionTime = TimeZoneInfo.ConvertTime(sessionDateTime, this.TimeZoneInfo, destinationTimeZoneInfo);
+            DateTime destinationDateTime = TimeZoneInfo.ConvertTime(sessionDateTime, this.TimeZoneInfo, destinationTimeZoneInfo);
 
-            return sessionTime;
+            return destinationDateTime;
 
         }
 

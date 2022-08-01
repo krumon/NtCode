@@ -46,23 +46,25 @@ namespace NtCore
 
         #region Public methods
 
-        public void CreateDefaultSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
+        public KrSessionHours AddDefaultSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
         {
             // Main Sessions
-            Add(GetRegularSession());
-            Add(GetOvernightSession());
+            AddSession(TradingSession.Regular, instrumentCode, 0, 0);
+            AddSession(TradingSession.OVN, instrumentCode, 0, 0);
             // Regular Sessions
-            Sessions[0].Add(GetAmericanAndEuropeanSession());
-            Sessions[0].Add(GetAmericanSession());
+            Sessions[0].AddSession(TradingSession.AmericanAndEuropean, instrumentCode, 0, 0);
+            Sessions[0].AddSession(TradingSession.American, instrumentCode, 0, 0);
             // Overnight Sessions
-            Sessions[1].Add(GetAmericanResidualSession());
-            Sessions[1].Add(GetAsianSession());
-            Sessions[1].Add(GetAsianResidualSession());
-            Sessions[1].Add(GetEuropeanSession());
+            Sessions[1].AddSession(TradingSession.American_RS, instrumentCode, 0, 0);
+            Sessions[1].AddSession(TradingSession.Asian, instrumentCode, 0, 0);
+            Sessions[1].AddSession(TradingSession.Asian_RS, instrumentCode, 0, 0);
+            Sessions[1].AddSession(TradingSession.European, instrumentCode, 0, 0);
             // Minor Sessions
-            Sessions[1].Sessions[0].Add(GetAmericanResidualExtraTimeSession());
-            Sessions[1].Sessions[0].Add(GetAmericanResidualEndOfDaySession());
-            Sessions[1].Sessions[0].Add(GetAmericanResidualNewDaySession());
+            Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_EXT, instrumentCode, 0, 0);
+            Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_EOD, instrumentCode, 0, 0);
+            Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_NWD, instrumentCode, 0, 0);
+
+            return this;
         }
 
         protected bool IsInSession(DateTime time)

@@ -662,9 +662,9 @@ namespace NtCore
 
         //}
 
-        public static SessionHours ToSessionHours(this TradingSession type)
+        public static SessionHours ToSessionHours(this TradingSession type, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
         {
-            return SessionHours.CreateSessionHoursByType(type);
+            return SessionHours.CreateSessionHoursByType(type,instrumentCode,balanceMinutes);
         }
 
         public static SessionHours ToInitialBalance(this BalanceSession sessionBalance, int balanceMinutes, InstrumentCode instrumentCode = InstrumentCode.Default)
