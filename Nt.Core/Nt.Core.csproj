@@ -74,6 +74,7 @@
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
     <Compile Include="Sessions\KrSession.cs" />
+    <Compile Include="Sessions\SessionHours\KrSessionHours.cs" />
     <Compile Include="Simulation\NtSimulator.cs" />
     <Compile Include="Users\Accounts.cs" />
     <Compile Include="Users\Settings.cs" />

@@ -219,7 +219,7 @@ namespace NtCore
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
         /// <returns>The <see cref="DateTime"/> of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetNextSessionTime(
+        public DateTime GetNextDateTime(
             DateTime currentTime, 
             TimeZoneInfo sourceTimeZoneInfo = null, 
             TimeZoneInfo destinationTimeZoneInfo = null)

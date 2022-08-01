@@ -59,8 +59,8 @@ namespace NtConsole
             currentDateTime = bar.Time;
             session.SessionHours.Iterator((s) =>
             {
-                if (s.IsInSession(currentDateTime))
-                    simulator.ShowText = s.Description;
+                //if (s.IsInSession(currentDateTime))
+                //    simulator.ShowText = s.Description;
             });
 
         }
@@ -76,7 +76,7 @@ namespace NtConsole
             KrSession session = new KrSession();
             session.SessionHours.Iterator((s) =>
             {
-                s.IsInSession(currentDateTime);
+                //s.IsInSession(currentDateTime);
                     //simulator.ShowText += s.Description + Environment.NewLine;
             });
         }

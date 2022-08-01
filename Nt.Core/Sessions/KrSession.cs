@@ -8,13 +8,13 @@
 
         #region Fields
 
-        protected SessionHours sessionHours;
+        protected KrSessionHours sessionHours;
 
         #endregion
 
         #region Properties
 
-        public SessionHours SessionHours
+        public KrSessionHours SessionHours
         {
             get { return sessionHours; }
         }
@@ -25,7 +25,10 @@
 
         public KrSession()
         {
-            sessionHours = SessionHours.CreateMundialSessions();
+
+            sessionHours = KrSessionHours.CreateSessionHours(TradingSession.Electronic);
+            sessionHours.CreateDefaultSessions();
+
         }
 
         #endregion
