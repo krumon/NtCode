@@ -183,10 +183,10 @@ namespace NtConsole
 
         private static void TimeSpanTester()
         {
-            SessionTime sessionTime1 = SessionTime.CreateCustomSessionTime(TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"),22,0,0);
-            SessionTime sessionTime2 = SessionTime.CreateCustomSessionTime(TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"),2,0,0);
+            SessionTime sessionTime1 = SessionTime.CreateCustomSessionTime(22,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+            SessionTime sessionTime2 = SessionTime.CreateCustomSessionTime(2,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
 
-            Console.WriteLine(String.Format("Utc Offset: {0}",sessionTime1.TimeZoneInfo.BaseUtcOffset.ToString()));
+            Console.WriteLine(String.Format("Utc Offset: {0}",sessionTime1.SessionTimeZoneInfo.BaseUtcOffset.ToString()));
             Console.WriteLine(String.Format("Time 1: {0}",sessionTime1.ToUtcTime.ToString()));
             Console.WriteLine(String.Format("Time 2: {0}",sessionTime2.ToUtcTime.ToString()));
         }

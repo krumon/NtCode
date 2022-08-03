@@ -43,5 +43,19 @@ namespace NtCore
             }
         }
 
+        /// <summary>
+        /// Converts a string to <see cref="InstrumentCode"/> enum.
+        /// </summary>
+        /// <param name="code">The string to converts to enum.</param>
+        /// <returns>The <see cref="InstrumentCode"/> enum.</returns>
+        /// <exception cref="Exception">Returns a exception if the string cannot be convert.</exception>
+        public static InstrumentCode ToInstrumentCode(this string code)
+        {
+
+            if (InstrumentCode.TryParse(code, out InstrumentCode instrumentCode))
+                return instrumentCode;
+
+            throw new Exception("The string 'code' cannot be convert to InstrumentCode enum.");
+        }
     }
 }
