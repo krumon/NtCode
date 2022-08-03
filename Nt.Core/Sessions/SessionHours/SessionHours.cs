@@ -145,7 +145,7 @@ namespace NtCore
             TimeZoneInfo sourceTimeZoneInfo = null,
             TimeZoneInfo destinationTimeZoneInfo = null)
         {
-            return BeginSessionTime.GetNextTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            return BeginSessionTime.GetNextTime(currentDate);
         }
 
         /// <summary>
@@ -160,13 +160,13 @@ namespace NtCore
             TimeZoneInfo destinationTimeZoneInfo = null,
             bool sessionComplete = false)
         {
-            DateTime beginDateTime = BeginSessionTime.GetNextTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
-            DateTime endDateTime = EndSessionTime.GetNextTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            DateTime beginDateTime = BeginSessionTime.GetNextTime(currentDate);
+            DateTime endDateTime = EndSessionTime.GetNextTime(currentDate);
 
             if (sessionComplete && (endDateTime <= beginDateTime))
-                return EndSessionTime.GetNextTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo) + TimeSpan.FromHours(24);
+                return EndSessionTime.GetNextTime(currentDate) + TimeSpan.FromHours(24);
 
-            return EndSessionTime.GetNextTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            return EndSessionTime.GetNextTime(currentDate);
         }
 
         /// <summary>
@@ -182,8 +182,8 @@ namespace NtCore
             bool sessionComplete = false)
         {
             DateTime[] sessionDateTimes = new DateTime[2];
-            DateTime beginDateTime = BeginSessionTime.GetNextTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
-            DateTime endDateTime = EndSessionTime.GetNextTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            DateTime beginDateTime = BeginSessionTime.GetNextTime(currentDate);
+            DateTime endDateTime = EndSessionTime.GetNextTime(currentDate);
 
             if (sessionComplete && (endDateTime <= beginDateTime))
                 endDateTime += TimeSpan.FromHours(24);
