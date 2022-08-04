@@ -26,9 +26,9 @@
         public KrSession()
         {
 
-            sessionHours = KrSessionHours
-                .CreateSessionHours(TradingSession.Electronic)
-                .AddDefaultSessions();
+            //sessionHours = KrSessionHours
+            //    .CreateSessionHours(TradingSession.Electronic)
+            //    .AddDefaultSessions();
             //sessionHours.AddDefaultSessions();
 
         }

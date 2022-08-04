@@ -51,18 +51,17 @@ namespace NtConsole
 
             // Libero la memoria.
             Dispose();
-
         }
 
         private static void Simulator_BarUpdated(Bar bar)
         {
             currentDateTime = bar.Time;
-            session.SessionHours.Iterator((s) =>
+            // TODO: Borrar. Es KrSession el que debe tener el iterador.
+            session.SessionHours.Sessions[0].Iterator((s) =>
             {
                 //if (s.IsInSession(currentDateTime))
                 //    simulator.ShowText = s.Description;
             });
-
         }
 
         private static void Dispose()
@@ -74,7 +73,8 @@ namespace NtConsole
         private static void NtSessionHoursIteratorTest()
         {
             KrSession session = new KrSession();
-            session.SessionHours.Iterator((s) =>
+            // TODO: Borrar. Es KrSession el que debe tener el iterador.
+            session.SessionHours.Sessions[0].Iterator((s) =>
             {
                 //s.IsInSession(currentDateTime);
                     //simulator.ShowText += s.Description + Environment.NewLine;
