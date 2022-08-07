@@ -1,7 +1,8 @@
-﻿using System;
+﻿using NtCore;
+using System;
 using System.Timers;
 
-namespace NtCore
+namespace NtConnect
 {
     public class NtSimulator
     {

@@ -4,15 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{77C4DCF3-98A3-4C20-95F1-0806C30FE114}</ProjectGuid>
+    <ProjectGuid>{D32C9296-C1C6-4E7C-8E9F-5139BA0A2334}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NtScripts</RootNamespace>
-    <AssemblyName>Nt.Scripts</AssemblyName>
+    <RootNamespace>NtConnect</RootNamespace>
+    <AssemblyName>Nt.Connect</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,24 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NinjaTrader.Core">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\NinjaTrader 8\bin64\NinjaTrader.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NinjaTrader.Custom">
-      <HintPath>..\..\..\NinjaTrader 8\bin\Custom\NinjaTrader.Custom.dll</HintPath>
-    </Reference>
-    <Reference Include="NinjaTrader.Gui">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\NinjaTrader 8\bin64\NinjaTrader.Gui.dll</HintPath>
-    </Reference>
-    <Reference Include="PresentationCore" />
-    <Reference Include="SharpDX">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\NinjaTrader 8\bin64\SharpDX.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct2D1">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\NinjaTrader 8\bin64\SharpDX.Direct2D1.dll</HintPath>
+    <Reference Include="NinjaTrader.Client">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\NinjaTrader 8\bin64\NinjaTrader.Client.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,30 +42,20 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChartStyles\MyChartStyle.cs" />
-    <Compile Include="DrawingTools\LabelLines\LabelLine\LabelLine.cs" />
-    <Compile Include="DrawingTools\LabelLines\LabelLine\LabelLine.v.0.1.cs" />
-    <Compile Include="DrawingTools\LabelLines\PriceLine\PriceLine.v.0.1.cs" />
-    <Compile Include="DrawingTools\LabelLines\TimeLine\TimeLine.v.0.1.cs" />
-    <Compile Include="Drawing\LabelLineDrawingMethods.cs" />
-    <Compile Include="Indicators\Base\MyBaseIndicator.cs" />
-    <Compile Include="Indicators\Templates\IndicatorTemplate.cs" />
-    <Compile Include="Indicators\TradingZone\TradingZone.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="API Ninjatrader\NtApiCommand.cs" />
+    <Compile Include="API Ninjatrader\NtApiFunction.cs" />
+    <Compile Include="Connections\NtConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Simulator\NtSimulator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nt.Core\_Nt.Core.csproj">
       <Project>{3a644626-5b81-4ee5-9d67-6b77d5ba4940}</Project>
       <Name>_Nt.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DrawingTools\LabelRegions\" />
-    <Folder Include="Indicators\TradingLevels\" />
-    <Folder Include="Strategies\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

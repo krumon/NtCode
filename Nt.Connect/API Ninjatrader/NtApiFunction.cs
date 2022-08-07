@@ -1,4 +1,4 @@
-﻿namespace NtCore
+﻿namespace NtConnect
 {
 
     /// <summary>

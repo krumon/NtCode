@@ -1,9 +1,9 @@
-﻿using NtCore;
+﻿using NinjaTrader.Client;
+using NtConnect;
+using NtCore;
 using System;
-using NinjaTrader.Client;
-using System.Timers;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Timers;
 
 namespace NtConsole
 {
@@ -44,7 +44,7 @@ namespace NtConsole
             Thread.Sleep(3000);
 
             // Comienzo el método de simulación.
-            NtSessionHoursIteratorTest();
+            KrSessionHoursIteratorTest();
 
             // Paro el hilo principal de la aplicación para poder ver las pruebas en la consola.
             Console.ReadKey();
@@ -57,11 +57,11 @@ namespace NtConsole
         {
             currentDateTime = bar.Time;
             // TODO: Borrar. Es KrSession el que debe tener el iterador.
-            session.SessionHours.Sessions[0].Iterator((s) =>
-            {
-                //if (s.IsInSession(currentDateTime))
-                //    simulator.ShowText = s.Description;
-            });
+            //session.SessionHours.Sessions[0].Iterator((s) =>
+            //{
+            //    //if (s.IsInSession(currentDateTime))
+            //    //    simulator.ShowText = s.Description;
+            //});
         }
 
         private static void Dispose()
@@ -70,18 +70,18 @@ namespace NtConsole
             simulator.Dispose();
         }
 
-        private static void NtSessionHoursIteratorTest()
+        private static void KrSessionHoursIteratorTest()
         {
             KrSession session = new KrSession();
             // TODO: Borrar. Es KrSession el que debe tener el iterador.
-            session.SessionHours.Sessions[0].Iterator((s) =>
-            {
-                //s.IsInSession(currentDateTime);
-                    //simulator.ShowText += s.Description + Environment.NewLine;
-            });
+            //session.SessionHours.Sessions[0].Iterator((s) =>
+            //{
+            //    //s.IsInSession(currentDateTime);
+            //        //simulator.ShowText += s.Description + Environment.NewLine;
+            //});
         }
 
-        private static void CreateAndPrintNtSession()
+        private static void CreateAndPrintSession()
         {
             // Create
             KrSession session = new KrSession();

@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NinjaTrader.Client">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\NinjaTrader 8\bin64\NinjaTrader.Client.dll</HintPath>
-    </Reference>
     <Reference Include="NinjaTrader.Core">
       <HintPath>..\References\NinjaTrader.Core.dll</HintPath>
     </Reference>
@@ -48,34 +45,34 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include=".Base\NtElement.cs" />
+    <Compile Include=".Ninjascripts\Indicators\KrSessionHours.cs" />
     <Compile Include="Bars\Bar.cs" />
     <Compile Include="Bars\SwingLevel.cs" />
     <Compile Include="Bars\SwingPoint.cs" />
     <Compile Include="Bars\BarsCache.cs" />
-    <Compile Include="Connections\NtApiCommand.cs" />
-    <Compile Include="Connections\NtApiFunction.cs" />
-    <Compile Include="Connections\NtConnection.cs" />
+    <Compile Include="Drawing\LabelLineHelpers.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\MarketExchangeHelpers.cs" />
     <Compile Include="Instruments\MarketExchange.cs" />
     <Compile Include="Instruments\InstrumentCode.cs" />
     <Compile Include="Instruments\InstrumentCodeHelpers.cs" />
+    <Compile Include="Math\ISeriesHelpers.cs" />
     <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
-    <Compile Include="Sessions\KrSession.cs" />
-    <Compile Include="Sessions\SessionHours\KrSessionHours.cs" />
-    <Compile Include="Simulation\NtSimulator.cs" />
+    <Compile Include=".Ninjascripts\MasterIndicator\KrSession.cs" />
+    <Compile Include="Sessions\SessionHours\SessionHoursStructure.cs" />
     <Compile Include="Users\Accounts.cs" />
     <Compile Include="Users\Settings.cs" />
     <Compile Include="Sessions\SessionHours\BalanceSession.cs" />

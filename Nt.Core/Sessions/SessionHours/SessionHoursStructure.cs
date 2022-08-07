@@ -10,13 +10,15 @@ namespace NtCore
     /// <summary>
     /// Represents the SessionHours Indicator Core.
     /// </summary>
-    public class KrSessionHours
+    public class SessionHoursStructure
     {
 
         #region Private members
 
+        /// <summary>
+        /// Collection of sessions hours.
+        /// </summary>
         protected List<SessionHours> sessions = new List<SessionHours>();
-        protected List<List<SessionHours>> sessionsList = new List<List<SessionHours>>();
 
         #endregion
 
@@ -28,25 +30,31 @@ namespace NtCore
         public List<SessionHours> Sessions => sessions;
 
         /// <summary>
-        /// The <see cref="DateTime"/> object of the actual session begin.
+        /// The <see cref="SessionTime"/> object of the actual session begin.
         /// </summary>
-        public DateTime SessionBegin { get; protected set; }
+        public SessionTime SessionBegin { get; set; }
 
         /// <summary>
-        /// The <see cref="DateTime"/> object of the actual session end.
+        /// The <see cref="SessionTime"/> object of the actual session end.
         /// </summary>
-        public DateTime SessionEnd { get;protected set; }
+        public SessionTime SessionEnd { get;set; }
+
+        public bool IsPartialHoliday { get;set; }
+
+        public bool IsLateBegin { get; set; }
+
+        public bool IsEarlyEnd { get; set; }
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Create a default instance of <see cref="KrSessionHours"/>.
+        /// Create a default instance of <see cref="SessionHoursStructure"/>.
         /// </summary>
         /// <param name="ninjascript"></param>
         /// <param name="sessionIterator"></param>
-        public KrSessionHours()
+        public SessionHoursStructure()
         {
         }
 
@@ -139,7 +147,7 @@ namespace NtCore
 
         #region Para revisar
 
-        public KrSessionHours AddDefaultSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
+        public SessionHoursStructure AddDefaultSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
         {
             // TODO: Borrar. Es KrSessionHours la que tiene que tener el método AddSession.
             //       AddSession(TradingSession.Regular, instrumentCode, 0, 0);
