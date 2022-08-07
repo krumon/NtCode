@@ -1,6 +1,4 @@
-﻿using NinjaTrader;
-using NinjaTrader.Core;
-using NinjaTrader.Data;
+﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using System;
 using System.Collections.Generic;
@@ -10,13 +8,58 @@ namespace NtCore
     /// <summary>
     /// Represents the SessionHours Indicator Core.
     /// </summary>
-    public class KrSessionHours
+    public class NtSessionHours : KrSessionHours
     {
 
         #region Private members
 
-        protected List<SessionHours> sessions = new List<SessionHours>();
-        protected List<List<SessionHours>> sessionsList = new List<List<SessionHours>>();
+        /// <summary>
+        /// The ninjascript parent of the class.
+        /// </summary>
+        private NinjaScriptBase ninjascript;
+
+        /// <summary>
+        /// The session iterator to store the actual and next session data.
+        /// </summary>
+        private SessionIterator sessionIterator;
+
+        /// <summary>
+        /// The bars of the chart control.
+        /// </summary>
+        private Bars bars;
+
+        /// <summary>
+        /// The global general options <see cref="TimeZoneInfo"/>.
+        /// </summary>
+        private TimeZoneInfo platformTimeZoneInfo;
+
+        /// <summary>
+        /// Store the actual session begin
+        /// </summary>
+        private DateTime actualSessionBegin = DateTime.MinValue; // Globals.MinDate;
+
+        /// <summary>
+        /// Store the actual session end.
+        /// </summary>
+        private DateTime actualSessionEnd = DateTime.MinValue;
+
+        /// <summary>
+        /// The current session end in Bars TimeZoneInfo.
+        /// </summary>
+        private DateTime currentSessionEnd = DateTime.MinValue;
+
+        /// <summary>
+        /// The session end time in Bars TimeZoneInfo.
+        /// </summary>
+        private DateTime sessionDateTmp = DateTime.MinValue;
+
+        /// <summary>
+        /// Session bar indexs collection.
+        /// </summary>
+        private List<int> newSessionBarIdx = new List<int>();
+
+        private Dictionary<int, SessionHours> cacheDictionary = new Dictionary<int, SessionHours>();
+        private List<Dictionary<int,SessionHours>> sortedDicList = new List<Dictionary<int, SessionHours>>();
 
         #endregion
 
@@ -25,17 +68,17 @@ namespace NtCore
         /// <summary>
         /// Collection of sessions hours.
         /// </summary>
-        public List<SessionHours> Sessions => sessions;
+        public List<SessionHours> Sessions { get; set; }
 
         /// <summary>
         /// The <see cref="DateTime"/> object of the actual session begin.
         /// </summary>
-        public DateTime SessionBegin { get; protected set; }
+        public DateTime SessionBegin => actualSessionBegin;
 
         /// <summary>
         /// The <see cref="DateTime"/> object of the actual session end.
         /// </summary>
-        public DateTime SessionEnd { get;protected set; }
+        public DateTime SessionEnd => actualSessionEnd;
 
         #endregion
 
@@ -46,8 +89,12 @@ namespace NtCore
         /// </summary>
         /// <param name="ninjascript"></param>
         /// <param name="sessionIterator"></param>
-        public KrSessionHours()
+        public NtSessionHours(NinjaScriptBase ninjascript, SessionIterator sessionIterator, Bars bars, TimeZoneInfo platformTimeZoneInfo)
         {
+            this.ninjascript = ninjascript;
+            this.sessionIterator = sessionIterator;
+            this.bars = bars;
+            this.platformTimeZoneInfo = platformTimeZoneInfo;
         }
 
         #endregion
@@ -59,9 +106,6 @@ namespace NtCore
 
         #region Public methods
 
-        // TODO:    - Método para añadir las sesiones.
-        //          - Método para saber si una sesión es menor o mayor que otra.
-
         /// <summary>
         /// Returns the session last bar date.
         /// </summary>
@@ -69,77 +113,77 @@ namespace NtCore
         /// <param name="bars"></param>
         /// <param name="platformTimeZoneInfo"></param>
         /// <returns></returns>
-        //public DateTime GetLastBarSessionDate(DateTime time)
-        //{
-        //    if (time <= actualSessionEnd)
-        //        return sessionDateTmp;
+        public DateTime GetLastBarSessionDate(DateTime time)
+        {
+            if (time <= actualSessionEnd)
+                return sessionDateTmp;
 
-        //    if (!bars.BarsType.IsIntraday)
-        //        return sessionDateTmp;
+            if (!bars.BarsType.IsIntraday)
+                return sessionDateTmp;
 
-        //    sessionIterator.GetNextSession(time, true);
+            sessionIterator.GetNextSession(time, true);
 
-        //    actualSessionBegin = sessionIterator.ActualSessionBegin;
-        //    actualSessionEnd = sessionIterator.ActualSessionEnd;
+            actualSessionBegin = sessionIterator.ActualSessionBegin;
+            actualSessionEnd = sessionIterator.ActualSessionEnd;
             
-        //    sessionDateTmp = TimeZoneInfo.ConvertTime(actualSessionEnd.AddSeconds(-1), platformTimeZoneInfo,bars.TradingHours.TimeZoneInfo);
+            sessionDateTmp = TimeZoneInfo.ConvertTime(actualSessionEnd.AddSeconds(-1), platformTimeZoneInfo,bars.TradingHours.TimeZoneInfo);
 
-        //    if (newSessionBarIdx.Count == 0 ||
-        //        newSessionBarIdx.Count > 0 && ninjascript.CurrentBar > newSessionBarIdx[newSessionBarIdx.Count - 1])
-        //        newSessionBarIdx.Add(ninjascript.CurrentBar);
+            if (newSessionBarIdx.Count == 0 ||
+                newSessionBarIdx.Count > 0 && ninjascript.CurrentBar > newSessionBarIdx[newSessionBarIdx.Count - 1])
+                newSessionBarIdx.Add(ninjascript.CurrentBar);
                 
-        //    return sessionDateTmp;
-        //}
+            return sessionDateTmp;
+        }
 
         #endregion
 
         #region Market Data methods
 
-        ///// <summary>
-        ///// Event driven method which is called whenever a bar is updated. 
-        ///// The frequency in which OnBarUpdate is called will be determined by the "Calculate" property. 
-        ///// OnBarUpdate() is the method where all of your script's core bar based calculation logic should be contained.
-        ///// </summary>
-        //public virtual void OnBarUpdate()
-        //{
-        //    LastBarTimeUpdate();
-        //}
+        /// <summary>
+        /// Event driven method which is called whenever a bar is updated. 
+        /// The frequency in which OnBarUpdate is called will be determined by the "Calculate" property. 
+        /// OnBarUpdate() is the method where all of your script's core bar based calculation logic should be contained.
+        /// </summary>
+        public virtual void OnBarUpdate()
+        {
+            LastBarTimeUpdate();
+        }
 
-        ///// <summary>
-        ///// Event driven method which is called and guaranteed to be in the correct sequence 
-        ///// for every change in level one market data for the underlying instrument. 
-        ///// OnMarketData() can include but is not limited to the bid, ask, last price and volume.
-        ///// </summary>
-        //public virtual void OnMarketData()
-        //{
-        //    LastBarTimeUpdate();
-        //}
+        /// <summary>
+        /// Event driven method which is called and guaranteed to be in the correct sequence 
+        /// for every change in level one market data for the underlying instrument. 
+        /// OnMarketData() can include but is not limited to the bid, ask, last price and volume.
+        /// </summary>
+        public virtual void OnMarketData()
+        {
+            LastBarTimeUpdate();
+        }
 
-        //#endregion
+        #endregion
 
-        //#region Private methods
+        #region Private methods
 
-        ///// <summary>
-        ///// Method to update the last bar time.
-        ///// </summary>
-        //private void LastBarTimeUpdate()
-        //{
-        //    DateTime lastBarTimeStamp = GetLastBarSessionDate(ninjascript.Time[0]);
+        /// <summary>
+        /// Method to update the last bar time.
+        /// </summary>
+        private void LastBarTimeUpdate()
+        {
+            DateTime lastBarTimeStamp = GetLastBarSessionDate(ninjascript.Time[0]);
 
-        //    if (lastBarTimeStamp != currentSessionEnd)
-        //    {
-        //        cacheDictionary = new Dictionary<int, SessionHours>();
-        //        sortedDicList.Add(cacheDictionary);
-        //    }
+            if (lastBarTimeStamp != currentSessionEnd)
+            {
+                cacheDictionary = new Dictionary<int, SessionHours>();
+                sortedDicList.Add(cacheDictionary);
+            }
 
-        //    currentSessionEnd = lastBarTimeStamp;
-        //}
+            currentSessionEnd = lastBarTimeStamp;
+        }
 
         #endregion
 
         #region Para revisar
 
-        public KrSessionHours AddDefaultSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
+        public NtSessionHours AddDefaultSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
         {
             // TODO: Borrar. Es KrSessionHours la que tiene que tener el método AddSession.
             //       AddSession(TradingSession.Regular, instrumentCode, 0, 0);

@@ -2,14 +2,14 @@
 
 using NinjaTrader.Gui;
 using NinjaTrader.Gui.Chart;
-using SharpDX;
 using System;
+using System.Windows;
 
 #endregion
 
 namespace NtCore
 {
-    /*
+    
     /// <summary>
     /// Helper methods to the label line drawing tool
     /// </summary>
@@ -55,7 +55,7 @@ namespace NtCore
             // Left arrow
             Point point1 = new Point(
                 labelOriginPoint.X, 
-                intlabelOriginPoint.Y + topArrowHead + leftArrowOffset + leftArrowBase/2
+                labelOriginPoint.Y + topArrowHead + leftArrowOffset + leftArrowBase/2
                 ) + pixelAdjVector;
             Point point2 = new Point(
                 labelOriginPoint.X + leftArrowHead, 
@@ -358,15 +358,15 @@ namespace NtCore
                     case (HorizontalAlignment.Left):
                         return new Point(
                             panel.X + labelMargin.Left,
-                            anchorPoint.Y - labelSize.Height/2);
+                            (float)anchorPoint.Y - labelSize.Height/2);
                     case (HorizontalAlignment.Center):
                         return new Point(
                             (panel.X + panel.W - labelSize.Width)/2,
-                            anchorPoint.Y - labelSize.Height / 2);
+                            (float)anchorPoint.Y - labelSize.Height / 2);
                     default:
                         return new Point(
                             panel.X + panel.W - labelMargin.Right - labelSize.Width,
-                            anchorPoint.Y - labelSize.Height / 2);
+                            (float)anchorPoint.Y - labelSize.Height / 2);
                 }
             }
 
@@ -376,15 +376,15 @@ namespace NtCore
                 {
                     case (VerticalAlignment.Bottom):
                         return new Point(
-                            anchorPoint.X - labelSize.Width / 2, 
+                            (float)anchorPoint.X - labelSize.Width / 2, 
                             panel.Y + panel.H - labelMargin.Bottom - labelSize.Height);
                     case (VerticalAlignment.Center):
                         return new Point(
-                            anchorPoint.X - labelSize.Width / 2, 
+                            (float)anchorPoint.X - labelSize.Width / 2, 
                             (panel.Y + panel.H - labelSize.Height)/2);
                     default:
                         return new Point(
-                            anchorPoint.X - labelSize.Width / 2,
+                            (float)anchorPoint.X - labelSize.Width / 2,
                             panel.Y + labelMargin.Top);
                 }
             }
@@ -577,5 +577,5 @@ namespace NtCore
         #endregion
 
     }
-    */
+    
 }

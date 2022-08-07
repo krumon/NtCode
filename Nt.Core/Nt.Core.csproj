@@ -105,9 +105,6 @@
     <Compile Include="Sessions\SessionHours\TradingSession.cs" />
     <Compile Include="Sessions\SessionTimes\SessionTimeHelpers.cs" />
     <Compile Include="Files\XmlFileItem.cs" />
-    <Compile Include="Helpers\ISeriesHelpers.cs" />
-    <Compile Include="Helpers\LabelLineHelpers.cs" />
-    <Compile Include="Helpers\StringHelpers.cs" />
     <Compile Include="Drawing\Margin.cs" />
     <Compile Include="zDelete\Resources.cs" />
     <Compile Include="zDelete\Test.cs" />

@@ -29,51 +29,52 @@ namespace NtCore
 
     //}
 
-    ///// <summary>
-    ///// All texts of the ninjascripts
-    ///// </summary>
-    //public static class Texts
-    //{
+    /// <summary>
+    /// All texts of the ninjascripts
+    /// </summary>
+    public static class Texts
+    {
 
-    //    /// <summary>
-    //    /// Display name for anchor.
-    //    /// </summary>
-    //    public static string AnchorDisplayName => "Y";
+        /// <summary>
+        /// Display name for anchor.
+        /// </summary>
+        public static string AnchorDisplayName => "Y";
 
-    //    /// <summary>
-    //    /// Display name for anchor.
-    //    /// </summary>
-    //    public static string AnchorYDisplayName => "Price";
+        /// <summary>
+        /// Display name for anchor.
+        /// </summary>
+        public static string AnchorYDisplayName => "Price";
 
-    //    /// <summary>
-    //    /// Display name for anchor.
-    //    /// </summary>
-    //    public static string AnchorXDisplayName => "Time";
+        /// <summary>
+        /// Display name for anchor.
+        /// </summary>
+        public static string AnchorXDisplayName => "Time";
 
-    //    /// <summary>
-    //    /// Display name for start anchor.
-    //    /// </summary>
-    //    public static string AnchorStartDisplayName => "Start Y";
+        /// <summary>
+        /// Display name for start anchor.
+        /// </summary>
+        public static string AnchorStartDisplayName => "Start Y";
 
-    //    /// <summary>
-    //    /// Display name for end anchor.
-    //    /// </summary>
-    //    public static string AnchorEndDisplayName => "End Y";
+        /// <summary>
+        /// Display name for end anchor.
+        /// </summary>
+        public static string AnchorEndDisplayName => "End Y";
 
-    //    /// <summary>
-    //    /// The root of all paths
-    //    /// </summary>
-    //    public const string LabelLineDisplayName = "Label Line";
+        /// <summary>
+        /// The root of all paths
+        /// </summary>
+        public const string LabelLineDisplayName = "Label Line";
 
-    //    /// <summary>
-    //    /// The root of all paths
-    //    /// </summary>
-    //    public const string PriceLineDisplayName = "Price Line";
+        /// <summary>
+        /// The root of all paths
+        /// </summary>
+        public const string PriceLineDisplayName = "Price Line";
 
-    //    /// <summary>
-    //    /// The root of all paths
-    //    /// </summary>
-    //    public const string TimeLineDisplayName = "Time Line";
+        /// <summary>
+        /// The root of all paths
+        /// </summary>
+        public const string TimeLineDisplayName = "Time Line";
 
-    //}
+        //}
+    }
 }
