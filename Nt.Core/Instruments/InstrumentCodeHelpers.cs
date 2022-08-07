@@ -57,5 +57,24 @@ namespace NtCore
 
             throw new Exception("The string 'code' cannot be convert to InstrumentCode enum.");
         }
+
+        /// <summary>
+        /// Method to convert the <see cref="InstrumentCode"/> to <see cref="MarketExchange"/>.
+        /// </summary>
+        /// <param name="instrumentCode">The instrument code.</param>
+        /// <returns>The <see cref="MarketExchange"/> value.</returns>
+        public static TimeZoneInfo ToTimeZoneInfo(this InstrumentCode instrumentCode)
+        {
+            switch (instrumentCode)
+            {
+                case (InstrumentCode.Default):
+                case (InstrumentCode.MES):
+                    return instrumentCode.ToMarketExchange().ToTimeZoneInfo();
+                default:
+                    throw new Exception("The instrument code doesn't exists.");
+            }
+        }
+
+
     }
 }

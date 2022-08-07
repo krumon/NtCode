@@ -86,15 +86,15 @@ namespace NtCore
         /// </summary>
         /// <param name="tradingSession">the <see cref="TradingSession"/> to create the <see cref="SessionHours"/> class.</param>
         /// <param name="instrumentCode">The unique code of the instrument.</param>
-        /// <param name="balanceMinutes">The minutes of the balance session.</param>
+        /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
         /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
-        public static SessionHours CreateSessionHoursByType(TradingSession tradingSession, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
+        public static SessionHours CreateSessionHoursByType(TradingSession tradingSession, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             return new SessionHours
             {
                 sessionType = tradingSession,
-                BeginSessionTime = tradingSession.ToBeginSessionTime(instrumentCode, balanceMinutes),
-                EndSessionTime = tradingSession.ToEndSessionTime(instrumentCode, balanceMinutes),
+                BeginSessionTime = tradingSession.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
+                EndSessionTime = tradingSession.ToEndSessionTime(instrumentCode, endTimeDisplacement),
             };
         }
 
@@ -103,14 +103,14 @@ namespace NtCore
         /// </summary>
         /// <param name="balanceSession">the <see cref="BalanceSession"/> to create the <see cref="SessionHours"/>.</param>
         /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
-        public static SessionHours CreateSessionBalanceByType(BalanceSession balanceSession, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
+        public static SessionHours CreateSessionBalanceByType(BalanceSession balanceSession, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             return new SessionHours
             {
                 balanceSession = balanceSession,
                 sessionType = balanceSession.ToTradingSession(),
-                BeginSessionTime = balanceSession.ToBeginSessionTime(instrumentCode, balanceMinutes),
-                EndSessionTime = balanceSession.ToEndSessionTime(instrumentCode, balanceMinutes),
+                BeginSessionTime = balanceSession.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
+                EndSessionTime = balanceSession.ToEndSessionTime(instrumentCode, endTimeDisplacement),
             };
         }
 
@@ -145,7 +145,7 @@ namespace NtCore
             TimeZoneInfo sourceTimeZoneInfo = null,
             TimeZoneInfo destinationTimeZoneInfo = null)
         {
-            return BeginSessionTime.GetNextTime(currentDate);
+            return BeginSessionTime.GetNextSessionTime(currentDate);
         }
 
         /// <summary>
@@ -160,13 +160,13 @@ namespace NtCore
             TimeZoneInfo destinationTimeZoneInfo = null,
             bool sessionComplete = false)
         {
-            DateTime beginDateTime = BeginSessionTime.GetNextTime(currentDate);
-            DateTime endDateTime = EndSessionTime.GetNextTime(currentDate);
+            DateTime beginDateTime = BeginSessionTime.GetNextSessionTime(currentDate);
+            DateTime endDateTime = EndSessionTime.GetNextSessionTime(currentDate);
 
             if (sessionComplete && (endDateTime <= beginDateTime))
-                return EndSessionTime.GetNextTime(currentDate) + TimeSpan.FromHours(24);
+                return EndSessionTime.GetNextSessionTime(currentDate) + TimeSpan.FromHours(24);
 
-            return EndSessionTime.GetNextTime(currentDate);
+            return EndSessionTime.GetNextSessionTime(currentDate);
         }
 
         /// <summary>
@@ -182,8 +182,8 @@ namespace NtCore
             bool sessionComplete = false)
         {
             DateTime[] sessionDateTimes = new DateTime[2];
-            DateTime beginDateTime = BeginSessionTime.GetNextTime(currentDate);
-            DateTime endDateTime = EndSessionTime.GetNextTime(currentDate);
+            DateTime beginDateTime = BeginSessionTime.GetNextSessionTime(currentDate);
+            DateTime endDateTime = EndSessionTime.GetNextSessionTime(currentDate);
 
             if (sessionComplete && (endDateTime <= beginDateTime))
                 endDateTime += TimeSpan.FromHours(24);

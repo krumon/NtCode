@@ -22,16 +22,16 @@ namespace NtCore
         private TradingTime tradingTime;
 
         /// <summary>
-        /// The <see cref="SessionTimeZoneInfo"/> configute on ninjatrader plattaform.
+        /// The <see cref="TimeZoneInfo"/> configute on ninjatrader plattaform.
         /// All ninjascript times are reference to this TimeZoneInfo.
         /// </summary>
         private TimeZoneInfo plattaformTimeZoneInfo;
 
         /// <summary>
-        /// The <see cref="SessionTimeZoneInfo"/> configure in the specific Chartcontrol.
+        /// The <see cref="TimeZoneInfo"/> configure in the specific Chartcontrol.
         /// This property must be used to draw the times in the correct place on the chart.
         /// </summary>
-        private TimeZoneInfo tradingHoursTimeZoneInfo;
+        private TimeZoneInfo barsTimeZoneInfo;
 
         /// <summary>
         /// The instrument code to calculate the session time.
@@ -42,7 +42,7 @@ namespace NtCore
         /// <summary>
         /// The last <see cref="DateTime"/> of the session.
         /// </summary>
-        private DateTime actualNextTime = DateTime.MinValue; 
+        private DateTime actualSessionTime = DateTime.MinValue; 
 
         #endregion
 
@@ -64,9 +64,9 @@ namespace NtCore
         public string Description => tradingTime == TradingTime.Custom ? description : tradingTime.ToDescription();
 
         /// <summary>
-        /// Gets or sets the <see cref="TimeZoneInfo"/> of the trading hour.
+        /// Gets or sets the <see cref="System.TimeZoneInfo"/> of the trading hour.
         /// </summary>
-        public TimeZoneInfo SessionTimeZoneInfo { get; set; }
+        public TimeZoneInfo TimeZoneInfo { get; set; }
 
         /// <summary>
         /// Gets or sets the time of the trading hour.
@@ -80,12 +80,12 @@ namespace NtCore
         {
             get
             {
-                if (SessionTimeZoneInfo == null)
-                    throw new ArgumentNullException(nameof(SessionTimeZoneInfo));
+                if (TimeZoneInfo == null)
+                    throw new ArgumentNullException(nameof(TimeZoneInfo));
                 if (Time == null)
                     throw new ArgumentNullException(nameof(Time));
 
-                TimeSpan utcTime = Time - SessionTimeZoneInfo.BaseUtcOffset;
+                TimeSpan utcTime = Time - TimeZoneInfo.BaseUtcOffset;
 
                 if (utcTime.TotalHours >= 24)
                 {
@@ -106,8 +106,8 @@ namespace NtCore
         {
             get
             {
-                if (SessionTimeZoneInfo == null)
-                    throw new ArgumentNullException(nameof(SessionTimeZoneInfo));
+                if (TimeZoneInfo == null)
+                    throw new ArgumentNullException(nameof(TimeZoneInfo));
                 if (Time == null)
                     throw new ArgumentNullException(nameof(Time));
 
@@ -137,36 +137,6 @@ namespace NtCore
 
         }
 
-        /// <summary>
-        /// Create new instance of <see cref="SessionTime"/> with sepecific parameters.
-        /// </summary>
-        /// <param name="tradingTime"></param>
-        /// <param name="instrumentCode"></param>
-        /// <param name="tradingTimeDisplacement"></param>
-        //private SessionTime(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int tradingTimeDisplacement = 0)
-        //{
-        //    this.tradingTime = tradingTime;
-        //    this.TimeZoneInfo = tradingTime.ToTimeZoneInfo(instrumentCode);
-        //    this.Time = tradingTime.ToTime(instrumentCode, tradingTimeDisplacement);
-        //}
-
-        /// <summary>
-        /// Create a new instance instance of <see cref="SessionTime"/> class whith custom values.
-        /// </summary>
-        /// <param name="timeZoneInfo"></param>
-        /// <param name="hour"></param>
-        /// <param name="minute"></param>
-        /// <param name="code"></param>
-        /// <param name="description"></param>
-        //private SessionTime(TimeZoneInfo timeZoneInfo, int hour, int minute, int seconds, string code, string description = "")
-        //{
-        //    tradingTime = TradingTime.Custom;
-        //    this.code = code;
-        //    this.description = description;
-        //    this.TimeZoneInfo = timeZoneInfo;
-        //    this.Time = new TimeSpan(hour,minute,seconds);
-        //}
-
         #endregion
 
         #region Instance methods
@@ -176,15 +146,15 @@ namespace NtCore
         /// </summary>
         /// <param name="tradingTime">The specific session time to create the instance.</param>
         /// <param name="instrumentCode">The unique code of the financial instrument session.</param>
-        /// <param name="tradingTimeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
+        /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
         /// <returns>The session time instance.</returns>
-        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int tradingTimeDisplacement = 0)
+        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
         {
             return new SessionTime 
             {
                 tradingTime = tradingTime,
-                SessionTimeZoneInfo = tradingTime.ToTimeZoneInfo(instrumentCode),
-                Time = tradingTime.ToTime(instrumentCode, tradingTimeDisplacement)
+                TimeZoneInfo = tradingTime.ToTimeZoneInfo(instrumentCode),
+                Time = tradingTime.ToTime(instrumentCode, timeDisplacement)
             };
         }
 
@@ -196,15 +166,15 @@ namespace NtCore
         /// <param name="code">The code of the custom session.</param>
         /// <param name="description">The description of the custom session time.</param>
         /// <returns>A new instance of the <see cref="SessionTime"/> with the specific parameters.</returns>
-        public static SessionTime CreateCustomSessionTime(TimeSpan time, TimeZoneInfo timeZoneInfo = null, string code = "CUSTOM", string description = "")
+        public static SessionTime CreateCustomSessionTime(TimeSpan time, TimeZoneInfo timeZoneInfo = null, string code = "CUSTOM", string description = "My Custom Session Time.")
         {
             return new SessionTime
             {
                 tradingTime = TradingTime.Custom,
+                Time = time,
+                TimeZoneInfo = timeZoneInfo,
                 code = code,
-                description = description,
-                SessionTimeZoneInfo = timeZoneInfo,
-                Time = time
+                description = description
             };
         }
 
@@ -225,7 +195,7 @@ namespace NtCore
                 tradingTime = TradingTime.Custom,
                 code = code,
                 description = description,
-                SessionTimeZoneInfo = timeZoneInfo,
+                TimeZoneInfo = timeZoneInfo,
                 Time = new TimeSpan(hour, minute, seconds)
             };
         }
@@ -235,43 +205,23 @@ namespace NtCore
         #region Public methods
 
         /// <summary>
-        /// Converts the <see cref="Time"/> to integer.
-        /// </summary>
-        /// <param name="destinationTimeZoneInfo">The target <see cref="SessionTimeZoneInfo"/>. The default values is <see cref="TimeZoneInfo.Local"/>.</param>
-        /// <returns>The integer that represents the session <see cref="Time"/></returns>
-        public int ToInteger(TimeZoneInfo destinationTimeZoneInfo = null)
-        {
-            TimeSpan time = GetTime(DateTime.Now, destinationTimeZoneInfo);
-            return (time.Hours * 10000) + (time.Minutes * 100) + (time.Seconds);
-        }
-
-        /// <summary>
         /// Gets the trading time <see cref="DateTime"/>.
         /// </summary>
         /// <param name="time">The current date to create the date time structure.</param>
         /// <param name="sourceTimeZoneInfo">The TimeZoneInfo of the time passed by the nijascript.</param>
         /// <param name="destinationTimeZoneInfo">The time zone info to convert the date time structure.</param>
         /// <returns></returns>
-        public DateTime GetDateTime(
-            DateTime time,
-            TimeZoneInfo sourceTimeZoneInfo = null,
-            TimeZoneInfo destinationTimeZoneInfo = null)
+        public DateTime GetTime(DateTime time)
         {
 
-            if (sourceTimeZoneInfo == null)
-                sourceTimeZoneInfo = plattaformTimeZoneInfo;
-
-            if (destinationTimeZoneInfo == null)
-                destinationTimeZoneInfo = plattaformTimeZoneInfo;
-
             // Converts the time to the SessionTime.TimeZoneInfo
-            DateTime currentTime = TimeZoneInfo.ConvertTime(time, sourceTimeZoneInfo, SessionTimeZoneInfo);
+            DateTime currentTime = TimeZoneInfo.ConvertTime(time, plattaformTimeZoneInfo, TimeZoneInfo);
             // Calculate the next time.
-            DateTime sessionDateTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
+            DateTime sessionTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
             // Converts de time to the destinationTimeZoneInfo passed as parameter.
-            DateTime destinationDateTime = TimeZoneInfo.ConvertTime(sessionDateTime, SessionTimeZoneInfo, destinationTimeZoneInfo);
+            DateTime destinationTime = TimeZoneInfo.ConvertTime(sessionTime, TimeZoneInfo, plattaformTimeZoneInfo);
 
-            return destinationDateTime;
+            return destinationTime;
 
         }
 
@@ -279,67 +229,27 @@ namespace NtCore
         /// Gets the trading time <see cref="DateTime"/>.
         /// </summary>
         /// <param name="time">The current date to create the date time structure.</param>
-        /// <param name="destinationTimeZoneInfo">The time zone info to convert the date time structure.</param>
-        /// <returns></returns>
-        public TimeSpan GetTime(
-            DateTime time,
-            TimeZoneInfo sourceTimeZoneInfo = null,
-            TimeZoneInfo destinationTimeZoneInfo = null)
-        {
-            return GetDateTime(time,sourceTimeZoneInfo,destinationTimeZoneInfo).TimeOfDay;
-        }
-
-        /// <summary>
-        /// Gets the trading time <see cref="DateTime"/>.
-        /// </summary>
-        /// <param name="time">The current date to create the date time structure.</param>
-        /// <param name="sourceTimeZoneInfo">The <see cref="SessionTimeZoneInfo"/> that represents <paramref name="time"/>"/></param>
-        /// <param name="destinationTimeZoneInfo">The <see cref="SessionTimeZoneInfo"/> to convert the date time structure.</param>
         /// <returns>The <see cref="DateTime"/> of the next session since the <paramref name="time"/></returns>
-        public DateTime GetNextTime(DateTime time)
+        public DateTime GetNextSessionTime(DateTime time)
         {
+            // Gets the current session time.
+            DateTime sessionTime = GetTime(time);
 
-            //if (sourceTimeZoneInfo == null)
-            //{
-            //    if (currentTime.Kind == DateTimeKind.Local)
-            //        sourceTimeZoneInfo = TimeZoneInfo.Local;
+            if (sessionTime > time)
+                return sessionTime;
 
-            //    else if (currentTime.Kind == DateTimeKind.Utc)
-            //        sourceTimeZoneInfo = TimeZoneInfo.Utc;
-
-            //    else if (currentTime.Kind == DateTimeKind.Unspecified)
-            //        throw new ArgumentNullException(nameof(sourceTimeZoneInfo) + " cannot be null if the " + nameof(DateTimeKind) + " is Unnespecified");
-            //}
-
-            //if (destinationTimeZoneInfo == null)
-            //    destinationTimeZoneInfo = TimeZoneInfo.Local;
-
-            // Converts the time to the SessionTime.TimeZoneInfo
-            DateTime currentTime = TimeZoneInfo.ConvertTime(time, plattaformTimeZoneInfo, SessionTimeZoneInfo);
-            // Calculate the next time.
-            DateTime nextDateTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
-
-            // Make sure the next time changed.
-            if (currentTime.Date <= nextDateTime)
-                // Return de actualNextTime converts to Bars.TradingHours.TimeZoneInfo
-                return TimeZoneInfo.ConvertTime(actualNextTime, plattaformTimeZoneInfo, tradingHoursTimeZoneInfo);
-
-            // Converts the next time to PlattaformTimeZoneInfo.
-            actualNextTime = TimeZoneInfo.ConvertTime(nextDateTime, SessionTimeZoneInfo, plattaformTimeZoneInfo);
-
-            // Return de actual next time converts to Bars.TradingHours.TimeZoneInfo
-            return TimeZoneInfo.ConvertTime(actualNextTime, plattaformTimeZoneInfo, tradingHoursTimeZoneInfo);
+            return sessionTime.AddDays(1);
         }
 
         #endregion
 
         #region Ninjatrader Methods
 
-        public void Configure(string masterInstrument = "Default", TimeZoneInfo plattaformTimeZoneInfo = null, TimeZoneInfo tradingHoursTimeZoneInfo = null)
+        public void Configure(string masterInstrument = "Default", TimeZoneInfo plattaformTimeZoneInfo = null, TimeZoneInfo barsTimeZoneInfo = null)
         {
             this.instrumentCode = masterInstrument.ToInstrumentCode();
             this.plattaformTimeZoneInfo = plattaformTimeZoneInfo ?? TimeZoneInfo.Local;
-            this.tradingHoursTimeZoneInfo = tradingHoursTimeZoneInfo ?? TimeZoneInfo.Local;
+            this.barsTimeZoneInfo = barsTimeZoneInfo ?? TimeZoneInfo.Local;
         }
 
         /// <summary>
@@ -349,7 +259,60 @@ namespace NtCore
         /// <param name="time">The time passed by ninjascript.</param>
         public void OnBarUpdate(DateTime time)
         {
-            GetNextTime(time);
+            if (time < actualSessionTime)
+                return;
+
+            if (actualSessionTime.Date == time.Date)
+                return;
+
+            actualSessionTime = GetNextSessionTime(time);
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        /// <summary>
+        /// Converts the <see cref="Time"/> to integer.
+        /// </summary>
+        /// <returns>The integer that represents the session <see cref="Time"/></returns>
+        public int ToInteger(DateTime time)
+        {
+            return (time.Hour * 10000) + (time.Minute * 100) + (time.Second);
+        }
+
+        /// <summary>
+        /// Converts the <see cref="Int32"/> to <see cref="DateTime"/>.
+        /// </summary>
+        /// <returns>The date thats represents the session date.</returns>
+        public DateTime FromInteger(int time)
+        {
+            throw new Exception("This method must be executed");
+        }
+
+        /// <summary>
+        /// Returns true if the object has the same <see cref="TimeSpan"/> and the same <see cref="TimeZoneInfo"/>.
+        /// </summary>
+        /// <param name="obj">The object to compare.</param>
+        /// <returns>True if the objects are equal otherwise false.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is SessionTime)
+            {
+                if (((SessionTime)obj).Time == Time && ((SessionTime)obj).TimeZoneInfo == TimeZoneInfo)
+                    return true;
+                return false;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return Time.ToString();
         }
 
         #endregion

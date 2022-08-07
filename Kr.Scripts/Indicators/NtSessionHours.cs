@@ -65,6 +65,8 @@ namespace Ninjascripts
         /// </summary>
         private List<int> newSessionBarIdx = new List<int>();
 
+        private Instrument instrument;
+
         #endregion
 
         #region Public properties
@@ -102,6 +104,11 @@ namespace Ninjascripts
             this.ninjascript = ninjascript;
             this.sessionIterator = sessionIterator;
             this.bars = bars;
+
+            instrument = new Instrument
+            {
+                InstrumentCode = bars.Instrument.MasterInstrument.Name.ToInstrumentCode(),
+            };
         }
 
         #endregion

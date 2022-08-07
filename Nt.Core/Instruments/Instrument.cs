@@ -23,10 +23,6 @@ namespace NtCore
         /// </summary>
         public string Description => InstrumentCode.ToDescription();
 
-        /// <summary>
-        /// The instrument <see cref="SessionHours"/>.
-        /// </summary>
-        public SessionHours SessionHours { get; set; }
 
         #endregion
     }

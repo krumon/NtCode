@@ -1,8 +1,4 @@
-﻿using NinjaTrader.Core;
-using NinjaTrader.Data;
-using NinjaTrader.NinjaScript;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace NtCore
 {
