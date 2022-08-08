@@ -1,17 +1,12 @@
-﻿using NinjaTrader.Client;
-using NtConnect;
+﻿using NtConnect;
 using NtCore;
 using System;
 using System.Threading;
-using System.Timers;
 
 namespace NtConsole
 {
     internal class Program
     {
-        public static Client client;
-        public static System.Timers.Timer timer;
-
         public static NtSimulator simulator;
         public static KrSession session;
 
@@ -134,7 +129,7 @@ namespace NtConsole
                     return;
 
                 Console.WriteLine();
-                Console.WriteLine(String.Format("Código: {0} | {1} | {2}", session, session.ToTradingTime().ToSessionTime().ToLocalTime.ToString(),session.ToTradingTime().ToDescription()));
+                Console.WriteLine(String.Format("Código: {0} | {1} | {2}", session, session.ToTradingTime().ToSessionTime().LocalTime.ToString(),session.ToTradingTime().ToDescription()));
                 Console.ReadKey();
                 Console.Clear();
 
@@ -149,57 +144,57 @@ namespace NtConsole
                 Console.WriteLine(timeZone.ToSessionHours().ToString());
         }
 
-        private static void ATIConnection()
-        {
-            client = new Client();
-            int connect = client.Connected(1);
-            client.SubscribeMarketData("MES");
+        //private static void ATIConnection()
+        //{
+        //    client = new Client();
+        //    int connect = client.Connected(1);
+        //    client.SubscribeMarketData("MES");
 
-            Console.WriteLine(String.Format("{0} | Connected to NT8: {1}", DateTime.Now, connect.ToString()));
-            Console.WriteLine(String.Format("Cash Value: {0}", client.CashValue("")));
-            Console.WriteLine(String.Format("Buying Power: {0}", client.BuyingPower("")));
+        //    Console.WriteLine(String.Format("{0} | Connected to NT8: {1}", DateTime.Now, connect.ToString()));
+        //    Console.WriteLine(String.Format("Cash Value: {0}", client.CashValue("")));
+        //    Console.WriteLine(String.Format("Buying Power: {0}", client.BuyingPower("")));
 
-            timer = new System.Timers.Timer()
-            {
-                Interval = 1000
-            };
+        //    timer = new System.Timers.Timer()
+        //    {
+        //        Interval = 1000
+        //    };
 
-            timer.Elapsed += ATI_Timer_Elapsed;
-            timer.Enabled = true;
+        //    timer.Elapsed += ATI_Timer_Elapsed;
+        //    timer.Enabled = true;
 
-            Console.ReadKey();
+        //    Console.ReadKey();
 
-            client.UnsubscribeMarketData("MES");
-            timer.Elapsed -= ATI_Timer_Elapsed;
-            timer.Enabled = false;
-            timer.Dispose();
-            timer.Close(); // Creo que no es necesario
+        //    client.UnsubscribeMarketData("MES");
+        //    timer.Elapsed -= ATI_Timer_Elapsed;
+        //    timer.Enabled = false;
+        //    timer.Dispose();
+        //    timer.Close(); // Creo que no es necesario
             
-            int disconnect = client.TearDown();
-            Console.WriteLine(String.Format("{0} | Disconnected to NT8: {1}", DateTime.Now, disconnect.ToString()));
-            Console.ReadKey();
+        //    int disconnect = client.TearDown();
+        //    Console.WriteLine(String.Format("{0} | Disconnected to NT8: {1}", DateTime.Now, disconnect.ToString()));
+        //    Console.ReadKey();
 
-        }
+        //}
 
-        private static void TimeSpanTester()
-        {
-            SessionTime sessionTime1 = SessionTime.CreateCustomSessionTime(22,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
-            SessionTime sessionTime2 = SessionTime.CreateCustomSessionTime(2,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+        //private static void TimeSpanTester()
+        //{
+        //    SessionTime sessionTime1 = SessionTime.CreateCustomSessionTime(22,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+        //    SessionTime sessionTime2 = SessionTime.CreateCustomSessionTime(2,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
 
-            Console.WriteLine(String.Format("Utc Offset: {0}",sessionTime1.TimeZoneInfo.BaseUtcOffset.ToString()));
-            Console.WriteLine(String.Format("Time 1: {0}",sessionTime1.ToUtcTime.ToString()));
-            Console.WriteLine(String.Format("Time 2: {0}",sessionTime2.ToUtcTime.ToString()));
-        }
+        //    Console.WriteLine(String.Format("Utc Offset: {0}",sessionTime1.TimeZoneInfo.BaseUtcOffset.ToString()));
+        //    Console.WriteLine(String.Format("Time 1: {0}",sessionTime1.ToUtcTime.ToString()));
+        //    Console.WriteLine(String.Format("Time 2: {0}",sessionTime2.ToUtcTime.ToString()));
+        //}
 
-        private static void ATI_Timer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            if (client == null)
-                return;
+        //private static void ATI_Timer_Elapsed(object sender, ElapsedEventArgs e)
+        //{
+        //    if (client == null)
+        //        return;
 
-            double lastPrice = client.MarketData("MES", 0);
+        //    double lastPrice = client.MarketData("MES", 0);
 
-            Console.WriteLine(string.Format("{0} | Last: {1}", DateTime.Now, lastPrice));
-        }
+        //    Console.WriteLine(string.Format("{0} | Last: {1}", DateTime.Now, lastPrice));
+        //}
 
     }
 }

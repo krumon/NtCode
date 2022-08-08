@@ -23,7 +23,7 @@ using System.Xml.Serialization;
 /// from the ninjatrader ninjascript
 /// </summary>
 namespace NinjaTrader.NinjaScript.Indicators.KrMasterIndicators
-{
+{/*
 	/// <summary>
 	/// The Trading Zone indicator plots lines that represents the resistance and support levels.
 	/// </summary>
@@ -868,7 +868,7 @@ namespace NinjaTrader.NinjaScript.Indicators.KrMasterIndicators
 		#endregion
 
 	}
-
+	*/
 }
 
 #endregion

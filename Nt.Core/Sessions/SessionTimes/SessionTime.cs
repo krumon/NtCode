@@ -76,7 +76,7 @@ namespace NtCore
         /// <summary>
         /// Converts the Time property to UTC time.
         /// </summary>
-        public TimeSpan ToUtcTime
+        public TimeSpan UtcTime
         {
             get
             {
@@ -102,7 +102,7 @@ namespace NtCore
         /// <summary>
         /// Converts the Time property to UTC time.
         /// </summary>
-        public TimeSpan ToLocalTime
+        public TimeSpan LocalTime
         {
             get
             {
@@ -111,7 +111,7 @@ namespace NtCore
                 if (Time == null)
                     throw new ArgumentNullException(nameof(Time));
 
-                TimeSpan localTime = this.ToUtcTime + TimeZoneInfo.Local.BaseUtcOffset;
+                TimeSpan localTime = this.UtcTime + TimeZoneInfo.Local.BaseUtcOffset;
 
                 if (localTime.TotalHours >= 24)
                 {
@@ -243,30 +243,59 @@ namespace NtCore
 
         #endregion
 
-        #region Ninjatrader Methods
+        #region Public Methods
 
-        public void Configure(string masterInstrument = "Default", TimeZoneInfo plattaformTimeZoneInfo = null, TimeZoneInfo barsTimeZoneInfo = null)
+        public DateTime ToSessionTime(DateTime time, TimeZoneInfo timeZoneInfo = null)
         {
-            this.instrumentCode = masterInstrument.ToInstrumentCode();
-            this.plattaformTimeZoneInfo = plattaformTimeZoneInfo ?? TimeZoneInfo.Local;
-            this.barsTimeZoneInfo = barsTimeZoneInfo ?? TimeZoneInfo.Local;
+            if (time == null)
+                throw new ArgumentNullException(nameof(time) + "can not be null");
+
+            if (time.Kind != DateTimeKind.Local)
+                throw new ArgumentException(nameof(time) + " kind must be Local");
+
+
+            return TimeZoneInfo.ConvertTime(time, TimeZoneInfo.Local, TimeZoneInfo);
         }
+
+        public DateTime ToLocalTime(DateTime time)
+        {
+            return new DateTime();
+        }
+
+        public DateTime ToUtcTime(DateTime time)
+        {
+            return new DateTime();
+        }
+
+        public DateTime ToUnspecificTime(DateTime time)
+        {
+            return new DateTime();
+        }
+
+
+
+        //public void Configure(string masterInstrument = "Default", TimeZoneInfo plattaformTimeZoneInfo = null, TimeZoneInfo barsTimeZoneInfo = null)
+        //{
+        //    this.instrumentCode = masterInstrument.ToInstrumentCode();
+        //    this.plattaformTimeZoneInfo = plattaformTimeZoneInfo ?? TimeZoneInfo.Local;
+        //    this.barsTimeZoneInfo = barsTimeZoneInfo ?? TimeZoneInfo.Local;
+        //}
 
         /// <summary>
         /// Update the values when the bar of the char is updated.
         /// The parameter are passed in <see cref="plattaformTimeZoneInfo"/> time.
         /// </summary>
         /// <param name="time">The time passed by ninjascript.</param>
-        public void OnBarUpdate(DateTime time)
-        {
-            if (time < actualSessionTime)
-                return;
+        //public void OnBarUpdate(DateTime time)
+        //{
+        //    if (time < actualSessionTime)
+        //        return;
 
-            if (actualSessionTime.Date == time.Date)
-                return;
+        //    if (actualSessionTime.Date == time.Date)
+        //        return;
 
-            actualSessionTime = GetNextSessionTime(time);
-        }
+        //    actualSessionTime = GetNextSessionTime(time);
+        //}
 
         #endregion
 
@@ -298,12 +327,110 @@ namespace NtCore
         public override bool Equals(object obj)
         {
             if (obj is SessionTime)
-            {
-                if (((SessionTime)obj).Time == Time && ((SessionTime)obj).TimeZoneInfo == TimeZoneInfo)
-                    return true;
-                return false;
-            }
+                return ((SessionTime)obj).Time == Time && ((SessionTime)obj).TimeZoneInfo == TimeZoneInfo;
+
             return false;
+        }
+
+        public bool Equals(SessionTime value)
+        {
+            return value.Time == Time && value.TimeZoneInfo == TimeZoneInfo;
+        }
+
+        public static bool Equals(SessionTime st1, SessionTime st2)
+        {
+            return st1.Time == st2.Time && st1.TimeZoneInfo == st2.TimeZoneInfo;
+        }
+
+        public int Compare(SessionTime st1, SessionTime st2)
+        {
+            if (st1 == null || st2 == null)
+            {
+                throw new ArgumentException("The argument can not be null.");
+            }
+
+            TimeSpan st1UtcTime = st1.UtcTime;
+            TimeSpan st2UtcTime = st2.UtcTime;
+
+            if (st1UtcTime > st2UtcTime)
+            {
+                return 1;
+            }
+
+            if (st1UtcTime < st2UtcTime)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        public int CompareTo(object value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+
+            if (!(value is SessionTime))
+            {
+                throw new ArgumentException("Argument must be SessionTime");
+            }
+
+            TimeSpan valueUtcTime = ((SessionTime)value).UtcTime;
+
+            if (UtcTime > valueUtcTime)
+            {
+                return 1;
+            }
+
+            if (UtcTime < valueUtcTime)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        public int CompareTo(SessionTime value)
+        {
+            if (value == null)
+            {
+                return 1;
+            }
+
+            TimeSpan valueUtcTime = ((SessionTime)value).UtcTime;
+
+            if (UtcTime > valueUtcTime)
+            {
+                return 1;
+            }
+
+            if (UtcTime < valueUtcTime)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        public static SessionTime operator +(SessionTime st1, SessionTime st2)
+        {
+            if (st1 == null || st2 == null)
+            {
+                throw new ArgumentException("The argument can not be null.");
+            }
+
+            TimeSpan sum = st1.UtcTime + st2.UtcTime;
+
+            TimeSpan st2UtcTime = st2.UtcTime;
+
+            return new SessionTime();
+        }
+
+        public static SessionTime operator -(SessionTime st1, SessionTime st2)
+        {
+            return new SessionTime();
         }
 
         /// <summary>
@@ -315,6 +442,16 @@ namespace NtCore
             return Time.ToString();
         }
 
+        /// <summary>
+        /// Returns object hash code.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         #endregion
+
     }
 }

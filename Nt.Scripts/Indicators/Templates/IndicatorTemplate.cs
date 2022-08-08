@@ -39,7 +39,7 @@ using System.Xml.Serialization;
 #endregion
 
 namespace NinjaTrader.NinjaScript.Indicators
-{
+{/*
 
     /// <summary>
     /// Add specific description for you indicator
@@ -260,4 +260,5 @@ namespace NinjaTrader.NinjaScript.Indicators
         #endregion
 
     }
+    */
 }

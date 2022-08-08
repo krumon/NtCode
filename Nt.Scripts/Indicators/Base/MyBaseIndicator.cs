@@ -8,7 +8,7 @@ using System.Windows.Media;
 /// from the ninjatrader ninjascript
 /// </summary>
 namespace NinjaTrader.NinjaScript.Indicators
-{
+{/*
     /// <summary>
     /// Represents a base class for any ninjascript technical indicator.
     /// </summary>
@@ -135,4 +135,5 @@ namespace NinjaTrader.NinjaScript.Indicators
 
 
     }
+    */
 }
