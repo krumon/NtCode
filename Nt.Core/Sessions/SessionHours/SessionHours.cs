@@ -137,15 +137,67 @@ namespace NtCore
         /// <summary>
         /// Gets the begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
+        /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
+        public DateTime GetBeginTime(DateTime currentDate)
+        {
+            return BeginSessionTime.GetTime(currentDate);
+        }
+
+        /// <summary>
+        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
+        /// </summary>
+        /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
+        /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
+        public DateTime GetBeginTime(DateTime currentDate, TimeZoneInfo sourceTimeZoneInfo = null)
+        {
+            return BeginSessionTime.GetTime(currentDate,sourceTimeZoneInfo);
+        }
+
+        /// <summary>
+        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
+        /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
         /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetNextBeginDateTime(
+        public DateTime GetBeginTime(
             DateTime currentDate,
             TimeZoneInfo sourceTimeZoneInfo = null,
             TimeZoneInfo destinationTimeZoneInfo = null)
         {
-            return BeginSessionTime.GetNextSessionTime(currentDate);
+            return BeginSessionTime.GetTime(currentDate,sourceTimeZoneInfo,destinationTimeZoneInfo);
+        }
+
+        /// <summary>
+        /// Gets the end <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
+        /// </summary>
+        /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
+        public DateTime GetEndTime(DateTime currentDate)
+        {
+            return EndSessionTime.GetTime(currentDate);
+        }
+
+        /// <summary>
+        /// Gets the end <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
+        /// </summary>
+        /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
+        /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
+        public DateTime GetEndTime(DateTime currentDate, TimeZoneInfo sourceTimeZoneInfo = null)
+        {
+            return EndSessionTime.GetTime(currentDate,sourceTimeZoneInfo);
+        }
+
+        /// <summary>
+        /// Gets the end <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
+        /// </summary>
+        /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
+        /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
+        /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
+        public DateTime GetEndTime(
+            DateTime currentDate,
+            TimeZoneInfo sourceTimeZoneInfo = null,
+            TimeZoneInfo destinationTimeZoneInfo = null)
+        {
+            return EndSessionTime.GetTime(currentDate,sourceTimeZoneInfo,destinationTimeZoneInfo);
         }
 
         /// <summary>
@@ -157,16 +209,15 @@ namespace NtCore
         public DateTime GetNextEndDateTime(
             DateTime currentDate,
             TimeZoneInfo sourceTimeZoneInfo = null,
-            TimeZoneInfo destinationTimeZoneInfo = null,
-            bool sessionComplete = false)
+            TimeZoneInfo destinationTimeZoneInfo = null)
         {
-            DateTime beginDateTime = BeginSessionTime.GetNextSessionTime(currentDate);
-            DateTime endDateTime = EndSessionTime.GetNextSessionTime(currentDate);
+            DateTime beginDateTime = BeginSessionTime.GetTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            DateTime endDateTime = EndSessionTime.GetTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
 
-            if (sessionComplete && (endDateTime <= beginDateTime))
-                return EndSessionTime.GetNextSessionTime(currentDate) + TimeSpan.FromHours(24);
+            if (endDateTime <= beginDateTime)
+                return endDateTime.AddHours(24);
 
-            return EndSessionTime.GetNextSessionTime(currentDate);
+            return EndSessionTime.GetTime(currentDate);
         }
 
         /// <summary>
@@ -182,8 +233,8 @@ namespace NtCore
             bool sessionComplete = false)
         {
             DateTime[] sessionDateTimes = new DateTime[2];
-            DateTime beginDateTime = BeginSessionTime.GetNextSessionTime(currentDate);
-            DateTime endDateTime = EndSessionTime.GetNextSessionTime(currentDate);
+            DateTime beginDateTime = BeginSessionTime.GetTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
+            DateTime endDateTime = EndSessionTime.GetTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
 
             if (sessionComplete && (endDateTime <= beginDateTime))
                 endDateTime += TimeSpan.FromHours(24);
