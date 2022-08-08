@@ -207,39 +207,56 @@ namespace NtCore
         /// <summary>
         /// Gets the trading time <see cref="DateTime"/>.
         /// </summary>
-        /// <param name="time">The current date to create the date time structure.</param>
+        /// <param name="sourceTime">The current date to create the date time structure.</param>
         /// <param name="sourceTimeZoneInfo">The TimeZoneInfo of the time passed by the nijascript.</param>
         /// <param name="destinationTimeZoneInfo">The time zone info to convert the date time structure.</param>
         /// <returns></returns>
-        public DateTime GetTime(DateTime time)
+        public DateTime GetSessionTime(DateTime sourceTime, TimeZoneInfo sourceTimeZoneInfo)
         {
 
             // Converts the time to the SessionTime.TimeZoneInfo
-            DateTime currentTime = TimeZoneInfo.ConvertTime(time, plattaformTimeZoneInfo, TimeZoneInfo);
-            // Calculate the next time.
-            DateTime sessionTime = new DateTime(currentTime.Year, currentTime.Month, currentTime.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
-            // Converts de time to the destinationTimeZoneInfo passed as parameter.
-            DateTime destinationTime = TimeZoneInfo.ConvertTime(sessionTime, TimeZoneInfo, plattaformTimeZoneInfo);
-
-            return destinationTime;
+            DateTime time = TimeZoneInfo.ConvertTime(sourceTime, sourceTimeZoneInfo, TimeZoneInfo);
+            // Calculate the session time for the date passed as parameter.
+            DateTime sessionTime = new DateTime(time.Year, time.Month, time.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
+            // Converts the time to the sourceTimeZoneInfo.
+            return TimeZoneInfo.ConvertTime(sessionTime, TimeZoneInfo, sourceTimeZoneInfo);
 
         }
 
         /// <summary>
         /// Gets the trading time <see cref="DateTime"/>.
         /// </summary>
-        /// <param name="time">The current date to create the date time structure.</param>
-        /// <returns>The <see cref="DateTime"/> of the next session since the <paramref name="time"/></returns>
-        public DateTime GetNextSessionTime(DateTime time)
+        /// <param name="sourceTime">The current date to create the date time structure.</param>
+        /// <param name="sourceTimeZoneInfo">The TimeZoneInfo of the time passed by the nijascript.</param>
+        /// <param name="destinationTimeZoneInfo">The time zone info to convert the date time structure.</param>
+        /// <returns></returns>
+        public DateTime GetSessionTime(DateTime sourceTime, TimeZoneInfo sourceTimeZoneInfo, TimeZoneInfo destinationTimeZoneInfo)
         {
-            // Gets the current session time.
-            DateTime sessionTime = GetTime(time);
 
-            if (sessionTime > time)
-                return sessionTime;
+            // Converts the time to the SessionTime.TimeZoneInfo
+            DateTime time = TimeZoneInfo.ConvertTime(sourceTime, sourceTimeZoneInfo, TimeZoneInfo);
+            // Calculate the session time for the date passed as parameter.
+            DateTime sessionTime = new DateTime(time.Year, time.Month, time.Day, Time.Hours, Time.Minutes, Time.Seconds, DateTimeKind.Unspecified);
+            // Converts the time to the destination TimeZoneInfo.
+            return TimeZoneInfo.ConvertTime(sessionTime, TimeZoneInfo, destinationTimeZoneInfo);
 
-            return sessionTime.AddDays(1);
         }
+
+        ///// <summary>
+        ///// Gets the trading time <see cref="DateTime"/>.
+        ///// </summary>
+        ///// <param name="time">The current date to create the date time structure.</param>
+        ///// <returns>The <see cref="DateTime"/> of the next session since the <paramref name="time"/></returns>
+        //public DateTime GetNextSessionTime(DateTime time, TimeZoneInfo sourceTimeZoneInfo)
+        //{
+        //    // Gets the current session time.
+        //    DateTime sessionTime = GetSessionTime(time,sourceTimeZoneInfo);
+
+        //    if (sessionTime > time)
+        //        return sessionTime;
+
+        //    return sessionTime.AddDays(1);
+        //}
 
         #endregion
 
@@ -272,8 +289,6 @@ namespace NtCore
             return new DateTime();
         }
 
-
-
         //public void Configure(string masterInstrument = "Default", TimeZoneInfo plattaformTimeZoneInfo = null, TimeZoneInfo barsTimeZoneInfo = null)
         //{
         //    this.instrumentCode = masterInstrument.ToInstrumentCode();
@@ -302,52 +317,38 @@ namespace NtCore
         #region Helper methods
 
         /// <summary>
-        /// Converts the <see cref="Time"/> to integer.
-        /// </summary>
-        /// <returns>The integer that represents the session <see cref="Time"/></returns>
-        public int ToInteger(DateTime time)
-        {
-            return (time.Hour * 10000) + (time.Minute * 100) + (time.Second);
-        }
-
-        /// <summary>
-        /// Converts the <see cref="Int32"/> to <see cref="DateTime"/>.
-        /// </summary>
-        /// <returns>The date thats represents the session date.</returns>
-        public DateTime FromInteger(int time)
-        {
-            throw new Exception("This method must be executed");
-        }
-
-        /// <summary>
-        /// Returns true if the object has the same <see cref="TimeSpan"/> and the same <see cref="TimeZoneInfo"/>.
+        /// Returns true if the objects have the same <see cref="TimeSpan"/> and the same <see cref="TimeZoneInfo"/>.
         /// </summary>
         /// <param name="obj">The object to compare.</param>
         /// <returns>True if the objects are equal otherwise false.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is SessionTime)
-                return ((SessionTime)obj).Time == Time && ((SessionTime)obj).TimeZoneInfo == TimeZoneInfo;
+            if (obj is SessionTime time)
+                return time.Time == Time && time.TimeZoneInfo == TimeZoneInfo;
 
             return false;
         }
 
         public bool Equals(SessionTime value)
         {
-            return value.Time == Time && value.TimeZoneInfo == TimeZoneInfo;
+            if (value != null)
+                return value.Time == Time && value.TimeZoneInfo == TimeZoneInfo;
+
+            throw new ArgumentException("The argument can not be null.");
         }
 
         public static bool Equals(SessionTime st1, SessionTime st2)
         {
-            return st1.Time == st2.Time && st1.TimeZoneInfo == st2.TimeZoneInfo;
+            if (st1 != null && st2 != null)
+                return st1.Time == st2.Time && st1.TimeZoneInfo == st2.TimeZoneInfo;
+
+            throw new ArgumentException("The arguments can not be null.");
         }
 
         public int Compare(SessionTime st1, SessionTime st2)
         {
             if (st1 == null || st2 == null)
-            {
-                throw new ArgumentException("The argument can not be null.");
-            }
+                throw new ArgumentException("The arguments can not be null.");
 
             TimeSpan st1UtcTime = st1.UtcTime;
             TimeSpan st2UtcTime = st2.UtcTime;
