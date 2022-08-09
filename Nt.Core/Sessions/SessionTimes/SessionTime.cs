@@ -546,12 +546,39 @@ namespace NtCore
         /// <returns></returns>
         public override string ToString()
         {
+            return $"{Code} | {Time}";
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// </summary>
+        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <returns></returns>
+        public string ToString(string format = "")
+        {
+            string f = format.ToUpper();
+
+            if (f == "UTC")
+                return $"{Code} | {UtcTime}";
+
+            if (f == "LOCAL")
+                return $"{Code} | {LocalTime}";
+
+            return $"{Code} | {Time}";
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Code"/> and the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// </summary>
+        /// <returns></returns>
+        public string ToShortString()
+        {
             return Time.ToString();
         }
 
         /// <summary>
-        /// Returns a long string of the <see cref="SessionTime"/>. 
-        /// The string include: Code, Description and the Time.
+        /// Returns the string that represents the <see cref="Code"/>, <see cref="Description"/>, 
+        /// <see cref="Time"/> and <see cref="TimeZoneInfo"/> of the <see cref="SessionTime"/>. 
         /// </summary>
         /// <returns></returns>
         public string ToLongString()

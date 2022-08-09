@@ -19,6 +19,8 @@ namespace NtCore
             switch (tradingTime)
             {
                 // MAIN SESSIONS
+                case TradingTime.Custom:
+                    return "CTM";
                 case TradingTime.Electronic_Open:
                     return "EL-O";
                 case TradingTime.Electronic_Close:
@@ -172,6 +174,8 @@ namespace NtCore
         public static TradingTime ToTradingTime(this String code)
         {
             // MAIN SESSIONS
+            if (code == "CTM")
+                return TradingTime.Custom;
             if (code == "EL-O")
                 return TradingTime.Electronic_Open;
             if (code == "EL-C")
@@ -239,6 +243,8 @@ namespace NtCore
             switch (tradingTime)
             {
                 // MAIN SESSIONS
+                case TradingTime.Custom:
+                    return "Custom Time.";
                 case TradingTime.Electronic_Open:
                     return "Electronic Session. Open time.";
                 case TradingTime.Electronic_Close:
@@ -649,6 +655,7 @@ namespace NtCore
 
                     // MAJOR SESSIONS TIME ZONES
                     case (TradingTime.AmericanAndEuropean_Open):
+                    case (TradingTime.American_Open):
                     case (TradingTime.American_Close):
                     case (TradingTime.American_RS_Open):
                     case (TradingTime.American_RS_EXT_Open):
@@ -669,7 +676,6 @@ namespace NtCore
                     case (TradingTime.European_Open):
                     case (TradingTime.European_Close):
                     case (TradingTime.AmericanAndEuropean_Close):
-                    case (TradingTime.American_Open):
                         return TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
 
                     case (TradingTime.Custom):
@@ -701,6 +707,7 @@ namespace NtCore
                         return instrumentCode.ToMarketExchange().ToElectronicFinalTime() + TimeSpan.FromMinutes(offset);
 
                     case (TradingTime.Regular_Open):
+                    case (TradingTime.American_Open):
                     case (TradingTime.AmericanAndEuropean_Open):
                     case (TradingTime.OVN_Close):
                         return instrumentCode.ToMarketExchange().ToRegularInitialTime() + TimeSpan.FromMinutes(offset);
@@ -727,7 +734,6 @@ namespace NtCore
 
                     case (TradingTime.European_Close):
                     case (TradingTime.AmericanAndEuropean_Close):
-                    case (TradingTime.American_Open):
                         return new TimeSpan(16, 30, 0) + TimeSpan.FromMinutes(offset);
 
                     case (TradingTime.American_RS_EXT_Close):
@@ -749,9 +755,9 @@ namespace NtCore
         /// </summary>
         /// <param name="tradingTime"></param>
         /// <returns><see cref="SessionTime"/>.</returns>
-        public static SessionTime ToSessionTime(this TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
+        public static SessionTime ToSessionTime(this TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
         {
-            return SessionTime.CreateSessionTimeByType(tradingTime, instrumentCode, offset);
+            return SessionTime.CreateSessionTimeByType(tradingTime, instrumentCode, timeDisplacement);
         }
     }
 }

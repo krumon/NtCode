@@ -1,5 +1,6 @@
 ﻿using NtCore;
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp
 {
@@ -8,14 +9,9 @@ namespace ConsoleApp
 
         #region Private members
 
-        SessionTime st;
-
         #endregion
 
-        #region Public Properties
-
-        public string SessionTimeText => st.ToString();
-        public string SessionTimeLongText => st.ToLongString();
+        #region Properties
 
         #endregion
 
@@ -30,40 +26,81 @@ namespace ConsoleApp
 
         #endregion
 
-        #region Public methods
+        #region Run method
 
         public override void Run()
         {
-            // Comprobación de la instancia por defecto de SessionTime y
-            // compruebo los dos métodos ToString.
-            st = new SessionTime();
-            //Console.WriteLine();
-            //Console.WriteLine("Test de los métodos ToString...");
-            //Console.WriteLine();
-            WriteTitle("Test de los métodos ToString...");
-            Console.WriteLine($"ToString Method => {st}");
-            Console.WriteLine($"ToLongString Method => {st.ToLongString()}");
-
-            // Asigno a st un SessinTime creado a través de un tipo.
-            st = SessionTime.CreateSessionTimeByType(TradingTime.American_Open);
-            WriteTitle("Creación de un objeto SessionTime por el tipo...");
-            Console.WriteLine(st.ToLongString());
-            Wait();
+            PrintDefaultInstance();
+            PrintSessionTimeCreateByType(TradingTime.American_RS_EOD_Close);
+            PrintSessionTimesCompareMethods(TradingTime.American_Open,TradingTime.European_Close,true);
         }
 
         #endregion
 
         #region Private methods
 
-        private void ToStringTest()
+        private void PrintDefaultInstance(bool pauseWhenEnd = false)
         {
-            Console.WriteLine($"ToString Method => {SessionTimeText}");
-            Console.WriteLine($"ToLongString Method => {SessionTimeLongText}");
+            // Create a default instance.
+            SessionTime st = new SessionTime();
+            WriteTitle("Print a session time default instance with all methods.");
+            Console.WriteLine($"Method ToString() => {st}");
+            Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
+            Console.WriteLine($"Method ToLongString() => {st.ToLongString()}");
+
+            if (pauseWhenEnd)
+                Wait();
+
         }
 
-        #endregion
+        private void PrintSessionTimeCreateByType(TradingTime type, bool pauseWhenEnd = false)
+        {
+            // Create a session time by type.
+            SessionTime st = SessionTime.CreateSessionTimeByType(type);
 
-        static void PrintSession()
+            WriteTitle("Method to create a session time by type.");
+            Console.WriteLine(st.ToString());
+            Console.WriteLine(st.ToString("LOCAL"));
+
+            if (pauseWhenEnd)
+                Wait();
+        }
+
+        private void PrintSpecificSessionTimes(bool pauseWhenEnd = false)
+        {
+            WriteTitle("Print the specific session times.");
+            WriteEnum<TradingTime>((t) =>
+            {
+                if (t != TradingTime.Custom)
+                    Console.WriteLine(t.ToSessionTime().ToString("Local"));
+            });
+
+            if (pauseWhenEnd)
+                Wait();
+
+        }
+
+        private void PrintSessionTimesCompareMethods(TradingTime t1, TradingTime t2, bool pauseWhenEnd = false)
+        {
+            SessionTime st1 = SessionTime.CreateSessionTimeByType(t1);
+            SessionTime st2 = SessionTime.CreateSessionTimeByType(t2);
+
+            int i = SessionTime.Compare(st1,st2);
+
+            if (i < 0)
+                Console.WriteLine($"{nameof(st1)} is minor than {nameof(st2)}.");
+            if (i > 0)
+                Console.WriteLine($"{nameof(st1)} is major than {nameof(st2)}.");
+            if (i < 0)
+                Console.WriteLine($"{nameof(st1)} and {nameof(st2)} are equals.");
+
+            if (pauseWhenEnd)
+                Wait();
+
+        }
+
+
+        private void PrintSession()
         {
             while (true)
             {
@@ -123,6 +160,8 @@ namespace ConsoleApp
         //    Console.WriteLine(String.Format("Time 1: {0}",sessionTime1.ToUtcTime.ToString()));
         //    Console.WriteLine(String.Format("Time 2: {0}",sessionTime2.ToUtcTime.ToString()));
         //}
+
+        #endregion
 
     }
 }

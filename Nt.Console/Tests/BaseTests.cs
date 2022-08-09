@@ -16,9 +16,28 @@ namespace ConsoleApp
 
         public void WriteTitle(string title)
         {
-            Console.WriteLine();
-            Console.WriteLine(title);
-            Console.WriteLine();
+            string line = string.Empty;
+            foreach (char c in title)
+                line += "-";
+            Console.WriteLine(line);
+            Console.WriteLine(title.ToUpper());
+            Console.WriteLine(line);
+        }
+
+        public void WriteEnum<T>()
+            where T : Enum
+        {
+            Array array = Enum.GetValues(typeof(T));
+            foreach (T t in array)
+                Console.WriteLine(t.ToString());
+        }
+
+        public void WriteEnum<T>(Action<T> action)
+            where T : Enum
+        {
+            Array array = Enum.GetValues(typeof(T));
+            foreach (T t in array)
+                action(t);
         }
 
 
