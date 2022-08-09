@@ -313,8 +313,8 @@ namespace NtCore
         /// <returns>True if the objects are equal otherwise false.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is SessionTime time)
-                return time.Time == Time && time.TimeZoneInfo == TimeZoneInfo;
+            if (obj is SessionTime st)
+                return st == this; // this.Time == st.Time && this.UtcTime == st.UtcTime;
 
             return false;
         }
@@ -326,12 +326,13 @@ namespace NtCore
         /// <param name="value">The <see cref="SessionTime"/> to compare with the instance.</param>
         /// <returns>True if the pair of <see cref="SessionTime"/> are equals.</returns>
         /// <exception cref="ArgumentException">The <see cref="SessionTime"/>object passed as parameter cannot be null.</exception>
-        public bool Equals(SessionTime value)
+        public bool Equals(SessionTime st)
         {
-            if (value != null)
-                return value.Time == Time && value.TimeZoneInfo == TimeZoneInfo;
 
-            throw new ArgumentException("The argument can not be null.");
+            if (st is null)
+                return false;
+
+            return st == this; // this.Time == st.Time && this.UtcTime == st.UtcTime;
         }
 
         /// <summary>
@@ -344,10 +345,15 @@ namespace NtCore
         /// <exception cref="ArgumentException">The <see cref="SessionTime"/>objects passed as parameter cannot be null.</exception>
         public static bool Equals(SessionTime st1, SessionTime st2)
         {
-            if (st1 != null && st2 != null)
-                return st1.Time == st2.Time && st1.TimeZoneInfo == st2.TimeZoneInfo;
 
-            throw new ArgumentException("The arguments can not be null.");
+            if (st1 is null && st2 is null)
+                return true;
+
+            if (st1 is null || st2 is null)
+                return false;
+
+            return st1 == st2; // st1.Time == st2.Time && st1.UtcTime == st2.UtcTime;
+
         }
 
         /// <summary>
@@ -473,7 +479,7 @@ namespace NtCore
 
             if (compare < 0)
                 return true;
-
+            
             return false;
         }
 
@@ -508,37 +514,42 @@ namespace NtCore
             return false;
         }
 
-        /// <summary>
-        /// Determines whether two specified instances of <see cref="SessionTime"/> are the same.
-        /// </summary>
-        /// <param name="st1">The first object to compare.</param>
-        /// <param name="st2">The second object to compare.</param>
-        /// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
-        public static bool operator ==(SessionTime st1, SessionTime st2)
-        {
-            int compare = SessionTime.Compare(st1, st2);
+        ///// <summary>
+        ///// Determines whether two specified instances of <see cref="SessionTime"/> are the same.
+        ///// </summary>
+        ///// <param name="st1">The first object to compare.</param>
+        ///// <param name="st2">The second object to compare.</param>
+        ///// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
+        //public static bool operator ==(SessionTime st1, SessionTime st2)
+        //{
+        //    if (st1 is null && st2 is null)
+        //        return true;
+            
+        //    if (st1 is null || st2 is null)
+        //        return false;
 
-            if (compare == 0)
-                return true;
+        //    return st1.UtcTime == st2.UtcTime;
+        //}
 
-            return false;
-        }
+        ///// <summary>
+        ///// Determines whether two specified instances of <see cref="SessionTime"/> are not the same.
+        ///// </summary>
+        ///// <param name="st1">The first object to compare.</param>
+        ///// <param name="st2">The second object to compare.</param>
+        ///// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
+        //public static bool operator !=(SessionTime st1, SessionTime st2)
+        //{
+        //    if (st1 is null && st2 is null)
+        //        return false;
 
-        /// <summary>
-        /// Determines whether two specified instances of <see cref="SessionTime"/> are not the same.
-        /// </summary>
-        /// <param name="st1">The first object to compare.</param>
-        /// <param name="st2">The second object to compare.</param>
-        /// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
-        public static bool operator !=(SessionTime st1, SessionTime st2)
-        {
-            int compare = SessionTime.Compare(st1, st2);
+        //    if (st1 is null && !(st2 is null))
+        //        return true;
 
-            if (compare != 0)
-                return true;
+        //    if (!(st1 is null) || st2 is null)
+        //        return true;
 
-            return false;
-        }
+        //    return st1.UtcTime != st2.UtcTime;
+        //}
 
         /// <summary>
         /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.

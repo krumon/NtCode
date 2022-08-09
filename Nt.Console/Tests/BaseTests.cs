@@ -14,6 +14,14 @@ namespace ConsoleApp
             Console.WriteLine();
         }
 
+        public void WaitAndClear()
+        {
+            Console.WriteLine();
+            Console.Write("Press any key to continue...");
+            Console.ReadKey();
+            Console.Clear();
+        }
+
         public void WriteTitle(string title)
         {
             string line = string.Empty;

@@ -30,16 +30,21 @@ namespace ConsoleApp
 
         public override void Run()
         {
-            PrintDefaultInstance();
-            PrintSessionTimeCreateByType(TradingTime.American_RS_EOD_Close);
-            PrintSessionTimesCompareMethods(TradingTime.American_Open,TradingTime.European_Close,true);
+            WriteDefaultInstance();
+            Console.Clear();
+            WriteSessionTimeCreateByType(TradingTime.American_RS_EOD_Close);
+            Console.Clear();
+            WriteSpecificSessionTimes();
+            Console.Clear();
+            WriteSessionTimesCompareMethods(TradingTime.American_Close,TradingTime.American_Close);
+            WaitAndClear();
         }
 
         #endregion
 
         #region Private methods
 
-        private void PrintDefaultInstance(bool pauseWhenEnd = false)
+        private void WriteDefaultInstance()
         {
             // Create a default instance.
             SessionTime st = new SessionTime();
@@ -48,12 +53,9 @@ namespace ConsoleApp
             Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
             Console.WriteLine($"Method ToLongString() => {st.ToLongString()}");
 
-            if (pauseWhenEnd)
-                Wait();
-
         }
 
-        private void PrintSessionTimeCreateByType(TradingTime type, bool pauseWhenEnd = false)
+        private void WriteSessionTimeCreateByType(TradingTime type)
         {
             // Create a session time by type.
             SessionTime st = SessionTime.CreateSessionTimeByType(type);
@@ -62,11 +64,9 @@ namespace ConsoleApp
             Console.WriteLine(st.ToString());
             Console.WriteLine(st.ToString("LOCAL"));
 
-            if (pauseWhenEnd)
-                Wait();
         }
 
-        private void PrintSpecificSessionTimes(bool pauseWhenEnd = false)
+        private void WriteSpecificSessionTimes()
         {
             WriteTitle("Print the specific session times.");
             WriteEnum<TradingTime>((t) =>
@@ -75,27 +75,77 @@ namespace ConsoleApp
                     Console.WriteLine(t.ToSessionTime().ToString("Local"));
             });
 
-            if (pauseWhenEnd)
-                Wait();
-
         }
 
-        private void PrintSessionTimesCompareMethods(TradingTime t1, TradingTime t2, bool pauseWhenEnd = false)
+        private void WriteSessionTimesCompareMethods(TradingTime t1, TradingTime t2)
         {
             SessionTime st1 = SessionTime.CreateSessionTimeByType(t1);
             SessionTime st2 = SessionTime.CreateSessionTimeByType(t2);
+            int i;
+            bool b = false;
+            string s = string.Empty;
 
-            int i = SessionTime.Compare(st1,st2);
+            WriteTitle("methods to compare and operators.");
+            Console.WriteLine($"  {nameof(st1)} = {st1.ToString("local")}");
+            Console.WriteLine($"  {nameof(st2)} = {st2.ToString("local")}");
+            Console.WriteLine();
+
+            #region Method CompareTo(st1,st2)
+            
+            i = SessionTime.Compare(st1,st2);
 
             if (i < 0)
-                Console.WriteLine($"{nameof(st1)} is minor than {nameof(st2)}.");
+                s = $"=> {nameof(st1)} is minor than {nameof(st2)}.";
             if (i > 0)
-                Console.WriteLine($"{nameof(st1)} is major than {nameof(st2)}.");
-            if (i < 0)
-                Console.WriteLine($"{nameof(st1)} and {nameof(st2)} are equals.");
+                s = $"=> {nameof(st1)} is major than {nameof(st2)}.";
+            if (i == 0)
+                s = $"=> {nameof(st1)} and {nameof(st2)} are equals.";
 
-            if (pauseWhenEnd)
-                Wait();
+            Console.WriteLine($"- Method CompareTo(st1,st2) {s}");
+
+            #endregion
+
+            #region Method st1.CompareTo(st2)
+
+            i = st1.CompareTo(st2);
+
+            if (i < 0)
+                s = $"=> {nameof(st1)} is minor than {nameof(st2)}.";
+            if (i > 0)
+                s = $"=> {nameof(st1)} is major than {nameof(st2)}.";
+            if (i == 0)
+                s = $"=> {nameof(st1)} and {nameof(st2)} are equals.";
+
+            Console.WriteLine($"- Method st1.CompareTo(st2) {s}");
+
+            #endregion
+
+            #region Method Equals(st1,st2)
+            
+            b = SessionTime.Equals(st1,st2);
+
+            if (b)
+                s = $"=> {nameof(st1)} and {nameof(st2)} are equals.";
+            else
+                s = $"=> {nameof(st1)} and {nameof(st2)} are not equals.";
+
+            Console.WriteLine($"- Method Equals(st1,st2) {s}");
+
+            #endregion
+
+            // TODO: Este método no funciona. TimeZoneInfo falla en su operador ==
+            #region Method st1.Equals(st2)
+
+            b = st1.Equals(st2);
+
+            if (b)
+                s = $"=> {nameof(st1)} and {nameof(st2)} are equals.";
+            else
+                s = $"=> {nameof(st1)} and {nameof(st2)} are not equals.";
+
+            Console.WriteLine($"- Method st1.Equals(st2) {s}");
+
+            #endregion
 
         }
 
