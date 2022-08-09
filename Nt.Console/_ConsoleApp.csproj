@@ -64,6 +64,11 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\BaseTests.cs" />
+    <Compile Include="Tests\NtConnectionTests.cs" />
+    <Compile Include="Tests\SessionHoursTests.cs" />
+    <Compile Include="Tests\SimulatorTests.cs" />
+    <Compile Include="Tests\SessionTimeTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -9,12 +9,12 @@ namespace NtCore
         /// <summary>
         /// The unique code of the trading time.
         /// </summary>
-        private string code;
+        private string code = "Default";
 
         /// <summary>
         /// The description of the trading time.
         /// </summary>
-        private string description;
+        private string description = "UTC Initial Time of the Day.";
 
         /// <summary>
         /// The trading time type.
@@ -86,18 +86,18 @@ namespace NtCore
                 if (Time == null)
                     throw new ArgumentNullException(nameof(Time));
 
-                //TimeSpan utcTime = Time - TimeZoneInfo.BaseUtcOffset;
+                TimeSpan utcTime = Time - TimeZoneInfo.BaseUtcOffset;
 
-                //if (utcTime.TotalHours >= 24)
-                //{
-                //    utcTime -= TimeSpan.FromHours(24);
-                //}
-                //if (utcTime.TotalHours < 0)
-                //{
-                //    utcTime += TimeSpan.FromHours(24);
-                //}
+                if (utcTime.TotalHours >= 24)
+                {
+                    utcTime -= TimeSpan.FromHours(24);
+                }
+                if (utcTime.TotalHours < 0)
+                {
+                    utcTime += TimeSpan.FromHours(24);
+                }
 
-                return Time - TimeZoneInfo.BaseUtcOffset; // utcTime;
+                return utcTime;
             }
         }
 
@@ -114,18 +114,18 @@ namespace NtCore
                 if (Time == null)
                     throw new ArgumentNullException(nameof(Time));
 
-                //TimeSpan localTime = this.UtcTime + TimeZoneInfo.Local.BaseUtcOffset;
+                TimeSpan localTime = this.UtcTime + TimeZoneInfo.Local.BaseUtcOffset;
 
-                //if (localTime.TotalHours >= 24)
-                //{
-                //    localTime -= TimeSpan.FromHours(24);
-                //}
-                //if (localTime.TotalHours < 0)
-                //{
-                //    localTime += TimeSpan.FromHours(24);
-                //}
+                if (localTime.TotalHours >= 24)
+                {
+                    localTime -= TimeSpan.FromHours(24);
+                }
+                if (localTime.TotalHours < 0)
+                {
+                    localTime += TimeSpan.FromHours(24);
+                }
 
-                return UtcTime + TimeZoneInfo.Local.BaseUtcOffset; // localTime;
+                return localTime;
             }
         }
 
@@ -136,9 +136,10 @@ namespace NtCore
         /// <summary>
         /// Create a default instance of <see cref="SessionTime"/>.
         /// </summary>
-        protected SessionTime()
+        public SessionTime()
         {
-
+            Time = new TimeSpan();
+            TimeZoneInfo = TimeZoneInfo.Utc;
         }
 
         #endregion
@@ -223,7 +224,7 @@ namespace NtCore
                 // Returns the SessionTime TimeSpan for the date passed as parameter.
                 return GetTime(time,sourceTimeZoneInfo);
 
-            throw new Exception("The kind of the time must be Local or Utc");
+            throw new Exception("The kind of the " + nameof(time) + " must be Local or Utc");
         }
 
         /// <summary>
@@ -359,7 +360,7 @@ namespace NtCore
         /// -1 if <paramref name="st1"/>is minor than <paramref name="st1"/>,
         /// otherwise are equals and returns 0.</returns>
         /// <exception cref="ArgumentException">The <see cref="SessionTime"/>objects passed as parameter cannot be null.</exception>
-        public int Compare(SessionTime st1, SessionTime st2)
+        public static int Compare(SessionTime st1, SessionTime st2)
         {
             if (st1 == null || st2 == null)
                 throw new ArgumentException("The arguments can not be null.");
@@ -393,7 +394,7 @@ namespace NtCore
         {
             if (value == null)
             {
-                return 1;
+                throw new ArgumentException("Argument cannot be null");
             }
 
             if (!(value is SessionTime))
@@ -403,12 +404,12 @@ namespace NtCore
 
             TimeSpan valueUtcTime = ((SessionTime)value).UtcTime;
 
-            if (UtcTime > valueUtcTime)
+            if (this.UtcTime > valueUtcTime)
             {
                 return 1;
             }
 
-            if (UtcTime < valueUtcTime)
+            if (this.UtcTime < valueUtcTime)
             {
                 return -1;
             }
@@ -426,7 +427,7 @@ namespace NtCore
         {
             if (value == null)
             {
-                return 1;
+                throw new ArgumentException("Argument cannot be null");
             }
 
             TimeSpan valueUtcTime = ((SessionTime)value).UtcTime;
@@ -445,44 +446,98 @@ namespace NtCore
         }
 
         /// <summary>
-        /// Added the <see cref="SessionTime"/> objects passed by parameters.
+        /// Determines whether two specified instances of <see cref="SessionTime"/> that is greater than another specified.
         /// </summary>
-        /// <param name="st1"></param>
-        /// <param name="st2"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException">The object passed as parameter cannot be null.</exception>
-        public static SessionTime operator +(SessionTime st1, SessionTime st2)
+        /// <param name="st1">The first object to compare.</param>
+        /// <param name="st2">The second object to compare.</param>
+        /// <returns>True if <paramref name="st1"/> is greater than <paramref name="st2"/>; otherwise, false.</returns>
+        public static bool operator >(SessionTime st1, SessionTime st2)
         {
-            if (st1 == null || st2 == null)
-            {
-                throw new ArgumentException("The argument can not be null.");
-            }
+            int compare = SessionTime.Compare(st1, st2);
 
-            TimeSpan sum = st1.UtcTime + st2.UtcTime;
+            if (compare > 0)
+                return true;
 
-            TimeSpan st2UtcTime = st2.UtcTime;
-
-            return new SessionTime();
+            return false;
         }
 
-        public static SessionTime operator >(SessionTime st1, SessionTime st2)
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionTime"/> that is earlier than another specified.
+        /// </summary>
+        /// <param name="st1">The first object to compare.</param>
+        /// <param name="st2">The second object to compare.</param>
+        /// <returns>True if <paramref name="st1"/> is less than <paramref name="st2"/>; otherwise, false.</returns>
+        public static bool operator <(SessionTime st1, SessionTime st2)
         {
-            return new SessionTime();
+            int compare = SessionTime.Compare(st1, st2);
+
+            if (compare < 0)
+                return true;
+
+            return false;
         }
 
-        public static SessionTime operator <(SessionTime st1, SessionTime st2)
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionTime"/> that is the same as or greater than another specified.
+        /// </summary>
+        /// <param name="st1">The first object to compare.</param>
+        /// <param name="st2">The second object to compare.</param>
+        /// <returns>True if <paramref name="st1"/> is equal to or greater than <paramref name="st2"/>; otherwise, false.</returns>
+        public static bool operator >=(SessionTime st1, SessionTime st2)
         {
-            return new SessionTime();
+            int compare = SessionTime.Compare(st1, st2);
+
+            if (compare >= 0)
+                return true;
+
+            return false;
+        }
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionTime"/> that is the same as or earlier than another specified.
+        /// </summary>
+        /// <param name="st1">The first object to compare.</param>
+        /// <param name="st2">The second object to compare.</param>
+        /// <returns>True if <paramref name="st1"/> is equal to or less than <paramref name="st2"/>; otherwise, false.</returns>
+        public static bool operator <=(SessionTime st1, SessionTime st2)
+        {
+            int compare = SessionTime.Compare(st1, st2);
+
+            if (compare <= 0)
+                return true;
+
+            return false;
         }
 
-        public static SessionTime operator >=(SessionTime st1, SessionTime st2)
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionTime"/> are the same.
+        /// </summary>
+        /// <param name="st1">The first object to compare.</param>
+        /// <param name="st2">The second object to compare.</param>
+        /// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
+        public static bool operator ==(SessionTime st1, SessionTime st2)
         {
-            return new SessionTime();
+            int compare = SessionTime.Compare(st1, st2);
+
+            if (compare == 0)
+                return true;
+
+            return false;
         }
 
-        public static SessionTime operator <=(SessionTime st1, SessionTime st2)
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionTime"/> are not the same.
+        /// </summary>
+        /// <param name="st1">The first object to compare.</param>
+        /// <param name="st2">The second object to compare.</param>
+        /// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
+        public static bool operator !=(SessionTime st1, SessionTime st2)
         {
-            return new SessionTime();
+            int compare = SessionTime.Compare(st1, st2);
+
+            if (compare != 0)
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -501,7 +556,7 @@ namespace NtCore
         /// <returns></returns>
         public string ToLongString()
         {
-            return $"Code: {Code} | Description: {Description} | Time: {Time}";
+            return $"Code: {Code} | Description: {Description} | Time: {Time} | TimeZoneInfo: {TimeZoneInfo.DisplayName}";
         }
 
         /// <summary>
