@@ -7,42 +7,14 @@ namespace NtCore
         #region Private members
 
         /// <summary>
-        /// The unique code of the trading time.
-        /// </summary>
-        private string code = "Default";
-
-        /// <summary>
         /// The description of the trading time.
         /// </summary>
-        private string description = "UTC Initial Time of the Day.";
+        //private string description = "UTC Initial Time of the Day.";
 
         /// <summary>
         /// The trading time type.
         /// </summary>
         private TradingTime tradingTime;
-
-        ///// <summary>
-        ///// The <see cref="TimeZoneInfo"/> configute on ninjatrader plattaform.
-        ///// All ninjascript times are reference to this TimeZoneInfo.
-        ///// </summary>
-        //private TimeZoneInfo plattaformTimeZoneInfo;
-
-        ///// <summary>
-        ///// The <see cref="TimeZoneInfo"/> configure in the specific Chartcontrol.
-        ///// This property must be used to draw the times in the correct place on the chart.
-        ///// </summary>
-        //private TimeZoneInfo barsTimeZoneInfo;
-
-        ///// <summary>
-        ///// The instrument code to calculate the session time.
-        ///// This code represents de instrument represents on the chart.
-        ///// </summary>
-        //private InstrumentCode instrumentCode;
-
-        ///// <summary>
-        ///// The last <see cref="DateTime"/> of the session.
-        ///// </summary>
-        //private DateTime actualSessionTime = DateTime.MinValue; 
 
         #endregion
 
@@ -51,17 +23,36 @@ namespace NtCore
         /// <summary>
         /// The trading time type.
         /// </summary>
-        public TradingTime TradingTimeType => tradingTime;
+        public TradingTime TradingTime 
+        {
+            private set 
+            { 
+                tradingTime = value;
+
+                if (tradingTime == TradingTime.Custom)
+                {
+                    Code = ToDefaultCode();
+                    if (string.IsNullOrEmpty(Description))
+                        Description = $"Custom Session Time {LocalTime.TotalHours}.";
+                }
+                else
+                {
+                    Code = tradingTime.ToCode();
+                    Description = tradingTime.ToDescription();
+                }
+            }
+            get => tradingTime;
+        }
 
         /// <summary>
         /// Gets the unique code of the <see cref="SessionTime"/>.
         /// </summary>
-        public string Code => tradingTime == TradingTime.Custom ? code : tradingTime.ToCode();
+        public string Code { get; private set; }
 
         /// <summary>
         /// Gets the description of the <see cref="SessionTime"/>.
         /// </summary>
-        public string Description => tradingTime == TradingTime.Custom ? description : tradingTime.ToDescription();
+        public string Description {get; private set; }
 
         /// <summary>
         /// Gets or sets the <see cref="System.TimeZoneInfo"/> of the trading hour.
@@ -136,10 +127,8 @@ namespace NtCore
         /// <summary>
         /// Create a default instance of <see cref="SessionTime"/>.
         /// </summary>
-        public SessionTime()
+        private SessionTime()
         {
-            Time = new TimeSpan();
-            TimeZoneInfo = TimeZoneInfo.Utc;
         }
 
         #endregion
@@ -147,19 +136,19 @@ namespace NtCore
         #region Instance methods
 
         /// <summary>
-        /// Create a default instance of <see cref="SessionTime"/> by specific <see cref="TradingTime"/>.
+        /// Create a default instance of <see cref="SessionTime"/> by specific <see cref="NtCore.TradingTime"/>.
         /// </summary>
         /// <param name="tradingTime">The specific session time to create the instance.</param>
         /// <param name="instrumentCode">The unique code of the financial instrument session.</param>
-        /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
+        /// <param name="specificTimeOffset">The offset of the <see cref="DateTime"/> in minutes.</param>
         /// <returns>The session time instance.</returns>
-        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
+        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int specificTimeOffset = 0)
         {
             return new SessionTime 
             {
-                tradingTime = tradingTime,
                 TimeZoneInfo = tradingTime.ToTimeZoneInfo(instrumentCode),
-                Time = tradingTime.ToTime(instrumentCode, timeDisplacement)
+                Time = tradingTime.ToTime(instrumentCode, specificTimeOffset),
+                TradingTime = tradingTime
             };
         }
 
@@ -171,15 +160,14 @@ namespace NtCore
         /// <param name="code">The code of the custom session.</param>
         /// <param name="description">The description of the custom session time.</param>
         /// <returns>A new instance of the <see cref="SessionTime"/> with the specific parameters.</returns>
-        public static SessionTime CreateCustomSessionTime(TimeSpan time, TimeZoneInfo timeZoneInfo = null, string code = "CUSTOM", string description = "My Custom Session Time.")
+        public static SessionTime CreateCustomSessionTime(TimeSpan time, TimeZoneInfo timeZoneInfo = null, string description = "")
         {
             return new SessionTime
             {
-                tradingTime = TradingTime.Custom,
                 Time = time,
                 TimeZoneInfo = timeZoneInfo,
-                code = code,
-                description = description
+                Description = description,
+                TradingTime = TradingTime.Custom,
             };
         }
 
@@ -193,15 +181,14 @@ namespace NtCore
         /// <param name="code">The custom session code.</param>
         /// <param name="description">The custom session time description.</param>
         /// <returns></returns>
-        public static SessionTime CreateCustomSessionTime(int hour, int minute, int seconds, TimeZoneInfo timeZoneInfo = null, string code = "CUSTOM", string description = "")
+        public static SessionTime CreateCustomSessionTime(int hour, int minute, int seconds, TimeZoneInfo timeZoneInfo = null, string description = "")
         {
             return new SessionTime
             {
-                tradingTime = TradingTime.Custom,
-                code = code,
-                description = description,
+                Time = new TimeSpan(hour, minute, seconds),
                 TimeZoneInfo = timeZoneInfo,
-                Time = new TimeSpan(hour, minute, seconds)
+                Description = description,
+                TradingTime = TradingTime.Custom,
             };
         }
 
@@ -264,10 +251,6 @@ namespace NtCore
 
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
         /// Added the session time to the date passed as parameter and returns it.
         /// </summary>
@@ -278,32 +261,91 @@ namespace NtCore
             return new DateTime(date.Year, date.Month, date.Day, Time.Hours, date.Minute, date.Second, DateTimeKind.Unspecified);
         }
 
-        //public void Configure(string masterInstrument = "Default", TimeZoneInfo plattaformTimeZoneInfo = null, TimeZoneInfo barsTimeZoneInfo = null)
-        //{
-        //    this.instrumentCode = masterInstrument.ToInstrumentCode();
-        //    this.plattaformTimeZoneInfo = plattaformTimeZoneInfo ?? TimeZoneInfo.Local;
-        //    this.barsTimeZoneInfo = barsTimeZoneInfo ?? TimeZoneInfo.Local;
-        //}
+        /// <summary>
+        /// Indicates if <paramref name="st"/> exists in the <see cref="TradingTime"/> enum.
+        /// </summary>
+        /// <param name="st">Session time object to check exists.</param>
+        /// <returns>True if the session time object exists in the trading time type.</returns>
+        public bool Exist()
+        {
+            bool exist = false;
+            SessionTime st = CreateSessionTimeByType(TradingTime.American_Open);
+            SessionTime st_tmp;
+
+            EnumHelpers.Iterator<TradingTime>((t) =>
+            {
+                if (!exist)
+                {
+                    if (t == TradingTime.Custom)
+                        return;
+
+                    st_tmp = CreateSessionTimeByType(t);
+                    if (st.Equals(st_tmp))
+                        exist = true;
+                }
+            });
+
+            return exist;
+        }
 
         /// <summary>
-        /// Update the values when the bar of the char is updated.
-        /// The parameter are passed in <see cref="plattaformTimeZoneInfo"/> time.
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
         /// </summary>
-        /// <param name="time">The time passed by ninjascript.</param>
-        //public void OnBarUpdate(DateTime time)
-        //{
-        //    if (time < actualSessionTime)
-        //        return;
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"{Code} | {Time}";
+        }
 
-        //    if (actualSessionTime.Date == time.Date)
-        //        return;
+        /// <summary>
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// </summary>
+        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <returns></returns>
+        public string ToString(string format = "")
+        {
+            string f = format.ToUpper();
 
-        //    actualSessionTime = GetNextSessionTime(time);
-        //}
+            if (f == "UTC")
+                return $"{Code} | {UtcTime} Utc";
+
+            if (f == "LOCAL")
+                return $"{Code} | {LocalTime} Local";
+
+            return $"{Code} | {Time}";
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Code"/> and the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// </summary>
+        /// <returns></returns>
+        public string ToShortString()
+        {
+            return Time.ToString();
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Code"/>, <see cref="Description"/>, 
+        /// <see cref="Time"/> and <see cref="TimeZoneInfo"/> of the <see cref="SessionTime"/>. 
+        /// </summary>
+        /// <returns></returns>
+        public string ToLongString()
+        {
+            return $"Code: {Code} | Description: {Description} | Time: {Time} | TimeZoneInfo: {TimeZoneInfo.DisplayName}";
+        }
+
+        /// <summary>
+        /// Returns the hash code.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
 
         #endregion
 
-        #region Helper methods
+        #region Operator, Compare and Equity methods
 
         /// <summary>
         /// Compare <see cref="SessionTime"/> objects and return true if the elements are equals.
@@ -571,7 +613,7 @@ namespace NtCore
             if (st2 is null)
                 throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
 
-            return new TimeSpan((st1.UtcTime + st2.UtcTime).Ticks);
+            return st1.UtcTime + st2.UtcTime;
         }
 
         /// <summary>
@@ -622,62 +664,19 @@ namespace NtCore
             return new TimeSpan((st.UtcTime - ts).Ticks);
         }
 
-        /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return $"{Code} | {Time}";
-        }
+        #endregion
+
+        #region Helper Methods
 
         /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// Returns default code for custom session times.
         /// </summary>
-        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
-        /// <returns></returns>
-        public string ToString(string format = "")
+        /// <returns>Returns a string with the hours and minutes in specific time zone info and utc time zone info.</returns>
+        private string ToDefaultCode()
         {
-            string f = format.ToUpper();
-
-            if (f == "UTC")
-                return $"{Code} | {UtcTime}";
-
-            if (f == "LOCAL")
-                return $"{Code} | {LocalTime}";
-
-            return $"{Code} | {Time}";
-        }
-
-        /// <summary>
-        /// Returns the string that represents the <see cref="Code"/> and the <see cref="Time"/> of the <see cref="SessionTime"/>.
-        /// </summary>
-        /// <returns></returns>
-        public string ToShortString()
-        {
-            return Time.ToString();
-        }
-
-        /// <summary>
-        /// Returns the string that represents the <see cref="Code"/>, <see cref="Description"/>, 
-        /// <see cref="Time"/> and <see cref="TimeZoneInfo"/> of the <see cref="SessionTime"/>. 
-        /// </summary>
-        /// <returns></returns>
-        public string ToLongString()
-        {
-            return $"Code: {Code} | Description: {Description} | Time: {Time} | TimeZoneInfo: {TimeZoneInfo.DisplayName}";
-        }
-
-        /// <summary>
-        /// Returns the hash code.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
+            return $"CTM-{Time.Hours}{Time.Minutes}-{UtcTime.Hours}{UtcTime.Minutes}";
         }
 
         #endregion
-
     }
 }

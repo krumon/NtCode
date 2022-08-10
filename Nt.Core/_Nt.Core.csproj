@@ -62,6 +62,7 @@
     <Compile Include="Bars\SwingPoint.cs" />
     <Compile Include="Bars\BarsCache.cs" />
     <Compile Include="Drawing\LabelLineHelpers.cs" />
+    <Compile Include="Helpers\EnumHelpers.cs" />
     <Compile Include="Helpers\DateTimeHelpers.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\MarketExchangeHelpers.cs" />

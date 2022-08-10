@@ -30,13 +30,13 @@ namespace ConsoleApp
 
         public override void Run()
         {
-            DefaultInstance();
-            Console.Clear();
-            SessionTimeCreateByType(TradingTime.American_RS_EOD_Close);
-            Console.Clear();
-            SpecificSessionTimes();
-            Console.Clear();
-            SessionTimesCompareMethods(TradingTime.American_Close,TradingTime.American_RS_Open);
+            InstanceTests();
+            Clear();
+            ToStringTests(TradingTime.American_RS_EOD_Close);
+            Clear();
+            SessionTimeEnumTests();
+            Clear();
+            OperatorTests(TradingTime.Asian_Open,TradingTime.American_RS_EOD_Close);
             WaitAndClear();
         }
 
@@ -44,116 +44,150 @@ namespace ConsoleApp
 
         #region Private methods
 
-        private void DefaultInstance()
+        private void InstanceTests()
         {
-            // Create a default instance.
-            SessionTime st = new SessionTime();
-            WriteTitle("Print a session time default instance with all methods.");
+            // Create a custom instance.
+            Title("Test of Instance methods.");
+
+            SessionTime st = SessionTime.CreateCustomSessionTime(9,15,0,TimeZoneInfo.Local);
+            Console.WriteLine($"Method ToString() => {st}");
+            Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
+            Console.WriteLine($"Method ToLongString() => {st.ToLongString()}");
+
+            st = SessionTime.CreateCustomSessionTime(new TimeSpan(9,0,0),TimeZoneInfo.Local);
+            NewLine();
+            Console.WriteLine($"Method ToString() => {st}");
+            Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
+            Console.WriteLine($"Method ToLongString() => {st.ToLongString()}");
+
+            // Create instance by type
+            st = SessionTime.CreateSessionTimeByType(TradingTime.European_Open);
+            NewLine();
             Console.WriteLine($"Method ToString() => {st}");
             Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
             Console.WriteLine($"Method ToLongString() => {st.ToLongString()}");
 
         }
 
-        private void SessionTimeCreateByType(TradingTime type)
+        private void ToStringTests(TradingTime type)
         {
             // Create a session time by type.
             SessionTime st = SessionTime.CreateSessionTimeByType(type);
 
-            WriteTitle("Method to create a session time by type.");
+            Title("Test of To String methods.");
             Console.WriteLine(st.ToString());
+            Console.WriteLine(st.ToShortString());
+            Console.WriteLine(st.ToLongString());
             Console.WriteLine(st.ToString("LOCAL"));
-
+            Console.WriteLine(st.ToString("UTC"));
         }
 
-        private void SpecificSessionTimes()
+        private void SessionTimeEnumTests()
         {
-            WriteTitle("Print the specific session times.");
-            WriteEnum<TradingTime>((t) =>
+            Title("Test of iteration and check methods.");
+            EnumHelpers.Writer<TradingTime>();
+
+            NewLine();
+            EnumHelpers.Iterator<TradingTime>((t) =>
             {
                 if (t != TradingTime.Custom)
                     Console.WriteLine(t.ToSessionTime().ToString("Local"));
             });
 
+            NewLine();
+            SessionTime st = SessionTime.CreateSessionTimeByType(TradingTime.American_Open);
+            bool exist = st.Exist();
+
+            string s = exist ? "exist" : "don't exist";
+            Write(st.ToString());
+            Write($"{st.Description} {s} in {nameof(TradingTime)} enum.");
+
         }
 
-        private void SessionTimesCompareMethods(TradingTime t1, TradingTime t2)
+        private void OperatorTests(TradingTime t1, TradingTime t2)
         {
             SessionTime st1 = SessionTime.CreateSessionTimeByType(t1);
             SessionTime st2 = SessionTime.CreateSessionTimeByType(t2);
             int i;
-            bool b = false;
+            bool b;
             string s = string.Empty;
-
-            WriteTitle("methods to compare and operators.");
-            Console.WriteLine($"  {nameof(st1)} = {st1.ToString("local")}");
-            Console.WriteLine($"  {nameof(st2)} = {st2.ToString("local")}");
-            Console.WriteLine();
-
-            #region Method CompareTo(st1,st2)
+            string method = string.Empty;
             
+            NewLine();
+            Console.WriteLine($"{nameof(st1)} = {st1.ToString("local")}");
+            Console.WriteLine($"{nameof(st2)} = {st2.ToString("local")}");
+
+            #region Compare tests
+            
+            Title("Test of Compare methods.");
             i = SessionTime.Compare(st1,st2);
+            method = "CompareTo(st1,st2) =>";
 
             if (i < 0)
-                s = $"=> {nameof(st1)} is minor than {nameof(st2)}.";
+                s = $"{method} {st1.Code} is minor than {st2.Code}.";
             if (i > 0)
-                s = $"=> {nameof(st1)} is major than {nameof(st2)}.";
+                s = $"{method} {st1.Code} is major than {st2.Code}.";
             if (i == 0)
-                s = $"=> {nameof(st1)} and {nameof(st2)} are equals.";
-
-            Console.WriteLine($"- Method CompareTo(st1,st2) {s}");
-
-            #endregion
-
-            #region Method st1.CompareTo(st2)
+                s = $"{method} {st1.Code} and {st2.Code} have the same time.";
+            Write(s);
 
             i = st1.CompareTo(st2);
+            s = string.Empty;
+            method = "CompareTo(st2) =>";
 
             if (i < 0)
-                s = $"=> {nameof(st1)} is minor than {nameof(st2)}.";
+                s = $"{method} {st1.Code} is minor than {st2.Code}.";
             if (i > 0)
-                s = $"=> {nameof(st1)} is major than {nameof(st2)}.";
+                s = $"{method} {st1.Code} is major than {st2.Code}.";
             if (i == 0)
-                s = $"=> {nameof(st1)} and {nameof(st2)} are equals.";
-
-            Console.WriteLine($"- Method st1.CompareTo(st2) {s}");
+                s = $"{method} {st1.Code} and {st2.Code} have the same time.";
+            Write(s);
 
             #endregion
 
-            #region Method Equals(st1,st2)
-            
+            #region Equal tests
+
+            Title("Test of Equal methods.");
             b = SessionTime.Equals(st1,st2);
+            s = string.Empty;
+            method = "Equals(st1,st2) =>";
 
             if (b)
-                s = $"=> {nameof(st1)} and {nameof(st2)} are equals.";
+                s = $"{method} {st1.Code} and {st2.Code} are equals.";
             else
-                s = $"=> {nameof(st1)} and {nameof(st2)} are not equals.";
+                s = $"{method} {st1.Code} and {st2.Code} are not equals.";
+            Write(s);
 
-            Console.WriteLine($"- Method Equals(st1,st2) {s}");
-
-            #endregion
-
-            #region Method st1.Equals(st2)
+            b = st1.Equals(st2);
+            s = string.Empty;
+            method = "st1.Equals(st2) =>";
 
             if (st1.Equals(st2))
-                s = $"=> {nameof(st1)} and {nameof(st2)} are equals.";
+                s = $"{method} {nameof(st1)} and {nameof(st2)} are equals.";
             else
-                s = $"=> {nameof(st1)} and {nameof(st2)} are not equals.";
+                s = $"{method} {nameof(st1)} and {nameof(st2)} are not equals.";
 
-            Console.WriteLine($"- Method st1.Equals(st2) {s}");
+            Write(s);
 
             #endregion
 
             #region Method operators
 
+            Title("Test of Operator methods.");
+            s = string.Empty;
+
+            if (st1 == st2)
+                s += $"{st1.Code} is equal to {st2.Code}.{Environment.NewLine}";
+            if (st1 != st2)
+                s += $"{st1.Code} is not equal to {st2.Code}.{Environment.NewLine}";
             if (st1 <= st2)
-                s = $"{nameof(st1)} is equal to or less than {nameof(st2)}.";
-            else if (st1 >= st2)
-                s = $"{nameof(st1)} is equal to or greater than {nameof(st2)}.";
-            else if (st1 < st2)
-                s = $"{nameof(st1)} is less than {nameof(st2)}.";
-            else if (st1 > st2)
-                s = $"{nameof(st1)} is greater than {nameof(st2)}.";
+                s += $"{st1.Code} is equal to or less than {st2.Code}.{Environment.NewLine}";
+            if (st1 >= st2)
+                s += $"{st1.Code} is equal to or greater than {st2.Code}.{Environment.NewLine}";
+            if (st1 < st2)
+                s += $"{st1.Code} is less than {st2.Code}.{Environment.NewLine}";
+            if (st1 > st2)
+                s += $"{st1.Code} is greater than {st2.Code}.{Environment.NewLine}";
 
             Console.WriteLine(s);
             Console.WriteLine($"{nameof(st1)} + {nameof(st2)} = {(st1+st2).ToString()}");

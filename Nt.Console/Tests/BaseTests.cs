@@ -6,12 +6,37 @@ namespace ConsoleApp
     {
         public abstract void Run();
         
+        public void Title(string title)
+        {
+            string line = string.Empty;
+            foreach (char c in title)
+                line += "-";
+            Console.WriteLine(line);
+            Console.WriteLine(title.ToUpper());
+            Console.WriteLine(line);
+        }
+        
+        public void Write(string msg = "")
+        {
+            Console.WriteLine(msg);
+        }
+
+        public void NewLine()
+        {
+            Console.WriteLine();
+        }
+        
         public void Wait()
         {
             Console.WriteLine();
             Console.Write("Press any key to continue...");
             Console.ReadKey();
             Console.WriteLine();
+        }
+
+        public void Clear()
+        {
+            Console.Clear();
         }
 
         public void WaitAndClear()
@@ -21,33 +46,6 @@ namespace ConsoleApp
             Console.ReadKey();
             Console.Clear();
         }
-
-        public void WriteTitle(string title)
-        {
-            string line = string.Empty;
-            foreach (char c in title)
-                line += "-";
-            Console.WriteLine(line);
-            Console.WriteLine(title.ToUpper());
-            Console.WriteLine(line);
-        }
-
-        public void WriteEnum<T>()
-            where T : Enum
-        {
-            Array array = Enum.GetValues(typeof(T));
-            foreach (T t in array)
-                Console.WriteLine(t.ToString());
-        }
-
-        public void WriteEnum<T>(Action<T> action)
-            where T : Enum
-        {
-            Array array = Enum.GetValues(typeof(T));
-            foreach (T t in array)
-                action(t);
-        }
-
 
     }
 }
