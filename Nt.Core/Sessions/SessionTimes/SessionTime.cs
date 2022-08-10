@@ -314,7 +314,7 @@ namespace NtCore
         public override bool Equals(object obj)
         {
             if (obj is SessionTime st)
-                return st == this; // this.Time == st.Time && this.UtcTime == st.UtcTime;
+                return this.Time == st.Time && this.UtcTime == st.UtcTime && this.Code == st.Code;
 
             return false;
         }
@@ -332,7 +332,7 @@ namespace NtCore
             if (st is null)
                 return false;
 
-            return st == this; // this.Time == st.Time && this.UtcTime == st.UtcTime;
+            return this.Time == st.Time && this.UtcTime == st.UtcTime && this.Code == st.Code;
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace NtCore
             if (st1 is null || st2 is null)
                 return false;
 
-            return st1 == st2; // st1.Time == st2.Time && st1.UtcTime == st2.UtcTime;
+            return st1.Time == st2.Time && st1.UtcTime == st2.UtcTime & st1.Code == st2.Code;
 
         }
 
@@ -447,7 +447,7 @@ namespace NtCore
             {
                 return -1;
             }
-
+            
             return 0;
         }
 
@@ -459,12 +459,13 @@ namespace NtCore
         /// <returns>True if <paramref name="st1"/> is greater than <paramref name="st2"/>; otherwise, false.</returns>
         public static bool operator >(SessionTime st1, SessionTime st2)
         {
-            int compare = SessionTime.Compare(st1, st2);
+            if (st1 is null)
+                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
 
-            if (compare > 0)
-                return true;
+            if (st2 is null)
+                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
 
-            return false;
+            return st1.UtcTime > st2.UtcTime; ;
         }
 
         /// <summary>
@@ -475,12 +476,13 @@ namespace NtCore
         /// <returns>True if <paramref name="st1"/> is less than <paramref name="st2"/>; otherwise, false.</returns>
         public static bool operator <(SessionTime st1, SessionTime st2)
         {
-            int compare = SessionTime.Compare(st1, st2);
+            if (st1 is null)
+                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
 
-            if (compare < 0)
-                return true;
-            
-            return false;
+            if (st2 is null)
+                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
+
+            return st1.UtcTime < st2.UtcTime; ;
         }
 
         /// <summary>
@@ -491,12 +493,13 @@ namespace NtCore
         /// <returns>True if <paramref name="st1"/> is equal to or greater than <paramref name="st2"/>; otherwise, false.</returns>
         public static bool operator >=(SessionTime st1, SessionTime st2)
         {
-            int compare = SessionTime.Compare(st1, st2);
+            if (st1 is null)
+                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
 
-            if (compare >= 0)
-                return true;
+            if (st2 is null)
+                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
 
-            return false;
+            return st1.UtcTime >= st2.UtcTime; ;
         }
         /// <summary>
         /// Determines whether two specified instances of <see cref="SessionTime"/> that is the same as or earlier than another specified.
@@ -506,50 +509,118 @@ namespace NtCore
         /// <returns>True if <paramref name="st1"/> is equal to or less than <paramref name="st2"/>; otherwise, false.</returns>
         public static bool operator <=(SessionTime st1, SessionTime st2)
         {
-            int compare = SessionTime.Compare(st1, st2);
 
-            if (compare <= 0)
-                return true;
+            if (st1 is null)
+                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
 
-            return false;
+            if (st2 is null)
+                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
+
+            return st1.UtcTime <= st2.UtcTime; ;
         }
 
-        ///// <summary>
-        ///// Determines whether two specified instances of <see cref="SessionTime"/> are the same.
-        ///// </summary>
-        ///// <param name="st1">The first object to compare.</param>
-        ///// <param name="st2">The second object to compare.</param>
-        ///// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
-        //public static bool operator ==(SessionTime st1, SessionTime st2)
-        //{
-        //    if (st1 is null && st2 is null)
-        //        return true;
-            
-        //    if (st1 is null || st2 is null)
-        //        return false;
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionTime"/> have the same <see cref="Time"/>.
+        /// </summary>
+        /// <param name="st1">The first object to compare.</param>
+        /// <param name="st2">The second object to compare.</param>
+        /// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
+        public static bool operator ==(SessionTime st1, SessionTime st2)
+        {
+            if (st1 is null && st2 is null)
+                return true;
 
-        //    return st1.UtcTime == st2.UtcTime;
-        //}
+            if (st1 is null || st2 is null)
+                return false;
 
-        ///// <summary>
-        ///// Determines whether two specified instances of <see cref="SessionTime"/> are not the same.
-        ///// </summary>
-        ///// <param name="st1">The first object to compare.</param>
-        ///// <param name="st2">The second object to compare.</param>
-        ///// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
-        //public static bool operator !=(SessionTime st1, SessionTime st2)
-        //{
-        //    if (st1 is null && st2 is null)
-        //        return false;
+            return st1.UtcTime == st2.UtcTime;
+        }
 
-        //    if (st1 is null && !(st2 is null))
-        //        return true;
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionTime"/> haven't the same <see cref="Time"/>.
+        /// </summary>
+        /// <param name="st1">The first object to compare.</param>
+        /// <param name="st2">The second object to compare.</param>
+        /// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
+        public static bool operator !=(SessionTime st1, SessionTime st2)
+        {
+            if (st1 is null && st2 is null)
+                return false;
 
-        //    if (!(st1 is null) || st2 is null)
-        //        return true;
+            if (st1 is null && !(st2 is null))
+                return true;
 
-        //    return st1.UtcTime != st2.UtcTime;
-        //}
+            if (!(st1 is null) || st2 is null)
+                return true;
+
+            return st1.UtcTime != st2.UtcTime;
+        }
+
+        /// <summary>
+        /// Adds a specified session time to a specified session time, generating a new time span.
+        /// </summary>
+        /// <param name="st1">Session time value to add.</param>
+        /// <param name="st2">Session time value to add.</param>
+        /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="st1"/> and <paramref name="st2"/>.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TimeSpan operator+(SessionTime st1, SessionTime st2)
+        {
+            if (st1 is null)
+                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
+
+            if (st2 is null)
+                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
+
+            return new TimeSpan((st1.UtcTime + st2.UtcTime).Ticks);
+        }
+
+        /// <summary>
+        /// Adds a specified session time to a specified time span, generating a new time span.
+        /// </summary>
+        /// <param name="st">Session time value to add.</param>
+        /// <param name="ts">Time span value to add.</param>
+        /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="st"/> and <paramref name="ts"/>.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TimeSpan operator+(SessionTime st, TimeSpan ts)
+        {
+            if (st is null)
+                throw new ArgumentNullException($"the argument {nameof(st)} cannot be null.");
+
+            return new TimeSpan((st.UtcTime + ts).Ticks);
+        }
+
+        /// <summary>
+        /// Subtracts a specified session time from a specified session time value and returns a newtime span.
+        /// </summary>
+        /// <param name="st1">Session time value to substract.</param>
+        /// <param name="st2">Session time value to substract.</param>
+        /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="st1"/> minus the value of <paramref name="st2"/>.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TimeSpan operator-(SessionTime st1, SessionTime st2)
+        {
+            if (st1 is null)
+                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
+
+            if (st2 is null)
+                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
+
+            return new TimeSpan((st1.UtcTime - st2.UtcTime).Ticks);
+        }
+
+        /// <summary>
+        /// Subtracts a specified time span from a specified session time value and returns a newtime span.
+        /// </summary>
+        /// <param name="st">Session time value to add.</param>
+        /// <param name="ts">Time span value to add.</param>
+        /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="st"/> minus the value of <paramref name="ts"/>.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TimeSpan operator -(SessionTime st, TimeSpan ts)
+        {
+            if (st is null)
+                throw new ArgumentNullException($"the argument {nameof(st)} cannot be null.");
+
+            return new TimeSpan((st.UtcTime - ts).Ticks);
+        }
 
         /// <summary>
         /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.

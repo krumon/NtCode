@@ -30,13 +30,13 @@ namespace ConsoleApp
 
         public override void Run()
         {
-            WriteDefaultInstance();
+            DefaultInstance();
             Console.Clear();
-            WriteSessionTimeCreateByType(TradingTime.American_RS_EOD_Close);
+            SessionTimeCreateByType(TradingTime.American_RS_EOD_Close);
             Console.Clear();
-            WriteSpecificSessionTimes();
+            SpecificSessionTimes();
             Console.Clear();
-            WriteSessionTimesCompareMethods(TradingTime.American_Close,TradingTime.American_Close);
+            SessionTimesCompareMethods(TradingTime.American_Close,TradingTime.American_RS_Open);
             WaitAndClear();
         }
 
@@ -44,7 +44,7 @@ namespace ConsoleApp
 
         #region Private methods
 
-        private void WriteDefaultInstance()
+        private void DefaultInstance()
         {
             // Create a default instance.
             SessionTime st = new SessionTime();
@@ -55,7 +55,7 @@ namespace ConsoleApp
 
         }
 
-        private void WriteSessionTimeCreateByType(TradingTime type)
+        private void SessionTimeCreateByType(TradingTime type)
         {
             // Create a session time by type.
             SessionTime st = SessionTime.CreateSessionTimeByType(type);
@@ -66,7 +66,7 @@ namespace ConsoleApp
 
         }
 
-        private void WriteSpecificSessionTimes()
+        private void SpecificSessionTimes()
         {
             WriteTitle("Print the specific session times.");
             WriteEnum<TradingTime>((t) =>
@@ -77,7 +77,7 @@ namespace ConsoleApp
 
         }
 
-        private void WriteSessionTimesCompareMethods(TradingTime t1, TradingTime t2)
+        private void SessionTimesCompareMethods(TradingTime t1, TradingTime t2)
         {
             SessionTime st1 = SessionTime.CreateSessionTimeByType(t1);
             SessionTime st2 = SessionTime.CreateSessionTimeByType(t2);
@@ -133,12 +133,9 @@ namespace ConsoleApp
 
             #endregion
 
-            // TODO: Este método no funciona. TimeZoneInfo falla en su operador ==
             #region Method st1.Equals(st2)
 
-            b = st1.Equals(st2);
-
-            if (b)
+            if (st1.Equals(st2))
                 s = $"=> {nameof(st1)} and {nameof(st2)} are equals.";
             else
                 s = $"=> {nameof(st1)} and {nameof(st2)} are not equals.";
@@ -147,8 +144,24 @@ namespace ConsoleApp
 
             #endregion
 
-        }
+            #region Method operators
 
+            if (st1 <= st2)
+                s = $"{nameof(st1)} is equal to or less than {nameof(st2)}.";
+            else if (st1 >= st2)
+                s = $"{nameof(st1)} is equal to or greater than {nameof(st2)}.";
+            else if (st1 < st2)
+                s = $"{nameof(st1)} is less than {nameof(st2)}.";
+            else if (st1 > st2)
+                s = $"{nameof(st1)} is greater than {nameof(st2)}.";
+
+            Console.WriteLine(s);
+            Console.WriteLine($"{nameof(st1)} + {nameof(st2)} = {(st1+st2).ToString()}");
+            Console.WriteLine($"{nameof(st1)} - {nameof(st2)} = {(st1-st2).ToString()}");
+
+            #endregion
+
+        }
 
         private void PrintSession()
         {
