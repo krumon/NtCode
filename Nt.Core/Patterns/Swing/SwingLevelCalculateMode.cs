@@ -1,4 +1,4 @@
-﻿namespace NtCore
+﻿namespace Nt.Core
 {
     /// <summary>
     /// The calculate mode for the swing level.

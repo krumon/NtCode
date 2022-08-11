@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NtCore
+namespace Nt.Core
 {
     /// <summary>
     /// Contents properties and methods of specific trading time zone.

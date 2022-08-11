@@ -1,4 +1,4 @@
-﻿namespace NtConnect
+﻿namespace Nt.Connect
 {
 
     /// <summary>

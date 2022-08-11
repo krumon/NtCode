@@ -1,4 +1,4 @@
-﻿namespace NtCore
+﻿namespace Nt.Core
 {
     /// <summary>
     /// Type of arrows.

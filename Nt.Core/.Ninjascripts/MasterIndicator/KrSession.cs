@@ -1,4 +1,4 @@
-﻿namespace NtCore
+﻿namespace Nt.Core
 {
     /// <summary>
     /// Base class for any session in ninjatrader.

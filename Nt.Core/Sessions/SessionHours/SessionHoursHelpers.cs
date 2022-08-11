@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace NtCore
+namespace Nt.Core
 {
 
     /// <summary>

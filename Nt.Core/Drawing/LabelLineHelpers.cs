@@ -7,7 +7,7 @@ using System.Windows;
 
 #endregion
 
-namespace NtCore
+namespace Nt.Core
 {
     
     /// <summary>

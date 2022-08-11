@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 
-namespace NtCore
+namespace Nt.Core
 {
     public class PartialHoliday
     {

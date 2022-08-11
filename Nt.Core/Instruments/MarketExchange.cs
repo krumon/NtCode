@@ -1,5 +1,5 @@
 ﻿
-namespace NtCore
+namespace Nt.Core
 {
     /// <summary>
     /// The market exchange types.

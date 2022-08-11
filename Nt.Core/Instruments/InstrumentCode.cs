@@ -1,5 +1,5 @@
 ﻿
-namespace NtCore
+namespace Nt.Core
 {
     /// <summary>
     /// The unique code of financial instruments.

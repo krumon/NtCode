@@ -7,7 +7,7 @@
     <ProjectGuid>{3A644626-5B81-4EE5-9D67-6B77D5BA4940}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NtCore</RootNamespace>
+    <RootNamespace>Nt.Core</RootNamespace>
     <AssemblyName>Nt.Core</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -62,8 +62,6 @@
     <Compile Include="Bars\SwingPoint.cs" />
     <Compile Include="Bars\BarsCache.cs" />
     <Compile Include="Drawing\LabelLineHelpers.cs" />
-    <Compile Include="Helpers\EnumHelpers.cs" />
-    <Compile Include="Helpers\DateTimeHelpers.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\MarketExchangeHelpers.cs" />
     <Compile Include="Instruments\MarketExchange.cs" />
@@ -110,7 +108,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sessions\SessionTimes\SessionTime.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Kr.Core\Kr.Core.csproj">
+      <Project>{7b0da799-b199-47d4-baee-83f4a1fe636a}</Project>
+      <Name>Kr.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)bin\Debug\$(TargetFileName)" "$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\NinjaTrader 8\bin\Custom" /E /Y

@@ -1,7 +1,7 @@
 ﻿using NinjaTrader.Core;
 using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
-using NtCore;
+using Nt.Core;
 using System;
 using System.Collections.Generic;
 

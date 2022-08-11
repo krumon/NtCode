@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Kr.Core;
+using System;
 
-namespace NtCore
+namespace Nt.Core
 {
     public class SessionTime
     {
@@ -136,7 +137,7 @@ namespace NtCore
         #region Instance methods
 
         /// <summary>
-        /// Create a default instance of <see cref="SessionTime"/> by specific <see cref="NtCore.TradingTime"/>.
+        /// Create a default instance of <see cref="SessionTime"/> by specific <see cref="Nt.Core.TradingTime"/>.
         /// </summary>
         /// <param name="tradingTime">The specific session time to create the instance.</param>
         /// <param name="instrumentCode">The unique code of the financial instrument session.</param>

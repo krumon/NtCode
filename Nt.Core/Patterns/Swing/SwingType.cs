@@ -1,4 +1,4 @@
-﻿namespace NtCore
+﻿namespace Nt.Core
 {
     /// <summary>
     /// The type of swing. The swing can be formed by high prices or low prices

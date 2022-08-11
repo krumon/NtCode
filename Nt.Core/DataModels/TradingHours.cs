@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Xml.Serialization;
 
-namespace NtCore
+namespace Nt.Core
 {
     /// <summary>
     /// Represents the Trading Hours information returned from the current bars series. 

@@ -1,5 +1,5 @@
-﻿using NtConnect;
-using NtCore;
+﻿using Nt.Connect;
+using Nt.Core;
 using System;
 using System.Threading;
 

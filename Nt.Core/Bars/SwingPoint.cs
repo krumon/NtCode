@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace NtCore
+namespace Nt.Core
 {
     public class SwingPoint : NtElement
     {

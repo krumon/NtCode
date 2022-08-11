@@ -1,6 +1,6 @@
-﻿using NtCore;
+﻿using Kr.Core;
+using Nt.Core;
 using System;
-using System.Collections.Generic;
 
 namespace ConsoleApp
 {

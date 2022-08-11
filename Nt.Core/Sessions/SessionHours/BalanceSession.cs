@@ -1,5 +1,5 @@
 ﻿
-namespace NtCore
+namespace Nt.Core
 {
     /// <summary>
     /// Instrument session balances types.

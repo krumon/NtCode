@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NtCore
+namespace Nt.Core
 {
     /// <summary>
     /// Represents consts, fields and properties of the Ninjatrader user configuration.

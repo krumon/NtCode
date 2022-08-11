@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NtCore
+namespace Nt.Core
 {
     /// <summary>
     /// Represents the SessionHours Indicator Core.

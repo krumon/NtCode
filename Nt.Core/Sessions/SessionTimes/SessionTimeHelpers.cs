@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NtCore
+namespace Nt.Core
 {
 
     /// <summary>

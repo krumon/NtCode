@@ -1,4 +1,4 @@
-﻿using NtCore;
+﻿using Nt.Core;
 using NinjaTrader.Gui;
 
 namespace NinjaTrader.NinjaScript.DrawingTools
@@ -26,7 +26,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 			if (State == State.SetDefaults)
 			{
 				LabelType = LabelLineType.Price;
-				Name = NtCore.Texts.PriceLineDisplayName;
+				Name = Nt.Core.Texts.PriceLineDisplayName;
 				//Anchor.DisplayName = Nt.Core.Resources.Texts.AnchorYDisplayName;
 				//Anchor.IsXPropertiesVisible = false;
 				DisplayOnChartsMenus = true;

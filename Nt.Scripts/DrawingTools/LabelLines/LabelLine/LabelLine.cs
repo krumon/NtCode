@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Serialization;
 using NTRes.NinjaTrader.Gui.Chart;
-using NtCore;
+using Nt.Core;
 using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows;
@@ -159,13 +159,13 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 		/// Represents the horizontal alignment of the price label.
 		/// </summary>
 		[Display(Name = "Horizontal Alignment", Description = "The horizontal alignment of the label", GroupName = "Label", Order = 1)]
-		public NtCore.HorizontalAlignment LabelHorizontalAlignment { get; set; }
+		public HorizontalAlignment LabelHorizontalAlignment { get; set; }
 
 		/// <summary>
 		/// Represents the vertical alignment of the time label.
 		/// </summary>
 		[Display(Name = "Vertical Alignment", Description = "The vertical alignment of the label", GroupName = "Label", Order = 2)]
-		public NtCore.VerticalAlignment LabelVerticalAlignment { get; set; }
+		public VerticalAlignment LabelVerticalAlignment { get; set; }
 
 		/// <summary>
 		/// Type of the arrow of the label.

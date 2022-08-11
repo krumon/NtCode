@@ -74,13 +74,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Nt.Connect\Nt.Connect.csproj">
-      <Project>{d32c9296-c1c6-4e7c-8e9f-5139ba0a2334}</Project>
-      <Name>Nt.Connect</Name>
+    <ProjectReference Include="..\Kr.Core\Kr.Core.csproj">
+      <Project>{7B0DA799-B199-47D4-BAEE-83F4A1FE636A}</Project>
+      <Name>Kr.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Nt.Core\_Nt.Core.csproj">
+    <ProjectReference Include="..\Nt.Connect\NtConnect.csproj">
+      <Project>{d32c9296-c1c6-4e7c-8e9f-5139ba0a2334}</Project>
+      <Name>NtConnect</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Nt.Core\Nt.Core.csproj">
       <Project>{3a644626-5b81-4ee5-9d67-6b77d5ba4940}</Project>
-      <Name>_Nt.Core</Name>
+      <Name>Nt.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

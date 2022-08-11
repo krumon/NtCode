@@ -1,7 +1,7 @@
 ﻿using NinjaTrader.NinjaScript;
 using System;
 
-namespace NtCore
+namespace Nt.Core
 {
     /// <summary>
     /// Extension or helper methods of <see cref="ISeries{T}"/> class.

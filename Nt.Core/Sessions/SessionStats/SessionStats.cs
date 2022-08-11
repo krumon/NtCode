@@ -1,6 +1,6 @@
 ﻿using NinjaTrader.NinjaScript;
 
-namespace NtCore
+namespace Nt.Core
 {
     public class SessionStats
     {

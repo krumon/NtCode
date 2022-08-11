@@ -1,5 +1,4 @@
-﻿using NtCore;
-using System;
+﻿using System;
 
 namespace ConsoleApp
 {

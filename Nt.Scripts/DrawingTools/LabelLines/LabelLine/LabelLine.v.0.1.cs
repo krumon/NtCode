@@ -14,7 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Serialization;
 
-using NtCore;
+using Nt.Core;
 
 #endregion
 
@@ -183,7 +183,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 				{
 					IsEditing = true,
 					DrawingTool = this,
-					DisplayName = NtCore.Texts.LabelLineDisplayName,
+					DisplayName = Nt.Core.Texts.LabelLineDisplayName,
 					IsBrowsable = true
 				};
 				

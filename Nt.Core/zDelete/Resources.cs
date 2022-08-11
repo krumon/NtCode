@@ -1,5 +1,5 @@
 ﻿
-namespace NtCore
+namespace Nt.Core
 {
     ///// <summary>
     ///// All paths of the ninjascripts and the application.

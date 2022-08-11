@@ -4,7 +4,7 @@ using NinjaTrader.Gui.Chart;
 using NinjaTrader.NinjaScript;
 using NinjaTrader.NinjaScript.DrawingTools;
 
-namespace NtCore
+namespace Nt.Core
 {
     public class Test : NinjaScriptBase
     {

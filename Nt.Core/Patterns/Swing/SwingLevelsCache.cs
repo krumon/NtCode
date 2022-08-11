@@ -1,7 +1,7 @@
 ﻿using NinjaTrader.NinjaScript;
 using System;
 
-namespace NtCore
+namespace Nt.Core
 {
     public class SwingLevelsCache : Cache<SwingPoint>
     {
