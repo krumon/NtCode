@@ -6,7 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Strings\" />
+    <Folder Include="Math\" />
+    <Folder Include="Files\" />
+    <Folder Include="String\" />
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

@@ -8,11 +8,6 @@ namespace Nt.Core
         #region Private members
 
         /// <summary>
-        /// The description of the trading time.
-        /// </summary>
-        //private string description = "UTC Initial Time of the Day.";
-
-        /// <summary>
         /// The trading time type.
         /// </summary>
         private TradingTime tradingTime;
@@ -508,7 +503,7 @@ namespace Nt.Core
             if (st2 is null)
                 throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
 
-            return st1.UtcTime > st2.UtcTime; ;
+            return st1.UtcTime > st2.UtcTime;
         }
 
         /// <summary>
@@ -525,7 +520,7 @@ namespace Nt.Core
             if (st2 is null)
                 throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
 
-            return st1.UtcTime < st2.UtcTime; ;
+            return st1.UtcTime < st2.UtcTime;
         }
 
         /// <summary>
@@ -542,7 +537,7 @@ namespace Nt.Core
             if (st2 is null)
                 throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
 
-            return st1.UtcTime >= st2.UtcTime; ;
+            return st1.UtcTime >= st2.UtcTime;
         }
         /// <summary>
         /// Determines whether two specified instances of <see cref="SessionTime"/> that is the same as or earlier than another specified.
@@ -559,7 +554,7 @@ namespace Nt.Core
             if (st2 is null)
                 throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
 
-            return st1.UtcTime <= st2.UtcTime; ;
+            return st1.UtcTime <= st2.UtcTime;
         }
 
         /// <summary>
@@ -667,7 +662,7 @@ namespace Nt.Core
 
         #endregion
 
-        #region Helper Methods
+        #region Private Methods
 
         /// <summary>
         /// Returns default code for custom session times.

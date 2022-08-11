@@ -4,9 +4,9 @@ namespace Nt.Core
 {
 
     /// <summary>
-    /// Helper methods of trading hours classes.
+    /// <see cref="TradingTime"/> helper methods.
     /// </summary>
-    public static class SessionTimeHelpers
+    public static class TradingTimeHelpers
     {
 
         /// <summary>

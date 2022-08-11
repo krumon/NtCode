@@ -72,7 +72,10 @@
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
     <Compile Include=".Ninjascripts\MasterIndicator\KrSession.cs" />
+    <Compile Include="Sessions\SessionHours\BalanceSessionHelpers.cs" />
+    <Compile Include="Sessions\SessionHours\TradingSessionHelpers.cs" />
     <Compile Include="Sessions\SessionHours\SessionHoursStructure.cs" />
+    <Compile Include="Sessions\SessionTime\TradingTimeHelpers.cs" />
     <Compile Include="Users\Accounts.cs" />
     <Compile Include="Users\Settings.cs" />
     <Compile Include="Sessions\SessionHours\BalanceSession.cs" />
@@ -96,17 +99,15 @@
     <Compile Include="Patterns\Swing\SwingType.cs" />
     <Compile Include="Prices\CandleStickPrice.cs" />
     <Compile Include="Prices\PriceType.cs" />
-    <Compile Include="Sessions\SessionTimes\TradingTime.cs" />
-    <Compile Include="Sessions\SessionHours\SessionHoursHelpers.cs" />
+    <Compile Include="Sessions\SessionTime\TradingTime.cs" />
     <Compile Include="Sessions\SessionHours\SessionHours.cs" />
     <Compile Include="Sessions\SessionHours\TradingSession.cs" />
-    <Compile Include="Sessions\SessionTimes\SessionTimeHelpers.cs" />
     <Compile Include="Files\XmlFileItem.cs" />
     <Compile Include="Drawing\Margin.cs" />
     <Compile Include="zDelete\Resources.cs" />
     <Compile Include="zDelete\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sessions\SessionTimes\SessionTime.cs" />
+    <Compile Include="Sessions\SessionTime\SessionTime.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kr.Core\Kr.Core.csproj">

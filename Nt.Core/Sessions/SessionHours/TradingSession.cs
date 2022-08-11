@@ -25,6 +25,8 @@ namespace Nt.Core
         American_RS_EXT,            // American Residual Session - American Extra Time
         American_RS_EOD,            // American Residual Session - End Of Day
         American_RS_NWD,            // American Residual Session - New Day
+
+        Custom,                     // Custom session
         
         //// BALANCES
         //// --------

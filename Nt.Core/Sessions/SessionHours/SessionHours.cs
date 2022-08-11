@@ -17,29 +17,51 @@ namespace Nt.Core
 
         #region Private members
 
-        private TradingSession sessionType;
-        private BalanceSession balanceSession;
 
-        //private InstrumentCode instrumentCode;
+        /// <summary>
+        /// The trading session type.
+        /// </summary>
+        private TradingSession tradingSession;
+
+        //private BalanceSession balanceSession;
 
         #endregion
 
         #region Public properties
 
         /// <summary>
-        /// The type of the session.
+        /// The trading session type.
         /// </summary>
-        public TradingSession SessionType => sessionType;
+        public TradingSession TradingSession
+        {
+            private set
+            {
+                tradingSession = value;
+
+                if (tradingSession == TradingSession.Custom)
+                {
+                    Code = ToDefaultCode();
+                    if (string.IsNullOrEmpty(Description))
+                        Description = $"Custom Session Hours {BeginSessionTime.LocalTime.TotalHours}.{EndSessionTime.LocalTime.TotalHours}.";
+                }
+                else
+                {
+                    Code = tradingSession.ToCode();
+                    Description = tradingSession.ToDescription();
+                }
+            }
+            get => tradingSession;
+        }
 
         /// <summary>
         /// Gets the unique code of the <see cref="SessionHours"/>.
         /// </summary>
-        public string Code => sessionType.ToCode();
+        public string Code { get; private set; }
 
         /// <summary>
         /// Gets the description of the <see cref="SessionHours"/>.
         /// </summary>
-        public string Description => sessionType.ToDescription();
+        public string Description { get; private set; }
 
         /// <summary>
         /// The initial <see cref="SessionTime"/>.
@@ -57,14 +79,14 @@ namespace Nt.Core
         public List<SessionHours> Sessions { get; set; }
 
         /// <summary>
-        /// Collection of balance sessions in the <see cref="SessionHours"/>.
-        /// </summary>
-        public List<SessionHours> BalanceSessions { get; set; }
-
-        /// <summary>
         /// Indicates if the <see cref="SessionHours"/> has sessions.
         /// </summary>
         public bool HasSessions => Sessions != null && Sessions.Count >= 1;
+        
+        ///// <summary>
+        ///// Collection of balance sessions in the <see cref="SessionHours"/>.
+        ///// </summary>
+        //public List<SessionHours> BalanceSessions { get; set; }
 
         #endregion
 
@@ -82,9 +104,9 @@ namespace Nt.Core
         #region Instance methods
 
         /// <summary>
-        /// Create a new instance of <see cref="SessionHours"/> class with <see cref="TradingSession"/>.
+        /// Create a new instance of <see cref="SessionHours"/> class with <see cref="Core.TradingSession"/>.
         /// </summary>
-        /// <param name="tradingSession">the <see cref="TradingSession"/> to create the <see cref="SessionHours"/> class.</param>
+        /// <param name="tradingSession">the <see cref="Core.TradingSession"/> to create the <see cref="SessionHours"/> class.</param>
         /// <param name="instrumentCode">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
         /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
@@ -92,43 +114,46 @@ namespace Nt.Core
         {
             return new SessionHours
             {
-                sessionType = tradingSession,
                 BeginSessionTime = tradingSession.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
                 EndSessionTime = tradingSession.ToEndSessionTime(instrumentCode, endTimeDisplacement),
+                TradingSession = tradingSession,
             };
         }
 
-        /// <summary>
-        /// Create a new instance of <see cref="SessionHours"/> class with <see cref="BalanceSession"/>.
-        /// </summary>
-        /// <param name="balanceSession">the <see cref="BalanceSession"/> to create the <see cref="SessionHours"/>.</param>
-        /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
-        public static SessionHours CreateSessionBalanceByType(BalanceSession balanceSession, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
-        {
-            return new SessionHours
-            {
-                balanceSession = balanceSession,
-                sessionType = balanceSession.ToTradingSession(),
-                BeginSessionTime = balanceSession.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
-                EndSessionTime = balanceSession.ToEndSessionTime(instrumentCode, endTimeDisplacement),
-            };
-        }
 
         /// <summary>
         /// Create a new instance of <see cref="SessionHours"/> class with specific session times.
         /// </summary>
         /// <param name="beginSessionTime">The initial <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
         /// <param name="endSessionTime">The final <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
+        /// <param name="description">Custom session hours description.</param>
         /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
-        public static SessionHours CreateCustomSessionHours(TradingTime beginSessionTime, TradingTime endSessionTime)
+        public static SessionHours CreateCustomSessionHours(TradingTime beginSessionTime, TradingTime endSessionTime, string description = "")
         {
             return new SessionHours
             {
                 BeginSessionTime = SessionTime.CreateSessionTimeByType(beginSessionTime),
                 EndSessionTime = SessionTime.CreateSessionTimeByType(endSessionTime),
+                Description = description,
+                TradingSession = TradingSession.Custom,
             };
         }
 
+        ///// <summary>
+        ///// Create a new instance of <see cref="SessionHours"/> class with <see cref="BalanceSession"/>.
+        ///// </summary>
+        ///// <param name="balanceSession">the <see cref="BalanceSession"/> to create the <see cref="SessionHours"/>.</param>
+        ///// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
+        //public static SessionHours CreateSessionBalanceByType(BalanceSession balanceSession, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        //{
+        //    return new SessionHours
+        //    {
+        //        BeginSessionTime = balanceSession.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
+        //        EndSessionTime = balanceSession.ToEndSessionTime(instrumentCode, endTimeDisplacement),
+        //        TradingSession = balanceSession.ToTradingSession(),
+        //        //balanceSession = balanceSession,
+        //    };
+        //}
 
         #endregion
 
@@ -423,7 +448,341 @@ namespace Nt.Core
 
         #endregion
 
-        #region Private methods
+        #region Operator, Compare and Equity methods
+
+        /// <summary>
+        /// Compare <see cref="SessionTime"/> objects and return true if the elements are equals.
+        /// the <see cref="SessionTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// </summary>
+        /// <param name="obj">The object to compare.</param>
+        /// <returns>True if the objects are equal otherwise false.</returns>
+        public override bool Equals(object obj)
+        {
+            if (obj is SessionHours sh)
+                return BeginSessionTime.Equals(sh.BeginSessionTime) && EndSessionTime.Equals(sh.EndSessionTime) && this.Code == sh.Code;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Compare <see cref="SessionTime"/> objects and return true if the elements are equals.
+        /// the <see cref="SessionTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// </summary>
+        /// <param name="value">The <see cref="SessionTime"/> to compare with the instance.</param>
+        /// <returns>True if the pair of <see cref="SessionTime"/> are equals.</returns>
+        /// <exception cref="ArgumentException">The <see cref="SessionTime"/>object passed as parameter cannot be null.</exception>
+        public bool Equals(SessionHours sh)
+        {
+
+            if (sh is null)
+                return false;
+
+            return BeginSessionTime.Equals(sh.BeginSessionTime) && EndSessionTime.Equals(sh.EndSessionTime) && this.Code == sh.Code;
+        }
+
+        /// <summary>
+        /// Compare <see cref="SessionTime"/> objects and return true if the elements are equals.
+        /// the <see cref="SessionTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// </summary>
+        /// <param name="sh1">The first <see cref="SessionTime"/> object to compare with the second.</param>
+        /// <param name="sh2">The second <see cref="SessionTime"/> object to compare with the first.</param>
+        /// <returns>True if <see cref="SessionTime"/> objects are equals.</returns>
+        /// <exception cref="ArgumentException">The <see cref="SessionTime"/>objects passed as parameter cannot be null.</exception>
+        public static bool Equals(SessionHours sh1, SessionHours sh2)
+        {
+
+            if (sh1 is null && sh2 is null)
+                return true;
+
+            if (sh1 is null || sh2 is null)
+                return false;
+
+            return SessionTime.Equals(sh1.BeginSessionTime, sh2.BeginSessionTime) && SessionTime.Equals(sh1.EndSessionTime, sh2.EndSessionTime) && sh1.Code == sh2.Code;
+
+        }
+
+        /// <summary>
+        /// Compare <see cref="SessionHours"/> objects and return 1 if <paramref name="sh1"/> is greater than <paramref name="sh2"/>, 
+        /// otherwise returns -1 and 0 if the objects are equals.
+        /// </summary>
+        /// <param name="sh1">The first <see cref="SessionHours"/> object to compare with the second.</param>
+        /// <param name="sh2">The second <see cref="SessionHours"/> object to compare with the first.</param>
+        /// <returns>1 if <paramref name="sh1"/>is greater than <paramref name="sh2"/>,
+        /// -1 if <paramref name="sh1"/>is minor than <paramref name="sh1"/>,
+        /// otherwise are equals and returns 0.</returns>
+        /// <exception cref="ArgumentException">The <see cref="SessionHours"/>objects passed as parameter cannot be null.</exception>
+        public static int Compare(SessionHours sh1, SessionHours sh2)
+        {
+            if (sh1 == null || sh2 == null)
+                throw new ArgumentException("The arguments can not be null.");
+
+            TimeSpan sh1UtcTime = sh1.BeginSessionTime.Time + sh1.EndSessionTime.Time;
+            TimeSpan sh2UtcTime = sh2.EndSessionTime.Time + sh2.EndSessionTime.Time;
+
+            if (sh1UtcTime > sh2UtcTime)
+            {
+                return 1;
+            }
+
+            if (sh1UtcTime < sh2UtcTime)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Compare <paramref name="value"/> object with the object instance and return 1 if the instance is major than the second, 
+        /// otherwise returns -1 and 0 if the objects are equals.
+        /// </summary>
+        /// <param name="value">The object to compare.</param>
+        /// <returns>1 if <paramref name="value"/>is minor than the object instance,
+        /// -1 if <paramref name="value"/>is major than <paramref name="st1"/>,
+        /// otherwise are equals and returns 0.</returns>
+        /// <exception cref="ArgumentException">The object passed as parameter cannot be null.</exception>
+        public int CompareTo(object value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentException("Argument cannot be null");
+            }
+
+            if (value is SessionHours sh)
+            {
+                TimeSpan utcTime = this.BeginSessionTime.Time + this.EndSessionTime.Time;
+                TimeSpan shUtcTime = sh.EndSessionTime.Time + sh.EndSessionTime.Time;
+
+                if (utcTime > shUtcTime)
+                {
+                    return 1;
+                }
+
+                if (utcTime < shUtcTime)
+                {
+                    return -1;
+                }
+
+                return 0;
+            }
+
+            throw new ArgumentException("Argument must be SessionHours object.");
+        }
+
+        /// <summary>
+        /// Compare <see cref="SessionHours"/> to <see cref="SessionHours"/> instance and return 1 
+        /// if the instance is major than the second, 
+        /// otherwise returns -1 and 0 if the objects are equals.
+        /// <param name="value">The target object to compare.</param>
+        /// <returns></returns>
+        public int CompareTo(SessionHours value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentException("Argument cannot be null");
+            }
+
+            TimeSpan thisUtcTime = this.BeginSessionTime.Time + this.EndSessionTime.Time;
+            TimeSpan valueUtcTime = ((SessionHours)value).EndSessionTime.Time + ((SessionHours)value).EndSessionTime.Time;
+
+            if (thisUtcTime > valueUtcTime)
+            {
+                return 1;
+            }
+
+            if (thisUtcTime < valueUtcTime)
+            {
+                return -1;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionHours"/> that is greater than another specified.
+        /// </summary>
+        /// <param name="sh1">The first object to compare.</param>
+        /// <param name="sh2">The second object to compare.</param>
+        /// <returns>True if <paramref name="sh1"/> is greater than <paramref name="sh2"/>; otherwise, false.</returns>
+        public static bool operator >(SessionHours sh1, SessionHours sh2)
+        {
+            if (sh1 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
+
+            if (sh2 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh2)} cannot be null.");
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionHours"/> that is earlier than another specified.
+        /// </summary>
+        /// <param name="sh1">The first object to compare.</param>
+        /// <param name="sh2">The second object to compare.</param>
+        /// <returns>True if <paramref name="sh1"/> is less than <paramref name="sh2"/>; otherwise, false.</returns>
+        public static bool operator <(SessionHours sh1, SessionHours sh2)
+        {
+            if (sh1 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
+
+            if (sh2 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh2)} cannot be null.");
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionHours"/> that is the same as or greater than another specified.
+        /// </summary>
+        /// <param name="sh1">The first object to compare.</param>
+        /// <param name="sh2">The second object to compare.</param>
+        /// <returns>True if <paramref name="sh1"/> is equal to or greater than <paramref name="sh2"/>; otherwise, false.</returns>
+        public static bool operator >=(SessionHours sh1, SessionHours sh2)
+        {
+            if (sh1 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
+
+            if (sh2 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh2)} cannot be null.");
+
+            return false;
+        }
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionHours"/> that is the same as or earlier than another specified.
+        /// </summary>
+        /// <param name="sh1">The first object to compare.</param>
+        /// <param name="sh2">The second object to compare.</param>
+        /// <returns>True if <paramref name="sh1"/> is equal to or less than <paramref name="sh2"/>; otherwise, false.</returns>
+        public static bool operator <=(SessionHours sh1, SessionHours sh2)
+        {
+
+            if (sh1 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
+
+            if (sh2 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh2)} cannot be null.");
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionHours"/> have the same <see cref="Time"/>.
+        /// </summary>
+        /// <param name="sh1">The first object to compare.</param>
+        /// <param name="sh2">The second object to compare.</param>
+        /// <returns>True if <paramref name="sh1"/> and <paramref name="sh2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
+        public static bool operator ==(SessionHours sh1, SessionHours sh2)
+        {
+            if (sh1 is null && sh2 is null)
+                return true;
+
+            if (sh1 is null || sh2 is null)
+                return false;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether two specified instances of <see cref="SessionHours"/> haven't the same <see cref="Time"/>.
+        /// </summary>
+        /// <param name="sh1">The first object to compare.</param>
+        /// <param name="sh2">The second object to compare.</param>
+        /// <returns>True if <paramref name="sh1"/> and <paramref name="sh2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
+        public static bool operator !=(SessionHours sh1, SessionHours sh2)
+        {
+            if (sh1 is null && sh2 is null)
+                return false;
+
+            if (sh1 is null && !(sh2 is null))
+                return true;
+
+            if (!(sh1 is null) || sh2 is null)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Adds a specified session time to a specified session time, generating a new time span.
+        /// </summary>
+        /// <param name="sh1">Session time value to add.</param>
+        /// <param name="sh2">Session time value to add.</param>
+        /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="sh1"/> and <paramref name="sh2"/>.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TimeSpan operator +(SessionHours sh1, SessionHours sh2)
+        {
+            if (sh1 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
+
+            if (sh2 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh2)} cannot be null.");
+
+            return sh1.BeginSessionTime.UtcTime + sh2.EndSessionTime.UtcTime;
+        }
+
+        /// <summary>
+        /// Adds a specified session time to a specified time span, generating a new time span.
+        /// </summary>
+        /// <param name="sh">Session time value to add.</param>
+        /// <param name="ts">Time span value to add.</param>
+        /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="sh"/> and <paramref name="ts"/>.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TimeSpan operator +(SessionHours sh, TimeSpan ts)
+        {
+            if (sh is null)
+                throw new ArgumentNullException($"the argument {nameof(sh)} cannot be null.");
+
+            return new TimeSpan((sh.EndSessionTime.UtcTime + ts).Ticks);
+        }
+
+        /// <summary>
+        /// Subtracts a specified session time from a specified session time value and returns a newtime span.
+        /// </summary>
+        /// <param name="sh1">Session time value to substract.</param>
+        /// <param name="sh2">Session time value to substract.</param>
+        /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="sh1"/> minus the value of <paramref name="sh2"/>.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TimeSpan operator -(SessionHours sh1, SessionHours sh2)
+        {
+            if (sh1 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
+
+            if (sh2 is null)
+                throw new ArgumentNullException($"the argument {nameof(sh2)} cannot be null.");
+
+            return new TimeSpan((sh1.EndSessionTime.UtcTime - sh2.BeginSessionTime.UtcTime).Ticks);
+        }
+
+        /// <summary>
+        /// Subtracts a specified time span from a specified session time value and returns a newtime span.
+        /// </summary>
+        /// <param name="sh">Session time value to add.</param>
+        /// <param name="ts">Time span value to add.</param>
+        /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="sh"/> minus the value of <paramref name="ts"/>.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static TimeSpan operator -(SessionHours sh, TimeSpan ts)
+        {
+            if (sh is null)
+                throw new ArgumentNullException($"the argument {nameof(sh)} cannot be null.");
+
+            return new TimeSpan((sh.BeginSessionTime.UtcTime - ts).Ticks);
+        }
+
+        #endregion
+
+
+
+        #region Private Methods
+
+        /// <summary>
+        /// Returns default code for custom session times.
+        /// </summary>
+        /// <returns>Returns a string with the hours and minutes in specific time zone info and utc time zone info.</returns>
+        private string ToDefaultCode()
+        {
+            return $"CTM-{BeginSessionTime.Time.TotalHours}{EndSessionTime.Time.TotalHours}-{BeginSessionTime.UtcTime.TotalHours}{EndSessionTime.UtcTime.TotalHours}";
+        }
 
         // TODO: Codificar el método "Add" para añadir sesiones conforme al enum TradingSession
         //       y organizando según queramos que se vean las sesiones.
