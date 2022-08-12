@@ -73,16 +73,6 @@ namespace Nt.Core
         /// </summary>
         public SessionTime EndSessionTime { get; set; }
 
-        /// <summary>
-        /// Collection of minor sessions in the <see cref="SessionHours"/>.
-        /// </summary>
-        public List<SessionHours> Sessions { get; set; }
-
-        /// <summary>
-        /// Indicates if the <see cref="SessionHours"/> has sessions.
-        /// </summary>
-        public bool HasSessions => Sessions != null && Sessions.Count >= 1;
-        
         ///// <summary>
         ///// Collection of balance sessions in the <see cref="SessionHours"/>.
         ///// </summary>
@@ -124,16 +114,49 @@ namespace Nt.Core
         /// <summary>
         /// Create a new instance of <see cref="SessionHours"/> class with specific session times.
         /// </summary>
-        /// <param name="beginSessionTime">The initial <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
-        /// <param name="endSessionTime">The final <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
+        /// <param name="beginTradingSession">The initial <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
+        /// <param name="endTradingSession">The final <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
-        public static SessionHours CreateCustomSessionHours(TradingTime beginSessionTime, TradingTime endSessionTime, string description = "")
+        public static SessionHours CreateCustomSessionHours(TradingTime beginTradingSession, TradingTime endTradingSession, string description = "")
         {
             return new SessionHours
             {
-                BeginSessionTime = SessionTime.CreateSessionTimeByType(beginSessionTime),
-                EndSessionTime = SessionTime.CreateSessionTimeByType(endSessionTime),
+                BeginSessionTime = SessionTime.CreateSessionTimeByType(beginTradingSession),
+                EndSessionTime = SessionTime.CreateSessionTimeByType(endTradingSession),
+                Description = description,
+                TradingSession = TradingSession.Custom,
+            };
+        }
+
+        public static SessionHours CreateCustomSessionHours(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTime endTradingTime, string description = "")
+        {
+            return new SessionHours
+            {
+                BeginSessionTime = SessionTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
+                EndSessionTime = SessionTime.CreateSessionTimeByType(endTradingTime),
+                Description = description,
+                TradingSession = TradingSession.Custom,
+            };
+        }
+
+        public static SessionHours CreateCustomSessionHours(TradingTime beginTradingTime, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
+        {
+            return new SessionHours
+            {
+                BeginSessionTime = SessionTime.CreateSessionTimeByType(beginTradingTime),
+                EndSessionTime = SessionTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
+                Description = description,
+                TradingSession = TradingSession.Custom,
+            };
+        }
+
+        public static SessionHours CreateCustomSessionHours(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
+        {
+            return new SessionHours
+            {
+                BeginSessionTime = SessionTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom Session - Open Time" : description + " - Open"),
+                EndSessionTime = SessionTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom Session - Close Time" : description + " - Close"),
                 Description = description,
                 TradingSession = TradingSession.Custom,
             };
@@ -274,32 +297,15 @@ namespace Nt.Core
         /// Converts the <see cref="SessionHours"/> to string.
         /// </summary>
         /// <returns></returns>
-        public override string ToString()
-        {
-            DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
-
-            string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
-
-            if (HasSessions)
-                for (int i = 0; i < Sessions.Count; i++)
-                    sessions += Environment.NewLine + Sessions[i].ToString();
-
-            return sessions;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="SessionHours"/> to string.
-        /// </summary>
-        /// <returns></returns>
         public string ToString(bool onlyActualSession = true)
         {
             DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
             string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
             if (!onlyActualSession)
             {
-                if (HasSessions)
-                    for (int i = 0; i < Sessions.Count; i++)
-                        sessions += Environment.NewLine + Sessions[i].ToString(onlyActualSession);
+                //if (HasSessions)
+                //    for (int i = 0; i < Sessions.Count; i++)
+                //        sessions += Environment.NewLine + Sessions[i].ToString(onlyActualSession);
             }
 
             return sessions;
@@ -315,125 +321,43 @@ namespace Nt.Core
             return String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
         }
 
-        public SessionHours GetRegularSession()
+        /// <summary>
+        /// Converts the <see cref="SessionHours"/> to string.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
         {
-            return CreateSessionHoursByType(TradingSession.Regular);
+
+            return ""; // sessions;
         }
 
-        public SessionHours GetOvernightSession()
+        /// <summary>
+        /// Converts the <see cref="SessionHours"/> to short string.
+        /// </summary>
+        /// <returns></returns>
+        public string ToShortString()
         {
-            return CreateSessionHoursByType(TradingSession.OVN);
+
+            return "Aún no se ha desarrollado este método :)";
         }
 
-        public SessionHours GetEuropeanSession()
+        /// <summary>
+        /// Converts the <see cref="SessionHours"/> to long string.
+        /// </summary>
+        /// <returns></returns>
+        public string ToLongString()
         {
-            return CreateSessionHoursByType(TradingSession.European);
+
+            return "Aún no se ha desarrollado este método :)";
         }
 
-        public SessionHours GetAsianSession()
+        /// <summary>
+        /// Returns the hash code.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
         {
-            return CreateSessionHoursByType(TradingSession.Asian);
-        }
-
-        public SessionHours GetAmericanSession()
-        {
-            return CreateSessionHoursByType(TradingSession.American);
-        }
-        
-        public SessionHours GetAmericanAndEuropeanSession()
-        {
-            return CreateSessionHoursByType(TradingSession.AmericanAndEuropean);
-        }
-
-        public SessionHours GetAmericanResidualSession()
-        {
-            return CreateSessionHoursByType(TradingSession.American_RS); ;
-        }
-
-        public SessionHours GetAsianResidualSession()
-        {
-            return CreateSessionHoursByType(TradingSession.Asian_RS); ;
-        }
-
-        public SessionHours GetAmericanResidualExtraTimeSession()
-        {
-            return CreateSessionHoursByType(TradingSession.American_RS_EXT); ;
-        }
-
-        public SessionHours GetAmericanResidualEndOfDaySession()
-        {
-            return CreateSessionHoursByType(TradingSession.American_RS_EOD); ;
-        }
-
-        public SessionHours GetAmericanResidualNewDaySession()
-        {
-            return CreateSessionHoursByType(TradingSession.American_RS_NWD); ;
-        }
-
-        public List<SessionHours> GetAmericanSessions()
-        {
-            List<SessionHours> sessions = new List<SessionHours>
-            {
-                CreateSessionHoursByType(TradingSession.AmericanAndEuropean),
-                CreateSessionHoursByType(TradingSession.American),
-            };
-
-            return sessions;
-        }
-
-        public List<SessionHours> GetAmericanResidualSessions()
-        {
-            List<SessionHours> sessions = new List<SessionHours>
-            {
-                CreateSessionHoursByType(TradingSession.American_RS_EXT),
-                CreateSessionHoursByType(TradingSession.American_RS_EXT),
-                CreateSessionHoursByType(TradingSession.American_RS_NWD)
-            };
-
-            return sessions;
-        }
-
-        public void AddSession(
-            TradingSession sessionType, 
-            InstrumentCode instrumentCode = InstrumentCode.Default, 
-            int includeInitialBalance = 0, 
-            int includeFinalBalance = 0)
-        {
-
-            if (Sessions == null)
-                Sessions = new List<SessionHours>();
-
-            Add(sessionType.ToSessionHours(instrumentCode, includeInitialBalance));
-        }
-
-        public void Remove(SessionHours sessionHours)
-        {
-            if (sessionHours == null)
-                throw new ArgumentNullException(nameof(sessionHours));
-
-            if (Sessions == null)
-                throw new ArgumentNullException(nameof(Sessions));
-
-            Sessions.Remove(sessionHours);
-
-            if (Sessions.Count == 0)
-                Sessions = null;
-
-        }
-
-        public void Clear()
-        {
-            Sessions.Clear();
-
-            Sessions = null;
-        }
-
-        public void Iterator(Action<SessionHours> action = null)
-        {
-            action(this);
-            if (HasSessions)
-                for (int i = 0; i < Sessions.Count; i++)
-                    Sessions[i].Iterator(action);
+            return base.GetHashCode();
         }
 
         //public bool IsBetween(DateTime currentDateTime, DateTime minorDateTime, DateTime majorDateTime)
@@ -771,8 +695,6 @@ namespace Nt.Core
 
         #endregion
 
-
-
         #region Private Methods
 
         /// <summary>
@@ -784,28 +706,87 @@ namespace Nt.Core
             return $"CTM-{BeginSessionTime.Time.TotalHours}{EndSessionTime.Time.TotalHours}-{BeginSessionTime.UtcTime.TotalHours}{EndSessionTime.UtcTime.TotalHours}";
         }
 
-        // TODO: Codificar el método "Add" para añadir sesiones conforme al enum TradingSession
-        //       y organizando según queramos que se vean las sesiones.
-        private void Add(SessionHours session)
+        #endregion
+
+        #region Helpèr methods
+
+        public SessionHours GetRegularSession()
         {
-            if (session == null)
-                throw new ArgumentNullException(nameof(session));
-
-            //if (HasSessions)
-            //{
-            //    DateTime[] nextDateTimes = session.GetNextDateTimes(DateTime.Now);
-            //    foreach (var s in Sessions)
-            //    {
-            //        session.IsInnerSession(s);
-            //    }
-            //}
-            //else
-            //    Sessions.Add(session);
-
-            Sessions.Add(session);
+            return CreateSessionHoursByType(TradingSession.Regular);
         }
 
+        public SessionHours GetOvernightSession()
+        {
+            return CreateSessionHoursByType(TradingSession.OVN);
+        }
 
+        public SessionHours GetEuropeanSession()
+        {
+            return CreateSessionHoursByType(TradingSession.European);
+        }
+
+        public SessionHours GetAsianSession()
+        {
+            return CreateSessionHoursByType(TradingSession.Asian);
+        }
+
+        public SessionHours GetAmericanSession()
+        {
+            return CreateSessionHoursByType(TradingSession.American);
+        }
+
+        public SessionHours GetAmericanAndEuropeanSession()
+        {
+            return CreateSessionHoursByType(TradingSession.AmericanAndEuropean);
+        }
+
+        public SessionHours GetAmericanResidualSession()
+        {
+            return CreateSessionHoursByType(TradingSession.American_RS); ;
+        }
+
+        public SessionHours GetAsianResidualSession()
+        {
+            return CreateSessionHoursByType(TradingSession.Asian_RS); ;
+        }
+
+        public SessionHours GetAmericanResidualExtraTimeSession()
+        {
+            return CreateSessionHoursByType(TradingSession.American_RS_EXT); ;
+        }
+
+        public SessionHours GetAmericanResidualEndOfDaySession()
+        {
+            return CreateSessionHoursByType(TradingSession.American_RS_EOD); ;
+        }
+
+        public SessionHours GetAmericanResidualNewDaySession()
+        {
+            return CreateSessionHoursByType(TradingSession.American_RS_NWD); ;
+        }
+
+        public List<SessionHours> GetAmericanSessions()
+        {
+            List<SessionHours> sessions = new List<SessionHours>
+            {
+                CreateSessionHoursByType(TradingSession.AmericanAndEuropean),
+                CreateSessionHoursByType(TradingSession.American),
+            };
+
+            return sessions;
+        }
+
+        public List<SessionHours> GetAmericanResidualSessions()
+        {
+            List<SessionHours> sessions = new List<SessionHours>
+            {
+                CreateSessionHoursByType(TradingSession.American_RS_EXT),
+                CreateSessionHoursByType(TradingSession.American_RS_EXT),
+                CreateSessionHoursByType(TradingSession.American_RS_NWD)
+            };
+
+            return sessions;
+        }
 
         #endregion
 

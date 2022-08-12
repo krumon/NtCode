@@ -31,14 +31,19 @@ namespace Nt.Core
         #region Public properties
 
         /// <summary>
+        /// Collection of <see cref="SessionHours"/>.
+        /// </summary>
+        public List<SessionHours> Sessions => sessions;
+
+        /// <summary>
+        /// Indicates if the <see cref="SessionHours"/> has sessions.
+        /// </summary>
+        public bool HasSessions => Sessions != null && Sessions.Count >= 1;
+
+        /// <summary>
         /// The number of session stored.
         /// </summary>
         public int N => sortedSessionList.Count;
-
-        /// <summary>
-        /// Collection of sessions hours.
-        /// </summary>
-        public List<SessionHours> Sessions => sessions;
 
         /// <summary>
         /// The <see cref="SessionTime"/> object of the actual session begin.
@@ -78,14 +83,74 @@ namespace Nt.Core
 
         #region Public methods
 
+        public void AddSession( 
+            TradingSession sessionType,
+             InstrumentCode instrumentCode = InstrumentCode.Default,
+             int includeInitialBalance = 0,
+             int includeFinalBalance = 0)
+        {
+
+            if (Sessions == null)
+                sessions = new List<SessionHours>();
+
+            Add(sessionType.ToSessionHours(instrumentCode, includeInitialBalance));
+        }
+
+        public void Remove(SessionHours sessionHours)
+        {
+            if (sessionHours == null)
+                throw new ArgumentNullException(nameof(sessionHours));
+
+            if (Sessions == null)
+                throw new ArgumentNullException(nameof(Sessions));
+
+            Sessions.Remove(sessionHours);
+
+            if (Sessions.Count == 0)
+                sessions = null;
+
+        }
+
+        public void Clear()
+        {
+            Sessions.Clear();
+
+            sessions = null;
+        }
+
         /// <summary>
-        /// Returns the string with the number of the session, the begin time and the end time.
+        /// Converts the <see cref="SessionHours"/> to string.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            return $"Session {N}: Begin: {currentSession.SessionBegin.ToString()} | End: {currentSession.SessionEnd.ToString()}";
+            //DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
+
+            //string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
+
+            //if (HasSessions)
+            //    for (int i = 0; i < Sessions.Count; i++)
+            //        sessions += Environment.NewLine + Sessions[i].ToString();
+
+            return ""; // sessions;
         }
+
+        //public void Iterator(Action<SessionHours> action = null)
+        //{
+        //    action(this);
+        //    if (HasSessions)
+        //        for (int i = 0; i < Sessions.Count; i++)
+        //            Sessions[i].Iterator(action);
+        //}
+
+        /// <summary>
+        /// Returns the string with the number of the session, the begin time and the end time.
+        /// </summary>
+        /// <returns></returns>
+        //public override string ToString()
+        //{
+        //    return $"Session {N}: Begin: {currentSession.SessionBegin.ToString()} | End: {currentSession.SessionEnd.ToString()}";
+        //}
 
         // TODO:    - Método para añadir las sesiones.
         //          - Método para saber si una sesión es menor o mayor que otra.
@@ -119,77 +184,67 @@ namespace Nt.Core
         //    return sessionDateTmp;
         //}
 
+
+
         #endregion
 
-        #region Market Data methods
+        #region Private methods
 
-        ///// <summary>
-        ///// Event driven method which is called whenever a bar is updated. 
-        ///// The frequency in which OnBarUpdate is called will be determined by the "Calculate" property. 
-        ///// OnBarUpdate() is the method where all of your script's core bar based calculation logic should be contained.
-        ///// </summary>
-        //public virtual void OnBarUpdate()
-        //{
-        //    LastBarTimeUpdate();
-        //}
+        // TODO: Codificar el método "Add" para añadir sesiones conforme al enum TradingSession
+        //       y organizando según queramos que se vean las sesiones.
+        private void Add(SessionHours session)
+        {
+            if (session == null)
+                throw new ArgumentNullException(nameof(session));
 
-        ///// <summary>
-        ///// Event driven method which is called and guaranteed to be in the correct sequence 
-        ///// for every change in level one market data for the underlying instrument. 
-        ///// OnMarketData() can include but is not limited to the bid, ask, last price and volume.
-        ///// </summary>
-        //public virtual void OnMarketData()
-        //{
-        //    LastBarTimeUpdate();
-        //}
+            //if (HasSessions)
+            //{
+            //    DateTime[] nextDateTimes = session.GetNextDateTimes(DateTime.Now);
+            //    foreach (var s in Sessions)
+            //    {
+            //        session.IsInnerSession(s);
+            //    }
+            //}
+            //else
+            //    Sessions.Add(session);
 
-        //#endregion
+            Sessions.Add(session);
+        }
 
-        //#region Private methods
+        #endregion
 
-        ///// <summary>
-        ///// Method to update the last bar time.
-        ///// </summary>
-        //private void LastBarTimeUpdate()
-        //{
-        //    DateTime lastBarTimeStamp = GetLastBarSessionDate(ninjascript.Time[0]);
+        #region Helper methods
 
-        //    if (lastBarTimeStamp != currentSessionEnd)
-        //    {
-        //        cacheDictionary = new Dictionary<int, SessionHours>();
-        //        sortedDicList.Add(cacheDictionary);
-        //    }
 
-        //    currentSessionEnd = lastBarTimeStamp;
-        //}
+
 
         #endregion
 
         #region Para revisar
 
-        public SessionHoursStructure AddDefaultSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
-        {
-            // TODO: Borrar. Es KrSessionHours la que tiene que tener el método AddSession.
-            //       AddSession(TradingSession.Regular, instrumentCode, 0, 0);
+        //public SessionHoursStructure AddDefaultSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
+        //{
+        //    // TODO: Borrar. Es KrSessionHours la que tiene que tener el método AddSession.
+        //    //       AddSession(TradingSession.Regular, instrumentCode, 0, 0);
 
-            // Main Sessions
-            Sessions[0].AddSession(TradingSession.Regular, instrumentCode, 0, 0);
-            Sessions[0].AddSession(TradingSession.OVN, instrumentCode, 0, 0);
-            // Regular Sessions
-            Sessions[0].Sessions[0].AddSession(TradingSession.AmericanAndEuropean, instrumentCode, 0, 0);
-            Sessions[0].Sessions[0].AddSession(TradingSession.American, instrumentCode, 0, 0);
-            // Overnight Sessions
-            Sessions[0].Sessions[1].AddSession(TradingSession.American_RS, instrumentCode, 0, 0);
-            Sessions[0].Sessions[1].AddSession(TradingSession.Asian, instrumentCode, 0, 0);
-            Sessions[0].Sessions[1].AddSession(TradingSession.Asian_RS, instrumentCode, 0, 0);
-            Sessions[0].Sessions[1].AddSession(TradingSession.European, instrumentCode, 0, 0);
-            // Minor Sessions
-            Sessions[0].Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_EXT, instrumentCode, 0, 0);
-            Sessions[0].Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_EOD, instrumentCode, 0, 0);
-            Sessions[0].Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_NWD, instrumentCode, 0, 0);
+        //    // Main Sessions
+        //    Sessions[0].AddSession(TradingSession.Regular, instrumentCode, 0, 0);
+        //    Sessions[0].AddSession(TradingSession.OVN, instrumentCode, 0, 0);
+        //    // Regular Sessions
+        //    Sessions[0].Sessions[0].AddSession(TradingSession.AmericanAndEuropean, instrumentCode, 0, 0);
+        //    Sessions[0].Sessions[0].AddSession(TradingSession.American, instrumentCode, 0, 0);
+        //    // Overnight Sessions
+        //    Sessions[0].Sessions[1].AddSession(TradingSession.American_RS, instrumentCode, 0, 0);
+        //    Sessions[0].Sessions[1].AddSession(TradingSession.Asian, instrumentCode, 0, 0);
+        //    Sessions[0].Sessions[1].AddSession(TradingSession.Asian_RS, instrumentCode, 0, 0);
+        //    Sessions[0].Sessions[1].AddSession(TradingSession.European, instrumentCode, 0, 0);
+        //    // Minor Sessions
+        //    Sessions[0].Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_EXT, instrumentCode, 0, 0);
+        //    Sessions[0].Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_EOD, instrumentCode, 0, 0);
+        //    Sessions[0].Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_NWD, instrumentCode, 0, 0);
 
-            return this;
-        }
+        //    return this;
+        //}
 
         protected bool IsInSession(DateTime time)
         {

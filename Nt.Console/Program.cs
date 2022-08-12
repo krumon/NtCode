@@ -10,10 +10,12 @@ namespace ConsoleApp
 
         static SimulatorTests simulatorTests = new SimulatorTests();
         static SessionTimeTests sessionTimeTests = new SessionTimeTests();
+        static SessionHoursTests sessionHoursTests = new SessionHoursTests();
 
         static void Main(string[] args)
         {
-            sessionTimeTests.Run();
+            //sessionTimeTests.Run();
+            sessionHoursTests.Run();
         }
 
     }
