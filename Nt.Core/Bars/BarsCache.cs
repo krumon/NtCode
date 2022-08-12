@@ -46,7 +46,7 @@ namespace Nt.Core
             return GetCacheIdx(pattern, strength, instance, barsAgo, searchMode) != -1;
         }
 
-        public NtElement GetPattern(ChartPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
+        public NsElement GetPattern(ChartPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
         {
             return GetCachePattern(pattern, strength, instance, barsAgo, searchMode);
         }
@@ -165,7 +165,7 @@ namespace Nt.Core
             }
         }
 
-        private NtElement GetCachePattern(ChartPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
+        private NsElement GetCachePattern(ChartPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
         {
             if (instance < 1)
                 throw new Exception(string.Format("Instance should be greater or equal than one.", GetType().Name, instance));

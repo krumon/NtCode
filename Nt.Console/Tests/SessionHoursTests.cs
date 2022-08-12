@@ -42,7 +42,7 @@ namespace ConsoleApp
         private static void CreateAndPrintSession()
         {
             // Create
-            KrSession session = new KrSession();
+            NsSession session = new NsSession();
 
             // Print
             Console.WriteLine("NINJATRADER SESSION");

@@ -3,18 +3,18 @@
     /// <summary>
     /// Base class for any session in ninjatrader.
     /// </summary>
-    public class KrSession
+    public class NsSession
     {
 
         #region Fields
 
-        protected KrSessionHours sessionHours;
+        protected NsSessionHours sessionHours;
 
         #endregion
 
         #region Properties
 
-        public KrSessionHours SessionHours
+        public NsSessionHours SessionHours
         {
             get { return sessionHours; }
         }
@@ -23,7 +23,7 @@
 
         #region Constructors
 
-        public KrSession()
+        public NsSession()
         {
 
             //sessionHours = KrSessionHours

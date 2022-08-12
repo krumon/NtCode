@@ -6,10 +6,20 @@ namespace Nt.Core
     /// <summary>
     /// Represents the SessionHours Indicator Core.
     /// </summary>
-    public class SessionHoursStructure
+    public class SessionHoursStructure : NsIndicator
     {
 
         #region Private members
+
+        /// <summary>
+        /// The current session.
+        /// </summary>
+        protected SessionHoursStructure currentSession;
+
+        /// <summary>
+        /// Session sorted list.
+        /// </summary>
+        protected List<SessionHoursStructure> sortedSessionList = new List<SessionHoursStructure>();
 
         /// <summary>
         /// Collection of sessions hours.
@@ -19,6 +29,11 @@ namespace Nt.Core
         #endregion
 
         #region Public properties
+
+        /// <summary>
+        /// The number of session stored.
+        /// </summary>
+        public int N => sortedSessionList.Count;
 
         /// <summary>
         /// Collection of sessions hours.
@@ -63,6 +78,15 @@ namespace Nt.Core
 
         #region Public methods
 
+        /// <summary>
+        /// Returns the string with the number of the session, the begin time and the end time.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return $"Session {N}: Begin: {currentSession.SessionBegin.ToString()} | End: {currentSession.SessionEnd.ToString()}";
+        }
+
         // TODO:    - Método para añadir las sesiones.
         //          - Método para saber si una sesión es menor o mayor que otra.
 
@@ -85,13 +109,13 @@ namespace Nt.Core
 
         //    actualSessionBegin = sessionIterator.ActualSessionBegin;
         //    actualSessionEnd = sessionIterator.ActualSessionEnd;
-            
+
         //    sessionDateTmp = TimeZoneInfo.ConvertTime(actualSessionEnd.AddSeconds(-1), platformTimeZoneInfo,bars.TradingHours.TimeZoneInfo);
 
         //    if (newSessionBarIdx.Count == 0 ||
         //        newSessionBarIdx.Count > 0 && ninjascript.CurrentBar > newSessionBarIdx[newSessionBarIdx.Count - 1])
         //        newSessionBarIdx.Add(ninjascript.CurrentBar);
-                
+
         //    return sessionDateTmp;
         //}
 
