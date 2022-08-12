@@ -222,7 +222,7 @@ namespace Nt.Core
             // Converts the time to the SessionTime.TimeZoneInfo
             DateTime date = TimeZoneInfo.ConvertTime(sourceTime, sourceTimeZoneInfo, TimeZoneInfo);
             // Calculate the session time for the date passed as parameter.
-            DateTime sessionTime = ToSessionDateTime(date);
+            DateTime sessionTime = ToSessionTime(date);
             // Converts the time to the sourceTimeZoneInfo.
             return TimeZoneInfo.ConvertTime(sessionTime, TimeZoneInfo, sourceTimeZoneInfo);
 
@@ -241,20 +241,10 @@ namespace Nt.Core
             // Converts the time to the SessionTime.TimeZoneInfo
             DateTime date = TimeZoneInfo.ConvertTime(sourceTime, sourceTimeZoneInfo, TimeZoneInfo);
             // Calculate the session time for the date passed as parameter.
-            DateTime sessionTime = ToSessionDateTime(date);
+            DateTime sessionTime = ToSessionTime(date);
             // Converts the time to the destination TimeZoneInfo.
             return TimeZoneInfo.ConvertTime(sessionTime, TimeZoneInfo, destinationTimeZoneInfo);
 
-        }
-
-        /// <summary>
-        /// Added the session time to the date passed as parameter and returns it.
-        /// </summary>
-        /// <param name="date"></param>
-        /// <returns>The <see cref="DateTime"/> that represents the session time.</returns>
-        public DateTime ToSessionDateTime(DateTime date)
-        {
-            return new DateTime(date.Year, date.Month, date.Day, Time.Hours, date.Minute, date.Second, DateTimeKind.Unspecified);
         }
 
         /// <summary>
@@ -298,17 +288,17 @@ namespace Nt.Core
         /// </summary>
         /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
         /// <returns></returns>
-        public string ToString(string format = "")
+        public string ToString(string format)
         {
             string f = format.ToUpper();
 
-            if (f == "UTC")
-                return $"{Code} | {UtcTime} Utc";
+            if (f == "U")
+                return $"{Code} | {UtcTime} (Utc)";
 
-            if (f == "LOCAL")
-                return $"{Code} | {LocalTime} Local";
+            if (f == "L")
+                return $"{Code} | {LocalTime} (Local)";
 
-            return $"{Code} | {Time}";
+            return $"{Code} | {Time} ({TimeZoneInfo.StandardName})";
         }
 
         /// <summary>
@@ -317,7 +307,25 @@ namespace Nt.Core
         /// <returns></returns>
         public string ToShortString()
         {
-            return Time.ToString();
+            return $"{Time} ({TimeZoneInfo.StandardName})";
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// </summary>
+        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <returns></returns>
+        public string ToShortString(string format)
+        {
+            string f = format.ToUpper();
+
+            if (f == "U")
+                return $"{UtcTime} (Utc)";
+
+            if (f == "L")
+                return $"{LocalTime} (Local)";
+
+            return $"{Time} ({TimeZoneInfo.StandardName})";
         }
 
         /// <summary>
@@ -327,7 +335,25 @@ namespace Nt.Core
         /// <returns></returns>
         public string ToLongString()
         {
-            return $"Code: {Code} | Description: {Description} | Time: {Time} | TimeZoneInfo: {TimeZoneInfo.DisplayName}";
+            return $"Code: {Code} | Description: {Description} | Time: {Time} | TimeZoneInfo: {TimeZoneInfo.StandardName}";
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// </summary>
+        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <returns></returns>
+        public string ToLongString(string format)
+        {
+            string f = format.ToUpper();
+
+            if (f == "U")
+                return $"Code: {Code} | Description: {Description} | Time: {UtcTime} (Utc)";
+
+            if (f == "L")
+                return $"Code: {Code} | Description: {Description} | Time: {LocalTime} (Local)";
+
+            return $"Code: {Code} | Description: {Description} | Time: {Time} ({TimeZoneInfo.StandardName})";
         }
 
         /// <summary>
@@ -671,6 +697,16 @@ namespace Nt.Core
         private string ToDefaultCode()
         {
             return $"CTM-{Time.Hours}{Time.Minutes}-{UtcTime.Hours}{UtcTime.Minutes}";
+        }
+
+        /// <summary>
+        /// Added the session time to the date passed as parameter and returns it.
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns>The <see cref="DateTime"/> that represents the session time.</returns>
+        public DateTime ToSessionTime(DateTime date)
+        {
+            return new DateTime(date.Year, date.Month, date.Day, Time.Hours, date.Minute, date.Second, DateTimeKind.Unspecified);
         }
 
         #endregion

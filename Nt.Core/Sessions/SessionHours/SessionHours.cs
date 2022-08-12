@@ -73,10 +73,10 @@ namespace Nt.Core
         /// </summary>
         public SessionTime EndSessionTime { get; set; }
 
-        ///// <summary>
-        ///// Collection of balance sessions in the <see cref="SessionHours"/>.
-        ///// </summary>
-        //public List<SessionHours> BalanceSessions { get; set; }
+        /// <summary>
+        /// Session hours duration.
+        /// </summary>
+        public TimeSpan Duration => EndSessionTime >= BeginSessionTime ? EndSessionTime - BeginSessionTime : BeginSessionTime - EndSessionTime;
 
         #endregion
 
@@ -85,7 +85,7 @@ namespace Nt.Core
         /// <summary>
         /// Create a default instance of <see cref="SessionHours"/> class.
         /// </summary>
-        protected SessionHours()
+        private SessionHours()
         {
         }
 
@@ -112,12 +112,12 @@ namespace Nt.Core
 
 
         /// <summary>
-        /// Create a new instance of <see cref="SessionHours"/> class with specific session times.
+        /// Create a new custom instance of <see cref="SessionHours"/> objects with specific <see cref="TradingTime"/> types and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTradingSession">The initial <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
-        /// <param name="endTradingSession">The final <see cref="SessionTime"/> of the <see cref="SessionHours"/> class.</param>
+        /// <param name="beginTradingSession">The initial <see cref="TradingTime"/> type of the <see cref="SessionHours"/> object.</param>
+        /// <param name="endTradingSession">The final <see cref="TradingTime"/> type of the <see cref="SessionHours"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
+        /// <returns>A new custom instance of <see cref="SessionHours"/> object.</returns>
         public static SessionHours CreateCustomSessionHours(TradingTime beginTradingSession, TradingTime endTradingSession, string description = "")
         {
             return new SessionHours
@@ -129,6 +129,68 @@ namespace Nt.Core
             };
         }
 
+        /// <summary>
+        /// Create a new custom instance of <see cref="SessionHours"/> objects with specific <see cref="SessionTime"/> object, <see cref="TradingTime"/> type and <paramref name="description"/>.
+        /// </summary>
+        /// <param name="beginSessionTime">The initial <see cref="SessionTime"/> of the <see cref="SessionHours"/> object.</param>
+        /// <param name="endTradingSession">The final <see cref="TradingTime"/> type of the <see cref="SessionHours"/> object.</param>
+        /// <param name="description">Custom session hours description.</param>
+        /// <returns>A new custom instance of <see cref="SessionHours"/> object.</returns>
+        public static SessionHours CreateCustomSessionHours(SessionTime beginSessionTime, TradingTime endTradingSession, string description = "")
+        {
+            return new SessionHours
+            {
+                BeginSessionTime = beginSessionTime,
+                EndSessionTime = SessionTime.CreateSessionTimeByType(endTradingSession),
+                Description = description,
+                TradingSession = TradingSession.Custom,
+            };
+        }
+
+        /// <summary>
+        /// Create a new custom instance of <see cref="SessionHours"/> objects with specific <see cref="SessionTime"/> object, <see cref="TradingTime"/> type and <paramref name="description"/>.
+        /// </summary>
+        /// <param name="beginTradingSession">The initial <see cref="TradingTime"/> type of the <see cref="SessionHours"/> object.</param>
+        /// <param name="endSessionTime">The final <see cref="SessionTime"/> of the <see cref="SessionHours"/> object.</param>
+        /// <param name="description">Custom session hours description.</param>
+        /// <returns>A new custom instance of <see cref="SessionHours"/> object.</returns>
+        public static SessionHours CreateCustomSessionHours(TradingTime beginTradingSession, SessionTime endSessionTime, string description = "")
+        {
+            return new SessionHours
+            {
+                BeginSessionTime = SessionTime.CreateSessionTimeByType(beginTradingSession),
+                EndSessionTime = endSessionTime,
+                Description = description,
+                TradingSession = TradingSession.Custom,
+            };
+        }
+
+        /// <summary>
+        /// Create a new custom instance of <see cref="SessionHours"/> objects with specific <see cref="SessionTime"/> objects and <paramref name="description"/>.
+        /// </summary>
+        /// <param name="beginSessionTime">The initial <see cref="SessionTime"/> of the <see cref="SessionHours"/> object.</param>
+        /// <param name="endSessionTime">The final <see cref="SessionTime"/> of the <see cref="SessionHours"/> object.</param>
+        /// <param name="description">Custom session hours description.</param>
+        /// <returns>A new custom instance of <see cref="SessionHours"/> object.</returns>
+        public static SessionHours CreateCustomSessionHours(SessionTime beginSessionTime, SessionTime endSessionTime, string description = "")
+        {
+            return new SessionHours
+            {
+                BeginSessionTime = beginSessionTime,
+                EndSessionTime = endSessionTime,
+                Description = description,
+                TradingSession = TradingSession.Custom,
+            };
+        }
+
+        /// <summary>
+        /// Create a new custom instance of <see cref="SessionHours"/> objects with specific <see cref="TradingTime"/>, <see cref="SessionTime"/> properties and <paramref name="description"/>.
+        /// </summary>
+        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionHours"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionHours"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTradingTime">The final <see cref="TradingTime"/> type of the <see cref="SessionHours"/> object.</param>
+        /// <param name="description">Custom session hours description.</param>
+        /// <returns>A new custom instance of <see cref="SessionHours"/> object.</returns>
         public static SessionHours CreateCustomSessionHours(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTime endTradingTime, string description = "")
         {
             return new SessionHours
@@ -140,6 +202,14 @@ namespace Nt.Core
             };
         }
 
+        /// <summary>
+        /// Create a new custom instance of <see cref="SessionHours"/> objects with specific <see cref="TradingTime"/>, <see cref="SessionTime"/> properties and <paramref name="description"/>.
+        /// </summary>
+        /// <param name="beginTradingTime">The initial <see cref="TradingTime"/> type of the <see cref="SessionHours"/> object.</param>
+        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionHours"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionHours"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="description"></param>
+        /// <returns>A new custom instance of <see cref="SessionHours"/> object.</returns>
         public static SessionHours CreateCustomSessionHours(TradingTime beginTradingTime, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
             return new SessionHours
@@ -151,6 +221,15 @@ namespace Nt.Core
             };
         }
 
+        /// <summary>
+        /// Create a new custom instance of <see cref="SessionHours"/> objects with specific <see cref="SessionTime"/> properties and <paramref name="description"/>.
+        /// </summary>
+        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionHours"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionHours"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionHours"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionHours"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="description"></param>
+        /// <returns>A new custom instance of <see cref="SessionHours"/> object.</returns>
         public static SessionHours CreateCustomSessionHours(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
             return new SessionHours
@@ -183,12 +262,12 @@ namespace Nt.Core
         #region Public Methods
 
         /// <summary>
-        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
+        /// Gets the initial <see cref="DateTime"/> of the <see cref="SessionHours"/>.
         /// </summary>
         /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetBeginTime(DateTime currentDate)
+        public DateTime GetBeginTime(DateTime time)
         {
-            return BeginSessionTime.GetTime(currentDate);
+            return BeginSessionTime.GetTime(time);
         }
 
         /// <summary>
@@ -196,9 +275,9 @@ namespace Nt.Core
         /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetBeginTime(DateTime currentDate, TimeZoneInfo sourceTimeZoneInfo = null)
+        public DateTime GetBeginTime(DateTime time, TimeZoneInfo sourceTimeZoneInfo)
         {
-            return BeginSessionTime.GetTime(currentDate,sourceTimeZoneInfo);
+            return BeginSessionTime.GetTime(time,sourceTimeZoneInfo);
         }
 
         /// <summary>
@@ -208,20 +287,20 @@ namespace Nt.Core
         /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
         /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
         public DateTime GetBeginTime(
-            DateTime currentDate,
-            TimeZoneInfo sourceTimeZoneInfo = null,
-            TimeZoneInfo destinationTimeZoneInfo = null)
+            DateTime time,
+            TimeZoneInfo sourceTimeZoneInfo,
+            TimeZoneInfo destinationTimeZoneInfo)
         {
-            return BeginSessionTime.GetTime(currentDate,sourceTimeZoneInfo,destinationTimeZoneInfo);
+            return BeginSessionTime.GetTime(time,sourceTimeZoneInfo,destinationTimeZoneInfo);
         }
 
         /// <summary>
         /// Gets the end <see cref="DateTime"/> structure of the <see cref="SessionHours"/>.
         /// </summary>
         /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetEndTime(DateTime currentDate)
+        public DateTime GetEndTime(DateTime time)
         {
-            return EndSessionTime.GetTime(currentDate);
+            return EndSessionTime.GetTime(time);
         }
 
         /// <summary>
@@ -229,9 +308,9 @@ namespace Nt.Core
         /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetEndTime(DateTime currentDate, TimeZoneInfo sourceTimeZoneInfo = null)
+        public DateTime GetEndTime(DateTime time, TimeZoneInfo sourceTimeZoneInfo)
         {
-            return EndSessionTime.GetTime(currentDate,sourceTimeZoneInfo);
+            return EndSessionTime.GetTime(time,sourceTimeZoneInfo);
         }
 
         /// <summary>
@@ -241,11 +320,41 @@ namespace Nt.Core
         /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
         /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
         public DateTime GetEndTime(
-            DateTime currentDate,
-            TimeZoneInfo sourceTimeZoneInfo = null,
-            TimeZoneInfo destinationTimeZoneInfo = null)
+            DateTime time,
+            TimeZoneInfo sourceTimeZoneInfo,
+            TimeZoneInfo destinationTimeZoneInfo)
         {
-            return EndSessionTime.GetTime(currentDate,sourceTimeZoneInfo,destinationTimeZoneInfo);
+            return EndSessionTime.GetTime(time,sourceTimeZoneInfo,destinationTimeZoneInfo);
+        }
+
+        // TODO: Terminar este método. ES COMPLICADO!!!!!!
+
+        public DateTime? GetNextSessionEndTime(DateTime currentTime, DateTime actualSessionBeginTime, DateTime actualSessionEndTime)
+        {
+            TimeZoneInfo sourceTimeZoneInfo = 
+                currentTime.Kind == DateTimeKind.Local ? TimeZoneInfo.Local : 
+                currentTime.Kind == DateTimeKind.Utc ? TimeZoneInfo.Utc : null;
+
+            if (sourceTimeZoneInfo != null)
+            {
+                DateTime beginTime = GetBeginTime(currentTime);
+                DateTime endTime = GetEndTime(currentTime);
+
+                bool dayChanges = actualSessionEndTime.Date - actualSessionBeginTime.Date != TimeSpan.Zero;
+
+                if (endTime <= beginTime && dayChanges)
+                    return GetEndTime(actualSessionEndTime);
+                
+                if (beginTime > actualSessionBeginTime)
+                {
+
+                }
+            }
+                // Returns the SessionTime TimeSpan for the date passed as parameter.
+                //return GetTime(time, sourceTimeZoneInfo);
+
+            throw new Exception("The kind of the " + nameof(currentTime) + " must be Local or Utc");
+
         }
 
         /// <summary>
@@ -291,64 +400,6 @@ namespace Nt.Core
             sessionDateTimes[1] = endDateTime;
 
             return sessionDateTimes;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="SessionHours"/> to string.
-        /// </summary>
-        /// <returns></returns>
-        public string ToString(bool onlyActualSession = true)
-        {
-            DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
-            string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
-            if (!onlyActualSession)
-            {
-                //if (HasSessions)
-                //    for (int i = 0; i < Sessions.Count; i++)
-                //        sessions += Environment.NewLine + Sessions[i].ToString(onlyActualSession);
-            }
-
-            return sessions;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="SessionHours"/> to string.
-        /// </summary>
-        /// <returns></returns>
-        public string ToString(DateTime referenceDateTime)
-        {
-            DateTime[] sessionDateTimes = GetNextDateTimes(referenceDateTime);
-            return String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
-        }
-
-        /// <summary>
-        /// Converts the <see cref="SessionHours"/> to string.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-
-            return ""; // sessions;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="SessionHours"/> to short string.
-        /// </summary>
-        /// <returns></returns>
-        public string ToShortString()
-        {
-
-            return "Aún no se ha desarrollado este método :)";
-        }
-
-        /// <summary>
-        /// Converts the <see cref="SessionHours"/> to long string.
-        /// </summary>
-        /// <returns></returns>
-        public string ToLongString()
-        {
-
-            return "Aún no se ha desarrollado este método :)";
         }
 
         /// <summary>
@@ -691,6 +742,101 @@ namespace Nt.Core
                 throw new ArgumentNullException($"the argument {nameof(sh)} cannot be null.");
 
             return new TimeSpan((sh.BeginSessionTime.UtcTime - ts).Ticks);
+        }
+
+        #endregion
+
+        #region ToString methods
+
+        /// <summary>
+        /// Converts the <see cref="SessionHours"/> to string.
+        /// </summary>
+        /// <returns></returns>
+        public string ToString(bool onlyActualSession)
+        {
+            DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
+            string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
+            if (!onlyActualSession)
+            {
+                //if (HasSessions)
+                //    for (int i = 0; i < Sessions.Count; i++)
+                //        sessions += Environment.NewLine + Sessions[i].ToString(onlyActualSession);
+            }
+
+            return sessions;
+        }
+
+        /// <summary>
+        /// Converts the <see cref="SessionHours"/> to string.
+        /// </summary>
+        /// <returns></returns>
+        public string ToString(DateTime referenceDateTime)
+        {
+            DateTime[] sessionDateTimes = GetNextDateTimes(referenceDateTime);
+            return String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
+        }
+
+        /// <summary>
+        /// Converts the <see cref="SessionHours"/> to string.
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return String.Format($"{Description} || Begin Time: {BeginSessionTime.ToString("Local")} || End Time: {EndSessionTime.ToShortString()}");
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// </summary>
+        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <returns></returns>
+        public string ToString(string format)
+        {
+            string f = format.ToUpper();
+
+            return String.Format($"{Description} || Begin Time: {BeginSessionTime.ToShortString(f)} || End Time: {EndSessionTime.ToShortString(f)}");
+        }
+
+        /// <summary>
+        /// Converts the <see cref="SessionHours"/> to short string.
+        /// </summary>
+        /// <returns></returns>
+        public string ToShortString()
+        {
+            return String.Format($"{BeginSessionTime.ToShortString()} => {EndSessionTime.ToShortString()}");
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// </summary>
+        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <returns></returns>
+        public string ToShortString(string format)
+        {
+            string f = format.ToUpper();
+
+            return String.Format($"{BeginSessionTime.ToShortString(f)} => {EndSessionTime.ToShortString(f)}");
+        }
+
+        /// <summary>
+        /// Converts the <see cref="SessionHours"/> to long string.
+        /// </summary>
+        /// <returns></returns>
+        public string ToLongString()
+        {
+            return String.Format($"{Code} || {Description} || Begin Time: {BeginSessionTime.ToLongString()} || End Time: {EndSessionTime.ToLongString()}");
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="SessionTime"/>.
+        /// </summary>
+        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <returns></returns>
+        public string ToLongString(string format)
+        {
+            string f = format.ToUpper();
+
+            return String.Format($"{Code} || {Description} || Begin Time: {BeginSessionTime.ToLongString(f)} || End Time: {EndSessionTime.ToLongString(f)}");
         }
 
         #endregion

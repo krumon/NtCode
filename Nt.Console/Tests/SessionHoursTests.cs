@@ -36,11 +36,11 @@ namespace ConsoleApp
             InstanceTests();
             WaitAndClear();
             ToStringTests(TradingSession.American_RS);
-            Clear();
-            SessionHoursEnumTest();
-            Clear();
-            OperatorTests(TradingSession.Asian, TradingSession.European);
             WaitAndClear();
+            //SessionHoursEnumTest();
+            //WaitAndClear();
+            //OperatorTests(TradingSession.Asian, TradingSession.European);
+            //WaitAndClear();
         }
 
         #endregion
@@ -57,21 +57,21 @@ namespace ConsoleApp
                 TradingTime.Asian_Close,
                 "My Custom Session Hours");
             Console.WriteLine($"Method ToString() => {sh}");
-            Console.WriteLine($"Method ToShortString() => {sh.ToShortString()}");
-            Console.WriteLine($"Method ToLongString() => {sh.ToLongString()}");
+            Console.WriteLine($"Method ToShortString() => {sh.ToShortString("u")}");
+            Console.WriteLine($"Method ToLongString() => {sh.ToLongString("l")}");
 
             sh = SessionHours.CreateCustomSessionHours(new TimeSpan(12,15,0),TimeZoneInfo.Local,TradingTime.European_Close);
             NewLine();
             Console.WriteLine($"Method ToString() => {sh}");
-            Console.WriteLine($"Method ToShortString() => {sh.ToShortString()}");
-            Console.WriteLine($"Method ToLongString() => {sh.ToLongString()}");
+            Console.WriteLine($"Method ToShortString() => {sh.ToShortString("u")}");
+            Console.WriteLine($"Method ToLongString() => {sh.ToLongString("l")}");
 
             // Create instance by type
             sh = SessionHours.CreateSessionHoursByType(TradingSession.American);
             NewLine();
             Console.WriteLine($"Method ToString() => {sh}");
-            Console.WriteLine($"Method ToShortString() => {sh.ToShortString()}");
-            Console.WriteLine($"Method ToLongString() => {sh.ToLongString()}");
+            Console.WriteLine($"Method ToShortString() => {sh.ToShortString("l")}");
+            Console.WriteLine($"Method ToLongString() => {sh.ToLongString("u")}");
 
         }
 
