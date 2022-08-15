@@ -1,0 +1,240 @@
+﻿using NinjaTrader.Core;
+using NinjaTrader.Data;
+using NinjaTrader.NinjaScript;
+using System;
+using System.Collections.Generic;
+
+namespace Nt.Core
+{
+    /// <summary>
+    /// Represents the trading hours session definition.
+    /// </summary>
+    public class NsSession : NsIndicator
+    {
+
+        #region Private members
+
+        /// <summary>
+        /// The ninjascript parent of the class.
+        /// </summary>
+        private NinjaScriptBase ninjascript;
+
+        /// <summary>
+        /// The bars of the chart control.
+        /// </summary>
+        private Bars bars;
+
+        /// <summary>
+        /// The session iterator to store the actual and next session data.
+        /// </summary>
+        private SessionIterator sessionIterator;
+
+        /// <summary>
+        /// The current session end in Bars TimeZoneInfo.
+        /// </summary>
+        private DateTime currentSessionEnd = Globals.MinDate;
+
+        /// <summary>
+        /// The session end time in Bars TimeZoneInfo.
+        /// </summary>
+        private DateTime sessionDateTmp = Globals.MinDate;
+
+        /// <summary>
+        /// Session bar indexs collection.
+        /// </summary>
+        private List<int> newSessionBarIdx = new List<int>();
+
+        /// <summary>
+        /// Flag to indicate whe the session changed to new session.
+        /// </summary>
+        private bool newSession;
+
+        #endregion
+
+        #region Public events
+
+        /// <summary>
+        /// Event thats is raised when the sessoin changed.
+        /// </summary>
+        public event Action<SessionChangedEventArgs> SessionChanged = (e) => { };
+
+        #endregion
+
+        #region Public properties
+
+        /// <summary>
+        /// Represents the chart bars <see cref="Instrument"/>.
+        /// </summary>
+        public Instrument Instrument { get; private set; }
+
+        /// <summary>
+        /// Represents the actual session begin
+        /// </summary>
+        public DateTime ActualSessionBegin { get; set; } = Globals.MinDate;
+
+        /// <summary>
+        /// Represents the actual session end.
+        /// </summary>
+        public DateTime ActualSessionEnd { get; set; } = Globals.MinDate;
+
+        /// <summary>
+        /// Represents the <see cref="TimeZoneInfo"/> configure on the platform.
+        /// </summary>
+        public TimeZoneInfo PlatformTimeZoneInfo { get; private set; }
+
+        /// <summary>
+        /// Represents The <see cref="TimeZoneInfo"/> of the bars trading hours.
+        /// </summary>
+        public TimeZoneInfo BarsTimeZoneInfo { get; private set; }
+
+        /// <summary>
+        /// The session number.
+        /// </summary>
+        public int Count { get; private set; }
+
+        /// <summary>
+        /// Is true when a new session is added to the sorted session list.
+        /// </summary>
+        public bool NewSession 
+        {
+            get => newSession;
+            private set
+            {
+                // Make sure value changed
+                if (value == newSession)
+                    return;
+
+                // Update value.
+                newSession = value;
+
+                if (!value)
+                    return;
+
+                // Update the counter.
+                Count++;
+
+                // Create the event args.
+                SessionChangedEventArgs e = new SessionChangedEventArgs(ActualSessionBegin, ActualSessionEnd);
+
+                // Raise the handler method
+                OnSessionChanged(new SessionChangedEventArgs(ActualSessionBegin,ActualSessionEnd));
+
+                // Raise the event
+                SessionChanged?.Invoke(e);
+
+            }
+        }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Create a default instance of <see cref="NsSession"/>.
+        /// </summary>
+        /// <param name="sessionIterator"></param>
+        /// <param name="bars"></param>
+        /// <param name="ninjascript"></param>
+        public NsSession(NinjaScriptBase ninjascript, SessionIterator sessionIterator, Bars bars)
+        {
+            this.ninjascript = ninjascript;
+            this.bars = bars;
+            this.sessionIterator = sessionIterator;
+            PlatformTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
+            BarsTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
+            Instrument = new Instrument
+            {
+                InstrumentCode = bars.Instrument.MasterInstrument.Name.ToInstrumentCode(),
+            };
+        }
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Returns the session last bar date.
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="bars"></param>
+        /// <param name="platformTimeZoneInfo"></param>
+        /// <returns></returns>
+        public DateTime GetLastBarSessionDate(DateTime time)
+        {
+            if (time <= ActualSessionEnd)
+                return sessionDateTmp;
+
+            if (!bars.BarsType.IsIntraday)
+                return sessionDateTmp;
+
+            sessionIterator.GetNextSession(time, true);
+
+            ActualSessionBegin = sessionIterator.ActualSessionBegin;
+            ActualSessionEnd = sessionIterator.ActualSessionEnd;
+
+            sessionDateTmp = TimeZoneInfo.ConvertTime(ActualSessionEnd.AddSeconds(-1), PlatformTimeZoneInfo, BarsTimeZoneInfo);
+
+            // TODO: Esto no lo entiendo.
+            if (newSessionBarIdx.Count == 0 ||
+                newSessionBarIdx.Count > 0 && ninjascript.CurrentBar > newSessionBarIdx[newSessionBarIdx.Count - 1])
+                newSessionBarIdx.Add(ninjascript.CurrentBar);
+
+            return sessionDateTmp;
+        }
+
+        #endregion
+
+        #region Handler methods
+
+        public virtual void OnSessionChanged(SessionChangedEventArgs e)
+        {
+        }
+
+        #endregion
+
+        #region Market Data methods
+
+        /// <summary>
+        /// Event driven method which is called whenever a bar is updated. 
+        /// The frequency in which OnBarUpdate is called will be determined by the "Calculate" property. 
+        /// OnBarUpdate() is the method where all of your script's core bar based calculation logic should be contained.
+        /// </summary>
+        public override void OnBarUpdate()
+        {
+            LastBarUpdate();
+        }
+
+        /// <summary>
+        /// Event driven method which is called and guaranteed to be in the correct sequence 
+        /// for every change in level one market data for the underlying instrument. 
+        /// OnMarketData() can include but is not limited to the bid, ask, last price and volume.
+        /// </summary>
+        public override void OnMarketData()
+        {
+            LastBarUpdate();
+        }
+
+        #endregion
+
+        #region Private methods
+
+        /// <summary>
+        /// Method to update the last bar time.
+        /// </summary>
+        private void LastBarUpdate()
+        {
+            DateTime lastBarTimeStamp = GetLastBarSessionDate(ninjascript.Time[0]);
+            bool isNewSession = false;
+
+            if (lastBarTimeStamp != currentSessionEnd)
+                isNewSession = true;
+            
+            currentSessionEnd = lastBarTimeStamp;
+            NewSession = isNewSession;
+        }
+
+        #endregion
+
+
+    }
+}

@@ -3,7 +3,7 @@
     /// <summary>
     /// Base ninjatrader indicator.
     /// </summary>
-    public abstract class NsIndicator
+    public abstract class NsIndicator : NsElement
     {
 
         #region Market Data methods

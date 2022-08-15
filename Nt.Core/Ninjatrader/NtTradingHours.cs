@@ -8,20 +8,20 @@ namespace Nt.Core
     /// <summary>
     /// Represents the Trading Hours information returned from the current bars series. 
     /// </summary>
-    public class TradingHours
+    public class NtTradingHours
     {
 
         /// <summary>
         /// A serializable collection of full holidays configured for a Trading Hours template. Holidays are days which fall outside of the regular trading schedule.
         /// </summary>
-        public PartialHoliday[] HolidaysSerializable { get; set; }
+        public NtPartialHoliday[] HolidaysSerializable { get; set; }
 
         /// <summary>
         /// A serializable collection of partial holidays which are configured for a Trading Hours template. 
         /// Holidays are days which fall outside of the normal trading schedule, on which data will be excluded. 
         /// For more information please see the "Understanding trading holidays" section of the Using the Trading Hours window.
         /// </summary>
-        public PartialHoliday[] PartialHolidaysSerializable { get; set; }
+        public NtPartialHoliday[] PartialHolidaysSerializable { get; set; }
 
         /// <summary>
         /// Represents the trading hours version
@@ -36,7 +36,7 @@ namespace Nt.Core
         /// <summary>
         /// A collection of session definitions of the configured Trading Hours template.
         /// </summary>
-        public Collection<Session> Sessions { get; set; }
+        public Collection<NsSession> Sessions { get; set; }
 
         /// <summary>
         /// Indicates a time zone that is configured by a Trading Hours template 
@@ -55,7 +55,7 @@ namespace Nt.Core
         /// For more information please see the "Understanding trading holidays" section of the Using the Trading Hours window.
         /// </summary>
         [XmlIgnore]
-        public Dictionary<DateTime, PartialHoliday> PartialHolidays { get; }
+        public Dictionary<DateTime, NtPartialHoliday> PartialHolidays { get; }
 
         /// <summary>
         /// Indicates a time zone display name that is configured by a Trading Hour template

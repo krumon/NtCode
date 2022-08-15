@@ -5,7 +5,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents a holiday definition.
     /// </summary>
-    public class Holiday
+    public class NtHoliday
     {
         /// <summary>
         /// A DateTime representing the date of the trading hours holiday.
