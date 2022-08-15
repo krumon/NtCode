@@ -49,6 +49,9 @@ namespace Nt.Core
         /// </summary>
         private bool newSession;
 
+        private PartialHoliday partialHoliday;
+        private string holiday;
+
         #endregion
 
         #region Public events
@@ -116,11 +119,8 @@ namespace Nt.Core
                 // Create the event args.
                 SessionChangedEventArgs e = new SessionChangedEventArgs(ActualSessionBegin, ActualSessionEnd);
 
-                // Raise the handler method
-                OnSessionChanged(new SessionChangedEventArgs(ActualSessionBegin,ActualSessionEnd));
-
-                // Raise the event
-                SessionChanged?.Invoke(e);
+                // Call the listeners
+                OnNinjatraderSessionChanged(e);
 
             }
         }
@@ -217,6 +217,23 @@ namespace Nt.Core
         #endregion
 
         #region Private methods
+
+        public virtual void OnNinjatraderSessionChanged(SessionChangedEventArgs e)
+        {
+
+            // Execute the custom code
+            //bars.TradingHours.PartialHolidays.TryGetValue(DateTime.Now, out partialHoliday);
+
+            // Execute the custom code
+            //bars.TradingHours.Holidays.TryGetValue(DateTime.Now, out holiday);
+
+            // Raise the handler method
+            OnSessionChanged(e);
+
+            // Raise the event
+            SessionChanged?.Invoke(e);
+
+        }
 
         /// <summary>
         /// Method to update the last bar time.

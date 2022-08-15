@@ -6,25 +6,15 @@ namespace Nt.Core
     /// <summary>
     /// Represents the SessionHours Indicator Core.
     /// </summary>
-    public class SessionHoursStructure : NsIndicator
+    public class NsSessionHoursStructure : NsIndicator
     {
 
         #region Private members
 
         /// <summary>
-        /// The current session.
+        /// Session collection.
         /// </summary>
-        protected SessionHoursStructure currentSession;
-
-        /// <summary>
-        /// Session sorted list.
-        /// </summary>
-        protected List<SessionHoursStructure> sortedSessionList = new List<SessionHoursStructure>();
-
-        /// <summary>
-        /// Collection of sessions hours.
-        /// </summary>
-        protected List<SessionHours> sessions = new List<SessionHours>();
+        protected List<SessionHours> sessions;
 
         #endregion
 
@@ -33,7 +23,16 @@ namespace Nt.Core
         /// <summary>
         /// Collection of <see cref="SessionHours"/>.
         /// </summary>
-        public List<SessionHours> Sessions => sessions;
+        public List<SessionHours> Sessions 
+        {
+            get 
+            {
+                if (sessions == null) 
+                    sessions = new List<SessionHours>();
+
+                return sessions;
+            }
+        }
 
         /// <summary>
         /// Indicates if the <see cref="SessionHours"/> has sessions.
@@ -41,21 +40,18 @@ namespace Nt.Core
         public bool HasSessions => Sessions != null && Sessions.Count >= 1;
 
         /// <summary>
-        /// The number of session stored.
+        /// The <see cref="DateTime"/> object of the actual ninjatrader session begin.
         /// </summary>
-        public int N => sortedSessionList.Count;
+        public DateTime BeginTime { get; set; }
 
         /// <summary>
-        /// The <see cref="SessionTime"/> object of the actual session begin.
+        /// The <see cref="DateTime"/> object of the actual ninjatrader session end.
         /// </summary>
-        public SessionTime SessionBegin { get; set; }
+        public DateTime EndTime { get;set; }
 
-        /// <summary>
-        /// The <see cref="SessionTime"/> object of the actual session end.
-        /// </summary>
-        public SessionTime SessionEnd { get;set; }
+        public bool IsPartialHoliday { get; set; }
 
-        public bool IsPartialHoliday { get;set; }
+        public bool IsHoliday { get; set; }
 
         public bool IsLateBegin { get; set; }
 
@@ -66,11 +62,11 @@ namespace Nt.Core
         #region Constructor
 
         /// <summary>
-        /// Create a default instance of <see cref="SessionHoursStructure"/>.
+        /// Create a default instance of <see cref="SessionStructure"/>.
         /// </summary>
         /// <param name="ninjascript"></param>
         /// <param name="sessionIterator"></param>
-        public SessionHoursStructure()
+        public NsSessionHoursStructure()
         {
         }
 
@@ -93,18 +89,18 @@ namespace Nt.Core
             if (Sessions == null)
                 sessions = new List<SessionHours>();
 
-            Add(sessionType.ToSessionHours(instrumentCode, includeInitialBalance));
+            Add(sessionType.ToSessionHours(instrumentCode));
         }
 
-        public void Remove(SessionHours sessionHours)
+        public void Remove(SessionHours session)
         {
-            if (sessionHours == null)
-                throw new ArgumentNullException(nameof(sessionHours));
+            if (session == null)
+                throw new ArgumentNullException(nameof(session));
 
             if (Sessions == null)
                 throw new ArgumentNullException(nameof(Sessions));
 
-            Sessions.Remove(sessionHours);
+            Sessions.Remove(session);
 
             if (Sessions.Count == 0)
                 sessions = null;
@@ -124,6 +120,8 @@ namespace Nt.Core
         /// <returns></returns>
         public override string ToString()
         {
+            return $"N: {Idx} | Begin: {BeginTime.ToShortDateString()} | End: {EndTime.ToShortDateString()}";
+            
             //DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
 
             //string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
@@ -131,8 +129,6 @@ namespace Nt.Core
             //if (HasSessions)
             //    for (int i = 0; i < Sessions.Count; i++)
             //        sessions += Environment.NewLine + Sessions[i].ToString();
-
-            return ""; // sessions;
         }
 
         //public void Iterator(Action<SessionHours> action = null)
@@ -154,37 +150,6 @@ namespace Nt.Core
 
         // TODO:    - Método para añadir las sesiones.
         //          - Método para saber si una sesión es menor o mayor que otra.
-
-        /// <summary>
-        /// Returns the session last bar date.
-        /// </summary>
-        /// <param name="time"></param>
-        /// <param name="bars"></param>
-        /// <param name="platformTimeZoneInfo"></param>
-        /// <returns></returns>
-        //public DateTime GetLastBarSessionDate(DateTime time)
-        //{
-        //    if (time <= actualSessionEnd)
-        //        return sessionDateTmp;
-
-        //    if (!bars.BarsType.IsIntraday)
-        //        return sessionDateTmp;
-
-        //    sessionIterator.GetNextSession(time, true);
-
-        //    actualSessionBegin = sessionIterator.ActualSessionBegin;
-        //    actualSessionEnd = sessionIterator.ActualSessionEnd;
-
-        //    sessionDateTmp = TimeZoneInfo.ConvertTime(actualSessionEnd.AddSeconds(-1), platformTimeZoneInfo,bars.TradingHours.TimeZoneInfo);
-
-        //    if (newSessionBarIdx.Count == 0 ||
-        //        newSessionBarIdx.Count > 0 && ninjascript.CurrentBar > newSessionBarIdx[newSessionBarIdx.Count - 1])
-        //        newSessionBarIdx.Add(ninjascript.CurrentBar);
-
-        //    return sessionDateTmp;
-        //}
-
-
 
         #endregion
 
@@ -210,13 +175,6 @@ namespace Nt.Core
 
             Sessions.Add(session);
         }
-
-        #endregion
-
-        #region Helper methods
-
-
-
 
         #endregion
 
@@ -246,21 +204,21 @@ namespace Nt.Core
         //    return this;
         //}
 
-        protected bool IsInSession(DateTime time)
-        {
-            CurrentTime = time;
+        //protected bool IsInSession(DateTime time)
+        //{
+        //    CurrentTime = time;
 
-            if (CurrentTime > NextBeginDateTime)
-            {
-                if (CurrentTime > NextEndDateTime)
-                {
-                    //NextBeginDateTime = GetNextBeginDateTime(CurrentTime);
-                    //NextEndDateTime = GetNextEndDateTime(CurrentTime);
-                    return true;
-                }
-            }
-            return false;
-        }
+        //    if (CurrentTime > NextBeginDateTime)
+        //    {
+        //        if (CurrentTime > NextEndDateTime)
+        //        {
+        //            //NextBeginDateTime = GetNextBeginDateTime(CurrentTime);
+        //            //NextEndDateTime = GetNextEndDateTime(CurrentTime);
+        //            return true;
+        //        }
+        //    }
+        //    return false;
+        //}
 
         /// <summary>
         /// Create a new instance of <see cref="SessionHours"/> class with <see cref="TradingSession"/>.
@@ -278,11 +236,11 @@ namespace Nt.Core
         //};
         //}
 
-        public DateTime CurrentTime { get; set; } = DateTime.MinValue;
+        //public DateTime CurrentTime { get; set; } = DateTime.MinValue;
 
-        public DateTime NextBeginDateTime { get; set; } = DateTime.MinValue;
+        //public DateTime NextBeginDateTime { get; set; } = DateTime.MinValue;
 
-        public DateTime NextEndDateTime { get; set; } = DateTime.MinValue;
+        //public DateTime NextEndDateTime { get; set; } = DateTime.MinValue;
 
         #endregion
 

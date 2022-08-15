@@ -1,7 +1,7 @@
 ﻿namespace Nt.Core
 {
     /// <summary>
-    /// Base ninjatrader indicator.
+    /// Base class for any ninjascript strategy.
     /// </summary>
     public abstract class NsStrategy
     {

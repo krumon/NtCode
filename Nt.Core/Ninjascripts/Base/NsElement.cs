@@ -11,7 +11,7 @@
         public int Idx { get; set; }
 
         /// <summary>
-        /// Fre the unmagnement memory of any element.
+        /// Free the unmagnement memory of any element.
         /// </summary>
         public virtual void Dispose() { }
 
