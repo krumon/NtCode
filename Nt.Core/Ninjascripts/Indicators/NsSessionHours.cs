@@ -31,17 +31,17 @@ namespace Nt.Core
         /// <summary>
         /// The session hours structure core.
         /// </summary>
-        private NsSessionHoursStructure sessionHoursStructure;
+        private NsTradingHours tradingHours;
 
         /// <summary>
-        /// <see cref="SessionStructure"/> sorted collection.
+        /// <see cref="NsTradingHours"/> sorted collection.
         /// </summary>
-        private List<NsSessionHoursStructure> sessionHoursStructureList = new List<NsSessionHoursStructure>();
+        private List<NsTradingHours> tradingHoursList = new List<NsTradingHours>();
 
         /// <summary>
         /// Represents the ninjatrader session configure on the chart bars.
         /// </summary>
-        public NsSession ninjatraderSession;
+        public NsSession ntSession;
 
         #endregion
 
@@ -50,21 +50,31 @@ namespace Nt.Core
         /// <summary>
         /// Represents the ninjatrader session configure on the chart bars.
         /// </summary>
-        public NsSession NinjatraderSession
+        public NsSession NtSession
         {
             get
             {
-                if (ninjatraderSession == null)
-                    ninjatraderSession = new NsSession(ninjascript, SessionIterator, bars);
+                if (ntSession == null)
+                    ntSession = new NsSession(ninjascript, SessionIterator, bars);
 
-                return ninjatraderSession;
+                return ntSession;
             }
         }
 
         /// <summary>
-        /// Represents the session hours structure.
+        /// Represents the trading hours structure.
         /// </summary>
-        public NsSessionHoursStructure SessionHoursStructure => sessionHoursStructure;
+        public NsTradingHours TradingHours
+        {
+            get
+            {
+                if (tradingHours == null)
+                    tradingHours = new NsTradingHours(ntSession, bars);
+
+                return tradingHours;
+            }
+        }
+
 
         /// <summary>
         /// The session iterator to store the actual and next session data.
@@ -80,9 +90,20 @@ namespace Nt.Core
             }
         }
 
-        public DateTime BeginTime => NinjatraderSession.ActualSessionBegin;
-        public DateTime EndTime => NinjatraderSession.ActualSessionEnd;
-        public int Count => sessionHoursStructureList.Count;
+        /// <summary>
+        /// The begin time of the main session.
+        /// </summary>
+        public DateTime BeginTime => NtSession.ActualSessionBegin;
+
+        /// <summary>
+        /// The end time of the main session.
+        /// </summary>
+        public DateTime EndTime => NtSession.ActualSessionEnd;
+
+        /// <summary>
+        /// The number of main sessions stored.
+        /// </summary>
+        public int Count => tradingHoursList.Count;
 
         #endregion
 
@@ -98,7 +119,11 @@ namespace Nt.Core
             this.ninjascript = ninjascript;
             this.bars = bars;
 
-            NinjatraderSession.SessionChanged += NinjatraderSessionChanged;
+            this.sessionIterator = new SessionIterator(bars);
+            this.tradingHours = new NsTradingHours(NtSession,bars);
+
+            NtSession.SessionChanged += OnSessionChanged;
+            //NtSession.SessionChanged += TradingHours.OnSessionChanged;
         }
 
         #endregion
@@ -122,7 +147,9 @@ namespace Nt.Core
         /// </summary>
         public override void Dispose()
         {
-            ninjatraderSession.SessionChanged -= NinjatraderSessionChanged;
+            ntSession.SessionChanged -= OnSessionChanged;
+            //NtSession.SessionChanged -= TradingHours.OnSessionChanged;
+            tradingHours.Dispose();
         }
 
         #endregion
@@ -136,7 +163,7 @@ namespace Nt.Core
         /// </summary>
         public override void OnBarUpdate()
         {
-            NinjatraderSession.OnBarUpdate();
+            NtSession.OnBarUpdate();
         }
 
         /// <summary>
@@ -146,22 +173,25 @@ namespace Nt.Core
         /// </summary>
         public override void OnMarketData()
         {
-            NinjatraderSession.OnMarketData();
+            NtSession.OnMarketData();
         }
 
         #endregion
 
         #region Private methods
 
-        private void NinjatraderSessionChanged(SessionChangedEventArgs e)
+        private void OnSessionChanged(SessionChangedEventArgs e)
         {
-            sessionHoursStructure = new NsSessionHoursStructure
+            tradingHours.Dispose();
+            tradingHours = new NsTradingHours(ntSession, bars)
             {
                 Idx = Count,
-                BeginTime = this.BeginTime,
-                EndTime = this.NinjatraderSession.ActualSessionEnd
+                BeginTime = e.NewSessionBeginTime,
+                EndTime = e.NewSessionEndTime
             };
-            sessionHoursStructureList.Add(sessionHoursStructure);
+
+            tradingHoursList.Add(tradingHours);
+
         }
 
         #endregion

@@ -11,7 +11,7 @@ namespace ConsoleApp
         #region Private members
 
         public NtSimulator simulator;
-        public NsSessionHoursStructure session;
+        public NsTradingHours session;
 
         public static DateTime currentDateTime = DateTime.MinValue;
         public static DateTime beginDateTime = DateTime.MinValue;
@@ -47,7 +47,7 @@ namespace ConsoleApp
             simulator.BarUpdated += Simulator_BarUpdated;
 
             // Inicializo el indicador maestro de sesiones.
-            session = new NsSessionHoursStructure();
+            //session = new NsTradingHours();
 
             // Comienzo la simulación.
             simulator.Start();
@@ -90,7 +90,8 @@ namespace ConsoleApp
 
         private static void KrSessionHoursIteratorTest()
         {
-            NsSessionHoursStructure session = new NsSessionHoursStructure();
+            //NsTradingHours session = new NsTradingHours();
+            
             // TODO: Borrar. Es KrSession el que debe tener el iterador.
             //session.SessionHours.Sessions[0].Iterator((s) =>
             //{

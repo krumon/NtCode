@@ -1,20 +1,42 @@
-﻿using System;
+﻿using NinjaTrader.Data;
+using NinjaTrader.NinjaScript;
+using System;
 using System.Collections.Generic;
 
 namespace Nt.Core
 {
     /// <summary>
-    /// Represents the SessionHours Indicator Core.
+    /// Represents the Trading Hours structure.
     /// </summary>
-    public class NsSessionHoursStructure : NsIndicator
+    public class NsTradingHours : NsIndicator
     {
 
         #region Private members
 
         /// <summary>
+        /// The ninjascript parent of the class.
+        /// </summary>
+        private NinjaScriptBase ninjascript;
+
+        /// <summary>
+        /// The bars of the chart control.
+        /// </summary>
+        private Bars bars;
+
+        /// <summary>
         /// Session collection.
         /// </summary>
-        protected List<SessionHours> sessions;
+        private List<SessionHours> sessions;
+
+        /// <summary>
+        /// Store the patial holiday object when the trading hours is in a partial holiday.
+        /// </summary>
+        private PartialHoliday partialHoliday;
+
+        /// <summary>
+        /// Represents the ninjatrader session configure on the chart bars.
+        /// </summary>
+        public NsSession ntSession;
 
         #endregion
 
@@ -49,35 +71,71 @@ namespace Nt.Core
         /// </summary>
         public DateTime EndTime { get;set; }
 
-        public bool IsPartialHoliday { get; set; }
+        /// <summary>
+        /// Store the patial holiday object when the trading hours is in a partial holiday.
+        /// </summary>
+        public PartialHoliday PartialHoliday => partialHoliday;
 
-        public bool IsHoliday { get; set; }
+        /// <summary>
+        /// Indicates if the trading hours is a partial holiday.
+        /// </summary>
+        public bool IsPartialHoliday { get; private set; } // => PartialHoliday != null; // {get; private set;}
 
-        public bool IsLateBegin { get; set; }
+        /// <summary>
+        /// Indicates if the partial holiday has a late begin time.
+        /// </summary>
+        public bool IsLateBegin => IsPartialHoliday && PartialHoliday.IsLateBegin;
 
-        public bool IsEarlyEnd { get; set; }
+        /// <summary>
+        /// Indicates if the partial holiday has a early end.
+        /// </summary>
+        public bool IsEarlyEnd => IsPartialHoliday && PartialHoliday.IsEarlyEnd;
 
         #endregion
 
         #region Constructor
 
         /// <summary>
-        /// Create a default instance of <see cref="SessionStructure"/>.
+        /// Create a default instance of <see cref="NsTradingHours"/>.
         /// </summary>
         /// <param name="ninjascript"></param>
-        /// <param name="sessionIterator"></param>
-        public NsSessionHoursStructure()
+        /// <param name="bars"></param>
+        public NsTradingHours(NsSession ntSession, Bars bars)
         {
+            this.ntSession = ntSession;
+            this.bars = bars;
+
+            this.ntSession.SessionChanged += OnSessionChanged;
         }
 
         #endregion
 
-        #region Instance methods
-
-
-        #endregion
-
         #region Public methods
+
+        /// <summary>
+        /// If the trading hours is in partial holiday, gets the Partial Holiday object, otherwise, partial holiday is null.
+        /// </summary>
+        /// <param name="e"></param>
+        public virtual void OnSessionChanged(SessionChangedEventArgs e)
+        {
+            //if (!(bars.TradingHours.PartialHolidays.TryGetValue(e.NewSessionBeginTime, out partialHoliday)))
+            //    partialHoliday = null;
+
+            if (bars.TradingHours.PartialHolidays.TryGetValue(e.NewSessionBeginTime, out partialHoliday))
+                IsPartialHoliday = true;
+            //else
+            //    partialHoliday = null;
+
+        }
+
+        /// <summary>
+        /// Free the memory.
+        /// </summary>
+        public override void Dispose()
+        {
+            ntSession.SessionChanged -= OnSessionChanged;
+        }
+
 
         public void AddSession( 
             TradingSession sessionType,
@@ -120,7 +178,8 @@ namespace Nt.Core
         /// <returns></returns>
         public override string ToString()
         {
-            return $"N: {Idx} | Begin: {BeginTime.ToShortDateString()} | End: {EndTime.ToShortDateString()}";
+            string holidayText = partialHoliday == null ? "" : IsLateBegin ? " | Partial Holiday - Late Begin." : " | Partial Holiday - Early End.";
+            return $"N: {Idx} | Begin: {BeginTime.ToLongTimeString()} | End: {EndTime.ToLongTimeString()} {holidayText}";
             
             //DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
 
@@ -153,8 +212,13 @@ namespace Nt.Core
 
         #endregion
 
+        #region Market Data methods
+
+        #endregion
+
         #region Private methods
 
+        
         // TODO: Codificar el método "Add" para añadir sesiones conforme al enum TradingSession
         //       y organizando según queramos que se vean las sesiones.
         private void Add(SessionHours session)

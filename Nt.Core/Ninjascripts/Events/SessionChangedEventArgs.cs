@@ -13,12 +13,12 @@ namespace Nt.Core
         /// <summary>
         /// Represents the actual session begin
         /// </summary>
-        public DateTime NewSessionBegin { get; set; }
+        public DateTime NewSessionBeginTime { get; set; }
 
         /// <summary>
         /// Represents the actual session end.
         /// </summary>
-        public DateTime NewSessionEnd { get; set; }
+        public DateTime NewSessionEndTime { get; set; }
 
         #endregion
 
@@ -39,8 +39,8 @@ namespace Nt.Core
         /// <param name="newSessionEnd">The final time of the new session.</param>
         public SessionChangedEventArgs(DateTime newSessionBegin, DateTime newSessionEnd)
         {
-            this.NewSessionBegin = newSessionBegin;
-            this.NewSessionEnd = newSessionEnd;
+            this.NewSessionBeginTime = newSessionBegin;
+            this.NewSessionEndTime = newSessionEnd;
         }
 
         #endregion
