@@ -77,7 +77,7 @@
     <Compile Include="Ninjascripts\Indicators\NsSessionHours.cs" />
     <Compile Include="Sessions\SessionHours\BalanceSessionHelpers.cs" />
     <Compile Include="Sessions\SessionHours\TradingSessionHelpers.cs" />
-    <Compile Include="Ninjascripts\Scripts\NsTradingHours.cs" />
+    <Compile Include="TradingHours\NsTradingHours.cs" />
     <Compile Include="Sessions\SessionTime\TradingTimeHelpers.cs" />
     <Compile Include="Users\Accounts.cs" />
     <Compile Include="Users\Settings.cs" />
