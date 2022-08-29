@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents consts, fields and properties of the Ninjatrader user configuration.
     /// </summary>
-    public class SessionsManager
+    public class SessionsManager : NtScript
     {
 
         #region Consts
@@ -45,20 +45,27 @@ namespace Nt.Core
         /// </summary>
         private List<NtTradingHours> tradingHoursList = new List<NtTradingHours>();
 
-        #endregion
-
-        #region Fields
-
         protected UserAccount userAccount;
         protected UserSession userSession;
         protected UserSettings userSettings;
 
         #endregion
 
+        #region Fields
+
+        #endregion
+
         #region Properties
 
-        public NtTradingHours TradingHours { get;private set; }
+        //public NtTradingHours TradingHours { get;private set; }
+        //public UserAccount UserAccount { get;private set; }
+        //public UserSession UserSession { get;private set; }
+        //public UserSettings UserSettings { get;private set; }
 
+        /// <summary>
+        /// The number of main sessions stored.
+        /// </summary>
+        public int UserSessionsCount => tradingHoursList.Count;
 
         #endregion
 
@@ -79,7 +86,7 @@ namespace Nt.Core
 
             this.userAccount = addUserAccounts ? new UserAccount() : null;
             this.userSettings = addUserSettings ? new UserSettings() : null;
-            this.userSession = addUserSessions ? new UserSession(ninjascript, sessionIterator, bars) : null;
+            this.userSession = addUserSessions ? new UserSession(ninjascript, bars, sessionIterator) : null;
         }
 
         #endregion
@@ -88,9 +95,38 @@ namespace Nt.Core
 
         public SessionsManager UseTradingHours()
         {
-            TradingHours = new NtTradingHours();
-            userSession.UserSessionChanged += TradingHours.OnUserSessionChanged;
+            userSession.UserSessionChanged += OnUserSessionChanged;
             return this;
+        }
+
+        #endregion
+
+        #region handler methods
+
+        public override void OnBarUpdate()
+        {
+            userSession.OnBarUpdate();
+        }
+
+        public override void OnMarketData()
+        {
+            userSession.OnMarketData();
+        }
+
+        /// <summary>
+        /// If the trading hours is in partial holiday, gets the Partial Holiday object, otherwise, partial holiday is null.
+        /// </summary>
+        /// <param name="e"></param>
+        public virtual void OnUserSessionChanged(UserSessionChangedEventArgs e)
+        {
+            tradingHours = new NtTradingHours();
+            tradingHours.UpdateUserSession(e,UserSessionsCount);
+            tradingHoursList.Add(tradingHours);
+        }
+
+        public override void Dispose()
+        {
+            userSession.UserSessionChanged -= OnUserSessionChanged;
         }
 
         #endregion

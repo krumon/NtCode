@@ -55,7 +55,7 @@ namespace Nt.Core
             get
             {
                 if (ntSession == null)
-                    ntSession = new UserSession(ninjascript, SessionIterator, bars);
+                    ntSession = new UserSession(ninjascript, bars, SessionIterator);
 
                 return ntSession;
             }

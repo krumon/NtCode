@@ -11,6 +11,11 @@ namespace Nt.Core
         #region Public properties
 
         /// <summary>
+        /// The element id or index
+        /// </summary>
+        public int Idx { get; set; }
+
+        /// <summary>
         /// Represents the actual session begin
         /// </summary>
         public DateTime NewSessionBeginTime { get; set; }

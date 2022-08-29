@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the Trading Hours structure.
     /// </summary>
-    public class NtTradingHours : NtIndicator
+    public class NtTradingHours : NtScript
     {
 
         #region Private members
@@ -21,7 +21,7 @@ namespace Nt.Core
         /// <summary>
         /// The bars of the chart control.
         /// </summary>
-        private Bars bars;
+        //private Bars bars;
 
         /// <summary>
         /// Session collection.
@@ -31,7 +31,7 @@ namespace Nt.Core
         /// <summary>
         /// Store the patial holiday object when the trading hours is in a partial holiday.
         /// </summary>
-        private PartialHoliday partialHoliday;
+        //private PartialHoliday partialHoliday;
 
         /// <summary>
         /// Represents the ninjatrader session configure on the chart bars.
@@ -74,7 +74,7 @@ namespace Nt.Core
         /// <summary>
         /// Store the patial holiday object when the trading hours is in a partial holiday.
         /// </summary>
-        public PartialHoliday PartialHoliday => partialHoliday;
+        //public PartialHoliday PartialHoliday => partialHoliday;
 
         /// <summary>
         /// Indicates if the trading hours is a partial holiday.
@@ -90,6 +90,11 @@ namespace Nt.Core
         /// Indicates if the partial holiday has a early end.
         /// </summary>
         public bool IsEarlyEnd { get; private set; } //=> IsPartialHoliday && PartialHoliday.IsEarlyEnd;
+
+        /// <summary>
+        /// The number of main sessions stored.
+        /// </summary>
+        public int Count { get; private set; }
 
         #endregion
 
@@ -116,9 +121,10 @@ namespace Nt.Core
         /// If the trading hours is in partial holiday, gets the Partial Holiday object, otherwise, partial holiday is null.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void OnUserSessionChanged(UserSessionChangedEventArgs e)
+        public void UpdateUserSession(UserSessionChangedEventArgs e, int count)
         {
-
+            Count = count;
+            Idx = e.Idx;
             BeginTime = e.NewSessionBeginTime;
             EndTime = e.NewSessionEndTime;
             IsPartialHoliday = e.IsPartialHoliday;
@@ -128,11 +134,6 @@ namespace Nt.Core
             // TODO: Add Sessions selected by the user in the ninjascript. (American, Assian, Custom,...)
 
 
-
-            //if (bars.TradingHours.PartialHolidays.TryGetValue(e.NewSessionBeginTime, out partialHoliday))
-            //    IsPartialHoliday = true;
-            //else
-            //    partialHoliday = null;
 
         }
 
@@ -186,7 +187,7 @@ namespace Nt.Core
         /// <returns></returns>
         public override string ToString()
         {
-            string holidayText = partialHoliday == null ? "" : IsLateBegin ? " | Partial Holiday - Late Begin." : " | Partial Holiday - Early End.";
+            string holidayText = !IsPartialHoliday ? "" : IsLateBegin ? " | Partial Holiday - Late Begin." : " | Partial Holiday - Early End.";
             return $"N: {Idx} | Begin: {BeginTime.ToLongTimeString()} | End: {EndTime.ToLongTimeString()} {holidayText}";
             
             //DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);

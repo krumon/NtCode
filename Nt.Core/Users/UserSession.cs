@@ -137,8 +137,9 @@ namespace Nt.Core
                 // Create the event args.
                 UserSessionChangedEventArgs e = new UserSessionChangedEventArgs 
                 { 
-                    NewSessionBeginTime = ActualSessionBegin,
-                    NewSessionEndTime = ActualSessionEnd,
+                    Idx = this.ninjascript.CurrentBar,
+                    NewSessionBeginTime = this.ActualSessionBegin,
+                    NewSessionEndTime = this.ActualSessionEnd,
                     IsPartialHoliday = this.IsPartialHoliday,
                     IsLateBegin = this.IsLateBegin,
                     IsEarlyEnd = this.IsEarlyEnd,
@@ -175,11 +176,11 @@ namespace Nt.Core
         /// <param name="sessionIterator"></param>
         /// <param name="bars"></param>
         /// <param name="ninjascript"></param>
-        public UserSession(NinjaScriptBase ninjascript, SessionIterator sessionIterator, Bars bars)
+        public UserSession(NinjaScriptBase ninjascript, Bars bars, SessionIterator sessionIterator)
         {
             this.ninjascript = ninjascript;
             this.bars = bars;
-            this.sessionIterator = sessionIterator;
+            this.sessionIterator = sessionIterator ?? new SessionIterator(bars);
             PlatformTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
             BarsTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
             Instrument = new Instrument
