@@ -5,7 +5,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents consts, fields and properties of the Ninjatrader user configuration.
     /// </summary>
-    public class Settings
+    public class UserSettings
     {
 
         #region Consts
@@ -88,9 +88,9 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
-        /// Create a default instance of the <see cref="Settings"/> class.
+        /// Create a default instance of the <see cref="UserSettings"/> class.
         /// </summary>
-        public Settings()
+        public UserSettings()
         {
 
         }

@@ -11,7 +11,7 @@ namespace ConsoleApp
         #region Private members
 
         public NtSimulator simulator;
-        public NsTradingHours session;
+        public NtTradingHours session;
 
         public static DateTime currentDateTime = DateTime.MinValue;
         public static DateTime beginDateTime = DateTime.MinValue;

@@ -6,12 +6,12 @@ namespace Nt.Core
     public class NtPartialHoliday
     {
 
-        public NsSession Constraint { get; set; }
+        public UserSession Constraint { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }
         public bool IsEarlyEnd { get; set; }
         public bool IsLateBegin { get; set; }
-        public Collection<NsSession> Sessions { get; set; }
+        public Collection<UserSession> Sessions { get; set; }
 
     }
 }

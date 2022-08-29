@@ -9,7 +9,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the trading hours session definition.
     /// </summary>
-    public class NsSession : NsIndicator
+    public class UserSession : NtIndicator
     {
 
         #region Private members
@@ -47,10 +47,9 @@ namespace Nt.Core
         /// <summary>
         /// Flag to indicate whe the session changed to new session.
         /// </summary>
-        private bool newSession;
+        private bool isNewSession;
 
         private PartialHoliday partialHoliday;
-        private string holiday;
 
         #endregion
 
@@ -59,11 +58,26 @@ namespace Nt.Core
         /// <summary>
         /// Event thats is raised when the sessoin changed.
         /// </summary>
-        public event Action<SessionChangedEventArgs> SessionChanged = (e) => { };
+        public event Action<UserSessionChangedEventArgs> UserSessionChanged = (e) => { };
 
         #endregion
 
         #region Public properties
+
+        /// <summary>
+        /// The ninjascript parent of the class.
+        /// </summary>
+        public NinjaScriptBase Ninjascript => ninjascript;
+
+        /// <summary>
+        /// The bars of the chart control.
+        /// </summary>
+        public Bars Bars => bars;
+
+        /// <summary>
+        /// The session iterator to store the actual and next session data.
+        /// </summary>
+        public SessionIterator SessionIterator => sessionIterator;
 
         /// <summary>
         /// Represents the chart bars <see cref="Instrument"/>.
@@ -98,17 +112,17 @@ namespace Nt.Core
         /// <summary>
         /// Is true when a new session is added to the sorted session list.
         /// </summary>
-        public bool NewSession 
+        public bool IsNewSession 
         {
-            get => newSession;
+            get => isNewSession;
             private set
             {
                 // Make sure value changed
-                if (value == newSession)
+                if (value == isNewSession)
                     return;
 
                 // Update value.
-                newSession = value;
+                isNewSession = value;
 
                 if (!value)
                     return;
@@ -116,26 +130,52 @@ namespace Nt.Core
                 // Update the counter.
                 Count++;
 
+                // if date is a partial hoilday...store the partial holiday
+                if (!(bars.TradingHours.PartialHolidays.TryGetValue(ActualSessionBegin, out partialHoliday)))
+                    partialHoliday = null;
+
                 // Create the event args.
-                SessionChangedEventArgs e = new SessionChangedEventArgs(ActualSessionBegin, ActualSessionEnd);
+                UserSessionChangedEventArgs e = new UserSessionChangedEventArgs 
+                { 
+                    NewSessionBeginTime = ActualSessionBegin,
+                    NewSessionEndTime = ActualSessionEnd,
+                    IsPartialHoliday = this.IsPartialHoliday,
+                    IsLateBegin = this.IsLateBegin,
+                    IsEarlyEnd = this.IsEarlyEnd,
+                };
 
                 // Call the listeners
-                OnNinjatraderSessionChanged(e);
+                OnNtUserSessionChanged(e);
 
             }
         }
+
+        /// <summary>
+        /// Indicates if the trading hours is a partial holiday.
+        /// </summary>
+        public bool IsPartialHoliday => partialHoliday != null;
+
+        /// <summary>
+        /// Indicates if the partial holiday has a late begin time.
+        /// </summary>
+        public bool IsLateBegin => IsPartialHoliday && partialHoliday.IsLateBegin;
+
+        /// <summary>
+        /// Indicates if the partial holiday has a early end.
+        /// </summary>
+        public bool IsEarlyEnd => IsPartialHoliday && partialHoliday.IsEarlyEnd;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Create a default instance of <see cref="NsSession"/>.
+        /// Create a default instance of <see cref="UserSession"/>.
         /// </summary>
         /// <param name="sessionIterator"></param>
         /// <param name="bars"></param>
         /// <param name="ninjascript"></param>
-        public NsSession(NinjaScriptBase ninjascript, SessionIterator sessionIterator, Bars bars)
+        public UserSession(NinjaScriptBase ninjascript, SessionIterator sessionIterator, Bars bars)
         {
             this.ninjascript = ninjascript;
             this.bars = bars;
@@ -186,7 +226,7 @@ namespace Nt.Core
 
         #region Handler methods
 
-        public virtual void OnSessionChanged(SessionChangedEventArgs e)
+        public virtual void OnUserSessionChanged(UserSessionChangedEventArgs e)
         {
         }
 
@@ -218,20 +258,14 @@ namespace Nt.Core
 
         #region Private methods
 
-        public virtual void OnNinjatraderSessionChanged(SessionChangedEventArgs e)
+        private void OnNtUserSessionChanged(UserSessionChangedEventArgs e)
         {
 
-            // Execute the custom code
-            //bars.TradingHours.PartialHolidays.TryGetValue(DateTime.Now, out partialHoliday);
-
-            // Execute the custom code
-            //bars.TradingHours.Holidays.TryGetValue(DateTime.Now, out holiday);
-
             // Raise the handler method
-            OnSessionChanged(e);
+            OnUserSessionChanged(e);
 
             // Raise the event
-            SessionChanged?.Invoke(e);
+            UserSessionChanged?.Invoke(e);
 
         }
 
@@ -247,7 +281,7 @@ namespace Nt.Core
                 isNewSession = true;
             
             currentSessionEnd = lastBarTimeStamp;
-            NewSession = isNewSession;
+            IsNewSession = isNewSession;
         }
 
         #endregion

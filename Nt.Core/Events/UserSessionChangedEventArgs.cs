@@ -5,7 +5,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the trading hours session definition.
     /// </summary>
-    public class SessionChangedEventArgs : EventArgs
+    public class UserSessionChangedEventArgs : EventArgs
     {
 
         #region Public properties
@@ -20,6 +20,22 @@ namespace Nt.Core
         /// </summary>
         public DateTime NewSessionEndTime { get; set; }
 
+        /// <summary>
+        /// Indicates if the trading hours is a partial holiday.
+        /// </summary>
+        public bool IsPartialHoliday { get; set; }
+
+        /// <summary>
+        /// Indicates if the partial holiday has a late begin time.
+        /// </summary>
+        public bool IsLateBegin { get; set; }
+
+        /// <summary>
+        /// Indicates if the partial holiday has a early end.
+        /// </summary>
+        public bool IsEarlyEnd { get; set; }
+
+
         #endregion
 
         #region Constructors
@@ -27,7 +43,7 @@ namespace Nt.Core
         /// <summary>
         /// Create <see cref="NtNewSessionEventArgs"/> default instance.
         /// </summary>
-        public SessionChangedEventArgs()
+        public UserSessionChangedEventArgs()
         {
 
         }
@@ -37,7 +53,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="newSessionBegin">The initial time of the new session.</param>
         /// <param name="newSessionEnd">The final time of the new session.</param>
-        public SessionChangedEventArgs(DateTime newSessionBegin, DateTime newSessionEnd)
+        public UserSessionChangedEventArgs(DateTime newSessionBegin, DateTime newSessionEnd)
         {
             this.NewSessionBeginTime = newSessionBegin;
             this.NewSessionEndTime = newSessionEnd;

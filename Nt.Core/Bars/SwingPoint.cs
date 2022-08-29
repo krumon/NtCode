@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Nt.Core
 {
-    public class SwingPoint : NsElement
+    public class SwingPoint : NtElement
     {
 
         #region Private members

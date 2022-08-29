@@ -3,7 +3,7 @@
     /// <summary>
     /// Base class for any ninjascript.
     /// </summary>
-    public abstract class NsScript : NsElement
+    public abstract class NtScript : NtElement
     {
 
         #region Market Data methods

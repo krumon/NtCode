@@ -6,7 +6,7 @@ namespace Nt.Core
 {
 
     public abstract class Cache<T>
-        where T : NsElement
+        where T : NtElement
     {
 
         #region Private members

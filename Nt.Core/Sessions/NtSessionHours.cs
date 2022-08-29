@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the core of the ninjascripts  session hours.
     /// </summary>
-    public class NsSessionHours : NsIndicator
+    public class NtSessionHours : NtIndicator
     {
 
         #region Private members
@@ -31,17 +31,17 @@ namespace Nt.Core
         /// <summary>
         /// The session hours structure core.
         /// </summary>
-        private NsTradingHours tradingHours;
+        private NtTradingHours tradingHours;
 
         /// <summary>
-        /// <see cref="NsTradingHours"/> sorted collection.
+        /// <see cref="NtTradingHours"/> sorted collection.
         /// </summary>
-        private List<NsTradingHours> tradingHoursList = new List<NsTradingHours>();
+        private List<NtTradingHours> tradingHoursList = new List<NtTradingHours>();
 
         /// <summary>
         /// Represents the ninjatrader session configure on the chart bars.
         /// </summary>
-        public NsSession ntSession;
+        public UserSession ntSession;
 
         #endregion
 
@@ -50,12 +50,12 @@ namespace Nt.Core
         /// <summary>
         /// Represents the ninjatrader session configure on the chart bars.
         /// </summary>
-        public NsSession NtSession
+        public UserSession NtSession
         {
             get
             {
                 if (ntSession == null)
-                    ntSession = new NsSession(ninjascript, SessionIterator, bars);
+                    ntSession = new UserSession(ninjascript, SessionIterator, bars);
 
                 return ntSession;
             }
@@ -64,12 +64,12 @@ namespace Nt.Core
         /// <summary>
         /// Represents the trading hours structure.
         /// </summary>
-        public NsTradingHours TradingHours
+        public NtTradingHours TradingHours
         {
             get
             {
                 if (tradingHours == null)
-                    tradingHours = new NsTradingHours(ntSession, bars);
+                    tradingHours = new NtTradingHours();
 
                 return tradingHours;
             }
@@ -114,15 +114,15 @@ namespace Nt.Core
         /// </summary>
         /// <param name="ninjascript"></param>
         /// <param name="sessionIterator"></param>
-        public NsSessionHours(NinjaScriptBase ninjascript, SessionIterator sessionIterator, Bars bars)
+        public NtSessionHours(NinjaScriptBase ninjascript, SessionIterator sessionIterator, Bars bars)
         {
             this.ninjascript = ninjascript;
             this.bars = bars;
 
             this.sessionIterator = new SessionIterator(bars);
-            this.tradingHours = new NsTradingHours(NtSession,bars);
+            this.tradingHours = new NtTradingHours();
 
-            NtSession.SessionChanged += OnSessionChanged;
+            NtSession.UserSessionChanged += OnSessionChanged;
             //NtSession.SessionChanged += TradingHours.OnSessionChanged;
         }
 
@@ -147,7 +147,7 @@ namespace Nt.Core
         /// </summary>
         public override void Dispose()
         {
-            ntSession.SessionChanged -= OnSessionChanged;
+            ntSession.UserSessionChanged -= OnSessionChanged;
             //NtSession.SessionChanged -= TradingHours.OnSessionChanged;
             tradingHours.Dispose();
         }
@@ -180,10 +180,10 @@ namespace Nt.Core
 
         #region Private methods
 
-        private void OnSessionChanged(SessionChangedEventArgs e)
+        private void OnSessionChanged(UserSessionChangedEventArgs e)
         {
             tradingHours.Dispose();
-            tradingHours = new NsTradingHours(ntSession, bars)
+            tradingHours = new NtTradingHours()
             {
                 Idx = Count,
                 BeginTime = e.NewSessionBeginTime,

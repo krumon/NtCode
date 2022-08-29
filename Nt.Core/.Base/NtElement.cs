@@ -3,7 +3,7 @@
     /// <summary>
     /// Base ninjatrader element
     /// </summary>
-    public abstract class NsElement
+    public abstract class NtElement
     {
         /// <summary>
         /// The element id or index

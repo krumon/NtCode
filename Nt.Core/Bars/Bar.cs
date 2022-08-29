@@ -2,7 +2,7 @@
 
 namespace Nt.Core
 {
-    public class Bar : NsElement
+    public class Bar : NtElement
     {
 
         #region Public properties

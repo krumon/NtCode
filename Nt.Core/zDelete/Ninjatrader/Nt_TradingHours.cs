@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the Trading Hours information returned from the current bars series. 
     /// </summary>
-    public class NtTradingHours
+    public class Nt_TradingHours
     {
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Nt.Core
         /// <summary>
         /// A collection of session definitions of the configured Trading Hours template.
         /// </summary>
-        public Collection<NsSession> Sessions { get; set; }
+        public Collection<UserSession> Sessions { get; set; }
 
         /// <summary>
         /// Indicates a time zone that is configured by a Trading Hours template 
