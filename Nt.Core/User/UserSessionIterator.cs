@@ -9,7 +9,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the trading hours session definition.
     /// </summary>
-    public class UserSession : NtIndicator
+    public class UserSessionIterator : NtScript
     {
 
         #region Private members
@@ -58,7 +58,7 @@ namespace Nt.Core
         /// <summary>
         /// Event thats is raised when the sessoin changed.
         /// </summary>
-        public event Action<UserSessionChangedEventArgs> UserSessionChanged = (e) => { };
+        public event Action<UserSessionChangedEventArgs> SessionChanged = (e) => { };
 
         #endregion
 
@@ -146,7 +146,7 @@ namespace Nt.Core
                 };
 
                 // Call the listeners
-                OnNtUserSessionChanged(e);
+                OnNtSessionChanged(e);
 
             }
         }
@@ -171,12 +171,12 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
-        /// Create a default instance of <see cref="UserSession"/>.
+        /// Create a default instance of <see cref="UserSessionIterator"/>.
         /// </summary>
         /// <param name="sessionIterator"></param>
         /// <param name="bars"></param>
         /// <param name="ninjascript"></param>
-        public UserSession(NinjaScriptBase ninjascript, Bars bars, SessionIterator sessionIterator)
+        public UserSessionIterator(NinjaScriptBase ninjascript, Bars bars, SessionIterator sessionIterator)
         {
             this.ninjascript = ninjascript;
             this.bars = bars;
@@ -227,7 +227,7 @@ namespace Nt.Core
 
         #region Handler methods
 
-        public virtual void OnUserSessionChanged(UserSessionChangedEventArgs e)
+        public virtual void OnSessionChanged(UserSessionChangedEventArgs e)
         {
         }
 
@@ -259,14 +259,14 @@ namespace Nt.Core
 
         #region Private methods
 
-        private void OnNtUserSessionChanged(UserSessionChangedEventArgs e)
+        private void OnNtSessionChanged(UserSessionChangedEventArgs e)
         {
 
             // Raise the handler method
-            OnUserSessionChanged(e);
+            OnSessionChanged(e);
 
             // Raise the event
-            UserSessionChanged?.Invoke(e);
+            SessionChanged?.Invoke(e);
 
         }
 

@@ -31,17 +31,17 @@ namespace Nt.Core
         /// <summary>
         /// The session hours structure core.
         /// </summary>
-        private NtTradingHours tradingHours;
+        private UserSession tradingHours;
 
         /// <summary>
-        /// <see cref="NtTradingHours"/> sorted collection.
+        /// <see cref="UserSession"/> sorted collection.
         /// </summary>
-        private List<NtTradingHours> tradingHoursList = new List<NtTradingHours>();
+        private List<UserSession> tradingHoursList = new List<UserSession>();
 
         /// <summary>
         /// Represents the ninjatrader session configure on the chart bars.
         /// </summary>
-        public UserSession ntSession;
+        public UserSessionIterator ntSession;
 
         #endregion
 
@@ -50,12 +50,12 @@ namespace Nt.Core
         /// <summary>
         /// Represents the ninjatrader session configure on the chart bars.
         /// </summary>
-        public UserSession NtSession
+        public UserSessionIterator NtSession
         {
             get
             {
                 if (ntSession == null)
-                    ntSession = new UserSession(ninjascript, bars, SessionIterator);
+                    ntSession = new UserSessionIterator(ninjascript, bars, SessionIterator);
 
                 return ntSession;
             }
@@ -64,12 +64,12 @@ namespace Nt.Core
         /// <summary>
         /// Represents the trading hours structure.
         /// </summary>
-        public NtTradingHours TradingHours
+        public UserSession TradingHours
         {
             get
             {
                 if (tradingHours == null)
-                    tradingHours = new NtTradingHours();
+                    tradingHours = new UserSession();
 
                 return tradingHours;
             }
@@ -120,9 +120,9 @@ namespace Nt.Core
             this.bars = bars;
 
             this.sessionIterator = new SessionIterator(bars);
-            this.tradingHours = new NtTradingHours();
+            this.tradingHours = new UserSession();
 
-            NtSession.UserSessionChanged += OnSessionChanged;
+            NtSession.SessionChanged += OnSessionChanged;
             //NtSession.SessionChanged += TradingHours.OnSessionChanged;
         }
 
@@ -147,7 +147,7 @@ namespace Nt.Core
         /// </summary>
         public override void Dispose()
         {
-            ntSession.UserSessionChanged -= OnSessionChanged;
+            ntSession.SessionChanged -= OnSessionChanged;
             //NtSession.SessionChanged -= TradingHours.OnSessionChanged;
             tradingHours.Dispose();
         }
@@ -183,7 +183,7 @@ namespace Nt.Core
         private void OnSessionChanged(UserSessionChangedEventArgs e)
         {
             tradingHours.Dispose();
-            tradingHours = new NtTradingHours()
+            tradingHours = new UserSession()
             {
                 Idx = Count,
                 BeginTime = e.NewSessionBeginTime,
