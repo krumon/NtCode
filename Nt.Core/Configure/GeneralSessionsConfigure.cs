@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents the <see cref="UserSession"/> configure.
     /// </summary>
-    public class TypicalSessionsConfigure
+    public class GeneralSessionsConfigure
     {
         // Sessions
         public bool includeAmericanRegularSession = true;
@@ -22,7 +22,7 @@
     /// <summary>
     /// Represents the <see cref="UserSession"/> default configure.
     /// </summary>
-    public class UserSessionDefaultConfigure : TypicalSessionsConfigure
+    public class GeneralSessionsDefaultConfigure : GeneralSessionsConfigure
     {
 
     }

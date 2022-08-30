@@ -55,7 +55,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configure\TypicalSessionsConfigure.cs" />
+    <Compile Include="Configure\GeneralSessionsConfigure.cs" />
     <Compile Include="Files\NtFileType.cs" />
     <Compile Include=".Base\NtScript.cs" />
     <Compile Include=".Base\NtStrategy.cs" />
@@ -72,7 +72,7 @@
     <Compile Include="Instruments\InstrumentCode.cs" />
     <Compile Include="Instruments\InstrumentCodeHelpers.cs" />
     <Compile Include="Math\ISeriesHelpers.cs" />
-    <Compile Include="Events\UserSessionChangedEventArgs.cs" />
+    <Compile Include="Events\SessionChangedEventArgs.cs" />
     <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
@@ -83,13 +83,13 @@
     <Compile Include="User\UserSession.cs" />
     <Compile Include="Sessions\SessionTime\TradingTimeHelpers.cs" />
     <Compile Include="User\UserAccount.cs" />
-    <Compile Include="Sessions\UserManager.cs" />
+    <Compile Include="Sessions\SessionsManager.cs" />
     <Compile Include="User\UserSettings.cs" />
     <Compile Include="Sessions\SessionHours\BalanceSession.cs" />
     <Compile Include="Sessions\SessionStats\SessionStats.cs" />
     <Compile Include="zDelete\Ninjatrader\NtHoliday.cs" />
     <Compile Include="zDelete\Ninjatrader\NtPartialHoliday.cs" />
-    <Compile Include="User\UserSessionIterator.cs" />
+    <Compile Include="Sessions\SessionsIterator\SessionsIterator.cs" />
     <Compile Include="zDelete\Ninjatrader\Nt_TradingHours.cs" />
     <Compile Include="Bars\BarType.cs" />
     <Compile Include="Caches\CacheSearchMode.cs" />

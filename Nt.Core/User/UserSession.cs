@@ -13,7 +13,7 @@ namespace Nt.Core
 
         #region Private members
 
-        private readonly TypicalSessionsConfigure configure;
+        private readonly GeneralSessionsConfigure configure;
 
         /// <summary>
         /// The ninjascript parent of the class.
@@ -96,7 +96,7 @@ namespace Nt.Core
         /// <summary>
         /// The number of main sessions stored.
         /// </summary>
-        public int N { get; private set; }
+        public int N { get; set; }
 
         #endregion
 
@@ -107,7 +107,7 @@ namespace Nt.Core
         /// </summary>
         public UserSession()
         {
-            this.configure = new UserSessionDefaultConfigure();
+            this.configure = new GeneralSessionsDefaultConfigure();
 
             //this.ntSession = ntSession;
             //this.bars = bars;
@@ -118,10 +118,10 @@ namespace Nt.Core
         /// <summary>
         /// Create a default instance of <see cref="UserSession"/>.
         /// </summary>
-        public UserSession(TypicalSessionsConfigure configure)
+        public UserSession(GeneralSessionsConfigure configure)
         {
             if (configure == null)
-                this.configure = new UserSessionDefaultConfigure();
+                this.configure = new GeneralSessionsDefaultConfigure();
             else
                 this.configure = configure;
 
@@ -139,9 +139,8 @@ namespace Nt.Core
         /// If the trading hours is in partial holiday, gets the Partial Holiday object, otherwise, partial holiday is null.
         /// </summary>
         /// <param name="e"></param>
-        public void UpdateUserSessions(UserSessionChangedEventArgs e, int n)
+        public void UpdateUserSessions(SessionChangedEventArgs e)
         {
-            N = n;
             Idx = e.Idx;
             BeginTime = e.NewSessionBeginTime;
             EndTime = e.NewSessionEndTime;
@@ -203,16 +202,15 @@ namespace Nt.Core
         /// <returns></returns>
         public override string ToString()
         {
-            string holidayText = !IsPartialHoliday ? "" : IsLateBegin ? " | Partial Holiday - Late Begin." : " | Partial Holiday - Early End.";
-            return $"N: {Idx} | Begin: {BeginTime.ToLongTimeString()} | End: {EndTime.ToLongTimeString()} {holidayText}";
+            string holidayText = !IsPartialHoliday ? 
+                "Regular Day." : IsLateBegin ? 
+                "Partial Holiday - Late Begin." : "Partial Holiday - Early End.";
+            return 
+                $"N: {N} " +
+                $"| Begin: {BeginTime.ToShortDateString()} {BeginTime.ToLongTimeString()} " +
+                $"| End: {EndTime.ToShortDateString()} {EndTime.ToLongTimeString()} " +
+                $"| {holidayText}";
             
-            //DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
-
-            //string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
-
-            //if (HasSessions)
-            //    for (int i = 0; i < Sessions.Count; i++)
-            //        sessions += Environment.NewLine + Sessions[i].ToString();
         }
 
         //public void Iterator(Action<SessionHours> action = null)

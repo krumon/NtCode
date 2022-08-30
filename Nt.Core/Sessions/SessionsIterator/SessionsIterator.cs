@@ -9,7 +9,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the trading hours session definition.
     /// </summary>
-    public class UserSessionIterator : NtScript
+    public class SessionsIterator : NtScript
     {
 
         #region Private members
@@ -58,7 +58,7 @@ namespace Nt.Core
         /// <summary>
         /// Event thats is raised when the sessoin changed.
         /// </summary>
-        public event Action<UserSessionChangedEventArgs> SessionChanged = (e) => { };
+        public event Action<SessionChangedEventArgs> SessionChanged = (e) => { };
 
         #endregion
 
@@ -135,7 +135,7 @@ namespace Nt.Core
                     partialHoliday = null;
 
                 // Create the event args.
-                UserSessionChangedEventArgs e = new UserSessionChangedEventArgs 
+                SessionChangedEventArgs e = new SessionChangedEventArgs 
                 { 
                     Idx = this.ninjascript.CurrentBar,
                     NewSessionBeginTime = this.ActualSessionBegin,
@@ -171,16 +171,17 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
-        /// Create a default instance of <see cref="UserSessionIterator"/>.
+        /// Create a default instance of <see cref="SessionsIterator"/>.
         /// </summary>
         /// <param name="sessionIterator"></param>
         /// <param name="bars"></param>
         /// <param name="ninjascript"></param>
-        public UserSessionIterator(NinjaScriptBase ninjascript, Bars bars, SessionIterator sessionIterator)
+        public SessionsIterator(NinjaScriptBase ninjascript, Bars bars, SessionIterator sessionIterator)
         {
             this.ninjascript = ninjascript;
             this.bars = bars;
             this.sessionIterator = sessionIterator ?? new SessionIterator(bars);
+
             PlatformTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
             BarsTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
             Instrument = new Instrument
@@ -227,7 +228,7 @@ namespace Nt.Core
 
         #region Handler methods
 
-        public virtual void OnSessionChanged(UserSessionChangedEventArgs e)
+        public virtual void OnSessionChanged(SessionChangedEventArgs e)
         {
         }
 
@@ -259,7 +260,7 @@ namespace Nt.Core
 
         #region Private methods
 
-        private void OnNtSessionChanged(UserSessionChangedEventArgs e)
+        private void OnNtSessionChanged(SessionChangedEventArgs e)
         {
 
             // Raise the handler method

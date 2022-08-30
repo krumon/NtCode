@@ -1,30 +1,29 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
-using System;
-using System.Collections.Generic;
 
 namespace Nt.Core
 {
     /// <summary>
     /// Represents consts, fields and properties of the Ninjatrader user configuration.
     /// </summary>
-    public class UserManager : NtScript
+    public class SessionsManager : NtScript
     {
 
-        #region Private members
+        #region Fields
 
-        protected UserSessionIterator userTradingHours;
+        public SessionsIterator sessionsIterator;
+        public UserSessions generalSessions;
+        public UserSessions customSessions;
+
         protected UserAccount userAccount;
         protected UserSettings userSettings;
-        protected UserSessions typicalSessions;
-        protected UserSessions customSessions;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Create a default instance of the <see cref="UserManager"/> class.
+        /// Create a default instance of the <see cref="SessionsManager"/> class.
         /// </summary>
         /// <param name="ninjascript"></param>
         /// <param name="sessionIterator"></param>
@@ -32,10 +31,10 @@ namespace Nt.Core
         /// <param name="addAccounts"></param>
         /// <param name="addSettings"></param>
         /// <param name="addUserSessionChangedEvent"></param>
-        public UserManager(
+        public SessionsManager(
             NinjaScriptBase ninjascript, 
-            SessionIterator sessionIterator, 
             Bars bars, 
+            SessionIterator sessionIterator, 
             bool addAccounts = false,
             bool addSettings = false,
             bool addUserSessionChangedEvent = true
@@ -44,22 +43,22 @@ namespace Nt.Core
 
             this.userAccount = addAccounts ? new UserAccount() : null;
             this.userSettings = addSettings ? new UserSettings() : null;
-            this.userTradingHours = addUserSessionChangedEvent ? new UserSessionIterator(ninjascript, bars, sessionIterator) : null;
+            this.sessionsIterator = addUserSessionChangedEvent ? new SessionsIterator(ninjascript, bars, sessionIterator) : null;
         }
 
         #endregion
 
         #region functionality methods
 
-        public UserManager UseTypicalSessions(TypicalSessionsConfigure configure = null) // Add the options by parameters (includeAmericanSession, includeAssianSession...)
+        public SessionsManager UseGeneralSessions(GeneralSessionsConfigure configure = null) // Add the options by parameters (includeAmericanSession, includeAssianSession...)
         {
-            if (typicalSessions == null)
+            if (generalSessions == null)
             {
                 // Create the user session object
-                typicalSessions = new UserSessions(configure);
+                generalSessions = new UserSessions(configure);
 
                 // Add the delegate
-                userTradingHours.SessionChanged += OnUserSessionChanged;
+                sessionsIterator.SessionChanged += OnUserSessionChanged;
             }
 
             // return the object with the user sessions implementation
@@ -72,23 +71,23 @@ namespace Nt.Core
 
         public override void OnBarUpdate()
         {
-            if (userTradingHours != null)
-                userTradingHours.OnBarUpdate();
+            if (sessionsIterator != null)
+                sessionsIterator.OnBarUpdate();
         }
 
         public override void OnMarketData()
         {
-            if (userTradingHours != null)
-                userTradingHours.OnMarketData();
+            if (sessionsIterator != null)
+                sessionsIterator.OnMarketData();
         }
 
         /// <summary>
         /// Changed any object or property when the session changed.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void OnUserSessionChanged(UserSessionChangedEventArgs e)
+        public virtual void OnUserSessionChanged(SessionChangedEventArgs e)
         {
-            typicalSessions.OnUserSessionChanged(e);
+            generalSessions.OnUserSessionChanged(e);
 
             //currentSession = new UserSession();
             //currentSession.UpdateUserSessions(e,SessionsCount);
@@ -99,7 +98,7 @@ namespace Nt.Core
 
         public override void Dispose()
         {
-            userTradingHours.SessionChanged -= OnUserSessionChanged;
+            sessionsIterator.SessionChanged -= OnUserSessionChanged;
         }
 
         #endregion

@@ -12,7 +12,7 @@ namespace Nt.Core
     {
         #region Private members
 
-        private readonly TypicalSessionsConfigure userSessionConfigure;
+        private readonly GeneralSessionsConfigure generalSessionConfigure;
 
         /// <summary>
         /// The session hours structure core.
@@ -30,7 +30,7 @@ namespace Nt.Core
         /// <summary>
         /// The number of main sessions stored.
         /// </summary>
-        public int Count => HasSessions ? sessions.Count : -1;
+        public int Count => HasSessions ? sessions.Count : 0;
 
         #endregion
 
@@ -38,15 +38,15 @@ namespace Nt.Core
 
         public UserSessions()
         {
-            this.userSessionConfigure = new UserSessionDefaultConfigure();
+            this.generalSessionConfigure = new GeneralSessionsDefaultConfigure();
         }
 
-        public UserSessions(TypicalSessionsConfigure configure)
+        public UserSessions(GeneralSessionsConfigure configure)
         {
             if (configure == null)
-                this.userSessionConfigure = new UserSessionDefaultConfigure();
+                this.generalSessionConfigure = new GeneralSessionsDefaultConfigure();
             else
-                this.userSessionConfigure = configure;
+                this.generalSessionConfigure = configure;
         }
 
         #endregion
@@ -57,13 +57,14 @@ namespace Nt.Core
         /// Changed any object or property when the session changed.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void OnUserSessionChanged(UserSessionChangedEventArgs e)
+        public virtual void OnUserSessionChanged(SessionChangedEventArgs e)
         {
-            currentSession = new UserSession(userSessionConfigure);
-            currentSession.UpdateUserSessions(e, Count);
+            currentSession = new UserSession(generalSessionConfigure);
+            currentSession.UpdateUserSessions(e);
             if (sessions == null)
                 sessions = new List<UserSession>();
             sessions.Add(currentSession);
+            currentSession.N = Count;
         }
 
         #endregion

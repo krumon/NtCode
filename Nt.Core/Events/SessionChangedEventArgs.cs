@@ -5,7 +5,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the trading hours session definition.
     /// </summary>
-    public class UserSessionChangedEventArgs : EventArgs
+    public class SessionChangedEventArgs : EventArgs
     {
 
         #region Public properties
@@ -48,7 +48,7 @@ namespace Nt.Core
         /// <summary>
         /// Create <see cref="NtNewSessionEventArgs"/> default instance.
         /// </summary>
-        public UserSessionChangedEventArgs()
+        public SessionChangedEventArgs()
         {
 
         }
@@ -58,7 +58,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="newSessionBegin">The initial time of the new session.</param>
         /// <param name="newSessionEnd">The final time of the new session.</param>
-        public UserSessionChangedEventArgs(DateTime newSessionBegin, DateTime newSessionEnd)
+        public SessionChangedEventArgs(DateTime newSessionBegin, DateTime newSessionEnd)
         {
             this.NewSessionBeginTime = newSessionBegin;
             this.NewSessionEndTime = newSessionEnd;
