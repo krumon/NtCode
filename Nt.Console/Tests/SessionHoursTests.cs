@@ -55,7 +55,7 @@ namespace ConsoleApp
             SessionHours sh = SessionHours.CreateCustomSessionHours(
                 TradingTime.American_Open,
                 TradingTime.Asian_Close,
-                "My Custom Session Hours");
+                "My Custom SessionHours Hours");
             Console.WriteLine($"Method ToString() => {sh}");
             Console.WriteLine($"Method ToShortString() => {sh.ToShortString("u")}");
             Console.WriteLine($"Method ToLongString() => {sh.ToLongString("l")}");

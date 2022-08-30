@@ -21,9 +21,7 @@ namespace Nt.Core
         /// <summary>
         /// The trading session type.
         /// </summary>
-        private TradingSession tradingSession;
-
-        //private BalanceSession balanceSession;
+        private TradingSession genericSession;
 
         #endregion
 
@@ -32,25 +30,25 @@ namespace Nt.Core
         /// <summary>
         /// The trading session type.
         /// </summary>
-        public TradingSession TradingSession
+        public TradingSession GenericSession
         {
             private set
             {
-                tradingSession = value;
+                genericSession = value;
 
-                if (tradingSession == TradingSession.Custom)
+                if (genericSession == TradingSession.Custom)
                 {
                     Code = ToDefaultCode();
                     if (string.IsNullOrEmpty(Description))
-                        Description = $"Custom Session Hours {BeginSessionTime.LocalTime.TotalHours}.{EndSessionTime.LocalTime.TotalHours}.";
+                        Description = $"Custom SessionHours Hours {BeginSessionTime.LocalTime.TotalHours}.{EndSessionTime.LocalTime.TotalHours}.";
                 }
                 else
                 {
-                    Code = tradingSession.ToCode();
-                    Description = tradingSession.ToDescription();
+                    Code = genericSession.ToCode();
+                    Description = genericSession.ToDescription();
                 }
             }
-            get => tradingSession;
+            get => genericSession;
         }
 
         /// <summary>
@@ -74,7 +72,7 @@ namespace Nt.Core
         public SessionTime EndSessionTime { get; set; }
 
         /// <summary>
-        /// Session hours duration.
+        /// SessionHours hours duration.
         /// </summary>
         public TimeSpan Duration => EndSessionTime >= BeginSessionTime ? EndSessionTime - BeginSessionTime : BeginSessionTime - EndSessionTime;
 
@@ -96,17 +94,17 @@ namespace Nt.Core
         /// <summary>
         /// Create a new instance of <see cref="SessionHours"/> class with <see cref="Core.TradingSession"/>.
         /// </summary>
-        /// <param name="tradingSession">the <see cref="Core.TradingSession"/> to create the <see cref="SessionHours"/> class.</param>
+        /// <param name="genericSession">the <see cref="Core.TradingSession"/> to create the <see cref="SessionHours"/> class.</param>
         /// <param name="instrumentCode">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
         /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
-        public static SessionHours CreateSessionHoursByType(TradingSession tradingSession, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static SessionHours CreateSessionHoursByType(TradingSession genericSession, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             return new SessionHours
             {
-                BeginSessionTime = tradingSession.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
-                EndSessionTime = tradingSession.ToEndSessionTime(instrumentCode, endTimeDisplacement),
-                TradingSession = tradingSession,
+                BeginSessionTime = genericSession.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
+                EndSessionTime = genericSession.ToEndSessionTime(instrumentCode, endTimeDisplacement),
+                GenericSession = genericSession,
             };
         }
 
@@ -125,7 +123,7 @@ namespace Nt.Core
                 BeginSessionTime = SessionTime.CreateSessionTimeByType(beginTradingSession),
                 EndSessionTime = SessionTime.CreateSessionTimeByType(endTradingSession),
                 Description = description,
-                TradingSession = TradingSession.Custom,
+                GenericSession = TradingSession.Custom,
             };
         }
 
@@ -143,7 +141,7 @@ namespace Nt.Core
                 BeginSessionTime = beginSessionTime,
                 EndSessionTime = SessionTime.CreateSessionTimeByType(endTradingSession),
                 Description = description,
-                TradingSession = TradingSession.Custom,
+                GenericSession = TradingSession.Custom,
             };
         }
 
@@ -161,7 +159,7 @@ namespace Nt.Core
                 BeginSessionTime = SessionTime.CreateSessionTimeByType(beginTradingSession),
                 EndSessionTime = endSessionTime,
                 Description = description,
-                TradingSession = TradingSession.Custom,
+                GenericSession = TradingSession.Custom,
             };
         }
 
@@ -179,7 +177,7 @@ namespace Nt.Core
                 BeginSessionTime = beginSessionTime,
                 EndSessionTime = endSessionTime,
                 Description = description,
-                TradingSession = TradingSession.Custom,
+                GenericSession = TradingSession.Custom,
             };
         }
 
@@ -198,7 +196,7 @@ namespace Nt.Core
                 BeginSessionTime = SessionTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
                 EndSessionTime = SessionTime.CreateSessionTimeByType(endTradingTime),
                 Description = description,
-                TradingSession = TradingSession.Custom,
+                GenericSession = TradingSession.Custom,
             };
         }
 
@@ -217,7 +215,7 @@ namespace Nt.Core
                 BeginSessionTime = SessionTime.CreateSessionTimeByType(beginTradingTime),
                 EndSessionTime = SessionTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
                 Description = description,
-                TradingSession = TradingSession.Custom,
+                GenericSession = TradingSession.Custom,
             };
         }
 
@@ -234,28 +232,12 @@ namespace Nt.Core
         {
             return new SessionHours
             {
-                BeginSessionTime = SessionTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom Session - Open Time" : description + " - Open"),
-                EndSessionTime = SessionTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom Session - Close Time" : description + " - Close"),
+                BeginSessionTime = SessionTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom SessionHours - Open Time" : description + " - Open"),
+                EndSessionTime = SessionTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom SessionHours - Close Time" : description + " - Close"),
                 Description = description,
-                TradingSession = TradingSession.Custom,
+                GenericSession = TradingSession.Custom,
             };
         }
-
-        ///// <summary>
-        ///// Create a new instance of <see cref="SessionHours"/> class with <see cref="BalanceSession"/>.
-        ///// </summary>
-        ///// <param name="balanceSession">the <see cref="BalanceSession"/> to create the <see cref="SessionHours"/>.</param>
-        ///// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
-        //public static SessionHours CreateSessionBalanceByType(BalanceSession balanceSession, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
-        //{
-        //    return new SessionHours
-        //    {
-        //        BeginSessionTime = balanceSession.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
-        //        EndSessionTime = balanceSession.ToEndSessionTime(instrumentCode, endTimeDisplacement),
-        //        TradingSession = balanceSession.ToTradingSession(),
-        //        //balanceSession = balanceSession,
-        //    };
-        //}
 
         #endregion
 
@@ -410,16 +392,6 @@ namespace Nt.Core
         {
             return base.GetHashCode();
         }
-
-        //public bool IsBetween(DateTime currentDateTime, DateTime minorDateTime, DateTime majorDateTime)
-        //{
-        //    if (minorDateTime >= majorDateTime)
-        //        throw new Exception("The monor date time cannot be bigger than major date time.");
-
-        //    DateTime[] nextTimes = GetNextDateTimes(currentDateTime,null,null,true);
-
-        //    return true;
-        //}
 
         #endregion
 
@@ -681,8 +653,8 @@ namespace Nt.Core
         /// <summary>
         /// Adds a specified session time to a specified session time, generating a new time span.
         /// </summary>
-        /// <param name="sh1">Session time value to add.</param>
-        /// <param name="sh2">Session time value to add.</param>
+        /// <param name="sh1">SessionHours time value to add.</param>
+        /// <param name="sh2">SessionHours time value to add.</param>
         /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="sh1"/> and <paramref name="sh2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static TimeSpan operator +(SessionHours sh1, SessionHours sh2)
@@ -699,7 +671,7 @@ namespace Nt.Core
         /// <summary>
         /// Adds a specified session time to a specified time span, generating a new time span.
         /// </summary>
-        /// <param name="sh">Session time value to add.</param>
+        /// <param name="sh">SessionHours time value to add.</param>
         /// <param name="ts">Time span value to add.</param>
         /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="sh"/> and <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
@@ -714,8 +686,8 @@ namespace Nt.Core
         /// <summary>
         /// Subtracts a specified session time from a specified session time value and returns a newtime span.
         /// </summary>
-        /// <param name="sh1">Session time value to substract.</param>
-        /// <param name="sh2">Session time value to substract.</param>
+        /// <param name="sh1">SessionHours time value to substract.</param>
+        /// <param name="sh2">SessionHours time value to substract.</param>
         /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="sh1"/> minus the value of <paramref name="sh2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static TimeSpan operator -(SessionHours sh1, SessionHours sh2)
@@ -732,7 +704,7 @@ namespace Nt.Core
         /// <summary>
         /// Subtracts a specified time span from a specified session time value and returns a newtime span.
         /// </summary>
-        /// <param name="sh">Session time value to add.</param>
+        /// <param name="sh">SessionHours time value to add.</param>
         /// <param name="ts">Time span value to add.</param>
         /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="sh"/> minus the value of <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
@@ -760,7 +732,7 @@ namespace Nt.Core
             {
                 //if (HasSessions)
                 //    for (int i = 0; i < Sessions.Count; i++)
-                //        sessions += Environment.NewLine + Sessions[i].ToString(onlyActualSession);
+                //        children += Environment.NewLine + Sessions[i].ToString(onlyActualSession);
             }
 
             return sessions;

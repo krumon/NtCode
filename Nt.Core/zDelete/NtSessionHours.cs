@@ -101,7 +101,7 @@ namespace Nt.Core
     //    public DateTime EndTime => NtSession.ActualSessionEnd;
 
     //    /// <summary>
-    //    /// The number of main sessions stored.
+    //    /// The number of main children stored.
     //    /// </summary>
     //    public int Count => tradingHoursList.Count;
 

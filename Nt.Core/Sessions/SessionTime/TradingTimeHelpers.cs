@@ -246,57 +246,57 @@ namespace Nt.Core
                 case TradingTime.Custom:
                     return "Custom Time.";
                 case TradingTime.Electronic_Open:
-                    return "Electronic Session. Open time.";
+                    return "Electronic SessionHours. Open time.";
                 case TradingTime.Electronic_Close:
-                    return "Electronic Session. Close time.";
+                    return "Electronic SessionHours. Close time.";
                 case TradingTime.Regular_Open:
-                    return "Regular Session. Open time.";
+                    return "Regular SessionHours. Open time.";
                 case TradingTime.Regular_Close:
-                    return "Regular Session. Close time.";
+                    return "Regular SessionHours. Close time.";
                 case TradingTime.OVN_Open:
-                    return "Overnight Session. Open time.";
+                    return "Overnight SessionHours. Open time.";
                 case TradingTime.OVN_Close:
-                    return "Overnight Session. Close time.";
+                    return "Overnight SessionHours. Close time.";
 
                 // MAJOR SESSIONS
                 case TradingTime.Asian_Open:
-                    return "Asian Session. Open time.";
+                    return "Asian SessionHours. Open time.";
                 case TradingTime.Asian_Close:
-                    return "Asian Session. Close time.";
+                    return "Asian SessionHours. Close time.";
                 case TradingTime.Asian_RS_Open:
-                    return "Asian residual Session. Open time.";
+                    return "Asian residual SessionHours. Open time.";
                 case TradingTime.Asian_RS_Close:
-                    return "Asian residual Session. Close time.";
+                    return "Asian residual SessionHours. Close time.";
                 case TradingTime.European_Open:
-                    return "European Session. Open time.";
+                    return "European SessionHours. Open time.";
                 case TradingTime.European_Close:
-                    return "European Session. Close time.";
+                    return "European SessionHours. Close time.";
                 case TradingTime.AmericanAndEuropean_Open:
-                    return "American and European Session. Open time.";
+                    return "American and European SessionHours. Open time.";
                 case TradingTime.AmericanAndEuropean_Close:
-                    return "American and European Session. Close time.";
+                    return "American and European SessionHours. Close time.";
                 case TradingTime.American_Open:
-                    return "American Session. Open time.";
+                    return "American SessionHours. Open time.";
                 case TradingTime.American_Close:
-                    return "American Session. Close time.";
+                    return "American SessionHours. Close time.";
                 case TradingTime.American_RS_Open:
-                    return "American residual Session. Open time.";
+                    return "American residual SessionHours. Open time.";
                 case TradingTime.American_RS_Close:
-                    return "American residual Session. Close time.";
+                    return "American residual SessionHours. Close time.";
 
                 // MINOR SESSIONS
                 case TradingTime.American_RS_EXT_Open:
-                    return "American Residual Session. Extra Time Open.";
+                    return "American Residual SessionHours. Extra Time Open.";
                 case TradingTime.American_RS_EXT_Close:
-                    return "American Residual Session. Extra Time Close.";
+                    return "American Residual SessionHours. Extra Time Close.";
                 case TradingTime.American_RS_EOD_Open:
-                    return "American Residual Session. End Of Day Open.";
+                    return "American Residual SessionHours. End Of Day Open.";
                 case TradingTime.American_RS_EOD_Close:
-                    return "American Residual Session. End Of Day Close.";
+                    return "American Residual SessionHours. End Of Day Close.";
                 case TradingTime.American_RS_NWD_Open:
-                    return "American Residual Session. New Day Open.";
+                    return "American Residual SessionHours. New Day Open.";
                 case TradingTime.American_RS_NWD_Close:
-                    return "American Residual Session. New Day Close.";
+                    return "American Residual SessionHours. New Day Close.";
 
                 // BALANCES SESSIONS
                 // -----------------
@@ -565,7 +565,7 @@ namespace Nt.Core
         //                    //case (SpecificSessionTime.American_RS_NWD_FB_Close):
         //                    //    return SpecificSessionTime.Asian_Open.ToTimeSpan();
 
-        //                    //// Asian minor sessions
+        //                    //// Asian minor children
         //                    //case (SpecificSessionTime.Asian_IB_Open):
         //                    //    return new TimeSpan(9, 0, 0);
         //                    //case (SpecificSessionTime.Asian_IB_Close):
@@ -579,7 +579,7 @@ namespace Nt.Core
         //                    //case (SpecificSessionTime.Asian_FB_Close):
         //                    //    return new TimeSpan(15, 0, 0);
 
-        //                    //// American minor sessions
+        //                    //// American minor children
         //                    //case (SpecificSessionTime.American_IB_Open):
         //                    //    return new TimeSpan(8, 30, 0);
         //                    //case (SpecificSessionTime.American_IB_Close):
@@ -593,7 +593,7 @@ namespace Nt.Core
         //                    //case (SpecificSessionTime.American_FB_Close):
         //                    //    return new TimeSpan(15, 0, 0);
 
-        //                    //// American and european minor sessions
+        //                    //// American and european minor children
         //                    //case (SpecificSessionTime.AmericanAndEuropean_IB_Open):
         //                    //    return new TimeSpan(8, 30, 0);
         //                    //case (SpecificSessionTime.AmericanAndEuropean_IB_Close):
@@ -607,7 +607,7 @@ namespace Nt.Core
         //                    //case (SpecificSessionTime.AmericanAndEuropean_FB_Close):
         //                    //    return new TimeSpan(10, 30, 0);
 
-        //                    //// Eurepan minor sessions
+        //                    //// Eurepan minor children
         //                    //case (SpecificSessionTime.European_IB_Open):
         //                    //    return new TimeSpan(8, 0, 0);
         //                    //case (SpecificSessionTime.European_IB_Close):

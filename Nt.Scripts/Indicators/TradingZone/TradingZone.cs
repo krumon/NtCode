@@ -139,7 +139,7 @@ namespace NinjaTrader.NinjaScript.Indicators.KrMasterIndicators
 
 		#endregion
 
-		#region Session variables
+		#region SessionHours variables
 
 		private DateTime cacheSessionEnd = Globals.MinDate;
 		private DateTime currentDate = Globals.MinDate;

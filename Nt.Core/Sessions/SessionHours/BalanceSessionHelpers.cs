@@ -65,7 +65,7 @@ namespace Nt.Core
                     return TradingSession.American_RS_NWD;
 
                 default:
-                    throw new Exception("The Session Balance doesn´t exist.");
+                    throw new Exception("The SessionHours Balance doesn´t exist.");
             }
         }
 
@@ -113,7 +113,7 @@ namespace Nt.Core
                     return false;
 
                 default:
-                    throw new Exception("The Session Balance doesn´t exist.");
+                    throw new Exception("The SessionHours Balance doesn´t exist.");
             }
         }
 
@@ -161,7 +161,7 @@ namespace Nt.Core
                     return false;
 
                 default:
-                    throw new Exception("The Session Balance doesn´t exist.");
+                    throw new Exception("The SessionHours Balance doesn´t exist.");
             }
         }
 
@@ -209,7 +209,7 @@ namespace Nt.Core
                     return true;
 
                 default:
-                    throw new Exception("The Session Balance doesn´t exist.");
+                    throw new Exception("The SessionHours Balance doesn´t exist.");
             }
         }
 
@@ -304,32 +304,32 @@ namespace Nt.Core
             {
                 // BALANCES
                 case BalanceSession.Regular_IB:
-                    return "Regular Session Initial Balance.";
+                    return "Regular SessionHours Initial Balance.";
                 case BalanceSession.Regular_BB:
-                    return "Regular Session Between Balances.";
+                    return "Regular SessionHours Between Balances.";
                 case BalanceSession.Regular_FB:
-                    return "Regular Session Final Balance.";
+                    return "Regular SessionHours Final Balance.";
 
                 case BalanceSession.OVN_IB:
-                    return "Overnight Session Initial Balance.";
+                    return "Overnight SessionHours Initial Balance.";
                 case BalanceSession.OVN_BB:
-                    return "Overnight Session Between Balances.";
+                    return "Overnight SessionHours Between Balances.";
                 case BalanceSession.OVN_FB:
-                    return "Overnight Session Final Balance.";
+                    return "Overnight SessionHours Final Balance.";
 
                 case BalanceSession.American_IB:
-                    return "American Session Initial Balance.";
+                    return "American SessionHours Initial Balance.";
                 case BalanceSession.American_BB:
-                    return "American Session Between Balances.";
+                    return "American SessionHours Between Balances.";
                 case BalanceSession.American_FB:
-                    return "American Session Final Balance.";
+                    return "American SessionHours Final Balance.";
 
                 case BalanceSession.AmericanAndEuropean_IB:
-                    return "American and European Session Initial Balance.";
+                    return "American and European SessionHours Initial Balance.";
                 case BalanceSession.AmericanAndEuropean_BB:
-                    return "American and European Session Between Balances.";
+                    return "American and European SessionHours Between Balances.";
                 case BalanceSession.AmericanAndEuropean_FB:
-                    return "American and European Session Final Balance.";
+                    return "American and European SessionHours Final Balance.";
 
                 case BalanceSession.Asian_IB:
                     return "Asian Initial Balance.";
@@ -411,12 +411,12 @@ namespace Nt.Core
         ///// <summary>
         ///// Converts the <see cref="TradingSession"/> to initial <see cref="SessionTime"/>.
         ///// </summary>
-        ///// <param name="tradingSession"></param>
+        ///// <param name="genericSession"></param>
         ///// <returns>Initial <see cref="SessionTime"/> of the <see cref="TradingSession"/>.</returns>
-        //public static SessionTime ToBeginSessionTime(this TradingSession tradingSession, InstrumentCode instrumentCode = InstrumentCode.Default)
+        //public static SessionTime ToBeginSessionTime(this TradingSession genericSession, InstrumentCode instrumentCode = InstrumentCode.Default)
         //{
 
-        //    switch (tradingSession)
+        //    switch (genericSession)
         //    {
 
         //        case (SpecificSessionHours.Electronic):

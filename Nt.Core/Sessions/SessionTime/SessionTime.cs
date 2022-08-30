@@ -3,7 +3,10 @@ using System;
 
 namespace Nt.Core
 {
-    public class SessionTime
+    /// <summary>
+    /// Represents a specific trading time.
+    /// </summary>
+    public class SessionTime : NtScript
     {
         #region Private members
 
@@ -29,7 +32,7 @@ namespace Nt.Core
                 {
                     Code = ToDefaultCode();
                     if (string.IsNullOrEmpty(Description))
-                        Description = $"Custom Session Time {LocalTime.TotalHours}.";
+                        Description = $"Custom SessionHours Time {LocalTime.TotalHours}.";
                 }
                 else
                 {
@@ -89,7 +92,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Converts the Time property to UTC time.
+        /// Converts the Time property to Local time.
         /// </summary>
         public TimeSpan LocalTime
         {
@@ -135,15 +138,34 @@ namespace Nt.Core
         /// Create a default instance of <see cref="SessionTime"/> by specific <see cref="Nt.Core.TradingTime"/>.
         /// </summary>
         /// <param name="tradingTime">The specific session time to create the instance.</param>
+        /// <param name="e">The snew session args.</param>
         /// <param name="instrumentCode">The unique code of the financial instrument session.</param>
-        /// <param name="specificTimeOffset">The offset of the <see cref="DateTime"/> in minutes.</param>
+        /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
         /// <returns>The session time instance.</returns>
-        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int specificTimeOffset = 0)
+        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
         {
             return new SessionTime 
             {
                 TimeZoneInfo = tradingTime.ToTimeZoneInfo(instrumentCode),
-                Time = tradingTime.ToTime(instrumentCode, specificTimeOffset),
+                Time = tradingTime.ToTime(instrumentCode, timeDisplacement),
+                TradingTime = tradingTime
+            };
+        }
+
+        /// <summary>
+        /// Create a default instance of <see cref="SessionTime"/> by specific <see cref="Nt.Core.TradingTime"/>.
+        /// </summary>
+        /// <param name="tradingTime">The specific session time to create the instance.</param>
+        /// <param name="e">The snew session args.</param>
+        /// <param name="instrumentCode">The unique code of the financial instrument session.</param>
+        /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
+        /// <returns>The session time instance.</returns>
+        public static SessionTime CreateSessionTimeByType(TradingTime tradingTime, SessionChangedEventArgs e, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
+        {
+            return new SessionTime 
+            {
+                TimeZoneInfo = tradingTime.ToTimeZoneInfo(instrumentCode),
+                Time = tradingTime.ToTime(instrumentCode, timeDisplacement),
                 TradingTime = tradingTime
             };
         }
@@ -186,6 +208,15 @@ namespace Nt.Core
                 Description = description,
                 TradingTime = TradingTime.Custom,
             };
+        }
+
+        #endregion
+
+        #region Handler methods
+
+        public virtual void OnBarUpdate(DateTime userConfigureTime)
+        {
+
         }
 
         #endregion
@@ -250,12 +281,12 @@ namespace Nt.Core
         /// <summary>
         /// Indicates if <paramref name="st"/> exists in the <see cref="TradingTime"/> enum.
         /// </summary>
-        /// <param name="st">Session time object to check exists.</param>
+        /// <param name="tradingTime"><see cref="TradingTime"/> to check exists.</param>
         /// <returns>True if the session time object exists in the trading time type.</returns>
-        public bool Exist()
+        public static bool Exist(TradingTime tradingTime)
         {
             bool exist = false;
-            SessionTime st = CreateSessionTimeByType(TradingTime.American_Open);
+            SessionTime st = CreateSessionTimeByType(tradingTime);
             SessionTime st_tmp;
 
             EnumHelpers.Iterator<TradingTime>((t) =>
@@ -623,8 +654,8 @@ namespace Nt.Core
         /// <summary>
         /// Adds a specified session time to a specified session time, generating a new time span.
         /// </summary>
-        /// <param name="st1">Session time value to add.</param>
-        /// <param name="st2">Session time value to add.</param>
+        /// <param name="st1">SessionHours time value to add.</param>
+        /// <param name="st2">SessionHours time value to add.</param>
         /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="st1"/> and <paramref name="st2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static TimeSpan operator+(SessionTime st1, SessionTime st2)
@@ -641,7 +672,7 @@ namespace Nt.Core
         /// <summary>
         /// Adds a specified session time to a specified time span, generating a new time span.
         /// </summary>
-        /// <param name="st">Session time value to add.</param>
+        /// <param name="st">SessionHours time value to add.</param>
         /// <param name="ts">Time span value to add.</param>
         /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="st"/> and <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
@@ -656,8 +687,8 @@ namespace Nt.Core
         /// <summary>
         /// Subtracts a specified session time from a specified session time value and returns a newtime span.
         /// </summary>
-        /// <param name="st1">Session time value to substract.</param>
-        /// <param name="st2">Session time value to substract.</param>
+        /// <param name="st1">SessionHours time value to substract.</param>
+        /// <param name="st2">SessionHours time value to substract.</param>
         /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="st1"/> minus the value of <paramref name="st2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
         public static TimeSpan operator-(SessionTime st1, SessionTime st2)
@@ -674,7 +705,7 @@ namespace Nt.Core
         /// <summary>
         /// Subtracts a specified time span from a specified session time value and returns a newtime span.
         /// </summary>
-        /// <param name="st">Session time value to add.</param>
+        /// <param name="st">SessionHours time value to add.</param>
         /// <param name="ts">Time span value to add.</param>
         /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="st"/> minus the value of <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
@@ -710,5 +741,6 @@ namespace Nt.Core
         }
 
         #endregion
+
     }
 }

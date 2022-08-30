@@ -95,12 +95,12 @@ namespace ConsoleApp
             });
 
             NewLine();
-            SessionTime st = SessionTime.CreateSessionTimeByType(TradingTime.American_Open);
-            bool exist = st.Exist();
+            TradingTime tt = TradingTime.American_Open;
+            bool exist = SessionTime.Exist(tt);
 
             string s = exist ? "exist" : "don't exist";
-            Write(st.ToString());
-            Write($"{st.Description} {s} in {nameof(TradingTime)} enum.");
+            Write(tt.ToString());
+            Write($"{tt} {s} in {nameof(TradingTime)} enum.");
 
         }
 

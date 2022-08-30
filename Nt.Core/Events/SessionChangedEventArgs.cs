@@ -26,6 +26,11 @@ namespace Nt.Core
         public DateTime NewSessionEndTime { get; set; }
 
         /// <summary>
+        /// Represents the actual session time zone info.
+        /// </summary>
+        public TimeZoneInfo NewSessionTimeZoneInfo { get; set; }
+
+        /// <summary>
         /// Indicates if the trading hours is a partial holiday.
         /// </summary>
         public bool IsPartialHoliday { get; set; }
@@ -58,11 +63,11 @@ namespace Nt.Core
         /// </summary>
         /// <param name="newSessionBegin">The initial time of the new session.</param>
         /// <param name="newSessionEnd">The final time of the new session.</param>
-        public SessionChangedEventArgs(DateTime newSessionBegin, DateTime newSessionEnd)
-        {
-            this.NewSessionBeginTime = newSessionBegin;
-            this.NewSessionEndTime = newSessionEnd;
-        }
+        //public SessionChangedEventArgs(DateTime newSessionBegin, DateTime newSessionEnd)
+        //{
+        //    this.NewSessionBeginTime = newSessionBegin;
+        //    this.NewSessionEndTime = newSessionEnd;
+        //}
 
         #endregion
 

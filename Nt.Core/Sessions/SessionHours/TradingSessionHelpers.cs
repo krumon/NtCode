@@ -63,29 +63,29 @@ namespace Nt.Core
             {
                 // SESSIONS
                 case TradingSession.Electronic:
-                    return "Electronic Session.";
+                    return "Electronic SessionHours.";
                 case TradingSession.Regular:
-                    return "Regular Session.";
+                    return "Regular SessionHours.";
                 case TradingSession.OVN:
-                    return "Overnight Session.";
+                    return "Overnight SessionHours.";
                 case TradingSession.American:
-                    return "American Session.";
+                    return "American SessionHours.";
                 case TradingSession.AmericanAndEuropean:
-                    return "American and European Session.";
+                    return "American and European SessionHours.";
                 case TradingSession.Asian:
-                    return "Asian Session.";
+                    return "Asian SessionHours.";
                 case TradingSession.European:
-                    return "Asian Session.";
+                    return "Asian SessionHours.";
                 case TradingSession.American_RS:
-                    return "American Residual Session.";
+                    return "American Residual SessionHours.";
                 case TradingSession.Asian_RS:
-                    return "Asian Residual Session.";
+                    return "Asian Residual SessionHours.";
                 case TradingSession.American_RS_EXT:
-                    return "American Residual Extra time Session.";
+                    return "American Residual Extra time SessionHours.";
                 case TradingSession.American_RS_EOD:
-                    return "American Residual End Of Day Session.";
+                    return "American Residual End Of Day SessionHours.";
                 case TradingSession.American_RS_NWD:
-                    return "American Residual New Day Session.";
+                    return "American Residual New Day SessionHours.";
 
                 default:
                     throw new Exception("The specific trading doesn't exists.");

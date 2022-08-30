@@ -40,7 +40,7 @@ namespace Nt.Core
         private DateTime sessionDateTmp = Globals.MinDate;
 
         /// <summary>
-        /// Session bar indexs collection.
+        /// SessionHours bar indexs collection.
         /// </summary>
         private List<int> newSessionBarIdx = new List<int>();
 
@@ -97,10 +97,10 @@ namespace Nt.Core
         /// <summary>
         /// Represents the <see cref="TimeZoneInfo"/> configure on the platform.
         /// </summary>
-        public TimeZoneInfo PlatformTimeZoneInfo { get; private set; }
+        public TimeZoneInfo UserTimeZoneInfo { get; private set; }
 
         /// <summary>
-        /// Represents The <see cref="TimeZoneInfo"/> of the bars trading hours.
+        /// Represents the <see cref="TimeZoneInfo"/> of the chart bars.
         /// </summary>
         public TimeZoneInfo BarsTimeZoneInfo { get; private set; }
 
@@ -140,6 +140,7 @@ namespace Nt.Core
                     Idx = this.ninjascript.CurrentBar,
                     NewSessionBeginTime = this.ActualSessionBegin,
                     NewSessionEndTime = this.ActualSessionEnd,
+                    NewSessionTimeZoneInfo = this.UserTimeZoneInfo,
                     IsPartialHoliday = this.IsPartialHoliday,
                     IsLateBegin = this.IsLateBegin,
                     IsEarlyEnd = this.IsEarlyEnd,
@@ -182,7 +183,7 @@ namespace Nt.Core
             this.bars = bars;
             this.sessionIterator = sessionIterator ?? new SessionIterator(bars);
 
-            PlatformTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
+            UserTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
             BarsTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
             Instrument = new Instrument
             {
@@ -214,7 +215,7 @@ namespace Nt.Core
             ActualSessionBegin = sessionIterator.ActualSessionBegin;
             ActualSessionEnd = sessionIterator.ActualSessionEnd;
 
-            sessionDateTmp = TimeZoneInfo.ConvertTime(ActualSessionEnd.AddSeconds(-1), PlatformTimeZoneInfo, BarsTimeZoneInfo);
+            sessionDateTmp = TimeZoneInfo.ConvertTime(ActualSessionEnd.AddSeconds(-1), UserTimeZoneInfo, BarsTimeZoneInfo);
 
             // TODO: Esto no lo entiendo.
             if (newSessionBarIdx.Count == 0 ||
