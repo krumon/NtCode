@@ -215,7 +215,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="appsettingsNt.json" />
-    <None Include="appsettings.json" />
+    <None Include="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

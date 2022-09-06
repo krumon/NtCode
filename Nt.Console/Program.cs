@@ -24,7 +24,7 @@ namespace ConsoleApp
         {
             using (IHost host = Host.CreateDefaultBuilder(args).ConfigureAppConfiguration((hostingContext,configurationBuilder) => 
             {
-                configurationBuilder.Sources.Clear();
+                //configurationBuilder.Sources.Clear();
 
                 IHostEnvironment env = hostingContext.HostingEnvironment;
                 var path = "appsettings.json"; // Path.Combine(env.ContentRootPath, "appsettings.json");
@@ -32,10 +32,13 @@ namespace ConsoleApp
                 configurationBuilder.SetBasePath(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
                 configurationBuilder
-                    .AddJsonFile(path, optional: true, reloadOnChange: true)
-                    .AddJsonFile($"appsettings{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile(path, optional: false, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                     .AddJsonFile($"appsettingsNt.json", optional: true, reloadOnChange: true)
-                    .AddEnvironmentVariables();
+                    .AddEnvironmentVariables((configure) =>
+                    {
+                        configure.Prefix = "PROCESSOR_";
+                    });
             
                 IConfigurationRoot configurationRoot = configurationBuilder.Build();
 
@@ -52,7 +55,7 @@ namespace ConsoleApp
                 //sessionTimeTests.Run();
                 //sessionHoursTests.Run();
 
-                //IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
+                IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
 
                 //IConfiguration config2 = new ConfigurationBuilder()
                 //    .AddJsonFile("appsettings.json",true,false)
@@ -60,7 +63,7 @@ namespace ConsoleApp
 
 
                 //IHostApplicationLifetime lifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
-                
+
                 await host.RunAsync();
 
             }
