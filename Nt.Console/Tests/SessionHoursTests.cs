@@ -52,22 +52,22 @@ namespace ConsoleApp
             // Create a custom instance.
             Title("Test of Instance methods.");
 
-            SessionHours sh = SessionHours.CreateCustomSessionHours(
+            TradingSessionInfo sh = TradingSessionInfo.CreateCustomSessionHours(
                 TradingTime.American_Open,
                 TradingTime.Asian_Close,
-                "My Custom SessionHours Hours");
+                "My Custom TradingSessionInfo Hours");
             Console.WriteLine($"Method ToString() => {sh}");
             Console.WriteLine($"Method ToShortString() => {sh.ToShortString("u")}");
             Console.WriteLine($"Method ToLongString() => {sh.ToLongString("l")}");
 
-            sh = SessionHours.CreateCustomSessionHours(new TimeSpan(12,15,0),TimeZoneInfo.Local,TradingTime.European_Close);
+            sh = TradingSessionInfo.CreateCustomSessionHours(new TimeSpan(12,15,0),TimeZoneInfo.Local,TradingTime.European_Close);
             NewLine();
             Console.WriteLine($"Method ToString() => {sh}");
             Console.WriteLine($"Method ToShortString() => {sh.ToShortString("u")}");
             Console.WriteLine($"Method ToLongString() => {sh.ToLongString("l")}");
 
             // Create instance by type
-            sh = SessionHours.CreateSessionHoursByType(TradingSession.American);
+            sh = TradingSessionInfo.CreateSessionHoursByType(TradingSession.American);
             NewLine();
             Console.WriteLine($"Method ToString() => {sh}");
             Console.WriteLine($"Method ToShortString() => {sh.ToShortString("l")}");
@@ -78,7 +78,7 @@ namespace ConsoleApp
         private void ToStringTests(TradingSession type)
         {
             // Create a session time by type.
-            SessionHours sh = SessionHours.CreateSessionHoursByType(type);
+            TradingSessionInfo sh = TradingSessionInfo.CreateSessionHoursByType(type);
 
             Title("Test of To String methods.");
             Console.WriteLine(sh.ToString());
@@ -101,7 +101,7 @@ namespace ConsoleApp
             });
 
             NewLine();
-            SessionHours sh = SessionHours.CreateSessionHoursByType(TradingSession.American);
+            TradingSessionInfo sh = TradingSessionInfo.CreateSessionHoursByType(TradingSession.American);
             //bool exist = sh.Exist();
 
             //string s = exist ? "exist" : "don't exist";
@@ -112,8 +112,8 @@ namespace ConsoleApp
 
         private void OperatorTests(TradingSession t1, TradingSession t2)
         {
-            SessionHours sh1 = SessionHours.CreateSessionHoursByType(t1);
-            SessionHours sh2 = SessionHours.CreateSessionHoursByType(t2);
+            TradingSessionInfo sh1 = TradingSessionInfo.CreateSessionHoursByType(t1);
+            TradingSessionInfo sh2 = TradingSessionInfo.CreateSessionHoursByType(t2);
             int i;
             bool b;
             string s = string.Empty;
@@ -126,7 +126,7 @@ namespace ConsoleApp
             #region Compare tests
 
             Title("Test of Compare methods.");
-            i = SessionHours.Compare(sh1, sh2);
+            i = TradingSessionInfo.Compare(sh1, sh2);
             method = "CompareTo(st1,st2) =>";
 
             if (i < 0)
@@ -154,7 +154,7 @@ namespace ConsoleApp
             #region Equal tests
 
             Title("Test of Equal methods.");
-            b = SessionTime.Equals(sh1, sh2);
+            b = TradingTimeInfo.Equals(sh1, sh2);
             s = string.Empty;
             method = "Equals(st1,st2) =>";
 
@@ -256,8 +256,8 @@ namespace ConsoleApp
 
         //private static void TimeSpanTester()
         //{
-        //    SessionTime sessionTime1 = SessionTime.CreateCustomSessionTime(22,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
-        //    SessionTime sessionTime2 = SessionTime.CreateCustomSessionTime(2,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+        //    TradingTimeInfo sessionTime1 = TradingTimeInfo.CreateCustomSessionTime(22,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+        //    TradingTimeInfo sessionTime2 = TradingTimeInfo.CreateCustomSessionTime(2,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
 
         //    Console.WriteLine(String.Format("Utc Offset: {0}",sessionTime1.TimeZoneInfo.BaseUtcOffset.ToString()));
         //    Console.WriteLine(String.Format("Time 1: {0}",sessionTime1.ToUtcTime.ToString()));
@@ -272,7 +272,7 @@ namespace ConsoleApp
         //    // Print
         //    Console.WriteLine("NINJATRADER SESSION");
         //    Console.WriteLine("-------------------");
-        //    Console.WriteLine(session.SessionHours.ToString());
+        //    Console.WriteLine(session.TradingSessionInfo.ToString());
         //}
 
         //private static void PrintTradingSessions()

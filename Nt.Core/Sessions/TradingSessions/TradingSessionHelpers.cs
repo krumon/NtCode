@@ -63,29 +63,29 @@ namespace Nt.Core
             {
                 // SESSIONS
                 case TradingSession.Electronic:
-                    return "Electronic SessionHours.";
+                    return "Electronic TradingSessionInfo.";
                 case TradingSession.Regular:
-                    return "Regular SessionHours.";
+                    return "Regular TradingSessionInfo.";
                 case TradingSession.OVN:
-                    return "Overnight SessionHours.";
+                    return "Overnight TradingSessionInfo.";
                 case TradingSession.American:
-                    return "American SessionHours.";
+                    return "American TradingSessionInfo.";
                 case TradingSession.AmericanAndEuropean:
-                    return "American and European SessionHours.";
+                    return "American and European TradingSessionInfo.";
                 case TradingSession.Asian:
-                    return "Asian SessionHours.";
+                    return "Asian TradingSessionInfo.";
                 case TradingSession.European:
-                    return "Asian SessionHours.";
+                    return "Asian TradingSessionInfo.";
                 case TradingSession.American_RS:
-                    return "American Residual SessionHours.";
+                    return "American Residual TradingSessionInfo.";
                 case TradingSession.Asian_RS:
-                    return "Asian Residual SessionHours.";
+                    return "Asian Residual TradingSessionInfo.";
                 case TradingSession.American_RS_EXT:
-                    return "American Residual Extra time SessionHours.";
+                    return "American Residual Extra time TradingSessionInfo.";
                 case TradingSession.American_RS_EOD:
-                    return "American Residual End Of Day SessionHours.";
+                    return "American Residual End Of Day TradingSessionInfo.";
                 case TradingSession.American_RS_NWD:
-                    return "American Residual New Day SessionHours.";
+                    return "American Residual New Day TradingSessionInfo.";
 
                 default:
                     throw new Exception("The specific trading doesn't exists.");
@@ -93,11 +93,11 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSession"/> to initial <see cref="SessionTime"/>.
+        /// Converts the <see cref="TradingSession"/> to initial <see cref="TradingTimeInfo"/>.
         /// </summary>
         /// <param name="tradingSession"></param>
-        /// <returns>Initial <see cref="SessionTime"/> of the <see cref="TradingSession"/>.</returns>
-        public static SessionTime ToBeginSessionTime(this TradingSession tradingSession, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
+        /// <returns>Initial <see cref="TradingTimeInfo"/> of the <see cref="TradingSession"/>.</returns>
+        public static TradingTimeInfo ToBeginSessionTime(this TradingSession tradingSession, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
         {
             switch (instrumentCode)
             {
@@ -143,11 +143,11 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Method to convert the <see cref="TradingSession"/> to final <see cref="SessionTime"/>.
+        /// Method to convert the <see cref="TradingSession"/> to final <see cref="TradingTimeInfo"/>.
         /// </summary>
         /// <param name="tradingSession"></param>
-        /// <returns>Final <see cref="SessionTime"/> of the <see cref="TradingSession"/>.</returns>
-        public static SessionTime ToEndSessionTime(this TradingSession tradingSession, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
+        /// <returns>Final <see cref="TradingTimeInfo"/> of the <see cref="TradingSession"/>.</returns>
+        public static TradingTimeInfo ToEndSessionTime(this TradingSession tradingSession, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
         {
             switch (instrumentCode)
             {
@@ -193,9 +193,9 @@ namespace Nt.Core
 
         }
 
-        public static SessionHours ToSessionHours(this TradingSession type, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
+        public static TradingSessionInfo ToSessionHours(this TradingSession type, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
         {
-            return SessionHours.CreateSessionHoursByType(type,instrumentCode,balanceMinutes);
+            return TradingSessionInfo.CreateSessionHoursByType(type,instrumentCode,balanceMinutes);
         }
 
         public static TradingSession[] ToArray(this TradingSession type)

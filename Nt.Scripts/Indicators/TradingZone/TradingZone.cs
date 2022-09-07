@@ -139,7 +139,7 @@ namespace NinjaTrader.NinjaScript.Indicators.KrMasterIndicators
 
 		#endregion
 
-		#region SessionHours variables
+		#region TradingSessionInfo variables
 
 		private DateTime cacheSessionEnd = Globals.MinDate;
 		private DateTime currentDate = Globals.MinDate;
@@ -350,7 +350,7 @@ namespace NinjaTrader.NinjaScript.Indicators.KrMasterIndicators
 				resistanceSwings = new Series<double>(this);
 				supportSwings = new Series<double>(this);
 
-				// Sessions
+				// SessionHours
 				storedSession = new SessionIterator(Bars);
 			}
 

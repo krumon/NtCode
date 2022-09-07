@@ -40,7 +40,7 @@ namespace Nt.Core
         private DateTime sessionDateTmp = Globals.MinDate;
 
         /// <summary>
-        /// SessionHours bar indexs collection.
+        /// TradingSessionInfo bar indexs collection.
         /// </summary>
         private List<int> newSessionBarIdx = new List<int>();
 

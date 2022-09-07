@@ -246,57 +246,57 @@ namespace Nt.Core
                 case TradingTime.Custom:
                     return "Custom Time.";
                 case TradingTime.Electronic_Open:
-                    return "Electronic SessionHours. Open time.";
+                    return "Electronic TradingSessionInfo. Open time.";
                 case TradingTime.Electronic_Close:
-                    return "Electronic SessionHours. Close time.";
+                    return "Electronic TradingSessionInfo. Close time.";
                 case TradingTime.Regular_Open:
-                    return "Regular SessionHours. Open time.";
+                    return "Regular TradingSessionInfo. Open time.";
                 case TradingTime.Regular_Close:
-                    return "Regular SessionHours. Close time.";
+                    return "Regular TradingSessionInfo. Close time.";
                 case TradingTime.OVN_Open:
-                    return "Overnight SessionHours. Open time.";
+                    return "Overnight TradingSessionInfo. Open time.";
                 case TradingTime.OVN_Close:
-                    return "Overnight SessionHours. Close time.";
+                    return "Overnight TradingSessionInfo. Close time.";
 
                 // MAJOR SESSIONS
                 case TradingTime.Asian_Open:
-                    return "Asian SessionHours. Open time.";
+                    return "Asian TradingSessionInfo. Open time.";
                 case TradingTime.Asian_Close:
-                    return "Asian SessionHours. Close time.";
+                    return "Asian TradingSessionInfo. Close time.";
                 case TradingTime.Asian_RS_Open:
-                    return "Asian residual SessionHours. Open time.";
+                    return "Asian residual TradingSessionInfo. Open time.";
                 case TradingTime.Asian_RS_Close:
-                    return "Asian residual SessionHours. Close time.";
+                    return "Asian residual TradingSessionInfo. Close time.";
                 case TradingTime.European_Open:
-                    return "European SessionHours. Open time.";
+                    return "European TradingSessionInfo. Open time.";
                 case TradingTime.European_Close:
-                    return "European SessionHours. Close time.";
+                    return "European TradingSessionInfo. Close time.";
                 case TradingTime.AmericanAndEuropean_Open:
-                    return "American and European SessionHours. Open time.";
+                    return "American and European TradingSessionInfo. Open time.";
                 case TradingTime.AmericanAndEuropean_Close:
-                    return "American and European SessionHours. Close time.";
+                    return "American and European TradingSessionInfo. Close time.";
                 case TradingTime.American_Open:
-                    return "American SessionHours. Open time.";
+                    return "American TradingSessionInfo. Open time.";
                 case TradingTime.American_Close:
-                    return "American SessionHours. Close time.";
+                    return "American TradingSessionInfo. Close time.";
                 case TradingTime.American_RS_Open:
-                    return "American residual SessionHours. Open time.";
+                    return "American residual TradingSessionInfo. Open time.";
                 case TradingTime.American_RS_Close:
-                    return "American residual SessionHours. Close time.";
+                    return "American residual TradingSessionInfo. Close time.";
 
                 // MINOR SESSIONS
                 case TradingTime.American_RS_EXT_Open:
-                    return "American Residual SessionHours. Extra Time Open.";
+                    return "American Residual TradingSessionInfo. Extra Time Open.";
                 case TradingTime.American_RS_EXT_Close:
-                    return "American Residual SessionHours. Extra Time Close.";
+                    return "American Residual TradingSessionInfo. Extra Time Close.";
                 case TradingTime.American_RS_EOD_Open:
-                    return "American Residual SessionHours. End Of Day Open.";
+                    return "American Residual TradingSessionInfo. End Of Day Open.";
                 case TradingTime.American_RS_EOD_Close:
-                    return "American Residual SessionHours. End Of Day Close.";
+                    return "American Residual TradingSessionInfo. End Of Day Close.";
                 case TradingTime.American_RS_NWD_Open:
-                    return "American Residual SessionHours. New Day Open.";
+                    return "American Residual TradingSessionInfo. New Day Open.";
                 case TradingTime.American_RS_NWD_Close:
-                    return "American Residual SessionHours. New Day Close.";
+                    return "American Residual TradingSessionInfo. New Day Close.";
 
                 // BALANCES SESSIONS
                 // -----------------
@@ -565,7 +565,7 @@ namespace Nt.Core
         //                    //case (SpecificSessionTime.American_RS_NWD_FB_Close):
         //                    //    return SpecificSessionTime.Asian_Open.ToTimeSpan();
 
-        //                    //// Asian minor children
+        //                    //// Asian minor sessionHoursList
         //                    //case (SpecificSessionTime.Asian_IB_Open):
         //                    //    return new TimeSpan(9, 0, 0);
         //                    //case (SpecificSessionTime.Asian_IB_Close):
@@ -579,7 +579,7 @@ namespace Nt.Core
         //                    //case (SpecificSessionTime.Asian_FB_Close):
         //                    //    return new TimeSpan(15, 0, 0);
 
-        //                    //// American minor children
+        //                    //// American minor sessionHoursList
         //                    //case (SpecificSessionTime.American_IB_Open):
         //                    //    return new TimeSpan(8, 30, 0);
         //                    //case (SpecificSessionTime.American_IB_Close):
@@ -593,7 +593,7 @@ namespace Nt.Core
         //                    //case (SpecificSessionTime.American_FB_Close):
         //                    //    return new TimeSpan(15, 0, 0);
 
-        //                    //// American and european minor children
+        //                    //// American and european minor sessionHoursList
         //                    //case (SpecificSessionTime.AmericanAndEuropean_IB_Open):
         //                    //    return new TimeSpan(8, 30, 0);
         //                    //case (SpecificSessionTime.AmericanAndEuropean_IB_Close):
@@ -607,7 +607,7 @@ namespace Nt.Core
         //                    //case (SpecificSessionTime.AmericanAndEuropean_FB_Close):
         //                    //    return new TimeSpan(10, 30, 0);
 
-        //                    //// Eurepan minor children
+        //                    //// Eurepan minor sessionHoursList
         //                    //case (SpecificSessionTime.European_IB_Open):
         //                    //    return new TimeSpan(8, 0, 0);
         //                    //case (SpecificSessionTime.European_IB_Close):
@@ -751,13 +751,13 @@ namespace Nt.Core
             }
 
         /// <summary>
-        /// Returns <see cref="SessionTime"/> by <see cref="TradingTime"/>.
+        /// Returns <see cref="TradingTimeInfo"/> by <see cref="TradingTime"/>.
         /// </summary>
         /// <param name="tradingTime"></param>
-        /// <returns><see cref="SessionTime"/>.</returns>
-        public static SessionTime ToSessionTime(this TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
+        /// <returns><see cref="TradingTimeInfo"/>.</returns>
+        public static TradingTimeInfo ToSessionTime(this TradingTime tradingTime, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
         {
-            return SessionTime.CreateSessionTimeByType(tradingTime, instrumentCode, timeDisplacement);
+            return TradingTimeInfo.CreateSessionTimeByType(tradingTime, instrumentCode, timeDisplacement);
         }
     }
 }

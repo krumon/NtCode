@@ -65,7 +65,7 @@ namespace Nt.Core
                     return TradingSession.American_RS_NWD;
 
                 default:
-                    throw new Exception("The SessionHours Balance doesn´t exist.");
+                    throw new Exception("The TradingSessionInfo Balance doesn´t exist.");
             }
         }
 
@@ -113,7 +113,7 @@ namespace Nt.Core
                     return false;
 
                 default:
-                    throw new Exception("The SessionHours Balance doesn´t exist.");
+                    throw new Exception("The TradingSessionInfo Balance doesn´t exist.");
             }
         }
 
@@ -161,7 +161,7 @@ namespace Nt.Core
                     return false;
 
                 default:
-                    throw new Exception("The SessionHours Balance doesn´t exist.");
+                    throw new Exception("The TradingSessionInfo Balance doesn´t exist.");
             }
         }
 
@@ -209,7 +209,7 @@ namespace Nt.Core
                     return true;
 
                 default:
-                    throw new Exception("The SessionHours Balance doesn´t exist.");
+                    throw new Exception("The TradingSessionInfo Balance doesn´t exist.");
             }
         }
 
@@ -304,32 +304,32 @@ namespace Nt.Core
             {
                 // BALANCES
                 case BalanceSession.Regular_IB:
-                    return "Regular SessionHours Initial Balance.";
+                    return "Regular TradingSessionInfo Initial Balance.";
                 case BalanceSession.Regular_BB:
-                    return "Regular SessionHours Between Balances.";
+                    return "Regular TradingSessionInfo Between Balances.";
                 case BalanceSession.Regular_FB:
-                    return "Regular SessionHours Final Balance.";
+                    return "Regular TradingSessionInfo Final Balance.";
 
                 case BalanceSession.OVN_IB:
-                    return "Overnight SessionHours Initial Balance.";
+                    return "Overnight TradingSessionInfo Initial Balance.";
                 case BalanceSession.OVN_BB:
-                    return "Overnight SessionHours Between Balances.";
+                    return "Overnight TradingSessionInfo Between Balances.";
                 case BalanceSession.OVN_FB:
-                    return "Overnight SessionHours Final Balance.";
+                    return "Overnight TradingSessionInfo Final Balance.";
 
                 case BalanceSession.American_IB:
-                    return "American SessionHours Initial Balance.";
+                    return "American TradingSessionInfo Initial Balance.";
                 case BalanceSession.American_BB:
-                    return "American SessionHours Between Balances.";
+                    return "American TradingSessionInfo Between Balances.";
                 case BalanceSession.American_FB:
-                    return "American SessionHours Final Balance.";
+                    return "American TradingSessionInfo Final Balance.";
 
                 case BalanceSession.AmericanAndEuropean_IB:
-                    return "American and European SessionHours Initial Balance.";
+                    return "American and European TradingSessionInfo Initial Balance.";
                 case BalanceSession.AmericanAndEuropean_BB:
-                    return "American and European SessionHours Between Balances.";
+                    return "American and European TradingSessionInfo Between Balances.";
                 case BalanceSession.AmericanAndEuropean_FB:
-                    return "American and European SessionHours Final Balance.";
+                    return "American and European TradingSessionInfo Final Balance.";
 
                 case BalanceSession.Asian_IB:
                     return "Asian Initial Balance.";
@@ -372,12 +372,12 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Converts the <see cref="BalanceSession"/> to initial <see cref="SessionTime"/>.
+        /// Converts the <see cref="BalanceSession"/> to initial <see cref="TradingTimeInfo"/>.
         /// </summary>
         /// <param name="tradingSession">The type of the trading session.</param>
         /// <param name="balanceMinutes">The minutes of the balance.</param>
-        /// <returns>Initial <see cref="SessionTime"/> of the <see cref="BalanceSession"/>.</returns>
-        public static SessionTime ToBeginSessionTime(this BalanceSession sessionBalance, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
+        /// <returns>Initial <see cref="TradingTimeInfo"/> of the <see cref="BalanceSession"/>.</returns>
+        public static TradingTimeInfo ToBeginSessionTime(this BalanceSession sessionBalance, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
         {
             if (sessionBalance.IsInitialBalance())
                 return sessionBalance.ToTradingSession().ToBeginSessionTime(instrumentCode, 0);
@@ -390,12 +390,12 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Converts the <see cref="BalanceSession"/> to initial <see cref="SessionTime"/>.
+        /// Converts the <see cref="BalanceSession"/> to initial <see cref="TradingTimeInfo"/>.
         /// </summary>
         /// <param name="tradingSession">The type of the trading session.</param>
         /// <param name="balanceMinutes">The minutes of the balance.</param>
-        /// <returns>Initial <see cref="SessionTime"/> of the <see cref="BalanceSession"/>.</returns>
-        public static SessionTime ToEndSessionTime(this BalanceSession sessionBalance, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
+        /// <returns>Initial <see cref="TradingTimeInfo"/> of the <see cref="BalanceSession"/>.</returns>
+        public static TradingTimeInfo ToEndSessionTime(this BalanceSession sessionBalance, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
         {
             if (sessionBalance.IsInitialBalance())
                 return sessionBalance.ToTradingSession().ToBeginSessionTime(instrumentCode, balanceMinutes);
@@ -409,11 +409,11 @@ namespace Nt.Core
         }
 
         ///// <summary>
-        ///// Converts the <see cref="TradingSession"/> to initial <see cref="SessionTime"/>.
+        ///// Converts the <see cref="TradingSession"/> to initial <see cref="TradingTimeInfo"/>.
         ///// </summary>
         ///// <param name="genericSession"></param>
-        ///// <returns>Initial <see cref="SessionTime"/> of the <see cref="TradingSession"/>.</returns>
-        //public static SessionTime ToBeginSessionTime(this TradingSession genericSession, InstrumentCode instrumentCode = InstrumentCode.Default)
+        ///// <returns>Initial <see cref="TradingTimeInfo"/> of the <see cref="TradingSession"/>.</returns>
+        //public static TradingTimeInfo ToBeginSessionTime(this TradingSession genericSession, InstrumentCode instrumentCode = InstrumentCode.Default)
         //{
 
         //    switch (genericSession)
@@ -479,11 +479,11 @@ namespace Nt.Core
 
         //}
 
-        public static SessionHours ToInitialBalance(this BalanceSession sessionBalance, int balanceMinutes, InstrumentCode instrumentCode = InstrumentCode.Default)
+        public static TradingSessionInfo ToInitialBalance(this BalanceSession sessionBalance, int balanceMinutes, InstrumentCode instrumentCode = InstrumentCode.Default)
         {
-            SessionTime initialTime = sessionBalance.ToTradingSession().ToBeginSessionTime(instrumentCode);
-            SessionTime finalTime = sessionBalance.ToTradingSession().ToBeginSessionTime(instrumentCode,balanceMinutes);
-            //return SessionHours.CreateSessionHoursByType(type);
+            TradingTimeInfo initialTime = sessionBalance.ToTradingSession().ToBeginSessionTime(instrumentCode);
+            TradingTimeInfo finalTime = sessionBalance.ToTradingSession().ToBeginSessionTime(instrumentCode,balanceMinutes);
+            //return TradingSessionInfo.CreateSessionHoursByType(type);
             return null;
         }
 

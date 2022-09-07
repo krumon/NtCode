@@ -75,7 +75,7 @@ namespace ConsoleApp
         {
             currentDateTime = bar.Time;
             // TODO: Borrar. Es KrSession el que debe tener el iterador.
-            //session.SessionHours.Sessions[0].Iterator((s) =>
+            //session.TradingSessionInfo.SessionHours[0].Iterator((s) =>
             //{
             //    //if (s.IsInSession(currentDateTime))
             //    //    simulator.ShowText = s.Description;
@@ -93,7 +93,7 @@ namespace ConsoleApp
             //NsTradingHours session = new NsTradingHours();
             
             // TODO: Borrar. Es KrSession el que debe tener el iterador.
-            //session.SessionHours.Sessions[0].Iterator((s) =>
+            //session.TradingSessionInfo.SessionHours[0].Iterator((s) =>
             //{
             //    //s.IsInSession(currentDateTime);
             //        //simulator.ShowText += s.Description + Environment.NewLine;

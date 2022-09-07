@@ -216,18 +216,21 @@
     <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
+    <Compile Include="Sessions\SessionFilters\SessionFilters.cs" />
+    <Compile Include="Sessions\SessionHours\CustomSessionHours.cs" />
+    <Compile Include="Sessions\SessionHours\GenericSessionHours.cs" />
     <Compile Include="zDelete\NtSessionHours.cs" />
-    <Compile Include="Sessions\SessionHours\BalanceSessionHelpers.cs" />
-    <Compile Include="Sessions\SessionHours\TradingSessionHelpers.cs" />
-    <Compile Include="Sessions\SessionHours\Sessions.cs" />
-    <Compile Include="Sessions\TradingSessions\TradingSessions.cs" />
+    <Compile Include="zDelete\BalanceSessionHelpers.cs" />
+    <Compile Include="Sessions\TradingSessions\TradingSessionHelpers.cs" />
+    <Compile Include="Sessions\SessionHours\SessionHours.cs" />
+    <Compile Include="Sessions\SessionHours\TradingSessions.cs" />
     <Compile Include="zDelete\UserSessions.cs" />
     <Compile Include="zDelete\UserSession.cs" />
-    <Compile Include="Sessions\SessionTime\TradingTimeHelpers.cs" />
+    <Compile Include="Sessions\TradingTimes\TradingTimeHelpers.cs" />
     <Compile Include="User\UserAccount.cs" />
     <Compile Include="Sessions\SessionsManager.cs" />
     <Compile Include="User\UserSettings.cs" />
-    <Compile Include="Sessions\SessionHours\BalanceSession.cs" />
+    <Compile Include="zDelete\BalanceSession.cs" />
     <Compile Include="Sessions\SessionStats\SessionStats.cs" />
     <Compile Include="zDelete\Ninjatrader\NtHoliday.cs" />
     <Compile Include="zDelete\Ninjatrader\NtPartialHoliday.cs" />
@@ -248,15 +251,15 @@
     <Compile Include="Patterns\Swing\SwingType.cs" />
     <Compile Include="Prices\CandleStickPrice.cs" />
     <Compile Include="Prices\PriceType.cs" />
-    <Compile Include="Sessions\SessionTime\TradingTime.cs" />
-    <Compile Include="Sessions\SessionHours\SessionHours.cs" />
-    <Compile Include="Sessions\SessionHours\TradingSession.cs" />
+    <Compile Include="Sessions\TradingTimes\TradingTime.cs" />
+    <Compile Include="Sessions\TradingSessions\TradingSessionInfo.cs" />
+    <Compile Include="Sessions\TradingSessions\TradingSession.cs" />
     <Compile Include="Files\XmlFileItem.cs" />
     <Compile Include="Drawing\Margin.cs" />
     <Compile Include="zDelete\Resources.cs" />
     <Compile Include="zDelete\Test.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Sessions\SessionTime\SessionTime.cs" />
+    <Compile Include="Sessions\TradingTimes\TradingTimeInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kr.Core\Kr.Core.csproj">

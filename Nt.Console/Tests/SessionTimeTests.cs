@@ -49,19 +49,19 @@ namespace ConsoleApp
             // Create a custom instance.
             Title("Test of Instance methods.");
 
-            SessionTime st = SessionTime.CreateCustomSessionTime(9,15,0,TimeZoneInfo.Local);
+            TradingTimeInfo st = TradingTimeInfo.CreateCustomSessionTime(9,15,0,TimeZoneInfo.Local);
             Console.WriteLine($"Method ToString() => {st}");
             Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
             Console.WriteLine($"Method ToLongString() => {st.ToLongString()}");
 
-            st = SessionTime.CreateCustomSessionTime(new TimeSpan(9,0,0),TimeZoneInfo.Local);
+            st = TradingTimeInfo.CreateCustomSessionTime(new TimeSpan(9,0,0),TimeZoneInfo.Local);
             NewLine();
             Console.WriteLine($"Method ToString() => {st}");
             Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
             Console.WriteLine($"Method ToLongString() => {st.ToLongString()}");
 
             // Create instance by type
-            st = SessionTime.CreateSessionTimeByType(TradingTime.European_Open);
+            st = TradingTimeInfo.CreateSessionTimeByType(TradingTime.European_Open);
             NewLine();
             Console.WriteLine($"Method ToString() => {st}");
             Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
@@ -72,7 +72,7 @@ namespace ConsoleApp
         private void ToStringTests(TradingTime type)
         {
             // Create a session time by type.
-            SessionTime st = SessionTime.CreateSessionTimeByType(type);
+            TradingTimeInfo st = TradingTimeInfo.CreateSessionTimeByType(type);
 
             Title("Test of To String methods.");
             Console.WriteLine(st.ToString());
@@ -96,7 +96,7 @@ namespace ConsoleApp
 
             NewLine();
             TradingTime tt = TradingTime.American_Open;
-            bool exist = SessionTime.Exist(tt);
+            bool exist = TradingTimeInfo.Exist(tt);
 
             string s = exist ? "exist" : "don't exist";
             Write(tt.ToString());
@@ -106,8 +106,8 @@ namespace ConsoleApp
 
         private void OperatorTests(TradingTime t1, TradingTime t2)
         {
-            SessionTime st1 = SessionTime.CreateSessionTimeByType(t1);
-            SessionTime st2 = SessionTime.CreateSessionTimeByType(t2);
+            TradingTimeInfo st1 = TradingTimeInfo.CreateSessionTimeByType(t1);
+            TradingTimeInfo st2 = TradingTimeInfo.CreateSessionTimeByType(t2);
             int i;
             bool b;
             string s = string.Empty;
@@ -120,7 +120,7 @@ namespace ConsoleApp
             #region Compare tests
             
             Title("Test of Compare methods.");
-            i = SessionTime.Compare(st1,st2);
+            i = TradingTimeInfo.Compare(st1,st2);
             method = "CompareTo(st1,st2) =>";
 
             if (i < 0)
@@ -148,7 +148,7 @@ namespace ConsoleApp
             #region Equal tests
 
             Title("Test of Equal methods.");
-            b = SessionTime.Equals(st1,st2);
+            b = TradingTimeInfo.Equals(st1,st2);
             s = string.Empty;
             method = "Equals(st1,st2) =>";
 
@@ -250,8 +250,8 @@ namespace ConsoleApp
 
         //private static void TimeSpanTester()
         //{
-        //    SessionTime sessionTime1 = SessionTime.CreateCustomSessionTime(22,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
-        //    SessionTime sessionTime2 = SessionTime.CreateCustomSessionTime(2,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+        //    TradingTimeInfo sessionTime1 = TradingTimeInfo.CreateCustomSessionTime(22,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
+        //    TradingTimeInfo sessionTime2 = TradingTimeInfo.CreateCustomSessionTime(2,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
 
         //    Console.WriteLine(String.Format("Utc Offset: {0}",sessionTime1.TimeZoneInfo.BaseUtcOffset.ToString()));
         //    Console.WriteLine(String.Format("Time 1: {0}",sessionTime1.ToUtcTime.ToString()));

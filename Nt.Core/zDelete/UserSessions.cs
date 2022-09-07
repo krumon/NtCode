@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Nt.Core
 {
     ///// <summary>
-    ///// Represents the user children collection.
+    ///// Represents the user sessionHoursList collection.
     ///// </summary>
     //public class UserSessions
     //{
@@ -22,15 +22,15 @@ namespace Nt.Core
     //    /// <summary>
     //    /// <see cref="UserSession"/> sorted collection.
     //    /// </summary>
-    //    private List<UserSession> children; 
+    //    private List<UserSession> sessionHoursList; 
         
         
-    //    public bool HasSessions => children != null && children.Count > 0;
+    //    public bool HasSessions => sessionHoursList != null && sessionHoursList.Count > 0;
 
     //    /// <summary>
-    //    /// The number of main children stored.
+    //    /// The number of main sessionHoursList stored.
     //    /// </summary>
-    //    public int Count => HasSessions ? children.Count : 0;
+    //    public int Count => HasSessions ? sessionHoursList.Count : 0;
 
     //    #endregion
 
@@ -57,13 +57,13 @@ namespace Nt.Core
     //    /// Changed any object or property when the session changed.
     //    /// </summary>
     //    /// <param name="e"></param>
-    //    public virtual void OnTradingSessionsChanged(SessionChangedEventArgs e)
+    //    public virtual void OnSessionHoursChanged(SessionChangedEventArgs e)
     //    {
     //        currentSessions = new UserSession(genericSessionsConfigure);
-    //        currentSessions.Init(e);
-    //        if (children == null)
-    //            children = new List<UserSession>();
-    //        children.Add(currentSessions);
+    //        currentSessions.Load(e);
+    //        if (sessionHoursList == null)
+    //            sessionHoursList = new List<UserSession>();
+    //        sessionHoursList.Add(currentSessions);
     //        currentSessions.N = Count;
     //    }
 
@@ -73,7 +73,7 @@ namespace Nt.Core
 
     //    public override string ToString()
     //    {
-    //        return HasSessions ? children[Count - 1].ToString() : "Sessions list is empty.";
+    //        return HasSessions ? sessionHoursList[Count - 1].ToString() : "SessionHours list is empty.";
     //    }
 
     //    #endregion

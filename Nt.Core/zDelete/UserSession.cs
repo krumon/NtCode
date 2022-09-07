@@ -26,9 +26,9 @@ namespace Nt.Core
     //    //private Bars bars;
 
     //    /// <summary>
-    //    /// SessionHours collection.
+    //    /// TradingSessionInfo collection.
     //    /// </summary>
-    //    private List<SessionHours> children;
+    //    private List<TradingSessionInfo> sessionHoursList;
 
     //    /// <summary>
     //    /// Store the patial holiday object when the trading hours is in a partial holiday.
@@ -45,23 +45,23 @@ namespace Nt.Core
     //    #region Public properties
 
     //    /// <summary>
-    //    /// Collection of <see cref="SessionHours"/>.
+    //    /// Collection of <see cref="TradingSessionInfo"/>.
     //    /// </summary>
-    //    public List<SessionHours> Sessions 
+    //    public List<TradingSessionInfo> SessionHours 
     //    {
     //        get 
     //        {
-    //            if (children == null) 
-    //                children = new List<SessionHours>();
+    //            if (sessionHoursList == null) 
+    //                sessionHoursList = new List<TradingSessionInfo>();
 
-    //            return children;
+    //            return sessionHoursList;
     //        }
     //    }
 
     //    /// <summary>
-    //    /// Indicates if the <see cref="SessionHours"/> has children.
+    //    /// Indicates if the <see cref="TradingSessionInfo"/> has sessionHoursList.
     //    /// </summary>
-    //    public bool HasSessions => Sessions != null && Sessions.Count >= 1;
+    //    public bool HasSessions => SessionHours != null && SessionHours.Count >= 1;
 
     //    /// <summary>
     //    /// The <see cref="DateTime"/> object of the actual ninjatrader session begin.
@@ -94,7 +94,7 @@ namespace Nt.Core
     //    public bool IsEarlyEnd { get; private set; } //=> IsPartialHoliday && PartialHoliday.IsEarlyEnd;
 
     //    /// <summary>
-    //    /// The number of main children stored.
+    //    /// The number of main sessionHoursList stored.
     //    /// </summary>
     //    public int N { get; set; }
 
@@ -112,7 +112,7 @@ namespace Nt.Core
     //        //this.ntSession = ntSession;
     //        //this.bars = bars;
 
-    //        //this.ntSession.UserSessionChanged += OnTradingSessionsChanged;
+    //        //this.ntSession.UserSessionChanged += OnSessionHoursChanged;
     //    }
 
     //    /// <summary>
@@ -128,7 +128,7 @@ namespace Nt.Core
     //        //this.ntSession = ntSession;
     //        //this.bars = bars;
 
-    //        //this.ntSession.UserSessionChanged += OnTradingSessionsChanged;
+    //        //this.ntSession.UserSessionChanged += OnSessionHoursChanged;
     //    }
 
     //    #endregion
@@ -139,7 +139,7 @@ namespace Nt.Core
     //    /// If the trading hours is in partial holiday, gets the Partial Holiday object, otherwise, partial holiday is null.
     //    /// </summary>
     //    /// <param name="e"></param>
-    //    public void Init(SessionChangedEventArgs e)
+    //    public void Load(SessionChangedEventArgs e)
     //    {
     //        Idx = e.Idx;
     //        BeginTime = e.NewSessionBeginTime;
@@ -148,7 +148,7 @@ namespace Nt.Core
     //        IsEarlyEnd = e.IsEarlyEnd;
     //        IsLateBegin = e.IsLateBegin;
 
-    //        // TODO: Add Sessions selected by the user in the ninjascript. (American, Assian, Custom,...)
+    //        // TODO: Add SessionHours selected by the user in the ninjascript. (American, Assian, Custom,...)
 
     //    }
 
@@ -168,36 +168,36 @@ namespace Nt.Core
     //         int includeFinalBalance = 0)
     //    {
 
-    //        if (Sessions == null)
-    //            children = new List<SessionHours>();
+    //        if (SessionHours == null)
+    //            sessionHoursList = new List<TradingSessionInfo>();
 
     //        Add(sessionType.ToSessionHours(instrumentCode));
     //    }
 
-    //    public void Remove(SessionHours session)
+    //    public void Remove(TradingSessionInfo session)
     //    {
     //        if (session == null)
     //            throw new ArgumentNullException(nameof(session));
 
-    //        if (Sessions == null)
-    //            throw new ArgumentNullException(nameof(Sessions));
+    //        if (SessionHours == null)
+    //            throw new ArgumentNullException(nameof(SessionHours));
 
-    //        Sessions.Remove(session);
+    //        SessionHours.Remove(session);
 
-    //        if (Sessions.Count == 0)
-    //            children = null;
+    //        if (SessionHours.Count == 0)
+    //            sessionHoursList = null;
 
     //    }
 
     //    public void Clear()
     //    {
-    //        Sessions.Clear();
+    //        SessionHours.Clear();
 
-    //        children = null;
+    //        sessionHoursList = null;
     //    }
 
     //    /// <summary>
-    //    /// Converts the <see cref="SessionHours"/> to string.
+    //    /// Converts the <see cref="TradingSessionInfo"/> to string.
     //    /// </summary>
     //    /// <returns></returns>
     //    public override string ToString()
@@ -213,12 +213,12 @@ namespace Nt.Core
             
     //    }
 
-    //    //public void Iterator(Action<SessionHours> action = null)
+    //    //public void Iterator(Action<TradingSessionInfo> action = null)
     //    //{
     //    //    action(this);
     //    //    if (HasSessions)
-    //    //        for (int i = 0; i < Sessions.Count; i++)
-    //    //            Sessions[i].Iterator(action);
+    //    //        for (int i = 0; i < SessionHours.Count; i++)
+    //    //            SessionHours[i].Iterator(action);
     //    //}
 
     //    /// <summary>
@@ -227,7 +227,7 @@ namespace Nt.Core
     //    /// <returns></returns>
     //    //public override string ToString()
     //    //{
-    //    //    return $"SessionHours {N}: Begin: {currentSessions.SessionBegin.ToString()} | End: {currentSessions.SessionEnd.ToString()}";
+    //    //    return $"TradingSessionInfo {N}: Begin: {currentSessions.SessionBegin.ToString()} | End: {currentSessions.SessionEnd.ToString()}";
     //    //}
 
     //    // TODO:    - Método para añadir las sesiones.
@@ -244,7 +244,7 @@ namespace Nt.Core
         
     //    // TODO: Codificar el método "Add" para añadir sesiones conforme al enum TradingSession
     //    //       y organizando según queramos que se vean las sesiones.
-    //    private void Add(SessionHours session)
+    //    private void Add(TradingSessionInfo session)
     //    {
     //        if (session == null)
     //            throw new ArgumentNullException(nameof(session));
@@ -252,41 +252,41 @@ namespace Nt.Core
     //        //if (HasSessions)
     //        //{
     //        //    DateTime[] nextDateTimes = session.GetNextDateTimes(DateTime.Now);
-    //        //    foreach (var s in Sessions)
+    //        //    foreach (var s in SessionHours)
     //        //    {
     //        //        session.IsInnerSession(s);
     //        //    }
     //        //}
     //        //else
-    //        //    Sessions.Add(session);
+    //        //    SessionHours.Add(session);
 
-    //        Sessions.Add(session);
+    //        SessionHours.Add(session);
     //    }
 
     //    #endregion
 
     //    #region Para revisar
 
-    //    //public Sessions AddDefaultSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
+    //    //public SessionHours AddDefaultSessions(InstrumentCode instrumentCode = InstrumentCode.Default)
     //    //{
     //    //    // TODO: Borrar. Es KrSessionHours la que tiene que tener el método AddSession.
     //    //    //       AddSession(TradingSession.Regular, instrumentCode, 0, 0);
 
-    //    //    // Main Sessions
-    //    //    Sessions[0].AddSession(TradingSession.Regular, instrumentCode, 0, 0);
-    //    //    Sessions[0].AddSession(TradingSession.OVN, instrumentCode, 0, 0);
-    //    //    // Regular Sessions
-    //    //    Sessions[0].Sessions[0].AddSession(TradingSession.AmericanAndEuropean, instrumentCode, 0, 0);
-    //    //    Sessions[0].Sessions[0].AddSession(TradingSession.American, instrumentCode, 0, 0);
-    //    //    // Overnight Sessions
-    //    //    Sessions[0].Sessions[1].AddSession(TradingSession.American_RS, instrumentCode, 0, 0);
-    //    //    Sessions[0].Sessions[1].AddSession(TradingSession.Asian, instrumentCode, 0, 0);
-    //    //    Sessions[0].Sessions[1].AddSession(TradingSession.Asian_RS, instrumentCode, 0, 0);
-    //    //    Sessions[0].Sessions[1].AddSession(TradingSession.European, instrumentCode, 0, 0);
-    //    //    // Minor Sessions
-    //    //    Sessions[0].Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_EXT, instrumentCode, 0, 0);
-    //    //    Sessions[0].Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_EOD, instrumentCode, 0, 0);
-    //    //    Sessions[0].Sessions[1].Sessions[0].AddSession(TradingSession.American_RS_NWD, instrumentCode, 0, 0);
+    //    //    // Main SessionHours
+    //    //    SessionHours[0].AddSession(TradingSession.Regular, instrumentCode, 0, 0);
+    //    //    SessionHours[0].AddSession(TradingSession.OVN, instrumentCode, 0, 0);
+    //    //    // Regular SessionHours
+    //    //    SessionHours[0].SessionHours[0].AddSession(TradingSession.AmericanAndEuropean, instrumentCode, 0, 0);
+    //    //    SessionHours[0].SessionHours[0].AddSession(TradingSession.American, instrumentCode, 0, 0);
+    //    //    // Overnight SessionHours
+    //    //    SessionHours[0].SessionHours[1].AddSession(TradingSession.American_RS, instrumentCode, 0, 0);
+    //    //    SessionHours[0].SessionHours[1].AddSession(TradingSession.Asian, instrumentCode, 0, 0);
+    //    //    SessionHours[0].SessionHours[1].AddSession(TradingSession.Asian_RS, instrumentCode, 0, 0);
+    //    //    SessionHours[0].SessionHours[1].AddSession(TradingSession.European, instrumentCode, 0, 0);
+    //    //    // Minor SessionHours
+    //    //    SessionHours[0].SessionHours[1].SessionHours[0].AddSession(TradingSession.American_RS_EXT, instrumentCode, 0, 0);
+    //    //    SessionHours[0].SessionHours[1].SessionHours[0].AddSession(TradingSession.American_RS_EOD, instrumentCode, 0, 0);
+    //    //    SessionHours[0].SessionHours[1].SessionHours[0].AddSession(TradingSession.American_RS_NWD, instrumentCode, 0, 0);
 
     //    //    return this;
     //    //}
@@ -308,12 +308,12 @@ namespace Nt.Core
     //    //}
 
     //    /// <summary>
-    //    /// Create a new instance of <see cref="SessionHours"/> class with <see cref="TradingSession"/>.
+    //    /// Create a new instance of <see cref="TradingSessionInfo"/> class with <see cref="TradingSession"/>.
     //    /// </summary>
-    //    /// <param name="genericSession">the <see cref="TradingSession"/> to create the <see cref="SessionHours"/> class.</param>
+    //    /// <param name="genericSession">the <see cref="TradingSession"/> to create the <see cref="TradingSessionInfo"/> class.</param>
     //    /// <param name="instrumentCode">The unique code of the instrument.</param>
     //    /// <param name="balanceMinutes">The minutes of the balance session.</param>
-    //    /// <returns>A new instance of <see cref="SessionHours"/> class.</returns>
+    //    /// <returns>A new instance of <see cref="TradingSessionInfo"/> class.</returns>
     //    //public static KrSessionHours CreateSessionHours(TradingSession genericSession, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
     //    //{
     //    //return new KrSessionHours

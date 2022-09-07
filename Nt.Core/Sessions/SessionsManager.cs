@@ -1,6 +1,7 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using System;
+using System.Collections.Generic;
 
 namespace Nt.Core
 {
@@ -18,9 +19,44 @@ namespace Nt.Core
         private SessionsIterator sessionsIterator;
 
         /// <summary>
-        /// Gets the <see cref="Core.TradingSessions"/> configure by the user.
+        /// Represents the <see cref="SessionHours"/> configure by the user.
         /// </summary>
-        private TradingSessions tradingSessions;
+        //private SessionHours sessionHours;
+
+        /// <summary>
+        /// Represents the <see cref="GenericSessionHours"/> configure by the user.
+        /// </summary>
+        private GenericSessionHours genericSessions;
+
+        /// <summary>
+        /// Represents the <see cref="CustomSessionHours"/> configure by the user.
+        /// </summary>
+        private CustomSessionHours customSessions;
+
+        /// <summary>
+        /// Represents the <see cref="SessionFilters"/> configure by the user.
+        /// </summary>
+        private SessionFilters sessionFilters;
+
+        /// <summary>
+        /// Represents the <see cref="SessionStats"/> configure by the user.
+        /// </summary>
+        private SessionStats sessionStats;
+
+        /// <summary>
+        /// Represents the last session hours.
+        /// </summary>
+        private SessionHours lastSession;
+
+        /// <summary>
+        /// Represents the actual session hours.
+        /// </summary>
+        private SessionHours actualSession;
+
+        /// <summary>
+        /// Stores all session hours in a sorted list.
+        /// </summary>
+        private List<SessionHours> sessionHoursList;
 
         #endregion
 
@@ -34,25 +70,91 @@ namespace Nt.Core
             get
             {
                 if (sessionsIterator == null)
-                    throw new ArgumentNullException(nameof(SessionsIterator),"SessionsManager has not initialize with SessionIterator funcionality.");
+                    throw new ArgumentNullException(nameof(SessionsIterator),"The SessionsManager has not include SessionIterator funcionality.");
 
                 return sessionsIterator;
             }
         }
 
         /// <summary>
-        /// Gets the <see cref="Core.TradingSessions"/> configure by the user.
+        /// Gets the <see cref="SessionHours"/> configure by the user.
         /// </summary>
-        public TradingSessions TradingSessions
+        public SessionHours SessionHours
         {
             get
             {
-                if (tradingSessions == null)
-                    throw new ArgumentNullException(nameof(TradingSessions),"SessionsManager has not configure generic sessions.");
+                if (genericSessions == null)
+                    throw new ArgumentNullException(nameof(GenericSessions), "The SessionsManager don't include generic session hours.");
 
-                return tradingSessions;
+                return genericSessions;
             }
         }
+
+        /// <summary>
+        /// Gets the <see cref="GenericSessionHours"/> configure by the user.
+        /// </summary>
+        public GenericSessionHours GenericSessions
+        {
+            get
+            {
+                if (genericSessions == null)
+                    throw new ArgumentNullException(nameof(GenericSessions), "The SessionsManager don't include generic sessions.");
+
+                return genericSessions;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="GenericSessionHours"/> configure by the user.
+        /// </summary>
+        public CustomSessionHours CustomSessions
+        {
+            get
+            {
+                if (customSessions == null)
+                    throw new ArgumentNullException(nameof(CustomSessions),"The SessionsManager don't include custom sessions.");
+
+                return customSessions;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SessionFilters"/> configure by the user.
+        /// </summary>
+        public SessionFilters SessionFilters
+        {
+            get
+            {
+                if (sessionFilters == null)
+                    throw new ArgumentNullException(nameof(SessionFilters),"The SessionsManager don't include session filters.");
+
+                return sessionFilters;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SessionStats"/> configure by the user.
+        /// </summary>
+        public SessionStats SessionStats
+        {
+            get
+            {
+                if (sessionStats == null)
+                    throw new ArgumentNullException(nameof(SessionStats),"The SessionsManager don't include session stats.");
+
+                return sessionStats;
+            }
+        }
+
+        /// <summary>
+        /// Gets true if any sessionHoursList are stored.
+        /// </summary>
+        public bool HasSessions => sessionHoursList != null && sessionHoursList.Count > 0;
+
+        /// <summary>
+        /// Gets the number of <see cref="SessionHours"/> stored.
+        /// </summary>
+        public int Count => HasSessions ? sessionHoursList.Count : 0;
 
         #endregion
 
@@ -80,62 +182,62 @@ namespace Nt.Core
         #region functionality methods
 
         /// <summary>
-        /// Add generic sessions with specific configure passed by parameter.
+        /// Add generic sessionHoursList with specific configure passed by parameter.
         /// </summary>
         /// <param name="configure">Specific <see cref="GenericSessionConfigure"/>.</param>
-        /// <returns><see cref="SessionsManager"/> with generic sessions funcionality.</returns>
+        /// <returns><see cref="SessionsManager"/> with generic sessionHoursList funcionality.</returns>
         public SessionsManager UseGenericSessions(GenericSessionsConfigure configure)
         {
-            if (tradingSessions == null)
+            if (genericSessions == null)
             {
                 // Create the user session object
-                tradingSessions = new TradingSessions();
+                genericSessions = new GenericSessionHours();
 
                 // Add configuration
-                if (configure != null)
-                    tradingSessions.AddConfigure(configure);
-                else
-                    tradingSessions.AddConfigure(new CustomSessionsDefaultConfigure());
+                //if (configure != null)
+                //    genericSessions.AddConfigure(configure);
+                //else
+                //    genericSessions.AddConfigure(new CustomSessionsDefaultConfigure());
 
                 // Add the delegate
-                sessionsIterator.SessionChanged += OnTradingSessionsChanged;
+                sessionsIterator.SessionChanged += OnSessionHoursChanged;
             }
             else
             {
-                tradingSessions.AddConfigure(configure);
+                //genericSessions.AddConfigure(configure);
             }
 
-            // return the object with the user children implementation
+            // return the object with the user sessionHoursList implementation
             return this;
         }
 
         /// <summary>
-        /// Add custom sessions with specific configure passed by parameter.
+        /// Add custom sessionHoursList with specific configure passed by parameter.
         /// </summary>
         /// <param name="configure">Specific <see cref="CustomSessionConfigure"/>.</param>
-        /// <returns><see cref="SessionsManager"/> with generic sessions funcionality.</returns>
+        /// <returns><see cref="SessionsManager"/> with generic sessionHoursList funcionality.</returns>
         public SessionsManager UseCustomSessions(CustomSessionsConfigure configure) 
         {
-            if (tradingSessions == null)
+            if (genericSessions == null)
             {
                 // Create the user session object
-                tradingSessions = new TradingSessions();
+                customSessions = new CustomSessionHours();
 
                 // Add configuration
-                if (configure != null)
-                    tradingSessions.AddConfigure(configure);
-                else
-                    tradingSessions.AddConfigure(new CustomSessionsDefaultConfigure());
+                //if (configure != null)
+                //    genericSessions.AddConfigure(configure);
+                //else
+                //    genericSessions.AddConfigure(new CustomSessionsDefaultConfigure());
 
                 // Add the delegate
-                sessionsIterator.SessionChanged += OnTradingSessionsChanged;
+                sessionsIterator.SessionChanged += OnSessionHoursChanged;
             }
             else
             {
-                tradingSessions.AddConfigure(configure);
+                //genericSessions.AddConfigure(configure);
             }
 
-            // return the object with the user children implementation
+            // return the object with the user sessionHoursList implementation
             return this;
         }
 
@@ -173,25 +275,90 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Event driven method which is called whenever a trading sessions changed.
+        /// Changed any object or property when the session changed.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void OnTradingSessionsChanged(SessionChangedEventArgs e)
+        public virtual void OnSessionHoursChanged(SessionChangedEventArgs e)
         {
-            tradingSessions.OnTradingSessionsChanged(e);
+            //var temp = actualSession;
+            //lastSession = temp;
+            lastSession = actualSession;
+            actualSession = new SessionHours(); // genericSessionsConfigure, customSessionsConfigure);
+            actualSession.Load(e);
+            actualSession.N = Count;
+            if (sessionHoursList == null)
+                sessionHoursList = new List<SessionHours>();
+            sessionHoursList.Add(actualSession);
         }
+
+        /// <summary>
+        /// Event driven method which is called whenever a trading sessionHoursList changed.
+        /// </summary>
+        /// <param name="e"></param>
+        //public virtual void OnSessionHoursChanged(SessionChangedEventArgs e)
+        //{
+        //    genericSessions.OnSessionHoursChanged(e);
+        //}
 
         /// <summary>
         /// Method used to free memory when the script is terminate.
         /// </summary>
         public override void Dispose()
         {
-            sessionsIterator.SessionChanged -= OnTradingSessionsChanged;
+            sessionsIterator.SessionChanged -= OnSessionHoursChanged;
         }
 
         #endregion
 
         #region Public methods
+
+        /// <summary>
+        /// Add configure to the trading sessionHoursList.
+        /// The configure can be added only when the configure doesn't exists.
+        /// </summary>
+        /// <param name="configure"></param>
+        /// <exception cref="Exception"></exception>
+        public void AddConfigure(ISessionsConfigure configure)
+        {
+            //if (configure is GenericSessionsConfigure genericConfigure)
+            //    if (genericSessionsConfigure != null)
+            //        throw new Exception("The generic sessionHoursList configure exists. The configure can not be rewriter.");
+            //    else
+            //    {
+            //        genericSessionsConfigure = genericConfigure;
+            //        IncludeGenericSessions = true;
+            //        return;
+            //    }
+
+            //if (configure is CustomSessionsConfigure customConfigure)
+            //    if (customSessionsConfigure != null)
+            //        throw new Exception("The custom sessionHoursList configure exists. The configure can not be rewriter.");
+            //    else
+            //    {
+            //        customSessionsConfigure = customConfigure;
+            //        IncludeCustomSessions = true;
+            //        return;
+            //    }
+        }
+
+        /// <summary>
+        /// Represent a string with the last session stored.
+        /// </summary>
+        /// <returns>String of the last session stored.</returns>
+        public override string ToString()
+        {
+            return actualSession != null ? actualSession.ToString() : "The session has not started.";
+        }
+
+        /// <summary>
+        /// Represent a string with the session stored.
+        /// </summary>
+        /// <param name="idx">The session index. 0 is the actual, 1 is the last,...</param>
+        /// <returns>String of the last session stored.</returns>
+        public string ToString(int idx)
+        {
+            return idx>=0 && idx<Count ? sessionHoursList[Count - 1 - idx].ToString() : "SessionHours list is empty.";
+        }
 
         #endregion
 

@@ -16,7 +16,7 @@
     }
 
     /// <summary>
-    /// Sessions configure implementation
+    /// SessionHours configure implementation
     /// </summary>
     public interface ISessionsConfigure : ISessionConfigure
     {
@@ -40,7 +40,7 @@
     }
 
     /// <summary>
-    /// Represents the base sessions configure.
+    /// Represents the base sessionHoursList configure.
     /// </summary>
     public abstract class BaseSessionsConfigure : BaseSessionConfigure, ISessionsConfigure
     {
@@ -88,7 +88,7 @@
     /// </summary>
     public class GenericSessionsConfigure : BaseSessionsConfigure
     {
-        // Sessions
+        // SessionHours
         //public bool includeAmericanRegularSession = true;
         //public bool includeAmericanOvernightSession = true;
         //public bool includeAmericanAndEuropeanSession = true;

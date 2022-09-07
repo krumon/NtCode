@@ -6,53 +6,53 @@ using System.Collections.Generic;
 namespace Nt.Core
 {
     /// <summary>
-    /// Represents all user trading sessions.
+    /// Represents all user trading sessionHoursList.
     /// </summary>
     public class TradingSessions
     {
         #region Private members
 
         /// <summary>
-        /// Represents the generic sessions configuration.
+        /// Represents the generic sessionHoursList configuration.
         /// </summary>
         private GenericSessionsConfigure genericSessionsConfigure;
 
         /// <summary>
-        /// Represents the custom sessions configuration.
+        /// Represents the custom sessionHoursList configuration.
         /// </summary>
         private CustomSessionsConfigure customSessionsConfigure;
 
         /// <summary>
-        /// Represents the current sessions.
+        /// Represents the current sessionHoursList.
         /// </summary>
-        private Sessions currentSessions;
+        private SessionHours currentSessions;
 
         /// <summary>
-        /// Sessions store.
+        /// SessionHours store.
         /// </summary>
-        private List<Sessions> sessions;
+        private List<SessionHours> sessions;
 
         #endregion
 
         #region Public properties
 
         /// <summary>
-        /// Gets true if any sessions are stored.
+        /// Gets true if any sessionHoursList are stored.
         /// </summary>
         public bool HasSessions => sessions != null && sessions.Count > 0;
 
         /// <summary>
-        /// Gets the total sessions stored.
+        /// Gets the total sessionHoursList stored.
         /// </summary>
         public int Count => HasSessions ? sessions.Count : 0;
 
         /// <summary>
-        /// Indicates if <see cref="TradingSessions"/> include generic sessions.
+        /// Indicates if <see cref="TradingSessions"/> include generic sessionHoursList.
         /// </summary>
         public bool IncludeGenericSessions { get; set; }
 
         /// <summary>
-        /// Indicates if <see cref="TradingSessions"/> include custom sessions.
+        /// Indicates if <see cref="TradingSessions"/> include custom sessionHoursList.
         /// </summary>
         public bool IncludeCustomSessions { get; set; }
 
@@ -71,9 +71,9 @@ namespace Nt.Core
         /// <summary>
         /// Create a new instance of <see cref="TradingSessions"/> object with generic and custom configure objects.
         /// </summary>
-        /// <param name="genericConfigure">The generic sessions configure.</param>
-        /// <param name="customConfigure">The custom sessions configure.</param>
-        //public TradingSessions(GenericSessionsConfigure genericConfigure, CustomSessionsConfigure customConfigure)
+        /// <param name="genericConfigure">The generic sessionHoursList configure.</param>
+        /// <param name="customConfigure">The custom sessionHoursList configure.</param>
+        //public GenericSessions(GenericSessionsConfigure genericConfigure, CustomSessionsConfigure customConfigure)
         //{
         //    if (IncludeGenericSessions)
         //        if (genericConfigure == null)
@@ -91,8 +91,8 @@ namespace Nt.Core
         /// <summary>
         /// Create a new instance of <see cref="TradingSessions"/> object with generic and custom configure objects.
         /// </summary>
-        /// <param name="configure">Specific sessions configure.</param>
-        //public TradingSessions(ISessionsConfigure configure)
+        /// <param name="configure">Specific sessionHoursList configure.</param>
+        //public GenericSessions(ISessionsConfigure configure)
         //{
         //    if (IncludeGenericSessions && configure == null)
         //    {
@@ -119,8 +119,8 @@ namespace Nt.Core
         /// <summary>
         /// Create a new instance of <see cref="TradingSessions"/> object with generic configure object.
         /// </summary>
-        /// <param name="genericConfigure">The generic sessions configure.</param>
-        //public TradingSessions(GenericSessionsConfigure genericConfigure)
+        /// <param name="genericConfigure">The generic sessionHoursList configure.</param>
+        //public GenericSessions(GenericSessionsConfigure genericConfigure)
         //{
         //    if (IncludeGenericSessions)
         //        if (genericConfigure == null)
@@ -133,8 +133,8 @@ namespace Nt.Core
         /// <summary>
         /// Create a new instance of <see cref="TradingSessions"/> object with custom Configure object.
         /// </summary>
-        /// <param name="customConfigure">The custom sessions configure.</param>
-        //public TradingSessions(CustomSessionsConfigure customConfigure)
+        /// <param name="customConfigure">The custom sessionHoursList configure.</param>
+        //public GenericSessions(CustomSessionsConfigure customConfigure)
         //{
         //    if (IncludeCustomSessions)
         //        if (customConfigure == null)
@@ -151,22 +151,22 @@ namespace Nt.Core
         /// Changed any object or property when the session changed.
         /// </summary>
         /// <param name="e"></param>
-        public virtual void OnTradingSessionsChanged(SessionChangedEventArgs e)
-        {
-            currentSessions = new Sessions(); // genericSessionsConfigure, customSessionsConfigure);
-            currentSessions.Init(e);
-            currentSessions.N = Count;
-            if (sessions == null)
-                sessions = new List<Sessions>();
-            sessions.Add(currentSessions);
-        }
+        //public virtual void OnTradingSessionsChanged(SessionChangedEventArgs e)
+        //{
+        //    currentSessions = new SessionHours(); // genericSessionsConfigure, customSessionsConfigure);
+        //    currentSessions.Load(e);
+        //    currentSessions.N = Count;
+        //    if (sessions == null)
+        //        sessions = new List<SessionHours>();
+        //    sessions.Add(currentSessions);
+        //}
 
         #endregion
 
         #region Public methods
 
         /// <summary>
-        /// Add configure to the trading sessions.
+        /// Add configure to the trading sessionHoursList.
         /// The configure can be added only when the configure doesn't exists.
         /// </summary>
         /// <param name="configure"></param>
@@ -175,7 +175,7 @@ namespace Nt.Core
         {
             if (configure is GenericSessionsConfigure genericConfigure)
                 if (genericSessionsConfigure != null)
-                    throw new Exception("The generic sessions configure exists. The configure can not be rewriter.");
+                    throw new Exception("The generic sessionHoursList configure exists. The configure can not be rewriter.");
                 else
                 {
                     genericSessionsConfigure = genericConfigure;
@@ -185,7 +185,7 @@ namespace Nt.Core
 
             if (configure is CustomSessionsConfigure customConfigure)
                 if (customSessionsConfigure != null)
-                    throw new Exception("The custom sessions configure exists. The configure can not be rewriter.");
+                    throw new Exception("The custom sessionHoursList configure exists. The configure can not be rewriter.");
                 else
                 {
                     customSessionsConfigure = customConfigure;
@@ -200,7 +200,7 @@ namespace Nt.Core
         /// <returns>String of the last session stored.</returns>
         public override string ToString()
         {
-            return HasSessions ? sessions[Count - 1].ToString() : "Sessions list is empty.";
+            return HasSessions ? sessions[Count - 1].ToString() : "SessionHours list is empty.";
         }
 
         #endregion
