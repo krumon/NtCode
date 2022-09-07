@@ -11,7 +11,19 @@ namespace Nt.Core
     public class SessionsManager : NtScript
     {
 
-        #region Fields
+        #region Private members
+
+        SessionManagerOptions sessionManagerOptions;
+
+        /// <summary>
+        /// The ninjascript parent of the class.
+        /// </summary>
+        private NinjaScriptBase ninjascript;
+
+        /// <summary>
+        /// The bars of the chart control.
+        /// </summary>
+        private Bars bars;
 
         /// <summary>
         /// Gets the <see cref="SessionsIterator"/> funcionality.
@@ -176,6 +188,30 @@ namespace Nt.Core
         {
             this.sessionsIterator = useSessionIterator ? new SessionsIterator(ninjascript, bars, sessionIterator) : null;
         }
+
+        #endregion
+
+        #region Instance methods
+
+        /// <summary>
+        /// Create a <see cref="SessionsManager"/> default instance.
+        /// </summary>
+        /// <param name="ninjascript"></param>
+        /// <param name="bars"></param>
+        public void CreateDefaultSessionManager(
+            NinjaScriptBase ninjascript,
+            Bars bars
+            )
+        {
+            this.ninjascript = ninjascript;
+            this.bars = bars;
+        }
+
+        public void Configure(Action<SessionManagerOptions> options)
+        {
+            options?.Invoke(sessionManagerOptions);
+        }
+
 
         #endregion
 

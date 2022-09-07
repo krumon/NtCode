@@ -15,22 +15,22 @@ namespace Nt.Core
         /// <summary>
         /// Represents the generic sessionHoursList configuration.
         /// </summary>
-        private GenericSessionsConfigure genericSessionsConfigure;
+        //private GenericSessionsConfigure genericSessionsConfigure;
 
         /// <summary>
         /// Represents the custom sessionHoursList configuration.
         /// </summary>
-        private CustomSessionsConfigure customSessionsConfigure;
+        //private CustomSessionsConfigure customSessionsConfigure;
 
         /// <summary>
         /// Represents the current sessionHoursList.
         /// </summary>
-        private SessionHours currentSessions;
+        //private SessionHours currentSessions;
 
         /// <summary>
         /// SessionHours store.
         /// </summary>
-        private List<SessionHours> sessions;
+        //private List<SessionHours> sessions;
 
         #endregion
 
@@ -39,22 +39,22 @@ namespace Nt.Core
         /// <summary>
         /// Gets true if any sessionHoursList are stored.
         /// </summary>
-        public bool HasSessions => sessions != null && sessions.Count > 0;
+        //public bool HasSessions => sessions != null && sessions.Count > 0;
 
         /// <summary>
         /// Gets the total sessionHoursList stored.
         /// </summary>
-        public int Count => HasSessions ? sessions.Count : 0;
+        //public int Count => HasSessions ? sessions.Count : 0;
 
         /// <summary>
         /// Indicates if <see cref="TradingSessions"/> include generic sessionHoursList.
         /// </summary>
-        public bool IncludeGenericSessions { get; set; }
+        //public bool IncludeGenericSessions { get; set; }
 
         /// <summary>
         /// Indicates if <see cref="TradingSessions"/> include custom sessionHoursList.
         /// </summary>
-        public bool IncludeCustomSessions { get; set; }
+        //public bool IncludeCustomSessions { get; set; }
 
         #endregion
 
@@ -64,9 +64,9 @@ namespace Nt.Core
         /// Create a new instance of <see cref="TradingSessions"/> object.
         /// The session has been configured by default.
         /// </summary>
-        public TradingSessions() //: this(null, null)
-        {
-        }
+        //public TradingSessions() //: this(null, null)
+        //{
+        //}
 
         /// <summary>
         /// Create a new instance of <see cref="TradingSessions"/> object with generic and custom configure objects.
@@ -171,37 +171,37 @@ namespace Nt.Core
         /// </summary>
         /// <param name="configure"></param>
         /// <exception cref="Exception"></exception>
-        public void AddConfigure(ISessionsConfigure configure)
-        {
-            if (configure is GenericSessionsConfigure genericConfigure)
-                if (genericSessionsConfigure != null)
-                    throw new Exception("The generic sessionHoursList configure exists. The configure can not be rewriter.");
-                else
-                {
-                    genericSessionsConfigure = genericConfigure;
-                    IncludeGenericSessions = true;
-                    return;
-                }
+        //public void AddConfigure(ISessionsConfigure configure)
+        //{
+        //    if (configure is GenericSessionsConfigure genericConfigure)
+        //        if (genericSessionsConfigure != null)
+        //            throw new Exception("The generic sessionHoursList configure exists. The configure can not be rewriter.");
+        //        else
+        //        {
+        //            genericSessionsConfigure = genericConfigure;
+        //            IncludeGenericSessions = true;
+        //            return;
+        //        }
 
-            if (configure is CustomSessionsConfigure customConfigure)
-                if (customSessionsConfigure != null)
-                    throw new Exception("The custom sessionHoursList configure exists. The configure can not be rewriter.");
-                else
-                {
-                    customSessionsConfigure = customConfigure;
-                    IncludeCustomSessions = true;
-                    return;
-                }
-        }
+        //    if (configure is CustomSessionsConfigure customConfigure)
+        //        if (customSessionsConfigure != null)
+        //            throw new Exception("The custom sessionHoursList configure exists. The configure can not be rewriter.");
+        //        else
+        //        {
+        //            customSessionsConfigure = customConfigure;
+        //            IncludeCustomSessions = true;
+        //            return;
+        //        }
+        //}
 
         /// <summary>
         /// Represent a string with the last session stored.
         /// </summary>
         /// <returns>String of the last session stored.</returns>
-        public override string ToString()
-        {
-            return HasSessions ? sessions[Count - 1].ToString() : "SessionHours list is empty.";
-        }
+        //public override string ToString()
+        //{
+        //    return HasSessions ? sessions[Count - 1].ToString() : "SessionHours list is empty.";
+        //}
 
         #endregion
 
