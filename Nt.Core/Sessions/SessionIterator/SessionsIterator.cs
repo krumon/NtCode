@@ -49,7 +49,7 @@ namespace Nt.Core
         /// </summary>
         private bool isNewSession;
 
-        private PartialHoliday partialHoliday;
+        //private PartialHoliday partialHoliday;
 
         #endregion
 
@@ -79,10 +79,10 @@ namespace Nt.Core
         /// </summary>
         public SessionIterator SessionIterator => sessionIterator;
 
-        /// <summary>
-        /// Represents the chart bars <see cref="Instrument"/>.
-        /// </summary>
-        public Instrument Instrument { get; private set; }
+        ///// <summary>
+        ///// Represents the chart bars <see cref="Instrument"/>.
+        ///// </summary>
+        //public Instrument Instrument { get; private set; }
 
         /// <summary>
         /// Represents the actual session begin
@@ -107,7 +107,7 @@ namespace Nt.Core
         /// <summary>
         /// The session number.
         /// </summary>
-        public int Count { get; private set; }
+        //public int Count { get; private set; }
 
         /// <summary>
         /// Is true when a new session is added to the sorted session list.
@@ -128,11 +128,11 @@ namespace Nt.Core
                     return;
 
                 // Update the counter.
-                Count++;
+                //Count++;
 
                 // if date is a partial hoilday...store the partial holiday
-                if (!(bars.TradingHours.PartialHolidays.TryGetValue(ActualSessionBegin, out partialHoliday)))
-                    partialHoliday = null;
+                //if (!(bars.TradingHours.PartialHolidays.TryGetValue(ActualSessionBegin, out partialHoliday)))
+                //    partialHoliday = null;
 
                 // Create the event args.
                 SessionChangedEventArgs e = new SessionChangedEventArgs 
@@ -141,9 +141,9 @@ namespace Nt.Core
                     NewSessionBeginTime = this.ActualSessionBegin,
                     NewSessionEndTime = this.ActualSessionEnd,
                     NewSessionTimeZoneInfo = this.UserTimeZoneInfo,
-                    IsPartialHoliday = this.IsPartialHoliday,
-                    IsLateBegin = this.IsLateBegin,
-                    IsEarlyEnd = this.IsEarlyEnd,
+                    //IsPartialHoliday = this.IsPartialHoliday,
+                    //IsLateBegin = this.IsLateBegin,
+                    //IsEarlyEnd = this.IsEarlyEnd,
                 };
 
                 // Call the listeners
@@ -155,17 +155,17 @@ namespace Nt.Core
         /// <summary>
         /// Indicates if the trading hours is a partial holiday.
         /// </summary>
-        public bool IsPartialHoliday => partialHoliday != null;
+        //public bool IsPartialHoliday => partialHoliday != null;
 
         /// <summary>
         /// Indicates if the partial holiday has a late begin time.
         /// </summary>
-        public bool IsLateBegin => IsPartialHoliday && partialHoliday.IsLateBegin;
+        //public bool IsLateBegin => IsPartialHoliday && partialHoliday.IsLateBegin;
 
         /// <summary>
         /// Indicates if the partial holiday has a early end.
         /// </summary>
-        public bool IsEarlyEnd => IsPartialHoliday && partialHoliday.IsEarlyEnd;
+        //public bool IsEarlyEnd => IsPartialHoliday && partialHoliday.IsEarlyEnd;
 
         #endregion
 
@@ -177,18 +177,18 @@ namespace Nt.Core
         /// <param name="sessionIterator"></param>
         /// <param name="bars"></param>
         /// <param name="ninjascript"></param>
-        public SessionsIterator(NinjaScriptBase ninjascript, Bars bars, SessionIterator sessionIterator)
+        public SessionsIterator(NinjaScriptBase ninjascript, Bars bars)
         {
             this.ninjascript = ninjascript;
             this.bars = bars;
-            this.sessionIterator = sessionIterator ?? new SessionIterator(bars);
+            this.sessionIterator = new SessionIterator(bars);
 
             UserTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
             BarsTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
-            Instrument = new Instrument
-            {
-                InstrumentCode = bars.Instrument.MasterInstrument.Name.ToInstrumentCode(),
-            };
+            //Instrument = new Instrument
+            //{
+            //    InstrumentCode = bars.Instrument.MasterInstrument.Name.ToInstrumentCode(),
+            //};
         }
 
         #endregion
