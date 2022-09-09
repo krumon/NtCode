@@ -7,17 +7,17 @@ namespace Nt.Core
     public class SessionFilters : NtScript
     {
 
-        #region Consts
+        #region static consts
 
         /// <summary>
         /// The minimum date for the filters.
         /// </summary>
-        public static DateTime MIN_DATE = new DateTime(1970, 1, 1);
+        public readonly static DateTime MIN_DATE = new DateTime(1970, 1, 1);
 
         /// <summary>
         /// The maximum date for the filters.
         /// </summary>
-        public static DateTime MAX_DATE = new DateTime(2050, 12, 31);
+        public readonly static DateTime MAX_DATE = new DateTime(2050, 12, 31);
 
         #endregion
 
@@ -50,40 +50,6 @@ namespace Nt.Core
 
         #endregion
 
-        #region Session Filters Options
-
-        /// <summary>
-        /// Indicates if the ninjascript enter in historial data bars.
-        /// </summary>
-        private bool includeHistoricalData;
-
-        /// <summary>
-        /// Indicates if the ninjascript enter in partial holidays.
-        /// </summary>
-        private bool includePartialHolidays;
-
-        /// <summary>
-        /// Indicates if the ninjascript enter in partial holidays with late begin.
-        /// </summary>
-        private bool includeLateBegin;
-
-        /// <summary>
-        /// Indicates if the ninjascript enter in partial holidays with early end.
-        /// </summary>
-        private bool includeEarlyEnd;
-
-        /// <summary>
-        /// Represents the minimum date to enter with the ninjascript.
-        /// </summary>
-        private DateTime initialDate;
-
-        /// <summary>
-        /// Represents the maximum date to enter with the ninjascript.
-        /// </summary>
-        private DateTime finalDate;
-
-        #endregion
-
         #region Public properties
 
         /// <summary>
@@ -104,32 +70,32 @@ namespace Nt.Core
         /// <summary>
         /// Gets if the ninjascript enter in historial data bars.
         /// </summary>
-        public bool IncludeHistoricalData => includeHistoricalData;
+        public bool IncludeHistoricalData {get;private set;}
 
         /// <summary>
         /// Gets if the ninjascript enter in partial holidays.
         /// </summary>
-        public bool IncludePartialHolidays => includePartialHolidays;
+        public bool IncludePartialHolidays { get; private set; }
 
         /// <summary>
         /// Gets if the ninjascript enter in partial holidays with late begin.
         /// </summary>
-        public bool IncludeLateBegin => includeLateBegin;
+        public bool IncludeLateBegin { get; private set; }
 
         /// <summary>
         /// Gets if the ninjascript enter in partial holidays with early end.
         /// </summary>
-        public bool IncludeEarlyEnd => includeEarlyEnd;
+        public bool IncludeEarlyEnd { get; private set; }
 
         /// <summary>
         /// Gets the minimum date to enter with the ninjascript.
         /// </summary>
-        public DateTime InitialDate => initialDate;
+        public DateTime InitialDate { get; private set; }
 
         /// <summary>
         /// Gets the maximum date to enter with the ninjascript.
         /// </summary>
-        public DateTime FinalDate => finalDate;
+        public DateTime FinalDate { get; private set; }
 
         #endregion
 
@@ -221,12 +187,12 @@ namespace Nt.Core
         /// <param name="options"></param>
         private void AutoMapper(SessionFiltersOptions options)
         {
-            includeHistoricalData = options.IncludeHistoricalData;
-            includePartialHolidays = options.IncludePartialHolidays;
-            includeLateBegin = options.IncludeLateBegin;
-            includeEarlyEnd = options.IncludeEarlyEnd;
-            finalDate = options.FinalDate;
-            initialDate = options.InitialDate;
+            IncludeHistoricalData = options.IncludeHistoricalData;
+            IncludePartialHolidays = options.IncludePartialHolidays;
+            IncludeLateBegin = options.IncludeLateBegin;
+            IncludeEarlyEnd = options.IncludeEarlyEnd;
+            FinalDate = options.FinalDate;
+            InitialDate = options.InitialDate;
         }
 
         /// <summary>
@@ -235,9 +201,9 @@ namespace Nt.Core
         /// <returns></returns>
         private bool CheckFilters()
         {
-            bool historicalDataFilter   =   includeHistoricalData || currentDateTime > dateTimeNow;
-            bool dateFilter             =   initialDate >= currentDateTime && finalDate <= currentDateTime;
-            bool holidaysFilter         =   includePartialHolidays == IsPartialHoliday && includeEarlyEnd == IsEarlyEnd && includeLateBegin == IsLateBegin;
+            bool historicalDataFilter   =   IncludeHistoricalData || currentDateTime > dateTimeNow;
+            bool dateFilter             =   InitialDate >= currentDateTime && FinalDate <= currentDateTime;
+            bool holidaysFilter         =   IncludePartialHolidays == IsPartialHoliday && IncludeEarlyEnd == IsEarlyEnd && IncludeLateBegin == IsLateBegin;
             bool dayOfWeekFilters       =   true;
             bool monthOfYearFilters     =   true;
 
@@ -261,12 +227,12 @@ namespace Nt.Core
         /// <param name="options"></param>
         public static void AutoMapper(SessionFilters session, SessionFiltersOptions options)
         {
-            session.includeHistoricalData = options.IncludeHistoricalData;
-            session.includePartialHolidays = options.IncludePartialHolidays;
-            session.includeLateBegin = options.IncludeLateBegin;
-            session.includeEarlyEnd = options.IncludeEarlyEnd;
-            session.finalDate = options.FinalDate;
-            session.initialDate = options.InitialDate;
+            session.IncludeHistoricalData = options.IncludeHistoricalData;
+            session.IncludePartialHolidays = options.IncludePartialHolidays;
+            session.IncludeLateBegin = options.IncludeLateBegin;
+            session.IncludeEarlyEnd = options.IncludeEarlyEnd;
+            session.FinalDate = options.FinalDate;
+            session.InitialDate = options.InitialDate;
         }
 
         #endregion

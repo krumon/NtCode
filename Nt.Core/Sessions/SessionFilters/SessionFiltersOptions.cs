@@ -3,7 +3,7 @@
 namespace Nt.Core
 {
     /// <summary>
-    /// Options to create <see cref="SessionsManager"/> object.
+    /// Options to create <see cref="SessionFilters"/> object.
     /// </summary>
     public class SessionFiltersOptions
     {
@@ -121,16 +121,40 @@ namespace Nt.Core
 
         #region Public methods
 
+        /// <summary>
+        /// Method to add the date filters.
+        /// </summary>
+        /// <param name="initialDate"></param>
+        /// <param name="finalDate"></param>
+        /// <returns></returns>
         public SessionFiltersOptions AddDateFilters(DateTime initialDate, DateTime finalDate)
         {
+            if(initialDate < finalDate)
+            {
+                this.initialDate = initialDate;
+                this.finalDate = finalDate;
+            }
 
-            this.initialDate = initialDate;
-            this.finalDate = finalDate;
+            if (initialDate < SessionFilters.MIN_DATE)
+                this.initialDate = SessionFilters.MIN_DATE;
+
+            if (finalDate > SessionFilters.MAX_DATE)
+                this.finalDate = SessionFilters.MAX_DATE;
 
             return this;
 
         }
 
+        /// <summary>
+        /// Mthod to add date filters.
+        /// </summary>
+        /// <param name="initialYear"></param>
+        /// <param name="initialMonth"></param>
+        /// <param name="initialDay"></param>
+        /// <param name="finalYear"></param>
+        /// <param name="finalMonth"></param>
+        /// <param name="finalDay"></param>
+        /// <returns></returns>
         public SessionFiltersOptions AddDateFilters(
             int initialYear = 1970, 
             int initialMonth = 1, 
@@ -141,24 +165,6 @@ namespace Nt.Core
         {
 
             #region Make sure initial and final dates are correct
-
-            if (initialYear > finalYear)
-            {
-                initialYear = 1970;
-                finalYear = 2050;
-            }
-
-            if (initialYear < DateTime.MinValue.Year)
-                initialYear = 1970;
-
-            if (initialYear > DateTime.MaxValue.Year)
-                initialYear = 1970;
-
-            if (finalYear < DateTime.MinValue.Year)
-                finalYear = 2050;
-
-            if (finalYear > DateTime.MaxValue.Year)
-                initialYear = 2050;
 
             if (initialMonth < 1 || initialMonth > 12)
                 initialMonth = 1;
@@ -202,12 +208,19 @@ namespace Nt.Core
 
             #endregion
 
-            this.initialDate = new DateTime(initialYear, initialMonth, initialDay);
-            this.finalDate = new DateTime(finalYear, finalMonth, finalDay);
+            AddDateFilters(new DateTime(initialYear, initialMonth, initialDay), new DateTime(finalYear, finalMonth, finalDay));
 
             return this;
         }
 
+        /// <summary>
+        /// Method to add date filters.
+        /// </summary>
+        /// <param name="initialYear"></param>
+        /// <param name="initialMonth"></param>
+        /// <param name="finalYear"></param>
+        /// <param name="finalMonth"></param>
+        /// <returns></returns>
         public SessionFiltersOptions AddDateFilters(
             int initialYear = 1970, 
             int initialMonth = 1, 
@@ -219,6 +232,12 @@ namespace Nt.Core
             return this;
         }
 
+        /// <summary>
+        /// Method to add date filters.
+        /// </summary>
+        /// <param name="initialYear"></param>
+        /// <param name="finalYear"></param>
+        /// <returns></returns>
         public SessionFiltersOptions AddDateFilters(
             int initialYear = 1970,
             int finalYear = 2050)
@@ -228,8 +247,6 @@ namespace Nt.Core
 
             return this;
         }
-
-
 
         #endregion
     }

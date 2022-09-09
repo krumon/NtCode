@@ -73,7 +73,6 @@ namespace ConsoleApp
                             );
                     });
 
-
                 await host.RunAsync();
 
             }

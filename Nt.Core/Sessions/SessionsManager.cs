@@ -53,20 +53,6 @@ namespace Nt.Core
         /// </summary>
         private List<SessionHours> sessionHoursList;
 
-        /// <summary>
-        /// Max sessions to stored
-        /// </summary>
-        private int maxSessionsToStored;
-
-        #endregion
-
-        #region SessionManager options properties
-
-        /// <summary>
-        /// Max sessions to stored
-        /// </summary>
-        public int MaxSessionsToStored => maxSessionsToStored;
-
         #endregion
 
         #region Public Properties
@@ -74,12 +60,12 @@ namespace Nt.Core
         /// <summary>
         /// Gets the last session hours.
         /// </summary>
-        public SessionHours LastSession => lastSession;
+        //public SessionHours LastSession => lastSession;
 
         /// <summary>
         /// Gets the actual session hours.
         /// </summary>
-        public SessionHours ActualSession => actualSession;
+        //public SessionHours ActualSession => actualSession;
 
         /// <summary>
         /// Gets true if any sessionHoursList are stored.
@@ -90,6 +76,11 @@ namespace Nt.Core
         /// Gets the number of <see cref="SessionHours"/> stored.
         /// </summary>
         public int Count => HasSessions ? sessionHoursList.Count : 0;
+
+        /// <summary>
+        /// Max sessions to stored
+        /// </summary>
+        public int MaxSessionsToStored { get; private set; }
 
         #endregion
 
@@ -229,7 +220,7 @@ namespace Nt.Core
         /// <param name="options"></param>
         public static void AutoMapper(SessionsManager session, SessionManagerOptions options)
         {
-            session.maxSessionsToStored = options.MaxSessionsToStored;
+            session.MaxSessionsToStored = options.MaxSessionsToStored;
         }
 
         #endregion
@@ -242,7 +233,7 @@ namespace Nt.Core
         /// <param name="options"></param>
         public void AutoMapper (SessionManagerOptions options)
         {
-            maxSessionsToStored = options.MaxSessionsToStored;
+            MaxSessionsToStored = options.MaxSessionsToStored;
         }
 
         /// <summary>
