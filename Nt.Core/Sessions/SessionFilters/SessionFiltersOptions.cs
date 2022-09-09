@@ -11,11 +11,6 @@ namespace Nt.Core
         #region Private members
 
         /// <summary>
-        /// Indicates if the ninjascript enter in historial data bars.
-        /// </summary>
-        private bool includeHistoricalData = true;
-
-        /// <summary>
         /// Indicates if the ninjascript enter in partial holidays.
         /// </summary>
         private bool includePartialHolidays = true;
@@ -45,9 +40,9 @@ namespace Nt.Core
         #region Public properties
 
         /// <summary>
-        /// Gets if the ninjascript enter in historial data bars.
+        /// Gets or sets if the ninjascript enter in historial data bars.
         /// </summary>
-        public bool IncludeHistoricalData {get; private set;}
+        public bool IncludeHistoricalData {get; set;}
 
         /// <summary>
         /// Gets if the ninjascript enter in partial holidays.
