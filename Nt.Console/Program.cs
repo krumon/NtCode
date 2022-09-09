@@ -55,20 +55,28 @@ namespace ConsoleApp
                 //sessionTimeTests.Run();
                 //sessionHoursTests.Run();
 
-                IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
+                SessionsManager sessionManager;
 
-                //IConfiguration config2 = new ConfigurationBuilder()
-                //    .AddJsonFile("appsettings.json",true,false)
-                //    .Build();
+                sessionManager = SessionsManager
+                    .Load(null, null)
+                    .Configure((options) =>
+                    {
+                        options.MaxSessionsToStored = 100;
 
+                    })
+                    .AddSessionFilters((options) =>
+                    {
+                        options.AddDateFilters(
+                            initialYear: 2000,
+                            initialMonth: 6,
+                            initialDay: 15
+                            );
+                    });
 
-                //IHostApplicationLifetime lifetime = host.Services.GetRequiredService<IHostApplicationLifetime>();
 
                 await host.RunAsync();
 
             }
-
-            Wait();
 
         }
 

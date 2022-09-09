@@ -141,9 +141,9 @@ namespace NinjaTrader.NinjaScript.Indicators.KrMasterIndicators
 
 		#region TradingSessionInfo variables
 
-		private DateTime cacheSessionEnd = Globals.MinDate;
-		private DateTime currentDate = Globals.MinDate;
-		private DateTime sessionDateTmp = Globals.MinDate;
+		private DateTime cacheSessionEnd = Globals.InitialDate;
+		private DateTime currentDate = Globals.InitialDate;
+		private DateTime sessionDateTmp = Globals.InitialDate;
 		private SessionIterator sessionIterator;
 		private SessionIterator storedSession;
 		private List<int> newSessionBarIdx = new List<int>();

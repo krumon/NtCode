@@ -48,7 +48,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 
 			if (lineT is TimeLine)
 			{
-				if (time == Core.Globals.MinDate && barsAgo == int.MinValue)
+				if (time == Core.Globals.InitialDate && barsAgo == int.MinValue)
 					throw new ArgumentException("missing time line time / bars ago");
 			}
 			else if (lineT is PriceLine)
@@ -80,7 +80,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 		private static PriceLine PriceLineCore(NinjaScriptBase owner, bool isAutoScale, string tag,
 												double y, Brush brush, DashStyleHelper dashStyle, int width)
 		{
-			return DrawLabelLineTypeCore<PriceLine>(owner, isAutoScale, tag, 0, Core.Globals.MinDate, y, brush, dashStyle, width, false, null);
+			return DrawLabelLineTypeCore<PriceLine>(owner, isAutoScale, tag, 0, Core.Globals.InitialDate, y, brush, dashStyle, width, false, null);
 		}
 
 		// vertical line overloads
@@ -167,7 +167,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 		/// <returns></returns>
 		public static PriceLine PriceLine(NinjaScriptBase owner, string tag, double y, bool isGlobal, string templateName)
 		{
-			return DrawLabelLineTypeCore<PriceLine>(owner, false, tag, int.MinValue, Core.Globals.MinDate, y, null, DashStyleHelper.Solid, 1, isGlobal, templateName);
+			return DrawLabelLineTypeCore<PriceLine>(owner, false, tag, int.MinValue, Core.Globals.InitialDate, y, null, DashStyleHelper.Solid, 1, isGlobal, templateName);
 		}
 
 		/// <summary>
@@ -247,7 +247,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 		/// <returns></returns>
 		public static TimeLine TimeLine(NinjaScriptBase owner, string tag, int barsAgo, Brush brush)
 		{
-			return TimeLineCore(owner, false, tag, barsAgo, Core.Globals.MinDate, brush, DashStyleHelper.Solid, 1);
+			return TimeLineCore(owner, false, tag, barsAgo, Core.Globals.InitialDate, brush, DashStyleHelper.Solid, 1);
 		}
 
 		/// <summary>
@@ -263,7 +263,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 		public static TimeLine TimeLine(NinjaScriptBase owner, string tag, int barsAgo, Brush brush,
 													DashStyleHelper dashStyle, int width)
 		{
-			return TimeLineCore(owner, false, tag, barsAgo, Core.Globals.MinDate, brush, dashStyle, width);
+			return TimeLineCore(owner, false, tag, barsAgo, Core.Globals.InitialDate, brush, dashStyle, width);
 		}
 
 		/// <summary>
@@ -299,7 +299,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 													DashStyleHelper dashStyle, int width, bool drawOnPricePanel)
 		{
 			return DrawingTool.DrawToggledPricePanel(owner, drawOnPricePanel, () =>
-				TimeLineCore(owner, false, tag, barsAgo, Core.Globals.MinDate, brush, dashStyle, width));
+				TimeLineCore(owner, false, tag, barsAgo, Core.Globals.InitialDate, brush, dashStyle, width));
 		}
 
 		/// <summary>
@@ -313,7 +313,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 		/// <returns></returns>
 		public static TimeLine TimeLine(NinjaScriptBase owner, string tag, int barsAgo, bool isGlobal, string templateName)
 		{
-			return DrawLabelLineTypeCore<TimeLine>(owner, false, tag, barsAgo, Core.Globals.MinDate,
+			return DrawLabelLineTypeCore<TimeLine>(owner, false, tag, barsAgo, Core.Globals.InitialDate,
 				double.MinValue, null, DashStyleHelper.Solid, 1, isGlobal, templateName);
 		}
 

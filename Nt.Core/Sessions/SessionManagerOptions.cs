@@ -5,11 +5,39 @@
     /// </summary>
     public class SessionManagerOptions
     {
-        public int MaxSessionsStored { get; set; } = 256;
-        //public bool UseSessionIterator { get; set; }
-        //public bool UseSessionFilters { get; set; }
-        //public bool UseSessionStats { get; set; }
-        //public bool IncludeGenericSessions { get; set; }
-        //public bool IncludeCustomSessions { get; set; }
+        #region Private members
+
+        /// <summary>
+        /// Max sessions to stored in <see cref="SessionsManager"/> object.
+        /// </summary>
+        private int maxSessionsToStored = 256;
+
+        #endregion
+
+        #region Public properties
+
+        /// <summary>
+        /// Max sessions to stored in <see cref="SessionsManager"/> object.
+        /// </summary>
+        public int MaxSessionsToStored
+        {
+            get => maxSessionsToStored;
+            set
+            {
+                // Make sure value changed
+                if (maxSessionsToStored == value)
+                    return;
+
+                if (value < 2)
+                    // Store the last and actual session
+                    maxSessionsToStored = 2;
+
+                if (value > int.MaxValue)
+                    maxSessionsToStored = int.MaxValue;
+            }
+        }
+
+        #endregion
+
     }
 }

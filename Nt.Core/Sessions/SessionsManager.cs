@@ -2,7 +2,6 @@
 using NinjaTrader.NinjaScript;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 namespace Nt.Core
 {
@@ -54,6 +53,11 @@ namespace Nt.Core
         /// </summary>
         private List<SessionHours> sessionHoursList;
 
+        /// <summary>
+        /// Max sessions to stored
+        /// </summary>
+        private int maxSessionsToStored;
+
         #endregion
 
         #region SessionManager options properties
@@ -61,7 +65,7 @@ namespace Nt.Core
         /// <summary>
         /// Max sessions to stored
         /// </summary>
-        public int MaxSessionsStored { get; set; }
+        public int MaxSessionsToStored => maxSessionsToStored;
 
         #endregion
 
@@ -201,7 +205,7 @@ namespace Nt.Core
             actualSession.N = Count;
             if (sessionHoursList == null)
                 sessionHoursList = new List<SessionHours>();
-            if (Count >= MaxSessionsStored)
+            if (Count >= MaxSessionsToStored)
                 sessionHoursList.Remove(sessionHoursList[0]);
             sessionHoursList.Add(actualSession);
         }
@@ -225,7 +229,7 @@ namespace Nt.Core
         /// <param name="options"></param>
         public static void AutoMapper(SessionsManager session, SessionManagerOptions options)
         {
-            session.MaxSessionsStored = options.MaxSessionsStored;
+            session.maxSessionsToStored = options.MaxSessionsToStored;
         }
 
         #endregion
@@ -238,7 +242,7 @@ namespace Nt.Core
         /// <param name="options"></param>
         public void AutoMapper (SessionManagerOptions options)
         {
-            MaxSessionsStored = options.MaxSessionsStored;
+            maxSessionsToStored = options.MaxSessionsToStored;
         }
 
         /// <summary>
