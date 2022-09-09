@@ -2,6 +2,8 @@
 using NinjaTrader.NinjaScript;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Nt.Core
 {
@@ -73,6 +75,11 @@ namespace Nt.Core
         public bool HasSessions => sessionHoursList != null && sessionHoursList.Count > 0;
 
         /// <summary>
+        /// Gets true if <see cref="SessionsManager"/> has <see cref="SessionFilters"/>.
+        /// </summary>
+        public bool HasSessionFilters => sessionFilters != null;
+
+        /// <summary>
         /// Gets the number of <see cref="SessionHours"/> stored.
         /// </summary>
         public int Count => HasSessions ? sessionHoursList.Count : 0;
@@ -87,14 +94,25 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
+        /// Create a <see cref="SessionsManager"/> default instance.
+        /// </summary>
+        public SessionsManager()
+        {
+        }
+
+        /// <summary>
         /// Create a default instance of the <see cref="SessionsManager"/> class.
         /// </summary>
         /// <param name="ninjascript"></param>
         /// <param name="bars"></param>
         private SessionsManager(NinjaScriptBase ninjascript, Bars bars)
         {
+            // Set values.
             this.ninjascript = ninjascript;
             this.bars = bars;
+
+            // If we need the session iterator...create him.
+            // TODO: Make Sure we need the session iterator object.
             this.sessionsIterator = new SessionsIterator(ninjascript, bars);
         }
 
@@ -103,50 +121,138 @@ namespace Nt.Core
         #region StateChanged methods
 
         /// <summary>
-        /// Create a default instance of the <see cref="SessionsManager"/> class.
-        /// </summary>
-        /// <param name="ninjascript"></param>
-        /// <param name="bars"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public static SessionsManager Load(NinjaScriptBase ninjascript, Bars bars)
-        {
-            if (ninjascript == null || bars == null)
-                throw new Exception("Parameters can not be null"); // return null;
-            
-            return new SessionsManager(ninjascript,bars);
-        }
-
-        /// <summary>
         /// Add <see cref="SessionManagerOptions"/> to configure <see cref="SessionsManager"/>.
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public SessionsManager Configure(Action<SessionManagerOptions> options)
+        public SessionsManager Configure(Action<SessionManagerOptions> options = null)
         {
+            // Create default session manager options.
             var sessionManagerOptions = new SessionManagerOptions();
+
+            // If options is not null...invoke delegate to update the options configure by the user.
             options?.Invoke(sessionManagerOptions);
+
+            // Mapper the sesion manager with the session manager options.
             AutoMapper(sessionManagerOptions);
 
             return this;
         }
 
-        #endregion
+        public SessionsManager Configure<T>(Action<T> options = null)
+            where T : SessionManagerOptions, new()
+        {
+            // Create default session manager options.
+            var sessionManagerOptions = new T();
 
-        #region functionality methods
+            // If options is not null...invoke delegate to update the options configure by the user.
+            options?.Invoke(sessionManagerOptions);
+
+            // Mapper the sesion manager with the session manager options.
+            AutoMapper(sessionManagerOptions);
+
+            return this;
+        }
+
+        public SessionsManager Configure<T>(T options = null)
+            where T : SessionManagerOptions, new()
+        {
+            // If options is null...create a default options...
+            if (options == null)
+                options = new T();
+
+            // Mapper the sesion filters with the session filters options.
+            AutoMapper(options);
+
+            return this;
+        }
 
         /// <summary>
         /// Add filters funcionality to session manager.
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public SessionsManager AddSessionFilters(Action<SessionFiltersOptions> options)
+        public SessionsManager ConfigureFilters(Action<SessionFiltersOptions> options = null)
         {
-            var sessionFiltersOptions = new SessionFiltersOptions();
-            options?.Invoke(sessionFiltersOptions);
-            sessionFilters = new SessionFilters(ninjascript, bars);
+            if (sessionFilters == null)
+                sessionFilters = new SessionFilters();
+
             sessionFilters.Configure(options);
+
             return this;
+        }
+
+        /// <summary>
+        /// Add filters funcionality to session manager.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureFilters(SessionFiltersOptions options = null)
+        {
+            if (sessionFilters == null)
+                sessionFilters = new SessionFilters();
+
+            sessionFilters.Configure(options);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add filters funcionality to session manager.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureFilters<T>(Action<T> options = null)
+            where T : SessionFiltersOptions, new()
+        {
+            if (sessionFilters == null)
+                sessionFilters = new SessionFilters();
+
+            sessionFilters.Configure(options);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add filters funcionality to session manager.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureFilters<T>(T options = null)
+            where T : SessionFiltersOptions, new()
+        {
+            if (sessionFilters == null)
+                sessionFilters = new SessionFilters();
+
+            sessionFilters.Configure(options);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Create a default instance of the <see cref="SessionsManager"/> class.
+        /// </summary>
+        /// <param name="ninjascript"></param>
+        /// <param name="bars"></param>
+        /// <exception cref="Exception"></exception>
+        public void Load(NinjaScriptBase ninjascript, Bars bars)
+        {
+            // Make sure session manager can be loaded.
+            if (ninjascript == null || bars == null)
+                throw new Exception("Parameters can not be null"); // return null;
+
+            // Set values.
+            this.ninjascript = ninjascript;
+            this.bars = bars;
+
+            // If we need the session iterator...create him.
+            // TODO: Make Sure we need the session iterator object.
+            this.sessionsIterator = new SessionsIterator(ninjascript, bars);
+
+            if (HasSessionFilters)
+                sessionFilters.Load(ninjascript, bars);
         }
 
         #endregion
@@ -160,7 +266,7 @@ namespace Nt.Core
         /// </summary>
         public override void OnBarUpdate()
         {
-            if (sessionFilters != null && !(sessionFilters.CanEntry()))
+            if (HasSessionFilters && !(sessionFilters.CanEntry()))
                 return;
 
             if (sessionsIterator != null)
@@ -174,7 +280,7 @@ namespace Nt.Core
         /// </summary>
         public override void OnMarketData()
         {
-            if (sessionFilters != null && !(sessionFilters.CanEntry()))
+            if (HasSessionFilters && !(sessionFilters.CanEntry()))
                 return;
 
             if (sessionsIterator != null)

@@ -5,7 +5,7 @@
     /// </summary>
     public class SessionManagerOptions
     {
-        #region Private members
+        #region Private members / Default values
 
         /// <summary>
         /// Max sessions to stored in <see cref="SessionsManager"/> object.

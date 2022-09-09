@@ -8,7 +8,12 @@ namespace Nt.Core
     public class SessionFiltersOptions
     {
 
-        #region Private members
+        #region Private members / default values
+
+        /// <summary>
+        /// Indicates if the ninjascript enter in historial data bars.
+        /// </summary>
+        private bool includeHistoricalData = true;
 
         /// <summary>
         /// Indicates if the ninjascript enter in partial holidays.
@@ -42,7 +47,7 @@ namespace Nt.Core
         /// <summary>
         /// Gets or sets if the ninjascript enter in historial data bars.
         /// </summary>
-        public bool IncludeHistoricalData {get; set;}
+        public bool IncludeHistoricalData => IncludeHistoricalData;
 
         /// <summary>
         /// Gets if the ninjascript enter in partial holidays.

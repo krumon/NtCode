@@ -55,23 +55,21 @@ namespace ConsoleApp
                 //sessionTimeTests.Run();
                 //sessionHoursTests.Run();
 
-                SessionsManager sessionManager;
-
-                sessionManager = SessionsManager
-                    .Load(null, null)
+                SessionsManager sessionManager = new SessionsManager()
                     .Configure((options) =>
                     {
                         options.MaxSessionsToStored = 100;
-
                     })
-                    .AddSessionFilters((options) =>
+                    .ConfigureFilters((filters) =>
                     {
-                        options.AddDateFilters(
+                        filters.AddDateFilters(
                             initialYear: 2000,
                             initialMonth: 6,
                             initialDay: 15
                             );
                     });
+
+                sessionManager.Load(null, null);
 
                 await host.RunAsync();
 

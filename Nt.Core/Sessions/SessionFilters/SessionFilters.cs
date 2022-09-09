@@ -104,13 +104,101 @@ namespace Nt.Core
         /// <summary>
         /// Create <see cref="SessionFilters"/> default instance.
         /// </summary>
-        /// <param name="bars"></param>
+        public SessionFilters()
+        {
+        }
+
+        /// <summary>
+        /// Create <see cref="SessionFilters"/> instance with parameters.
+        /// </summary>
         /// <param name="ninjascript"></param>
-        public SessionFilters(NinjaScriptBase ninjascript, Bars bars)
+        /// <param name="bars"></param>
+        private SessionFilters(NinjaScriptBase ninjascript, Bars bars)
         {
             this.ninjascript = ninjascript;
             this.bars = bars;
             dateTimeNow = DateTime.Now;
+        }
+
+        #endregion
+
+        #region State changed methods
+
+        /// <summary>
+        /// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionFilters Configure(Action<SessionFiltersOptions> options = null)
+        {
+            // Create default session filters options.
+            var sessionFiltersOptions = new SessionFiltersOptions();
+
+            // If options is not null...invoke delegate to update the options configure by the user.
+            if (options != null)
+                options.Invoke(sessionFiltersOptions);
+
+            // Mapper the sesion filters with the session filters options.
+            AutoMapper(sessionFiltersOptions);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionFilters Configure<T>(Action<T> options)
+            where T : SessionFiltersOptions, new()
+        {
+            // Create default session filters options.
+            var sessionFiltersOptions = new T();
+
+            // Invoke delegate to update the options configure by the user.
+            if (options != null)
+                options.Invoke(sessionFiltersOptions);
+
+            // Mapper the sesion filters with the session filters options.
+            AutoMapper(sessionFiltersOptions);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionFilters Configure<T>(T options = null)
+            where T : SessionFiltersOptions, new()
+        {
+            // If options is null...create a default options...
+            if (options == null)
+                options = new T();
+
+            // Mapper the sesion filters with the session filters options.
+            AutoMapper(options);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Load the <see cref="SessionFilters"/> class.
+        /// </summary>
+        /// <param name="ninjascript"></param>
+        /// <param name="bars"></param>
+        /// <exception cref="Exception"></exception>
+        public void Load(NinjaScriptBase ninjascript, Bars bars)
+        {
+            // Make sure session manager can be loaded.
+            if (ninjascript == null || bars == null)
+                throw new Exception("Parameters can not be null"); // return null;
+
+            // Set values.
+            this.ninjascript = ninjascript;
+            this.bars = bars;
         }
 
         #endregion
@@ -150,19 +238,6 @@ namespace Nt.Core
         #endregion
 
         #region Public methods
-
-        /// <summary>
-        /// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionFilters Configure(Action<SessionFiltersOptions> options)
-        {
-            var sessionFiltersOptions = new SessionFiltersOptions();
-            options?.Invoke(sessionFiltersOptions);
-            AutoMapper(sessionFiltersOptions);
-            return this;
-        }
 
         /// <summary>
         /// Event driven method which is called whenever a bar is updated.
