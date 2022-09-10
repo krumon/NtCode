@@ -32,8 +32,12 @@
                     // Store the last and actual session
                     maxSessionsToStored = 2;
 
-                if (value > int.MaxValue)
+                else if (value > int.MaxValue)
                     maxSessionsToStored = int.MaxValue;
+
+                else
+                    maxSessionsToStored = value;
+
             }
         }
 

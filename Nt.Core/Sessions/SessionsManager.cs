@@ -139,6 +139,7 @@ namespace Nt.Core
             // If options is not null...invoke delegate to update the options configure by the user.
             options?.Invoke(sessionManagerOptions);
 
+            
             // Mapper the sesion manager with the session manager options.
             AutoMapper(sessionManagerOptions);
 

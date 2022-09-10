@@ -20,9 +20,40 @@ namespace ConsoleApp
         //static SessionTimeTests sessionTimeTests = new SessionTimeTests();
         //static SessionHoursTests sessionHoursTests = new SessionHoursTests();
 
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
-            using (IHost host = Host.CreateDefaultBuilder(args).ConfigureAppConfiguration((hostingContext,configurationBuilder) => 
+            SessionsManager sessionManager = new SessionsManager();
+            sessionManager.Configure(SessionOptions);
+
+            //SessionsManager sessionManager = 
+            //    new SessionsManager()
+            //    .Configure((options) =>
+            //    {
+            //        options.MaxSessionsToStored = 100;
+            //    })
+            //    .ConfigureFilters((filters) =>
+            //    {
+            //        filters.AddDateFilters(
+            //            initialYear: 2000,
+            //            initialMonth: 6,
+            //            initialDay: 15
+            //            );
+            //    });
+
+            var s = sessionManager;
+            //sessionManager.Load(null, null);
+            Wait();
+
+        }
+
+        public static void SessionOptions(SessionManagerOptions options)
+        {
+            options.MaxSessionsToStored = 100;
+        }
+
+        public static async Task HostingTest()
+        {
+            using (IHost host = Host.CreateDefaultBuilder().ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
             {
                 //configurationBuilder.Sources.Clear();
 
@@ -39,7 +70,7 @@ namespace ConsoleApp
                     {
                         configure.Prefix = "PROCESSOR_";
                     });
-            
+
                 IConfigurationRoot configurationRoot = configurationBuilder.Build();
 
                 TransientFaultHandlingOptions options = new TransientFaultHandlingOptions();
@@ -49,30 +80,11 @@ namespace ConsoleApp
                 Console.WriteLine($"TransientFaultHandlingOptions.Enabled={options.Enabled}");
                 Console.WriteLine($"TransientFaultHandlingOptions.AutoRetryDelay={options.AutoRetryDelay}");
 
-            })
-            .Build())
-            {
-                //sessionTimeTests.Run();
-                //sessionHoursTests.Run();
-
-                SessionsManager sessionManager = new SessionsManager()
-                    .Configure((options) =>
-                    {
-                        options.MaxSessionsToStored = 100;
-                    })
-                    .ConfigureFilters((filters) =>
-                    {
-                        filters.AddDateFilters(
-                            initialYear: 2000,
-                            initialMonth: 6,
-                            initialDay: 15
-                            );
-                    });
-
-                sessionManager.Load(null, null);
+            }).Build())
+            { 
+                //Enter code
 
                 await host.RunAsync();
-
             }
 
         }
