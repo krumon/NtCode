@@ -131,11 +131,11 @@ namespace Nt.Core
         /// <param name="ninjascript">The ninjascript.</param>
         /// <param name="bars">The bars.</param>
         /// <param name="o">Any object necesary to load the script.</param>
-        public override void Load(NinjaScriptBase ninjascript, Bars bars, object o = null)
+        public override void Load(NinjaScriptBase ninjascript, Bars bars, SessionsIterator sessionsIterator)
         {
             // Make sure the object is a session iterator and session manager can be loaded.
-            if (ninjascript == null || bars == null || !(o is SessionsIterator sessionsIterator))
-                throw new Exception("Parameters can not be null"); // return null;
+            if (ninjascript == null || bars == null ||  sessionsIterator == null)
+                throw new Exception($"{nameof(SessionFilters)} load parameters can not be null"); // return null;
 
             // Set values.
             this.ninjascript = ninjascript;

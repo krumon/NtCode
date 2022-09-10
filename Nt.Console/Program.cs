@@ -49,6 +49,8 @@ namespace ConsoleApp
                         );
                 });
 
+            sessionManager.Load (null,null);
+
             var s = sessionManager;
             var f = sessionManager.SessionFilters;
             //sessionManager.Load(null, null);

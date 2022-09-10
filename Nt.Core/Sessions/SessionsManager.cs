@@ -55,6 +55,11 @@ namespace Nt.Core
         /// </summary>
         public bool sessionsManagerIsConfigured;
 
+        /// <summary>
+        /// Flags to indicates if the <see cref="SessionFilters"/> is configured.
+        /// </summary>
+        public bool sessionFiltersIsConfigured;
+
         #endregion
 
         #region Delegates
@@ -139,16 +144,16 @@ namespace Nt.Core
         #region StateChanged methods
 
         /// <summary>
-        /// Load the <see cref="SessionFilters"/>.
+        /// Load the <see cref="SessionsManager"/>.
         /// </summary>
         /// <param name="ninjascript">The ninjascript.</param>
         /// <param name="bars">The bars.</param>
         /// <param name="o">Any object necesary to load the script.</param>
-        public override void Load(NinjaScriptBase ninjascript, Bars bars, object o = null)
+        public override void Load(NinjaScriptBase ninjascript, Bars bars)
         {
             // Make sure session manager can be loaded.
             if (ninjascript == null || bars == null)
-                throw new Exception("Parameters can not be null"); // return null;
+                throw new Exception($"{nameof(SessionsManager)} load parameters can not be null"); // return null;
 
             // Set values.
             this.ninjascript = ninjascript;
@@ -156,8 +161,16 @@ namespace Nt.Core
 
             // Make sure the ninjascript is sessionsManagerIsConfigured
             if (!sessionsManagerIsConfigured)
+            {
                 ConfigureSessionsManager();
-            sessionsManagerIsConfigured = true;
+                sessionsManagerIsConfigured = true;
+            }
+
+            // If we need the session iterator...create him.
+            // TODO: Make Sure we need the session iterator object.
+            // Initialize the session iterator
+            if (sessionsIterator == null)
+                sessionsIterator = new SessionsIterator();
 
             // Load the elements...
             sessionsIterator.Load(ninjascript, bars);
@@ -220,12 +233,6 @@ namespace Nt.Core
         /// <returns></returns>
         public SessionsManager ConfigureSessionsManager(Action<SessionManagerOptions> options = null)
         {
-            // If we need the session iterator...create him.
-            // TODO: Make Sure we need the session iterator object.
-            // Initialize the session iterator
-            //if (sessionsIterator == null)
-            //    sessionsIterator = new SessionsIterator();
-
             // Create default session manager options.
             var sessionManagerOptions = new SessionManagerOptions();
 
@@ -251,10 +258,6 @@ namespace Nt.Core
         public SessionsManager ConfigureSessionsManager<T>(Action<T> options = null)
             where T : SessionManagerOptions, new()
         {
-            // Initialize the session iterator
-            //if (sessionsIterator == null)
-            //    sessionsIterator = new SessionsIterator();
-
             // Create default session manager options.
             var sessionManagerOptions = new T();
 
@@ -280,10 +283,6 @@ namespace Nt.Core
         public SessionsManager ConfigureSessionsManager<T>(T options = null)
             where T : SessionManagerOptions, new()
         {
-            // Initialize the session iterator
-            //if (sessionsIterator == null)
-            //    sessionsIterator = new SessionsIterator();
-
             // If options is null...create a default options...
             if (options == null)
                 options = new T();
@@ -305,10 +304,15 @@ namespace Nt.Core
         /// <returns></returns>
         public SessionsManager ConfigureSessionFilters(Action<SessionFiltersOptions> options = null)
         {
+            // Make sure session filters is not null.
             if (sessionFilters == null)
                 sessionFilters = new SessionFilters();
 
             sessionFilters.Configure(options);
+
+            // Update the configure flag
+            if (!sessionFiltersIsConfigured)
+                sessionFiltersIsConfigured = true;
 
             return this;
         }
@@ -320,10 +324,15 @@ namespace Nt.Core
         /// <returns></returns>
         public SessionsManager ConfigureSessionFilters(SessionFiltersOptions options = null)
         {
+            // Make sure session filters is not null.
             if (sessionFilters == null)
                 sessionFilters = new SessionFilters();
 
             sessionFilters.Configure(options);
+
+            // Update the configure flag
+            if (!sessionFiltersIsConfigured)
+                sessionFiltersIsConfigured = true;
 
             return this;
         }
@@ -337,10 +346,15 @@ namespace Nt.Core
         public SessionsManager ConfigureSessionFilters<T>(Action<T> options = null)
             where T : SessionFiltersOptions, new()
         {
+            // Make sure session filters is not null.
             if (sessionFilters == null)
                 sessionFilters = new SessionFilters();
 
             sessionFilters.Configure(options);
+
+            // Update the configure flag
+            if (!sessionFiltersIsConfigured)
+                sessionFiltersIsConfigured = true;
 
             return this;
         }
@@ -354,10 +368,15 @@ namespace Nt.Core
         public SessionsManager ConfigureSessionFilters<T>(T options = null)
             where T : SessionFiltersOptions, new()
         {
+            // Make sure session filters is not null.
             if (sessionFilters == null)
                 sessionFilters = new SessionFilters();
 
             sessionFilters.Configure(options);
+
+            // Update the configure flag
+            if (!sessionFiltersIsConfigured)
+                sessionFiltersIsConfigured = true;
 
             return this;
         }
@@ -377,13 +396,16 @@ namespace Nt.Core
             if (sessionFilters != null)
                 sessionFilters.OnBarUpdate();
 
+            // TODO: No funcionan los filtros. Arreglarlo!!!!!
             // Entry to the method if the filters are ok.
-            if (HasSessionFilters && !(sessionFilters.CanEntry()))
-                return;
+            //if (HasSessionFilters && !(sessionFilters.CanEntry()))
+            //    return;
 
             // Update the session iterator
             if (sessionsIterator != null)
                 sessionsIterator.OnBarUpdate();
+
+            ExecuteInBarUpdateMethod(BarUpdateAction);
         }
 
         /// <summary>
@@ -397,13 +419,16 @@ namespace Nt.Core
             if (sessionFilters != null)
                 sessionFilters.OnBarUpdate();
 
+            // TODO: No funcionan los filtros. Arreglarlo!!!!!
             // Entry to the method if the filters are ok.
-            if (HasSessionFilters && !(sessionFilters.CanEntry()))
-                return;
+            //if (HasSessionFilters && !(sessionFilters.CanEntry()))
+            //    return;
 
             // Update the session iterator
             if (sessionsIterator != null)
                 sessionsIterator.OnBarUpdate();
+
+            ExecuteInMarketDataMethod(MarketDataAction);
         }
 
         /// <summary>
@@ -412,19 +437,25 @@ namespace Nt.Core
         /// <param name="e"></param>
         public virtual void OnSessionHoursChanged(SessionChangedEventArgs e)
         {
-            //var temp = actualSession;
-            //lastSession = temp;
+            // Update Holiday filters
+            if (sessionFilters != null)
+                sessionFilters.OnSessionHoursChanged(e);
+
+            // Update actual session
             lastSession = actualSession;
             actualSession = new SessionHours();
             actualSession.Load(e);
             // TODO: Revisar esta asignación.
             actualSession.N = Count;
+
+            // Add the actual session to the list
             if (sessionHoursList == null)
                 sessionHoursList = new List<SessionHours>();
             if (Count >= MaxSessionsToStored)
                 sessionHoursList.Remove(sessionHoursList[0]);
             sessionHoursList.Add(actualSession);
 
+            // Execute delegate method.
             ExecuteInSessionHoursChangedMethod(SessionHoursChangedAction);
         }
 

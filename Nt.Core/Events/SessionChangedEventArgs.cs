@@ -51,23 +51,12 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
-        /// Create <see cref="NtNewSessionEventArgs"/> default instance.
+        /// Create <see cref="SessionChangedEventArgs"/> default instance.
         /// </summary>
         public SessionChangedEventArgs()
         {
 
         }
-
-        /// <summary>
-        /// Create <see cref="NtNewSessionEventArgs"/> new instance with specific date times.
-        /// </summary>
-        /// <param name="newSessionBegin">The initial time of the new session.</param>
-        /// <param name="newSessionEnd">The final time of the new session.</param>
-        //public SessionChangedEventArgs(DateTime newSessionBegin, DateTime newSessionEnd)
-        //{
-        //    this.NewSessionBeginTime = newSessionBegin;
-        //    this.NewSessionEndTime = newSessionEnd;
-        //}
 
         #endregion
 

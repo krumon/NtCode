@@ -93,6 +93,11 @@ namespace Nt.Core
         /// </summary>
         public Action BarUpdateAction;
 
+        /// <summary>
+        /// Delegate to execute in OnMarketData method.
+        /// </summary>
+        public Action MarketDataAction;
+
         #endregion
 
         #region State changed methods
@@ -103,7 +108,15 @@ namespace Nt.Core
         /// <param name="ninjascript">The ninjascript.</param>
         /// <param name="bars">The bars.</param>
         /// <param name="o">Any object necesary to load the script.</param>
-        public virtual void Load(NinjaScriptBase ninjascript, Bars bars, object o = null) { }
+        public virtual void Load(NinjaScriptBase ninjascript, Bars bars) { }
+
+        /// <summary>
+        /// Load the Script.
+        /// </summary>
+        /// <param name="ninjascript">The ninjascript.</param>
+        /// <param name="bars">The bars.</param>
+        /// <param name="sessionsIterator"><see cref="SessionsIterator"/> object necesary to load the script.</param>
+        public virtual void Load(NinjaScriptBase ninjascript, Bars bars, SessionsIterator sessionsIterator) { }
 
         /// <summary>
         /// Free the memory of the script.

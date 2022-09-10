@@ -39,6 +39,11 @@ namespace Nt.Core
         /// </summary>
         private bool isNewSession;
 
+        /// <summary>
+        /// Represents a partial holiday
+        /// </summary>
+        private PartialHoliday holiday;
+
         #endregion
 
         #region Public events
@@ -102,6 +107,8 @@ namespace Nt.Core
 
                 // Update the counter.
                 //Count++;
+                if (!(bars.TradingHours.PartialHolidays.TryGetValue(ActualSessionEnd, out var holidays)))
+                    holiday = null;
 
                 // Create the event args.
                 SessionChangedEventArgs e = new SessionChangedEventArgs 
@@ -110,9 +117,9 @@ namespace Nt.Core
                     NewSessionBeginTime = this.ActualSessionBegin,
                     NewSessionEndTime = this.ActualSessionEnd,
                     NewSessionTimeZoneInfo = this.UserTimeZoneInfo,
-                    //IsPartialHoliday = this.IsPartialHoliday,
-                    //IsLateBegin = this.IsLateBegin,
-                    //IsEarlyEnd = this.IsEarlyEnd,
+                    IsPartialHoliday = holiday!= null,
+                    IsLateBegin = holiday != null && holiday.IsLateBegin,
+                    IsEarlyEnd = holiday != null && holiday.IsEarlyEnd,
                 };
 
                 // Call the listeners
@@ -156,7 +163,7 @@ namespace Nt.Core
         /// <param name="ninjascript">The ninjascript.</param>
         /// <param name="bars">The bars.</param>
         /// <param name="o">Any object necesary to load the script.</param>
-        public override void Load(NinjaScriptBase ninjascript, Bars bars, object o = null)
+        public override void Load(NinjaScriptBase ninjascript, Bars bars)
         {
             // Make sure session manager can be loaded.
             if (ninjascript == null || bars == null)
