@@ -162,7 +162,7 @@ namespace NinjaTrader.NinjaScript.Indicators
             PaintPriceMarkers = true;
 
             // Determines which scale an indicator will be plotted on.
-            // This property should ONLY bet set from the OnStateChange() method during State. SetDefaults or State.Configure.
+            // This property should ONLY bet set from the OnStateChange() method during State. SetDefaults or State.ConfigureSessionsManager.
             ScaleJustification = NinjaTrader.Gui.Chart.ScaleJustification.Right;
 
             // Disable this property if your indicator requires custom values that cumulate with each new market data event. 
@@ -185,11 +185,11 @@ namespace NinjaTrader.NinjaScript.Indicators
         /// This method occurs when the user presses the OK or Apply button in the UI.
         /// This method is used to configure the indicator.
         /// </summary>
-        protected override void Configure() { }
+        protected override void ConfigureSessionsManager() { }
 
         /// <summary>
-        /// This method occurs when the object is configured and is ready to receive instructions.
-        /// This method is used to set values when the object is configured and is ready to receive instructions.
+        /// This method occurs when the object is sessionsManagerIsConfigured and is ready to receive instructions.
+        /// This method is used to set values when the object is sessionsManagerIsConfigured and is ready to receive instructions.
         /// </summary>
         protected override void Active() { }
 

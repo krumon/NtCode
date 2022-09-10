@@ -1,6 +1,7 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using System;
+using System.Collections.Generic;
 
 namespace Nt.Core
 {
@@ -24,14 +25,9 @@ namespace Nt.Core
         #region Private members
 
         /// <summary>
-        /// The ninjascript parent of the class.
+        /// Gets the <see cref="SessionsIterator"/> funcionality.
         /// </summary>
-        private NinjaScriptBase ninjascript;
-
-        /// <summary>
-        /// The bars of the chart control.
-        /// </summary>
-        private Bars bars;
+        private SessionsIterator sessionsIterator;
 
         /// <summary>
         /// The partial holiday object.
@@ -48,6 +44,11 @@ namespace Nt.Core
         /// </summary>
         private DateTime dateTimeNow;
 
+        /// <summary>
+        /// Flags to indicates if the <see cref="SessionFilters"/> is sessionsManagerIsConfigured.
+        /// </summary>
+        public bool configured;
+
         #endregion
 
         #region Public properties
@@ -58,14 +59,14 @@ namespace Nt.Core
         public bool IsPartialHoliday => partialHoliday != null;
 
         /// <summary>
-        /// Indicates if the partial holiday has a late begin time.
+        /// Indicates if the partial holiday is late begin.
         /// </summary>
-        public bool IsLateBegin => IsPartialHoliday && partialHoliday.IsLateBegin;
+        public bool IsLateBegin => partialHoliday == null ? false : partialHoliday.IsLateBegin; // IsPartialHoliday && partialHoliday.IsLateBegin;
 
         /// <summary>
-        /// Indicates if the partial holiday has a early end.
+        /// Indicates if the partial holiday is early end.
         /// </summary>
-        public bool IsEarlyEnd => IsPartialHoliday && partialHoliday.IsEarlyEnd;
+        public bool IsEarlyEnd => partialHoliday == null ? false : partialHoliday.IsEarlyEnd; // IsPartialHoliday && partialHoliday.IsEarlyEnd;
 
         /// <summary>
         /// Gets if the ninjascript enter in historial data bars.
@@ -125,6 +126,48 @@ namespace Nt.Core
         #region State changed methods
 
         /// <summary>
+        /// Load the <see cref="SessionFilters"/>.
+        /// </summary>
+        /// <param name="ninjascript">The ninjascript.</param>
+        /// <param name="bars">The bars.</param>
+        /// <param name="o">Any object necesary to load the script.</param>
+        public override void Load(NinjaScriptBase ninjascript, Bars bars, object o = null)
+        {
+            // Make sure the object is a session iterator and session manager can be loaded.
+            if (ninjascript == null || bars == null || !(o is SessionsIterator sessionsIterator))
+                throw new Exception("Parameters can not be null"); // return null;
+
+            // Set values.
+            this.ninjascript = ninjascript;
+            this.bars = bars;
+            this.sessionsIterator = sessionsIterator;
+
+            // Make sure the ninjascript is sessionsManagerIsConfigured
+            if (!configured)
+                Configure();
+
+            // Save now time for the historical data
+            dateTimeNow = DateTime.Now;
+
+            // Agregatte delegates
+            sessionsIterator.SessionChanged += OnSessionHoursChanged;
+
+        }
+
+        /// <summary>
+        /// Method used to free memory when the script is terminate.
+        /// </summary>
+        public override void Terminated()
+        {
+            // Disagregatte delegates
+            sessionsIterator.SessionChanged -= OnSessionHoursChanged;
+        }
+
+        #endregion
+
+        #region Configure methods
+
+        /// <summary>
         /// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
         /// </summary>
         /// <param name="options"></param>
@@ -140,6 +183,10 @@ namespace Nt.Core
 
             // Mapper the sesion filters with the session filters options.
             AutoMapper(sessionFiltersOptions);
+
+            // Update the configure flag
+            if (!configured)
+                configured = true;
 
             return this;
         }
@@ -162,6 +209,10 @@ namespace Nt.Core
             // Mapper the sesion filters with the session filters options.
             AutoMapper(sessionFiltersOptions);
 
+            // Update the configure flag
+            if (!configured)
+                configured = true;
+
             return this;
         }
 
@@ -181,24 +232,11 @@ namespace Nt.Core
             // Mapper the sesion filters with the session filters options.
             AutoMapper(options);
 
+            // Update the configure flag
+            if (!configured)
+                configured = true;
+
             return this;
-        }
-
-        /// <summary>
-        /// Load the <see cref="SessionFilters"/> class.
-        /// </summary>
-        /// <param name="ninjascript"></param>
-        /// <param name="bars"></param>
-        /// <exception cref="Exception"></exception>
-        public void Load(NinjaScriptBase ninjascript, Bars bars)
-        {
-            // Make sure session manager can be loaded.
-            if (ninjascript == null || bars == null)
-                throw new Exception("Parameters can not be null"); // return null;
-
-            // Set values.
-            this.ninjascript = ninjascript;
-            this.bars = bars;
         }
 
         #endregion
@@ -214,10 +252,6 @@ namespace Nt.Core
         {
             // Store the current date time
             currentDateTime = ninjascript.Time[0];
-
-            // if date is a partial hoilday...store the partial holiday
-            if (!(bars.TradingHours.PartialHolidays.TryGetValue(currentDateTime, out partialHoliday)))
-                partialHoliday = null;
         }
 
         /// <summary>
@@ -229,7 +263,14 @@ namespace Nt.Core
         {
             // Store the current date time
             currentDateTime = ninjascript.Time[0];
+        }
 
+        /// <summary>
+        /// Changed any object or property when the session changed.
+        /// </summary>
+        /// <param name="e"></param>
+        public virtual void OnSessionHoursChanged(SessionChangedEventArgs e)
+        {
             // if date is a partial hoilday...store the partial holiday
             if (!(bars.TradingHours.PartialHolidays.TryGetValue(ninjascript.Time[0], out partialHoliday)))
                 partialHoliday = null;

@@ -1,13 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using Nt.Connect;
+using NinjaTrader.NinjaScript;
 using Nt.Core;
 using System;
 using System.IO;
 using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 using static ConsoleApp.ConsoleHelpers;
 
@@ -22,25 +20,37 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            SessionsManager sessionManager = new SessionsManager();
-            sessionManager.Configure(SessionOptions);
-
-            //SessionsManager sessionManager = 
-            //    new SessionsManager()
-            //    .Configure((options) =>
-            //    {
-            //        options.MaxSessionsToStored = 100;
-            //    })
-            //    .ConfigureFilters((filters) =>
-            //    {
-            //        filters.AddDateFilters(
-            //            initialYear: 2000,
-            //            initialMonth: 6,
-            //            initialDay: 15
-            //            );
-            //    });
+            SessionsManager sessionManager =
+                new SessionsManager()
+                .ConfigureNtScripts<SessionsManager>((options) =>
+                {
+                    options.Calculate = Calculate.OnBarClose;
+                    options.Description = "My master indicator.";
+                    options.Name = "KrMasTerSession";
+                })
+                .ConfigureSessionsManager((options) =>
+                {
+                    options.MaxSessionsToStored = 100;
+                })
+                .ConfigureSessionFilters((filters) =>
+                {
+                    filters.AddDateFilters(
+                        initialYear: 2000,
+                        initialMonth: 6,
+                        initialDay: 15
+                        );
+                })
+                .ConfigureSessionFilters((filters) =>
+                {
+                    filters.AddDateFilters(
+                        finalYear: 2022,
+                        finalMonth: 9,
+                        finalDay: 5
+                        );
+                });
 
             var s = sessionManager;
+            var f = sessionManager.SessionFilters;
             //sessionManager.Load(null, null);
             Wait();
 

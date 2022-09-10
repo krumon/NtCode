@@ -15,16 +15,6 @@ namespace Nt.Core
         #region Private members
 
         /// <summary>
-        /// The ninjascript parent of the class.
-        /// </summary>
-        private NinjaScriptBase ninjascript;
-
-        /// <summary>
-        /// The bars of the chart control.
-        /// </summary>
-        private Bars bars;
-
-        /// <summary>
         /// The session iterator to store the actual and next session data.
         /// </summary>
         private SessionIterator sessionIterator;
@@ -49,8 +39,6 @@ namespace Nt.Core
         /// </summary>
         private bool isNewSession;
 
-        //private PartialHoliday partialHoliday;
-
         #endregion
 
         #region Public events
@@ -65,24 +53,9 @@ namespace Nt.Core
         #region Public properties
 
         /// <summary>
-        /// The ninjascript parent of the class.
-        /// </summary>
-        public NinjaScriptBase Ninjascript => ninjascript;
-
-        /// <summary>
-        /// The bars of the chart control.
-        /// </summary>
-        public Bars Bars => bars;
-
-        /// <summary>
         /// The session iterator to store the actual and next session data.
         /// </summary>
         public SessionIterator SessionIterator => sessionIterator;
-
-        ///// <summary>
-        ///// Represents the chart bars <see cref="Instrument"/>.
-        ///// </summary>
-        //public Instrument Instrument { get; private set; }
 
         /// <summary>
         /// Represents the actual session begin
@@ -118,7 +91,7 @@ namespace Nt.Core
             private set
             {
                 // Make sure value changed
-                if (value == isNewSession)
+                if (ninjascript == null || value == isNewSession)
                     return;
 
                 // Update value.
@@ -129,10 +102,6 @@ namespace Nt.Core
 
                 // Update the counter.
                 //Count++;
-
-                // if date is a partial hoilday...store the partial holiday
-                //if (!(bars.TradingHours.PartialHolidays.TryGetValue(ActualSessionBegin, out partialHoliday)))
-                //    partialHoliday = null;
 
                 // Create the event args.
                 SessionChangedEventArgs e = new SessionChangedEventArgs 
@@ -148,24 +117,8 @@ namespace Nt.Core
 
                 // Call the listeners
                 OnNtSessionChanged(e);
-
             }
         }
-
-        /// <summary>
-        /// Indicates if the trading hours is a partial holiday.
-        /// </summary>
-        //public bool IsPartialHoliday => partialHoliday != null;
-
-        /// <summary>
-        /// Indicates if the partial holiday has a late begin time.
-        /// </summary>
-        //public bool IsLateBegin => IsPartialHoliday && partialHoliday.IsLateBegin;
-
-        /// <summary>
-        /// Indicates if the partial holiday has a early end.
-        /// </summary>
-        //public bool IsEarlyEnd => IsPartialHoliday && partialHoliday.IsEarlyEnd;
 
         #endregion
 
@@ -174,10 +127,16 @@ namespace Nt.Core
         /// <summary>
         /// Create a default instance of <see cref="SessionsIterator"/>.
         /// </summary>
-        /// <param name="sessionIterator"></param>
-        /// <param name="bars"></param>
+        public SessionsIterator()
+        {
+        }
+
+        /// <summary>
+        /// Create a default instance with parameters of <see cref="SessionsIterator"/>.
+        /// </summary>
         /// <param name="ninjascript"></param>
-        public SessionsIterator(NinjaScriptBase ninjascript, Bars bars)
+        /// <param name="bars"></param>
+        private SessionsIterator(NinjaScriptBase ninjascript, Bars bars)
         {
             this.ninjascript = ninjascript;
             this.bars = bars;
@@ -185,10 +144,82 @@ namespace Nt.Core
 
             UserTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
             BarsTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
-            //Instrument = new Instrument
-            //{
-            //    InstrumentCode = bars.Instrument.MasterInstrument.Name.ToInstrumentCode(),
-            //};
+        }
+
+        #endregion
+
+        #region State Changed methods
+
+        /// <summary>
+        /// Load the Script.
+        /// </summary>
+        /// <param name="ninjascript">The ninjascript.</param>
+        /// <param name="bars">The bars.</param>
+        /// <param name="o">Any object necesary to load the script.</param>
+        public override void Load(NinjaScriptBase ninjascript, Bars bars, object o = null)
+        {
+            // Make sure session manager can be loaded.
+            if (ninjascript == null || bars == null)
+                throw new Exception("Parameters can not be null"); // return null;
+
+            // Set values.
+            this.ninjascript = ninjascript;
+            this.bars = bars;
+
+            // Create ninjatrader session iterator
+            this.sessionIterator = new SessionIterator(bars);
+
+            // Set the ninjatrader general options configure by the user
+            UserTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
+
+            // Sets the TimeZoneInfo configure by the user in the chart bars.
+            BarsTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
+
+            // Aggregate delegates to the events.
+        }
+
+        /// <summary>
+        /// Free the memory of the script.
+        /// </summary>
+        public override void Terminated()
+        {
+            
+        }
+
+        #endregion
+
+        #region Market Data methods
+
+        /// <summary>
+        /// Event driven method which is called whenever a bar is updated. 
+        /// The frequency in which OnBarUpdate is called will be determined by the "Calculate" property. 
+        /// OnBarUpdate() is the method where all of your script's core bar based calculation logic should be contained.
+        /// </summary>
+        public override void OnBarUpdate()
+        {
+            LastBarUpdate();
+        }
+
+        /// <summary>
+        /// Event driven method which is called and guaranteed to be in the correct sequence 
+        /// for every change in level one market data for the underlying instrument. 
+        /// OnMarketData() can include but is not limited to the bid, ask, last price and volume.
+        /// </summary>
+        public override void OnMarketData()
+        {
+            LastBarUpdate();
+        }
+
+        #endregion
+
+        #region Event driven methods
+
+        /// <summary>
+        /// Event driven method which is called whenever a session hours is changed.
+        /// </summary>
+        /// <param name="e"></param>
+        public virtual void OnSessionChanged(SessionChangedEventArgs e)
+        {
         }
 
         #endregion
@@ -227,40 +258,12 @@ namespace Nt.Core
 
         #endregion
 
-        #region Event driven methods
-
-        public virtual void OnSessionChanged(SessionChangedEventArgs e)
-        {
-        }
-
-        #endregion
-
-        #region Market Data methods
-
-        /// <summary>
-        /// Event driven method which is called whenever a bar is updated. 
-        /// The frequency in which OnBarUpdate is called will be determined by the "Calculate" property. 
-        /// OnBarUpdate() is the method where all of your script's core bar based calculation logic should be contained.
-        /// </summary>
-        public override void OnBarUpdate()
-        {
-            LastBarUpdate();
-        }
-
-        /// <summary>
-        /// Event driven method which is called and guaranteed to be in the correct sequence 
-        /// for every change in level one market data for the underlying instrument. 
-        /// OnMarketData() can include but is not limited to the bid, ask, last price and volume.
-        /// </summary>
-        public override void OnMarketData()
-        {
-            LastBarUpdate();
-        }
-
-        #endregion
-
         #region Private methods
 
+        /// <summary>
+        /// Mthod to raise the event and driven methods.
+        /// </summary>
+        /// <param name="e"></param>
         private void OnNtSessionChanged(SessionChangedEventArgs e)
         {
 
@@ -288,7 +291,6 @@ namespace Nt.Core
         }
 
         #endregion
-
 
     }
 }

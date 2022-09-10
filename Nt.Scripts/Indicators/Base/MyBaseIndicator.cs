@@ -49,14 +49,14 @@ namespace NinjaTrader.NinjaScript.Indicators
         /// This method occurs when the user presses the OK or Apply button in the UI.
         /// This method is used to configure the indicator.
         /// </summary>
-        protected virtual void Configure()
+        protected virtual void ConfigureSessionsManager()
         {
             // Add services to the indicator
         }
 
         /// <summary>
-        /// This method occurs when the object is configured and is ready to receive instructions.
-        /// This method is used to set values when the object is configured and is ready to receive instructions.
+        /// This method occurs when the object is sessionsManagerIsConfigured and is ready to receive instructions.
+        /// This method is used to set values when the object is sessionsManagerIsConfigured and is ready to receive instructions.
         /// </summary>
         protected virtual void Active() { }
 

@@ -16,16 +16,6 @@ namespace Nt.Core
         #region Private members
 
         /// <summary>
-        /// The ninjascript parent of the class.
-        /// </summary>
-        private NinjaScriptBase ninjascript;
-
-        /// <summary>
-        /// The bars of the chart control.
-        /// </summary>
-        private Bars bars;
-
-        /// <summary>
         /// Gets the <see cref="SessionsIterator"/> funcionality.
         /// </summary>
         private SessionsIterator sessionsIterator;
@@ -55,11 +45,33 @@ namespace Nt.Core
         /// </summary>
         private List<SessionHours> sessionHoursList;
 
+        /// <summary>
+        /// Flags to indicates if the <see cref="NtScript"/> is configured.
+        /// </summary>
+        public bool ntScriptIsConfigured;
+
+        /// <summary>
+        /// Flags to indicates if the <see cref="SessionsManager"/> is configured.
+        /// </summary>
+        public bool sessionsManagerIsConfigured;
+
         #endregion
 
-        #region Fields
+        #region Delegates
 
-        public Action OnSessionHoursChangedExecute;
+        /// <summary>
+        /// Delegate to execute in OnSessionHoursChanged method.
+        /// </summary>
+        public Action SessionHoursChangedAction;
+
+        #endregion
+
+        #region Configure Properties
+
+        /// <summary>
+        /// Max sessions to stored
+        /// </summary>
+        public int MaxSessionsToStored { get; private set; }
 
         #endregion
 
@@ -86,14 +98,14 @@ namespace Nt.Core
         public bool HasSessionFilters => sessionFilters != null;
 
         /// <summary>
+        /// Gets the <see cref="SessionFilters"/> configure by the user.
+        /// </summary>
+        public SessionFilters SessionFilters => sessionFilters;
+
+        /// <summary>
         /// Gets the number of <see cref="SessionHours"/> stored.
         /// </summary>
         public int Count => HasSessions ? sessionHoursList.Count : 0;
-
-        /// <summary>
-        /// Max sessions to stored
-        /// </summary>
-        public int MaxSessionsToStored { get; private set; }
 
         #endregion
 
@@ -117,9 +129,9 @@ namespace Nt.Core
             this.ninjascript = ninjascript;
             this.bars = bars;
 
-            // If we need the session iterator...create him.
-            // TODO: Make Sure we need the session iterator object.
-            this.sessionsIterator = new SessionsIterator(ninjascript, bars);
+            // Init and load the session iterator.
+            sessionsIterator = new SessionsIterator();
+            sessionsIterator.Load(ninjascript, bars);
         }
 
         #endregion
@@ -127,124 +139,12 @@ namespace Nt.Core
         #region StateChanged methods
 
         /// <summary>
-        /// Add <see cref="SessionManagerOptions"/> to configure <see cref="SessionsManager"/>.
+        /// Load the <see cref="SessionFilters"/>.
         /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionsManager Configure(Action<SessionManagerOptions> options = null)
-        {
-            // Create default session manager options.
-            var sessionManagerOptions = new SessionManagerOptions();
-
-            // If options is not null...invoke delegate to update the options configure by the user.
-            options?.Invoke(sessionManagerOptions);
-
-            
-            // Mapper the sesion manager with the session manager options.
-            AutoMapper(sessionManagerOptions);
-
-            return this;
-        }
-
-        public SessionsManager Configure<T>(Action<T> options = null)
-            where T : SessionManagerOptions, new()
-        {
-            // Create default session manager options.
-            var sessionManagerOptions = new T();
-
-            // If options is not null...invoke delegate to update the options configure by the user.
-            options?.Invoke(sessionManagerOptions);
-
-            // Mapper the sesion manager with the session manager options.
-            AutoMapper(sessionManagerOptions);
-
-            return this;
-        }
-
-        public SessionsManager Configure<T>(T options = null)
-            where T : SessionManagerOptions, new()
-        {
-            // If options is null...create a default options...
-            if (options == null)
-                options = new T();
-
-            // Mapper the sesion filters with the session filters options.
-            AutoMapper(options);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Add filters funcionality to session manager.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionsManager ConfigureFilters(Action<SessionFiltersOptions> options = null)
-        {
-            if (sessionFilters == null)
-                sessionFilters = new SessionFilters();
-
-            sessionFilters.Configure(options);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Add filters funcionality to session manager.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionsManager ConfigureFilters(SessionFiltersOptions options = null)
-        {
-            if (sessionFilters == null)
-                sessionFilters = new SessionFilters();
-
-            sessionFilters.Configure(options);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Add filters funcionality to session manager.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionsManager ConfigureFilters<T>(Action<T> options = null)
-            where T : SessionFiltersOptions, new()
-        {
-            if (sessionFilters == null)
-                sessionFilters = new SessionFilters();
-
-            sessionFilters.Configure(options);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Add filters funcionality to session manager.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionsManager ConfigureFilters<T>(T options = null)
-            where T : SessionFiltersOptions, new()
-        {
-            if (sessionFilters == null)
-                sessionFilters = new SessionFilters();
-
-            sessionFilters.Configure(options);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Create a default instance of the <see cref="SessionsManager"/> class.
-        /// </summary>
-        /// <param name="ninjascript"></param>
-        /// <param name="bars"></param>
-        /// <exception cref="Exception"></exception>
-        public void Load(NinjaScriptBase ninjascript, Bars bars)
+        /// <param name="ninjascript">The ninjascript.</param>
+        /// <param name="bars">The bars.</param>
+        /// <param name="o">Any object necesary to load the script.</param>
+        public override void Load(NinjaScriptBase ninjascript, Bars bars, object o = null)
         {
             // Make sure session manager can be loaded.
             if (ninjascript == null || bars == null)
@@ -254,13 +154,19 @@ namespace Nt.Core
             this.ninjascript = ninjascript;
             this.bars = bars;
 
-            // If we need the session iterator...create him.
-            // TODO: Make Sure we need the session iterator object.
-            this.sessionsIterator = new SessionsIterator(ninjascript, bars);
+            // Make sure the ninjascript is sessionsManagerIsConfigured
+            if (!sessionsManagerIsConfigured)
+                ConfigureSessionsManager();
+            sessionsManagerIsConfigured = true;
+
+            // Load the elements...
+            sessionsIterator.Load(ninjascript, bars);
+            if (HasSessionFilters)
+                sessionFilters.Load(ninjascript, bars, sessionsIterator);
+
+            // Aggregate the delegates
             sessionsIterator.SessionChanged += OnSessionHoursChanged;
 
-            if (HasSessionFilters)
-                sessionFilters.Load(ninjascript, bars);
         }
 
         /// <summary>
@@ -268,13 +174,197 @@ namespace Nt.Core
         /// </summary>
         public override void Terminated()
         {
-            // TODO: Make Sure we need the session iterator object.
+            // Disaggregate the delegates.
             sessionsIterator.SessionChanged -= OnSessionHoursChanged;
+
+            // Terminated the elements
+            sessionsIterator.Terminated();
+            if (HasSessionFilters)
+                sessionFilters.Terminated();
         }
 
         #endregion
 
-        #region handler methods
+        #region Configure methods
+
+        /// <summary>
+        /// Add <see cref="NtScriptConfigureOptions"/> to <see cref="NtScript"/> configure.
+        /// </summary>
+        /// <param name="options">The ninjascript configure options.</param>
+        public override SessionsManager ConfigureNtScripts<SessionsManager>(Action<NtScriptConfigureOptions> options = null)
+        {
+            // Make sure the trading hours is sessionsManagerIsConfigured by default
+            //TradingHours th = NinjaTrader.Data.TradingHours.String2TradingHours("CBOE US Index Futures ETH");
+            //th.CopyTo(ninjascript.TradingHours);
+
+            // Create default session manager options.
+            var ntScriptConfigureOptions = new NtScriptConfigureOptions();
+
+            // If options is not null...invoke delegate to update the options configure by the user.
+            options?.Invoke(ntScriptConfigureOptions);
+
+            // Mapper the sesion manager with the session manager options.
+            AutoMapper(ntScriptConfigureOptions);
+
+            // Update the configure flag
+            if (!ntScriptIsConfigured)
+                ntScriptIsConfigured = true;
+
+            return this as SessionsManager;
+        }
+
+        /// <summary>
+        /// Add <see cref="SessionManagerOptions"/> to <see cref="SessionsManager"/> configure.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureSessionsManager(Action<SessionManagerOptions> options = null)
+        {
+            // If we need the session iterator...create him.
+            // TODO: Make Sure we need the session iterator object.
+            // Initialize the session iterator
+            //if (sessionsIterator == null)
+            //    sessionsIterator = new SessionsIterator();
+
+            // Create default session manager options.
+            var sessionManagerOptions = new SessionManagerOptions();
+
+            // If options is not null...invoke delegate to update the options configure by the user.
+            options?.Invoke(sessionManagerOptions);
+
+            // Mapper the sesion manager with the session manager options.
+            AutoMapper(sessionManagerOptions);
+
+            // Update the configure flag
+            if (!sessionsManagerIsConfigured)
+                sessionsManagerIsConfigured = true;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add <see cref="SessionManagerOptions"/> to <see cref="SessionsManager"/> configure.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureSessionsManager<T>(Action<T> options = null)
+            where T : SessionManagerOptions, new()
+        {
+            // Initialize the session iterator
+            //if (sessionsIterator == null)
+            //    sessionsIterator = new SessionsIterator();
+
+            // Create default session manager options.
+            var sessionManagerOptions = new T();
+
+            // If options is not null...invoke delegate to update the options configure by the user.
+            options?.Invoke(sessionManagerOptions);
+
+            // Mapper the sesion manager with the session manager options.
+            AutoMapper(sessionManagerOptions);
+
+            // Update the configure flag
+            if (!sessionsManagerIsConfigured)
+                sessionsManagerIsConfigured = true;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add <see cref="SessionManagerOptions"/> to <see cref="SessionsManager"/> configure.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureSessionsManager<T>(T options = null)
+            where T : SessionManagerOptions, new()
+        {
+            // Initialize the session iterator
+            //if (sessionsIterator == null)
+            //    sessionsIterator = new SessionsIterator();
+
+            // If options is null...create a default options...
+            if (options == null)
+                options = new T();
+
+            // Mapper the sesion filters with the session filters options.
+            AutoMapper(options);
+
+            // Update the configure flag
+            if (!sessionsManagerIsConfigured)
+                sessionsManagerIsConfigured = true;
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add filters funcionality to session manager.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureSessionFilters(Action<SessionFiltersOptions> options = null)
+        {
+            if (sessionFilters == null)
+                sessionFilters = new SessionFilters();
+
+            sessionFilters.Configure(options);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add filters funcionality to session manager.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureSessionFilters(SessionFiltersOptions options = null)
+        {
+            if (sessionFilters == null)
+                sessionFilters = new SessionFilters();
+
+            sessionFilters.Configure(options);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add filters funcionality to session manager.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureSessionFilters<T>(Action<T> options = null)
+            where T : SessionFiltersOptions, new()
+        {
+            if (sessionFilters == null)
+                sessionFilters = new SessionFilters();
+
+            sessionFilters.Configure(options);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Add filters funcionality to session manager.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureSessionFilters<T>(T options = null)
+            where T : SessionFiltersOptions, new()
+        {
+            if (sessionFilters == null)
+                sessionFilters = new SessionFilters();
+
+            sessionFilters.Configure(options);
+
+            return this;
+        }
+
+        #endregion
+
+        #region Market Data methods
 
         /// <summary>
         /// Event driven method which is called whenever a bar is updated. 
@@ -283,11 +373,17 @@ namespace Nt.Core
         /// </summary>
         public override void OnBarUpdate()
         {
+            // Update the filters
+            if (sessionFilters != null)
+                sessionFilters.OnBarUpdate();
+
+            // Entry to the method if the filters are ok.
             if (HasSessionFilters && !(sessionFilters.CanEntry()))
                 return;
 
-            //if (sessionsIterator != null)
-            //    sessionsIterator.OnBarUpdate();
+            // Update the session iterator
+            if (sessionsIterator != null)
+                sessionsIterator.OnBarUpdate();
         }
 
         /// <summary>
@@ -297,11 +393,17 @@ namespace Nt.Core
         /// </summary>
         public override void OnMarketData()
         {
+            // Update the filters
+            if (sessionFilters != null)
+                sessionFilters.OnBarUpdate();
+
+            // Entry to the method if the filters are ok.
             if (HasSessionFilters && !(sessionFilters.CanEntry()))
                 return;
 
+            // Update the session iterator
             if (sessionsIterator != null)
-                sessionsIterator.OnMarketData();
+                sessionsIterator.OnBarUpdate();
         }
 
         /// <summary>
@@ -323,21 +425,7 @@ namespace Nt.Core
                 sessionHoursList.Remove(sessionHoursList[0]);
             sessionHoursList.Add(actualSession);
 
-            Execute(OnSessionHoursChangedExecute);
-        }
-
-        #endregion
-
-        #region Helper methods
-
-        /// <summary>
-        /// Mapper <see cref="SessionsManager"/> with <see cref="SessionManagerOptions"/>.
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="options"></param>
-        public static void AutoMapper(SessionsManager session, SessionManagerOptions options)
-        {
-            session.MaxSessionsToStored = options.MaxSessionsToStored;
+            ExecuteInSessionHoursChangedMethod(SessionHoursChangedAction);
         }
 
         #endregion
@@ -378,7 +466,29 @@ namespace Nt.Core
             return sessionHoursList[Count - 1 - idx].ToString();
         }
 
-        public void Execute(Action action)
+        #endregion
+
+        #region Helper methods
+
+        /// <summary>
+        /// Mapper <see cref="SessionsManager"/> with <see cref="SessionManagerOptions"/>.
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="options"></param>
+        public static void AutoMapper(SessionsManager session, SessionManagerOptions options)
+        {
+            session.MaxSessionsToStored = options.MaxSessionsToStored;
+        }
+
+        #endregion
+
+        #region Private methods
+
+        /// <summary>
+        /// Execute the delegate in the OnSessionHoursChanged method
+        /// </summary>
+        /// <param name="action">The delegate to execute.</param>
+        protected void ExecuteInSessionHoursChangedMethod(Action action)
         {
             action?.Invoke();
         }

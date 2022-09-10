@@ -62,7 +62,7 @@ namespace Nt.Core
 
         /// <summary>
         /// Create a new instance of <see cref="TradingSessions"/> object.
-        /// The session has been configured by default.
+        /// The session has been sessionsManagerIsConfigured by default.
         /// </summary>
         //public TradingSessions() //: this(null, null)
         //{
@@ -131,7 +131,7 @@ namespace Nt.Core
         //}
 
         /// <summary>
-        /// Create a new instance of <see cref="TradingSessions"/> object with custom Configure object.
+        /// Create a new instance of <see cref="TradingSessions"/> object with custom ConfigureSessionsManager object.
         /// </summary>
         /// <param name="customConfigure">The custom sessionHoursList configure.</param>
         //public GenericSessions(CustomSessionsConfigure customConfigure)

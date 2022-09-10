@@ -4,7 +4,7 @@
     #region Interfaces
 
     /// <summary>
-    /// Session Configure implementation
+    /// Session ConfigureSessionsManager implementation
     /// </summary>
     public interface ISessionConfigure
     {

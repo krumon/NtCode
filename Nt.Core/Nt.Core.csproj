@@ -195,6 +195,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include=".Base\NtScriptConfigureOptions.cs" />
     <Compile Include="Configure\SessionsConfigure.cs" />
     <Compile Include="Files\NtFileType.cs" />
     <Compile Include=".Base\NtScript.cs" />

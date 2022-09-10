@@ -47,7 +47,7 @@ namespace Nt.Core
         /// <summary>
         /// Gets or sets if the ninjascript enter in historial data bars.
         /// </summary>
-        public bool IncludeHistoricalData => includeHistoricalData;
+        public bool IncludeHistoricalData {get {return includeHistoricalData;} set { includeHistoricalData = value; } }
 
         /// <summary>
         /// Gets if the ninjascript enter in partial holidays.

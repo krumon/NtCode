@@ -17,7 +17,7 @@ namespace Nt.Scripts
 				BarWidth = 2;
 				MyParameter = 1;
 			}
-			else if (State == State.Configure)
+			else if (State == State.ConfigureSessionsManager)
 			{
 			}
 		}
