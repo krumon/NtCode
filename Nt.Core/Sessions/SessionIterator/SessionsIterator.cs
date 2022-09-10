@@ -227,7 +227,7 @@ namespace Nt.Core
 
         #endregion
 
-        #region Handler methods
+        #region Event driven methods
 
         public virtual void OnSessionChanged(SessionChangedEventArgs e)
         {

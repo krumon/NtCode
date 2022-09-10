@@ -57,6 +57,12 @@ namespace Nt.Core
 
         #endregion
 
+        #region Fields
+
+        public Action OnSessionHoursChangedExecute;
+
+        #endregion
+
         #region Public Properties
 
         /// <summary>
@@ -250,9 +256,19 @@ namespace Nt.Core
             // If we need the session iterator...create him.
             // TODO: Make Sure we need the session iterator object.
             this.sessionsIterator = new SessionsIterator(ninjascript, bars);
+            sessionsIterator.SessionChanged += OnSessionHoursChanged;
 
             if (HasSessionFilters)
                 sessionFilters.Load(ninjascript, bars);
+        }
+
+        /// <summary>
+        /// Method used to free memory when the script is terminate.
+        /// </summary>
+        public override void Terminated()
+        {
+            // TODO: Make Sure we need the session iterator object.
+            sessionsIterator.SessionChanged -= OnSessionHoursChanged;
         }
 
         #endregion
@@ -269,8 +285,8 @@ namespace Nt.Core
             if (HasSessionFilters && !(sessionFilters.CanEntry()))
                 return;
 
-            if (sessionsIterator != null)
-                sessionsIterator.OnBarUpdate();
+            //if (sessionsIterator != null)
+            //    sessionsIterator.OnBarUpdate();
         }
 
         /// <summary>
@@ -305,14 +321,8 @@ namespace Nt.Core
             if (Count >= MaxSessionsToStored)
                 sessionHoursList.Remove(sessionHoursList[0]);
             sessionHoursList.Add(actualSession);
-        }
 
-        /// <summary>
-        /// Method used to free memory when the script is terminate.
-        /// </summary>
-        public override void Dispose()
-        {
-            sessionsIterator.SessionChanged -= OnSessionHoursChanged;
+            Execute(OnSessionHoursChangedExecute);
         }
 
         #endregion
@@ -365,6 +375,11 @@ namespace Nt.Core
                 return "Index is out of range";
 
             return sessionHoursList[Count - 1 - idx].ToString();
+        }
+
+        public void Execute(Action action)
+        {
+            action?.Invoke();
         }
 
         #endregion

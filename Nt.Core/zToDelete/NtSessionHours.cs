@@ -135,7 +135,7 @@ namespace Nt.Core
     //    /// </summary>
     //    public void OnTerminated()
     //    {
-    //        Dispose();
+    //        Terminated();
     //    }
 
     //    #endregion
@@ -145,11 +145,11 @@ namespace Nt.Core
     //    /// <summary>
     //    /// Free the memory of the handler methods.
     //    /// </summary>
-    //    public override void Dispose()
+    //    public override void Terminated()
     //    {
     //        ntSession.SessionChanged -= OnSessionChanged;
     //        //NtSession.SessionChanged -= TradingHours.OnSessionChanged;
-    //        tradingHours.Dispose();
+    //        tradingHours.Terminated();
     //    }
 
     //    #endregion
@@ -182,7 +182,7 @@ namespace Nt.Core
 
     //    private void OnSessionChanged(SessionChangedEventArgs e)
     //    {
-    //        tradingHours.Dispose();
+    //        tradingHours.Terminated();
     //        tradingHours = new UserSession()
     //        {
     //            Idx = Count,

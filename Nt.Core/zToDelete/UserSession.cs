@@ -155,7 +155,7 @@ namespace Nt.Core
     //    /// <summary>
     //    /// Free the memory.
     //    /// </summary>
-    //    //public override void Dispose()
+    //    //public override void Terminated()
     //    //{
     //    //    //ntSession.UserSessionChanged -= OnSessionChanged;
     //    //}

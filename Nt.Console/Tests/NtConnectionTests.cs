@@ -62,7 +62,7 @@ namespace ConsoleApp
         //    client.UnsubscribeMarketData("MES");
         //    timer.Elapsed -= ATI_Timer_Elapsed;
         //    timer.Enabled = false;
-        //    timer.Dispose();
+        //    timer.Terminated();
         //    timer.Close(); // Creo que no es necesario
 
         //    int disconnect = client.TearDown();

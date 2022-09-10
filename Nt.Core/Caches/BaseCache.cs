@@ -102,7 +102,7 @@ namespace Nt.Core
                 T oldElement = tempElement;
                 cache[i] = newElement;
                 OnNtElementReplaced(newElement.Idx,newElement, oldElement);
-                oldElement.Dispose();
+                oldElement.Terminated();
             }
         }
 
@@ -131,7 +131,7 @@ namespace Nt.Core
             T oldElement = cache[idx];
             cache.RemoveAt(idx);
             OnNtElementRemoved(oldElement);
-            oldElement.Dispose();
+            oldElement.Terminated();
         }
 
         public void Remove(T item)
