@@ -2,7 +2,6 @@
 using NinjaTrader.Gui.Chart;
 using NinjaTrader.NinjaScript;
 using System;
-using System.Xml.Linq;
 
 namespace Nt.Core
 {
@@ -55,22 +54,22 @@ namespace Nt.Core
         /// <summary>
         /// Indicates if the ninjascript draw in the price panel.
         /// </summary>
-        public bool DrawOnPricePanel { get; private set; }
+        //public bool DrawOnPricePanel { get; private set; }
 
         /// <summary>
         /// Indicates if the ninjscript draw the horizontal grid lines.
         /// </summary>
-        public bool DrawHorizontalGridLines { get; private set; }
+        //public bool DrawHorizontalGridLines { get; private set; }
 
         /// <summary>
         /// Indicates if the ninjscript draw the vertical grid lines.
         /// </summary>
-        public bool DrawVerticalGridLines { get; private set; }
+        //public bool DrawVerticalGridLines { get; private set; }
 
         /// <summary>
         /// Indicates if the ninjscript paint the price markers.
         /// </summary>
-        public bool PaintPriceMarkers { get; private set; }
+        //public bool PaintPriceMarkers { get; private set; }
 
         /// <summary>
         /// Represents the scale justification of the chart.
@@ -86,20 +85,6 @@ namespace Nt.Core
 
         #endregion
 
-        #region Delegates
-
-        /// <summary>
-        /// Delegate to execute in OnBarUpdate method.
-        /// </summary>
-        public Action BarUpdateAction;
-
-        /// <summary>
-        /// Delegate to execute in OnMarketData method.
-        /// </summary>
-        public Action MarketDataAction;
-
-        #endregion
-
         #region State changed methods
 
         /// <summary>
@@ -109,14 +94,6 @@ namespace Nt.Core
         /// <param name="bars">The bars.</param>
         /// <param name="o">Any object necesary to load the script.</param>
         public virtual void Load(NinjaScriptBase ninjascript, Bars bars) { }
-
-        /// <summary>
-        /// Load the Script.
-        /// </summary>
-        /// <param name="ninjascript">The ninjascript.</param>
-        /// <param name="bars">The bars.</param>
-        /// <param name="sessionsIterator"><see cref="SessionsIterator"/> object necesary to load the script.</param>
-        public virtual void Load(NinjaScriptBase ninjascript, Bars bars, SessionsIterator sessionsIterator) { }
 
         /// <summary>
         /// Free the memory of the script.
@@ -175,37 +152,15 @@ namespace Nt.Core
             Calculate = options.Calculate;
             IsOverlay = options.IsOverlay;
             DisplayInDataBox = options.DisplayInDataBox;
-            DrawOnPricePanel = options.DrawOnPricePanel;
-            DrawHorizontalGridLines = options.DrawHorizontalGridLines;
-            DrawVerticalGridLines = options.DrawVerticalGridLines;
-            PaintPriceMarkers = options.PaintPriceMarkers;
+            //DrawOnPricePanel = options.DrawOnPricePanel;
+            //DrawHorizontalGridLines = options.DrawHorizontalGridLines;
+            //DrawVerticalGridLines = options.DrawVerticalGridLines;
+            //PaintPriceMarkers = options.PaintPriceMarkers;
             ScaleJustification = options.ScaleJustification;
             IsSuspendedWhileInactive = options.IsSuspendedWhileInactive;
         }
 
         #endregion
-
-        #region Protected methods
-
-        /// <summary>
-        /// Execute the delegate in the OnBarUpdate method
-        /// </summary>
-        /// <param name="action">The delegate to execute.</param>
-        protected void ExecuteInBarUpdateMethod(Action action)
-            {
-                action?.Invoke();
-            }
-
-            /// <summary>
-            /// Execute the delegate in the OnBarUpdate method
-            /// </summary>
-            /// <param name="action">The delegate to execute.</param>
-            protected void ExecuteInMarketDataMethod(Action action)
-            {
-                action?.Invoke();
-            }
-
-            #endregion
 
         #region Helper methods
 
@@ -221,10 +176,10 @@ namespace Nt.Core
             script.Calculate = options.Calculate;
             script.IsOverlay = options.IsOverlay;
             script.DisplayInDataBox = options.DisplayInDataBox;
-            script.DrawOnPricePanel = options.DrawOnPricePanel;
-            script.DrawHorizontalGridLines = options.DrawHorizontalGridLines;
-            script.DrawVerticalGridLines = options.DrawVerticalGridLines;
-            script.PaintPriceMarkers = options.PaintPriceMarkers;
+            //script.DrawOnPricePanel = options.DrawOnPricePanel;
+            //script.DrawHorizontalGridLines = options.DrawHorizontalGridLines;
+            //script.DrawVerticalGridLines = options.DrawVerticalGridLines;
+            //script.PaintPriceMarkers = options.PaintPriceMarkers;
             script.ScaleJustification = options.ScaleJustification;
             script.IsSuspendedWhileInactive = options.IsSuspendedWhileInactive;
         }

@@ -25,12 +25,12 @@ namespace Nt.Core
     //    private List<UserSession> sessionHoursList; 
         
         
-    //    public bool HasSessions => sessionHoursList != null && sessionHoursList.Count > 0;
+    //    public bool HasSessionHours => sessionHoursList != null && sessionHoursList.Count > 0;
 
     //    /// <summary>
     //    /// The number of main sessionHoursList stored.
     //    /// </summary>
-    //    public int Count => HasSessions ? sessionHoursList.Count : 0;
+    //    public int Count => HasSessionHours ? sessionHoursList.Count : 0;
 
     //    #endregion
 
@@ -73,7 +73,7 @@ namespace Nt.Core
 
     //    public override string ToString()
     //    {
-    //        return HasSessions ? sessionHoursList[Count - 1].ToString() : "SessionHours list is empty.";
+    //        return HasSessionHours ? sessionHoursList[Count - 1].ToString() : "SessionHours list is empty.";
     //    }
 
     //    #endregion

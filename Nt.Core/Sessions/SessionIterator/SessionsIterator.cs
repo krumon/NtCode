@@ -9,7 +9,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the trading hours session definition.
     /// </summary>
-    public class SessionsIterator : NtScript
+    public class SessionsIterator : BaseSession
     {
 
         #region Private members
@@ -40,9 +40,9 @@ namespace Nt.Core
         private bool isNewSession;
 
         /// <summary>
-        /// Represents a partial holiday
+        /// Represents a partial partialHoliday
         /// </summary>
-        private PartialHoliday holiday;
+        private PartialHoliday partialHoliday;
 
         #endregion
 
@@ -65,12 +65,12 @@ namespace Nt.Core
         /// <summary>
         /// Represents the actual session begin
         /// </summary>
-        public DateTime ActualSessionBegin { get; set; } = Globals.MinDate;
+        public DateTime ActualSessionBegin { get; private set; } = Globals.MinDate;
 
         /// <summary>
         /// Represents the actual session end.
         /// </summary>
-        public DateTime ActualSessionEnd { get; set; } = Globals.MinDate;
+        public DateTime ActualSessionEnd { get; private set; } = Globals.MinDate;
 
         /// <summary>
         /// Represents the <see cref="TimeZoneInfo"/> configure on the platform.
@@ -83,9 +83,9 @@ namespace Nt.Core
         public TimeZoneInfo BarsTimeZoneInfo { get; private set; }
 
         /// <summary>
-        /// The session number.
+        /// The sessions counter.
         /// </summary>
-        //public int Count { get; private set; }
+        public int Count { get; private set; }
 
         /// <summary>
         /// Is true when a new session is added to the sorted session list.
@@ -106,9 +106,11 @@ namespace Nt.Core
                     return;
 
                 // Update the counter.
-                //Count++;
+                Count++;
+
+                // Check if it's a partial holiday
                 if (!(bars.TradingHours.PartialHolidays.TryGetValue(ActualSessionEnd, out var holidays)))
-                    holiday = null;
+                    partialHoliday = null;
 
                 // Create the event args.
                 SessionChangedEventArgs e = new SessionChangedEventArgs 
@@ -117,9 +119,9 @@ namespace Nt.Core
                     NewSessionBeginTime = this.ActualSessionBegin,
                     NewSessionEndTime = this.ActualSessionEnd,
                     NewSessionTimeZoneInfo = this.UserTimeZoneInfo,
-                    IsPartialHoliday = holiday!= null,
-                    IsLateBegin = holiday != null && holiday.IsLateBegin,
-                    IsEarlyEnd = holiday != null && holiday.IsEarlyEnd,
+                    IsPartialHoliday = partialHoliday!= null,
+                    IsLateBegin = partialHoliday != null && partialHoliday.IsLateBegin,
+                    IsEarlyEnd = partialHoliday != null && partialHoliday.IsEarlyEnd,
                 };
 
                 // Call the listeners
@@ -182,7 +184,6 @@ namespace Nt.Core
             // Sets the TimeZoneInfo configure by the user in the chart bars.
             BarsTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
 
-            // Aggregate delegates to the events.
         }
 
         /// <summary>
@@ -190,7 +191,6 @@ namespace Nt.Core
         /// </summary>
         public override void Terminated()
         {
-            
         }
 
         #endregion
@@ -215,18 +215,6 @@ namespace Nt.Core
         public override void OnMarketData()
         {
             LastBarUpdate();
-        }
-
-        #endregion
-
-        #region Event driven methods
-
-        /// <summary>
-        /// Event driven method which is called whenever a session hours is changed.
-        /// </summary>
-        /// <param name="e"></param>
-        public virtual void OnSessionChanged(SessionChangedEventArgs e)
-        {
         }
 
         #endregion

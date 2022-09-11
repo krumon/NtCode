@@ -31,7 +31,7 @@ namespace Nt.Core
     //    private List<TradingSessionInfo> sessionHoursList;
 
     //    /// <summary>
-    //    /// Store the patial holiday object when the trading hours is in a partial holiday.
+    //    /// Store the patial partialHoliday object when the trading hours is in a partial partialHoliday.
     //    /// </summary>
     //    //private PartialHoliday partialHoliday;
 
@@ -61,7 +61,7 @@ namespace Nt.Core
     //    /// <summary>
     //    /// Indicates if the <see cref="TradingSessionInfo"/> has sessionHoursList.
     //    /// </summary>
-    //    public bool HasSessions => SessionHours != null && SessionHours.Count >= 1;
+    //    public bool HasSessionHours => SessionHours != null && SessionHours.Count >= 1;
 
     //    /// <summary>
     //    /// The <see cref="DateTime"/> object of the actual ninjatrader session begin.
@@ -74,22 +74,22 @@ namespace Nt.Core
     //    public DateTime EndTime { get;set; }
 
     //    /// <summary>
-    //    /// Store the patial holiday object when the trading hours is in a partial holiday.
+    //    /// Store the patial partialHoliday object when the trading hours is in a partial partialHoliday.
     //    /// </summary>
     //    //public PartialHoliday PartialHoliday => partialHoliday;
 
     //    /// <summary>
-    //    /// Indicates if the trading hours is a partial holiday.
+    //    /// Indicates if the trading hours is a partial partialHoliday.
     //    /// </summary>
     //    public bool IsPartialHoliday { get; private set; } // => PartialHoliday != null; // {get; private set;}
 
     //    /// <summary>
-    //    /// Indicates if the partial holiday has a late begin time.
+    //    /// Indicates if the partial partialHoliday has a late begin time.
     //    /// </summary>
     //    public bool IsLateBegin { get; private set; } //=> IsPartialHoliday && PartialHoliday.IsLateBegin;
 
     //    /// <summary>
-    //    /// Indicates if the partial holiday has a early end.
+    //    /// Indicates if the partial partialHoliday has a early end.
     //    /// </summary>
     //    public bool IsEarlyEnd { get; private set; } //=> IsPartialHoliday && PartialHoliday.IsEarlyEnd;
 
@@ -136,7 +136,7 @@ namespace Nt.Core
     //    #region Public methods
 
     //    /// <summary>
-    //    /// If the trading hours is in partial holiday, gets the Partial Holiday object, otherwise, partial holiday is null.
+    //    /// If the trading hours is in partial partialHoliday, gets the Partial Holiday object, otherwise, partial partialHoliday is null.
     //    /// </summary>
     //    /// <param name="e"></param>
     //    public void Load(SessionChangedEventArgs e)
@@ -216,7 +216,7 @@ namespace Nt.Core
     //    //public void Iterator(Action<TradingSessionInfo> action = null)
     //    //{
     //    //    action(this);
-    //    //    if (HasSessions)
+    //    //    if (HasSessionHours)
     //    //        for (int i = 0; i < SessionHours.Count; i++)
     //    //            SessionHours[i].Iterator(action);
     //    //}
@@ -249,7 +249,7 @@ namespace Nt.Core
     //        if (session == null)
     //            throw new ArgumentNullException(nameof(session));
 
-    //        //if (HasSessions)
+    //        //if (HasSessionHours)
     //        //{
     //        //    DateTime[] nextDateTimes = session.GetNextDateTimes(DateTime.Now);
     //        //    foreach (var s in SessionHours)

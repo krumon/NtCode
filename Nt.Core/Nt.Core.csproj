@@ -217,10 +217,11 @@
     <Compile Include="Patterns\Swing\SwingLevelsCache.cs" />
     <Compile Include="Patterns\Swing\SwingPointsCache.cs" />
     <Compile Include="Caches\BaseCache.cs" />
+    <Compile Include="Sessions\Base\BaseSession.cs" />
     <Compile Include="Sessions\SessionFilters\SessionFilters.cs" />
     <Compile Include="Sessions\SessionFilters\SessionFiltersOptions.cs" />
-    <Compile Include="Sessions\SessionHours\CustomSessionHours.cs" />
-    <Compile Include="Sessions\SessionHours\GenericSessionHours.cs" />
+    <Compile Include="Sessions\SessionHours\SessionHoursList.cs" />
+    <Compile Include="Sessions\SessionHours\SessionHoursListOptions.cs" />
     <Compile Include="Sessions\SessionManagerOptions.cs" />
     <Compile Include="zToDelete\NtSessionHours.cs" />
     <Compile Include="zToDelete\BalanceSessionHelpers.cs" />

@@ -39,12 +39,12 @@ namespace Nt.Core
         /// <summary>
         /// Gets true if any sessionHoursList are stored.
         /// </summary>
-        //public bool HasSessions => sessions != null && sessions.Count > 0;
+        //public bool HasSessionHours => sessions != null && sessions.Count > 0;
 
         /// <summary>
         /// Gets the total sessionHoursList stored.
         /// </summary>
-        //public int Count => HasSessions ? sessions.Count : 0;
+        //public int Count => HasSessionHours ? sessions.Count : 0;
 
         /// <summary>
         /// Indicates if <see cref="TradingSessions"/> include generic sessionHoursList.
@@ -62,7 +62,7 @@ namespace Nt.Core
 
         /// <summary>
         /// Create a new instance of <see cref="TradingSessions"/> object.
-        /// The session has been sessionsManagerIsConfigured by default.
+        /// The session has been sessionHoursListIsConfigured by default.
         /// </summary>
         //public TradingSessions() //: this(null, null)
         //{
@@ -131,7 +131,7 @@ namespace Nt.Core
         //}
 
         /// <summary>
-        /// Create a new instance of <see cref="TradingSessions"/> object with custom ConfigureSessionsManager object.
+        /// Create a new instance of <see cref="TradingSessions"/> object with custom ConfigureSessionHoursList object.
         /// </summary>
         /// <param name="customConfigure">The custom sessionHoursList configure.</param>
         //public GenericSessions(CustomSessionsConfigure customConfigure)
@@ -200,7 +200,7 @@ namespace Nt.Core
         /// <returns>String of the last session stored.</returns>
         //public override string ToString()
         //{
-        //    return HasSessions ? sessions[Count - 1].ToString() : "SessionHours list is empty.";
+        //    return HasSessionHours ? sessions[Count - 1].ToString() : "SessionHours list is empty.";
         //}
 
         #endregion

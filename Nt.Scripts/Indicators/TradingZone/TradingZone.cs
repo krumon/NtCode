@@ -308,7 +308,7 @@ namespace NinjaTrader.NinjaScript.Indicators.KrMasterIndicators
 				AddPlot(new Stroke(Brushes.Goldenrod, 2), PlotStyle.Dot, "SupportLine");
 			}
 
-			else if (State == State.ConfigureSessionsManager)
+			else if (State == State.ConfigureSessionHoursList)
 			{
 				// Swing variables
 

@@ -31,17 +31,17 @@ namespace Nt.Core
         public TimeZoneInfo NewSessionTimeZoneInfo { get; set; }
 
         /// <summary>
-        /// Indicates if the trading hours is a partial holiday.
+        /// Indicates if the trading hours is a partial partialHoliday.
         /// </summary>
         public bool IsPartialHoliday { get; set; }
 
         /// <summary>
-        /// Indicates if the partial holiday has a late begin time.
+        /// Indicates if the partial partialHoliday has a late begin time.
         /// </summary>
         public bool IsLateBegin { get; set; }
 
         /// <summary>
-        /// Indicates if the partial holiday has a early end.
+        /// Indicates if the partial partialHoliday has a early end.
         /// </summary>
         public bool IsEarlyEnd { get; set; }
 

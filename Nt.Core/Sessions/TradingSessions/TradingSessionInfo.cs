@@ -730,7 +730,7 @@ namespace Nt.Core
             string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
             if (!onlyActualSession)
             {
-                //if (HasSessions)
+                //if (HasSessionHours)
                 //    for (int i = 0; i < SessionHours.Count; i++)
                 //        sessionHoursList += Environment.NewLine + SessionHours[i].ToString(onlyActualSession);
             }

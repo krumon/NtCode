@@ -28,7 +28,7 @@ namespace ConsoleApp
                     options.Description = "My master indicator.";
                     options.Name = "KrMasTerSession";
                 })
-                .ConfigureSessionsManager((options) =>
+                .ConfigureSessionHoursList((options) =>
                 {
                     options.MaxSessionsToStored = 100;
                 })

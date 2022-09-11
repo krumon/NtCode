@@ -2,7 +2,7 @@
 
 namespace Nt.Core
 {
-    public class SessionStats
+    public class SessionStats : BaseSession
     {
 
         #region Private members

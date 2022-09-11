@@ -1,9 +1,6 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Nt.Core
 {
@@ -21,29 +18,22 @@ namespace Nt.Core
         private SessionsIterator sessionsIterator;
 
         /// <summary>
-        /// Represents the <see cref="SessionFilters"/> configure by the user.
+        /// Represents the <see cref="SessionFilters"/> of the sessions.
         /// </summary>
         private SessionFilters sessionFilters;
 
         /// <summary>
-        /// Represents the <see cref="SessionStats"/> configure by the user.
+        /// Represents the <see cref="SessionStats"/> of the sessions.
         /// </summary>
         private SessionStats sessionStats;
 
         /// <summary>
-        /// Represents the last session hours.
+        /// Represents the <see cref="SessionHoursList"/> of the main session.
         /// </summary>
-        private SessionHours lastSession;
+        private SessionHoursList sessionHoursList;
 
-        /// <summary>
-        /// Represents the actual session hours.
-        /// </summary>
-        private SessionHours actualSession;
 
-        /// <summary>
-        /// Stores all session hours in a sorted list.
-        /// </summary>
-        private List<SessionHours> sessionHoursList;
+        // TODO: Estas tres propiedades deben ir cada una en su clase.
 
         /// <summary>
         /// Flags to indicates if the <see cref="NtScript"/> is configured.
@@ -53,7 +43,7 @@ namespace Nt.Core
         /// <summary>
         /// Flags to indicates if the <see cref="SessionsManager"/> is configured.
         /// </summary>
-        public bool sessionsManagerIsConfigured;
+        public bool sessionHoursListIsConfigured;
 
         /// <summary>
         /// Flags to indicates if the <see cref="SessionFilters"/> is configured.
@@ -62,7 +52,17 @@ namespace Nt.Core
 
         #endregion
 
-        #region Delegates
+        #region Market data Delegates
+
+        /// <summary>
+        /// Delegate to execute in OnBarUpdate method.
+        /// </summary>
+        public Action BarUpdateAction;
+
+        /// <summary>
+        /// Delegate to execute in OnMarketData method.
+        /// </summary>
+        public Action MarketDataAction;
 
         /// <summary>
         /// Delegate to execute in OnSessionHoursChanged method.
@@ -73,29 +73,15 @@ namespace Nt.Core
 
         #region Configure Properties
 
-        /// <summary>
-        /// Max sessions to stored
-        /// </summary>
-        public int MaxSessionsToStored { get; private set; }
 
         #endregion
 
         #region Public Properties
 
         /// <summary>
-        /// Gets the last session hours.
-        /// </summary>
-        //public SessionHours LastSession => lastSession;
-
-        /// <summary>
-        /// Gets the actual session hours.
-        /// </summary>
-        //public SessionHours ActualSession => actualSession;
-
-        /// <summary>
         /// Gets true if any sessionHoursList are stored.
         /// </summary>
-        public bool HasSessions => sessionHoursList != null && sessionHoursList.Count > 0;
+        public bool HasSessionHours => sessionHoursList != null;
 
         /// <summary>
         /// Gets true if <see cref="SessionsManager"/> has <see cref="SessionFilters"/>.
@@ -103,14 +89,24 @@ namespace Nt.Core
         public bool HasSessionFilters => sessionFilters != null;
 
         /// <summary>
-        /// Gets the <see cref="SessionFilters"/> configure by the user.
+        /// Gets true if <see cref="SessionsManager"/> has <see cref="SessionStats"/>.
+        /// </summary>
+        public bool HasSessionStats => sessionStats != null;
+
+        /// <summary>
+        /// Gets the <see cref="SessionHoursList"/> of the main session.
+        /// </summary>
+        public SessionHoursList SessionHours => sessionHoursList;
+
+        /// <summary>
+        /// Gets the <see cref="SessionFilters"/> cof the main session.
         /// </summary>
         public SessionFilters SessionFilters => sessionFilters;
 
         /// <summary>
-        /// Gets the number of <see cref="SessionHours"/> stored.
+        /// Gets the <see cref="SessionStats"/> of the main session.
         /// </summary>
-        public int Count => HasSessions ? sessionHoursList.Count : 0;
+        public SessionStats SessionStats => sessionStats;
 
         #endregion
 
@@ -159,13 +155,6 @@ namespace Nt.Core
             this.ninjascript = ninjascript;
             this.bars = bars;
 
-            // Make sure the ninjascript is sessionsManagerIsConfigured
-            if (!sessionsManagerIsConfigured)
-            {
-                ConfigureSessionsManager();
-                sessionsManagerIsConfigured = true;
-            }
-
             // If we need the session iterator...create him.
             // TODO: Make Sure we need the session iterator object.
             // Initialize the session iterator
@@ -175,7 +164,11 @@ namespace Nt.Core
             // Load the elements...
             sessionsIterator.Load(ninjascript, bars);
             if (HasSessionFilters)
-                sessionFilters.Load(ninjascript, bars, sessionsIterator);
+                sessionFilters.Load(ninjascript, bars);
+            if (HasSessionHours)
+                sessionHoursList.Load(ninjascript, bars);
+            if (HasSessionStats)
+                sessionStats.Load(ninjascript, bars);
 
             // Aggregate the delegates
             sessionsIterator.SessionChanged += OnSessionHoursChanged;
@@ -194,6 +187,90 @@ namespace Nt.Core
             sessionsIterator.Terminated();
             if (HasSessionFilters)
                 sessionFilters.Terminated();
+            if (HasSessionHours)
+                sessionHoursList.Terminated();
+            if (HasSessionStats)
+                sessionStats.Terminated();
+
+        }
+
+        #endregion
+
+        #region Market Data methods
+
+        /// <summary>
+        /// Event driven method which is called whenever a bar is updated. 
+        /// The frequency in which OnBarUpdate is called will be determined by the "Calculate" property. 
+        /// OnBarUpdate() is the method where all of your script's core bar based calculation logic should be contained.
+        /// </summary>
+        public override void OnBarUpdate()
+        {
+            // First...update the session iterator
+            sessionsIterator.OnBarUpdate();
+
+            // Update the filters
+            if (HasSessionFilters)
+                sessionFilters.OnBarUpdate();
+
+            // Opcion 1
+            if (HasSessionFilters && sessionFilters.OnBarUpdateAndCheckFilters())
+            {
+                // Enter the code
+            }
+
+            // Opcion 2            
+            if (sessionFilters.CanEntry())
+            {
+                // Enter the code
+            }
+            
+            // TODO: No funcionan los filtros. Arreglarlo!!!!!
+            // Entry to the method if the filters are ok.
+            //if (HasSessionFilters && !(sessionFilters.CanEntry()))
+            //    return;
+
+            ExecuteInBarUpdateMethod(BarUpdateAction);
+        }
+
+        /// <summary>
+        /// Event driven method which is called and guaranteed to be in the correct sequence 
+        /// for every change in level one market data for the underlying instrument. 
+        /// OnMarketData() can include but is not limited to the bid, ask, last price and volume.
+        /// </summary>
+        public override void OnMarketData()
+        {
+            // Update the filters
+            if (sessionFilters != null)
+                sessionFilters.OnBarUpdate();
+
+            // TODO: No funcionan los filtros. Arreglarlo!!!!!
+            // Entry to the method if the filters are ok.
+            //if (HasSessionFilters && !(sessionFilters.CanEntry()))
+            //    return;
+
+            // Update the session iterator
+            if (sessionsIterator != null)
+                sessionsIterator.OnBarUpdate();
+
+            ExecuteInMarketDataMethod(MarketDataAction);
+        }
+
+        /// <summary>
+        /// Changed any object or property when the session changed.
+        /// </summary>
+        /// <param name="e"></param>
+        public virtual void OnSessionHoursChanged(SessionChangedEventArgs e)
+        {
+            // Update Holiday filters
+            if (HasSessionFilters)
+                sessionFilters.OnSessionChanged(e);
+
+            // Update the session hours list.
+            if (HasSessionHours)
+                sessionHoursList.OnSessionChanged(e);
+
+            // Execute delegate method.
+            ExecuteInSessionHoursChangedMethod(SessionHoursChangedAction);
         }
 
         #endregion
@@ -206,7 +283,7 @@ namespace Nt.Core
         /// <param name="options">The ninjascript configure options.</param>
         public override SessionsManager ConfigureNtScripts<SessionsManager>(Action<NtScriptConfigureOptions> options = null)
         {
-            // Make sure the trading hours is sessionsManagerIsConfigured by default
+            // Make sure the trading hours is sessionHoursListIsConfigured by default
             //TradingHours th = NinjaTrader.Data.TradingHours.String2TradingHours("CBOE US Index Futures ETH");
             //th.CopyTo(ninjascript.TradingHours);
 
@@ -226,25 +303,47 @@ namespace Nt.Core
             return this as SessionsManager;
         }
 
+        #region SessionHoursList
+
         /// <summary>
         /// Add <see cref="SessionManagerOptions"/> to <see cref="SessionsManager"/> configure.
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public SessionsManager ConfigureSessionsManager(Action<SessionManagerOptions> options = null)
+        public SessionsManager ConfigureSessionHoursList(Action<SessionHoursListOptions> options = null)
         {
-            // Create default session manager options.
-            var sessionManagerOptions = new SessionManagerOptions();
+            // Make sure session filters is not null.
+            if (!HasSessionHours)
+                sessionHoursList = new SessionHoursList();
 
-            // If options is not null...invoke delegate to update the options configure by the user.
-            options?.Invoke(sessionManagerOptions);
-
-            // Mapper the sesion manager with the session manager options.
-            AutoMapper(sessionManagerOptions);
+            // Configure....
+            sessionHoursList.Configure(options);
 
             // Update the configure flag
-            if (!sessionsManagerIsConfigured)
-                sessionsManagerIsConfigured = true;
+            if (!sessionHoursListIsConfigured)
+                sessionHoursListIsConfigured = true;
+
+            return this;
+
+        }
+
+        /// <summary>
+        /// Add filters funcionality to session manager.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManager ConfigureSessionFilters(SessionHoursListOptions options = null)
+        {
+            // Make sure session filters is not null.
+            if (!HasSessionHours)
+                sessionHoursList = new SessionHoursList();
+
+            // Configure....
+            sessionHoursList.Configure(options);
+
+            // Update the configure flag
+            if (!sessionHoursListIsConfigured)
+                sessionHoursListIsConfigured = true;
 
             return this;
         }
@@ -255,21 +354,19 @@ namespace Nt.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="options"></param>
         /// <returns></returns>
-        public SessionsManager ConfigureSessionsManager<T>(Action<T> options = null)
-            where T : SessionManagerOptions, new()
+        public SessionsManager ConfigureSessionHoursList<T>(Action<T> options = null)
+            where T : SessionHoursListOptions, new()
         {
-            // Create default session manager options.
-            var sessionManagerOptions = new T();
+            // Make sure session filters is not null.
+            if (!HasSessionHours)
+                sessionHoursList = new SessionHoursList();
 
-            // If options is not null...invoke delegate to update the options configure by the user.
-            options?.Invoke(sessionManagerOptions);
-
-            // Mapper the sesion manager with the session manager options.
-            AutoMapper(sessionManagerOptions);
+            // Configure....
+            sessionHoursList.Configure(options);
 
             // Update the configure flag
-            if (!sessionsManagerIsConfigured)
-                sessionsManagerIsConfigured = true;
+            if (!sessionHoursListIsConfigured)
+                sessionHoursListIsConfigured = true;
 
             return this;
         }
@@ -280,22 +377,26 @@ namespace Nt.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="options"></param>
         /// <returns></returns>
-        public SessionsManager ConfigureSessionsManager<T>(T options = null)
-            where T : SessionManagerOptions, new()
+        public SessionsManager ConfigureSessionHoursList<T>(T options = null)
+            where T : SessionHoursListOptions, new()
         {
-            // If options is null...create a default options...
-            if (options == null)
-                options = new T();
+            // Make sure session filters is not null.
+            if (!HasSessionHours)
+                sessionHoursList = new SessionHoursList();
 
-            // Mapper the sesion filters with the session filters options.
-            AutoMapper(options);
+            // Configure....
+            sessionHoursList.Configure(options);
 
             // Update the configure flag
-            if (!sessionsManagerIsConfigured)
-                sessionsManagerIsConfigured = true;
+            if (!sessionHoursListIsConfigured)
+                sessionHoursListIsConfigured = true;
 
             return this;
         }
+
+        #endregion
+
+        #region SessionFilters
 
         /// <summary>
         /// Add filters funcionality to session manager.
@@ -308,6 +409,7 @@ namespace Nt.Core
             if (sessionFilters == null)
                 sessionFilters = new SessionFilters();
 
+            // Configure....
             sessionFilters.Configure(options);
 
             // Update the configure flag
@@ -383,137 +485,32 @@ namespace Nt.Core
 
         #endregion
 
-        #region Market Data methods
-
-        /// <summary>
-        /// Event driven method which is called whenever a bar is updated. 
-        /// The frequency in which OnBarUpdate is called will be determined by the "Calculate" property. 
-        /// OnBarUpdate() is the method where all of your script's core bar based calculation logic should be contained.
-        /// </summary>
-        public override void OnBarUpdate()
-        {
-            // Update the filters
-            if (sessionFilters != null)
-                sessionFilters.OnBarUpdate();
-
-            // TODO: No funcionan los filtros. Arreglarlo!!!!!
-            // Entry to the method if the filters are ok.
-            //if (HasSessionFilters && !(sessionFilters.CanEntry()))
-            //    return;
-
-            // Update the session iterator
-            if (sessionsIterator != null)
-                sessionsIterator.OnBarUpdate();
-
-            ExecuteInBarUpdateMethod(BarUpdateAction);
-        }
-
-        /// <summary>
-        /// Event driven method which is called and guaranteed to be in the correct sequence 
-        /// for every change in level one market data for the underlying instrument. 
-        /// OnMarketData() can include but is not limited to the bid, ask, last price and volume.
-        /// </summary>
-        public override void OnMarketData()
-        {
-            // Update the filters
-            if (sessionFilters != null)
-                sessionFilters.OnBarUpdate();
-
-            // TODO: No funcionan los filtros. Arreglarlo!!!!!
-            // Entry to the method if the filters are ok.
-            //if (HasSessionFilters && !(sessionFilters.CanEntry()))
-            //    return;
-
-            // Update the session iterator
-            if (sessionsIterator != null)
-                sessionsIterator.OnBarUpdate();
-
-            ExecuteInMarketDataMethod(MarketDataAction);
-        }
-
-        /// <summary>
-        /// Changed any object or property when the session changed.
-        /// </summary>
-        /// <param name="e"></param>
-        public virtual void OnSessionHoursChanged(SessionChangedEventArgs e)
-        {
-            // Update Holiday filters
-            if (sessionFilters != null)
-                sessionFilters.OnSessionHoursChanged(e);
-
-            // Update actual session
-            lastSession = actualSession;
-            actualSession = new SessionHours();
-            actualSession.Load(e);
-            // TODO: Revisar esta asignación.
-            actualSession.N = Count;
-
-            // Add the actual session to the list
-            if (sessionHoursList == null)
-                sessionHoursList = new List<SessionHours>();
-            if (Count >= MaxSessionsToStored)
-                sessionHoursList.Remove(sessionHoursList[0]);
-            sessionHoursList.Add(actualSession);
-
-            // Execute delegate method.
-            ExecuteInSessionHoursChangedMethod(SessionHoursChangedAction);
-        }
-
         #endregion
 
         #region Public methods
 
-        /// <summary>
-        /// Mapper <see cref="SessionsManager"/> with <see cref="SessionManagerOptions"/>.
-        /// </summary>
-        /// <param name="options"></param>
-        public void AutoMapper (SessionManagerOptions options)
-        {
-            MaxSessionsToStored = options.MaxSessionsToStored;
-        }
-
-        /// <summary>
-        /// Represent a string with the last session stored.
-        /// </summary>
-        /// <returns>String of the last session stored.</returns>
-        public override string ToString()
-        {
-            return actualSession != null ? actualSession.ToString() : "Actual session is null.";
-        }
-
-        /// <summary>
-        /// Represent a string with the session stored.
-        /// </summary>
-        /// <param name="idx">The session index. 0 is the actual, 1 is the last,...</param>
-        /// <returns>String of the last session stored.</returns>
-        public string ToString(int idx)
-        {
-            if (!HasSessions)
-                return "SessionHours list is empty.";
-
-            if (idx < 0 || idx >=Count)
-                return "Index is out of range";
-
-            return sessionHoursList[Count - 1 - idx].ToString();
-        }
 
         #endregion
 
-        #region Helper methods
+        #region Delegate methods
 
         /// <summary>
-        /// Mapper <see cref="SessionsManager"/> with <see cref="SessionManagerOptions"/>.
+        /// Execute the delegate in the OnBarUpdate method
         /// </summary>
-        /// <param name="session"></param>
-        /// <param name="options"></param>
-        public static void AutoMapper(SessionsManager session, SessionManagerOptions options)
+        /// <param name="action">The delegate to execute.</param>
+        protected void ExecuteInBarUpdateMethod(Action action)
         {
-            session.MaxSessionsToStored = options.MaxSessionsToStored;
+            action?.Invoke();
         }
 
-        #endregion
-
-        #region Private methods
+        /// <summary>
+        /// Execute the delegate in the OnBarUpdate method
+        /// </summary>
+        /// <param name="action">The delegate to execute.</param>
+        protected void ExecuteInMarketDataMethod(Action action)
+        {
+            action?.Invoke();
+        }
 
         /// <summary>
         /// Execute the delegate in the OnSessionHoursChanged method
