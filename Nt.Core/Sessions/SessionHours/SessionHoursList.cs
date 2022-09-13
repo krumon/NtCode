@@ -8,16 +8,8 @@ namespace Nt.Core
     /// <summary>
     /// Represents the SessionHours of the day trading.
     /// </summary>
-    public class SessionHoursList : BaseSession
+    public class SessionHoursList : BaseSession<SessionHoursList, SessionHoursListOptions>
     {
-        #region Private members
-
-        /// <summary>
-        /// Flags to indicates if the <see cref="SessionFilters"/> is sessionHoursListIsConfigured.
-        /// </summary>
-        public bool configured;
-
-        #endregion
 
         #region Public properties
 
@@ -57,10 +49,6 @@ namespace Nt.Core
 
         #endregion
 
-        #region Constructors
-
-        #endregion
-
         #region State changed methods
 
         /// <summary>
@@ -71,18 +59,8 @@ namespace Nt.Core
         /// <param name="o">Any object necesary to load the script.</param>
         public override void Load(NinjaScriptBase ninjascript, Bars bars)
         {
-            // Make sure the parameters are not null.
-            if (ninjascript == null || bars == null)
-                throw new Exception($"{nameof(SessionFilters)} load parameters can not be null"); // return null;
-
-            // Set values.
-            this.ninjascript = ninjascript;
-            this.bars = bars;
-            //this.sessionsIterator = sessionsIterator;
-
-            // Make sure the ninjascript is sessionHoursListIsConfigured
-            if (!configured)
-                Configure();
+            // Call parent method to load.
+            base.Load(ninjascript, bars);
 
         }
 
@@ -120,82 +98,6 @@ namespace Nt.Core
 
         #endregion
 
-        #region Configure methods
-
-        /// <summary>
-        /// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionHoursList Configure(Action<SessionHoursListOptions> options = null)
-        {
-            // Create default session filters options.
-            var sessionOptions = new SessionHoursListOptions();
-
-            // If options is not null...invoke delegate to update the options configure by the user.
-            if (options != null)
-                options.Invoke(sessionOptions);
-
-            // Mapper the sesion filters with the session filters options.
-            Mapper(sessionOptions);
-
-            // Update the configure flag
-            if (!configured)
-                configured = true;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionHoursList Configure<T>(Action<T> options)
-            where T : SessionHoursListOptions, new()
-        {
-            // Create default session filters options.
-            var sessionFiltersOptions = new T();
-
-            // Invoke delegate to update the options configure by the user.
-            if (options != null)
-                options.Invoke(sessionFiltersOptions);
-
-            // Mapper the sesion filters with the session filters options.
-            Mapper(sessionFiltersOptions);
-
-            // Update the configure flag
-            if (!configured)
-                configured = true;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionHoursList Configure<T>(T options = null)
-            where T : SessionHoursListOptions, new()
-        {
-            // If options is null...create a default options...
-            if (options == null)
-                options = new T();
-
-            // Mapper the sesion filters with the session filters options.
-            Mapper(options);
-
-            // Update the configure flag
-            if (!configured)
-                configured = true;
-
-            return this;
-        }
-
-        #endregion
-
         #region Public methods
 
         /// <summary>
@@ -225,23 +127,10 @@ namespace Nt.Core
         #region Private methods
 
         /// <summary>
-        /// Mapper <see cref="SessionFilters"/> with <see cref="SessionFiltersOptions"/>.
-        /// </summary>
-        /// <param name="options"></param>
-        protected override void Mapper<T>(T options)
-        {
-            if (options is SessionHoursListOptions op)
-            {
-                MaxSessionsToStored = op.MaxSessionsToStored;
-            }
-
-        }
-
-        /// <summary>
         /// Mapper <see cref="SessionHoursList"/> from <see cref="SessionHoursListOptions"/>.
         /// </summary>
         /// <param name="options"></param>
-        private void Mapper(SessionHoursListOptions options)
+        protected override void Mapper(SessionHoursListOptions options)
         {
             MaxSessionsToStored = options.MaxSessionsToStored;
         }

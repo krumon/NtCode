@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents consts, fields and properties of the Ninjatrader user configuration.
     /// </summary>
-    public class SessionsManager : BaseSession
+    public class SessionsManager : BaseSession<SessionsManager, SessionsManagerOptions>
     {
 
         #region Private members
@@ -129,13 +129,8 @@ namespace Nt.Core
         /// <param name="o">Any object necesary to load the script.</param>
         public override void Load(NinjaScriptBase ninjascript, Bars bars)
         {
-            // Make sure session manager can be loaded.
-            if (ninjascript == null || bars == null)
-                throw new Exception($"{nameof(SessionsManager)} load parameters can not be null"); // return null;
-
-            // Set values.
-            this.ninjascript = ninjascript;
-            this.bars = bars;
+            // Call the parent method to load.
+            base.Load(ninjascript, bars);
 
             // If we need the session iterator...create him.
             // TODO: Make Sure we need the session iterator object.
@@ -264,8 +259,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public SessionsManager ConfigureSession<TSession,TOptions>(Action<TOptions> options = null)
-            where TSession : BaseSession, new()
+        public SessionsManager ConfigureSession<TOptions>(Action<TOptions> options = null)
             where TOptions : BaseSessionOptions, new()
         {
             if (options is Action<SessionHoursListOptions> shOptions)
@@ -275,7 +269,7 @@ namespace Nt.Core
                     sessionHoursList = new SessionHoursList();
 
                 // Configure....
-                sessionHoursList.Configure<SessionHoursList, SessionHoursListOptions>(shOptions);
+                sessionHoursList.Configure(shOptions);
 
                 // Update the configure flag
                 if (!sessionHoursListIsConfigured)
@@ -289,7 +283,7 @@ namespace Nt.Core
                     sessionFilters = new SessionFilters();
 
                 // Configure....
-                sessionFilters.Configure<SessionFilters, SessionFiltersOptions>(fOptions);
+                sessionFilters.Configure(fOptions);
 
                 // Update the configure flag
                 if (!sessionFiltersIsConfigured)
@@ -306,8 +300,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public SessionsManager ConfigureSession<TSession, TOptions>(TOptions options = null)
-            where TSession : BaseSession, new()
+        public SessionsManager ConfigureSession<TOptions>(TOptions options = null)
             where TOptions : BaseSessionOptions, new()
 
         {
@@ -318,7 +311,7 @@ namespace Nt.Core
                     sessionHoursList = new SessionHoursList();
 
                 // Configure....
-                sessionHoursList.Configure<SessionHoursList, SessionHoursListOptions>(shOptions);
+                sessionHoursList.Configure(shOptions);
 
                 // Update the configure flag
                 if (!sessionHoursListIsConfigured)
@@ -332,7 +325,7 @@ namespace Nt.Core
                     sessionFilters = new SessionFilters();
 
                 // Configure....
-                sessionFilters.Configure<SessionFilters, SessionFiltersOptions>(fOptions);
+                sessionFilters.Configure(fOptions);
 
                 // Update the configure flag
                 if (!sessionFiltersIsConfigured)
@@ -345,17 +338,17 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Add <see cref="NtScriptConfigureOptions"/> to <see cref="NtScript"/> configure.
+        /// Add <see cref="NtScriptOptions"/> to <see cref="NtScript"/> configure.
         /// </summary>
         /// <param name="options">The ninjascript configure options.</param>
-        public override SessionsManager ConfigureNtScripts<SessionsManager>(Action<NtScriptConfigureOptions> options = null)
+        public override SessionsManager ConfigureNtScripts<SessionsManager>(Action<NtScriptOptions> options = null)
         {
             // Make sure the trading hours is sessionHoursListIsConfigured by default
             //TradingHours th = NinjaTrader.Data.TradingHours.String2TradingHours("CBOE US Index Futures ETH");
             //th.CopyTo(ninjascript.TradingHours);
 
             // Create default session manager options.
-            var ntScriptConfigureOptions = new NtScriptConfigureOptions();
+            var ntScriptConfigureOptions = new NtScriptOptions();
 
             // If options is not null...invoke delegate to update the options configure by the user.
             options?.Invoke(ntScriptConfigureOptions);
@@ -369,193 +362,6 @@ namespace Nt.Core
 
             return this as SessionsManager;
         }
-
-        #region SessionHoursList
-
-        ///// <summary>
-        ///// Add <see cref="SessionsManagerOptions"/> to <see cref="SessionsManager"/> configure.
-        ///// </summary>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionsManager ConfigureSessionHoursList(Action<SessionHoursListOptions> options = null)
-        //{
-        //    // Make sure session filters is not null.
-        //    if (!HasSessionHours)
-        //        sessionHoursList = new SessionHoursList();
-
-        //    // Configure....
-        //    sessionHoursList.Configure(options);
-
-        //    // Update the configure flag
-        //    if (!sessionHoursListIsConfigured)
-        //        sessionHoursListIsConfigured = true;
-
-        //    return this;
-
-        //}
-
-        ///// <summary>
-        ///// Add filters funcionality to session manager.
-        ///// </summary>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionsManager ConfigureSessionHoursList(SessionHoursListOptions options = null)
-        //{
-        //    // Make sure session filters is not null.
-        //    if (!HasSessionHours)
-        //        sessionHoursList = new SessionHoursList();
-
-        //    // Configure....
-        //    sessionHoursList.Configure(options);
-
-        //    // Update the configure flag
-        //    if (!sessionHoursListIsConfigured)
-        //        sessionHoursListIsConfigured = true;
-
-        //    return this;
-        //}
-
-        ///// <summary>
-        ///// Add <see cref="SessionsManagerOptions"/> to <see cref="SessionsManager"/> configure.
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionsManager ConfigureSessionHoursList<T>(Action<T> options = null)
-        //    where T : SessionHoursListOptions, new()
-        //{
-        //    // Make sure session filters is not null.
-        //    if (!HasSessionHours)
-        //        sessionHoursList = new SessionHoursList();
-
-        //    // Configure....
-        //    sessionHoursList.Configure(options);
-
-        //    // Update the configure flag
-        //    if (!sessionHoursListIsConfigured)
-        //        sessionHoursListIsConfigured = true;
-
-        //    return this;
-        //}
-
-        ///// <summary>
-        ///// Add <see cref="SessionsManagerOptions"/> to <see cref="SessionsManager"/> configure.
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionsManager ConfigureSessionHoursList<T>(T options = null)
-        //    where T : SessionHoursListOptions, new()
-        //{
-        //    // Make sure session filters is not null.
-        //    if (!HasSessionHours)
-        //        sessionHoursList = new SessionHoursList();
-
-        //    // Configure....
-        //    sessionHoursList.Configure(options);
-
-        //    // Update the configure flag
-        //    if (!sessionHoursListIsConfigured)
-        //        sessionHoursListIsConfigured = true;
-
-        //    return this;
-        //}
-
-        #endregion
-
-        #region SessionFilters
-
-        ///// <summary>
-        ///// Add filters funcionality to session manager.
-        ///// </summary>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionsManager ConfigureSessionFilters(Action<SessionFiltersOptions> options = null)
-        //{
-        //    // Make sure session filters is not null.
-        //    if (sessionFilters == null)
-        //        sessionFilters = new SessionFilters();
-
-        //    // Configure....
-        //    sessionFilters.Configure<SessionFilters,SessionFiltersOptions>(options);
-
-        //    // Update the configure flag
-        //    if (!sessionFiltersIsConfigured)
-        //        sessionFiltersIsConfigured = true;
-
-        //    return this;
-        //}
-
-        ///// <summary>
-        ///// Add filters funcionality to session manager.
-        ///// </summary>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionsManager ConfigureSessionFilters(SessionFiltersOptions options = null)
-        //{
-        //    // Make sure session filters is not null.
-        //    if (sessionFilters == null)
-        //        sessionFilters = new SessionFilters();
-
-        //    sessionFilters.Configure<SessionFilters, SessionFiltersOptions>(options);
-
-        //    // Update the configure flag
-        //    if (!sessionFiltersIsConfigured)
-        //        sessionFiltersIsConfigured = true;
-
-        //    return this;
-        //}
-
-        ///// <summary>
-        ///// Add filters funcionality to session manager.
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionsManager ConfigureSessionFilters<T>(Action<T> options = null)
-        //    where T : SessionFiltersOptions, new()
-        //{
-        //    // Make sure session filters is not null.
-        //    if (sessionFilters == null)
-        //        sessionFilters = new SessionFilters();
-
-        //    sessionFilters.Configure<SessionFilters, SessionFiltersOptions>((Action<SessionFiltersOptions>)options);
-
-        //    // Update the configure flag
-        //    if (!sessionFiltersIsConfigured)
-        //        sessionFiltersIsConfigured = true;
-
-        //    return this;
-        //}
-
-        ///// <summary>
-        ///// Add filters funcionality to session manager.
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionsManager ConfigureSessionFilters<T>(T options = null)
-        //    where T : SessionFiltersOptions, new()
-        //{
-        //    // Make sure session filters is not null.
-        //    if (sessionFilters == null)
-        //        sessionFilters = new SessionFilters();
-
-        //    sessionFilters.Configure<SessionFilters, SessionFiltersOptions>(options);
-
-        //    // Update the configure flag
-        //    if (!sessionFiltersIsConfigured)
-        //        sessionFiltersIsConfigured = true;
-
-        //    return this;
-        //}
-
-        #endregion
-
-        #endregion
-
-        #region Public methods
-
 
         #endregion
 

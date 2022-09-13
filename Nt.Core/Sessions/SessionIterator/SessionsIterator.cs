@@ -167,13 +167,8 @@ namespace Nt.Core
         /// <param name="o">Any object necesary to load the script.</param>
         public override void Load(NinjaScriptBase ninjascript, Bars bars)
         {
-            // Make sure session manager can be loaded.
-            if (ninjascript == null || bars == null)
-                throw new Exception("Parameters can not be null"); // return null;
-
-            // Set values.
-            this.ninjascript = ninjascript;
-            this.bars = bars;
+            // Call to parent.
+            base.Load(ninjascript, bars);
 
             // Create ninjatrader session iterator
             this.sessionIterator = new SessionIterator(bars);

@@ -26,12 +26,12 @@ namespace Nt.Core
                     options.Description = "My master indicator.";
                     options.Name = "KrMasTerSession";
                 })
-                .ConfigureSession<SessionHoursList, SessionHoursListOptions>((options) =>
+                .ConfigureSession<SessionHoursListOptions>((options) =>
                 {
                     options.MaxSessionsToStored = 100;
                 })
-                .ConfigureSession<SessionFilters, SessionFiltersOptions>(sessionFiltersOptions)
-                .ConfigureSession<SessionFilters, SessionFiltersOptions>((filters) =>
+                .ConfigureSession(sessionFiltersOptions)
+                .ConfigureSession<SessionFiltersOptions>((filters) =>
                 {
                     filters.UseDateFilters(
                         finalYear: 2022,
@@ -48,9 +48,10 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public SessionsManagerBuilder AddSessionFilters(Action<SessionFiltersOptions> options)
+        public SessionsManagerBuilder UseSessionFilters(Action<SessionFiltersOptions> options)
         {
-            sessionFiltersOptions = new SessionFiltersOptions();
+            if (sessionFiltersOptions == null) 
+                sessionFiltersOptions = new SessionFiltersOptions();
             options?.Invoke(sessionFiltersOptions);
             return this;
         }

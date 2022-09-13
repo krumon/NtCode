@@ -7,7 +7,7 @@ namespace Nt.Core
     /// <summary>
     /// Ninjascript configure options.
     /// </summary>
-    public class NtScriptConfigureOptions
+    public class NtScriptOptions
     {
 
         #region Private members / Default value

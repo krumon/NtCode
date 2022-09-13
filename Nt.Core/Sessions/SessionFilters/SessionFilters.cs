@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Nt.Core
 {
-    public class SessionFilters : BaseSession
+    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions>
     {
 
         #region static consts
@@ -23,11 +23,6 @@ namespace Nt.Core
         #endregion
 
         #region Private members
-
-        /// <summary>
-        /// Gets the <see cref="SessionsIterator"/> funcionality.
-        /// </summary>
-        //private SessionsIterator sessionsIterator;
 
         /// <summary>
         /// The partial partialHoliday object.
@@ -130,21 +125,10 @@ namespace Nt.Core
         /// </summary>
         /// <param name="ninjascript">The ninjascript.</param>
         /// <param name="bars">The bars.</param>
-        /// <param name="o">Any object necesary to load the script.</param>
         public override void Load(NinjaScriptBase ninjascript, Bars bars)
         {
-            // Make sure the parameters are not null.
-            if (ninjascript == null || bars == null)
-                throw new Exception($"{nameof(SessionFilters)} load parameters can not be null"); // return null;
-
-            // Set values.
-            this.ninjascript = ninjascript;
-            this.bars = bars;
-            //this.sessionsIterator = sessionsIterator;
-
-            // Make sure the ninjascript is sessionHoursListIsConfigured
-            if (!IsConfigured)
-                Configure<SessionFilters,SessionFiltersOptions>();
+            // Call parent method
+            base.Load(ninjascript, bars);
 
             // Save now time for the historical data
             dateTimeNow = DateTime.Now;
@@ -208,82 +192,6 @@ namespace Nt.Core
 
         #endregion
 
-        #region Configure methods
-
-        ///// <summary>
-        ///// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
-        ///// </summary>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionFilters Configure(Action<SessionFiltersOptions> options = null)
-        //{
-        //    // Create default session filters options.
-        //    var sessionFiltersOptions = new SessionFiltersOptions();
-
-        //    // If options is not null...invoke delegate to update the options configure by the user.
-        //    if (options != null)
-        //        options.Invoke(sessionFiltersOptions);
-
-        //    // Mapper the sesion filters with the session filters options.
-        //    Mapper(sessionFiltersOptions);
-
-        //    // Update the configure flag
-        //    if (!configured)
-        //        configured = true;
-
-        //    return this;
-        //}
-
-        ///// <summary>
-        ///// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
-        ///// </summary>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionFilters Configure<T>(Action<T> options)
-        //    where T : SessionFiltersOptions, new()
-        //{
-        //    // Create default session filters options.
-        //    var sessionFiltersOptions = new T();
-
-        //    // Invoke delegate to update the options configure by the user.
-        //    if (options != null)
-        //        options.Invoke(sessionFiltersOptions);
-
-        //    // Mapper the sesion filters with the session filters options.
-        //    Mapper(sessionFiltersOptions);
-
-        //    // Update the configure flag
-        //    if (!configured)
-        //        configured = true;
-
-        //    return this;
-        //}
-
-        ///// <summary>
-        ///// Add <see cref="SessionFiltersOptions"/> to configure <see cref="SessionFilters"/>.
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="options"></param>
-        ///// <returns></returns>
-        //public SessionFilters Configure<T>(T options = null)
-        //    where T : SessionFiltersOptions, new()
-        //{
-        //    // If options is null...create a default options...
-        //    if (options == null)
-        //        options = new T();
-
-        //    // Mapper the sesion filters with the session filters options.
-        //    Mapper(options);
-
-        //    // Update the configure flag
-        //    if (!configured)
-        //        configured = true;
-
-        //    return this;
-        //}
-
-        #endregion
-
         #region Public methods
 
         /// <summary>
@@ -314,35 +222,18 @@ namespace Nt.Core
         #region Private methods
 
         /// <summary>
-        /// Mapper <see cref="SessionFilters"/> with <see cref="SessionFiltersOptions"/>.
+        /// Mapper <see cref="SessionFilters"/> from <see cref="SessionFiltersOptions"/>.
         /// </summary>
-        /// <param name="options"></param>
-        protected override void Mapper<T>(T options)
+        /// <param name="options">The <see cref="SessionFiltersOptions"/>.</param>
+        protected override void Mapper(SessionFiltersOptions options)
         {
-            if (options is SessionFiltersOptions op)
-            {
-                IncludeHistoricalData = op.IncludeHistoricalData;
-                IncludePartialHolidays = op.IncludePartialHolidays;
-                IncludeLateBegin = op.IncludeLateBegin;
-                IncludeEarlyEnd = op.IncludeEarlyEnd;
-                FinalDate = op.FinalDate;
-                InitialDate = op.InitialDate;
-            }
+            IncludeHistoricalData = options.IncludeHistoricalData;
+            IncludePartialHolidays = options.IncludePartialHolidays;
+            IncludeLateBegin = options.IncludeLateBegin;
+            IncludeEarlyEnd = options.IncludeEarlyEnd;
+            FinalDate = options.FinalDate;
+            InitialDate = options.InitialDate;
         }
-
-        /// <summary>
-        /// Mapper <see cref="SessionFilters"/> with <see cref="SessionFiltersOptions"/>.
-        /// </summary>
-        /// <param name="options"></param>
-        //private void Mapper(SessionFiltersOptions options)
-        //{
-        //    IncludeHistoricalData = options.IncludeHistoricalData;
-        //    IncludePartialHolidays = options.IncludePartialHolidays;
-        //    IncludeLateBegin = options.IncludeLateBegin;
-        //    IncludeEarlyEnd = options.IncludeEarlyEnd;
-        //    FinalDate = options.FinalDate;
-        //    InitialDate = options.InitialDate;
-        //}
 
         /// <summary>
         /// Check the filters.

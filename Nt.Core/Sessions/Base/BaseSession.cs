@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NinjaTrader.Data;
+using NinjaTrader.NinjaScript;
+using System;
 
 namespace Nt.Core
 {
@@ -7,12 +9,6 @@ namespace Nt.Core
     /// </summary>
     public abstract class BaseSession : NtScript
     {
-        #region Public properties
-
-        public bool IsConfigured { get; private set; }
-
-        #endregion
-
         #region Market data Delegates
 
         /// <summary>
@@ -32,6 +28,27 @@ namespace Nt.Core
 
         #endregion
 
+        #region State changed methods
+
+        /// <summary>
+        /// Load the <see cref="SessionFilters"/>.
+        /// </summary>
+        /// <param name="ninjascript">The ninjascript.</param>
+        /// <param name="bars">The bars.</param>
+        public override void Load(NinjaScriptBase ninjascript, Bars bars)
+        {
+            // Make sure the parameters are not null.
+            if (ninjascript == null || bars == null)
+                throw new Exception($"{nameof(SessionFilters)} load parameters can not be null"); // return null;
+
+            // Set values.
+            this.ninjascript = ninjascript;
+            this.bars = bars;
+
+        }
+
+        #endregion
+
         #region Market data methods
 
         /// <summary>
@@ -40,62 +57,6 @@ namespace Nt.Core
         /// <param name="e"></param>
         public virtual void OnSessionChanged(SessionChangedEventArgs e)
         {
-        }
-
-        #endregion
-
-        #region Configure Methods
-
-        /// <summary>
-        /// Add options to configure the session.
-        /// </summary>
-        /// <typeparam name="TSession"></typeparam>
-        /// <typeparam name="TOptions"></typeparam>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public TSession Configure<TSession,TOptions>(Action<TOptions> options)
-            where TSession : BaseSession, new()
-            where TOptions : class,new()
-        {
-            // Create default session options.
-            var sessionOptions = new TOptions();
-
-            // If options is not null...invoke delegate to update the options configure by the user.
-            if (options != null)
-                options.Invoke(sessionOptions);
-
-            // Mapper the sesion filters with the session filters options.
-            Mapper(sessionOptions);
-
-            // Update the configure flag
-            if (!IsConfigured)
-                IsConfigured = true;
-
-            return (TSession)this;
-        }
-
-        /// <summary>
-        /// Add options to configure the session.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public TSession Configure<TSession,TOptions>(TOptions options = null)
-            where TSession : BaseSession, new()
-            where TOptions : class,new()
-        {
-            // If options is null...create a default options...
-            if (options == null)
-                options = new TOptions();
-
-            // Mapper the sesion filters with the session filters options.
-            Mapper(options);
-
-            // Update the configure flag
-            if (!IsConfigured)
-                IsConfigured = true;
-
-            return (TSession)this;
         }
 
         #endregion
@@ -131,14 +92,110 @@ namespace Nt.Core
 
         #endregion
 
+    }
+
+    /// <summary>
+    /// The base class to ninjascript sessions
+    /// </summary>
+    /// <typeparam name="TOptions">The session options to configure the object.</typeparam>
+    public abstract class BaseSession<TSession,TOptions> : BaseSession
+        where TSession : BaseSession<TSession,TOptions>, new()
+        where TOptions : BaseSessionOptions, new()
+    {
+
+        #region Protected members
+
+        /// <summary>
+        /// Indicates if the session is configured
+        /// </summary>
+        protected bool isConfigured;
+
+        #endregion
+
+        #region State changed methods
+
+        /// <summary>
+        /// Load the <see cref="SessionFilters"/>.
+        /// </summary>
+        /// <param name="ninjascript">The ninjascript.</param>
+        /// <param name="bars">The bars.</param>
+        public override void Load(NinjaScriptBase ninjascript, Bars bars)
+        {
+            // Call parent method
+            base.Load(ninjascript, bars);
+
+            // Make sure the session is configured
+            if (!isConfigured)
+                Configure();
+        }
+
+        #endregion
+
+        #region Configure Methods
+
+        /// <summary>
+        /// Add options to configure the session.
+        /// </summary>
+        /// <typeparam name="TSession"></typeparam>
+        /// <typeparam name="TOptions"></typeparam>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public TSession Configure(Action<TOptions> options)
+        {
+            // Create default session options.
+            var sessionOptions = new TOptions();
+
+            // If options is not null...invoke delegate to update the options configure by the user.
+            if (options != null)
+                options.Invoke(sessionOptions);
+
+            // Mapper the sesion filters with the session filters options.
+            Mapper(sessionOptions);
+
+            // Update the configure flag
+            if (!isConfigured)
+                isConfigured = true;
+
+            return (TSession)this;
+        }
+
+        /// <summary>
+        /// Add options to configure the session.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public TSession Configure(TOptions options = null)
+        {
+            // If options is null...create a default options...
+            if (options == null)
+                options = new TOptions();
+
+            // Mapper the sesion filters with the session filters options.
+            Mapper(options);
+
+            // Update the configure flag
+            if (!isConfigured)
+                isConfigured = true;
+
+            return (TSession)this;
+        }
+
+        #endregion
+
         #region Public methods
 
-        protected virtual void Mapper<T>(T options)
+        /// <summary>
+        /// Mapper the <see cref="BaseSession"/> from the <see cref="BaseSessionOptions"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        protected virtual void Mapper(TOptions options)
         {
         }
 
         #endregion
-        
 
     }
+
 }

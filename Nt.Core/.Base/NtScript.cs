@@ -131,7 +131,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="ninjascript">The ninjascript to configure.</param>
         /// <param name="options">The ninjascript configure options.</param>
-        public virtual T ConfigureNtScripts<T>(Action<NtScriptConfigureOptions> options = null)
+        public virtual T ConfigureNtScripts<T>(Action<NtScriptOptions> options = null)
             where T : NtScript, new()
         {
             return new T();
@@ -142,10 +142,10 @@ namespace Nt.Core
         #region Public methods
 
         /// <summary>
-        /// Mapper <see cref="NtScript"/> from <see cref="NtScriptConfigureOptions"/>.
+        /// Mapper <see cref="NtScript"/> from <see cref="NtScriptOptions"/>.
         /// </summary>
         /// <param name="options">The ninjascript configure options.</param>
-        public void AutoMapper(NtScriptConfigureOptions options)
+        public void AutoMapper(NtScriptOptions options)
         {
             Description = options.Description;
             Name = options.Name;
@@ -165,11 +165,11 @@ namespace Nt.Core
         #region Helper methods
 
         /// <summary>
-        /// Mapper <see cref="NtScript"/> from <see cref="NtScriptConfigureOptions"/>.
+        /// Mapper <see cref="NtScript"/> from <see cref="NtScriptOptions"/>.
         /// </summary>
         /// <param name="script">The ninjascript.</param>
         /// <param name="options">The ninjascript configure options.</param>
-        public static void AutoMapper(NtScript script, NtScriptConfigureOptions options)
+        public static void AutoMapper(NtScript script, NtScriptOptions options)
         {
             script.Description = options.Description;
             script.Name = options.Name;
@@ -203,5 +203,6 @@ namespace Nt.Core
         }
 
         #endregion
+
     }
 }

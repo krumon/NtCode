@@ -28,11 +28,11 @@ namespace ConsoleApp
                     options.Description = "My master indicator.";
                     options.Name = "KrMasTerSession";
                 })
-                .ConfigureSession<SessionHoursList, SessionHoursListOptions>((options) =>
+                .ConfigureSession<SessionHoursListOptions>((options) =>
                 {
                     options.MaxSessionsToStored = 100;
                 })
-                .ConfigureSession<SessionFilters,SessionFiltersOptions>((filters) =>
+                .ConfigureSession<SessionFiltersOptions>((filters) =>
                 {
                     filters.UseDateFilters(
                         initialYear: 2000,
@@ -40,7 +40,7 @@ namespace ConsoleApp
                         initialDay: 15
                         );
                 })
-                .ConfigureSession<SessionFilters,SessionFiltersOptions>((filters) =>
+                .ConfigureSession<SessionFiltersOptions>((filters) =>
                 {
                     filters.UseDateFilters(
                         finalYear: 2022,
