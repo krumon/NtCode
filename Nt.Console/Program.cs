@@ -22,12 +22,12 @@ namespace ConsoleApp
         {
             SessionsManager sessionManager =
                 new SessionsManager()
-                .ConfigureNtScripts<SessionsManager>((options) =>
-                {
-                    options.Calculate = Calculate.OnBarClose;
-                    options.Description = "My master indicator.";
-                    options.Name = "KrMasTerSession";
-                })
+                //.ConfigureNtScripts<SessionsManager>((options) =>
+                //{
+                //    options.Calculate = Calculate.OnBarClose;
+                //    options.Description = "My master indicator.";
+                //    options.Name = "KrMasTerSession";
+                //})
                 .ConfigureSession<SessionHoursListOptions>((options) =>
                 {
                     options.MaxSessionsToStored = 100;

@@ -3,7 +3,7 @@
     /// <summary>
     /// Base class for any ninjascript strategy.
     /// </summary>
-    public abstract class NtStrategy : NtScript
+    public abstract class BaseStrategy : BaseScript
     {
     }
 

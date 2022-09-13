@@ -6,7 +6,7 @@ namespace Nt.Core
     /// <summary>
     /// Contents trading session information.
     /// </summary>
-    public class TradingSessionInfo : NtScript
+    public class TradingSessionInfo : BaseElement
     {
 
         #region Consts

@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the core of the ninjascripts  session hours.
     /// </summary>
-    //public class NtSessionHours : NtIndicator
+    //public class NtSessionHours : BaseIndicator
     //{
 
     //    #region Private members

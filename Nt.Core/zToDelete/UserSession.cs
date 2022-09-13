@@ -8,7 +8,7 @@ namespace Nt.Core
     ///// <summary>
     ///// Represents the Trading Hours structure.
     ///// </summary>
-    //public class UserSession : NtScript
+    //public class UserSession : BaseScript
     //{
 
     //    #region Private members

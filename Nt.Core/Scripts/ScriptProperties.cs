@@ -1,13 +1,12 @@
-﻿using NinjaTrader.Data;
+﻿using NinjaTrader.Gui.Chart;
 using NinjaTrader.NinjaScript;
-using NinjaTrader.Gui.Chart;
 
 namespace Nt.Core
 {
     /// <summary>
     /// Ninjascript configure options.
     /// </summary>
-    public class NtScriptOptions
+    public class ScriptProperties
     {
 
         #region Private members / Default value
@@ -15,12 +14,12 @@ namespace Nt.Core
 		/// <summary>
 		/// Represents the ninjascript description.
 		/// </summary>
-		private string description = @"Ninjascript description.";
+		private string description = @"Script created by kRuMoN.";
 
 		/// <summary>
 		/// Represents the ninjascript name.
 		/// </summary>
-		private string name = "Ninjascript_Name";
+		private string name = "kRuMoN Script";
 
 		/// <summary>
 		/// Represents the ninjascript calculate mode.
@@ -38,26 +37,6 @@ namespace Nt.Core
 		private bool displayInDataBox = true;
 
 		/// <summary>
-		/// Indicates if the ninjascript draw in the price panel.
-		/// </summary>
-		private bool drawOnPricePanel = true;
-
-		/// <summary>
-		/// Indicates if the ninjscript draw the horizontal grid lines.
-		/// </summary>
-		private bool drawHorizontalGridLines = true;
-
-        /// <summary>
-        /// Indicates if the ninjscript draw the vertical grid lines.
-        /// </summary>
-        private bool drawVerticalGridLines = true;
-
-        /// <summary>
-        /// Indicates if the ninjscript paint the price markers.
-        /// </summary>
-        private bool paintPriceMarkers = true;
-
-		/// <summary>
 		/// Represents the scale justification of the chart.
 		/// </summary>
 		private ScaleJustification scaleJustification = ScaleJustification.Right;
@@ -71,7 +50,7 @@ namespace Nt.Core
 
         #endregion
 
-        #region Configure properties
+        #region Properties
 
         /// <summary>
         /// Represents the ninjascript description.
@@ -97,26 +76,6 @@ namespace Nt.Core
         /// Indicates if the ninjascript display in the data box.
         /// </summary>
         public bool DisplayInDataBox { get { return displayInDataBox; } set { displayInDataBox = value; } }
-
-        /// <summary>
-        /// Indicates if the ninjascript draw in the price panel.
-        /// </summary>
-        public bool DrawOnPricePanel { get { return drawOnPricePanel; } set { drawOnPricePanel = value; } }
-
-        /// <summary>
-        /// Indicates if the ninjscript draw the horizontal grid lines.
-        /// </summary>
-        public bool DrawHorizontalGridLines { get { return drawHorizontalGridLines; } set { drawHorizontalGridLines = value; } }
-
-        /// <summary>
-        /// Indicates if the ninjscript draw the vertical grid lines.
-        /// </summary>
-        public bool DrawVerticalGridLines { get { return drawVerticalGridLines; } set { drawVerticalGridLines = value; } }
-
-        /// <summary>
-        /// Indicates if the ninjscript paint the price markers.
-        /// </summary>
-        public bool PaintPriceMarkers { get { return paintPriceMarkers; } set { paintPriceMarkers = value; } }
 
         /// <summary>
         /// Represents the scale justification of the chart.

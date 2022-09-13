@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Nt.Core
 {
-    public class SwingLevel : NtElement
+    public class SwingLevel : BaseElement
     {
 
 		#region Private members

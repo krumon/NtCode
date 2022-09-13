@@ -1,7 +1,6 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Nt.Core
 {
@@ -32,29 +31,6 @@ namespace Nt.Core
         /// Represents the <see cref="SessionHoursList"/> of the main session.
         /// </summary>
         private SessionHoursList sessionHoursList;
-
-
-        // TODO: Estas tres propiedades deben ir cada una en su clase.
-
-        /// <summary>
-        /// Flags to indicates if the <see cref="NtScript"/> is configured.
-        /// </summary>
-        public bool ntScriptIsConfigured;
-
-        /// <summary>
-        /// Flags to indicates if the <see cref="SessionsManager"/> is configured.
-        /// </summary>
-        public bool sessionHoursListIsConfigured;
-
-        /// <summary>
-        /// Flags to indicates if the <see cref="SessionFilters"/> is configured.
-        /// </summary>
-        public bool sessionFiltersIsConfigured;
-
-        #endregion
-
-        #region Configure Properties
-
 
         #endregion
 
@@ -260,7 +236,7 @@ namespace Nt.Core
         /// <param name="options"></param>
         /// <returns></returns>
         public SessionsManager ConfigureSession<TOptions>(Action<TOptions> options = null)
-            where TOptions : BaseSessionOptions, new()
+            where TOptions : BaseOptions, new()
         {
             if (options is Action<SessionHoursListOptions> shOptions)
             {
@@ -270,10 +246,6 @@ namespace Nt.Core
 
                 // Configure....
                 sessionHoursList.Configure(shOptions);
-
-                // Update the configure flag
-                if (!sessionHoursListIsConfigured)
-                    sessionHoursListIsConfigured = true;
 
             }
             else if (options is Action<SessionFiltersOptions> fOptions)
@@ -285,12 +257,7 @@ namespace Nt.Core
                 // Configure....
                 sessionFilters.Configure(fOptions);
 
-                // Update the configure flag
-                if (!sessionFiltersIsConfigured)
-                    sessionFiltersIsConfigured = true;
             }
-
-
 
             return this;
         }
@@ -301,7 +268,7 @@ namespace Nt.Core
         /// <param name="options"></param>
         /// <returns></returns>
         public SessionsManager ConfigureSession<TOptions>(TOptions options = null)
-            where TOptions : BaseSessionOptions, new()
+            where TOptions : BaseOptions, new()
 
         {
             if (options is SessionHoursListOptions shOptions)
@@ -313,10 +280,6 @@ namespace Nt.Core
                 // Configure....
                 sessionHoursList.Configure(shOptions);
 
-                // Update the configure flag
-                if (!sessionHoursListIsConfigured)
-                    sessionHoursListIsConfigured = true;
-
             }
             else if (options is SessionFiltersOptions fOptions)
             {
@@ -327,41 +290,33 @@ namespace Nt.Core
                 // Configure....
                 sessionFilters.Configure(fOptions);
 
-                // Update the configure flag
-                if (!sessionFiltersIsConfigured)
-                    sessionFiltersIsConfigured = true;
             }
-
-
 
             return this;
         }
 
-        /// <summary>
-        /// Add <see cref="NtScriptOptions"/> to <see cref="NtScript"/> configure.
-        /// </summary>
-        /// <param name="options">The ninjascript configure options.</param>
-        public override SessionsManager ConfigureNtScripts<SessionsManager>(Action<NtScriptOptions> options = null)
-        {
-            // Make sure the trading hours is sessionHoursListIsConfigured by default
-            //TradingHours th = NinjaTrader.Data.TradingHours.String2TradingHours("CBOE US Index Futures ETH");
-            //th.CopyTo(ninjascript.TradingHours);
+        ///// <summary>
+        ///// Add <see cref="ScriptProperties"/> to <see cref="BaseScript"/> configure.
+        ///// </summary>
+        ///// <param name="options">The ninjascript configure options.</param>
+        //public override SessionsManager ConfigureNtScripts<SessionsManager>(Action<ScriptProperties> options = null)
+        //{
+        //    // Make sure the trading hours is sessionHoursListIsConfigured by default
+        //    //TradingHours th = NinjaTrader.Data.TradingHours.String2TradingHours("CBOE US Index Futures ETH");
+        //    //th.CopyTo(ninjascript.TradingHours);
 
-            // Create default session manager options.
-            var ntScriptConfigureOptions = new NtScriptOptions();
+        //    // Create default session manager options.
+        //    var ntScriptConfigureOptions = new ScriptProperties();
 
-            // If options is not null...invoke delegate to update the options configure by the user.
-            options?.Invoke(ntScriptConfigureOptions);
+        //    // If options is not null...invoke delegate to update the options configure by the user.
+        //    options?.Invoke(ntScriptConfigureOptions);
 
-            // Mapper the sesion manager with the session manager options.
-            AutoMapper(ntScriptConfigureOptions);
+        //    // Mapper the sesion manager with the session manager options.
+        //    AutoMapper(ntScriptConfigureOptions);
 
-            // Update the configure flag
-            if (!ntScriptIsConfigured)
-                ntScriptIsConfigured = true;
+        //    return this as SessionsManager;
 
-            return this as SessionsManager;
-        }
+        //}
 
         #endregion
 

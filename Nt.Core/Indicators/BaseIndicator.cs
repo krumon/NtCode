@@ -3,7 +3,7 @@
     /// <summary>
     /// Base class for any ninjascript indicator.
     /// </summary>
-    public abstract class NtIndicator : NtScript
+    public abstract class BaseIndicator : BaseScript
     {
 
         #region Public properties
