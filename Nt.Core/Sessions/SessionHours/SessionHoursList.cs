@@ -225,6 +225,19 @@ namespace Nt.Core
         #region Private methods
 
         /// <summary>
+        /// Mapper <see cref="SessionFilters"/> with <see cref="SessionFiltersOptions"/>.
+        /// </summary>
+        /// <param name="options"></param>
+        protected override void Mapper<T>(T options)
+        {
+            if (options is SessionHoursListOptions op)
+            {
+                MaxSessionsToStored = op.MaxSessionsToStored;
+            }
+
+        }
+
+        /// <summary>
         /// Mapper <see cref="SessionHoursList"/> from <see cref="SessionHoursListOptions"/>.
         /// </summary>
         /// <param name="options"></param>

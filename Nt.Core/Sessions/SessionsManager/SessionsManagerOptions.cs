@@ -3,7 +3,7 @@
     /// <summary>
     /// Options to create <see cref="SessionsManager"/> object.
     /// </summary>
-    public class SessionManagerOptions
+    public class SessionsManagerOptions : BaseSessionOptions
     {
         #region Private members / Default values
 

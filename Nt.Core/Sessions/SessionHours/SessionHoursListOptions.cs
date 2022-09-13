@@ -3,7 +3,7 @@
     /// <summary>
     /// Options to create <see cref="SessionHoursList"/> object.
     /// </summary>
-    public class SessionHoursListOptions
+    public class SessionHoursListOptions : BaseSessionOptions
     {
         #region Private members / Default values
 

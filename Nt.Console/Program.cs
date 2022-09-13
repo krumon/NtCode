@@ -28,37 +28,38 @@ namespace ConsoleApp
                     options.Description = "My master indicator.";
                     options.Name = "KrMasTerSession";
                 })
-                .ConfigureSessionHoursList((options) =>
+                .ConfigureSession<SessionHoursList, SessionHoursListOptions>((options) =>
                 {
                     options.MaxSessionsToStored = 100;
                 })
-                .ConfigureSessionFilters((filters) =>
+                .ConfigureSession<SessionFilters,SessionFiltersOptions>((filters) =>
                 {
-                    filters.AddDateFilters(
+                    filters.UseDateFilters(
                         initialYear: 2000,
                         initialMonth: 6,
                         initialDay: 15
                         );
                 })
-                .ConfigureSessionFilters((filters) =>
+                .ConfigureSession<SessionFilters,SessionFiltersOptions>((filters) =>
                 {
-                    filters.AddDateFilters(
+                    filters.UseDateFilters(
                         finalYear: 2022,
                         finalMonth: 9,
                         finalDay: 5
                         );
                 });
 
-            sessionManager.Load (null,null);
 
             var s = sessionManager;
             var f = sessionManager.SessionFilters;
-            //sessionManager.Load(null, null);
+            
+            sessionManager.Load (null,null);
+
             Wait();
 
         }
 
-        public static void SessionOptions(SessionManagerOptions options)
+        public static void SessionOptions(SessionsManagerOptions options)
         {
             options.MaxSessionsToStored = 100;
         }
