@@ -9,7 +9,9 @@ namespace Nt.Core
     /// </summary>
     public class SessionsManagerBuilder
     {
+        NtScriptOptions ntScriptOptions;
         SessionFiltersOptions sessionFiltersOptions;
+        SessionHoursListOptions sessionHoursListOptions;
 
         #region Public methods
 
@@ -25,20 +27,13 @@ namespace Nt.Core
                     options.Calculate = Calculate.OnBarClose;
                     options.Description = "My master indicator.";
                     options.Name = "KrMasTerSession";
-                })
-                .ConfigureSession<SessionHoursListOptions>((options) =>
-                {
-                    options.MaxSessionsToStored = 100;
-                })
-                .ConfigureSession(sessionFiltersOptions)
-                .ConfigureSession<SessionFiltersOptions>((filters) =>
-                {
-                    filters.UseDateFilters(
-                        finalYear: 2022,
-                        finalMonth: 9,
-                        finalDay: 5
-                        );
                 });
+
+            if (sessionFiltersOptions != null)
+                sessionsManager.ConfigureSession(sessionHoursListOptions);
+
+            if (sessionHoursListOptions != null)
+                sessionsManager.ConfigureSession(sessionFiltersOptions);
 
             return sessionsManager;
         }
@@ -50,9 +45,32 @@ namespace Nt.Core
         /// <returns></returns>
         public SessionsManagerBuilder UseSessionFilters(Action<SessionFiltersOptions> options)
         {
+            // Create default options
             if (sessionFiltersOptions == null) 
                 sessionFiltersOptions = new SessionFiltersOptions();
+
+            // Add custom options
             options?.Invoke(sessionFiltersOptions);
+
+            // Return the builder
+            return this;
+        }
+
+        /// <summary>
+        /// Add <see cref="SessionHoursList"/> funcionality.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public SessionsManagerBuilder UseSessionHoursList(Action<SessionHoursListOptions> options)
+        {
+            // Create default options
+            if (sessionHoursListOptions == null)
+                sessionHoursListOptions = new SessionHoursListOptions();
+
+            // Add custom options
+            options?.Invoke(sessionHoursListOptions);
+
+            // return the builder
             return this;
         }
 

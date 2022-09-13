@@ -132,7 +132,7 @@ namespace Nt.Core
         /// <param name="initialDate"></param>
         /// <param name="finalDate"></param>
         /// <returns></returns>
-        public SessionFiltersOptions UseDateFilters(DateTime initialDate, DateTime finalDate)
+        public SessionFiltersOptions AddDateFilters(DateTime initialDate, DateTime finalDate)
         {
             if(initialDate < finalDate)
             {
@@ -160,7 +160,7 @@ namespace Nt.Core
         /// <param name="finalMonth"></param>
         /// <param name="finalDay"></param>
         /// <returns></returns>
-        public SessionFiltersOptions UseDateFilters(
+        public SessionFiltersOptions AddDateFilters(
             int initialYear = 1970, 
             int initialMonth = 1, 
             int initialDay = 1, 
@@ -213,7 +213,7 @@ namespace Nt.Core
 
             #endregion
 
-            UseDateFilters(new DateTime(initialYear, initialMonth, initialDay), new DateTime(finalYear, finalMonth, finalDay));
+            AddDateFilters(new DateTime(initialYear, initialMonth, initialDay), new DateTime(finalYear, finalMonth, finalDay));
 
             return this;
         }
@@ -226,13 +226,13 @@ namespace Nt.Core
         /// <param name="finalYear"></param>
         /// <param name="finalMonth"></param>
         /// <returns></returns>
-        public SessionFiltersOptions UseDateFilters(
+        public SessionFiltersOptions AddDateFilters(
             int initialYear = 1970, 
             int initialMonth = 1, 
             int finalYear = 2050, 
             int finalMonth = 12)
         {
-            UseDateFilters(initialYear,initialMonth,1,finalYear,finalMonth,31);
+            AddDateFilters(initialYear,initialMonth,1,finalYear,finalMonth,31);
 
             return this;
         }
@@ -243,12 +243,12 @@ namespace Nt.Core
         /// <param name="initialYear"></param>
         /// <param name="finalYear"></param>
         /// <returns></returns>
-        public SessionFiltersOptions UseDateFilters(
+        public SessionFiltersOptions AddDateFilters(
             int initialYear = 1970,
             int finalYear = 2050)
         {
 
-            UseDateFilters(initialYear, 1, 1, finalYear, 12, 31);
+            AddDateFilters(initialYear, 1, 1, finalYear, 12, 31);
 
             return this;
         }

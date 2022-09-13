@@ -34,7 +34,7 @@ namespace ConsoleApp
                 })
                 .ConfigureSession<SessionFiltersOptions>((filters) =>
                 {
-                    filters.UseDateFilters(
+                    filters.AddDateFilters(
                         initialYear: 2000,
                         initialMonth: 6,
                         initialDay: 15
@@ -42,7 +42,7 @@ namespace ConsoleApp
                 })
                 .ConfigureSession<SessionFiltersOptions>((filters) =>
                 {
-                    filters.UseDateFilters(
+                    filters.AddDateFilters(
                         finalYear: 2022,
                         finalMonth: 9,
                         finalDay: 5
