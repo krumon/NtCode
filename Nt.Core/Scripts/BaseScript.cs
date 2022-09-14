@@ -151,6 +151,9 @@ namespace Nt.Core
         /// <param name="script"></param>
         protected virtual void SetNinjascriptProperties(NinjaScriptBase ninjascript)
         {
+            if (ninjascript == null)
+                return;
+
             ninjascript.Name = Name;
             ninjascript.Calculate = Calculate;
             ninjascript.IsOverlay = IsOverlay;
@@ -263,8 +266,11 @@ namespace Nt.Core
 
             // Mapper the sesion filters with the session filters properties.
             SetProperties(sessionProperties);
-            SetNinjascriptProperties(ninjascript);
-            SetDefault(ninjascript);
+            if (ninjascript != null)
+            {
+                SetNinjascriptProperties(ninjascript);
+                SetDefault(ninjascript);
+            }
 
             return (TScript)this;
         }
@@ -283,8 +289,11 @@ namespace Nt.Core
 
             // Set the properties to ninjatrader.
             SetProperties(properties);
-            SetNinjascriptProperties(ninjascript);
-            SetDefault(ninjascript);
+            if (ninjascript != null)
+            {
+                SetNinjascriptProperties(ninjascript);
+                SetDefault(ninjascript);
+            }
 
             return (TScript)this;
         }

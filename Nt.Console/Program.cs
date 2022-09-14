@@ -20,19 +20,20 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
+            // OnStateChanged => State.Configure
             SessionsManager sessionManager =
-                new SessionsManager()
-                //.ConfigureNtScripts<SessionsManager>((options) =>
-                //{
-                //    options.Calculate = Calculate.OnBarClose;
-                //    options.Description = "My master indicator.";
-                //    options.Name = "KrMasTerSession";
-                //})
-                .ConfigureSession<SessionHoursListOptions>((options) =>
+                SessionsManager.CreateSessionManagerBuilder()
+                .ConfigureProperties((p) =>
                 {
-                    options.MaxSessionsToStored = 100;
+                    p.Calculate = Calculate.OnBarClose;
+                    p.IsOverlay = true;
+                    p.DisplayInDataBox = true;
                 })
-                .ConfigureSession<SessionFiltersOptions>((filters) =>
+                .UseSessionHoursList((o) =>
+                {
+                    o.MaxSessionsToStored = 100;
+                })
+                .UseSessionFilters((filters) =>
                 {
                     filters.AddDateFilters(
                         initialYear: 2000,
@@ -40,14 +41,15 @@ namespace ConsoleApp
                         initialDay: 15
                         );
                 })
-                .ConfigureSession<SessionFiltersOptions>((filters) =>
+                .UseSessionFilters((filters) =>
                 {
                     filters.AddDateFilters(
                         finalYear: 2022,
                         finalMonth: 9,
                         finalDay: 5
                         );
-                });
+                })
+                .Build(null);
 
 
             var s = sessionManager;

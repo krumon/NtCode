@@ -18,12 +18,12 @@ namespace Nt.Core
         private SessionsIterator sessionsIterator;
 
         /// <summary>
-        /// Represents the <see cref="SessionFilters"/> of the sessions.
+        /// Represents the <see cref="SessionFilters"/> of the main sessions.
         /// </summary>
         private SessionFilters sessionFilters;
 
         /// <summary>
-        /// Represents the <see cref="SessionStats"/> of the sessions.
+        /// Represents the <see cref="SessionStats"/> of the main sessions.
         /// </summary>
         private SessionStats sessionStats;
 
@@ -75,22 +75,6 @@ namespace Nt.Core
         /// </summary>
         public SessionsManager()
         {
-        }
-
-        /// <summary>
-        /// Create a default instance of the <see cref="SessionsManager"/> class.
-        /// </summary>
-        /// <param name="ninjascript"></param>
-        /// <param name="bars"></param>
-        private SessionsManager(NinjaScriptBase ninjascript, Bars bars)
-        {
-            // Set values.
-            this.ninjascript = ninjascript;
-            this.bars = bars;
-
-            // Init and load the session iterator.
-            sessionsIterator = new SessionsIterator();
-            sessionsIterator.Load(ninjascript, bars);
         }
 
         #endregion
@@ -294,29 +278,6 @@ namespace Nt.Core
 
             return this;
         }
-
-        ///// <summary>
-        ///// Add <see cref="ScriptProperties"/> to <see cref="BaseScript"/> configure.
-        ///// </summary>
-        ///// <param name="options">The ninjascript configure options.</param>
-        //public override SessionsManager ConfigureNtScripts<SessionsManager>(Action<ScriptProperties> options = null)
-        //{
-        //    // Make sure the trading hours is sessionHoursListIsConfigured by default
-        //    //TradingHours th = NinjaTrader.Data.TradingHours.String2TradingHours("CBOE US Index Futures ETH");
-        //    //th.CopyTo(ninjascript.TradingHours);
-
-        //    // Create default session manager options.
-        //    var ntScriptConfigureOptions = new ScriptProperties();
-
-        //    // If options is not null...invoke delegate to update the options configure by the user.
-        //    options?.Invoke(ntScriptConfigureOptions);
-
-        //    // Mapper the sesion manager with the session manager options.
-        //    AutoMapper(ntScriptConfigureOptions);
-
-        //    return this as SessionsManager;
-
-        //}
 
         #endregion
 

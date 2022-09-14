@@ -9,9 +9,30 @@ namespace Nt.Core
     /// </summary>
     public class SessionsManagerBuilder
     {
-        ScriptProperties scriptProperties;
-        SessionFiltersOptions sessionFiltersOptions;
-        SessionHoursListOptions sessionHoursListOptions;
+        /// <summary>
+        /// Store the <see cref="ScriptProperties"/>.
+        /// </summary>
+        private ScriptProperties scriptProperties;
+
+        /// <summary>
+        /// Store the <see cref="SessionFiltersOptions"/>.
+        /// </summary>
+        private SessionFiltersOptions sessionFiltersOptions;
+
+        /// <summary>
+        /// Store the <see cref="SessionHoursListOptions"/>.
+        /// </summary>
+        private SessionHoursListOptions sessionHoursListOptions;
+
+        /// <summary>
+        /// Indicates when the client use <see cref="SessionFilters"/>.
+        /// </summary>
+        bool useSessionFilters;
+
+        /// <summary>
+        /// Indicates when the client use <see cref="SessionHoursList"/>.
+        /// </summary>
+        bool useSessionHoursList;
 
         #region Public methods
 
@@ -26,11 +47,11 @@ namespace Nt.Core
             if (scriptProperties != null)
                 sessionsManager.ConfigureProperties(ninjascript, scriptProperties);
 
-            if (sessionFiltersOptions != null)
-                sessionsManager.ConfigureSession(sessionHoursListOptions);
-
-            if (sessionHoursListOptions != null)
+            if (sessionFiltersOptions != null || useSessionFilters)
                 sessionsManager.ConfigureSession(sessionFiltersOptions);
+
+            if (sessionHoursListOptions != null || useSessionHoursList)
+                sessionsManager.ConfigureSession(sessionHoursListOptions);
 
             return sessionsManager;
         }
@@ -61,11 +82,14 @@ namespace Nt.Core
         public SessionsManagerBuilder UseSessionFilters(Action<SessionFiltersOptions> options)
         {
             // Create default properties
-            if (sessionFiltersOptions == null) 
+            if (sessionFiltersOptions == null && options != null) 
                 sessionFiltersOptions = new SessionFiltersOptions();
 
             // Add custom properties
             options?.Invoke(sessionFiltersOptions);
+
+            // Update the flag
+            useSessionFilters = true;
 
             // Return the builder
             return this;
@@ -79,11 +103,14 @@ namespace Nt.Core
         public SessionsManagerBuilder UseSessionHoursList(Action<SessionHoursListOptions> options)
         {
             // Create default properties
-            if (sessionHoursListOptions == null)
+            if (sessionHoursListOptions == null && options != null)
                 sessionHoursListOptions = new SessionHoursListOptions();
 
             // Add custom properties
             options?.Invoke(sessionHoursListOptions);
+
+            // Update the flag
+            useSessionHoursList = true;
 
             // return the builder
             return this;
