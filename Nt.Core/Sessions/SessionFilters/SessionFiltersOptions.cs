@@ -40,6 +40,36 @@ namespace Nt.Core
         /// </summary>
         private DateTime finalDate = SessionFilters.MAX_DATE;
 
+        /// <summary>
+        /// Represents the year of the initial date.
+        /// </summary>
+        private int initialYear;
+
+        /// <summary>
+        /// Represents the month of the initial date.
+        /// </summary>
+        private int initialMonth;
+
+        /// <summary>
+        /// Represents the day of the initial date.
+        /// </summary>
+        private int initialDay;
+
+        /// <summary>
+        /// Represents the year of the final date.
+        /// </summary>
+        private int finalYear;
+
+        /// <summary>
+        /// Represents the month of the final date.
+        /// </summary>
+        private int finalMonth;
+
+        /// <summary>
+        /// Represents the day of the final date.
+        /// </summary>
+        private int finalDay;
+
         #endregion
 
         #region Public properties
@@ -161,59 +191,182 @@ namespace Nt.Core
         /// <param name="finalDay"></param>
         /// <returns></returns>
         public SessionFiltersOptions AddDateFilters(
-            int initialYear = 1970, 
-            int initialMonth = 1, 
-            int initialDay = 1, 
-            int finalYear = 2050, 
-            int finalMonth = 12, 
-            int finalDay = 31)
+            int initialYear, 
+            int initialMonth, 
+            int initialDay, 
+            int finalYear, 
+            int finalMonth, 
+            int finalDay)
         {
 
-            #region Make sure initial and final dates are correct
+            CheckAndUpdateDateValues(initialYear, initialMonth, initialDay, finalYear, finalMonth, finalDay);
+            UpdateDayOfMonth(initialYear, initialMonth, finalYear,finalMonth);
 
-            if (initialMonth < 1 || initialMonth > 12)
-                initialMonth = 1;
+            AddDateFilters(
+                new DateTime(
+                    initialYear != 0 ? initialYear : SessionFilters.MIN_DATE.Year, 
+                    initialMonth != 0 ? initialMonth : SessionFilters.MIN_DATE.Month, 
+                    initialDay != 0 ? initialDay : SessionFilters.MIN_DATE.Day
+                    ), 
+                new DateTime(
+                    finalYear != 0 ? finalYear : SessionFilters.MAX_DATE.Year, 
+                    finalMonth != 0 ? finalMonth : SessionFilters.MAX_DATE.Month, 
+                    finalDay != 0 ? finalDay : SessionFilters.MAX_DATE.Day
+                    ));
 
-            if (finalMonth < 1 || finalMonth > 12)
-                finalMonth = 12;
+            return this;
+        }
 
-            if (initialDay < 1 || initialDay > 31)
-                initialDay = 1;
-
-            if (finalDay < 1 || finalDay > 31)
-                finalDay = 31;
-
-            if (initialDay > 28)
+        /// <summary>
+        /// Mthod to add date filters.
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="day"></param>
+        /// <returns></returns>
+        public SessionFiltersOptions AddDateFilters(
+            int year, 
+            int month, 
+            int day,
+            bool isInitial = false
+            )
+        {
+            if (isInitial)
             {
-                if (initialDay == 31)
-                {
-                    if (initialMonth == 4 || initialMonth == 6 || initialMonth == 9 || initialMonth == 11)
-                        initialDay = 30;
-                }
-
-                if (initialMonth == 2 && initialDay > 28 && initialYear % 4 != 0)
-                    initialDay = 28;
-                else
-                    initialDay = 29;
+                CheckAndUpdateDateValues(year, month, day, finalYear, finalMonth, finalDay);
+                UpdateDayOfMonth(year, month, finalYear,finalMonth);
+            }
+            else
+            {
+                CheckAndUpdateDateValues(initialYear, initialMonth, initialDay, year, month, day);
+                UpdateDayOfMonth(initialYear, initialMonth, year, month);
             }
 
-            if (finalDay > 28)
-            {
-                if (finalDay == 31)
-                {
-                    if (finalMonth == 4 || finalMonth == 6 || finalMonth == 9 || finalMonth == 11)
-                        finalDay = 30;
-                }
 
-                if (finalMonth == 2 && finalDay > 28 && finalYear % 4 != 0)
-                    finalDay = 28;
-                else
-                    finalDay = 29;
+            AddDateFilters(
+                new DateTime(
+                    initialYear != 0 ? initialYear : SessionFilters.MIN_DATE.Year,
+                    initialMonth != 0 ? initialMonth : SessionFilters.MIN_DATE.Month,
+                    initialDay != 0 ? initialDay : SessionFilters.MIN_DATE.Day
+                    ),
+                new DateTime(
+                    finalYear != 0 ? finalYear : SessionFilters.MAX_DATE.Year,
+                    finalMonth != 0 ? finalMonth : SessionFilters.MAX_DATE.Month,
+                    finalDay != 0 ? finalDay : SessionFilters.MAX_DATE.Day
+                    ));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Mthod to add date filters.
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <param name="isInitial"></param>
+        /// <returns></returns>
+        public SessionFiltersOptions AddDateFilters(
+            int year, 
+            int month, 
+            bool isInitial = false
+            )
+        {
+            if (isInitial)
+            {
+                CheckAndUpdateDateValues(year, month, initialDay, finalYear, finalMonth, finalDay);
+                UpdateDayOfMonth(year, month, finalYear,finalMonth);
+            }
+            else
+            {
+                CheckAndUpdateDateValues(initialYear, initialMonth, initialDay, year, month, finalDay);
+                UpdateDayOfMonth(initialYear, initialMonth, year, month);
             }
 
-            #endregion
 
-            AddDateFilters(new DateTime(initialYear, initialMonth, initialDay), new DateTime(finalYear, finalMonth, finalDay));
+            AddDateFilters(
+                new DateTime(
+                    initialYear != 0 ? initialYear : SessionFilters.MIN_DATE.Year,
+                    initialMonth != 0 ? initialMonth : SessionFilters.MIN_DATE.Month,
+                    initialDay != 0 ? initialDay : SessionFilters.MIN_DATE.Day
+                    ),
+                new DateTime(
+                    finalYear != 0 ? finalYear : SessionFilters.MAX_DATE.Year,
+                    finalMonth != 0 ? finalMonth : SessionFilters.MAX_DATE.Month,
+                    finalDay != 0 ? finalDay : SessionFilters.MAX_DATE.Day
+                    ));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Mthod to add date filters.
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="isInitial"></param>
+        /// <returns></returns>
+        public SessionFiltersOptions AddDateFilters(
+            int year, 
+            bool isInitial = false
+            )
+        {
+            if (isInitial)
+            {
+                CheckAndUpdateDateValues(year, initialMonth, initialDay, finalYear, finalMonth, finalDay);
+                UpdateDayOfMonth(year, initialMonth, finalYear,finalMonth);
+            }
+            else
+            {
+                CheckAndUpdateDateValues(initialYear, initialMonth, initialDay, year, finalMonth, finalDay);
+                UpdateDayOfMonth(initialYear, initialMonth, year, finalMonth);
+            }
+
+
+            AddDateFilters(
+                new DateTime(
+                    initialYear != 0 ? initialYear : SessionFilters.MIN_DATE.Year,
+                    initialMonth != 0 ? initialMonth : SessionFilters.MIN_DATE.Month,
+                    initialDay != 0 ? initialDay : SessionFilters.MIN_DATE.Day
+                    ),
+                new DateTime(
+                    finalYear != 0 ? finalYear : SessionFilters.MAX_DATE.Year,
+                    finalMonth != 0 ? finalMonth : SessionFilters.MAX_DATE.Month,
+                    finalDay != 0 ? finalDay : SessionFilters.MAX_DATE.Day
+                    ));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Mthod to add date filters.
+        /// </summary>
+        /// <param name="initialYear"></param>
+        /// <param name="initialMonth"></param>
+        /// <param name="initialDay"></param>
+        /// <param name="finalYear"></param>
+        /// <param name="finalMonth"></param>
+        /// <param name="finalDay"></param>
+        /// <returns></returns>
+        public SessionFiltersOptions AddDateFilters(
+            int finalYear,
+            int finalMonth,
+            int finalDay
+            )
+        {
+
+            CheckAndUpdateDateValues(initialYear, initialMonth, initialDay, finalYear, finalMonth, finalDay);
+            UpdateDayOfMonth(initialYear, initialMonth, finalYear, finalMonth);
+
+            AddDateFilters(
+                new DateTime(
+                    initialYear != 0 ? initialYear : SessionFilters.MIN_DATE.Year,
+                    initialMonth != 0 ? initialMonth : SessionFilters.MIN_DATE.Month,
+                    initialDay != 0 ? initialDay : SessionFilters.MIN_DATE.Day
+                    ),
+                new DateTime(
+                    finalYear != 0 ? finalYear : SessionFilters.MAX_DATE.Year,
+                    finalMonth != 0 ? finalMonth : SessionFilters.MAX_DATE.Month,
+                    finalDay != 0 ? finalDay : SessionFilters.MAX_DATE.Day
+                    ));
 
             return this;
         }
@@ -227,12 +380,25 @@ namespace Nt.Core
         /// <param name="finalMonth"></param>
         /// <returns></returns>
         public SessionFiltersOptions AddDateFilters(
-            int initialYear = 1970, 
-            int initialMonth = 1, 
-            int finalYear = 2050, 
-            int finalMonth = 12)
+            int initialYear, 
+            int initialMonth, 
+            int finalYear, 
+            int finalMonth)
         {
-            AddDateFilters(initialYear,initialMonth,1,finalYear,finalMonth,31);
+            CheckAndUpdateDateValues(initialYear, initialMonth, initialDay, finalYear, finalMonth, finalDay);
+            UpdateDayOfMonth(initialYear, initialMonth, finalYear, finalMonth);
+
+            AddDateFilters(
+                new DateTime(
+                    initialYear != 0 ? initialYear : SessionFilters.MIN_DATE.Year,
+                    initialMonth != 0 ? initialMonth : SessionFilters.MIN_DATE.Month,
+                    initialDay != 0 ? initialDay : SessionFilters.MIN_DATE.Day
+                    ),
+                new DateTime(
+                    finalYear != 0 ? finalYear : SessionFilters.MAX_DATE.Year,
+                    finalMonth != 0 ? finalMonth : SessionFilters.MAX_DATE.Month,
+                    finalDay != 0 ? finalDay : SessionFilters.MAX_DATE.Day
+                    ));
 
             return this;
         }
@@ -244,13 +410,77 @@ namespace Nt.Core
         /// <param name="finalYear"></param>
         /// <returns></returns>
         public SessionFiltersOptions AddDateFilters(
-            int initialYear = 1970,
-            int finalYear = 2050)
+            int initialYear,
+            int finalYear)
         {
 
-            AddDateFilters(initialYear, 1, 1, finalYear, 12, 31);
+            CheckAndUpdateDateValues(initialYear, initialMonth, initialDay, finalYear, finalMonth, finalDay);
+            UpdateDayOfMonth(initialYear, initialMonth, finalYear, finalMonth);
+
+            AddDateFilters(
+                new DateTime(
+                    initialYear != 0 ? initialYear : SessionFilters.MIN_DATE.Year,
+                    initialMonth != 0 ? initialMonth : SessionFilters.MIN_DATE.Month,
+                    initialDay != 0 ? initialDay : SessionFilters.MIN_DATE.Day
+                    ),
+                new DateTime(
+                    finalYear != 0 ? finalYear : SessionFilters.MAX_DATE.Year,
+                    finalMonth != 0 ? finalMonth : SessionFilters.MAX_DATE.Month,
+                    finalDay != 0 ? finalDay : SessionFilters.MAX_DATE.Day
+                    ));
 
             return this;
+        }
+
+        #endregion
+
+        #region Private methods
+
+        private void CheckAndUpdateDateValues(
+            int initialYear,int initialMonth, int initialDay, 
+            int finalYear, int finalMonth, int finalDay)
+        {
+            if (CheckYear(initialYear))
+                this.initialYear = initialYear;
+
+            if (CheckMonth(initialMonth))
+                this.initialMonth = initialMonth;
+
+            if (CheckDay(initialDay))
+                this.initialDay = initialDay;
+
+            if (CheckYear(finalYear))
+                this.finalYear = finalYear;
+
+            if (CheckMonth(finalMonth))
+                this.finalMonth = finalMonth;
+
+            if (CheckDay(finalDay))
+                this.finalDay = finalDay;
+
+        }
+
+        private bool CheckYear(int year)
+        {
+            return (year >= SessionFilters.MIN_DATE.Year && year <= SessionFilters.MAX_DATE.Year);
+        }
+
+        private bool CheckMonth(int month)
+        {
+            return (month >= 1 && month <= 12);
+        }
+
+        private bool CheckDay(int day)
+        {
+            return (day >= 1 && day <= 31);
+        }
+
+        private void UpdateDayOfMonth(int initialYear, int initialMonth, int finalYear, int finalMonth)
+        {
+            if (initialDay > 28)
+                initialDay = DateTime.DaysInMonth(initialYear, initialMonth);
+            if (finalDay > 28)
+                finalDay = DateTime.DaysInMonth(finalYear, finalMonth);
         }
 
         #endregion

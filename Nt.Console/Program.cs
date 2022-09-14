@@ -34,9 +34,10 @@ namespace ConsoleApp
                 .UseSessionFilters((filters) =>
                 {
                     filters.AddDateFilters(
-                        initialYear: 2000,
-                        initialMonth: 6,
-                        initialDay: 15
+                        year: 2000,
+                        month: 6,
+                        day: 15,
+                        isInitial: true
                         );
                 })
                 .UseSessionFilters((filters) =>
