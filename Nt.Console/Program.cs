@@ -26,8 +26,6 @@ namespace ConsoleApp
                 .ConfigureProperties((p) =>
                 {
                     p.Calculate = Calculate.OnBarClose;
-                    p.IsOverlay = true;
-                    p.DisplayInDataBox = true;
                 })
                 .UseSessionHoursList((o) =>
                 {

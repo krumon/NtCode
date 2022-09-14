@@ -1,5 +1,4 @@
 ﻿using NinjaTrader.Data;
-using NinjaTrader.Gui.Chart;
 using NinjaTrader.NinjaScript;
 using System;
 
@@ -29,47 +28,24 @@ namespace Nt.Core
         /// <summary>
         /// Represents the ninjascript description.
         /// </summary>
-        public string Description {get; private set;}
+        public string Description {get; protected set;}
 
         /// <summary>
         /// Represents the ninjascript name.
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; protected set; }
 
         /// <summary>
         /// Represents the ninjascript calculate mode.
         /// </summary>
-        public Calculate Calculate { get; private set; }
-
-        /// <summary>
-        /// Indicates if the data is overlay in the graphics.
-        /// </summary>
-        public bool IsOverlay { get; private set; }
-
-        /// <summary>
-        /// Indicates if the ninjascript display in the data box.
-        /// </summary>
-        public bool DisplayInDataBox { get; private set; }
-
-        /// <summary>
-        /// Represents the scale justification of the chart.
-        /// </summary>
-        public ScaleJustification ScaleJustification { get; private set; }
-
-        //Disable this property if your indicator requires custom values that cumulate with each new market data event. 
-        //See Help Guide for additional information.
-        /// <summary>
-        /// Indicates if the ninjascript is suspended when the ninjascript is inactive.
-        /// </summary>
-        public bool IsSuspendedWhileInactive { get; private set; }
+        public Calculate Calculate { get; protected set; }
 
         #endregion
 
         #region State changed methods
 
         /// <summary>
-        /// Method to set default properties
-        /// This method is executed when "ConfigureProperties" methods is raised.
+        /// Method to set default properties in the script in "OnStateChanged.Configure" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript parent object.</param>
         public virtual void SetDefault(NinjaScriptBase ninjascript)
@@ -122,33 +98,12 @@ namespace Nt.Core
 
         #endregion
 
-        #region Public methods
-
-        /// <summary>
-        /// Set <see cref="BaseScript"/> properties from <see cref="ScriptProperties"/>.
-        /// </summary>
-        /// <param name="properties">The ninjascript properties.</param>
-        protected virtual void SetProperties<TProperties>(TProperties properties)
-            where TProperties : ScriptProperties, new()
-        {
-            Description = properties.Description;
-            Name = properties.Name;
-            Calculate = properties.Calculate;
-            IsOverlay = properties.IsOverlay;
-            DisplayInDataBox = properties.DisplayInDataBox;
-            ScaleJustification = properties.ScaleJustification;
-            IsSuspendedWhileInactive = properties.IsSuspendedWhileInactive;
-        }
-
-        #endregion
-
-        #region Private methods
+        #region Protected methods
 
         /// <summary>
         /// Automapper from <see cref="BaseScript"/> to <see cref="NinjaScriptBase"/>.
         /// </summary>
         /// <param name="ninjascript"></param>
-        /// <param name="script"></param>
         protected virtual void SetNinjascriptProperties(NinjaScriptBase ninjascript)
         {
             if (ninjascript == null)
@@ -156,9 +111,6 @@ namespace Nt.Core
 
             ninjascript.Name = Name;
             ninjascript.Calculate = Calculate;
-            ninjascript.IsOverlay = IsOverlay;
-            ninjascript.DisplayInDataBox = DisplayInDataBox;
-            ninjascript.ScaleJustification = ScaleJustification;
         }
 
         #endregion
@@ -170,9 +122,10 @@ namespace Nt.Core
     /// </summary>
     /// <typeparam name="TScript">The ninjascript.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
-    public abstract class BaseScript<TScript, TOptions> : BaseScript
-        where TScript : BaseScript<TScript,TOptions>, new()
+    public abstract class BaseScript<TScript, TOptions, TProperties> : BaseScript
+        where TScript : BaseScript<TScript,TOptions, TProperties>
         where TOptions : BaseOptions, new()
+        where TProperties: ScriptProperties, new()
     {
         #region Protected members
 
@@ -254,8 +207,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="properties"></param>
         /// <returns></returns>
-        public TScript ConfigureProperties<TProperties>(NinjaScriptBase ninjascript, Action<TProperties> properties)
-            where TProperties : ScriptProperties, new()
+        public TScript ConfigureProperties(NinjaScriptBase ninjascript, Action<TProperties> properties)
         {
             // Create default session properties.
             var sessionProperties = new TProperties();
@@ -269,7 +221,6 @@ namespace Nt.Core
             if (ninjascript != null)
             {
                 SetNinjascriptProperties(ninjascript);
-                SetDefault(ninjascript);
             }
 
             return (TScript)this;
@@ -280,8 +231,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public TScript ConfigureProperties<TProperties>(NinjaScriptBase ninjascript, TProperties properties = null)
-            where TProperties : ScriptProperties, new()
+        public TScript ConfigureProperties(NinjaScriptBase ninjascript, TProperties properties = null)
         {
             // If properties is null...create a default prperties...
             if (properties == null)
@@ -292,7 +242,6 @@ namespace Nt.Core
             if (ninjascript != null)
             {
                 SetNinjascriptProperties(ninjascript);
-                SetDefault(ninjascript);
             }
 
             return (TScript)this;
@@ -309,6 +258,21 @@ namespace Nt.Core
         /// <param name="options"></param>
         protected virtual void Mapper(TOptions options)
         {
+        }
+
+        #endregion
+
+        #region Protected methods
+
+        /// <summary>
+        /// Set <see cref="BaseScript"/> properties from <see cref="ScriptProperties"/>.
+        /// </summary>
+        /// <param name="properties">The ninjascript properties.</param>
+        protected virtual void SetProperties(TProperties properties)
+        {
+            Description = properties.Description;
+            Name = properties.Name;
+            Calculate = properties.Calculate;
         }
 
         #endregion

@@ -78,9 +78,10 @@ namespace Nt.Core
     /// </summary>
     /// <typeparam name="TSession">The session type</typeparam>
     /// <typeparam name="TOptions">The session options type to configure the object.</typeparam>
-    public abstract class BaseSession<TSession,TOptions> : BaseScript<TSession,TOptions>
-        where TSession : BaseSession<TSession,TOptions>, new()
+    public abstract class BaseSession<TSession,TOptions,TProperties> : BaseScript<TSession,TOptions, TProperties>
+        where TSession : BaseSession<TSession,TOptions,TProperties>, new()
         where TOptions : BaseOptions, new()
+        where TProperties : ScriptProperties, new()
     {
         #region Market data Delegates
 

@@ -196,18 +196,17 @@ namespace Nt.Core
             //       Add Custom SessionHours existing in the configuration object. 
         }
 
-        public void AddSession(
-            TradingSession sessionType,
-            InstrumentCode instrumentCode = InstrumentCode.Default,
-            int includeInitialBalance = 0,
-            int includeFinalBalance = 0)
+        /// <summary>
+        /// Adds <see cref="TradingSessionInfo"/> list to session hours sessions.
+        /// </summary>
+        /// <param name="sessionsInfo"></param>
+        public void AddSessions(params TradingSessionInfo[] sessionsInfo)
         {
-
-            if (Sessions == null)
-                sessions = new List<TradingSessionInfo>();
-
-            Add(sessionType.ToSessionHours(instrumentCode));
+            foreach (var sessionInfo in sessionsInfo)
+                Sessions.Add(sessionInfo);
         }
+
+
 
         public void Remove(TradingSessionInfo session)
         {
@@ -221,7 +220,6 @@ namespace Nt.Core
 
             if (Sessions.Count == 0)
                 sessions = null;
-
         }
 
         public void Clear()
@@ -238,10 +236,10 @@ namespace Nt.Core
         public override string ToString()
         {
             return 
-                $"N: {N} " +
-                $"| Begin: {BeginTime.ToShortDateString()} {BeginTime.ToLongTimeString()} " +
-                $"| End: {EndTime.ToShortDateString()} {EndTime.ToLongTimeString()} " +
-                $"| {holidayText}";
+                $"N: {N}. {TradingDay} " +
+                $"{BeginTime.ToShortDateString()} at {BeginTime.ToLongTimeString()} --> " +
+                $"{EndTime.ToShortDateString()} at {EndTime.ToLongTimeString()} " +
+                $"{holidayText}";
             
         }
 
@@ -256,6 +254,23 @@ namespace Nt.Core
         #endregion
 
         #region Private methods
+
+        /// <summary>
+        /// Add <see cref="TradingSessionInfo"/> to the session hours sessions in the correct place.
+        /// </summary>
+        /// <param name="sessionType"></param>
+        /// <param name="instrumentCode"></param>
+        /// <param name="includeInitialBalance"></param>
+        /// <param name="includeFinalBalance"></param>
+        private void AddSession(
+            TradingSession sessionType,
+            InstrumentCode instrumentCode = InstrumentCode.Default,
+            int includeInitialBalance = 0,
+            int includeFinalBalance = 0)
+        {
+
+            Sessions.Add(sessionType.ToSessionHours(instrumentCode));
+        }
 
 
         // TODO: Codificar el método "Add" para añadir sesiones conforme al enum TradingSession

@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Nt.Core
 {
-    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions>
+    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions, ScriptProperties>
     {
 
         #region static consts
