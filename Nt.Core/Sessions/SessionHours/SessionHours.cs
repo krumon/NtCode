@@ -236,9 +236,9 @@ namespace Nt.Core
         public override string ToString()
         {
             return 
-                $"N: {N}. {TradingDay} " +
+                $"N: {N}. {TradingDay} \t" +
                 $"{BeginTime.ToShortDateString()} at {BeginTime.ToLongTimeString()} --> " +
-                $"{EndTime.ToShortDateString()} at {EndTime.ToLongTimeString()} " +
+                $"{EndTime.ToShortDateString()} at {EndTime.ToLongTimeString()} \t" +
                 $"{holidayText}";
             
         }

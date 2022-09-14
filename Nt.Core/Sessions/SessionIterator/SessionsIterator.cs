@@ -12,6 +12,12 @@ namespace Nt.Core
     public class SessionsIterator : BaseSession
     {
 
+        #region Test Properties
+
+        public string DisplayDayType { get; set; } 
+
+        #endregion
+
         #region Private members
 
         /// <summary>
@@ -109,8 +115,11 @@ namespace Nt.Core
                 Count++;
 
                 // Check if it's a partial holiday
-                if (!(bars.TradingHours.PartialHolidays.TryGetValue(ActualSessionEnd, out var holidays)))
+                if (!bars.TradingHours.PartialHolidays.TryGetValue(ActualSessionEnd.Date, out partialHoliday))
                     partialHoliday = null;
+
+                // TODO: Remove
+                DisplayDayType = partialHoliday != null ? "Partial Holiday" : "--------------";
 
                 // Create the event args.
                 SessionChangedEventArgs e = new SessionChangedEventArgs

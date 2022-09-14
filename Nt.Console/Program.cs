@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using Nt.Core;
 using System;
@@ -50,7 +51,8 @@ namespace ConsoleApp
                 })
                 .Build(null);
 
-
+            var th = NinjaTrader.Data.TradingHours.Get("CME US Index Futures ETH");
+            var th2 = NinjaTrader.Data.TradingHours.String2TradingHours("CME US Index Futures ETH");
             var s = sessionManager;
             var f = sessionManager.SessionFilters;
             

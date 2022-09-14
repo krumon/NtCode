@@ -52,19 +52,24 @@ namespace Nt.Core
         public bool HasSessionStats => sessionStats != null;
 
         /// <summary>
-        /// Gets the <see cref="SessionHoursList"/> of the main session.
+        /// Gets the <see cref="SessionHoursList"/> of the manager.
         /// </summary>
         public SessionHoursList SessionHours => sessionHoursList;
 
         /// <summary>
-        /// Gets the <see cref="SessionFilters"/> cof the main session.
+        /// Gets the <see cref="SessionFilters"/> cof the manager.
         /// </summary>
         public SessionFilters SessionFilters => sessionFilters;
 
         /// <summary>
-        /// Gets the <see cref="SessionStats"/> of the main session.
+        /// Gets the <see cref="SessionStats"/> of the manager.
         /// </summary>
         public SessionStats SessionStats => sessionStats;
+
+        /// <summary>
+        /// Gets the <see cref="SessionsIterator"/> of the manager.
+        /// </summary>
+        public SessionsIterator SessionsIterator => sessionsIterator;
 
         #endregion
 
@@ -86,7 +91,6 @@ namespace Nt.Core
         /// </summary>
         /// <param name="ninjascript">The ninjascript.</param>
         /// <param name="bars">The bars.</param>
-        /// <param name="o">Any object necesary to load the script.</param>
         public override void Load(NinjaScriptBase ninjascript, Bars bars)
         {
             // Call the parent method to load.
@@ -290,6 +294,18 @@ namespace Nt.Core
         public static SessionsManagerBuilder CreateSessionManagerBuilder()
         {
             return new SessionsManagerBuilder();
+        }
+
+        #endregion
+
+        #region ToString methods
+
+        public override string ToString()
+        {
+            if (HasSessionHours)
+                return sessionHoursList.ToString();
+            else 
+                return $"{nameof(SessionsManager)} is empty";
         }
 
         #endregion
