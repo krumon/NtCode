@@ -121,7 +121,7 @@ namespace Nt.Core
         #region State changed methods
 
         /// <summary>
-        /// Load the <see cref="SessionFilters"/>.
+        /// Loaded <see cref="SessionFilters"/> in "OnStateChanged" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript.</param>
         /// <param name="bars">The bars.</param>

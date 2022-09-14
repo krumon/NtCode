@@ -63,22 +63,22 @@ namespace Nt.Core
         public SessionIterator SessionIterator => sessionIterator;
 
         /// <summary>
-        /// Represents the actual session begin
+        /// Represents the actual session start time converted to the user's configured Time Zone.
         /// </summary>
         public DateTime ActualSessionBegin { get; private set; } = Globals.MinDate;
 
         /// <summary>
-        /// Represents the actual session end.
+        /// Represents the actual session end time converted to the user's configured Time Zone.
         /// </summary>
         public DateTime ActualSessionEnd { get; private set; } = Globals.MinDate;
 
         /// <summary>
-        /// Represents the <see cref="TimeZoneInfo"/> configure on the platform.
+        /// Represents the user's configured <see cref="TimeZoneInfo"/>.
         /// </summary>
         public TimeZoneInfo UserTimeZoneInfo { get; private set; }
 
         /// <summary>
-        /// Represents the <see cref="TimeZoneInfo"/> of the chart bars.
+        /// Represents the bar's configured <see cref="TimeZoneInfo"/>.
         /// </summary>
         public TimeZoneInfo BarsTimeZoneInfo { get; private set; }
 
@@ -88,7 +88,7 @@ namespace Nt.Core
         public int Count { get; private set; }
 
         /// <summary>
-        /// Is true when a new session is added to the sorted session list.
+        /// Is true when a new session bars enter in a new session.
         /// </summary>
         public bool IsNewSession 
         {
@@ -105,7 +105,7 @@ namespace Nt.Core
                 if (!value)
                     return;
 
-                // Update the counter.
+                // Update the number of session counter.
                 Count++;
 
                 // Check if it's a partial holiday
@@ -113,11 +113,12 @@ namespace Nt.Core
                     partialHoliday = null;
 
                 // Create the event args.
-                SessionChangedEventArgs e = new SessionChangedEventArgs 
-                { 
+                SessionChangedEventArgs e = new SessionChangedEventArgs
+                {
                     Idx = this.ninjascript.CurrentBar,
-                    NewSessionBeginTime = this.ActualSessionBegin,
-                    NewSessionEndTime = this.ActualSessionEnd,
+                    N = this.Count,
+                    BeginTime = this.ActualSessionBegin,
+                    EndTime = this.ActualSessionEnd,
                     NewSessionTimeZoneInfo = this.UserTimeZoneInfo,
                     IsPartialHoliday = partialHoliday!= null,
                     IsLateBegin = partialHoliday != null && partialHoliday.IsLateBegin,
@@ -140,27 +141,18 @@ namespace Nt.Core
         {
         }
 
-        /// <summary>
-        /// Create a default instance with parameters of <see cref="SessionsIterator"/>.
-        /// </summary>
-        /// <param name="ninjascript"></param>
-        /// <param name="bars"></param>
-        private SessionsIterator(NinjaScriptBase ninjascript, Bars bars)
-        {
-            this.ninjascript = ninjascript;
-            this.bars = bars;
-            this.sessionIterator = new SessionIterator(bars);
-
-            UserTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
-            BarsTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
-        }
-
         #endregion
 
         #region State Changed methods
 
+        public override void SetDefault(NinjaScriptBase ninjascript)
+        {
+            NinjaTrader.Data.TradingHours.Get("").CopyTo(bars.TradingHours);
+            NinjaTrader.Data.TradingHours.String2TradingHours("").CopyTo(bars.TradingHours);
+        }
+
         /// <summary>
-        /// Load the Script.
+        /// Loaded <see cref="SessionsIterator"/> in "OnStateChanged" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript.</param>
         /// <param name="bars">The bars.</param>
@@ -225,20 +217,25 @@ namespace Nt.Core
         /// <returns></returns>
         public DateTime GetLastBarSessionDate(DateTime time)
         {
+            // Make sure the session is terminated
             if (time <= ActualSessionEnd)
                 return sessionDateTmp;
 
+            // Make sure the bars type are not intraday
             if (!bars.BarsType.IsIntraday)
                 return sessionDateTmp;
 
+            // Get the next session values
             sessionIterator.GetNextSession(time, true);
 
+            // Store the start and final time in user's configured time zone.
             ActualSessionBegin = sessionIterator.ActualSessionBegin;
             ActualSessionEnd = sessionIterator.ActualSessionEnd;
 
+            // Converts the start and end time to bar's configured time zone.
             sessionDateTmp = TimeZoneInfo.ConvertTime(ActualSessionEnd.AddSeconds(-1), UserTimeZoneInfo, BarsTimeZoneInfo);
 
-            // TODO: Esto no lo entiendo.
+            // Store the bar index of the session.
             if (newSessionBarIdx.Count == 0 ||
                 newSessionBarIdx.Count > 0 && ninjascript.CurrentBar > newSessionBarIdx[newSessionBarIdx.Count - 1])
                 newSessionBarIdx.Add(ninjascript.CurrentBar);

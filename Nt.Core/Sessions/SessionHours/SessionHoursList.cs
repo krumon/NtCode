@@ -10,8 +10,7 @@ namespace Nt.Core
     /// </summary>
     public class SessionHoursList : BaseSession<SessionHoursList, SessionHoursListOptions>
     {
-
-        #region Public properties
+        #region Private members
 
         /// <summary>
         /// Represents the last session hours.
@@ -28,6 +27,10 @@ namespace Nt.Core
         /// </summary>
         private List<SessionHours> sessionHoursList;
 
+        #endregion
+
+        #region Public properties
+
         /// <summary>
         /// Gets true if any sessionHoursList are stored.
         /// </summary>
@@ -37,6 +40,33 @@ namespace Nt.Core
         /// Gets the number of <see cref="SessionHours"/> stored.
         /// </summary>
         public int Count => HasSessions ? sessionHoursList.Count : 0;
+
+        /// <summary>
+        /// Gets the actual session.
+        /// </summary>
+        public SessionHours GetActualSession => actualSession;
+
+        /// <summary>
+        /// Gets the last session.
+        /// </summary>
+        public SessionHours GetLastSession => lastSession;
+
+        /// <summary>
+        /// Gets the session stored in the index.
+        /// </summary>
+        /// <param name="sessionsAgo"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public SessionHours this[int sessionsAgo]
+        { 
+            get
+            {
+                if (sessionsAgo >= Count || sessionsAgo < 0)
+                    throw new ArgumentOutOfRangeException(nameof(sessionsAgo));
+
+                return sessionHoursList[Count-1-sessionsAgo];
+            } 
+        }
 
         #endregion
 
@@ -52,7 +82,7 @@ namespace Nt.Core
         #region State changed methods
 
         /// <summary>
-        /// Load the <see cref="SessionFilters"/>.
+        /// Loaded <see cref="SessionHoursList"/> in "OnStateChanged" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript.</param>
         /// <param name="bars">The bars.</param>
@@ -84,15 +114,17 @@ namespace Nt.Core
             // Update actual session
             lastSession = actualSession;
             actualSession = new SessionHours();
-            actualSession.Load(e);
+            actualSession.SetValues(e);
             // TODO: Revisar esta asignación.
-            actualSession.N = Count;
+            actualSession.N = e.N;
 
-            // Add the actual session to the list
+            // if List is null...create the new list.
             if (sessionHoursList == null)
                 sessionHoursList = new List<SessionHours>();
+            // If list is overflow...remove the oldest element
             if (Count >= MaxSessionsToStored)
                 sessionHoursList.Remove(sessionHoursList[0]);
+            // Add to the list the new session
             sessionHoursList.Add(actualSession);
         }
 
@@ -112,14 +144,14 @@ namespace Nt.Core
         /// <summary>
         /// Represent a string with the session stored.
         /// </summary>
-        /// <param name="idx">The session index. 0 is the actual, 1 is the last,...</param>
+        /// <param name="sessionsAgo">The session index. 0 is the actual, 1 is the last,...</param>
         /// <returns>String of the last session stored.</returns>
-        public string ToString(int idx)
+        public string ToString(int sessionsAgo)
         {
-            if (idx < 0 || idx >= Count)
+            if (sessionsAgo < 0 || sessionsAgo >= Count)
                 return "Index is out of range";
 
-            return sessionHoursList[Count - 1 - idx].ToString();
+            return sessionHoursList[Count - 1 - sessionsAgo].ToString();
         }
 
         #endregion

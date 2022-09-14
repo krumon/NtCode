@@ -154,7 +154,7 @@ namespace Nt.Core
         //public virtual void OnTradingSessionsChanged(SessionChangedEventArgs e)
         //{
         //    currentSessions = new SessionHours(); // genericSessionsConfigure, customSessionsConfigure);
-        //    currentSessions.Load(e);
+        //    currentSessions.AddValues(e);
         //    currentSessions.N = Count;
         //    if (sessions == null)
         //        sessions = new List<SessionHours>();

@@ -71,16 +71,16 @@ namespace Nt.Core
         /// Method to set default properties
         /// This method is executed when "ConfigureProperties" methods is raised.
         /// </summary>
-        /// <param name="ninjascript"></param>
+        /// <param name="ninjascript">The ninjascript parent object.</param>
         public virtual void SetDefault(NinjaScriptBase ninjascript)
         {
         }
 
         /// <summary>
-        /// Load the Script.
+        /// Loaded the Script in OnStateChanged method.
         /// </summary>
-        /// <param name="ninjascript">The parent ninjascript.</param>
-        /// <param name="bars">The chart bars object.</param>
+        /// <param name="ninjascript">The parent ninjascript object.</param>
+        /// <param name="bars">The chart bars object loaded.</param>
         public virtual void Load(NinjaScriptBase ninjascript, Bars bars) 
         {
             // Make sure the parameters are not null.
@@ -186,7 +186,7 @@ namespace Nt.Core
         #region State changed methods
 
         /// <summary>
-        /// Load the <see cref="BaseScript"/>.
+        /// AddValues the <see cref="BaseScript"/>.
         /// </summary>
         /// <param name="ninjascript">The parent ninjascript.</param>
         /// <param name="bars">The chart bars object.</param>

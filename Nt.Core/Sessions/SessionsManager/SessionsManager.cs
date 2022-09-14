@@ -82,7 +82,7 @@ namespace Nt.Core
         #region StateChanged methods
 
         /// <summary>
-        /// Load the <see cref="SessionsManager"/>.
+        /// Loaded <see cref="SessionsManager"/> in "OnStateChanged" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript.</param>
         /// <param name="bars">The bars.</param>
@@ -98,7 +98,7 @@ namespace Nt.Core
             if (sessionsIterator == null)
                 sessionsIterator = new SessionsIterator();
 
-            // Load the elements...
+            // AddValues the elements...
             sessionsIterator.Load(ninjascript, bars);
             if (HasSessionFilters)
                 sessionFilters.Load(ninjascript, bars);

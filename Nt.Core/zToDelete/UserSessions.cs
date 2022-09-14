@@ -60,7 +60,7 @@ namespace Nt.Core
     //    public virtual void OnSessionHoursChanged(SessionChangedEventArgs e)
     //    {
     //        currentSessions = new UserSession(genericSessionsConfigure);
-    //        currentSessions.Load(e);
+    //        currentSessions.AddValues(e);
     //        if (sessionHoursList == null)
     //            sessionHoursList = new List<UserSession>();
     //        sessionHoursList.Add(currentSessions);

@@ -11,19 +11,40 @@ namespace Nt.Core
         #region Public properties
 
         /// <summary>
-        /// The element id or index
+        /// The first bar of the session index
         /// </summary>
         public int Idx { get; set; }
 
         /// <summary>
-        /// Represents the actual session begin
+        /// The number of the session.
         /// </summary>
-        public DateTime NewSessionBeginTime { get; set; }
+        public int N { get; set; }
 
         /// <summary>
-        /// Represents the actual session end.
+        /// Represents the actual session begin time.
         /// </summary>
-        public DateTime NewSessionEndTime { get; set; }
+        public DateTime BeginTime { get; set; }
+
+        /// <summary>
+        /// Represents the actual session end time.
+        /// </summary>
+        public DateTime EndTime { get; set; }
+
+        /// <summary>
+        /// Represents the actual session begin <see cref="DayOfWeek"/>.
+        /// </summary>
+        public DayOfWeek BeginDay => BeginTime.DayOfWeek;
+
+        /// <summary>
+        /// Represents the actual session end <see cref="DayOfWeek"/>.
+        /// </summary>
+        public DayOfWeek EndDay => EndTime.DayOfWeek;
+
+        /// <summary>
+        /// Represents the actual session <see cref="DayOfWeek"/>.
+        /// The day represents the <see cref="DayOfWeek"/> of the EndTime./>
+        /// </summary>
+        public DayOfWeek TradingDay => EndTime.DayOfWeek;
 
         /// <summary>
         /// Represents the actual session time zone info.
@@ -55,7 +76,6 @@ namespace Nt.Core
         /// </summary>
         public SessionChangedEventArgs()
         {
-
         }
 
         #endregion

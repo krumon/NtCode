@@ -139,7 +139,7 @@ namespace Nt.Core
     //    /// If the trading hours is in partial partialHoliday, gets the Partial Holiday object, otherwise, partial partialHoliday is null.
     //    /// </summary>
     //    /// <param name="e"></param>
-    //    public void Load(SessionChangedEventArgs e)
+    //    public void AddValues(SessionChangedEventArgs e)
     //    {
     //        Idx = e.Idx;
     //        BeginTime = e.NewSessionBeginTime;

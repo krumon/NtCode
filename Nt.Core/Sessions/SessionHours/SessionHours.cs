@@ -14,19 +14,14 @@ namespace Nt.Core
         #region Private members
 
         /// <summary>
-        /// Represents the generic sessionHoursList configure.
-        /// </summary>
-        private readonly GenericSessionsConfigure genericConfigure;
-
-        /// <summary>
-        /// Represents the custom sessionHoursList configure.
-        /// </summary>
-        private readonly CustomSessionsConfigure customConfigure;
-
-        /// <summary>
-        /// Store the sessionHoursList sessionHoursList.
+        /// Store the minor sessions in the main session.
         /// </summary>
         private List<TradingSessionInfo> sessions;
+
+        /// <summary>
+        /// String that contents the type of day (regular or partial holiday).
+        /// </summary>
+        string holidayText;
 
         #endregion
 
@@ -41,6 +36,22 @@ namespace Nt.Core
         /// The <see cref="DateTime"/> object of the actual ninjatrader session end.
         /// </summary>
         public DateTime EndTime { get; set; }
+
+        /// <summary>
+        /// Represents the actual session begin <see cref="DayOfWeek"/>.
+        /// </summary>
+        public DayOfWeek BeginDay => BeginTime.DayOfWeek;
+
+        /// <summary>
+        /// Represents the actual session end <see cref="DayOfWeek"/>.
+        /// </summary>
+        public DayOfWeek EndDay => EndTime.DayOfWeek;
+
+        /// <summary>
+        /// Represents the actual session <see cref="DayOfWeek"/>.
+        /// The day represents the <see cref="DayOfWeek"/> of the EndTime./>
+        /// </summary>
+        public DayOfWeek TradingDay => EndTime.DayOfWeek;
 
         /// <summary>
         /// Collection of <see cref="TradingSessionInfo"/>.
@@ -60,6 +71,11 @@ namespace Nt.Core
         /// Indicates if the <see cref="SessionHours"/> has sessionHoursList.
         /// </summary>
         public bool HasSessions => Sessions != null && Sessions.Count >= 1;
+
+        /// <summary>
+        /// Indicates if the current time is in session.
+        /// </summary>
+        public bool IsInSession { get;private set; }
 
         /// <summary>
         /// Indicates if the trading hours is a partial partialHoliday.
@@ -92,15 +108,68 @@ namespace Nt.Core
         {
         }
 
+        #endregion
+
+        #region State changed methods
+
         /// <summary>
-        /// Create a default instance of <see cref="SessionHours"/> with configure parameters.
+        /// Method to set default properties
+        /// This method is executed when "ConfigureProperties" methods is raised.
         /// </summary>
-        /// <param name="genericConfigure">The generic sessionHoursList configure object.</param>
-        /// <param name="customConfigure">The custom sessionHoursList configure object.</param>
-        public SessionHours(GenericSessionsConfigure genericConfigure, CustomSessionsConfigure customConfigure)
+        /// <param name="ninjascript">The ninjascript parent object.</param>
+        public override void SetDefault(NinjaScriptBase ninjascript)
         {
-            this.genericConfigure = genericConfigure;
-            this.customConfigure = customConfigure;
+        }
+
+        /// <summary>
+        /// AddValues the <see cref="SessionFilters"/>.
+        /// </summary>
+        /// <param name="ninjascript">The ninjascript parent object.</param>
+        /// <param name="bars">The bars loaded in the graphics.</param>
+        public override void Load(NinjaScriptBase ninjascript, Bars bars)
+        {
+            base.Load(ninjascript, bars);
+        }
+
+        /// <summary>
+        /// Method used to free memory when the script is terminate.
+        /// </summary>
+        public override void Terminated()
+        {
+        }
+
+        #endregion
+
+        #region Market Data methods
+
+        /// <summary>
+        /// Event driven method which is called whenever a bar is updated. 
+        /// The frequency in which OnBarUpdate is called will be determined by the "Calculate" property. 
+        /// OnBarUpdate() is the method where all of your script's core bar based calculation logic should be contained.
+        /// </summary>
+        public override void OnBarUpdate()
+        {
+            if (ninjascript.Time[0] > BeginTime && ninjascript.Time[0] <= EndTime)
+                IsInSession = true;
+        }
+
+        /// <summary>
+        /// Event driven method which is called and guaranteed to be in the correct sequence 
+        /// for every change in level one market data for the underlying instrument. 
+        /// OnMarketData() can include but is not limited to the bid, ask, last price and volume.
+        /// </summary>
+        public override void OnMarketData()
+        {
+            if (ninjascript.Time[0] > BeginTime && ninjascript.Time[0] <= EndTime)
+                IsInSession = true;
+        }
+
+        /// <summary>
+        /// Event driven method which is called for every new session. 
+        /// </summary>
+        /// <param name="e"></param>
+        public override void OnSessionChanged(SessionChangedEventArgs e)
+        {
         }
 
         #endregion
@@ -111,24 +180,27 @@ namespace Nt.Core
         /// If the trading hours is in partial partialHoliday, gets the Partial Holiday object, otherwise, partial partialHoliday is null.
         /// </summary>
         /// <param name="e"></param>
-        public void Load(SessionChangedEventArgs e)
+        public void SetValues(SessionChangedEventArgs e)
         {
             Idx = e.Idx;
-            BeginTime = e.NewSessionBeginTime;
-            EndTime = e.NewSessionEndTime;
+            N = e.N;
+            BeginTime = e.BeginTime;
+            EndTime = e.EndTime;
             IsPartialHoliday = e.IsPartialHoliday;
             IsEarlyEnd = e.IsEarlyEnd;
             IsLateBegin = e.IsLateBegin;
+
+            holidayText = !IsPartialHoliday ? "Regular Day." : IsLateBegin ? "Partial Holiday - Late Begin." : "Partial Holiday - Early End.";
 
             // TODO: Add Generic SessionHours existing in the configuration object. (American, Assian, Custom,...)
             //       Add Custom SessionHours existing in the configuration object. 
         }
 
-        public void AddSession( 
+        public void AddSession(
             TradingSession sessionType,
-             InstrumentCode instrumentCode = InstrumentCode.Default,
-             int includeInitialBalance = 0,
-             int includeFinalBalance = 0)
+            InstrumentCode instrumentCode = InstrumentCode.Default,
+            int includeInitialBalance = 0,
+            int includeFinalBalance = 0)
         {
 
             if (Sessions == null)
@@ -165,9 +237,6 @@ namespace Nt.Core
         /// <returns></returns>
         public override string ToString()
         {
-            string holidayText = !IsPartialHoliday ? 
-                "Regular Day." : IsLateBegin ? 
-                "Partial Holiday - Late Begin." : "Partial Holiday - Early End.";
             return 
                 $"N: {N} " +
                 $"| Begin: {BeginTime.ToShortDateString()} {BeginTime.ToLongTimeString()} " +
@@ -183,10 +252,6 @@ namespace Nt.Core
         //        for (int i = 0; i < SessionHours.Count; i++)
         //            SessionHours[i].Iterator(action);
         //}
-
-        #endregion
-
-        #region Market Data methods
 
         #endregion
 

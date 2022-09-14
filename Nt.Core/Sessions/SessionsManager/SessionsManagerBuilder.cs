@@ -1,5 +1,4 @@
 ﻿using NinjaTrader.NinjaScript;
-using Rules1;
 using System;
 
 namespace Nt.Core
