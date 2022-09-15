@@ -60,14 +60,15 @@ namespace Nt.Core
 
         #region Protected methods
 
-        /// <summary>
-        /// Set <see cref="BaseScript"/> properties from <see cref="ScriptProperties"/>.
-        /// </summary>
-        /// <param name="properties">The ninjascript properties.</param>
-        protected override void SetProperties(IndicatorProperties properties)
+        protected override void Mapper(IndicatorOptions options)
         {
-            // Set the parent properties
-            base.SetProperties(properties);
+            base.Mapper(options);
+        }
+
+        protected override void Mapper(IndicatorProperties properties)
+        {
+            // Mapper the parent properties
+            base.Mapper(properties);
 
             IsOverlay = properties.IsOverlay;
             DisplayInDataBox = properties.DisplayInDataBox;
@@ -92,6 +93,7 @@ namespace Nt.Core
         }
 
         #endregion
+
 
     }
 }

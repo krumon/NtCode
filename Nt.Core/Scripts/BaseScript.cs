@@ -23,25 +23,6 @@ namespace Nt.Core
 
         #endregion
 
-        #region Configure properties
-
-        /// <summary>
-        /// Represents the ninjascript description.
-        /// </summary>
-        public string Description {get; protected set;}
-
-        /// <summary>
-        /// Represents the ninjascript name.
-        /// </summary>
-        public string Name { get; protected set; }
-
-        /// <summary>
-        /// Represents the ninjascript calculate mode.
-        /// </summary>
-        public Calculate Calculate { get; protected set; }
-
-        #endregion
-
         #region State changed methods
 
         /// <summary>
@@ -106,11 +87,6 @@ namespace Nt.Core
         /// <param name="ninjascript"></param>
         protected virtual void SetNinjascriptProperties(NinjaScriptBase ninjascript)
         {
-            if (ninjascript == null)
-                return;
-
-            ninjascript.Name = Name;
-            ninjascript.Calculate = Calculate;
         }
 
         #endregion
@@ -124,7 +100,7 @@ namespace Nt.Core
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
     public abstract class BaseScript<TScript, TOptions, TProperties> : BaseScript
         where TScript : BaseScript<TScript,TOptions, TProperties>
-        where TOptions : BaseOptions, new()
+        where TOptions : ScriptOptions, new()
         where TProperties: ScriptProperties, new()
     {
         #region Protected members
@@ -133,6 +109,20 @@ namespace Nt.Core
         /// Indicates if the session is configured
         /// </summary>
         protected bool isConfigured;
+
+        #endregion
+
+        #region Public properties and options
+
+        /// <summary>
+        /// Gets the script properties
+        /// </summary>
+        public TProperties Properties { get; }
+
+        /// <summary>
+        /// Gets the script options
+        /// </summary>
+        public TOptions Options { get; }
 
         #endregion
 
@@ -207,7 +197,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="properties"></param>
         /// <returns></returns>
-        public TScript ConfigureProperties(NinjaScriptBase ninjascript, Action<TProperties> properties)
+        public TScript Configure(Action<TProperties> properties)
         {
             // Create default session properties.
             var sessionProperties = new TProperties();
@@ -217,11 +207,7 @@ namespace Nt.Core
                 properties.Invoke(sessionProperties);
 
             // Mapper the sesion filters with the session filters properties.
-            SetProperties(sessionProperties);
-            if (ninjascript != null)
-            {
-                SetNinjascriptProperties(ninjascript);
-            }
+            Mapper(sessionProperties);
 
             return (TScript)this;
         }
@@ -231,33 +217,60 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public TScript ConfigureProperties(NinjaScriptBase ninjascript, TProperties properties = null)
+        public TScript Configure(TProperties properties)
         {
             // If properties is null...create a default prperties...
             if (properties == null)
                 properties = new TProperties();
 
-            // Set the properties to ninjatrader.
-            SetProperties(properties);
-            if (ninjascript != null)
-            {
-                SetNinjascriptProperties(ninjascript);
-            }
+            // Set the properties.
+            Mapper(properties);
 
             return (TScript)this;
         }
 
-        #endregion
+        /// <summary>
+        /// Add properties to configure the script.
+        /// </summary>
+        /// <param name="properties"></param>
+        /// <returns></returns>
+        public TScript Configure(Action<TOptions,TProperties> config)
+        {
+            // Create default session properties.
+            var sessionProperties = new TProperties();
+            var sessionOptions = new TOptions();
 
-        #region Public methods
+            // If properties is not null...invoke delegate to update the properties configure by the user.
+            if (config != null)
+                config.Invoke(sessionOptions,sessionProperties);
+
+            // Mapper the sesion filters with the session filters properties.
+            Mapper(sessionOptions);
+            Mapper(sessionProperties);
+
+            return (TScript)this;
+        }
 
         /// <summary>
-        /// Mapper the <see cref="BaseScript"/> from the <see cref="BaseOptions"/>.
+        /// Add properties to configure the script.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="options"></param>
-        protected virtual void Mapper(TOptions options)
+        /// <returns></returns>
+        public TScript Configure(TOptions options, TProperties properties = null)
         {
+            // If options is null...create a default options...
+            if (properties == null)
+                properties = new TProperties();
+
+            // If properties is null...create a default properties...
+            if (properties == null)
+                properties = new TProperties();
+
+            // Set the properties.
+            Mapper(options);
+            Mapper(properties);
+
+            return (TScript)this;
         }
 
         #endregion
@@ -265,14 +278,24 @@ namespace Nt.Core
         #region Protected methods
 
         /// <summary>
-        /// Set <see cref="BaseScript"/> properties from <see cref="ScriptProperties"/>.
+        /// Mapper the <see cref="BaseScript"/> from the <see cref="ScriptOptions"/>.
         /// </summary>
-        /// <param name="properties">The ninjascript properties.</param>
-        protected virtual void SetProperties(TProperties properties)
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        protected virtual void Mapper(TOptions options)
         {
-            Description = properties.Description;
-            Name = properties.Name;
-            Calculate = properties.Calculate;
+        }
+
+        /// <summary>
+        /// Mapper the <see cref="BaseScript"/> from the <see cref="ScriptProperties"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="options"></param>
+        protected virtual void Mapper(TProperties properties)
+        {
+            Properties.Description = properties.Description;
+            Properties.Name = properties.Name;
+            Properties.Calculate = properties.Calculate;
         }
 
         #endregion

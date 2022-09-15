@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace Nt.Core
 {
-    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions, ScriptProperties>
+    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions, SessionFiltersProperties>
     {
 
         #region static consts
@@ -32,12 +32,12 @@ namespace Nt.Core
         /// <summary>
         /// The current date and time.
         /// </summary>
-        private DateTime currentDateTime;
+        private DateTime currentDateTime = DateTime.Now;
 
         /// <summary>
         /// Represents the datetime when the object is initialized.
         /// </summary>
-        private DateTime dateTimeNow;
+        private DateTime startTime = DateTime.Now;
 
         /// <summary>
         /// Flags to indicates if the <see cref="SessionFilters"/> is sessionHoursListIsConfigured.
@@ -51,47 +51,17 @@ namespace Nt.Core
         /// <summary>
         /// Gets if the session is a partial partialHoliday.
         /// </summary>
-        public bool IsPartialHoliday {get; private set;}
+        public bool IsPartialHoliday { get; private set; }
 
         /// <summary>
         /// Indicates if the partial partialHoliday is late begin.
         /// </summary>
-        public bool IsLateBegin { get; private set; } 
+        public bool IsLateBegin { get; private set; }
 
         /// <summary>
         /// Indicates if the partial partialHoliday is early end.
         /// </summary>
         public bool IsEarlyEnd { get; private set; }
-
-        /// <summary>
-        /// Gets if the ninjascript enter in historial data bars.
-        /// </summary>
-        public bool IncludeHistoricalData {get;private set;}
-
-        /// <summary>
-        /// Gets if the ninjascript enter in partial holidays.
-        /// </summary>
-        public bool IncludePartialHolidays { get; private set; }
-
-        /// <summary>
-        /// Gets if the ninjascript enter in partial holidays with late begin.
-        /// </summary>
-        public bool IncludeLateBegin { get; private set; }
-
-        /// <summary>
-        /// Gets if the ninjascript enter in partial holidays with early end.
-        /// </summary>
-        public bool IncludeEarlyEnd { get; private set; }
-
-        /// <summary>
-        /// Gets the minimum date to enter with the ninjascript.
-        /// </summary>
-        public DateTime InitialDate { get; private set; }
-
-        /// <summary>
-        /// Gets the maximum date to enter with the ninjascript.
-        /// </summary>
-        public DateTime FinalDate { get; private set; }
 
         #endregion
 
@@ -102,18 +72,6 @@ namespace Nt.Core
         /// </summary>
         public SessionFilters()
         {
-        }
-
-        /// <summary>
-        /// Create <see cref="SessionFilters"/> instance with parameters.
-        /// </summary>
-        /// <param name="ninjascript"></param>
-        /// <param name="bars"></param>
-        private SessionFilters(NinjaScriptBase ninjascript, Bars bars)
-        {
-            this.ninjascript = ninjascript;
-            this.bars = bars;
-            dateTimeNow = DateTime.Now;
         }
 
         #endregion
@@ -131,7 +89,7 @@ namespace Nt.Core
             base.Load(ninjascript, bars);
 
             // Save now time for the historical data
-            dateTimeNow = DateTime.Now;
+            startTime = DateTime.Now;
 
         }
 
@@ -201,7 +159,7 @@ namespace Nt.Core
         /// <returns>True if the ninjascript pass the filter conditions.</returns>
         public bool CanEntry()
         {
-            return CheckFilters();
+            return Check();
         }
 
         /// <summary>
@@ -213,7 +171,7 @@ namespace Nt.Core
         {
             OnBarUpdate();
 
-            return CheckFilters();
+            return Check();
         }
 
 
@@ -227,23 +185,23 @@ namespace Nt.Core
         /// <param name="options">The <see cref="SessionFiltersOptions"/>.</param>
         protected override void Mapper(SessionFiltersOptions options)
         {
-            IncludeHistoricalData = options.IncludeHistoricalData;
-            IncludePartialHolidays = options.IncludePartialHolidays;
-            IncludeLateBegin = options.IncludeLateBegin;
-            IncludeEarlyEnd = options.IncludeEarlyEnd;
-            FinalDate = options.FinalDate;
-            InitialDate = options.InitialDate;
+            Options.IncludeHistoricalData = options.IncludeHistoricalData;
+            Options.IncludePartialHolidays = options.IncludePartialHolidays;
+            Options.IncludeLateBegin = options.IncludeLateBegin;
+            Options.IncludeEarlyEnd = options.IncludeEarlyEnd;
+            Options.FinalDate = options.FinalDate;
+            Options.InitialDate = options.InitialDate;
         }
 
         /// <summary>
         /// Check the filters.
         /// </summary>
         /// <returns></returns>
-        private bool CheckFilters()
+        public bool Check()
         {
-            bool historicalDataFilter   =   IncludeHistoricalData || currentDateTime > dateTimeNow;
-            bool dateFilter             =   InitialDate >= currentDateTime && FinalDate <= currentDateTime;
-            bool holidaysFilter         =   IncludePartialHolidays == IsPartialHoliday && IncludeEarlyEnd == IsEarlyEnd && IncludeLateBegin == IsLateBegin;
+            bool historicalDataFilter   =   Options.IncludeHistoricalData || currentDateTime > startTime;
+            bool dateFilter             =   Options.InitialDate <= currentDateTime && Options.FinalDate >= currentDateTime;
+            bool holidaysFilter         =   Options.IncludePartialHolidays == IsPartialHoliday && Options.IncludeEarlyEnd == IsEarlyEnd && Options.IncludeLateBegin == IsLateBegin;
             bool dayOfWeekFilters       =   true;
             bool monthOfYearFilters     =   true;
 
@@ -267,12 +225,12 @@ namespace Nt.Core
         /// <param name="options"></param>
         public static void Mapper(SessionFilters session, SessionFiltersOptions options)
         {
-            session.IncludeHistoricalData = options.IncludeHistoricalData;
-            session.IncludePartialHolidays = options.IncludePartialHolidays;
-            session.IncludeLateBegin = options.IncludeLateBegin;
-            session.IncludeEarlyEnd = options.IncludeEarlyEnd;
-            session.FinalDate = options.FinalDate;
-            session.InitialDate = options.InitialDate;
+            session.Options.IncludeHistoricalData = options.IncludeHistoricalData;
+            session.Options.IncludePartialHolidays = options.IncludePartialHolidays;
+            session.Options.IncludeLateBegin = options.IncludeLateBegin;
+            session.Options.IncludeEarlyEnd = options.IncludeEarlyEnd;
+            session.Options.FinalDate = options.FinalDate;
+            session.Options.InitialDate = options.InitialDate;
         }
 
         #endregion

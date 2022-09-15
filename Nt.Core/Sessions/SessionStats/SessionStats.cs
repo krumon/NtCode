@@ -2,7 +2,8 @@
 
 namespace Nt.Core
 {
-    public class SessionStats : BaseSession
+    // TODO: Cambiar los parámetros genéricos
+    public class SessionStats : BaseSession<SessionFilters, SessionFiltersOptions, SessionFiltersProperties>
     {
 
         #region Private members

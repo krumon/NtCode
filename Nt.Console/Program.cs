@@ -1,7 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using Nt.Core;
 using System;
@@ -32,29 +31,33 @@ namespace ConsoleApp
                 {
                     o.MaxSessionsToStored = 100;
                 })
-                .UseSessionFilters((filters) =>
+                .UseSessionFilters((o) =>
                 {
-                    filters.AddDateFilters(
+                    o.AddDateFilters(
                         year: 2000,
                         month: 6,
                         day: 15,
                         isInitial: true
                         );
+                    o.IncludePartialHolidays = false;
                 })
                 .UseSessionFilters((filters) =>
                 {
                     filters.AddDateFilters(
-                        finalYear: 2022,
+                        finalYear: 2023,
                         finalMonth: 9,
                         finalDay: 5
                         );
                 })
                 .Build(null);
 
-            var th = NinjaTrader.Data.TradingHours.Get("CME US Index Futures ETH");
-            var th2 = NinjaTrader.Data.TradingHours.String2TradingHours("CME US Index Futures ETH");
+            //var th = NinjaTrader.Data.TradingHours.Get("CME US Index Futures ETH");
+            //var th2 = NinjaTrader.Data.TradingHours.String2TradingHours("CME US Index Futures ETH");
+
+
             var s = sessionManager;
             var f = sessionManager.SessionFilters;
+            bool check = f.Check();
             
             sessionManager.Load (null,null);
 

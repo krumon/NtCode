@@ -5,7 +5,7 @@ namespace Nt.Core
     /// <summary>
     /// Options to create <see cref="SessionFilters"/> object.
     /// </summary>
-    public class SessionFiltersOptions : BaseOptions
+    public class SessionFiltersOptions : SessionOptions
     {
 
         #region Private members / default values
@@ -145,12 +145,12 @@ namespace Nt.Core
         /// <summary>
         /// Gets the minimum date to enter with the ninjascript.
         /// </summary>
-        public DateTime InitialDate { get { return initialDate; } private set { initialDate = value; } }
+        public DateTime InitialDate { get { return initialDate; } set { initialDate = value; } }
 
         /// <summary>
         /// Gets the maximum date to enter with the ninjascript.
         /// </summary>
-        public DateTime FinalDate { get { return finalDate; } private set { finalDate = value; } }
+        public DateTime FinalDate { get { return finalDate; } set { finalDate = value; } }
 
         #endregion
 

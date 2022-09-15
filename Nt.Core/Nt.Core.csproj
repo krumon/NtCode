@@ -202,6 +202,17 @@
     <Compile Include="Configure\SessionsConfigure.cs" />
     <Compile Include="Files\NtFileType.cs" />
     <Compile Include="Scripts\BaseScript.cs" />
+    <Compile Include="Sessions\Base\SessionConfigure.cs" />
+    <Compile Include="Sessions\Base\SessionProperties.cs" />
+    <Compile Include="Sessions\Base\SessionOptions.cs" />
+    <Compile Include="Sessions\Base\SessionBuilder.cs" />
+    <Compile Include="Sessions\SessionFilters\SessionFiltersProperties.cs" />
+    <Compile Include="Sessions\SessionHours\SessionHoursOptions.cs" />
+    <Compile Include="Sessions\SessionHours\SessionHoursProperties.cs" />
+    <Compile Include="Sessions\SessionHours\SessionHoursListProperties.cs" />
+    <Compile Include="Sessions\SessionIterator\SessionsIteratorProperties.cs" />
+    <Compile Include="Sessions\SessionIterator\SessionsIteratorOptions.cs" />
+    <Compile Include="Sessions\SessionsManager\SessionsManagerProperties.cs" />
     <Compile Include="Strategy\BaseStrategy.cs" />
     <Compile Include="Indicators\BaseIndicator.cs" />
     <Compile Include=".Base\BaseElement.cs" />

@@ -3,7 +3,7 @@
     /// <summary>
     /// The indicator options
     /// </summary>
-    public class IndicatorOptions : BaseOptions
+    public class IndicatorOptions : ScriptOptions
     {
 
     }

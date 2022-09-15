@@ -1,9 +1,9 @@
 ﻿namespace Nt.Core
 {
     /// <summary>
-    /// Options to create <see cref="SessionsManager"/> object.
+    /// Options to create <see cref="SessionsIterator"/> object.
     /// </summary>
-    public class SessionsManagerOptions : SessionOptions
+    public class SessionsIteratorOptions : SessionOptions
     {
         #region Private members / Default values
 

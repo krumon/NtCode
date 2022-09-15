@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the SessionHours of the day trading.
     /// </summary>
-    public class SessionHoursList : BaseSession<SessionHoursList, SessionHoursListOptions, ScriptProperties>
+    public class SessionHoursList : BaseSession<SessionHoursList, SessionHoursListOptions, SessionHoursListProperties>
     {
         #region Private members
 

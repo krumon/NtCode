@@ -9,7 +9,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the trading hours session definition.
     /// </summary>
-    public class SessionsIterator : BaseSession
+    public class SessionsIterator : BaseSession<SessionsIterator, SessionsIteratorOptions, SessionsIteratorProperties>
     {
 
         #region Test Properties

@@ -43,8 +43,8 @@ namespace Nt.Core
         {
             var sessionsManager = new SessionsManager();
 
-            if (scriptProperties != null)
-                sessionsManager.ConfigureProperties(ninjascript, scriptProperties);
+            //if (scriptProperties != null)
+            //    sessionsManager.Configure(scriptProperties);
 
             if (sessionFiltersOptions != null || useSessionFilters)
                 sessionsManager.ConfigureSession(sessionFiltersOptions);
@@ -108,7 +108,7 @@ namespace Nt.Core
             // Add custom properties
             options?.Invoke(sessionHoursListOptions);
 
-            // Update the flag
+            // Update the flag to build default configure
             useSessionHoursList = true;
 
             // return the builder
