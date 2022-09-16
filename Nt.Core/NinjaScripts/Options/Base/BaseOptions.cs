@@ -5,9 +5,9 @@ namespace Nt.Core
     /// <summary>
     /// The base class for all ninjascripts options to configure.
     /// </summary>
-    public abstract class BaseOptions<T,N>
-        where T : BaseOptions<T,N>, new()
-        where N : NinjaScriptBase
+    public abstract class BaseOptions<TOptions,TNinjaScript>
+        where TOptions : BaseOptions<TOptions,TNinjaScript>, new()
+        where TNinjaScript : NinjaScriptBase
     {
 
         #region Public methods
@@ -16,7 +16,7 @@ namespace Nt.Core
         /// Copy options to ninjascript options
         /// </summary>
         /// <param name="options"></param>
-        public virtual void CopyTo(T options)
+        public virtual void CopyTo(TOptions options)
         {
         }
 
@@ -24,7 +24,7 @@ namespace Nt.Core
         /// Copy options to ninjatrader properties
         /// </summary>
         /// <param name="ninjascript"></param>
-        public virtual void CopyTo(N ninjascript)
+        public virtual void CopyTo(TNinjaScript ninjascript)
         {
         }
 

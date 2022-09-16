@@ -6,8 +6,8 @@ namespace Nt.Core
     /// <summary>
     /// The indicator options
     /// </summary>
-    public abstract class BaseStrategyOptions<T> : BaseNinjascriptOptions<T,StrategyBase>
-        where T : BaseStrategyOptions<T>, new()
+    public abstract class BaseStrategyOptions<TOptions> : BaseNinjascriptOptions<TOptions,StrategyBase>
+        where TOptions : BaseStrategyOptions<TOptions>, new()
     {
 
         #region Private members / Default value
@@ -26,7 +26,7 @@ namespace Nt.Core
         /// Copy options to ninjascript options
         /// </summary>
         /// <param name="options"></param>
-        public override void CopyTo(T options)
+        public override void CopyTo(TOptions options)
         {
             // Sets the parent options values.
             base.CopyTo(options);

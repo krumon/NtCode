@@ -212,7 +212,7 @@ namespace ConsoleApp
 
                 if (session == "AM" || session == "AS")
                 {
-                    Console.Write("- Es una sesión residual (Y/N): ");
+                    Console.Write("- Es una sesión residual (Y/TNinjaScript): ");
                     string isResidual = Console.ReadLine().ToUpper().Trim();
 
                     if (isResidual == "Y")

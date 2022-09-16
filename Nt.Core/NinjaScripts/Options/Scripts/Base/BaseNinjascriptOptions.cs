@@ -6,9 +6,9 @@ namespace Nt.Core
     /// <summary>
     /// The script options
     /// </summary>
-    public class BaseNinjascriptOptions<T,N> : BaseOptions<T,N>
-        where T : BaseNinjascriptOptions<T,N>, new()
-        where N : NinjaScriptBase
+    public class BaseNinjascriptOptions<TOptions,TNinjascript> : BaseOptions<TOptions,TNinjascript>
+        where TOptions : BaseNinjascriptOptions<TOptions,TNinjascript>, new()
+        where TNinjascript : NinjaScriptBase
     {
 
         #region Private members / Default values
@@ -65,7 +65,7 @@ namespace Nt.Core
         /// Copy options to ninjascript options
         /// </summary>
         /// <param name="options"></param>
-        public override void CopyTo(T options)
+        public override void CopyTo(TOptions options)
         {
             // Copy the new options
             options.Name = string.IsNullOrEmpty(Name) ? "kRuMoN Script" : Name;
@@ -78,7 +78,7 @@ namespace Nt.Core
         /// Copy options to ninjatrader properties
         /// </summary>
         /// <param name="ninjascript"></param>
-        public override void CopyTo(N ninjascript)
+        public override void CopyTo(TNinjascript ninjascript)
         {
             // Copy the new options
             ninjascript.Name = Name;

@@ -5,12 +5,10 @@ namespace Nt.Core
     /// <summary>
     /// Base class for any ninjascript indicator.
     /// </summary>
-    public abstract class BaseIndicator<TScript, TOptions> : BaseNinjascript<BaseIndicator<TScript, TOptions>, TOptions, IndicatorBase>
+    public abstract class BaseIndicator<TScript, TOptions> : BaseNinjascript<TScript, TOptions, IndicatorBase>
         where TScript : BaseIndicator<TScript, TOptions>, new()
         where TOptions : BaseIndicatorOptions<TOptions>, new()
     {
-
-
 
         #region Configure properties
 
@@ -94,7 +92,6 @@ namespace Nt.Core
         //}
 
         #endregion
-
 
     }
 }

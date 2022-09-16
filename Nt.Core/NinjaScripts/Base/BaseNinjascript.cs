@@ -102,10 +102,10 @@ namespace Nt.Core
     /// </summary>
     /// <typeparam name="TScript">The ninjascript.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
-    public abstract class BaseNinjascript<TScript, TOptions, N> : BaseNinjascript
-        where TScript : BaseNinjascript<TScript,TOptions, N>
-        where TOptions : BaseNinjascriptOptions<TOptions, N>, new()
-        where N : NinjaScriptBase
+    public abstract class BaseNinjascript<TScript, TOptions, TNinjascript> : BaseNinjascript
+        where TScript : BaseNinjascript<TScript,TOptions, TNinjascript>
+        where TOptions : BaseNinjascriptOptions<TOptions, TNinjascript>, new()
+        where TNinjascript : NinjaScriptBase
     {
         #region Protected members
 

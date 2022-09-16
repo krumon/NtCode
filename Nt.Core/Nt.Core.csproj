@@ -195,13 +195,25 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NinjaScripts\Builders\Base\BaseNinjascriptBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Indicators\Base\BaseIndicatorBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Managers\Base\BaseManagerBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Scripts\Base\BaseScriptBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Scripts\Sessions\Base\BaseSessionBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionsIteratorBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionStatsBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionHoursListBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionHoursBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Strategies\Base\BaseStrategyBuilder.cs" />
     <Compile Include="NinjaScripts\Managers\Base\BaseManager.cs" />
     <Compile Include="NinjaScripts\Options\Scripts\Base\BaseNinjascriptOptions.cs" />
     <Compile Include="NinjaScripts\Options\Scripts\Sessions\SessionStatsOptions.cs" />
     <Compile Include="NinjaScripts\Options\Strategies\Base\BaseStrategyOptions.cs" />
     <Compile Include="NinjaScripts\Options\Indicators\Base\BaseIndicatorOptions.cs" />
     <Compile Include="NinjaScripts\Options\Managers\Base\BaseManagerOptions.cs" />
-    <Compile Include="NinjaScripts\Scripts\Base\BaseNinjascript.cs" />
+    <Compile Include="NinjaScripts\Base\BaseNinjascript.cs" />
+    <Compile Include="NinjaScripts\Indicators\Base\BaseIndicator.cs" />
     <Compile Include="zToDelete\Properties\IndicatorProperties.cs" />
     <Compile Include="NinjaScripts\Options\Scripts\Base\BaseScriptOptions.cs" />
     <Compile Include="zToDelete\Properties\ScriptProperties.cs" />
@@ -211,7 +223,7 @@
     <Compile Include="zToDelete\SessionConfigure.cs" />
     <Compile Include="zToDelete\Properties\SessionProperties.cs" />
     <Compile Include="NinjaScripts\Options\Scripts\Sessions\Base\BaseSessionOptions.cs" />
-    <Compile Include="NinjaScripts\Builders\Sessions\SessionBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Managers\SessionBuilder.cs" />
     <Compile Include="zToDelete\Properties\SessionFiltersProperties.cs" />
     <Compile Include="NinjaScripts\Options\Scripts\Sessions\SessionHoursOptions.cs" />
     <Compile Include="zToDelete\Properties\SessionHoursProperties.cs" />
@@ -220,7 +232,6 @@
     <Compile Include="NinjaScripts\Options\Scripts\Sessions\SessionsIteratorOptions.cs" />
     <Compile Include="zToDelete\Properties\SessionsManagerProperties.cs" />
     <Compile Include="NinjaScripts\Strategies\Base\BaseStrategy.cs" />
-    <Compile Include="NinjaScripts\Indicators\Base\BaseIndicator.cs" />
     <Compile Include="NinjaScripts\Base\BaseElement.cs" />
     <Compile Include="Trading\Bars\Bar.cs" />
     <Compile Include="Trading\Patterns\Swing\SwingLevel.cs" />
@@ -298,7 +309,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="NinjaScripts\Builders\Base\" />
     <Folder Include="NinjaScripts\Scripts\Caches\Base\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

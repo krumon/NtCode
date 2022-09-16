@@ -5,8 +5,8 @@ namespace Nt.Core
     /// <summary>
     /// The script options
     /// </summary>
-    public class BaseScriptOptions<T> : BaseNinjascriptOptions<T,NinjaScriptBase>
-        where T : BaseScriptOptions<T>, new()
+    public class BaseScriptOptions<TOptions> : BaseNinjascriptOptions<TOptions,NinjaScriptBase>
+        where TOptions : BaseScriptOptions<TOptions>, new()
     {
 
         #region Private members / Default values
@@ -25,7 +25,7 @@ namespace Nt.Core
         /// Copy options to ninjascript options
         /// </summary>
         /// <param name="options"></param>
-        public override void CopyTo(T options)
+        public override void CopyTo(TOptions options)
         {
             // Copy parent properties
             base.CopyTo(options);
