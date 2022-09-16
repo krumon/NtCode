@@ -4,7 +4,7 @@
     /// Contains the objects to confegure a session
     /// </summary>
     public class SessionConfigure<TOptions, TProperties>
-        where TOptions : SessionOptions, new()
+        where TOptions : BaseSessionOptions<TOptions>, new()
         where TProperties : SessionProperties, new()
     {
         public TOptions Options { get; set; }

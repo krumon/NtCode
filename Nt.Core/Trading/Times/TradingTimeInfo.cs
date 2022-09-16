@@ -6,7 +6,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents a trading time information.
     /// </summary>
-    public class TradingTimeInfo : BaseScript
+    public class TradingTimeInfo : BaseNinjascript
     {
         #region Private members
 
