@@ -204,7 +204,7 @@
     <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionStatsBuilder.cs" />
     <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionHoursListBuilder.cs" />
     <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionHoursBuilder.cs" />
-    <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionBuilder.cs" />
+    <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionFiltersBuilder.cs" />
     <Compile Include="NinjaScripts\Builders\Strategies\Base\BaseStrategyBuilder.cs" />
     <Compile Include="NinjaScripts\Managers\Base\BaseManager.cs" />
     <Compile Include="NinjaScripts\Options\Scripts\Base\BaseNinjascriptOptions.cs" />

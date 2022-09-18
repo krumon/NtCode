@@ -19,13 +19,26 @@ namespace Nt.Core
         /// </summary>
         protected TOptions options;
 
+        public int contador = 36;
+
+        public void Log(string mensaje)
+        {
+            Console.WriteLine("Base Builder Message: " + mensaje);
+        }
+
         #endregion
+
+        public BaseNinjascriptBuilder()
+        {
+            options = new TOptions();
+        }
 
         #region Public methods
 
         /// <summary>
         /// Method to build any script.
         /// </summary>
+        /// <param name="ninjascript">The ninjatrader ninjascript.</param>
         /// <returns>The script object created by the builder.</returns>
         public virtual TScript Build(TNinjascript ninjascript)
         {
@@ -37,6 +50,22 @@ namespace Nt.Core
 
             // Set the default properties or the default actions of the session
             script.SetDefault(ninjascript);
+
+            // Return the script.
+            return script;
+        }
+
+        /// <summary>
+        /// Method to build any script.
+        /// </summary>
+        /// <returns>The script object created by the builder.</returns>
+        public virtual TScript Build()
+        {
+            // Create the script
+            TScript script = new TScript();
+
+            // Configure options
+            script.Configure(options);
 
             // Return the script.
             return script;

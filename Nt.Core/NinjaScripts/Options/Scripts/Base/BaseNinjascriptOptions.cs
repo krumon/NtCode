@@ -40,22 +40,22 @@ namespace Nt.Core
         /// <summary>
         /// Represents the ninjascript description.
         /// </summary>
-        public string Description { get { return description; } private set { description = value; } }
+        public string Description { get { return description; } set { description = value; } }
 
         /// <summary>
         /// Represents the ninjascript name.
         /// </summary>
-        public string Name { get { return name; } private set { name = value; } }
+        public string Name { get { return name; } set { name = value; } }
 
         /// <summary>
         /// Represents the ninjascript calculate mode.
         /// </summary>
-        public Calculate Calculate { get { return calculate; } private set { calculate = value; } }
+        public Calculate Calculate { get { return calculate; } set { calculate = value; } }
 
         /// <summary>
         /// Represents the minimum bars required to plot.
         /// </summary>
-        public int BarsRequiredToPlot { get { return barsRequiredToPlot; } private set { barsRequiredToPlot = value; } }
+        public int BarsRequiredToPlot { get { return barsRequiredToPlot; } set { barsRequiredToPlot = value; } }
 
         #endregion
 

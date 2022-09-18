@@ -20,46 +20,68 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
+            SessionFilters sessionFilters = new SessionFilters();
+
+            SessionFiltersBuilder builder = new SessionFiltersBuilder();
+
+            builder.contador = 12;
+
+            builder.Log("HOLA");
+
+            Wait();
+            //builder.Configure((op) =>
+            //{
+            //    op.Calculate = Calculate.OnEachTick;
+            //});
+
+            //SessionFiltersBuilder sessionFiltersBuilder1 = SessionFilters.CreateBuilder<SessionFiltersBuilder>();
+
+            //sessionFilters = sessionFiltersBuilder.Build();
+
+            //SessionFilters.CreateBuilder<SessionFiltersBuilder>()
+            //.Build(null);
+
+
+
             // OnStateChanged => State.Configure
-            SessionsManager sessionManager =
-                SessionsManager.CreateSessionManagerBuilder()
-                .ConfigureProperties((p) =>
-                {
-                    p.Calculate = Calculate.OnBarClose;
-                })
-                .UseSessionHoursList((o) =>
-                {
-                    o.MaxSessionsToStored = 100;
-                })
-                .UseSessionFilters((o) =>
-                {
-                    o.AddDateFilters(
-                        year: 2000,
-                        month: 6,
-                        day: 15,
-                        isInitial: true
-                        );
-                    o.IncludePartialHolidays = false;
-                })
-                .UseSessionFilters((filters) =>
-                {
-                    filters.AddDateFilters(
-                        finalYear: 2023,
-                        finalMonth: 9,
-                        finalDay: 5
-                        );
-                })
-                .Build(null);
+            //SessionsManager sessionManager =
+            //    SessionsManager.CreateSessionManagerBuilder()
+            //    .ConfigureProperties((p) =>
+            //    {
+            //        p.Calculate = Calculate.OnBarClose;
+            //    })
+            //    .UseSessionHoursList((o) =>
+            //    {
+            //        o.MaxSessionsToStored = 100;
+            //    })
+            //    .UseSessionFilters((o) =>
+            //    {
+            //        o.AddDateFilters(
+            //            year: 2000,
+            //            month: 6,
+            //            day: 15,
+            //            isInitial: true
+            //            );
+            //        o.IncludePartialHolidays = false;
+            //    })
+            //    .UseSessionFilters((filters) =>
+            //    {
+            //        filters.AddDateFilters(
+            //            finalYear: 2023,
+            //            finalMonth: 9,
+            //            finalDay: 5
+            //            );
+            //    })
+            //    .Build(null);
 
             //var th = NinjaTrader.Data.TradingHours.Get("CME US Index Futures ETH");
             //var th2 = NinjaTrader.Data.TradingHours.String2TradingHours("CME US Index Futures ETH");
 
+            //var s = sessionManager;
+            //var f = sessionManager.SessionFilters;
+            //bool check = f.Check();
 
-            var s = sessionManager;
-            var f = sessionManager.SessionFilters;
-            bool check = f.Check();
-            
-            sessionManager.Load (null,null);
+            //sessionManager.Load (null,null);
 
             Wait();
 
