@@ -6,10 +6,9 @@ namespace Nt.Core
     /// <summary>
     /// The base class to ninjascript builders
     /// </summary>
-    public abstract class BaseNinjascriptBuilder<TScript, TOptions, TNinjascript>
-        where TScript : BaseNinjascript<TScript, TOptions, TNinjascript>, new()
-        where TOptions : BaseNinjascriptOptions<TOptions, TNinjascript>, new()
-        where TNinjascript : NinjaScriptBase
+    public abstract class BaseNinjascriptBuilder<TScript, TOptions>
+        where TScript : BaseNinjascript<TScript, TOptions>, new()
+        where TOptions : BaseNinjascriptOptions<TOptions>, new()
     {
 
         #region Protected members
@@ -19,19 +18,7 @@ namespace Nt.Core
         /// </summary>
         protected TOptions options;
 
-        public int contador = 36;
-
-        public void Log(string mensaje)
-        {
-            Console.WriteLine("Base Builder Message: " + mensaje);
-        }
-
         #endregion
-
-        public BaseNinjascriptBuilder()
-        {
-            options = new TOptions();
-        }
 
         #region Public methods
 
@@ -40,7 +27,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="ninjascript">The ninjatrader ninjascript.</param>
         /// <returns>The script object created by the builder.</returns>
-        public virtual TScript Build(TNinjascript ninjascript)
+        public virtual TScript Build(NinjaScriptBase ninjascript)
         {
             // Create the script
             TScript script = new TScript();
@@ -76,7 +63,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="op">Delegate method with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        public BaseNinjascriptBuilder<TScript, TOptions, TNinjascript> Configure(Action<TOptions> op)
+        public BaseNinjascriptBuilder<TScript, TOptions> Configure(Action<TOptions> op)
         {
             // Create default options to rewriter the new properties passed by the options object.
             if (options == null)
@@ -94,7 +81,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="op"><see cref="TOptions"/> object with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        public BaseNinjascriptBuilder<TScript, TOptions, TNinjascript>Configure(TOptions op)
+        public BaseNinjascriptBuilder<TScript, TOptions>Configure(TOptions op)
         {
             // Create default options to rewriter the new properties passed by the options object.
             if (options == null)

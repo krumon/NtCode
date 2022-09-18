@@ -6,9 +6,8 @@ namespace Nt.Core
     /// <summary>
     /// The script options
     /// </summary>
-    public class BaseNinjascriptOptions<TOptions,TNinjascript> : BaseOptions<TOptions,TNinjascript>
-        where TOptions : BaseNinjascriptOptions<TOptions,TNinjascript>, new()
-        where TNinjascript : NinjaScriptBase
+    public abstract class BaseNinjascriptOptions<TOptions> : BaseOptions<TOptions>
+        where TOptions : BaseNinjascriptOptions<TOptions>, new()
     {
 
         #region Private members / Default values
@@ -16,12 +15,12 @@ namespace Nt.Core
         /// <summary>
         /// Represents the ninjascript description.
         /// </summary>
-        private string description = @"Script created by kRuMoN.";
+        private string description;
 
         /// <summary>
         /// Represents the ninjascript name.
         /// </summary>
-        private string name = "kRuMoN Script";
+        private string name;
 
         /// <summary>
         /// Represents the ninjascript calculate mode.
@@ -72,18 +71,6 @@ namespace Nt.Core
             options.Description = string.IsNullOrEmpty(Description) ? @"Script created by kRuMoN." : Description;
             options.Calculate = Calculate;
             options.BarsRequiredToPlot = BarsRequiredToPlot;
-        }
-
-        /// <summary>
-        /// Copy options to ninjatrader properties
-        /// </summary>
-        /// <param name="ninjascript"></param>
-        public override void CopyTo(TNinjascript ninjascript)
-        {
-            // Copy the new options
-            ninjascript.Name = Name;
-            ninjascript.Calculate = Calculate;
-            ninjascript.BarsRequiredToPlot = BarsRequiredToPlot;
         }
 
         #endregion

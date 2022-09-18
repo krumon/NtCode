@@ -6,7 +6,7 @@ namespace Nt.Core
     /// <summary>
     /// The indicator options
     /// </summary>
-    public abstract class BaseIndicatorOptions<TOptions> : BaseNinjascriptOptions<TOptions,IndicatorBase>
+    public abstract class BaseIndicatorOptions<TOptions> : BaseNinjascriptOptions<TOptions>
         where TOptions : BaseIndicatorOptions<TOptions>, new()
     {
 
@@ -127,9 +127,13 @@ namespace Nt.Core
         /// Copy options to ninjatrader indicator properties
         /// </summary>
         /// <param name="ninjascript"></param>
-        public sealed override void CopyTo(IndicatorBase ninjascript)
+        public void CopyTo(IndicatorBase ninjascript)
         {
-            base.CopyTo(ninjascript);
+            // Ninjascript properties
+            ninjascript.Name = Name;
+            ninjascript.Calculate = Calculate;
+            ninjascript.BarsRequiredToPlot = BarsRequiredToPlot;
+            // Indicator properties
             ninjascript.IsOverlay = IsOverlay;
             ninjascript.DisplayInDataBox = DisplayInDataBox;
             ninjascript.ScaleJustification = ScaleJustification;

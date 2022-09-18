@@ -1,11 +1,12 @@
 ﻿using NinjaTrader.NinjaScript;
+using System.Xml.Linq;
 
 namespace Nt.Core
 {
     /// <summary>
     /// The script options
     /// </summary>
-    public class BaseScriptOptions<TOptions> : BaseNinjascriptOptions<TOptions,NinjaScriptBase>
+    public class BaseScriptOptions<TOptions> : BaseNinjascriptOptions<TOptions>
         where TOptions : BaseScriptOptions<TOptions>, new()
     {
 
@@ -36,11 +37,12 @@ namespace Nt.Core
         /// Copy options to ninjatrader properties
         /// </summary>
         /// <param name="ninjascript"></param>
-        public sealed override void CopyTo(NinjaScriptBase ninjascript)
+        public void CopyTo(NinjaScriptBase ninjascript)
         {
-            // Copy parent properties
-            base.CopyTo((NinjaScriptBase)ninjascript);
-
+            // Copy the new options
+            ninjascript.Name = Name;
+            ninjascript.Calculate = Calculate;
+            ninjascript.BarsRequiredToPlot = BarsRequiredToPlot;
         }
 
         #endregion
