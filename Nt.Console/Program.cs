@@ -91,10 +91,10 @@ namespace ConsoleApp
 
         }
 
-        public static void SessionOptions(SessionsManagerOptions options)
-        {
-            options.MaxSessionsToStored = 100;
-        }
+        //public static void SessionOptions(SessionsManagerOptions options)
+        //{
+        //    options.MaxSessionsToStored = 100;
+        //}
 
         public static async Task HostingTest()
         {

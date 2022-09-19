@@ -8,7 +8,7 @@ namespace Nt.Core
     /// </summary>
     /// <typeparam name="TSession">The session type</typeparam>
     /// <typeparam name="TOptions">The session options type to configure the object.</typeparam>
-    public abstract class BaseSession<TSession,TOptions> : BaseScript<TSession,TOptions>
+    public abstract class BaseSession<TSession,TOptions> : BaseScript<TSession,TOptions>, ISession
         where TSession : BaseSession<TSession,TOptions>, new()
         where TOptions : BaseSessionOptions<TOptions>, new()
     {

@@ -9,7 +9,7 @@ namespace Nt.Core
     /// </summary>
     /// <typeparam name="TScript">The ninjascript.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
-    public abstract class BaseScript<TScript, TOptions> : BaseNinjascript<TScript,TOptions>
+    public abstract class BaseScript<TScript, TOptions> : BaseNinjascript<TScript,TOptions>, IScript
         where TScript : BaseScript<TScript,TOptions>, new()
         where TOptions : BaseScriptOptions<TOptions>, new()
     {

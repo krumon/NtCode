@@ -1,6 +1,7 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using System;
+using System.Collections.Generic;
 
 namespace Nt.Core
 {
@@ -34,7 +35,21 @@ namespace Nt.Core
 
         #endregion
 
+        #region Protected members
+
+        /// <summary>
+        /// Nijascripts collection
+        /// </summary>
+        protected new List<ISession> scripts;
+
+        #endregion
+
         #region Public Properties
+
+        /// <summary>
+        /// Gets the configured sessions.
+        /// </summary>
+        public List<ISession> Sessions => scripts;
 
         /// <summary>
         /// Gets true if any sessionHoursList are stored.
@@ -287,14 +302,16 @@ namespace Nt.Core
 
         #region Extension methods
         
+        
+
         /// <summary>
         /// Create <see cref="SessionsManagerBuilder"/> to build <see cref="SessionsManager"/> object.
         /// </summary>
         /// <returns></returns>
-        public static SessionsManagerBuilder CreateSessionManagerBuilder()
-        {
-            return new SessionsManagerBuilder();
-        }
+        //public static SessionsManagerBuilder CreateSessionManagerBuilder()
+        //{
+        //    return new SessionsManagerBuilder();
+        //}
 
         #endregion
 

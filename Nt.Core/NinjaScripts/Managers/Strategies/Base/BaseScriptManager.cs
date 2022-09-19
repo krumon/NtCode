@@ -13,10 +13,8 @@ namespace Nt.Core
     /// </summary>
     /// <typeparam name="TScript">The ninjascript.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
-    public abstract class BaseStrategiesManager<TScript, TOptions, TManagerScript, TManagerOptions> : BaseStrategy<TScript,TOptions>
-        where TScript : BaseStrategy<TScript, TOptions>, new()
-        where TOptions : BaseStrategyOptions<TOptions>, new()
-        where TManagerScript : BaseStrategiesManager<TScript, TOptions, TManagerScript, TManagerOptions>, new()
+    public abstract class BaseStrategiesManager<TManagerScript, TManagerOptions> : BaseStrategy<TManagerScript, TManagerOptions>
+        where TManagerScript : BaseStrategiesManager<TManagerScript, TManagerOptions>, new()
         where TManagerOptions : BaseStrategiesManagerOptions<TManagerOptions>, new()
     {
         #region Protected members
@@ -24,7 +22,7 @@ namespace Nt.Core
         /// <summary>
         /// Nijascripts collection
         /// </summary>
-        protected List<TScript> scripts;
+        protected List<IScript> scripts;
 
         #endregion
 
@@ -65,10 +63,10 @@ namespace Nt.Core
         /// </summary>
         /// <param name="script"></param>
         public void Add<T>(T script)
-            where T : TScript, new()
+            where T : IScript, new()
         {
             if (scripts == null)
-                scripts = new List<TScript>();
+                scripts = new List<IScript>();
 
             scripts.Add(script);
         }
@@ -79,7 +77,7 @@ namespace Nt.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="script"></param>
         public void Remove<T>(T script)
-            where T : TScript, new()
+            where T : IScript, new()
         {
             if (scripts == null)
                 return;
@@ -92,8 +90,8 @@ namespace Nt.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="script"></param>
         /// <returns></returns>
-        public TScript Get<T>(T script)
-            where T : TScript, new()
+        public IScript Get<T>(T script)
+            where T : IScript, new()
         {
             if (scripts == null)
                 if (scripts.Contains(script))

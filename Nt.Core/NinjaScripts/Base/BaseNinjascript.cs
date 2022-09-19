@@ -8,9 +8,9 @@ namespace Nt.Core
     /// <summary>
     /// Base class for any ninjascript.
     /// </summary>
-    public abstract class BaseNinjascript : BaseElement
+    public abstract class BaseNinjascript : BaseElement, INinjascript
     {
-        #region Protected members
+        #region Private members
 
         /// <summary>
         /// The ninjascript parent of the class.
@@ -21,6 +21,20 @@ namespace Nt.Core
         /// The bars of the chart control.
         /// </summary>
         protected Bars bars;
+
+        #region Public properties
+
+        /// <summary>
+        /// The ninjascript parent of the class.
+        /// </summary>
+        public NinjaScriptBase Ninjascript => ninjascript;
+
+        /// <summary>
+        /// The bars of the chart control.
+        /// </summary>
+        public Bars Bars => bars;
+
+        #endregion
 
         #endregion
 

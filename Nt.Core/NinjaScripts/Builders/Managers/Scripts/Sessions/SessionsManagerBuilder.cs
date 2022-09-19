@@ -1,4 +1,5 @@
-﻿using NinjaTrader.NinjaScript;
+﻿using NinjaTrader.Data;
+using NinjaTrader.NinjaScript;
 using System;
 
 namespace Nt.Core
@@ -6,7 +7,7 @@ namespace Nt.Core
     /// <summary>
     /// <see cref="SessionsManager"/> builder.
     /// </summary>
-    public class SessionsManagerBuilder
+    public class SessionsManagerBuilder : BaseScriptsManagerBuilder<SessionsManager,SessionsManagerOptions>
     {
         /// <summary>
         /// Store the <see cref="ScriptProperties"/>.
