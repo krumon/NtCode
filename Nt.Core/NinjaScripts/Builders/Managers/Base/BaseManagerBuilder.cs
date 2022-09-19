@@ -8,7 +8,7 @@ namespace Nt.Core
     /// The base class to script builders
     /// </summary>
     public abstract class BaseManagerBuilder<TScript,TOptions> : BaseScriptBuilder<TScript,TOptions>
-        where TScript : BaseManager<TScript,TOptions>, new()
+        where TScript : BaseNinjascriptsManager<TScript,TOptions>, new()
         where TOptions : BaseManagerOptions<TOptions>, new()
     {
 

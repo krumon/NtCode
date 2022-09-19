@@ -39,10 +39,7 @@ namespace Nt.Core
         /// <param name="ninjascript"></param>
         public void CopyTo(NinjaScriptBase ninjascript)
         {
-            // Copy the new options
-            ninjascript.Name = Name;
-            ninjascript.Calculate = Calculate;
-            ninjascript.BarsRequiredToPlot = BarsRequiredToPlot;
+            CopyToNinjascript(ninjascript);
         }
 
         #endregion

@@ -195,6 +195,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NinjaScripts\Base\BaseNinjascriptsManager.cs" />
     <Compile Include="NinjaScripts\Builders\Base\BaseNinjascriptBuilder.cs" />
     <Compile Include="NinjaScripts\Builders\Indicators\Base\BaseIndicatorBuilder.cs" />
     <Compile Include="NinjaScripts\Builders\Managers\Base\BaseManagerBuilder.cs" />
@@ -206,8 +207,14 @@
     <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionHoursBuilder.cs" />
     <Compile Include="NinjaScripts\Builders\Scripts\Sessions\SessionFiltersBuilder.cs" />
     <Compile Include="NinjaScripts\Builders\Strategies\Base\BaseStrategyBuilder.cs" />
-    <Compile Include="NinjaScripts\Managers\Base\BaseManager.cs" />
+    <Compile Include="NinjaScripts\Managers\Indicators\Base\BaseIndicatorsManager.cs" />
+    <Compile Include="NinjaScripts\Managers\Scripts\Base\BaseScriptsManager.cs" />
+    <Compile Include="NinjaScripts\Managers\Strategies\Base\BaseScriptManager.cs" />
+    <Compile Include="NinjaScripts\Options\Base\BaseNinjascriptsManagerOptions.cs" />
     <Compile Include="NinjaScripts\Options\Base\BaseNinjascriptOptions.cs" />
+    <Compile Include="NinjaScripts\Options\Managers\Indicators\Base\BaseIndicatorsManagerOptions.cs" />
+    <Compile Include="NinjaScripts\Options\Managers\Scripts\Base\BaseScriptsManagerOptions.cs" />
+    <Compile Include="NinjaScripts\Options\Managers\Strategies\Base\BaseStrategiesManagerOptions.cs" />
     <Compile Include="NinjaScripts\Options\Scripts\Sessions\SessionStatsOptions.cs" />
     <Compile Include="NinjaScripts\Options\Strategies\Base\BaseStrategyOptions.cs" />
     <Compile Include="NinjaScripts\Options\Indicators\Base\BaseIndicatorOptions.cs" />
@@ -255,7 +262,7 @@
     <Compile Include="NinjaScripts\Scripts\Sessions\SessionHoursList.cs" />
     <Compile Include="NinjaScripts\Options\Scripts\Sessions\SessionHoursListOptions.cs" />
     <Compile Include="NinjaScripts\Builders\Managers\SessionsManagerBuilder.cs" />
-    <Compile Include="NinjaScripts\Options\Managers\SessionsManagerOptions.cs" />
+    <Compile Include="NinjaScripts\Options\Managers\Scripts\SessionsManagerOptions.cs" />
     <Compile Include="zToDelete\NtSessionHours.cs" />
     <Compile Include="zToDelete\BalanceSessionHelpers.cs" />
     <Compile Include="Trading\Sessions\TradingSessionHelpers.cs" />
@@ -265,7 +272,7 @@
     <Compile Include="zToDelete\UserSession.cs" />
     <Compile Include="Trading\Times\TradingTimeHelpers.cs" />
     <Compile Include="Users\UserAccount.cs" />
-    <Compile Include="NinjaScripts\Managers\Sessions\SessionsManager.cs" />
+    <Compile Include="NinjaScripts\Managers\Scripts\Sessions\SessionsManager.cs" />
     <Compile Include="Users\UserSettings.cs" />
     <Compile Include="zToDelete\BalanceSession.cs" />
     <Compile Include="NinjaScripts\Scripts\Sessions\SessionStats.cs" />

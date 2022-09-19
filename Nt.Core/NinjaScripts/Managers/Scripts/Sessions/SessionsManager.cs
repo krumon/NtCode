@@ -7,7 +7,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents consts, fields and properties of the Ninjatrader user configuration.
     /// </summary>
-    public class SessionsManager : BaseManager<SessionsManager, SessionsManagerOptions>
+    public class SessionsManager : BaseScriptsManager<SessionsManager, SessionsManagerOptions>
     {
 
         #region Private members

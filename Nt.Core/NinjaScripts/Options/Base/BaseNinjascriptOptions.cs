@@ -73,6 +73,14 @@ namespace Nt.Core
             options.BarsRequiredToPlot = BarsRequiredToPlot;
         }
 
+        protected void CopyToNinjascript(NinjaScriptBase ninjascript)
+        {
+            // Copy the new options
+            ninjascript.Name = Name;
+            ninjascript.Calculate = Calculate;
+            ninjascript.BarsRequiredToPlot = BarsRequiredToPlot;
+        }
+
         #endregion
 
     }

@@ -130,9 +130,7 @@ namespace Nt.Core
         public void CopyTo(IndicatorBase ninjascript)
         {
             // Ninjascript properties
-            ninjascript.Name = Name;
-            ninjascript.Calculate = Calculate;
-            ninjascript.BarsRequiredToPlot = BarsRequiredToPlot;
+            CopyToNinjascript(ninjascript);
             // Indicator properties
             ninjascript.IsOverlay = IsOverlay;
             ninjascript.DisplayInDataBox = DisplayInDataBox;
