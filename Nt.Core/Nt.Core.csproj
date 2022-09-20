@@ -222,7 +222,7 @@
     <Compile Include="NinjaScripts\Options\Managers\Indicators\Base\BaseIndicatorsManagerOptions.cs" />
     <Compile Include="NinjaScripts\Options\Managers\Scripts\Base\BaseScriptsManagerOptions.cs" />
     <Compile Include="NinjaScripts\Options\Managers\Strategies\Base\BaseStrategiesManagerOptions.cs" />
-    <Compile Include="NinjaScripts\Options\Scripts\Base\NinjascriptOptions.cs" />
+    <Compile Include="NinjaScripts\Options\Scripts\Base\ScriptOptions.cs" />
     <Compile Include="NinjaScripts\Options\Scripts\Sessions\SessionStatsOptions.cs" />
     <Compile Include="NinjaScripts\Options\Strategies\Base\BaseStrategyOptions.cs" />
     <Compile Include="NinjaScripts\Options\Indicators\Base\BaseIndicatorOptions.cs" />

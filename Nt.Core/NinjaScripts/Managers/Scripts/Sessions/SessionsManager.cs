@@ -42,6 +42,8 @@ namespace Nt.Core
         /// </summary>
         protected new List<ISession> scripts;
 
+        protected Dictionary<Type, ISession> sessions = new Dictionary<Type, ISession>();
+
         #endregion
 
         #region Public Properties
@@ -238,6 +240,24 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
+        public SessionsManager ConfigureSession<TScript,TOptions>(Action<TOptions> options = null)
+            where TScript : BaseSession<TScript, TOptions>, new()
+            where TOptions : BaseSessionOptions<TOptions>, new()
+        {
+            TScript script;
+            if (!sessions.ContainsKey(typeof(TScript)))
+            {
+                sessions.Add(typeof(TScript), new TScript());
+                script = new TScript();
+            }
+            else
+                script = (TScript)sessions[typeof(TScript)];
+
+            script.Configure(options);
+
+            return this;
+        }
+
         public SessionsManager ConfigureSession<TOptions>(Action<TOptions> options = null)
             where TOptions : SessionsManagerOptions, new()
         {
