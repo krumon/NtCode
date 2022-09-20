@@ -22,4 +22,7 @@ namespace Nt.Core
         #endregion
 
     }
+
+
+}
 }

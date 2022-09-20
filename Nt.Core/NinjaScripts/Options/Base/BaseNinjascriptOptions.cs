@@ -73,6 +73,20 @@ namespace Nt.Core
             options.BarsRequiredToPlot = BarsRequiredToPlot;
         }
 
+        /// <summary>
+        /// Copy options to ninjascript options
+        /// </summary>
+        /// <param name="options"></param>
+        public virtual void CopyTo<TScript>(TScript script, TOptions options)
+            where TScript : BaseNinjascript<TScript, TOptions>, new()
+        {
+            // Copy the new options
+            script.Options.Name = string.IsNullOrEmpty(Name) ? "kRuMoN Script" : Name;
+            script.Options.Description = string.IsNullOrEmpty(Description) ? @"Script created by kRuMoN." : Description;
+            script.Options.Calculate = Calculate;
+            script.Options.BarsRequiredToPlot = BarsRequiredToPlot;
+        }
+
         protected void CopyToNinjascript(NinjaScriptBase ninjascript)
         {
             // Copy the new options
@@ -84,4 +98,5 @@ namespace Nt.Core
         #endregion
 
     }
+
 }
