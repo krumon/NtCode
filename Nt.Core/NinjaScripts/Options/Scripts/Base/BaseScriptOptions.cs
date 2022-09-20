@@ -6,7 +6,7 @@ namespace Nt.Core
     /// <summary>
     /// The script options
     /// </summary>
-    public class BaseScriptOptions<TOptions> : BaseNinjascriptOptions<TOptions>
+    public class BaseScriptOptions<TOptions> : BaseNinjascriptOptions<TOptions>, IScriptOptions<TOptions>
         where TOptions : BaseScriptOptions<TOptions>, new()
     {
 
@@ -45,4 +45,16 @@ namespace Nt.Core
         #endregion
 
     }
+
+    /// <summary>
+    /// The script options
+    /// </summary>
+    public class ScriptOptions : BaseScriptOptions<ScriptOptions>, IScriptOptions
+    {
+        public void CopyTo(IScriptOptions options)
+        {
+            base.CopyTo((ScriptOptions)options);
+        }
+    }
+
 }

@@ -4,6 +4,35 @@ using System;
 
 namespace Nt.Core
 {
+
+    /// <summary>
+    /// Interface for any ninjascript
+    /// </summary>
+    public interface INinjascript<TScript,TOptions> : IElement, INinjascript
+        where TScript : INinjascript<TScript,TOptions>
+        where TOptions : INinjascriptOptions<TOptions>
+    {
+
+        #region Configure methods
+
+        /// <summary>
+        /// Configure options into the script.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        TScript Configure(Action<TOptions> options);
+
+        /// <summary>
+        /// Add properties to configure the script.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        TScript Configure(TOptions options);
+
+        #endregion
+
+    }
+
     /// <summary>
     /// Interface for any ninjascript
     /// </summary>

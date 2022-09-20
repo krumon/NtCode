@@ -7,4 +7,12 @@
         where TOptions : BaseNinjascriptsManagerOptions<TOptions>, new()
     {
     }
+
+    /// <summary>
+    /// The ninjascripts manager options
+    /// </summary>
+    public class NinjascriptsManagerOptions : BaseNinjascriptsManagerOptions<NinjascriptsManagerOptions>
+    {
+    }
+
 }

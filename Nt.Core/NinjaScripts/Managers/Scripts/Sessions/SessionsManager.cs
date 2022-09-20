@@ -241,17 +241,15 @@ namespace Nt.Core
         /// <param name="options"></param>
         /// <returns></returns>
         public SessionsManager ConfigureSession<TScript,TOptions>(Action<TOptions> options = null)
-            where TScript : BaseSession<TScript, TOptions>, new()
+            where TScript : BaseSession<TScript,TOptions>, new()
             where TOptions : BaseSessionOptions<TOptions>, new()
         {
             TScript script;
+
             if (!sessions.ContainsKey(typeof(TScript)))
-            {
                 sessions.Add(typeof(TScript), new TScript());
-                script = new TScript();
-            }
-            else
-                script = (TScript)sessions[typeof(TScript)];
+            
+            script = (TScript)sessions[typeof(TScript)];
 
             script.Configure(options);
 

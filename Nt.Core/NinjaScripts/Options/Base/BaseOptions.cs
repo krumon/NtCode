@@ -5,7 +5,7 @@ namespace Nt.Core
     /// <summary>
     /// The base class for all ninjascripts options to configure.
     /// </summary>
-    public abstract class BaseOptions<TOptions>
+    public abstract class BaseOptions<TOptions> : BaseElement, IOptions<TOptions>
         where TOptions : BaseOptions<TOptions>, new()
     {
 
@@ -23,5 +23,15 @@ namespace Nt.Core
 
     }
 
+    /// <summary>
+    /// The base class for all ninjascripts options to configure.
+    /// </summary>
+    public class Options : BaseOptions<Options>, IOptions
+    {
+        public void CopyTo(IOptions options)
+        {
+            base.CopyTo((Options)options);
+        }
+    }
 
 }

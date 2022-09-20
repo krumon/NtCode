@@ -3,8 +3,19 @@
     /// <summary>
     /// The generic class for session options
     /// </summary>
-    public abstract class BaseSessionOptions<TOptions> : BaseScriptOptions<TOptions>
+    public abstract class BaseSessionOptions<TOptions> : BaseScriptOptions<TOptions>, ISessionOptions<TOptions>
         where TOptions : BaseSessionOptions<TOptions>, new()
     {
+    }
+
+    /// <summary>
+    /// The generic class for session options
+    /// </summary>
+    public class SessionOptions : BaseSessionOptions<SessionOptions>, ISessionOptions
+    {
+        public void CopyTo(ISessionOptions options)
+        {
+            base.CopyTo((SessionOptions)options);
+        }
     }
 }

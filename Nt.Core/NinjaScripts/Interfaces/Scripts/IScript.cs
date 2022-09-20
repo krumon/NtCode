@@ -1,7 +1,18 @@
 ﻿namespace Nt.Core
 {
-    public interface IScript : INinjascript
+    /// <summary>
+    /// Interface for any script.
+    /// </summary>
+    public interface IScript<TScript,TOptions> : INinjascript<TScript,TOptions>, IScript
+        where TScript : IScript<TScript,TOptions>
+        where TOptions : IScriptOptions<TOptions>
     {
+    }
 
+    /// <summary>
+    /// Interface for any script.
+    /// </summary>
+    public interface IScript
+    {
     }
 }

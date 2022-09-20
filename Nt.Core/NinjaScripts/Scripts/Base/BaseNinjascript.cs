@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Base class for any ninjascript.
     /// </summary>
-    public abstract class BaseNinjascript : BaseElement, INinjascript
+    public abstract class BaseNinjascript : BaseElement
     {
         #region Private members
 
@@ -116,7 +116,7 @@ namespace Nt.Core
     /// </summary>
     /// <typeparam name="TScript">The ninjascript.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
-    public abstract class BaseNinjascript<TScript, TOptions> : BaseNinjascript
+    public abstract class BaseNinjascript<TScript, TOptions> : BaseNinjascript, INinjascript<TScript,TOptions>
         where TScript : BaseNinjascript<TScript,TOptions>, new()
         where TOptions : BaseNinjascriptOptions<TOptions>, new()
     {

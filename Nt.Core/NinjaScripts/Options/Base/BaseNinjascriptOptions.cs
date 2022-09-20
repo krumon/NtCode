@@ -1,12 +1,11 @@
-﻿using Microsoft.Extensions.Options;
-using NinjaTrader.NinjaScript;
+﻿using NinjaTrader.NinjaScript;
 
 namespace Nt.Core
 {
     /// <summary>
     /// The script options
     /// </summary>
-    public abstract class BaseNinjascriptOptions<TOptions> : BaseOptions<TOptions>
+    public abstract class BaseNinjascriptOptions<TOptions> : BaseOptions<TOptions>, INinjascriptOptions<TOptions>
         where TOptions : BaseNinjascriptOptions<TOptions>, new()
     {
 
@@ -87,7 +86,7 @@ namespace Nt.Core
             script.Options.BarsRequiredToPlot = BarsRequiredToPlot;
         }
 
-        protected void CopyToNinjascript(NinjaScriptBase ninjascript)
+        public void CopyToNinjascript(NinjaScriptBase ninjascript)
         {
             // Copy the new options
             ninjascript.Name = Name;
@@ -99,4 +98,14 @@ namespace Nt.Core
 
     }
 
+    /// <summary>
+    /// The script options
+    /// </summary>
+    public class NinjascriptOptions : BaseNinjascriptOptions<NinjascriptOptions>, INinjascriptOptions
+    {
+        public void CopyTo(INinjascriptOptions options)
+        {
+            base.CopyTo((NinjascriptOptions)options);
+        }
+    }
 }
