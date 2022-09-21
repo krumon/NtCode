@@ -3,16 +3,16 @@
     /// <summary>
     /// Interface for any script session.
     /// </summary>
-    public interface ISession<TScript,TOptions> : IScript<TScript,TOptions>, ISession
-        where TScript : IScript<TScript,TOptions>
-        where TOptions : IScriptOptions<TOptions>
+    public interface ISession<TScript,TOptions> : INinjascript<TScript,TOptions>, ISession
+        where TScript : INinjascript<TScript,TOptions>
+        where TOptions : IOptions<TOptions>
     {
     }
 
     /// <summary>
     /// Interface for any script session.
     /// </summary>
-    public interface ISession : IScript
+    public interface ISession : INinjascript
     {
         /// <summary>
         /// Event driven method which is called for every new session. 

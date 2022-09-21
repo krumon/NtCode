@@ -6,14 +6,11 @@ namespace Nt.Core
 {
 
     /// <summary>
-    /// Base class for any ninjascript.
+    /// Base class for any ninjascripts manager.
     /// </summary>
-    /// <summary>
-    /// Base class for any ninjascript.
-    /// </summary>
-    /// <typeparam name="TScript">The ninjascript.</typeparam>
-    /// <typeparam name="TOptions">The ninjascript options.</typeparam>
-    public abstract class BaseManager<TManagerScript, TManagerOptions> : BaseScript<TManagerScript, TManagerOptions>
+    /// <typeparam name="TManagerScript">The ninjascripts manager.</typeparam>
+    /// <typeparam name="TManagerOptions">The ninjascripts manager options.</typeparam>
+    public abstract class BaseManager<TManagerScript, TManagerOptions> : BaseNinjascript<TManagerScript, TManagerOptions>
         where TManagerScript : BaseManager<TManagerScript, TManagerOptions>, new()
         where TManagerOptions : BaseManagerOptions<TManagerOptions>, new()
     {
@@ -22,12 +19,7 @@ namespace Nt.Core
         /// <summary>
         /// Nijascripts collection
         /// </summary>
-        protected List<IScript> scripts;
-
-        #endregion
-
-        #region Public properties
-
+        protected List<INinjascript> scripts;
 
         #endregion
 
@@ -46,16 +38,6 @@ namespace Nt.Core
 
         #endregion
 
-        #region Configure methods
-
-
-        #endregion
-
-        #region Builder methods
-
-
-        #endregion
-
         #region Public methods
 
         /// <summary>
@@ -63,10 +45,10 @@ namespace Nt.Core
         /// </summary>
         /// <param name="script"></param>
         public void Add<T>(T script)
-            where T : IScript, new()
+            where T : INinjascript, new()
         {
             if (scripts == null)
-                scripts = new List<IScript>();
+                scripts = new List<INinjascript>();
 
             scripts.Add(script);
         }
@@ -77,7 +59,7 @@ namespace Nt.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="script"></param>
         public void Remove<T>(T script)
-            where T : IScript, new()
+            where T : INinjascript, new()
         {
             if (scripts == null)
                 return;
@@ -90,8 +72,8 @@ namespace Nt.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="script"></param>
         /// <returns></returns>
-        public IScript Get<T>(T script)
-            where T : IScript, new()
+        public INinjascript Get<T>(T script)
+            where T : INinjascript, new()
         {
             if (scripts == null)
                 if (scripts.Contains(script))

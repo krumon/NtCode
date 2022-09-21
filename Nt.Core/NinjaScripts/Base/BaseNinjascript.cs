@@ -10,6 +10,7 @@ namespace Nt.Core
     /// </summary>
     public abstract class BaseNinjascript : BaseElement
     {
+
         #region Private members
 
         /// <summary>
@@ -22,6 +23,8 @@ namespace Nt.Core
         /// </summary>
         protected Bars bars;
 
+        #endregion
+
         #region Public properties
 
         /// <summary>
@@ -33,8 +36,6 @@ namespace Nt.Core
         /// The bars of the chart control.
         /// </summary>
         public Bars Bars => bars;
-
-        #endregion
 
         #endregion
 
@@ -94,15 +95,39 @@ namespace Nt.Core
 
         #endregion
 
-        #region Protected methods
+        #region Action delegates
 
         /// <summary>
-        /// Automapper from <see cref="BaseNinjascript"/> to <see cref="NinjaScriptBase"/>.
+        /// Delegate to execute in "OnBarUpdate" method.
         /// </summary>
-        /// <param name="ninjascript"></param>
-        //protected virtual void SetNinjascriptProperties(NinjaScriptBase ninjascript)
-        //{
-        //}
+        public Action BarUpdateAction;
+
+        /// <summary>
+        /// Delegate to execute in "OnMarketData" method.
+        /// </summary>
+        public Action MarketDataAction;
+
+        #endregion
+
+        #region Delegate methods
+
+        /// <summary>
+        /// Execute the delegate in the OnBarUpdate method
+        /// </summary>
+        /// <param name="action">The delegate to execute.</param>
+        protected void ExecuteInBarUpdateMethod(Action action)
+        {
+            action?.Invoke();
+        }
+
+        /// <summary>
+        /// Execute the delegate in the OnBarUpdate method
+        /// </summary>
+        /// <param name="action">The delegate to execute.</param>
+        protected void ExecuteInMarketDataMethod(Action action)
+        {
+            action?.Invoke();
+        }
 
         #endregion
 
@@ -118,7 +143,7 @@ namespace Nt.Core
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
     public abstract class BaseNinjascript<TScript, TOptions> : BaseNinjascript, INinjascript<TScript,TOptions>
         where TScript : BaseNinjascript<TScript,TOptions>, new()
-        where TOptions : BaseNinjascriptOptions<TOptions>, new()
+        where TOptions : BaseOptions<TOptions>, new()
     {
         #region Protected members
 
@@ -126,20 +151,6 @@ namespace Nt.Core
         /// Indicates if the session is configured
         /// </summary>
         protected bool isConfigured;
-
-        #endregion
-
-        #region Market data Delegates
-
-        /// <summary>
-        /// Delegate to execute in OnBarUpdate method.
-        /// </summary>
-        public Action BarUpdateAction;
-
-        /// <summary>
-        /// Delegate to execute in OnMarketData method.
-        /// </summary>
-        public Action MarketDataAction;
 
         #endregion
 
@@ -221,41 +232,6 @@ namespace Nt.Core
                 isConfigured = true;
 
             return (TScript)this;
-        }
-
-        #endregion
-
-        #region Delegate methods
-
-        /// <summary>
-        /// Execute the delegate in the OnBarUpdate method
-        /// </summary>
-        /// <param name="action">The delegate to execute.</param>
-        protected void ExecuteInBarUpdateMethod(Action action)
-        {
-            action?.Invoke();
-        }
-
-        /// <summary>
-        /// Execute the delegate in the OnBarUpdate method
-        /// </summary>
-        /// <param name="action">The delegate to execute.</param>
-        protected void ExecuteInMarketDataMethod(Action action)
-        {
-            action?.Invoke();
-        }
-
-        #endregion
-
-        #region Builder methods
-
-        /// <summary>
-        /// Creates a script builder default instance.
-        /// </summary>
-        public static TBuilder CreateBuilder<TBuilder>()
-            where TBuilder : BaseNinjascriptBuilder<TScript, TOptions>, new()
-        {
-            return new TBuilder();
         }
 
         #endregion

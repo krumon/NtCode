@@ -22,7 +22,7 @@ namespace Nt.Core
         /// <summary>
         /// Nijascripts collection
         /// </summary>
-        protected List<IScript> scripts;
+        protected List<INinjascript> scripts;
 
         #endregion
 
@@ -63,10 +63,10 @@ namespace Nt.Core
         /// </summary>
         /// <param name="script"></param>
         public void Add<T>(T script)
-            where T : IScript, new()
+            where T : INinjascript, new()
         {
             if (scripts == null)
-                scripts = new List<IScript>();
+                scripts = new List<INinjascript>();
 
             scripts.Add(script);
         }
@@ -77,7 +77,7 @@ namespace Nt.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="script"></param>
         public void Remove<T>(T script)
-            where T : IScript, new()
+            where T : INinjascript, new()
         {
             if (scripts == null)
                 return;
@@ -90,8 +90,8 @@ namespace Nt.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="script"></param>
         /// <returns></returns>
-        public IScript Get<T>(T script)
-            where T : IScript, new()
+        public INinjascript Get<T>(T script)
+            where T : INinjascript, new()
         {
             if (scripts == null)
                 if (scripts.Contains(script))

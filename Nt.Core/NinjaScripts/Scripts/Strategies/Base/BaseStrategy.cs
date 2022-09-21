@@ -3,7 +3,7 @@
 namespace Nt.Core
 {
     /// <summary>
-    /// Base class for any ninjascript indicator.
+    /// Base class for any strategy.
     /// </summary>
     public abstract class BaseStrategy<TScript, TOptions> : BaseNinjascript<TScript, TOptions>
         where TScript : BaseStrategy<TScript, TOptions>, new()

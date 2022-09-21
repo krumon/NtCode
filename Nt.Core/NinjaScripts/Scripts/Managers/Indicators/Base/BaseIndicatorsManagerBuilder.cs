@@ -1,17 +1,12 @@
-﻿using NinjaTrader.NinjaScript;
-using System;
-
-namespace Nt.Core
+﻿namespace Nt.Core
 {
     /// <summary>
     /// The base class to ninjascript builders
     /// </summary>
-    public abstract class BaseIndicatorsManagerBuilder<TManagerScript, TManagerOptions> : BaseNinjascriptBuilder<TManagerScript, TManagerOptions>
+    public abstract class BaseIndicatorsManagerBuilder<TManagerScript, TManagerOptions> : BaseBuilder<TManagerScript, TManagerOptions>
         where TManagerScript : BaseIndicatorsManager<TManagerScript, TManagerOptions>, new()
         where TManagerOptions : BaseIndicatorsManagerOptions<TManagerOptions>, new()
     {
-
-
     }
 
 }

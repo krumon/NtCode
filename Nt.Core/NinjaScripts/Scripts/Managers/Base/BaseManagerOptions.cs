@@ -1,9 +1,9 @@
 ﻿namespace Nt.Core
 {
     /// <summary>
-    /// The script options
+    /// The base class to ninjascripts manager options.
     /// </summary>
-    public abstract class BaseManagerOptions<TOptions> : BaseScriptOptions<TOptions>
+    public abstract class BaseManagerOptions<TOptions> : BaseOptions<TOptions>
         where TOptions : BaseManagerOptions<TOptions>, new()
     {
     }

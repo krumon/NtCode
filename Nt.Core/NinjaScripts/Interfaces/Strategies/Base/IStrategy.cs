@@ -3,7 +3,7 @@
     /// <summary>
     /// Interface for any script strategy.
     /// </summary>
-    public interface IStrategy<TScript,TOptions> : IScript<TScript,TOptions>, IStrategy
+    public interface IStrategy<TScript,TOptions> : INinjascript<TScript,TOptions>, IStrategy
         where TScript : IStrategy<TScript,TOptions>
         where TOptions : IStrategyOptions<TOptions>
     {
@@ -12,7 +12,7 @@
     /// <summary>
     /// Interface for any script strategy.
     /// </summary>
-    public interface IStrategy : IScript
+    public interface IStrategy : INinjascript
     {
     }
 }

@@ -3,7 +3,7 @@
     /// <summary>
     /// The generic class for session options
     /// </summary>
-    public abstract class BaseSessionOptions<TOptions> : BaseScriptOptions<TOptions>, ISessionOptions<TOptions>
+    public abstract class BaseSessionOptions<TOptions> : BaseOptions<TOptions>, ISessionOptions<TOptions>
         where TOptions : BaseSessionOptions<TOptions>, new()
     {
     }

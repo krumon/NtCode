@@ -1,12 +1,13 @@
 ﻿using NinjaTrader.NinjaScript;
+using System.Xml.Linq;
 
 namespace Nt.Core
 {
+
     /// <summary>
-    /// The script options
+    /// The options for any ninjascript.
     /// </summary>
-    public abstract class BaseNinjascriptOptions<TOptions> : BaseOptions<TOptions>, INinjascriptOptions<TOptions>
-        where TOptions : BaseNinjascriptOptions<TOptions>, new()
+    public class BaseOptions : IOptions
     {
 
         #region Private members / Default values
@@ -60,10 +61,35 @@ namespace Nt.Core
         #region Public methods
 
         /// <summary>
+        /// Copy the ninjascript properties to ninjatrader script.
+        /// </summary>
+        /// <param name="ninjascript">The ninjatrader script.</param>
+        public void CopyToNinjascript(NinjaScriptBase ninjascript)
+        {
+            // Copy the new options
+            ninjascript.Name = Name;
+            ninjascript.Calculate = Calculate;
+            ninjascript.BarsRequiredToPlot = BarsRequiredToPlot;
+        }
+
+        #endregion
+
+    }
+
+    /// <summary>
+    /// The base class for all ninjascripts options to configure.
+    /// </summary>
+    public abstract class BaseOptions<TOptions> : BaseOptions, IOptions<TOptions>
+        where TOptions : BaseOptions<TOptions>, new()
+    {
+
+        #region Public methods
+
+        /// <summary>
         /// Copy options to ninjascript options
         /// </summary>
         /// <param name="options"></param>
-        public override void CopyTo(TOptions options)
+        public virtual void CopyTo(TOptions options)
         {
             // Copy the new options
             options.Name = string.IsNullOrEmpty(Name) ? "kRuMoN Script" : Name;
@@ -86,26 +112,8 @@ namespace Nt.Core
             script.Options.BarsRequiredToPlot = BarsRequiredToPlot;
         }
 
-        public void CopyToNinjascript(NinjaScriptBase ninjascript)
-        {
-            // Copy the new options
-            ninjascript.Name = Name;
-            ninjascript.Calculate = Calculate;
-            ninjascript.BarsRequiredToPlot = BarsRequiredToPlot;
-        }
-
         #endregion
 
     }
 
-    /// <summary>
-    /// The script options
-    /// </summary>
-    public class NinjascriptOptions : BaseNinjascriptOptions<NinjascriptOptions>, INinjascriptOptions
-    {
-        public void CopyTo(INinjascriptOptions options)
-        {
-            base.CopyTo((NinjascriptOptions)options);
-        }
-    }
 }

@@ -4,14 +4,12 @@ using System;
 namespace Nt.Core
 {
     /// <summary>
-    /// The base class to ninjascript builders
+    /// The base class to ninjascripts manager builders.
     /// </summary>
-    public abstract class BaseManagerBuilder<TManagerScript, TManagerOptions> : BaseNinjascriptBuilder<TManagerScript, TManagerOptions>
+    public abstract class BaseManagerBuilder<TManagerScript, TManagerOptions> : BaseBuilder<TManagerScript, TManagerOptions>
         where TManagerScript : BaseManager<TManagerScript, TManagerOptions>, new()
         where TManagerOptions : BaseManagerOptions<TManagerOptions>, new()
     {
-
-
     }
 
 }

@@ -3,39 +3,9 @@ using NinjaTrader.NinjaScript;
 using System;
 
 namespace Nt.Core
-{
-
-    /// <summary>
-    /// Interface for any ninjascript.
-    /// </summary>
-    public interface INinjascript<TScript,TOptions> : INinjascript
-        where TScript : INinjascript<TScript,TOptions>
-        where TOptions : INinjascriptOptions<TOptions>
-    {
-
-        #region Configure methods
-
-        /// <summary>
-        /// Configure options into the script.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        TScript Configure(Action<TOptions> options);
-
-        /// <summary>
-        /// Add properties to configure the script.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        TScript Configure(TOptions options);
-
-        #endregion
-
-    }
-
-    /// <summary>
-    /// Interface for any ninjascript
-    /// </summary>
+{    /// <summary>
+     /// Interface for any ninjascript
+     /// </summary>
     public interface INinjascript : IElement
     {
         #region Protected members
@@ -89,6 +59,34 @@ namespace Nt.Core
         /// OnMarketData() can include but is not limited to the bid, ask, last price and volume.
         /// </summary>
         void OnMarketData();
+
+        #endregion
+
+    }
+
+    /// <summary>
+    /// Interface for any ninjascript.
+    /// </summary>
+    public interface INinjascript<TScript,TOptions> : INinjascript
+        where TScript : INinjascript<TScript,TOptions>
+        where TOptions : IOptions<TOptions>
+    {
+
+        #region Configure methods
+
+        /// <summary>
+        /// Configure options into the script.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        TScript Configure(Action<TOptions> options);
+
+        /// <summary>
+        /// Add properties to configure the script.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        TScript Configure(TOptions options);
 
         #endregion
 

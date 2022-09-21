@@ -4,14 +4,14 @@
     /// <summary>
     /// Interface for any indicator builder.
     /// </summary>
-    public interface IIndicatorBuilder : IBuilder
+    public interface IManagerBuilder : IBuilder
     {
     }
 
     /// <summary>
     /// Interface for any indicator builder.
     /// </summary>
-    public interface IIndicatorBuilder<TScript,TOptions> : IBuilder<TScript,TOptions>, IIndicatorBuilder
+    public interface IManagerBuilder<TScript,TOptions> : IBuilder<TScript,TOptions>, IManagerBuilder
         where TScript : IIndicatorBuilder<TScript,TOptions>
         where TOptions : IIndicatorOptions<TOptions>
     {

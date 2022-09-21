@@ -1,18 +1,20 @@
 ﻿namespace Nt.Core
 {
+
     /// <summary>
     /// Interface for any indicators manager.
     /// </summary>
-    public interface IIndicatorsMAnager<TScript,TOptions> : IScriptsManager<TScript,TOptions>, IIndicator
-        where TScript : IIndicatorsMAnager<TScript,TOptions>
-        where TOptions : IIndicatorOptions<TOptions>
+    public interface IIndicatorsManager : IManager
     {
     }
 
     /// <summary>
     /// Interface for any indicators manager.
     /// </summary>
-    public interface IIndicatorsManager : IScriptsManager
+    public interface IIndicatorsManager<TScript,TOptions> : IManager<TScript,TOptions>, IIndicatorsManager
+        where TScript : IIndicatorsManager<TScript,TOptions>
+        where TOptions : IIndicatorOptions<TOptions>
     {
     }
+
 }

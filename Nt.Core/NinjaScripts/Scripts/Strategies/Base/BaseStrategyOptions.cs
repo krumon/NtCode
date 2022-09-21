@@ -4,9 +4,9 @@ using NinjaTrader.NinjaScript;
 namespace Nt.Core
 {
     /// <summary>
-    /// The indicator options
+    /// The base class to strategy options.
     /// </summary>
-    public abstract class BaseStrategyOptions<TOptions> : BaseNinjascriptOptions<TOptions>
+    public abstract class BaseStrategyOptions<TOptions> : BaseOptions<TOptions>
         where TOptions : BaseStrategyOptions<TOptions>, new()
     {
 
