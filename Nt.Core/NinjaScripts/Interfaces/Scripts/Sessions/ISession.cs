@@ -1,7 +1,7 @@
 ﻿namespace Nt.Core
 {
     /// <summary>
-    /// Interface for any session script.
+    /// Interface for any script session.
     /// </summary>
     public interface ISession<TScript,TOptions> : IScript<TScript,TOptions>, ISession
         where TScript : IScript<TScript,TOptions>
@@ -10,9 +10,9 @@
     }
 
     /// <summary>
-    /// Interface for any session script.
+    /// Interface for any script session.
     /// </summary>
-    public interface ISession
+    public interface ISession : IScript
     {
         /// <summary>
         /// Event driven method which is called for every new session. 

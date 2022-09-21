@@ -1,0 +1,17 @@
+﻿namespace Nt.Core
+{
+    /// <summary>
+    /// Interface for any script strategy options.
+    /// </summary>
+    public interface IStrategyOptions<TOptions> : IScriptOptions<TOptions>, IStrategyOptions
+        where TOptions : IStrategyOptions<TOptions>
+    {
+    }
+
+    /// <summary>
+    /// Interface for any script strategy options.
+    /// </summary>
+    public interface IStrategyOptions : IScriptOptions
+    {
+    }
+}

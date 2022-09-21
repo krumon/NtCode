@@ -11,7 +11,7 @@
     /// <summary>
     /// Interface for any session options.
     /// </summary>
-    public interface ISessionOptions
+    public interface ISessionOptions : IScriptOptions
     {
     }
 }

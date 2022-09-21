@@ -1,9 +1,9 @@
 ﻿namespace Nt.Core
 {
     /// <summary>
-    /// The interfece for any script element.
+    /// The interfece for any ninjascript options.
     /// </summary>
-    public interface IOptions<TOptions> : IElement
+    public interface IOptions<TOptions> : IOptions
         where TOptions : IOptions<TOptions>
     {
 
@@ -21,7 +21,7 @@
     /// <summary>
     /// The interfece for any script element.
     /// </summary>
-    public interface IOptions : IOptions<IOptions>
+    public interface IOptions
     {
     }
 }

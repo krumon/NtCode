@@ -12,7 +12,7 @@
     /// <summary>
     /// Interface for any script.
     /// </summary>
-    public interface IScript
+    public interface IScript : INinjascript
     {
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Nt.Core
 {
     /// <summary>
-    /// The interfece for any script element.
+    /// The interfece for any ninjascript element.
     /// </summary>
     public interface IElement
     {

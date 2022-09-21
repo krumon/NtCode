@@ -13,7 +13,7 @@ namespace Nt.Core
     /// <summary>
     /// Interface for any ninjascript options.
     /// </summary>
-    public interface INinjascriptOptions
+    public interface INinjascriptOptions : IOptions
     {
         #region Properties
 

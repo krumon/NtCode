@@ -6,9 +6,9 @@ namespace Nt.Core
 {
 
     /// <summary>
-    /// Interface for any ninjascript
+    /// Interface for any ninjascript.
     /// </summary>
-    public interface INinjascript<TScript,TOptions> : IElement, INinjascript
+    public interface INinjascript<TScript,TOptions> : INinjascript
         where TScript : INinjascript<TScript,TOptions>
         where TOptions : INinjascriptOptions<TOptions>
     {
@@ -36,7 +36,7 @@ namespace Nt.Core
     /// <summary>
     /// Interface for any ninjascript
     /// </summary>
-    public interface INinjascript
+    public interface INinjascript : IElement
     {
         #region Protected members
 

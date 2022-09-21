@@ -10,7 +10,7 @@
     /// <summary>
     /// Interface for any script options.
     /// </summary>
-    public interface IScriptOptions
+    public interface IScriptOptions : INinjascriptOptions
     {
     }
 
