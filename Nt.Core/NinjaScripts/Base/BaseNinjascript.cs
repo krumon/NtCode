@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Base class for any ninjascript.
     /// </summary>
-    public abstract class BaseNinjascript : BaseElement
+    public abstract class BaseNinjascript : BaseElement, INinjascript
     {
 
         #region Private members
@@ -136,9 +136,6 @@ namespace Nt.Core
     /// <summary>
     /// Base class for any ninjascript.
     /// </summary>
-    /// <summary>
-    /// Base class for any ninjascript.
-    /// </summary>
     /// <typeparam name="TScript">The ninjascript.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
     public abstract class BaseNinjascript<TScript, TOptions> : BaseNinjascript, INinjascript<TScript,TOptions>
@@ -232,6 +229,12 @@ namespace Nt.Core
                 isConfigured = true;
 
             return (TScript)this;
+        }
+
+        public static TBuilder CreateBuilder<TBuilder>()
+            where TBuilder : BaseBuilder<TScript,TOptions>, new()
+        {
+            return new TBuilder();
         }
 
         #endregion

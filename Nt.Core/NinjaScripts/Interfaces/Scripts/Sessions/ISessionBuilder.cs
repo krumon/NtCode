@@ -1,13 +1,5 @@
 ﻿namespace Nt.Core
 {
-    /// <summary>
-    /// Interface for any session builder.
-    /// </summary>
-    public interface ISessionBuilder<TScript,TOptions> : IBuilder<TScript,TOptions>, ISession
-        where TScript : IBuilder<TScript,TOptions>
-        where TOptions : IOptions<TOptions>
-    {
-    }
 
     /// <summary>
     /// Interface for any session builder.
@@ -15,4 +7,14 @@
     public interface ISessionBuilder : IBuilder
     {
     }
+
+    /// <summary>
+    /// Interface for any session builder.
+    /// </summary>
+    public interface ISessionBuilder<TScript,TOptions> : IBuilder<TScript,TOptions>
+        where TScript : ISession<TScript,TOptions>
+        where TOptions : ISessionOptions<TOptions>
+    {
+    }
+
 }

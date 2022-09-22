@@ -3,8 +3,8 @@
     /// <summary>
     /// The generic class for session options
     /// </summary>
-    public abstract class BaseSessionOptions<TOptions> : BaseOptions<TOptions>, ISessionOptions<TOptions>
-        where TOptions : BaseSessionOptions<TOptions>, new()
+    public abstract class BaseSessionOptions<TSessionOptions> : BaseOptions<TSessionOptions>, ISessionOptions<TSessionOptions>
+        where TSessionOptions : BaseSessionOptions<TSessionOptions>, new()
     {
     }
 

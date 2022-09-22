@@ -2,18 +2,18 @@
 {
 
     /// <summary>
-    /// Interface for any indicator builder.
+    /// Interface for any manager builder.
     /// </summary>
     public interface IManagerBuilder : IBuilder
     {
     }
 
     /// <summary>
-    /// Interface for any indicator builder.
+    /// Interface for any manager builder.
     /// </summary>
-    public interface IManagerBuilder<TScript,TOptions> : IBuilder<TScript,TOptions>, IManagerBuilder
-        where TScript : IIndicatorBuilder<TScript,TOptions>
-        where TOptions : IIndicatorOptions<TOptions>
+    public interface IManagerBuilder<TManager,TManagerOptions> : IBuilder<TManager,TManagerOptions>, IManagerBuilder
+        where TManager : IManager<TManager,TManagerOptions>
+        where TManagerOptions : IManagerOptions<TManagerOptions>
     {
     }
 

@@ -1,5 +1,13 @@
 ﻿namespace Nt.Core
 {
+
+    /// <summary>
+    /// Interface for any script strategy.
+    /// </summary>
+    public interface IStrategy : INinjascript
+    {
+    }
+
     /// <summary>
     /// Interface for any script strategy.
     /// </summary>
@@ -9,10 +17,4 @@
     {
     }
 
-    /// <summary>
-    /// Interface for any script strategy.
-    /// </summary>
-    public interface IStrategy : INinjascript
-    {
-    }
 }

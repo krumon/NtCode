@@ -43,6 +43,7 @@ namespace Nt.Core
             // Strategy properties
 
         }
+
         #endregion
 
     }

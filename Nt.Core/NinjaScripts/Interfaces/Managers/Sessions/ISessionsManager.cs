@@ -11,9 +11,9 @@
     /// <summary>
     /// Interface for any sessions manager.
     /// </summary>
-    public interface ISessionsManager<TScript,TOptions> : IManager<TScript,TOptions>, ISessionsManager
-        where TScript : IManager<TScript,TOptions>
-        where TOptions : IManagerOptions<TOptions>
+    public interface ISessionsManager<TSessionsManager,TSessionsManagerOptions> : IManager<TSessionsManager,TSessionsManagerOptions>, ISessionsManager
+        where TSessionsManager : ISessionsManager<TSessionsManager,TSessionsManagerOptions>
+        where TSessionsManagerOptions : ISessionsManagerOptions<TSessionsManagerOptions>
     {
     }
 

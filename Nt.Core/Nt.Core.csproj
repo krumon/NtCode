@@ -197,6 +197,9 @@
   <ItemGroup>
     <Compile Include="NinjaScripts\Interfaces\Managers\Base\IManagerBuilder.cs" />
     <Compile Include="NinjaScripts\Interfaces\Managers\Base\IManagerOptions.cs" />
+    <Compile Include="NinjaScripts\Interfaces\Managers\Indicators\IIndicatorsManagerOptions.cs" />
+    <Compile Include="NinjaScripts\Interfaces\Managers\Sessions\ISessionsManagerOptions.cs" />
+    <Compile Include="NinjaScripts\Interfaces\Managers\Strategies\IStrategiesManagerOptions.cs" />
     <Compile Include="zToDelete\BaseNinjascriptsManager.cs" />
     <Compile Include="zToDelete\BaseNinjascriptsManagerBuilder.cs" />
     <Compile Include="NinjaScripts\Base\BaseBuilder.cs" />
@@ -344,7 +347,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="NinjaScripts\Interfaces\Scripts\Base\" />
     <Folder Include="NinjaScripts\Scripts\Caches\Base\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

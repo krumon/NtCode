@@ -1,5 +1,13 @@
 ﻿namespace Nt.Core
 {
+
+    /// <summary>
+    /// Interface for any script strategy options.
+    /// </summary>
+    public interface IStrategyOptions : IOptions
+    {
+    }
+
     /// <summary>
     /// Interface for any script strategy options.
     /// </summary>
@@ -8,10 +16,4 @@
     {
     }
 
-    /// <summary>
-    /// Interface for any script strategy options.
-    /// </summary>
-    public interface IStrategyOptions : IOptions
-    {
-    }
 }

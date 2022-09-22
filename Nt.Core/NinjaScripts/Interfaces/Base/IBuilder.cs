@@ -14,7 +14,7 @@
     /// <typeparam name="TScript"></typeparam>
     /// <typeparam name="TOptions"></typeparam>
     public interface IBuilder<TScript, TOptions> : IBuilder
-        where TScript : IBuilder<TScript, TOptions>
+        where TScript : INinjascript<TScript, TOptions>
         where TOptions : IOptions<TOptions>
     {
     }

@@ -20,16 +20,16 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            //SessionFilters sessionFilters = SessionFilters.CreateBuilder<SessionFiltersBuilder>()
-            //    .Configure((op) =>
-            //    {
-            //        op.Calculate = Calculate.OnEachTick;
-            //        op.BarsRequiredToPlot = 50;
-            //        op.AddDateFilters(year: 2020, isInitial: true);
-            //        op.AddDateFilters(year: 2022, isInitial: false);
-            //        op.AddDateFilters(new DateTime(2020, 6, 12), new DateTime(2022, 9, 20));
-            //    })
-            //    .Build();
+            SessionFilters sessionFilters = SessionFilters.CreateBuilder<SessionFiltersBuilder>()
+                .Configure((op) =>
+                {
+                    op.Calculate = Calculate.OnEachTick;
+                    op.BarsRequiredToPlot = 50;
+                    op.AddDateFilters(year: 2020, isInitial: true);
+                    op.AddDateFilters(year: 2022, isInitial: false);
+                    op.AddDateFilters(new DateTime(2020, 6, 12), new DateTime(2022, 9, 20));
+                })
+                .Build();
 
 
             Wait();
