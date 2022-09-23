@@ -7,7 +7,7 @@ namespace Nt.Core
     /// <summary>
     /// <see cref="SessionsManager"/> builder.
     /// </summary>
-    public class SessionsManagerBuilder : BaseManagerBuilder<SessionsManager,SessionsManagerOptions>
+    public class SessionsManagerBuilder : BaseManagerBuilder<SessionsManager,SessionsManagerOptions,SessionsManagerBuilder>
     {
         /// <summary>
         /// Store the <see cref="ScriptProperties"/>.

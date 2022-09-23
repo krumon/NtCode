@@ -11,9 +11,10 @@
     /// <summary>
     /// Interface for any indicators manager.
     /// </summary>
-    public interface IIndicatorsManager<TIndicatorsManager,TIndicatorsManagerOptionsOptions> : IManager<TIndicatorsManager,TIndicatorsManagerOptionsOptions>, IIndicatorsManager
-        where TIndicatorsManager : IIndicatorsManager<TIndicatorsManager,TIndicatorsManagerOptionsOptions>
-        where TIndicatorsManagerOptionsOptions : IIndicatorsManagerOptions<TIndicatorsManagerOptionsOptions>
+    public interface IIndicatorsManager<TManagerScript,TManagerOptions,TManagerBuilder> : IManager<TManagerScript,TManagerOptions,TManagerBuilder>, IIndicatorsManager
+        where TManagerScript : IIndicatorsManager<TManagerScript,TManagerOptions,TManagerBuilder>
+        where TManagerOptions : IIndicatorsManagerOptions<TManagerOptions>
+        where TManagerBuilder : IIndicatorsManagerBuilder<TManagerScript, TManagerOptions, TManagerBuilder>
     {
     }
 

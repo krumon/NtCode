@@ -1,8 +1,4 @@
-﻿using NinjaTrader.Data;
-using NinjaTrader.NinjaScript;
-using System.Collections.Generic;
-
-namespace Nt.Core
+﻿namespace Nt.Core
 {
 
     /// <summary>
@@ -13,95 +9,11 @@ namespace Nt.Core
     /// </summary>
     /// <typeparam name="TScript">The ninjascript.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
-    public abstract class BaseStrategiesManager<TManagerScript, TManagerOptions> : BaseStrategy<TManagerScript, TManagerOptions>
-        where TManagerScript : BaseStrategiesManager<TManagerScript, TManagerOptions>, new()
+    public abstract class BaseStrategiesManager<TManagerScript, TManagerOptions,TManagerBuilder> : BaseManager<TManagerScript, TManagerOptions,TManagerBuilder>, IStrategiesManager<TManagerScript,TManagerOptions,TManagerBuilder>
+        where TManagerScript : BaseStrategiesManager<TManagerScript, TManagerOptions,TManagerBuilder>, new()
         where TManagerOptions : BaseStrategiesManagerOptions<TManagerOptions>, new()
+        where TManagerBuilder : BaseStrategiesManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, new()
     {
-        #region Protected members
-
-        /// <summary>
-        /// Nijascripts collection
-        /// </summary>
-        protected List<INinjascript> scripts;
-
-        #endregion
-
-        #region Public properties
-
-
-        #endregion
-
-        #region State changed methods
-
-        /// <summary>
-        /// AddValues the <see cref="BaseNinjascript"/>.
-        /// </summary>
-        /// <param name="ninjascript">The parent ninjascript.</param>
-        /// <param name="bars">The chart bars object.</param>
-        public override void Load(NinjaScriptBase ninjascript, Bars bars)
-        {
-            // Call parent method
-            base.Load(ninjascript, bars);
-        }
-
-        #endregion
-
-        #region Configure methods
-
-
-        #endregion
-
-        #region Builder methods
-
-
-        #endregion
-
-        #region Public methods
-
-        /// <summary>
-        /// Add new script to the scripts collection
-        /// </summary>
-        /// <param name="script"></param>
-        public void Add<T>(T script)
-            where T : INinjascript, new()
-        {
-            if (scripts == null)
-                scripts = new List<INinjascript>();
-
-            scripts.Add(script);
-        }
-
-        /// <summary>
-        /// Remove script to the scripts collection.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="script"></param>
-        public void Remove<T>(T script)
-            where T : INinjascript, new()
-        {
-            if (scripts == null)
-                return;
-            scripts.Remove(script);
-        }
-
-        /// <summary>
-        /// Gets script to the scripts collection.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="script"></param>
-        /// <returns></returns>
-        public INinjascript Get<T>(T script)
-            where T : INinjascript, new()
-        {
-            if (scripts == null)
-                if (scripts.Contains(script))
-                    return scripts[scripts.IndexOf(script)];
-            
-            return null;
-        }
-
-        #endregion
-
     }
 
 }

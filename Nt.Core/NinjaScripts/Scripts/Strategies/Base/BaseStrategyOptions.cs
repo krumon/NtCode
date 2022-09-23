@@ -6,7 +6,7 @@ namespace Nt.Core
     /// <summary>
     /// The base class to strategy options.
     /// </summary>
-    public abstract class BaseStrategyOptions<TOptions> : BaseOptions<TOptions>
+    public abstract class BaseStrategyOptions<TOptions> : BaseOptions<TOptions>, IStrategyOptions<TOptions>
         where TOptions : BaseStrategyOptions<TOptions>, new()
     {
 

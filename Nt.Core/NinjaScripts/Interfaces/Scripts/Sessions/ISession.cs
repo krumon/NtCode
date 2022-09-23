@@ -1,13 +1,5 @@
 ﻿namespace Nt.Core
 {
-    /// <summary>
-    /// Interface for any script session.
-    /// </summary>
-    public interface ISession<TScript,TOptions> : INinjascript<TScript,TOptions>, ISession
-        where TScript : INinjascript<TScript,TOptions>
-        where TOptions : IOptions<TOptions>
-    {
-    }
 
     /// <summary>
     /// Interface for any script session.
@@ -20,4 +12,15 @@
         /// <param name="e"></param>
         void OnSessionChanged(SessionChangedEventArgs e);
     }
+
+    /// <summary>
+    /// Interface for any script session.
+    /// </summary>
+    public interface ISession<TScript,TOptions,TBuilder> : INinjascript<TScript,TOptions,TBuilder>, ISession
+        where TScript : ISession<TScript,TOptions,TBuilder>
+        where TOptions : ISessionOptions<TOptions>
+        where TBuilder : ISessionBuilder<TScript, TOptions, TBuilder>
+    {
+    }
+
 }

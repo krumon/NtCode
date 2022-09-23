@@ -6,7 +6,7 @@ namespace Nt.Core
     /// <summary>
     /// The indicator options
     /// </summary>
-    public abstract class BaseIndicatorOptions<TOptions> : BaseOptions<TOptions>
+    public abstract class BaseIndicatorOptions<TOptions> : BaseOptions<TOptions>, IIndicatorOptions<TOptions>
         where TOptions : BaseIndicatorOptions<TOptions>, new()
     {
 

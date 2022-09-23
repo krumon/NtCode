@@ -3,7 +3,7 @@
 namespace Nt.Core
 {
     // TODO: Cambiar los parámetros genéricos
-    public class SessionStats : BaseSession<SessionStats, SessionStatsOptions>
+    public class SessionStats : BaseSession<SessionStats, SessionStatsOptions,SessionStatsBuilder>
     {
 
         #region Private members

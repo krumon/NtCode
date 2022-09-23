@@ -20,7 +20,7 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            SessionFilters sessionFilters = SessionFilters.CreateBuilder<SessionFiltersBuilder>()
+            SessionFilters sessionFilters = SessionFilters.CreateBuilder()
                 .Configure((op) =>
                 {
                     op.Calculate = Calculate.OnEachTick;

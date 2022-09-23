@@ -138,10 +138,12 @@ namespace Nt.Core
     /// </summary>
     /// <typeparam name="TScript">The ninjascript.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
-    public abstract class BaseNinjascript<TScript, TOptions> : BaseNinjascript, INinjascript<TScript,TOptions>
-        where TScript : BaseNinjascript<TScript,TOptions>, new()
+    public abstract class BaseNinjascript<TScript, TOptions,TBuilder> : BaseNinjascript, INinjascript<TScript,TOptions,TBuilder>
+        where TScript : BaseNinjascript<TScript,TOptions,TBuilder>, new()
         where TOptions : BaseOptions<TOptions>, new()
+        where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>, new()
     {
+
         #region Protected members
 
         /// <summary>
@@ -231,8 +233,11 @@ namespace Nt.Core
             return (TScript)this;
         }
 
-        public static TBuilder CreateBuilder<TBuilder>()
-            where TBuilder : BaseBuilder<TScript,TOptions>, new()
+        /// <summary>
+        /// Create a ninjascript default builder.
+        /// </summary>
+        /// <returns>Default instance of <see cref="TBuilder"/>.</returns>
+        public static TBuilder CreateBuilder()
         {
             return new TBuilder();
         }

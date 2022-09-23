@@ -67,9 +67,10 @@ namespace Nt.Core
     /// <summary>
     /// Interface for any ninjascript.
     /// </summary>
-    public interface INinjascript<TScript,TOptions> : INinjascript
-        where TScript : INinjascript<TScript,TOptions>
+    public interface INinjascript<TScript,TOptions, TBuilder> : INinjascript
+        where TScript : INinjascript<TScript,TOptions, TBuilder>
         where TOptions : IOptions<TOptions>
+        where TBuilder : IBuilder<TScript,TOptions, TBuilder>
     {
 
         #region Configure methods

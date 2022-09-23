@@ -11,8 +11,8 @@
     /// <summary>
     /// Interface for any strategies manager options.
     /// </summary>
-    public interface IStrategiesManagerOptions<TStrategiesManagerOptions> : IManagerOptions<TStrategiesManagerOptions>, IStrategiesManagerOptions
-        where TStrategiesManagerOptions : IStrategiesManagerOptions<TStrategiesManagerOptions>
+    public interface IStrategiesManagerOptions<TManagerOptions> : IManagerOptions<TManagerOptions>, IStrategiesManagerOptions
+        where TManagerOptions : IStrategiesManagerOptions<TManagerOptions>
     {
     }
 

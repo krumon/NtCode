@@ -6,9 +6,10 @@ namespace Nt.Core
     /// <summary>
     /// The base class to ninjascript builders
     /// </summary>
-    public abstract class BaseBuilder<TScript, TOptions>: IBuilder<TScript, TOptions>
-        where TScript : BaseNinjascript<TScript, TOptions>, new()
+    public abstract class BaseBuilder<TScript, TOptions,TBuilder>: IBuilder<TScript, TOptions,TBuilder>
+        where TScript : BaseNinjascript<TScript, TOptions,TBuilder>, new()
         where TOptions : BaseOptions<TOptions>, new()
+        where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>, new()
     {
 
         #region Protected members
@@ -63,7 +64,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="op">Delegate method with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        public BaseBuilder<TScript, TOptions> Configure(Action<TOptions> op)
+        public BaseBuilder<TScript, TOptions,TBuilder> Configure(Action<TOptions> op)
         {
             // Create default options to rewriter the new properties passed by the options object.
             if (options == null)
@@ -81,7 +82,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="op"><see cref="TOptions"/> object with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        public BaseBuilder<TScript, TOptions>Configure(TOptions op)
+        public BaseBuilder<TScript, TOptions,TBuilder>Configure(TOptions op)
         {
             // Create default options to rewriter the new properties passed by the options object.
             if (options == null)

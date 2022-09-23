@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents consts, fields and properties of the Ninjatrader user configuration.
     /// </summary>
-    public class SessionsManager : BaseManager<SessionsManager, SessionsManagerOptions>
+    public class SessionsManager : BaseManager<SessionsManager, SessionsManagerOptions,SessionsManagerBuilder>
     {
 
         #region Private members
@@ -240,9 +240,10 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public SessionsManager ConfigureSession<TScript,TOptions>(Action<TOptions> options = null)
-            where TScript : BaseSession<TScript,TOptions>, new()
+        public SessionsManager ConfigureSession<TScript,TOptions,TBuilder>(Action<TOptions> options = null)
+            where TScript : BaseSession<TScript,TOptions,TBuilder>, new()
             where TOptions : BaseSessionOptions<TOptions>, new()
+            where TBuilder : BaseSessionBuilder<TScript,TOptions,TBuilder>, new()
         {
             TScript script;
 

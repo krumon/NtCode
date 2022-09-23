@@ -4,7 +4,10 @@ using System;
 
 namespace Nt.Core
 {
-    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions>
+    /// <summary>
+    /// Contents the filters for any session
+    /// </summary>
+    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions, SessionFiltersBuilder>
     {
 
         #region static consts

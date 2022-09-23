@@ -3,8 +3,8 @@
     /// <summary>
     /// The script options
     /// </summary>
-    public abstract class BaseStrategiesManagerOptions<TOptions> : BaseStrategyOptions<TOptions>
-        where TOptions : BaseStrategiesManagerOptions<TOptions>, new()
+    public abstract class BaseStrategiesManagerOptions<TManagerOptions> : BaseManagerOptions<TManagerOptions>, IStrategiesManagerOptions<TManagerOptions>
+        where TManagerOptions : BaseStrategiesManagerOptions<TManagerOptions>, new()
     {
     }
 }

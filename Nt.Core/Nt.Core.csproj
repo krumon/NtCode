@@ -197,8 +197,11 @@
   <ItemGroup>
     <Compile Include="NinjaScripts\Interfaces\Managers\Base\IManagerBuilder.cs" />
     <Compile Include="NinjaScripts\Interfaces\Managers\Base\IManagerOptions.cs" />
+    <Compile Include="NinjaScripts\Interfaces\Managers\Indicators\IIndicatorsManagerBuilder.cs" />
     <Compile Include="NinjaScripts\Interfaces\Managers\Indicators\IIndicatorsManagerOptions.cs" />
+    <Compile Include="NinjaScripts\Interfaces\Managers\Sessions\ISessionsManagerBuilder.cs" />
     <Compile Include="NinjaScripts\Interfaces\Managers\Sessions\ISessionsManagerOptions.cs" />
+    <Compile Include="NinjaScripts\Interfaces\Managers\Strategies\IStrategiesManagerBuilder.cs" />
     <Compile Include="NinjaScripts\Interfaces\Managers\Strategies\IStrategiesManagerOptions.cs" />
     <Compile Include="zToDelete\BaseNinjascriptsManager.cs" />
     <Compile Include="zToDelete\BaseNinjascriptsManagerBuilder.cs" />
