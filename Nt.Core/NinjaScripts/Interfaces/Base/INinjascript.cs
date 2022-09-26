@@ -3,11 +3,17 @@ using NinjaTrader.NinjaScript;
 using System;
 
 namespace Nt.Core
-{    /// <summary>
-     /// Interface for any ninjascript
-     /// </summary>
-    public interface INinjascript : IElement
+{    
+    
+    /// <summary>
+    /// Interface for any ninjascript.
+    /// </summary>
+    public interface INinjascript<TScript,TOptions, TBuilder> : IElement
+        where TScript : INinjascript<TScript,TOptions, TBuilder>
+        where TOptions : IOptions<TOptions>
+        where TBuilder : IBuilder<TScript,TOptions, TBuilder>
     {
+
         #region Protected members
 
         /// <summary>
@@ -62,17 +68,6 @@ namespace Nt.Core
 
         #endregion
 
-    }
-
-    /// <summary>
-    /// Interface for any ninjascript.
-    /// </summary>
-    public interface INinjascript<TScript,TOptions, TBuilder> : INinjascript
-        where TScript : INinjascript<TScript,TOptions, TBuilder>
-        where TOptions : IOptions<TOptions>
-        where TBuilder : IBuilder<TScript,TOptions, TBuilder>
-    {
-
         #region Configure methods
 
         /// <summary>
@@ -92,5 +87,14 @@ namespace Nt.Core
         #endregion
 
     }
+
+    /// <summary>
+    /// Interface for any ninjascript
+    /// </summary>
+    public interface INinjascript : INinjascript<INinjascript,IOptions,IBuilder>
+    {
+    }
+
+
 
 }

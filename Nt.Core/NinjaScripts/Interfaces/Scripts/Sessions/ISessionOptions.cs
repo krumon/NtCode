@@ -3,7 +3,7 @@
     /// <summary>
     /// Interface for any session options.
     /// </summary>
-    public interface ISessionOptions<TOptions> : IOptions<TOptions>, ISessionOptions
+    public interface ISessionOptions<TOptions> : IOptions<TOptions>
         where TOptions : ISessionOptions<TOptions>
     {
     }
@@ -11,7 +11,7 @@
     /// <summary>
     /// Interface for any session options.
     /// </summary>
-    public interface ISessionOptions : IOptions
+    public interface ISessionOptions : ISessionOptions<ISessionOptions>
     {
     }
 }

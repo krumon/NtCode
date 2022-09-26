@@ -7,9 +7,9 @@ namespace Nt.Core
     /// The base class to ninjascript builders
     /// </summary>
     public abstract class BaseBuilder<TScript, TOptions,TBuilder>: IBuilder<TScript, TOptions,TBuilder>
-        where TScript : BaseNinjascript<TScript, TOptions,TBuilder>, new()
-        where TOptions : BaseOptions<TOptions>, new()
-        where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>, new()
+        where TScript : BaseNinjascript<TScript, TOptions,TBuilder> 
+        where TOptions : BaseOptions<TOptions>
+        where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>
     {
 
         #region Protected members
@@ -31,7 +31,7 @@ namespace Nt.Core
         public virtual TScript Build(NinjaScriptBase ninjascript)
         {
             // Create the script
-            TScript script = new TScript();
+            TScript script = Activator.CreateInstance<TScript>(); // new TScript();
 
             // Configure options
             script.Configure(options);
@@ -50,7 +50,7 @@ namespace Nt.Core
         public virtual TScript Build()
         {
             // Create the script
-            TScript script = new TScript();
+            TScript script = Activator.CreateInstance<TScript>();  // new TScript();
 
             // Configure options
             script.Configure(options);
@@ -68,7 +68,7 @@ namespace Nt.Core
         {
             // Create default options to rewriter the new properties passed by the options object.
             if (options == null)
-                options = new TOptions();
+                options = Activator.CreateInstance<TOptions>();  // new TOptions();
 
             // Add custom options and properties
             op?.Invoke(options);
@@ -86,7 +86,7 @@ namespace Nt.Core
         {
             // Create default options to rewriter the new properties passed by the options object.
             if (options == null)
-                options = new TOptions();
+                options = Activator.CreateInstance<TOptions>();  // new TOptions();
 
             // Copy to the options object the options passed by parameter.
             op.CopyTo(options);
@@ -99,4 +99,7 @@ namespace Nt.Core
 
     }
 
+    public abstract class BaseBuilder : BaseBuilder<INinjascript, IOptions, IBuilder>, INinjascript
+    {
+    }
 }

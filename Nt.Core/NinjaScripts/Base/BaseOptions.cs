@@ -7,7 +7,23 @@ namespace Nt.Core
     /// <summary>
     /// The options for any ninjascript.
     /// </summary>
-    public class BaseOptions : IOptions
+    public class BaseOptions : BaseOptions<BaseOptions>, IOptions
+    {
+        public void CopyTo(IOptions options)
+        {
+            // Copy the new options
+            options.Name = string.IsNullOrEmpty(Name) ? "kRuMoN Script" : Name;
+            options.Description = string.IsNullOrEmpty(Description) ? @"Script created by kRuMoN." : Description;
+            options.Calculate = Calculate;
+            options.BarsRequiredToPlot = BarsRequiredToPlot;
+        }
+    }
+
+    /// <summary>
+    /// The base class for all ninjascripts options to configure.
+    /// </summary>
+    public abstract class BaseOptions<TOptions> : IOptions<TOptions>
+        where TOptions : BaseOptions<TOptions>
     {
 
         #region Private members / Default values
@@ -71,19 +87,6 @@ namespace Nt.Core
             ninjascript.Calculate = Calculate;
             ninjascript.BarsRequiredToPlot = BarsRequiredToPlot;
         }
-
-        #endregion
-
-    }
-
-    /// <summary>
-    /// The base class for all ninjascripts options to configure.
-    /// </summary>
-    public abstract class BaseOptions<TOptions> : BaseOptions, IOptions<TOptions>
-        where TOptions : BaseOptions<TOptions>, new()
-    {
-
-        #region Public methods
 
         /// <summary>
         /// Copy options to ninjascript options

@@ -76,7 +76,7 @@ namespace Nt.Core
         public INinjascript Get<T>(T script)
             where T : INinjascript, new()
         {
-            if (scripts == null)
+            if (scripts != null)
                 if (scripts.Contains(script))
                     return scripts[scripts.IndexOf(script)];
             

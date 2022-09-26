@@ -51,7 +51,7 @@ namespace Nt.Core
         /// <summary>
         /// Gets the configured sessions.
         /// </summary>
-        public List<ISession> Sessions => scripts;
+        public List<ISession> Scripts => scripts;
 
         /// <summary>
         /// Gets true if any sessionHoursList are stored.
