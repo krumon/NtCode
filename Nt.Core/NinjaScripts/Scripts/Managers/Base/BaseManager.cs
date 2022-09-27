@@ -1,5 +1,6 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
+using System;
 using System.Collections.Generic;
 
 namespace Nt.Core
@@ -46,7 +47,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="script"></param>
         public void Add<T>(T script)
-            where T : INinjascript, new()
+            where T : INinjascript
         {
             if (scripts == null)
                 scripts = new List<INinjascript>();

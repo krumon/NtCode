@@ -162,115 +162,129 @@ namespace Nt.Core
         /// <summary>
         /// Gets the script options
         /// </summary>
-        public TOptions Options { get; protected set; } //= new TOptions();
+        public TOptions Options { get; protected set; }
+
+        /// <summary>
+        /// Indicates if the session is configured
+        /// </summary>
+        public bool ConfigurationError => !isConfigured;
 
         #endregion
 
         #region State changed methods
 
-        /// <summary>
-        /// AddValues the <see cref="BaseNinjascript"/>.
-        /// </summary>
-        /// <param name="ninjascript">The parent ninjascript.</param>
-        /// <param name="bars">The chart bars object.</param>
-        public override void Load(NinjaScriptBase ninjascript, Bars bars)
-        {
-            // Call the parent method
-            base.Load(ninjascript, bars);
+        ///// <summary>
+        ///// AddValues the <see cref="BaseNinjascript"/>.
+        ///// </summary>
+        ///// <param name="ninjascript">The parent ninjascript.</param>
+        ///// <param name="bars">The chart bars object.</param>
+        //public override void Load(NinjaScriptBase ninjascript, Bars bars)
+        //{
+        //    // Call the parent method
+        //    base.Load(ninjascript, bars);
 
-            // Make sure the session is configured
-            if (!isConfigured)
-                Configure();
-        }
+        //    // Make sure the session is configured
+        //    //if (!isConfigured)
+        //    //    Configure();
+        //}
 
         #endregion
 
         #region Configure methods
 
-        /// <summary>
-        /// Configure options into the script.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public INinjascript Configure<Script,Options>(Action<Options> options)
-        {
-            // Create default session properties.
-            //var sessionOptions = new TOptions();
-            if (typeof(Script) is TScript && options is Action<TOptions> op)
-            {
-                if (this.Options == null)
-                    this.Options = Activator.CreateInstance<TOptions>(); // new TOptions();
+        ///// <summary>
+        ///// Configure options into the script.
+        ///// </summary>
+        ///// <param name="options"></param>
+        ///// <returns></returns>
+        //public INinjascript Configure<Script,Options>(Action<Options> options)
+        //{
+        //    // Create default session properties.
+        //    //var sessionOptions = new TOptions();
+        //    if (typeof(Script) is TScript && options is Action<TOptions> op)
+        //    {
+        //        if (this.Options == null)
+        //            this.Options = Activator.CreateInstance<TOptions>(); // new TOptions();
 
-                // If options is not null...invoke delegate to update the configure options by the user.
-                if (op != null)
-                    op.Invoke(this.Options);
+        //        // If options is not null...invoke delegate to update the configure options by the user.
+        //        if (op != null)
+        //            op.Invoke(this.Options);
 
-                // Copy the options into the class options.
-                //sessionOptions.CopyTo(Options);
+        //        // Copy the options into the class options.
+        //        //sessionOptions.CopyTo(Options);
 
-                // Update the configure flag
-                if (!isConfigured)
-                    isConfigured = true;
-            }
+        //        // Update the configure flag
+        //        if (!isConfigured)
+        //            isConfigured = true;
+        //    }
 
-            return (TScript)this;
-        }
+        //    return (TScript)this;
+        //}
 
-        /// <summary>
-        /// Configure options into the script.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public INinjascript Configure(Action<IOptions> options)
-        {
-            // Create default session properties.
-            //var sessionOptions = new TOptions();
+        ///// <summary>
+        ///// Configure options into the script.
+        ///// </summary>
+        ///// <param name="options"></param>
+        ///// <returns></returns>
+        //public INinjascript Configure(Action<IOptions> options)
+        //{
+        //    // Create default session properties.
+        //    //var sessionOptions = new TOptions();
 
-            if (Options == null)
-                Options = Activator.CreateInstance<TOptions>(); // new TOptions();
+        //    if (Options == null)
+        //        Options = Activator.CreateInstance<TOptions>(); // new TOptions();
 
-            // If options is not null...invoke delegate to update the configure options by the user.
-            if (options != null)
-                options.Invoke(Options);
+        //    // If options is not null...invoke delegate to update the configure options by the user.
+        //    if (options != null)
+        //        options.Invoke(Options);
 
-            // Copy the options into the class options.
-            //sessionOptions.CopyTo(Options);
+        //    // Copy the options into the class options.
+        //    //sessionOptions.CopyTo(Options);
 
-            // Update the configure flag
-            if (!isConfigured)
-                isConfigured = true;
+        //    // Update the configure flag
+        //    if (!isConfigured)
+        //        isConfigured = true;
 
-            return (TScript)this;
-        }
+        //    return (TScript)this;
+        //}
 
         /// <summary>
         /// Add properties to configure the script.
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        public INinjascript Configure(IOptions options = null)
+        public void Configure(IOptions options)
         {
-            if (Options == null)
-                Options = Activator.CreateInstance<TOptions>(); // new TOptions();
+            // The object only can be configured one time.
+            if (isConfigured)
+                return;
+
+            //if (Options == null)
+            //    Options = Activator.CreateInstance<TOptions>(); // new TOptions();
+
             // If properties is null...create a default properties...
             if (options != null)
                 Options = (TOptions)options;
 
-            // Copy the options into the class options.
-            //options.CopyTo(Options);
-
             // Update the configure flag
-            if (!isConfigured)
-                isConfigured = true;
+            //if (!isConfigured)
+            isConfigured = true;
+        }
 
-            return (TScript)this;
+        /// <summary>
+        /// Create a ninjascript default builder.
+        /// </summary>
+        /// <returns>Default instance of <see cref="IBuilder"/>.</returns>
+        public IBuilder CreateBuilder()
+        {
+            return Activator.CreateInstance<TBuilder>();
         }
 
         /// <summary>
         /// Create a ninjascript default builder.
         /// </summary>
         /// <returns>Default instance of <see cref="TBuilder"/>.</returns>
-        public IBuilder CreateBuilder()
+        public static IBuilder CreateDefaultBuilder()
         {
             return Activator.CreateInstance<TBuilder>();
         }
@@ -336,6 +350,27 @@ namespace Nt.Core
 
         #endregion
 
+        #region Public Methods
+
+        /// <summary>
+        /// Returns the type of the script.
+        /// </summary>
+        /// <returns></returns>
+        public Type GetScriptType()
+        {
+            return typeof(TScript);
+        }
+
+        /// <summary>
+        /// Returns the type of the options.
+        /// </summary>
+        /// <returns></returns>
+        public Type GetOptionsType()
+        {
+            return typeof(TOptions);
+        }
+
+        #endregion
     }
 
     ///// <summary>

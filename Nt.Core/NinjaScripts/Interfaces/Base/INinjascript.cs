@@ -72,20 +72,36 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        INinjascript Configure<Script, Options>(Action<Options> options);
+        //INinjascript Configure<Script, Options>(Action<Options> options);
 
         /// <summary>
         /// Add properties to configure the script.
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        INinjascript Configure(IOptions options);
+        void Configure(IOptions options);
 
         /// <summary>
         /// Create a ninjascript default builder.
         /// </summary>
         /// <returns>Default instance of <see cref="TBuilder"/>.</returns>
         IBuilder CreateBuilder();
+
+        #endregion
+
+        #region Public Methods
+
+        /// <summary>
+        /// Returns the type of the script.
+        /// </summary>
+        /// <returns></returns>
+        Type GetScriptType();
+
+        /// <summary>
+        /// Returns the type of the options.
+        /// </summary>
+        /// <returns></returns>
+        Type GetOptionsType();
 
         #endregion
 

@@ -20,9 +20,28 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            //SessionFilters sessionFilters = new SessionFilters().CreateBuilder()
-            //    .Configure<SessionFilters,SessionFiltersOptions>((op) =>
+
+            ISessionsManager sessionsManager = (ISessionsManager)(ISessionsManagerBuilder)((ISessionsManagerBuilder)SessionsManager.CreateDefaultBuilder())
+                .Add<SessionFilters, SessionFiltersOptions>((op) =>
+                {
+                    op.Name = "Session Filters";
+                    op.Calculate = Calculate.OnEachTick;
+                    op.BarsRequiredToPlot = 50;
+                    op.AddDateFilters(year: 2020, isInitial: true);
+                    op.AddDateFilters(year: 2022, isInitial: false);
+                    op.AddDateFilters(new DateTime(2020, 6, 12), new DateTime(2022, 9, 20));
+                })
+                .Add<SessionHours, SessionHoursOptions>((op) =>
+                {
+                    op.Name = "Session Hours";
+                })
+                .Build();
+
+            //INinjascript sessionFilters = 
+            //    SessionFilters.CreateDefaultBuilder()
+            //    .Configure<SessionFilters, SessionFiltersOptions>((op) =>
             //    {
+            //        op.Name = "Session Filters";
             //        op.Calculate = Calculate.OnEachTick;
             //        op.BarsRequiredToPlot = 50;
             //        op.AddDateFilters(year: 2020, isInitial: true);
@@ -31,8 +50,29 @@ namespace ConsoleApp
             //    })
             //    .Build();
 
+            //INinjascript sessionHours = SessionHours.CreateDefaultBuilder()
+            //    .Configure<SessionHours,SessionHoursOptions>((op) =>
+            //    {
+            //        op.Name = "Session Hours";
+            //    })
+            //    .Build();
+
+            INinjascript sessionStats = SessionStats.CreateDefaultBuilder()
+                .Build();
+
+            INinjascript sessionHoursList = SessionHoursList.CreateDefaultBuilder()
+                .Configure<SessionHoursList,SessionHoursListOptions>((op) =>
+                {
+                    op.MaxSessionsToStored = 13;
+                })
+                .Build();
+
+            //sessionsManager.Add(sessionFilters);
+            //sessionsManager.Add(sessionHours);
+            //sessionsManager.Add(sessionHoursList);
 
             Wait();
+
             //builder.Configure((op) =>
             //{
             //    op.Calculate = Calculate.OnEachTick;

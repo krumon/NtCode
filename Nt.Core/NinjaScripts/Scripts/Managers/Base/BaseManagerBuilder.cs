@@ -1,6 +1,4 @@
-﻿using NinjaTrader.NinjaScript;
-using System;
-using System.CodeDom;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Nt.Core
@@ -15,11 +13,26 @@ namespace Nt.Core
     {
         #region Private members
 
-        private List<ISession> scripts = new List<ISession>();
+        private List<INinjascript> scripts = new List<INinjascript>();
 
         #endregion
 
         #region Public methods
+
+        public IManagerBuilder Add<Script, Options>(Action<Options> options)
+            where Script : INinjascript
+        {
+            var script = Activator.CreateInstance<Script>().CreateBuilder().Configure<Script,Options>(options).Build();
+
+            if (scripts == null)
+                scripts = new List<INinjascript>();
+
+            scripts.Add(script);
+
+            return this;
+
+        }
+
 
         public TManagerBuilder Add<T>()
             where T : ISession, new()

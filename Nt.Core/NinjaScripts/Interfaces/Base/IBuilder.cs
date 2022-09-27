@@ -33,6 +33,20 @@ namespace Nt.Core
         INinjascript Build();
 
         /// <summary>
+        /// Configure options into the script.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        IBuilder Configure<Script, Options>(Action<Options> options);
+
+        /// <summary>
+        /// Configure the ninjascript properties passed by the <paramref name="op"/>.
+        /// </summary>
+        /// <param name="op">Delegate method with the new properties to configure the script.</param>
+        /// <returns>The script builder to continue the construction.</returns>
+        IBuilder Configure<Script,Options>(Options op);
+
+        /// <summary>
         /// Configure the ninjascript properties passed by the <paramref name="op"/>.
         /// </summary>
         /// <param name="op">Delegate method with the new properties to configure the script.</param>

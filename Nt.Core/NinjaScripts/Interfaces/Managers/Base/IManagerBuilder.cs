@@ -1,4 +1,6 @@
-﻿namespace Nt.Core
+﻿using System;
+
+namespace Nt.Core
 {
 
     /// <summary>
@@ -6,6 +8,10 @@
     /// </summary>
     public interface IManagerBuilder : IBuilder
     {
+
+        IManagerBuilder Add<Script, Options>(Action<Options> options)
+            where Script : INinjascript;
+
     }
 
 }

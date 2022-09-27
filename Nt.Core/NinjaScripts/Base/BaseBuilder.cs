@@ -60,6 +60,39 @@ namespace Nt.Core
         }
 
         /// <summary>
+        /// Configure options into the script.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public IBuilder Configure<Script, Options>(Action<Options> options)
+        {
+            // Create default session properties.
+            //var sessionOptions = new TOptions();
+            if (typeof(Script) == typeof(TScript) && options is Action<TOptions> op)
+            {
+                if (this.options == null)
+                    this.options = Activator.CreateInstance<TOptions>();
+
+                // If options is not null...invoke delegate to update the configure options by the user.
+                if (op != null)
+                    op.Invoke((TOptions)this.options);
+
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Configure the ninjascript properties passed by the <paramref name="op"/>.
+        /// </summary>
+        /// <param name="op">Delegate method with the new properties to configure the script.</param>
+        /// <returns>The script builder to continue the construction.</returns>
+        public IBuilder Configure<Script, Options>(Options op)
+        {
+            return this;
+        }
+
+        /// <summary>
         /// Configure the ninjascript properties passed by the <paramref name="op"/>.
         /// </summary>
         /// <param name="op">Delegate method with the new properties to configure the script.</param>
@@ -68,7 +101,7 @@ namespace Nt.Core
         {
             // Create default options to rewriter the new properties passed by the options object.
             if (options == null)
-                options = Activator.CreateInstance<TOptions>();  // new TOptions();
+                options = Activator.CreateInstance<TOptions>();
 
             // Add custom options and properties
             op?.Invoke((TOptions)options);
