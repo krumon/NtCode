@@ -8,12 +8,4 @@
     {
     }
 
-    /// <summary>
-    /// Interface for any indicator options.
-    /// </summary>
-    public interface ISessionsManagerOptions<TSessionsManagerOptions> : IManagerOptions<TSessionsManagerOptions>, ISessionsManagerOptions
-        where TSessionsManagerOptions : ISessionsManagerOptions<TSessionsManagerOptions>
-    {
-    }
-
 }

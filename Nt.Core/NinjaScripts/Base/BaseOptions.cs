@@ -5,24 +5,9 @@ namespace Nt.Core
 {
 
     /// <summary>
-    /// The options for any ninjascript.
-    /// </summary>
-    public class BaseOptions : BaseOptions<BaseOptions>, IOptions
-    {
-        public void CopyTo(IOptions options)
-        {
-            // Copy the new options
-            options.Name = string.IsNullOrEmpty(Name) ? "kRuMoN Script" : Name;
-            options.Description = string.IsNullOrEmpty(Description) ? @"Script created by kRuMoN." : Description;
-            options.Calculate = Calculate;
-            options.BarsRequiredToPlot = BarsRequiredToPlot;
-        }
-    }
-
-    /// <summary>
     /// The base class for all ninjascripts options to configure.
     /// </summary>
-    public abstract class BaseOptions<TOptions> : IOptions<TOptions>
+    public abstract class BaseOptions<TOptions> : IOptions
         where TOptions : BaseOptions<TOptions>
     {
 
@@ -89,10 +74,10 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Copy options to ninjascript options
+        /// Copy options to ninjascript object.
         /// </summary>
         /// <param name="options"></param>
-        public virtual void CopyTo(TOptions options)
+        public virtual void CopyTo(IOptions options)
         {
             // Copy the new options
             options.Name = string.IsNullOrEmpty(Name) ? "kRuMoN Script" : Name;
@@ -101,22 +86,37 @@ namespace Nt.Core
             options.BarsRequiredToPlot = BarsRequiredToPlot;
         }
 
-        /// <summary>
-        /// Copy options to ninjascript options
-        /// </summary>
-        /// <param name="options"></param>
-        public virtual void CopyTo<TScript>(TScript script, TOptions options)
-            //where TScript : BaseNinjascript<TScript, TOptions>, new()
-        {
-            // Copy the new options
-            //script.Options.Name = string.IsNullOrEmpty(Name) ? "kRuMoN Script" : Name;
-            //script.Options.Description = string.IsNullOrEmpty(Description) ? @"Script created by kRuMoN." : Description;
-            //script.Options.Calculate = Calculate;
-            //script.Options.BarsRequiredToPlot = BarsRequiredToPlot;
-        }
+        ///// <summary>
+        ///// Copy options to ninjascript options
+        ///// </summary>
+        ///// <param name="options"></param>
+        //public virtual void CopyTo<TScript>(TScript script, TOptions options)
+        //    //where TScript : BaseNinjascript<TScript, TOptions>, new()
+        //{
+        //    // Copy the new options
+        //    //script.Options.Name = string.IsNullOrEmpty(Name) ? "kRuMoN Script" : Name;
+        //    //script.Options.Description = string.IsNullOrEmpty(Description) ? @"Script created by kRuMoN." : Description;
+        //    //script.Options.Calculate = Calculate;
+        //    //script.Options.BarsRequiredToPlot = BarsRequiredToPlot;
+        //}
 
         #endregion
 
     }
+
+    ///// <summary>
+    ///// The options for any ninjascript.
+    ///// </summary>
+    //public abstract class BaseOptions : BaseOptions<BaseOptions>, IOptions
+    //{
+    //    public void CopyTo(IOptions options)
+    //    {
+    //        // Copy the new options
+    //        options.Name = string.IsNullOrEmpty(Name) ? "kRuMoN Script" : Name;
+    //        options.Description = string.IsNullOrEmpty(Description) ? @"Script created by kRuMoN." : Description;
+    //        options.Calculate = Calculate;
+    //        options.BarsRequiredToPlot = BarsRequiredToPlot;
+    //    }
+    //}
 
 }

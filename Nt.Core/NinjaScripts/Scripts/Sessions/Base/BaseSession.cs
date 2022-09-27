@@ -8,10 +8,10 @@ namespace Nt.Core
     /// <typeparam name="TSession">The session type</typeparam>
     /// <typeparam name="TSessionOptions">The session options type to configure the object.</typeparam>
     /// <typeparam name="TSessionBuilder">The session builder to construct the object.</typeparam>
-    public abstract class BaseSession<TSession,TSessionOptions,TSessionBuilder> : BaseNinjascript<TSession,TSessionOptions,TSessionBuilder>, ISession<TSession,TSessionOptions,TSessionBuilder>
-        where TSession : BaseSession<TSession,TSessionOptions,TSessionBuilder>, new()
-        where TSessionOptions : BaseSessionOptions<TSessionOptions>, new()
-        where TSessionBuilder : BaseSessionBuilder<TSession,TSessionOptions,TSessionBuilder>, new()
+    public abstract class BaseSession<TSession,TSessionOptions,TSessionBuilder> : BaseNinjascript<TSession,TSessionOptions,TSessionBuilder>, ISession
+        where TSession : BaseSession<TSession,TSessionOptions,TSessionBuilder>, ISession
+        where TSessionOptions : BaseSessionOptions<TSessionOptions>, ISessionOptions
+        where TSessionBuilder : BaseSessionBuilder<TSession,TSessionOptions,TSessionBuilder>, ISessionBuilder
     {
         //public List<TSession> UseSessions { get; set; } = new List<TSession>();
 

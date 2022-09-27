@@ -6,11 +6,11 @@ namespace Nt.Core
     /// <summary>
     /// The indicator options
     /// </summary>
-    public abstract class BaseIndicatorOptions<TOptions> : BaseOptions<TOptions>, IIndicatorOptions<TOptions>
-        where TOptions : BaseIndicatorOptions<TOptions>, new()
+    public abstract class BaseIndicatorOptions<TOptions> : BaseOptions<TOptions>, IIndicatorOptions
+        where TOptions : BaseIndicatorOptions<TOptions>, IIndicatorOptions
     {
 
-        #region Private members / Default value
+        #region Configure default values
 
         /// <summary>
         /// Indicates if the data is overlay in the graphics.
@@ -108,19 +108,20 @@ namespace Nt.Core
         /// Copy options to ninjascript options
         /// </summary>
         /// <param name="options"></param>
-        public override void CopyTo(TOptions options)
+        public override void CopyTo(IOptions options)
         {
+            TOptions op = (TOptions)options;
             // Sets the parent options values.
-            base.CopyTo(options);
+            base.CopyTo(op);
 
-            options.IsOverlay = IsOverlay;
-            options.DisplayInDataBox = DisplayInDataBox;
-            options.ScaleJustification = ScaleJustification;
-            options.IsSuspendedWhileInactive = IsSuspendedWhileInactive;
-            options.DrawOnPricePanel = DrawOnPricePanel;
-            options.DrawHorizontalGridLines = DrawHorizontalGridLines;
-            options.DrawVerticalGridLines = DrawVerticalGridLines;
-            options.PaintPriceMarkers = PaintPriceMarkers;
+            op.IsOverlay = IsOverlay;
+            op.DisplayInDataBox = DisplayInDataBox;
+            op.ScaleJustification = ScaleJustification;
+            op.IsSuspendedWhileInactive = IsSuspendedWhileInactive;
+            op.DrawOnPricePanel = DrawOnPricePanel;
+            op.DrawHorizontalGridLines = DrawHorizontalGridLines;
+            op.DrawVerticalGridLines = DrawVerticalGridLines;
+            op.PaintPriceMarkers = PaintPriceMarkers;
         }
 
         /// <summary>

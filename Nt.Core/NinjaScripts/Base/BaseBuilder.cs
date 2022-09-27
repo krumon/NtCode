@@ -6,10 +6,10 @@ namespace Nt.Core
     /// <summary>
     /// The base class to ninjascript builders
     /// </summary>
-    public abstract class BaseBuilder<TScript, TOptions,TBuilder>: IBuilder<TScript, TOptions,TBuilder>
-        where TScript : BaseNinjascript<TScript, TOptions,TBuilder> 
-        where TOptions : BaseOptions<TOptions>
-        where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>
+    public abstract class BaseBuilder<TScript, TOptions,TBuilder>: IBuilder
+        where TScript : BaseNinjascript<TScript, TOptions,TBuilder>, INinjascript
+        where TOptions : BaseOptions<TOptions>, IOptions
+        where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>, IBuilder
     {
 
         #region Protected members
@@ -17,7 +17,7 @@ namespace Nt.Core
         /// <summary>
         /// The script options.
         /// </summary>
-        protected TOptions options;
+        public IOptions options { get; private set; }
 
         #endregion
 
@@ -28,7 +28,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="ninjascript">The ninjatrader ninjascript.</param>
         /// <returns>The script object created by the builder.</returns>
-        public virtual TScript Build(NinjaScriptBase ninjascript)
+        public virtual INinjascript Build(NinjaScriptBase ninjascript)
         {
             // Create the script
             TScript script = Activator.CreateInstance<TScript>(); // new TScript();
@@ -47,7 +47,7 @@ namespace Nt.Core
         /// Method to build any script.
         /// </summary>
         /// <returns>The script object created by the builder.</returns>
-        public virtual TScript Build()
+        public virtual INinjascript Build()
         {
             // Create the script
             TScript script = Activator.CreateInstance<TScript>();  // new TScript();
@@ -64,14 +64,14 @@ namespace Nt.Core
         /// </summary>
         /// <param name="op">Delegate method with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        public BaseBuilder<TScript, TOptions,TBuilder> Configure(Action<TOptions> op)
+        public IBuilder Configure(Action<IOptions> op)
         {
             // Create default options to rewriter the new properties passed by the options object.
             if (options == null)
                 options = Activator.CreateInstance<TOptions>();  // new TOptions();
 
             // Add custom options and properties
-            op?.Invoke(options);
+            op?.Invoke((TOptions)options);
 
             // Return the builder
             return this;
@@ -82,7 +82,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="op"><see cref="TOptions"/> object with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        public BaseBuilder<TScript, TOptions,TBuilder>Configure(TOptions op)
+        public IBuilder Configure(IOptions op)
         {
             // Create default options to rewriter the new properties passed by the options object.
             if (options == null)
@@ -99,7 +99,10 @@ namespace Nt.Core
 
     }
 
-    public abstract class BaseBuilder : BaseBuilder<INinjascript, IOptions, IBuilder>, INinjascript
-    {
-    }
+    ///// <summary>
+    ///// The base class to ninjascript builders
+    ///// </summary>
+    //public abstract class BaseBuilder : BaseBuilder<BaseNinjascript, BaseOptions, BaseBuilder>, IBuilder
+    //{
+    //}
 }

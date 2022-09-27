@@ -161,18 +161,19 @@ namespace Nt.Core
         /// Copy options to ninjascript options
         /// </summary>
         /// <param name="options"></param>
-        public override void CopyTo(SessionFiltersOptions options)
+        public override void CopyTo(IOptions options)
         {
+            SessionFiltersOptions op = (SessionFiltersOptions)options;
             // Copy the parent options...
-            base.CopyTo(options);
+            base.CopyTo(op);
 
             // Copy the new options
-            options.IncludeHistoricalData = IncludeHistoricalData;
-            options.IncludePartialHolidays = IncludePartialHolidays;
-            options.IncludeLateBegin = IncludeLateBegin;
-            options.IncludeEarlyEnd = IncludeEarlyEnd;
-            options.FinalDate = FinalDate;
-            options.InitialDate = InitialDate;
+            op.IncludeHistoricalData = IncludeHistoricalData;
+            op.IncludePartialHolidays = IncludePartialHolidays;
+            op.IncludeLateBegin = IncludeLateBegin;
+            op.IncludeEarlyEnd = IncludeEarlyEnd;
+            op.FinalDate = FinalDate;
+            op.InitialDate = InitialDate;
 
         }
 

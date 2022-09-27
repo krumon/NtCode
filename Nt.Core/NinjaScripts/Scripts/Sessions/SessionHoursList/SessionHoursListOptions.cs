@@ -51,13 +51,14 @@ namespace Nt.Core
         /// Copy options to ninjascript options
         /// </summary>
         /// <param name="options"></param>
-        public override void CopyTo(SessionHoursListOptions options)
+        public override void CopyTo(IOptions options)
         {
+            SessionHoursListOptions op = (SessionHoursListOptions)options;
             // Copy the parent options...
-            base.CopyTo(options);
+            base.CopyTo(op);
 
             // Copy the new options
-            options.MaxSessionsToStored = MaxSessionsToStored;
+            op.MaxSessionsToStored = MaxSessionsToStored;
 
         }
 

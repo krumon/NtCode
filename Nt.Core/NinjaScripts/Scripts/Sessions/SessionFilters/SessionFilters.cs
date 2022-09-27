@@ -7,7 +7,7 @@ namespace Nt.Core
     /// <summary>
     /// Contents the filters for any session
     /// </summary>
-    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions, SessionFiltersBuilder>
+    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions,SessionFiltersBuilder>
     {
 
         #region static consts

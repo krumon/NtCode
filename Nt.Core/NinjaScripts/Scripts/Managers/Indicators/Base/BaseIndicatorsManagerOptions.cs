@@ -3,8 +3,8 @@
     /// <summary>
     /// The script options
     /// </summary>
-    public abstract class BaseIndicatorsManagerOptions<TOptions> : BaseManagerOptions<TOptions>, IIndicatorsManagerOptions<TOptions>
-        where TOptions : BaseIndicatorsManagerOptions<TOptions>, new()
+    public abstract class BaseIndicatorsManagerOptions<TOptions> : BaseManagerOptions<TOptions>, IIndicatorsManagerOptions
+        where TOptions : BaseIndicatorsManagerOptions<TOptions>, IIndicatorsManagerOptions
     {
     }
 }

@@ -3,10 +3,11 @@
     /// <summary>
     /// The base class to session scripts builders
     /// </summary>
-    public abstract class BaseSessionBuilder<TSession,TSessionOptions,TSessionBuilder> : BaseBuilder<TSession,TSessionOptions,TSessionBuilder>, ISessionBuilder<TSession,TSessionOptions,TSessionBuilder>
-        where TSession : BaseSession<TSession,TSessionOptions,TSessionBuilder>, new()
-        where TSessionOptions : BaseSessionOptions<TSessionOptions>, new()
-        where TSessionBuilder : BaseSessionBuilder<TSession, TSessionOptions, TSessionBuilder>, new()
+    public abstract class BaseSessionBuilder<TSession,TSessionOptions,TSessionBuilder> : BaseBuilder<TSession,TSessionOptions,TSessionBuilder>, ISessionBuilder
+        where TSession : BaseSession<TSession,TSessionOptions,TSessionBuilder>, ISession
+        where TSessionOptions : BaseSessionOptions<TSessionOptions>, ISessionOptions
+        where TSessionBuilder : BaseSessionBuilder<TSession, TSessionOptions, TSessionBuilder>, ISessionBuilder
     {
     }
+
 }

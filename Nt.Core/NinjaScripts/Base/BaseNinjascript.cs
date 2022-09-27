@@ -8,19 +8,9 @@ namespace Nt.Core
     /// <summary>
     /// Base class for any ninjascript.
     /// </summary>
-    public abstract class BaseNinjascript : BaseNinjascript<INinjascript, IOptions, IBuilder>, INinjascript
-    {
-    }
-
-    /// <summary>
-    /// Base class for any ninjascript.
-    /// </summary>
     /// <typeparam name="TScript">The ninjascript.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
-    public abstract class BaseNinjascript<TScript, TOptions,TBuilder> : BaseElement, INinjascript<TScript,TOptions,TBuilder>
-        where TScript : BaseNinjascript<TScript,TOptions,TBuilder>
-        where TOptions : BaseOptions<TOptions>
-        where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>
+    public abstract class BaseNinjascript : BaseElement
     {
 
         #region Protected members
@@ -35,11 +25,6 @@ namespace Nt.Core
         /// </summary>
         protected Bars bars;
 
-        /// <summary>
-        /// Indicates if the session is configured
-        /// </summary>
-        protected bool isConfigured;
-
         #endregion
 
         #region Public properties
@@ -53,11 +38,6 @@ namespace Nt.Core
         /// The bars of the chart control.
         /// </summary>
         public Bars Bars => bars;
-
-        /// <summary>
-        /// Gets the script options
-        /// </summary>
-        public TOptions Options { get; protected set; } //= new TOptions();
 
         #endregion
 
@@ -81,15 +61,12 @@ namespace Nt.Core
         {
             // Make sure the parameters are not null.
             if (ninjascript == null || bars == null)
-                throw new Exception($"{nameof(BaseNinjascript)} load parameters can not be null"); // return null;
+                throw new Exception($"Load parameters can not be null"); // return null;
 
             // Set values.
             this.ninjascript = ninjascript;
             this.bars = bars;
 
-            // Make sure the session is configured
-            if (!isConfigured)
-                Configure();
         }
 
         /// <summary>
@@ -117,69 +94,6 @@ namespace Nt.Core
         /// </summary>
         public virtual void OnMarketData()
         {
-        }
-
-        #endregion
-
-        #region Configure methods
-
-        /// <summary>
-        /// Configure options into the script.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public TScript Configure(Action<TOptions> options)
-        {
-            // Create default session properties.
-            //var sessionOptions = new TOptions();
-
-            if (Options == null)
-                Options = Activator.CreateInstance<TOptions>(); // new TOptions();
-
-            // If options is not null...invoke delegate to update the configure options by the user.
-            if (options != null)
-                options.Invoke(Options);
-
-            // Copy the options into the class options.
-            //sessionOptions.CopyTo(Options);
-
-            // Update the configure flag
-            if (!isConfigured)
-                isConfigured = true;
-
-            return (TScript)this;
-        }
-
-        /// <summary>
-        /// Add properties to configure the script.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public TScript Configure(TOptions options = null)
-        {
-            if (Options == null)
-                Options= Activator.CreateInstance<TOptions>(); // new TOptions();
-            // If properties is null...create a default properties...
-            if (options != null)
-                Options = options;
-
-            // Copy the options into the class options.
-            //options.CopyTo(Options);
-
-            // Update the configure flag
-            if (!isConfigured)
-                isConfigured = true;
-
-            return (TScript)this;
-        }
-
-        /// <summary>
-        /// Create a ninjascript default builder.
-        /// </summary>
-        /// <returns>Default instance of <see cref="TBuilder"/>.</returns>
-        public static TBuilder CreateBuilder()
-        {
-            return Activator.CreateInstance<TBuilder>(); // new TBuilder();
         }
 
         #endregion
@@ -221,5 +135,185 @@ namespace Nt.Core
         #endregion
 
     }
+
+
+    /// <summary>
+    /// Base class for any ninjascript.
+    /// </summary>
+    /// <typeparam name="TScript">The ninjascript.</typeparam>
+    /// <typeparam name="TOptions">The ninjascript options.</typeparam>
+    public abstract class BaseNinjascript<TScript, TOptions,TBuilder> : BaseNinjascript, INinjascript // INinjascript<TScript,TOptions,TBuilder>
+        where TScript : BaseNinjascript<TScript,TOptions,TBuilder>, INinjascript
+        where TOptions : BaseOptions<TOptions>, IOptions
+        where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>, IBuilder
+    {
+
+        #region Protected members
+
+        /// <summary>
+        /// Indicates if the session is configured
+        /// </summary>
+        protected bool isConfigured;
+
+        #endregion
+
+        #region Public properties
+
+        /// <summary>
+        /// Gets the script options
+        /// </summary>
+        public TOptions Options { get; protected set; } //= new TOptions();
+
+        #endregion
+
+        #region State changed methods
+
+        /// <summary>
+        /// AddValues the <see cref="BaseNinjascript"/>.
+        /// </summary>
+        /// <param name="ninjascript">The parent ninjascript.</param>
+        /// <param name="bars">The chart bars object.</param>
+        public override void Load(NinjaScriptBase ninjascript, Bars bars)
+        {
+            // Call the parent method
+            base.Load(ninjascript, bars);
+
+            // Make sure the session is configured
+            if (!isConfigured)
+                Configure();
+        }
+
+        #endregion
+
+        #region Configure methods
+
+        /// <summary>
+        /// Configure options into the script.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public INinjascript Configure(Action<IOptions> options)
+        {
+            // Create default session properties.
+            //var sessionOptions = new TOptions();
+
+            if (Options == null)
+                Options = Activator.CreateInstance<TOptions>(); // new TOptions();
+
+            // If options is not null...invoke delegate to update the configure options by the user.
+            if (options != null)
+                options.Invoke(Options);
+
+            // Copy the options into the class options.
+            //sessionOptions.CopyTo(Options);
+
+            // Update the configure flag
+            if (!isConfigured)
+                isConfigured = true;
+
+            return (TScript)this;
+        }
+
+        /// <summary>
+        /// Add properties to configure the script.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        public INinjascript Configure(IOptions options = null)
+        {
+            if (Options == null)
+                Options = Activator.CreateInstance<TOptions>(); // new TOptions();
+            // If properties is null...create a default properties...
+            if (options != null)
+                Options = (TOptions)options;
+
+            // Copy the options into the class options.
+            //options.CopyTo(Options);
+
+            // Update the configure flag
+            if (!isConfigured)
+                isConfigured = true;
+
+            return (TScript)this;
+        }
+
+        /// <summary>
+        /// Create a ninjascript default builder.
+        /// </summary>
+        /// <returns>Default instance of <see cref="TBuilder"/>.</returns>
+        public IBuilder CreateBuilder()
+        {
+            return Activator.CreateInstance<TBuilder>();
+        }
+
+        ///// <summary>
+        ///// Configure options into the script.
+        ///// </summary>
+        ///// <param name="options"></param>
+        ///// <returns></returns>
+        //public TScript Configure(Action<TOptions> options)
+        //{
+        //    // Create default session properties.
+        //    //var sessionOptions = new TOptions();
+
+        //    if (Options == null)
+        //        Options = Activator.CreateInstance<TOptions>(); // new TOptions();
+
+        //    // If options is not null...invoke delegate to update the configure options by the user.
+        //    if (options != null)
+        //        options.Invoke(Options);
+
+        //    // Copy the options into the class options.
+        //    //sessionOptions.CopyTo(Options);
+
+        //    // Update the configure flag
+        //    if (!isConfigured)
+        //        isConfigured = true;
+
+        //    return (TScript)this;
+        //}
+
+        ///// <summary>
+        ///// Add properties to configure the script.
+        ///// </summary>
+        ///// <param name="options"></param>
+        ///// <returns></returns>
+        //public TScript Configure(TOptions options = null)
+        //{
+        //    if (Options == null)
+        //        Options= Activator.CreateInstance<TOptions>(); // new TOptions();
+        //    // If properties is null...create a default properties...
+        //    if (options != null)
+        //        Options = options;
+
+        //    // Copy the options into the class options.
+        //    //options.CopyTo(Options);
+
+        //    // Update the configure flag
+        //    if (!isConfigured)
+        //        isConfigured = true;
+
+        //    return (TScript)this;
+        //}
+
+        ///// <summary>
+        ///// Create a ninjascript default builder.
+        ///// </summary>
+        ///// <returns>Default instance of <see cref="TBuilder"/>.</returns>
+        //public static TBuilder CreateBuilder()
+        //{
+        //    return Activator.CreateInstance<TBuilder>(); // new TBuilder();
+        //}
+
+        #endregion
+
+    }
+
+    ///// <summary>
+    ///// Base class for any ninjascript.
+    ///// </summary>
+    //public abstract class BaseNinjascript : BaseNinjascript<BaseNinjascript, BaseOptions, BaseBuilder>
+    //{
+    //}
 
 }

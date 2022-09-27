@@ -3,15 +3,14 @@
     /// <summary>
     /// Interface for any session options.
     /// </summary>
-    public interface ISessionOptions<TOptions> : IOptions<TOptions>
-        where TOptions : ISessionOptions<TOptions>
+    public interface ISessionOptions : IOptions
     {
     }
 
-    /// <summary>
-    /// Interface for any session options.
-    /// </summary>
-    public interface ISessionOptions : ISessionOptions<ISessionOptions>
-    {
-    }
+    ///// <summary>
+    ///// Interface for any session options.
+    ///// </summary>
+    //public interface ISessionOptions : ISessionOptions<ISessionOptions>
+    //{
+    //}
 }

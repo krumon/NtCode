@@ -10,10 +10,10 @@ namespace Nt.Core
     /// </summary>
     /// <typeparam name="TManagerScript">The ninjascripts manager.</typeparam>
     /// <typeparam name="TManagerOptions">The ninjascripts manager options.</typeparam>
-    public abstract class BaseManager<TManagerScript, TManagerOptions,TManagerBuilder> : BaseNinjascript<TManagerScript, TManagerOptions,TManagerBuilder>, IManager<TManagerScript,TManagerOptions,TManagerBuilder>
-        where TManagerScript : BaseManager<TManagerScript, TManagerOptions, TManagerBuilder>, new()
-        where TManagerOptions : BaseManagerOptions<TManagerOptions>, new()
-        where TManagerBuilder : BaseManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, new()
+    public abstract class BaseManager<TManagerScript, TManagerOptions,TManagerBuilder> : BaseNinjascript<TManagerScript, TManagerOptions,TManagerBuilder>, IManager
+        where TManagerScript : BaseManager<TManagerScript, TManagerOptions, TManagerBuilder>, IManager
+        where TManagerOptions : BaseManagerOptions<TManagerOptions>, IManagerOptions
+        where TManagerBuilder : BaseManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IManagerBuilder
     {
         #region Protected members
 

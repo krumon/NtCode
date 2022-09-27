@@ -235,54 +235,54 @@ namespace Nt.Core
 
         #region Configure methods
 
-        /// <summary>
-        /// Add <see cref="SessionsManagerOptions"/> to <see cref="SessionsManager"/> configure.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionsManager ConfigureSession<TScript,TOptions,TBuilder>(Action<TOptions> options = null)
-            where TScript : BaseSession<TScript,TOptions,TBuilder>, new()
-            where TOptions : BaseSessionOptions<TOptions>, new()
-            where TBuilder : BaseSessionBuilder<TScript,TOptions,TBuilder>, new()
-        {
-            TScript script;
+        ///// <summary>
+        ///// Add <see cref="SessionsManagerOptions"/> to <see cref="SessionsManager"/> configure.
+        ///// </summary>
+        ///// <param name="options"></param>
+        ///// <returns></returns>
+        //public SessionsManager ConfigureSession<TScript,TOptions,TBuilder>(Action<TOptions> options = null)
+        //    where TScript : BaseManager<TScript,TOptions,TBuilder>, IManager
+        //    where TOptions : BaseManagerOptions<TOptions>, IManagerOptions
+        //    where TBuilder : BaseManagerBuilder<TScript,TOptions,TBuilder>, IManagerBuilder
+        //{
+        //    TScript script;
 
-            if (!sessions.ContainsKey(typeof(TScript)))
-                sessions.Add(typeof(TScript), new TScript());
+        //    if (!sessions.ContainsKey(typeof(TScript)))
+        //        sessions.Add(typeof(TScript), Activator.CreateInstance<TScript>());
             
-            script = (TScript)sessions[typeof(TScript)];
+        //    script = (TScript)sessions[typeof(TScript)];
 
-            script.Configure(options);
+        //    script.Configure((TScript)options);
 
-            return this;
-        }
+        //    return this;
+        //}
 
-        public SessionsManager ConfigureSession<TOptions>(Action<TOptions> options = null)
-            where TOptions : SessionsManagerOptions, new()
-        {
-            if (options is Action<SessionHoursListOptions> shOptions)
-            {
-                // Make sure session filters is not null.
-                if (!HasSessionHours)
-                    sessionHoursList = new SessionHoursList();
+        //public SessionsManager ConfigureSession<TOptions>(Action<TOptions> options = null)
+        //    where TOptions : SessionsManagerOptions, new()
+        //{
+        //    if (options is Action<SessionHoursListOptions> shOptions)
+        //    {
+        //        // Make sure session filters is not null.
+        //        if (!HasSessionHours)
+        //            sessionHoursList = new SessionHoursList();
 
-                // Configure....
-                sessionHoursList.Configure(shOptions);
+        //        // Configure....
+        //        sessionHoursList.Configure(shOptions);
 
-            }
-            //else if (options is Action<SessionFiltersOptions> fOptions)
-            //{
-            //    // Make sure session filters is not null.
-            //    if (!HasSessionFilters)
-            //        sessionFilters = new SessionFilters();
+        //    }
+        //    //else if (options is Action<SessionFiltersOptions> fOptions)
+        //    //{
+        //    //    // Make sure session filters is not null.
+        //    //    if (!HasSessionFilters)
+        //    //        sessionFilters = new SessionFilters();
 
-            //    // Configure....
-            //    sessionFilters.Configure(fOptions);
+        //    //    // Configure....
+        //    //    sessionFilters.Configure(fOptions);
 
-            //}
+        //    //}
 
-            return this;
-        }
+        //    return this;
+        //}
 
         /// <summary>
         /// Add filters funcionality to session manager.

@@ -8,10 +8,10 @@ namespace Nt.Core
     /// <summary>
     /// The base class to ninjascripts manager builders.
     /// </summary>
-    public abstract class BaseManagerBuilder<TManagerScript, TManagerOptions, TManagerBuilder> : BaseBuilder<TManagerScript, TManagerOptions, TManagerBuilder>, IManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>
-        where TManagerScript : BaseManager<TManagerScript, TManagerOptions,TManagerBuilder>, new()
-        where TManagerOptions : BaseManagerOptions<TManagerOptions>, new()
-        where TManagerBuilder : BaseManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, new()
+    public abstract class BaseManagerBuilder<TManagerScript, TManagerOptions, TManagerBuilder> : BaseBuilder<TManagerScript, TManagerOptions, TManagerBuilder>, IManagerBuilder
+        where TManagerScript : BaseManager<TManagerScript, TManagerOptions,TManagerBuilder>, IManager
+        where TManagerOptions : BaseManagerOptions<TManagerOptions>, IManagerOptions
+        where TManagerBuilder : BaseManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IManagerBuilder
     {
         #region Private members
 
