@@ -192,6 +192,35 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
+        public INinjascript Configure<Script,Options>(Action<Options> options)
+        {
+            // Create default session properties.
+            //var sessionOptions = new TOptions();
+            if (typeof(Script) is TScript && options is Action<TOptions> op)
+            {
+                if (this.Options == null)
+                    this.Options = Activator.CreateInstance<TOptions>(); // new TOptions();
+
+                // If options is not null...invoke delegate to update the configure options by the user.
+                if (op != null)
+                    op.Invoke(this.Options);
+
+                // Copy the options into the class options.
+                //sessionOptions.CopyTo(Options);
+
+                // Update the configure flag
+                if (!isConfigured)
+                    isConfigured = true;
+            }
+
+            return (TScript)this;
+        }
+
+        /// <summary>
+        /// Configure options into the script.
+        /// </summary>
+        /// <param name="options"></param>
+        /// <returns></returns>
         public INinjascript Configure(Action<IOptions> options)
         {
             // Create default session properties.
@@ -300,9 +329,9 @@ namespace Nt.Core
         ///// Create a ninjascript default builder.
         ///// </summary>
         ///// <returns>Default instance of <see cref="TBuilder"/>.</returns>
-        //public static TBuilder CreateBuilder()
+        //public static TBuilder CreateDefaultBuilder()
         //{
-        //    return Activator.CreateInstance<TBuilder>(); // new TBuilder();
+        //    return (TBuilder)CreateBuilder(); // new TBuilder();
         //}
 
         #endregion

@@ -20,8 +20,8 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            //SessionFilters sessionFilters = SessionFilters.CreateBuilder()
-            //    .Configure((op) =>
+            //SessionFilters sessionFilters = new SessionFilters().CreateBuilder()
+            //    .Configure<SessionFilters,SessionFiltersOptions>((op) =>
             //    {
             //        op.Calculate = Calculate.OnEachTick;
             //        op.BarsRequiredToPlot = 50;

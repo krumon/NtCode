@@ -72,7 +72,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
-        INinjascript Configure(Action<IOptions> options);
+        INinjascript Configure<Script, Options>(Action<Options> options);
 
         /// <summary>
         /// Add properties to configure the script.

@@ -1,4 +1,6 @@
-﻿namespace Nt.Core
+﻿using System;
+
+namespace Nt.Core
 {
 
     /// <summary>
@@ -11,6 +13,7 @@
         /// </summary>
         /// <param name="e"></param>
         void OnSessionChanged(SessionChangedEventArgs e);
+
     }
 
     ///// <summary>
