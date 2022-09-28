@@ -21,7 +21,11 @@ namespace ConsoleApp
         public static void Main(string[] args)
         {
 
-            ISessionsManager sessionsManager = (ISessionsManager)(ISessionsManagerBuilder)((ISessionsManagerBuilder)SessionsManager.CreateDefaultBuilder())
+            INinjascript sessionsManager = SessionsManager.CreateDefaultBuilder()
+                //Configure<SessionsManager,SessionsManagerOptions>((op) =>
+                //{
+                //    op.SessionsManager = sessionsManager;
+                //})
                 .Add<SessionFilters, SessionFiltersOptions>((op) =>
                 {
                     op.Name = "Session Filters";

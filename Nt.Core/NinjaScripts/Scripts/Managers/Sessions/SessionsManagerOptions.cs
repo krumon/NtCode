@@ -3,7 +3,7 @@
     /// <summary>
     /// Options to create <see cref="SessionsManager"/> object.
     /// </summary>
-    public class SessionsManagerOptions : BaseManagerOptions<SessionsManagerOptions>
+    public class SessionsManagerOptions : BaseManagerOptions<SessionsManagerOptions>, ISessionsManagerOptions
     {
     }
 }

@@ -277,14 +277,15 @@ namespace Nt.Core
         /// <returns>Default instance of <see cref="IBuilder"/>.</returns>
         public IBuilder CreateBuilder()
         {
-            return Activator.CreateInstance<TBuilder>();
+            //return Activator.CreateInstance<TBuilder>();
+            return CreateDefaultBuilder();
         }
 
         /// <summary>
         /// Create a ninjascript default builder.
         /// </summary>
         /// <returns>Default instance of <see cref="TBuilder"/>.</returns>
-        public static IBuilder CreateDefaultBuilder()
+        public static TBuilder CreateDefaultBuilder()
         {
             return Activator.CreateInstance<TBuilder>();
         }

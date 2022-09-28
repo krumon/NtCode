@@ -30,17 +30,18 @@ namespace Nt.Core
         /// <returns>The script object created by the builder.</returns>
         public virtual INinjascript Build(NinjaScriptBase ninjascript)
         {
-            // Create the script
-            TScript script = Activator.CreateInstance<TScript>(); // new TScript();
+            //// Create the script
+            //TScript script = Activator.CreateInstance<TScript>(); // new TScript();
 
-            // Configure options
-            script.Configure(options);
+            //// Configure options
+            //script.Configure(options);
 
-            // Set the default properties or the default actions of the session
-            script.SetDefault(ninjascript);
+            //// Set the default properties or the default actions of the session
+            //script.SetDefault(ninjascript);
 
-            // Return the script.
-            return script;
+            //// Return the script.
+            //return script;
+            return Builder(ninjascript);
         }
 
         /// <summary>
@@ -49,14 +50,32 @@ namespace Nt.Core
         /// <returns>The script object created by the builder.</returns>
         public virtual INinjascript Build()
         {
+            //// Create the script
+            //TScript script = Activator.CreateInstance<TScript>();  // new TScript();
+
+            //// Configure options
+            //script.Configure(options);
+
+            //// Return the script.
+            //return script;
+            return Builder();
+        }
+
+        private TScript Builder(NinjaScriptBase ninjascript = null)
+        {
             // Create the script
-            TScript script = Activator.CreateInstance<TScript>();  // new TScript();
+            TScript script = Activator.CreateInstance<TScript>(); // new TScript();
 
             // Configure options
             script.Configure(options);
 
+            if (ninjascript != null)    
+                // Set the default properties or the default actions of the session
+                script.SetDefault(ninjascript);
+
             // Return the script.
             return script;
+
         }
 
         /// <summary>

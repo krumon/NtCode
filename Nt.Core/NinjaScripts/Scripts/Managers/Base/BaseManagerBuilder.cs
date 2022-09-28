@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NinjaTrader.NinjaScript;
+using System;
 using System.Collections.Generic;
 
 namespace Nt.Core
@@ -19,6 +20,15 @@ namespace Nt.Core
 
         #region Public methods
 
+        public override INinjascript Build()
+        {
+            return Builder();
+        }
+
+        public override INinjascript Build(NinjaScriptBase ninjascript)
+        {
+            return Builder(ninjascript);
+        }
         public IManagerBuilder Add<Script, Options>(Action<Options> options)
             where Script : INinjascript
         {
@@ -43,6 +53,26 @@ namespace Nt.Core
             return (TManagerBuilder)this;
         }
 
+
+        #endregion
+
+        #region Private methods
+
+        private TManagerScript Builder(NinjaScriptBase ninjascript = null)
+        {
+            // Create the script
+            TManagerScript script = Activator.CreateInstance<TManagerScript>(); // new TScript();
+
+            // Configure options
+            script.Scripts = scripts;
+
+            if (ninjascript != null)
+                // Set the default properties or the default actions of the session
+                script.SetDefault(ninjascript);
+
+            // Return the script.
+            return script;
+        }
 
         #endregion
 
