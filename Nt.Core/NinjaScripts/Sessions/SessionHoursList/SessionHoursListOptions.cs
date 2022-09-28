@@ -7,7 +7,8 @@ namespace Nt.Core
     /// </summary>
     public class SessionHoursListOptions : BaseSessionOptions<SessionHoursListOptions>
     {
-        #region Private members / Default values
+
+        #region Default values
 
         /// <summary>
         /// Max sessions to stored in <see cref="SessionHours"/> collection.
@@ -44,26 +45,6 @@ namespace Nt.Core
         }
 
         #endregion
-
-        #region Copy methods
-
-        /// <summary>
-        /// Copy options to ninjascript options
-        /// </summary>
-        /// <param name="options"></param>
-        public override void CopyTo(IOptions options)
-        {
-            SessionHoursListOptions op = (SessionHoursListOptions)options;
-            // Copy the parent options...
-            base.CopyTo(op);
-
-            // Copy the new options
-            op.MaxSessionsToStored = MaxSessionsToStored;
-
-        }
-
-        #endregion
-
 
     }
 }

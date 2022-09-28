@@ -300,7 +300,7 @@ namespace Nt.Core
                     sessionHoursList = new SessionHoursList();
 
                 // Configure....
-                sessionHoursList.Configure(shOptions);
+                sessionHoursList.SetOptions(shOptions);
 
             }
             else if (options is SessionFiltersOptions fOptions)
@@ -310,7 +310,7 @@ namespace Nt.Core
                     sessionFilters = new SessionFilters();
 
                 // Configure....
-                sessionFilters.Configure(fOptions);
+                sessionFilters.SetOptions(fOptions);
 
             }
 

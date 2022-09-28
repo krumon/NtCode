@@ -187,9 +187,9 @@ namespace Nt.Core
         /// <returns></returns>
         public bool Check()
         {
-            bool historicalDataFilter   =   Options.IncludeHistoricalData || currentDateTime > startTime;
-            bool dateFilter             =   Options.InitialDate <= currentDateTime && Options.FinalDate >= currentDateTime;
-            bool holidaysFilter         =   Options.IncludePartialHolidays == IsPartialHoliday && Options.IncludeEarlyEnd == IsEarlyEnd && Options.IncludeLateBegin == IsLateBegin;
+            bool historicalDataFilter   =   Configuration.IncludeHistoricalData || currentDateTime > startTime;
+            bool dateFilter             =   Configuration.InitialDate <= currentDateTime && Configuration.FinalDate >= currentDateTime;
+            bool holidaysFilter         =   Configuration.IncludePartialHolidays == IsPartialHoliday && Configuration.IncludeEarlyEnd == IsEarlyEnd && Configuration.IncludeLateBegin == IsLateBegin;
             bool dayOfWeekFilters       =   true;
             bool monthOfYearFilters     =   true;
 

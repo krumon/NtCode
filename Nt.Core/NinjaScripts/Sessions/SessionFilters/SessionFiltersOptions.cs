@@ -9,7 +9,7 @@ namespace Nt.Core
     public class SessionFiltersOptions : BaseSessionOptions<SessionFiltersOptions>
     {
 
-        #region Private members / default values
+        #region Default values
 
         /// <summary>
         /// Indicates if the ninjascript enter in historial data bars.
@@ -156,26 +156,6 @@ namespace Nt.Core
         #endregion
 
         #region Public methods
-
-        /// <summary>
-        /// Copy options to ninjascript options
-        /// </summary>
-        /// <param name="options"></param>
-        public override void CopyTo(IOptions options)
-        {
-            SessionFiltersOptions op = (SessionFiltersOptions)options;
-            // Copy the parent options...
-            base.CopyTo(op);
-
-            // Copy the new options
-            op.IncludeHistoricalData = IncludeHistoricalData;
-            op.IncludePartialHolidays = IncludePartialHolidays;
-            op.IncludeLateBegin = IncludeLateBegin;
-            op.IncludeEarlyEnd = IncludeEarlyEnd;
-            op.FinalDate = FinalDate;
-            op.InitialDate = InitialDate;
-
-        }
 
         /// <summary>
         /// Method to add the date filters.

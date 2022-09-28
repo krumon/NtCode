@@ -1,5 +1,4 @@
 ﻿using NinjaTrader.Gui.Chart;
-using NinjaTrader.NinjaScript;
 
 namespace Nt.Core
 {
@@ -10,7 +9,7 @@ namespace Nt.Core
         where TOptions : BaseIndicatorOptions<TOptions>, IIndicatorOptions
     {
 
-        #region Configure default values
+        #region Default values
 
         /// <summary>
         /// Indicates if the data is overlay in the graphics.
@@ -56,7 +55,7 @@ namespace Nt.Core
 
         #endregion
 
-        #region Properties
+        #region Public Properties
 
         /// <summary>
         /// Indicates if the data is overlay in the graphics.
@@ -104,43 +103,43 @@ namespace Nt.Core
 
         #region Public methods
 
-        /// <summary>
-        /// Copy options to ninjascript options
-        /// </summary>
-        /// <param name="options"></param>
-        public override void CopyTo(IOptions options)
-        {
-            TOptions op = (TOptions)options;
-            // Sets the parent options values.
-            base.CopyTo(op);
+        ///// <summary>
+        ///// Copy options to ninjascript options
+        ///// </summary>
+        ///// <param name="options"></param>
+        //public override void CopyTo(IOptions options)
+        //{
+        //    TOptions op = (TOptions)options;
+        //    // Sets the parent options values.
+        //    base.CopyTo(op);
 
-            op.IsOverlay = IsOverlay;
-            op.DisplayInDataBox = DisplayInDataBox;
-            op.ScaleJustification = ScaleJustification;
-            op.IsSuspendedWhileInactive = IsSuspendedWhileInactive;
-            op.DrawOnPricePanel = DrawOnPricePanel;
-            op.DrawHorizontalGridLines = DrawHorizontalGridLines;
-            op.DrawVerticalGridLines = DrawVerticalGridLines;
-            op.PaintPriceMarkers = PaintPriceMarkers;
-        }
+        //    op.IsOverlay = IsOverlay;
+        //    op.DisplayInDataBox = DisplayInDataBox;
+        //    op.ScaleJustification = ScaleJustification;
+        //    op.IsSuspendedWhileInactive = IsSuspendedWhileInactive;
+        //    op.DrawOnPricePanel = DrawOnPricePanel;
+        //    op.DrawHorizontalGridLines = DrawHorizontalGridLines;
+        //    op.DrawVerticalGridLines = DrawVerticalGridLines;
+        //    op.PaintPriceMarkers = PaintPriceMarkers;
+        //}
 
-        /// <summary>
-        /// Copy options to ninjatrader indicator properties
-        /// </summary>
-        /// <param name="ninjascript"></param>
-        public void CopyTo(IndicatorBase ninjascript)
-        {
-            // Ninjascript properties
-            CopyToNinjascript(ninjascript);
-            // Indicator properties
-            ninjascript.IsOverlay = IsOverlay;
-            ninjascript.DisplayInDataBox = DisplayInDataBox;
-            ninjascript.ScaleJustification = ScaleJustification;
-            ninjascript.DrawHorizontalGridLines = DrawHorizontalGridLines;
-            ninjascript.DrawVerticalGridLines = DrawVerticalGridLines;
-            ninjascript.DrawOnPricePanel = DrawOnPricePanel;
-            ninjascript.PaintPriceMarkers = PaintPriceMarkers;
-        }
+        ///// <summary>
+        ///// Copy options to ninjatrader indicator properties
+        ///// </summary>
+        ///// <param name="ninjascript"></param>
+        //public void CopyTo(IndicatorBase ninjascript)
+        //{
+        //    // Ninjascript properties
+        //    CopyToNinjascript(ninjascript);
+        //    // Indicator properties
+        //    ninjascript.IsOverlay = IsOverlay;
+        //    ninjascript.DisplayInDataBox = DisplayInDataBox;
+        //    ninjascript.ScaleJustification = ScaleJustification;
+        //    ninjascript.DrawHorizontalGridLines = DrawHorizontalGridLines;
+        //    ninjascript.DrawVerticalGridLines = DrawVerticalGridLines;
+        //    ninjascript.DrawOnPricePanel = DrawOnPricePanel;
+        //    ninjascript.PaintPriceMarkers = PaintPriceMarkers;
+        //}
 
         #endregion
 

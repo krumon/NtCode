@@ -22,10 +22,6 @@ namespace ConsoleApp
         {
 
             INinjascript sessionsManager = SessionsManager.CreateDefaultBuilder()
-                //Configure<SessionsManager,SessionsManagerOptions>((op) =>
-                //{
-                //    op.SessionsManager = sessionsManager;
-                //})
                 .Add<SessionFilters, SessionFiltersOptions>((op) =>
                 {
                     op.Name = "Session Filters";
@@ -39,27 +35,11 @@ namespace ConsoleApp
                 {
                     op.Name = "Session Hours";
                 })
+                .Configure((op) =>
+                {
+                    op.Name = "My Sessions Manager";
+                })
                 .Build();
-
-            //INinjascript sessionFilters = 
-            //    SessionFilters.CreateDefaultBuilder()
-            //    .Configure<SessionFilters, SessionFiltersOptions>((op) =>
-            //    {
-            //        op.Name = "Session Filters";
-            //        op.Calculate = Calculate.OnEachTick;
-            //        op.BarsRequiredToPlot = 50;
-            //        op.AddDateFilters(year: 2020, isInitial: true);
-            //        op.AddDateFilters(year: 2022, isInitial: false);
-            //        op.AddDateFilters(new DateTime(2020, 6, 12), new DateTime(2022, 9, 20));
-            //    })
-            //    .Build();
-
-            //INinjascript sessionHours = SessionHours.CreateDefaultBuilder()
-            //    .Configure<SessionHours,SessionHoursOptions>((op) =>
-            //    {
-            //        op.Name = "Session Hours";
-            //    })
-            //    .Build();
 
             INinjascript sessionStats = SessionStats.CreateDefaultBuilder()
                 .Build();
@@ -70,10 +50,6 @@ namespace ConsoleApp
                     op.MaxSessionsToStored = 13;
                 })
                 .Build();
-
-            //sessionsManager.Add(sessionFilters);
-            //sessionsManager.Add(sessionHours);
-            //sessionsManager.Add(sessionHoursList);
 
             Wait();
 
