@@ -70,9 +70,9 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
-        /// Create <see cref="SessionFilters"/> default instance.
+        /// Creates <see cref="SessionFilters"/> default instance.
         /// </summary>
-        public SessionFilters()
+        protected SessionFilters() : base()
         {
         }
 

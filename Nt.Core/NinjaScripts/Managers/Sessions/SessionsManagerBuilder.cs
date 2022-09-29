@@ -36,25 +36,25 @@ namespace Nt.Core
 
         #region Public methods
 
-        /// <summary>
-        /// Method to build the <see cref="SessionsManager"/> object.
-        /// </summary>
-        /// <returns>The <see cref="SessionsManager"/> object created by <see cref="SessionsManagerBuilder"/>.</returns>
-        public SessionsManager Build(NinjaScriptBase ninjascript)
-        {
-            var sessionsManager = new SessionsManager();
+        ///// <summary>
+        ///// Method to build the <see cref="SessionsManager"/> object.
+        ///// </summary>
+        ///// <returns>The <see cref="SessionsManager"/> object created by <see cref="SessionsManagerBuilder"/>.</returns>
+        //public SessionsManager Build(NinjaScriptBase ninjascript)
+        //{
+        //    var sessionsManager = new SessionsManager();
 
-            //if (scriptProperties != null)
-            //    sessionsManager.Configure(scriptProperties);
+        //    //if (scriptProperties != null)
+        //    //    sessionsManager.Configure(scriptProperties);
 
-            //if (sessionFiltersOptions != null || useSessionFilters)
-            //    sessionsManager.ConfigureSession(sessionFiltersOptions);
+        //    //if (sessionFiltersOptions != null || useSessionFilters)
+        //    //    sessionsManager.ConfigureSession(sessionFiltersOptions);
 
-            //if (sessionHoursListOptions != null || useSessionHoursList)
-            //    sessionsManager.ConfigureSession(sessionHoursListOptions);
+        //    //if (sessionHoursListOptions != null || useSessionHoursList)
+        //    //    sessionsManager.ConfigureSession(sessionHoursListOptions);
 
-            return sessionsManager;
-        }
+        //    return sessionsManager;
+        //}
 
         /// <summary>
         /// Configure the ninjascript properties.

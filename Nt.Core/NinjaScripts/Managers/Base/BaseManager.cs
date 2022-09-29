@@ -24,33 +24,18 @@ namespace Nt.Core
 
         #endregion
 
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseManager{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
+        /// </summary>
+        protected BaseManager() : base()
+        {
+        }
+
+        #endregion
+
         #region Public methods
-
-        ///// <summary>
-        ///// Add new script to the scripts collection
-        ///// </summary>
-        ///// <param name="script"></param>
-        //public void Add<T>(T script)
-        //    where T : INinjascript
-        //{
-        //    if (Scripts == null)
-        //        Scripts = new List<INinjascript>();
-
-        //    Scripts.Add(script);
-        //}
-
-        ///// <summary>
-        ///// Remove script to the scripts collection.
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="script"></param>
-        //public void Remove<T>(T script)
-        //    where T : INinjascript, new()
-        //{
-        //    if (Scripts == null)
-        //        return;
-        //    Scripts.Remove(script);
-        //}
 
         /// <summary>
         /// Gets script to the scripts collection.
@@ -58,15 +43,32 @@ namespace Nt.Core
         /// <typeparam name="T"></typeparam>
         /// <param name="script"></param>
         /// <returns></returns>
-        public INinjascript Get<T>(T script)
-            where T : INinjascript, new()
+        public INinjascript Get<T>()
+            where T : INinjascript
         {
             if (scripts != null)
-                if (scripts.Contains(script))
-                    return scripts[scripts.IndexOf(script)];
+                foreach (var script in scripts)
+                    if (typeof(T) == script.GetType())
+                        return script;
             
             return null;
         }
+
+        ///// <summary>
+        ///// Gets script to the scripts collection.
+        ///// </summary>
+        ///// <typeparam name="T"></typeparam>
+        ///// <param name="script"></param>
+        ///// <returns></returns>
+        //public INinjascript Get<T>(T script)
+        //    where T : INinjascript, new()
+        //{
+        //    if (scripts != null)
+        //        if (scripts.Contains(script))
+        //            return scripts[scripts.IndexOf(script)];
+            
+        //    return null;
+        //}
 
         /// <summary>
         /// Sets the ninjascripts collection from <see cref="BaseManagerBuilder"/> class.
@@ -75,7 +77,7 @@ namespace Nt.Core
         /// <param name="methodName"></param>
         public void SetScripts(List<INinjascript> scripts, [CallerMemberName] string methodName = null)
         {
-            if (methodName == nameof(IManagerBuilder.Build))
+            if (methodName == nameof(IManagerBuilder.Build) || methodName == "OnBuild")
                 this.scripts = scripts;
         }
 

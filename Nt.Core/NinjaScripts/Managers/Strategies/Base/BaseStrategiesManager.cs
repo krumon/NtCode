@@ -14,6 +14,18 @@
         where TManagerOptions : BaseStrategiesManagerOptions<TManagerOptions>, IStrategiesManagerOptions
         where TManagerBuilder : BaseStrategiesManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IStrategiesManagerBuilder
     {
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseStrategiesManager{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
+        /// </summary>
+        protected BaseStrategiesManager() : base()
+        {
+        }
+
+        #endregion
+
     }
 
 }

@@ -70,20 +70,6 @@ namespace Nt.Core
         #region Configure methods
 
         /// <summary>
-        /// Configure options into the script.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        //INinjascript Configure<Script, Options>(Action<Options> options);
-
-        /// <summary>
-        /// Add properties to configure the script.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        //void Configure(IOptions options);
-
-        /// <summary>
         /// Create a ninjascript default builder.
         /// </summary>
         /// <returns>Default instance of <see cref="TBuilder"/>.</returns>

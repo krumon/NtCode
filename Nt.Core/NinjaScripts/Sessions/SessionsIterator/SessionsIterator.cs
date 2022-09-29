@@ -144,9 +144,9 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
-        /// Create a default instance of <see cref="SessionsIterator"/>.
+        /// Creates <see cref="SessionsIterator"/> default instance.
         /// </summary>
-        public SessionsIterator()
+        protected SessionsIterator() : base()
         {
         }
 

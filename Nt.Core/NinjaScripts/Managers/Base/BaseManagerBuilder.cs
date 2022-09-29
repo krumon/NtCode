@@ -18,35 +18,24 @@ namespace Nt.Core
         /// <summary>
         /// Ninjascripts collection.
         /// </summary>
-        private List<INinjascript> scripts = new List<INinjascript>();
+        private List<INinjascript> scripts;
 
         #endregion
 
         #region Public methods
 
         /// <summary>
-        /// Builds the <see cref="IManager"/> object and set default properties of ninjatrader script.
+        /// Driven method to construct the ninjascript object.
         /// </summary>
-        /// <param name="ninjascript"></param>
-        /// <returns></returns>
-        public override INinjascript Build(NinjaScriptBase ninjascript = null)
+        /// <param name="script">The ninjascript object to build.</param>
+        /// <param name="ninjascript">The ninjatrader script.</param>
+        protected override void OnBuild(TManagerScript script, NinjaScriptBase ninjascript)
         {
-
-            // Create the script
-            TManagerScript script = Activator.CreateInstance<TManagerScript>();
-
-            // Set default properties of ninjatrader script.
-            if (ninjascript != null)
-                script.SetDefault(ninjascript);
-
-            // Configure the manager object.
-            script.SetOptions(Options);
+            // Call the parent.
+            base.OnBuild(script, ninjascript);
 
             // Configure the ninjascripts
             script.SetScripts(scripts);
-
-            // Return the script.
-            return script;
 
         }
 
@@ -56,11 +45,13 @@ namespace Nt.Core
         /// <typeparam name="Script">The <see cref="INinjascript"/> object to add object.</typeparam>
         /// <typeparam name="Options">The <see cref="INinjascript"/> configuration object.</typeparam>
         /// <param name="options">The specific configuration to add.</param>
-        /// <returns></returns>
+        /// <returns>Returns the builder to continue building the object.</returns>
         public IManagerBuilder Add<Script, Options>(Action<Options> options)
             where Script : INinjascript
         {
-            var script = Activator.CreateInstance<Script>().CreateBuilder().Configure<Script,Options>(options).Build();
+            Script script = CreateNinjascriptInstance<Script>();
+                
+            script.CreateBuilder().Configure<Script,Options>(options).Build();
 
             if (scripts == null)
                 scripts = new List<INinjascript>();
@@ -70,6 +61,46 @@ namespace Nt.Core
             return this;
 
         }
+
+        /// <summary>
+        /// Add <see cref="Sessionfilters"/> to the manager object.
+        /// </summary>
+        /// <param name="options">The options to configure the manager object.</param>
+        /// <returns>Returns the builder to continue building the object.</returns>
+        public IManagerBuilder AddSessionFilters(Action<SessionFiltersOptions> options) 
+            => Add<SessionFilters, SessionFiltersOptions>(options);
+
+        /// <summary>
+        /// Add <see cref="SessionHours"/> to the manager object.
+        /// </summary>
+        /// <param name="options">The options to configure the manager object.</param>
+        /// <returns>Returns the builder to continue building the object.</returns>
+        public IManagerBuilder AddSessionHours(Action<SessionHoursOptions> options) 
+            => Add<SessionHours, SessionHoursOptions>(options);
+
+        /// <summary>
+        /// Add <see cref="SessionHoursList"/> to the manager object.
+        /// </summary>
+        /// <param name="options">The options to configure the manager object.</param>
+        /// <returns>Returns the builder to continue building the object.</returns>
+        public IManagerBuilder AddSessionHoursList(Action<SessionHoursListOptions> options) 
+            => Add<SessionHoursList, SessionHoursListOptions>(options);
+
+        /// <summary>
+        /// Add <see cref="SessionStats"/> to the manager object.
+        /// </summary>
+        /// <param name="options">The options to configure the manager object.</param>
+        /// <returns>Returns the builder to continue building the object.</returns>
+        public IManagerBuilder AddSessionStats(Action<SessionStatsOptions> options) 
+            => Add<SessionStats, SessionStatsOptions>(options);
+
+        /// <summary>
+        /// Add <see cref="SessionsIterator"/> to the manager object.
+        /// </summary>
+        /// <param name="options">The options to configure the manager object.</param>
+        /// <returns>Returns the builder to continue building the object.</returns>
+        public IManagerBuilder AddSessionsIterator(Action<SessionsIteratorOptions> options) 
+            => Add<SessionsIterator, SessionsIteratorOptions>(options);
 
         #endregion
     }

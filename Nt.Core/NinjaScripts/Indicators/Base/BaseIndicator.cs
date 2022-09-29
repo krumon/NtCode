@@ -12,6 +12,17 @@ namespace Nt.Core
         where TBuilder : BaseIndicatorBuilder<TScript,TOptions,TBuilder>, IIndicatorBuilder
     {
 
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseIndicator{TScript, TOptions, TBuilder}"/> default instance.
+        /// </summary>
+        protected BaseIndicator() : base()
+        {
+        }
+
+        #endregion
+
         #region Configure methods
 
         public override void SetDefault(NinjaScriptBase ninjascript)

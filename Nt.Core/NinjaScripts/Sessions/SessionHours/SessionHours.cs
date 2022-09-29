@@ -99,12 +99,12 @@ namespace Nt.Core
 
         #endregion
 
-        #region Constructor
+        #region Constructors
 
         /// <summary>
-        /// Create a default instance of <see cref="SessionHours"/>.
+        /// Creates <see cref="SessionHours"/> default instance.
         /// </summary>
-        public SessionHours()
+        protected SessionHours() : base()
         {
         }
 

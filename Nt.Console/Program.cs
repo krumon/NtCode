@@ -20,9 +20,8 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-
             INinjascript sessionsManager = SessionsManager.CreateDefaultBuilder()
-                .Add<SessionFilters, SessionFiltersOptions>((op) =>
+                .AddSessionFilters((op) =>
                 {
                     op.Name = "Session Filters";
                     op.Calculate = Calculate.OnEachTick;
@@ -31,7 +30,7 @@ namespace ConsoleApp
                     op.AddDateFilters(year: 2022, isInitial: false);
                     op.AddDateFilters(new DateTime(2020, 6, 12), new DateTime(2022, 9, 20));
                 })
-                .Add<SessionHours, SessionHoursOptions>((op) =>
+                .AddSessionHours((op) =>
                 {
                     op.Name = "Session Hours";
                 })
@@ -106,8 +105,6 @@ namespace ConsoleApp
             //bool check = f.Check();
 
             //sessionManager.Load (null,null);
-
-            Wait();
 
         }
 

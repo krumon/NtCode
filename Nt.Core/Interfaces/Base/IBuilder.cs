@@ -45,7 +45,8 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options">Delegate method with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        IBuilder Configure<Script,Options>(Options options);
+        IBuilder Configure<Script, Options>(IOptions options)
+            where Options : IOptions;
 
         /// <summary>
         /// Configure the ninjascript properties passed by the <paramref name="options"/>.

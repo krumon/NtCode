@@ -13,16 +13,7 @@ namespace Nt.Core
         where TSessionOptions : BaseSessionOptions<TSessionOptions>, ISessionOptions
         where TSessionBuilder : BaseSessionBuilder<TSession,TSessionOptions,TSessionBuilder>, ISessionBuilder
     {
-        //public List<TSession> UseSessions { get; set; } = new List<TSession>();
 
-        #region Market data Delegates
-
-        /// <summary>
-        /// Delegate to execute in OnSessionHoursChanged method.
-        /// </summary>
-        public Action SessionChangedAction;
-
-        #endregion
 
         #region Market data methods
 
@@ -56,6 +47,26 @@ namespace Nt.Core
 
         //    return (TSession)this;
         //}
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseSession{TSession, TSessionOptions, TSessionBuilder}"/> default instance.
+        /// </summary>
+        protected BaseSession() : base()
+        {
+        }
+
+        #endregion
+
+        #region Market data Delegates
+
+        /// <summary>
+        /// Delegate to execute in OnSessionHoursChanged method.
+        /// </summary>
+        public Action SessionChangedAction;
 
         #endregion
 

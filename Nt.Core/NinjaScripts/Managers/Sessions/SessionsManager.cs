@@ -93,9 +93,9 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
-        /// Create a <see cref="SessionsManager"/> default instance.
+        /// Creates <see cref="SessionsManager"/> default instance.
         /// </summary>
-        public SessionsManager()
+        protected SessionsManager() : base()
         {
         }
 
@@ -116,20 +116,26 @@ namespace Nt.Core
             // If we need the session iterator...create him.
             // TODO: Make Sure we need the session iterator object.
             // Initialize the session iterator
-            if (sessionsIterator == null)
-                sessionsIterator = new SessionsIterator();
-
+            //if (sessionsIterator == null)
+            //    sessionsIterator = (SessionsIterator)SessionsIterator.CreateDefaultBuilder().Build();
+            Get<SessionsIterator>()?.Load(ninjascript, bars);
             // AddValues the elements...
-            sessionsIterator.Load(ninjascript, bars);
-            if (HasSessionFilters)
-                sessionFilters.Load(ninjascript, bars);
-            if (HasSessionHours)
-                sessionHoursList.Load(ninjascript, bars);
-            if (HasSessionStats)
-                sessionStats.Load(ninjascript, bars);
+            //sessionsIterator.Load(ninjascript, bars);
+            //if (HasSessionFilters)
+            //    sessionFilters.Load(ninjascript, bars);
+            //if (HasSessionHours)
+            //    sessionHoursList.Load(ninjascript, bars);
+            //if (HasSessionStats)
+            //    sessionStats.Load(ninjascript, bars);
+
+            if (scripts != null && scripts.Count > 0)
+                foreach (var script in scripts)
+                    script?.Load(ninjascript, bars);
+
 
             // Aggregate the delegates
-            sessionsIterator.SessionChanged += OnSessionChanged;
+
+            //((ISession)Get<SessionsIterator>())?.SessionChanged += OnSessionChanged;
 
         }
 
@@ -293,26 +299,26 @@ namespace Nt.Core
             where TOptions : SessionsManagerOptions, new()
 
         {
-            if (options is SessionHoursListOptions shOptions)
-            {
-                // Make sure session filters is not null.
-                if (!HasSessionHours)
-                    sessionHoursList = new SessionHoursList();
+            //if (options is SessionHoursListOptions shOptions)
+            //{
+            //    // Make sure session filters is not null.
+            //    if (!HasSessionHours)
+            //        sessionHoursList = new SessionHoursList();
 
-                // Configure....
-                sessionHoursList.SetOptions(shOptions);
+            //    // Configure....
+            //    sessionHoursList.SetOptions(shOptions);
 
-            }
-            else if (options is SessionFiltersOptions fOptions)
-            {
-                // Make sure session filters is not null.
-                if (!HasSessionFilters)
-                    sessionFilters = new SessionFilters();
+            //}
+            //else if (options is SessionFiltersOptions fOptions)
+            //{
+            //    // Make sure session filters is not null.
+            //    if (!HasSessionFilters)
+            //        sessionFilters = new SessionFilters();
 
-                // Configure....
-                sessionFilters.SetOptions(fOptions);
+            //    // Configure....
+            //    sessionFilters.SetOptions(fOptions);
 
-            }
+            //}
 
             return this;
         }

@@ -10,5 +10,17 @@ namespace Nt.Core
         where TOptions : BaseStrategyOptions<TOptions>, IStrategyOptions
         where TBuilder : BaseStrategyBuilder<TScript,TOptions,TBuilder>, IStrategyBuilder
     {
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseStrategy{TScript, TOptions, TBuilder}"/> default instance.
+        /// </summary>
+        protected BaseStrategy() : base()
+        {
+        }
+
+        #endregion
+
     }
 }

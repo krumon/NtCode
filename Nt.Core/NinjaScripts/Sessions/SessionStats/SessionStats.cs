@@ -23,18 +23,11 @@ namespace Nt.Core
 
         #region Constructors
 
-        public SessionStats()
-        {
-
-        }
-
         /// <summary>
-        /// Create default instance of <see cref="SessionStats"/> class.
+        /// Creates <see cref="SessionStats"/> default instance.
         /// </summary>
-        /// <param name="ninjascript">The ninjascript that help to get the stats.</param>
-        public SessionStats(NinjaScriptBase ninjascript)
+        protected SessionStats() : base()
         {
-            this.ninjascript = ninjascript;
         }
 
         #endregion

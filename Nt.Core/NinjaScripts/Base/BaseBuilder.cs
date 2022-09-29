@@ -1,6 +1,7 @@
 ﻿using Kr.Core;
 using NinjaTrader.NinjaScript;
 using System;
+using System.Reflection;
 
 namespace Nt.Core
 {
@@ -29,17 +30,28 @@ namespace Nt.Core
         /// </summary>
         /// <param name="ninjascript">The ninjatrader ninjascript.</param>
         /// <returns>The script object created by the builder.</returns>
-        public virtual INinjascript Build(NinjaScriptBase ninjascript = null)
+        public INinjascript Build(NinjaScriptBase ninjascript = null)
         {
             // Create the script
-            TScript script = Activator.CreateInstance<TScript>();
+            TScript script = CreateNinjascriptInstance();
+            
+            // Make sure the script has been constructed.
+            if (script == null)
+                throw new ArgumentNullException(nameof(script));
+
+            // if options is null create default options
+            if (Options == null)
+                Options = Activator.CreateInstance<TOptions>();
 
             // Configure options
             script.SetOptions(Options);
 
+            // Set the default ninjatrader script properties
             if (ninjascript != null)
-                // Set the default properties or the default actions of the session
                 script.SetDefault(ninjascript);
+
+            // Configuration method to the listeners
+            OnBuild(script, ninjascript);
 
             // Return the script.
             return script;
@@ -54,7 +66,16 @@ namespace Nt.Core
         {
             // Make sure options is a valid object and configure the script.
             if (typeof(Script) == typeof(TScript) && options is Action<TOptions> op)
-                Configure(op as Action<IOptions>);
+            {
+                // Create default options to rewriter the new properties passed by the options object.
+                if (this.Options == null)
+                    this.Options = Activator.CreateInstance<TOptions>();
+
+                // Add custom options and properties
+                op?.Invoke((TOptions)this.Options);
+
+                var o = this.Options;
+            }
 
             return (TBuilder)this;
         }
@@ -64,11 +85,19 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options">Delegate method with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        public IBuilder Configure<Script, Options>(Options options)
+        public IBuilder Configure<Script, Options>(IOptions options)
+            where Options : IOptions
         {
             // Make sure options is a valid object and configure the script.
             if (typeof(Script) == typeof(TScript) && typeof(Options) == typeof(TOptions))
-                Configure(options as IOptions);
+            {
+                // Create default options to rewriter the new properties passed by the options object.
+                if (this.Options == null)
+                    this.Options = Activator.CreateInstance<TOptions>();
+
+                // Copy to the options object the options passed by parameter.
+                Mapper.Auto(options, this.Options);
+            }
 
             return (TBuilder)this;
         }
@@ -107,6 +136,46 @@ namespace Nt.Core
 
             // Return the builder
             return this;
+        }
+
+        #endregion
+
+        #region Private methods
+
+        /// <summary>
+        /// Driven method to construct the ninjascript object.
+        /// </summary>
+        /// <param name="script">The ninjascript object to build.</param>
+        /// <param name="ninjascript">The ninjatrader script.</param>
+        protected virtual void OnBuild(TScript script, NinjaScriptBase ninjascript)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TScript"/> instance.
+        /// </summary>
+        /// <returns></returns>
+        protected TScript CreateNinjascriptInstance()
+        {
+            ConstructorInfo construct = typeof(TScript).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+            if (construct != null)
+               return (TScript)construct.Invoke(new object[] {});
+            else
+                throw new NullReferenceException();
+
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TScript"/> instance.
+        /// </summary>
+        /// <returns></returns>
+        protected T CreateNinjascriptInstance<T>()
+        {
+            ConstructorInfo construct = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null,Type.EmptyTypes, null);
+            if (construct != null)
+                return (T)construct.Invoke(new object[] {});
+            else 
+                throw new NullReferenceException();
         }
 
         #endregion

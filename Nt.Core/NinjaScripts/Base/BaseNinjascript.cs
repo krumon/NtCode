@@ -9,8 +9,6 @@ namespace Nt.Core
     /// <summary>
     /// Base class for any ninjascript.
     /// </summary>
-    /// <typeparam name="TScript">The ninjascript.</typeparam>
-    /// <typeparam name="TOptions">The ninjascript options.</typeparam>
     public abstract class BaseNinjascript : BaseElement
     {
 
@@ -134,14 +132,27 @@ namespace Nt.Core
 
         #endregion
 
+        #region Constructors
+
+        public BaseNinjascript()
+        {
+
+        }
+        protected BaseNinjascript(bool isNonPublicConstructor)
+        {
+        }
+
+        #endregion
+
     }
 
 
     /// <summary>
     /// Base class for any ninjascript.
     /// </summary>
-    /// <typeparam name="TScript">The ninjascript.</typeparam>
-    /// <typeparam name="TOptions">The ninjascript options.</typeparam>
+    /// <typeparam name="TScript">The ninjascript object.</typeparam>
+    /// <typeparam name="TOptions">The ninjascript options object.</typeparam>
+    /// <typeparam name="TBuilder">The ninjascript bulder object.</typeparam>
     public abstract class BaseNinjascript<TScript, TOptions,TBuilder> : BaseNinjascript, INinjascript // INinjascript<TScript,TOptions,TBuilder>
         where TScript : BaseNinjascript<TScript,TOptions,TBuilder>, INinjascript
         where TOptions : BaseOptions<TOptions>, IOptions
@@ -173,6 +184,18 @@ namespace Nt.Core
         /// Indicates if the session is configured
         /// </summary>
         public bool IsConfigured => Configuration != null;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseNinjascript"/> default instance.
+        /// </summary>
+        /// <param name="defaultConstructor"></param>
+        protected BaseNinjascript()
+        {
+        }
 
         #endregion
 
@@ -241,6 +264,7 @@ namespace Nt.Core
         }
 
         #endregion
+
     }
 
 }

@@ -18,6 +18,18 @@ namespace Nt.Core
         where TManagerOptions : BaseIndicatorsManagerOptions<TManagerOptions>, IIndicatorsManagerOptions
         where TManagerBuilder : BaseIndicatorsManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IIndicatorsManagerBuilder
     {
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseIndicatorsManager{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
+        /// </summary>
+        protected BaseIndicatorsManager() : base()
+        {
+        }
+
+        #endregion
+
     }
 
 }
