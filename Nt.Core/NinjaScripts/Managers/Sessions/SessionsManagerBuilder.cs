@@ -1,6 +1,5 @@
-﻿using NinjaTrader.Data;
-using NinjaTrader.NinjaScript;
-using System;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Nt.Core
 {
@@ -9,112 +8,61 @@ namespace Nt.Core
     /// </summary>
     public class SessionsManagerBuilder : BaseManagerBuilder<SessionsManager,SessionsManagerOptions,SessionsManagerBuilder>, ISessionsManagerBuilder
     {
-        /// <summary>
-        /// Store the <see cref="ScriptProperties"/>.
-        /// </summary>
-        private ScriptProperties scriptProperties;
+
+        #region Constructors
 
         /// <summary>
-        /// Store the <see cref="SessionFiltersOptions"/>.
+        /// Creates <see cref="SessionHoursBuilder"/> default instance.
         /// </summary>
-        private SessionFiltersOptions sessionFiltersOptions;
+        public SessionsManagerBuilder(SessionsManagerOptions options, List<INinjascript> scripts) : base(options,scripts)
+        {
+            Options = options;
+            Scripts = scripts;
+        }
 
-        /// <summary>
-        /// Store the <see cref="SessionHoursListOptions"/>.
-        /// </summary>
-        private SessionHoursListOptions sessionHoursListOptions;
-
-        /// <summary>
-        /// Indicates when the client use <see cref="SessionFilters"/>.
-        /// </summary>
-        bool useSessionFilters;
-
-        /// <summary>
-        /// Indicates when the client use <see cref="SessionHoursList"/>.
-        /// </summary>
-        bool useSessionHoursList;
+        #endregion
 
         #region Public methods
 
-        ///// <summary>
-        ///// Method to build the <see cref="SessionsManager"/> object.
-        ///// </summary>
-        ///// <returns>The <see cref="SessionsManager"/> object created by <see cref="SessionsManagerBuilder"/>.</returns>
-        //public SessionsManager Build(NinjaScriptBase ninjascript)
-        //{
-        //    var sessionsManager = new SessionsManager();
-
-        //    //if (scriptProperties != null)
-        //    //    sessionsManager.Configure(scriptProperties);
-
-        //    //if (sessionFiltersOptions != null || useSessionFilters)
-        //    //    sessionsManager.ConfigureSession(sessionFiltersOptions);
-
-        //    //if (sessionHoursListOptions != null || useSessionHoursList)
-        //    //    sessionsManager.ConfigureSession(sessionHoursListOptions);
-
-        //    return sessionsManager;
-        //}
+        /// <summary>
+        /// Add <see cref="Sessionfilters"/> to the manager object.
+        /// </summary>
+        /// <param name="options">The options to configure the manager object.</param>
+        /// <returns>Returns the builder to continue building the object.</returns>
+        public SessionsManagerBuilder AddSessionFilters(Action<SessionFiltersOptions> options)
+            => (SessionsManagerBuilder)Add<SessionFilters, SessionFiltersOptions>(options);
 
         /// <summary>
-        /// Configure the ninjascript properties.
+        /// Add <see cref="SessionHours"/> to the manager object.
         /// </summary>
-        /// <param name="properties"></param>
-        /// <returns></returns>
-        public SessionsManagerBuilder ConfigureProperties(Action<ScriptProperties> properties)
-        {
-            // Create default properties
-            if (scriptProperties == null)
-                scriptProperties = new ScriptProperties();
-
-            // Add custom properties
-            properties?.Invoke(scriptProperties);
-
-            // Return the builder
-            return this;
-        }
+        /// <param name="options">The options to configure the manager object.</param>
+        /// <returns>Returns the builder to continue building the object.</returns>
+        public SessionsManagerBuilder AddSessionHours(Action<SessionHoursOptions> options)
+            => (SessionsManagerBuilder)Add<SessionHours, SessionHoursOptions>(options);
 
         /// <summary>
-        /// Add <see cref="SessionFilters"/> funcionality.
+        /// Add <see cref="SessionHoursList"/> to the manager object.
         /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionsManagerBuilder UseSessionFilters(Action<SessionFiltersOptions> options)
-        {
-            // Create default properties
-            if (sessionFiltersOptions == null && options != null) 
-                sessionFiltersOptions = new SessionFiltersOptions();
-
-            // Add custom properties
-            options?.Invoke(sessionFiltersOptions);
-
-            // Update the flag
-            useSessionFilters = true;
-
-            // Return the builder
-            return this;
-        }
+        /// <param name="options">The options to configure the manager object.</param>
+        /// <returns>Returns the builder to continue building the object.</returns>
+        public SessionsManagerBuilder AddSessionHoursList(Action<SessionHoursListOptions> options)
+            => (SessionsManagerBuilder)Add<SessionHoursList, SessionHoursListOptions>(options);
 
         /// <summary>
-        /// Add <see cref="SessionHoursList"/> funcionality.
+        /// Add <see cref="SessionStats"/> to the manager object.
         /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        public SessionsManagerBuilder UseSessionHoursList(Action<SessionHoursListOptions> options)
-        {
-            // Create default properties
-            if (sessionHoursListOptions == null && options != null)
-                sessionHoursListOptions = new SessionHoursListOptions();
+        /// <param name="options">The options to configure the manager object.</param>
+        /// <returns>Returns the builder to continue building the object.</returns>
+        public SessionsManagerBuilder AddSessionStats(Action<SessionStatsOptions> options)
+            => (SessionsManagerBuilder)Add<SessionStats, SessionStatsOptions>(options);
 
-            // Add custom properties
-            options?.Invoke(sessionHoursListOptions);
-
-            // Update the flag to build default configure
-            useSessionHoursList = true;
-
-            // return the builder
-            return this;
-        }
+        /// <summary>
+        /// Add <see cref="SessionsIterator"/> to the manager object.
+        /// </summary>
+        /// <param name="options">The options to configure the manager object.</param>
+        /// <returns>Returns the builder to continue building the object.</returns>
+        public SessionsManagerBuilder AddSessionsIterator(Action<SessionsIteratorOptions> options)
+            => (SessionsManagerBuilder)Add<SessionsIterator, SessionsIteratorOptions>(options);
 
         #endregion
 

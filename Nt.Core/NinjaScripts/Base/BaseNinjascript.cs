@@ -1,6 +1,8 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Nt.Core
@@ -40,6 +42,17 @@ namespace Nt.Core
 
         #endregion
 
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseNinjascript"/> default instance.
+        /// </summary>
+        protected BaseNinjascript()
+        {
+        }
+
+        #endregion
+        
         #region State changed methods
 
         /// <summary>
@@ -132,17 +145,6 @@ namespace Nt.Core
 
         #endregion
 
-        #region Constructors
-
-        public BaseNinjascript()
-        {
-
-        }
-        protected BaseNinjascript(bool isNonPublicConstructor)
-        {
-        }
-
-        #endregion
 
     }
 
@@ -164,7 +166,7 @@ namespace Nt.Core
         /// <summary>
         /// Represents the script options
         /// </summary>
-        private TOptions configuration;
+        //private TOptions configuration;
 
         #endregion
 
@@ -173,7 +175,7 @@ namespace Nt.Core
         /// <summary>
         /// Gets the script options
         /// </summary>
-        public TOptions Configuration => configuration;
+        public TOptions Configuration { get; protected set; }
 
         /// <summary>
         /// Indicates if the session is configured
@@ -192,7 +194,6 @@ namespace Nt.Core
         /// <summary>
         /// Creates <see cref="BaseNinjascript"/> default instance.
         /// </summary>
-        /// <param name="defaultConstructor"></param>
         protected BaseNinjascript()
         {
         }
@@ -219,31 +220,36 @@ namespace Nt.Core
         public void SetOptions(IOptions options, [CallerMemberName] string methodName = null)
         {
             if (methodName == nameof(IBuilder.Build))
-                configuration = (TOptions)options;
+                Configuration = (TOptions)options;
         }
 
         /// <summary>
         /// Create a ninjascript default builder.
         /// </summary>
         /// <returns>Default instance of <see cref="IBuilder"/>.</returns>
-        public IBuilder CreateBuilder()
+        public virtual IBuilder CreateBuilder()
         {
-            //return Activator.CreateInstance<TBuilder>();
-            return CreateDefaultBuilder();
+            return CreateNinjascriptBuilder(Configuration);
         }
 
         /// <summary>
         /// Create a ninjascript default builder.
         /// </summary>
-        /// <returns>Default instance of <see cref="TBuilder"/>.</returns>
-        public static TBuilder CreateDefaultBuilder()
+        /// <returns>Default instance of <see cref="IBuilder"/>.</returns>
+        public virtual TBuilder CreateDefaultBuilder()
         {
-            return Activator.CreateInstance<TBuilder>();
+            return CreateNinjascriptBuilder(Configuration);
         }
 
         #endregion
 
         #region Public Methods
+
+        public T GetBuilder<T>()
+            where T : IBuilder
+        {
+            return (T)CreateBuilder();
+        }
 
         /// <summary>
         /// Returns the type of the script.
@@ -261,6 +267,36 @@ namespace Nt.Core
         public Type GetOptionsType()
         {
             return typeof(TOptions);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        /// <summary>
+        /// Creates a new <see cref="TScript"/> instance.
+        /// </summary>
+        /// <returns></returns>
+        public static TBuilder CreateNinjascriptBuilder(TOptions configuration)
+        {
+            ConstructorInfo construct = typeof(TBuilder).GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(TOptions) }, null);
+            if (construct != null)
+                return (TBuilder)construct.Invoke(new object[] { configuration });
+            else
+                throw new NullReferenceException();
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TScript"/> instance.
+        /// </summary>
+        /// <returns></returns>
+        public static TBuilder CreateManagerBuilder(TOptions configuration, List<INinjascript> scripts)
+        {
+            ConstructorInfo construct = typeof(TBuilder).GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(TOptions), typeof(List<INinjascript>) }, null);
+            if (construct != null)
+                return (TBuilder)construct.Invoke(new object[] { configuration, scripts });
+            else
+                throw new NullReferenceException();
         }
 
         #endregion

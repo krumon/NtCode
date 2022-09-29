@@ -8,6 +8,19 @@
         where TSessionOptions : BaseSessionOptions<TSessionOptions>, ISessionOptions
         where TSessionBuilder : BaseSessionBuilder<TSession, TSessionOptions, TSessionBuilder>, ISessionBuilder
     {
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseSessionBuilder{TSession, TSessionOptions, TSessionBuilder}"/> default instance.
+        /// </summary>
+        public BaseSessionBuilder(TSessionOptions options) : base(options)
+        {
+            Options = options;
+        }
+
+        #endregion
+
     }
 
 }

@@ -1,4 +1,6 @@
-﻿namespace Nt.Core
+﻿using System.Collections.Generic;
+
+namespace Nt.Core
 {
     /// <summary>
     /// The base class to ninjascript builders
@@ -8,6 +10,20 @@
         where TManagerOptions : BaseIndicatorsManagerOptions<TManagerOptions>, IIndicatorsManagerOptions
         where TManagerBuilder : BaseIndicatorsManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IIndicatorsManagerBuilder
     {
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseIndicatorsManagerBuilder{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
+        /// </summary>
+        public BaseIndicatorsManagerBuilder(TManagerOptions options, List<INinjascript> scripts) : base(options,scripts)
+        {
+            Options = options;
+            Scripts = scripts;
+        }
+
+        #endregion
+
     }
 
 }

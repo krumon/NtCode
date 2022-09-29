@@ -4,7 +4,7 @@ namespace Nt.Core
 {
 
     /// <summary>
-    /// Interface for any script session.
+    /// Interface for any session script.
     /// </summary>
     public interface ISession : INinjascript
     {
@@ -16,19 +16,16 @@ namespace Nt.Core
 
     }
 
-    ///// <summary>
-    ///// Interface for any script session.
-    ///// </summary>
-    //public interface ISession<TScript,TOptions,TBuilder> : INinjascript<TScript,TOptions,TBuilder>
-    //    where TScript : ISession<TScript,TOptions,TBuilder>
-    //    where TOptions : ISessionOptions<TOptions>
-    //    where TBuilder : ISessionBuilder<TScript, TOptions, TBuilder>
-    //{
-    //}
+    /// <summary>
+    /// Interface for any sessions iterator.
+    /// </summary>
+    public interface ISessionsIterator : ISession
+    {
 
-    //public interface ISession : ISession<ISession, ISessionOptions, ISessionBuilder>
-    //{
+        /// <summary>
+        /// Event thats is raised when the sessoin changed.
+        /// </summary>
+        event Action<SessionChangedEventArgs> SessionChanged;
 
-    //}
-
+    }
 }

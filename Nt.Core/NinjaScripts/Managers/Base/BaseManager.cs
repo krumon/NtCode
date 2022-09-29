@@ -20,7 +20,16 @@ namespace Nt.Core
         /// <summary>
         /// Nijascripts collection
         /// </summary>
-        protected List<INinjascript> scripts;
+        //protected List<INinjascript> scripts;
+
+        #endregion
+
+        #region Public properties
+
+        /// <summary>
+        /// Nijascripts collection
+        /// </summary>
+        public List<INinjascript> Scripts { get;protected set; }
 
         #endregion
 
@@ -38,6 +47,25 @@ namespace Nt.Core
         #region Public methods
 
         /// <summary>
+        /// Create a ninjascript default builder.
+        /// </summary>
+        /// <returns>Default instance of <see cref="IBuilder"/>.</returns>
+        public override IBuilder CreateBuilder()
+        {
+            return (IBuilder)CreateManagerBuilder(Configuration, Scripts);
+        }
+
+        /// <summary>
+        /// Create a ninjascript default builder.
+        /// </summary>
+        /// <returns>Default instance of <see cref="IBuilder"/>.</returns>
+        public override TManagerBuilder CreateDefaultBuilder()
+        {
+            return CreateManagerBuilder(Configuration,Scripts);
+        }
+
+
+        /// <summary>
         /// Gets script to the scripts collection.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -46,8 +74,8 @@ namespace Nt.Core
         public INinjascript Get<T>()
             where T : INinjascript
         {
-            if (scripts != null)
-                foreach (var script in scripts)
+            if (Scripts != null)
+                foreach (var script in Scripts)
                     if (typeof(T) == script.GetType())
                         return script;
             
@@ -78,7 +106,7 @@ namespace Nt.Core
         public void SetScripts(List<INinjascript> scripts, [CallerMemberName] string methodName = null)
         {
             if (methodName == nameof(IManagerBuilder.Build) || methodName == "OnBuild")
-                this.scripts = scripts;
+                this.Scripts = scripts;
         }
 
         #endregion

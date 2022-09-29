@@ -85,13 +85,21 @@ namespace Nt.Core
         void SetOptions(IOptions options, [CallerMemberName] string methodName = null);
 
         /// <summary>
-        /// Returns the type of the script.
+        /// Gets the builder object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        T GetBuilder<T>()
+            where T : IBuilder;
+
+        /// <summary>
+        /// Gets the type of the script.
         /// </summary>
         /// <returns></returns>
         Type GetScriptType();
 
         /// <summary>
-        /// Returns the type of the options.
+        /// Gets the type of the options.
         /// </summary>
         /// <returns></returns>
         Type GetOptionsType();

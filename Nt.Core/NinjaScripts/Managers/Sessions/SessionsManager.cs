@@ -40,9 +40,9 @@ namespace Nt.Core
         /// <summary>
         /// Nijascripts collection
         /// </summary>
-        protected new List<ISession> scripts;
+        //protected new List<ISession> scripts;
 
-        protected Dictionary<Type, ISession> sessions = new Dictionary<Type, ISession>();
+        //protected Dictionary<Type, ISession> sessions = new Dictionary<Type, ISession>();
 
         #endregion
 
@@ -51,7 +51,7 @@ namespace Nt.Core
         /// <summary>
         /// Gets the configured sessions.
         /// </summary>
-        public List<ISession> Scripts => scripts;
+        //public List<ISession> Scripts => scripts;
 
         /// <summary>
         /// Gets true if any sessionHoursList are stored.
@@ -115,27 +115,20 @@ namespace Nt.Core
 
             // If we need the session iterator...create him.
             // TODO: Make Sure we need the session iterator object.
-            // Initialize the session iterator
-            //if (sessionsIterator == null)
-            //    sessionsIterator = (SessionsIterator)SessionsIterator.CreateDefaultBuilder().Build();
-            Get<SessionsIterator>()?.Load(ninjascript, bars);
-            // AddValues the elements...
-            //sessionsIterator.Load(ninjascript, bars);
-            //if (HasSessionFilters)
-            //    sessionFilters.Load(ninjascript, bars);
-            //if (HasSessionHours)
-            //    sessionHoursList.Load(ninjascript, bars);
-            //if (HasSessionStats)
-            //    sessionStats.Load(ninjascript, bars);
+            if (Get<SessionsIterator>() == null)
+                CreateManagerBuilder(Configuration,Scripts).Add<SessionsIterator,SessionsIteratorOptions>((op) => { }).Build();
 
-            if (scripts != null && scripts.Count > 0)
-                foreach (var script in scripts)
+            Get<SessionsIterator>()?.Load(ninjascript, bars);
+
+            // Load the elements...
+            if (Scripts != null && Scripts.Count > 0)
+                foreach (var script in Scripts)
                     script?.Load(ninjascript, bars);
 
 
             // Aggregate the delegates
 
-            //((ISession)Get<SessionsIterator>())?.SessionChanged += OnSessionChanged;
+            ((ISessionsIterator)Get<SessionsIterator>()).SessionChanged += OnSessionChanged;
 
         }
 

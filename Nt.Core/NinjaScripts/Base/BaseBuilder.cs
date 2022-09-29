@@ -1,6 +1,7 @@
 ﻿using Kr.Core;
 using NinjaTrader.NinjaScript;
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 
 namespace Nt.Core
@@ -19,7 +20,19 @@ namespace Nt.Core
         /// <summary>
         /// The script options.
         /// </summary>
-        public IOptions Options { get; private set; }
+        public IOptions Options { get; protected set; }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Creates <see cref="BaseBuilder"/> default instance.
+        /// </summary>
+        public BaseBuilder(TOptions options)
+        {
+            Options = options;
+        }
 
         #endregion
 
@@ -73,8 +86,6 @@ namespace Nt.Core
 
                 // Add custom options and properties
                 op?.Invoke((TOptions)this.Options);
-
-                var o = this.Options;
             }
 
             return (TBuilder)this;
@@ -162,7 +173,6 @@ namespace Nt.Core
                return (TScript)construct.Invoke(new object[] {});
             else
                 throw new NullReferenceException();
-
         }
 
         /// <summary>
@@ -171,10 +181,36 @@ namespace Nt.Core
         /// <returns></returns>
         protected T CreateNinjascriptInstance<T>()
         {
-            ConstructorInfo construct = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null,Type.EmptyTypes, null);
+            ConstructorInfo construct = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
             if (construct != null)
-                return (T)construct.Invoke(new object[] {});
-            else 
+                return (T)construct.Invoke(new object[] { });
+            else
+                throw new NullReferenceException();
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TScript"/> instance.
+        /// </summary>
+        /// <returns></returns>
+        protected TScript CreateNinjascriptBuilderInstance(TOptions configuration)
+        {
+            ConstructorInfo construct = typeof(TScript).GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] {typeof(TBuilder)}, null);
+            if (construct != null)
+               return (TScript)construct.Invoke(new object[] {configuration});
+            else
+                throw new NullReferenceException();
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="TScript"/> instance.
+        /// </summary>
+        /// <returns></returns>
+        protected TScript CreateManagerBuilderInstance(TOptions configuration, List<INinjascript> scripts)
+        {
+            ConstructorInfo construct = typeof(TScript).GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] {typeof(TBuilder),typeof(List<INinjascript>)}, null);
+            if (construct != null)
+               return (TScript)construct.Invoke(new object[] {configuration, scripts});
+            else
                 throw new NullReferenceException();
         }
 
