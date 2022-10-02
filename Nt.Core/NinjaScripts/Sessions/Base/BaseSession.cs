@@ -52,12 +52,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        /// <summary>
-        /// Creates <see cref="BaseSession{TSession, TSessionOptions, TSessionBuilder}"/> default instance.
-        /// </summary>
-        protected BaseSession() : base()
-        {
-        }
+        ///// <summary>
+        ///// Creates <see cref="BaseSession{TSession, TSessionOptions, TSessionBuilder}"/> default instance.
+        ///// </summary>
+        //public BaseSession() : base()
+        //{
+        //}
 
         #endregion
 

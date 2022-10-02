@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Nt.Core
 {
     /// <summary>
     /// The builder class of <see cref="SessionStats"/>.
     /// </summary>
-    public class SessionStatsBuilder : BaseSessionBuilder<SessionStats, SessionStatsOptions,SessionStatsBuilder>
+    public class SessionStatsBuilder : BaseSessionBuilder<SessionStats, SessionStatsOptions,SessionStatsBuilder>, ISessionStatsBuilder
     {
 
         #region Constructors
@@ -13,12 +13,33 @@ namespace Nt.Core
         /// <summary>
         /// Creates <see cref="SessionStatsBuilder"/> default instance.
         /// </summary>
-        public SessionStatsBuilder(SessionStatsOptions options) : base(options)
+        /// <param name="script">The script to build.</param>
+        public SessionStatsBuilder(INinjascript script) : base(script)
         {
-            Options = options;
         }
 
         #endregion
+
+        #region Configuration methods
+
+        ///// <summary>
+        ///// Configure the ninjascript with the options passed by <see cref="Action{SessionStatsOptions}"/> delegate.
+        ///// </summary>
+        ///// <param name="options">The options to configure the ninjascript.</param>
+        ///// <returns>The builder to continue construction the ninjascript.</returns>
+        //public SessionStatsBuilder Configure(Action<SessionStatsOptions> options) =>
+        //    (SessionStatsBuilder)Configure<SessionStats, SessionStatsOptions>(options);
+
+        ///// <summary>
+        ///// Configure the ninjascript with the options passed by <see cref="SessionFiltersOptions"/> object.
+        ///// </summary>
+        ///// <param name="options">The options to configure the ninjascript.</param>
+        ///// <returns>The builder to continue construction the ninjascript.</returns>
+        //public SessionStatsBuilder Configure(SessionStatsOptions options) =>
+        //    (SessionStatsBuilder)Configure<SessionStats, SessionStatsOptions>(options);
+
+        #endregion
+
 
     }
 }

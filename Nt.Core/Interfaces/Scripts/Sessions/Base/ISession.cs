@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Nt.Core
+﻿namespace Nt.Core
 {
 
     /// <summary>
@@ -16,16 +14,4 @@ namespace Nt.Core
 
     }
 
-    /// <summary>
-    /// Interface for any sessions iterator.
-    /// </summary>
-    public interface ISessionsIterator : ISession
-    {
-
-        /// <summary>
-        /// Event thats is raised when the sessoin changed.
-        /// </summary>
-        event Action<SessionChangedEventArgs> SessionChanged;
-
-    }
 }

@@ -1,22 +1,45 @@
-﻿namespace Nt.Core
+﻿using System;
+
+namespace Nt.Core
 {
     /// <summary>
     /// The builder class of <see cref="SessionsIterator"/>.
     /// </summary>
-    public class SessionsIteratorBuilder : BaseSessionBuilder<SessionsIterator, SessionsIteratorOptions,SessionsIteratorBuilder>
+    public class SessionsIteratorBuilder : BaseSessionBuilder<SessionsIterator, SessionsIteratorOptions,SessionsIteratorBuilder>, ISessionsIteratorBuilder
     {
 
         #region Constructors
 
         /// <summary>
-        /// Creates <see cref="SessionHoursBuilder"/> default instance.
+        /// Creates <see cref="SessionsIteratorBuilder"/> default instance.
         /// </summary>
-        public SessionsIteratorBuilder(SessionsIteratorOptions options) : base(options)
+        /// <param name="script">The script to build.</param>
+        public SessionsIteratorBuilder(INinjascript script) : base(script)
         {
-            Options = options;
         }
 
         #endregion
+
+        #region Configuration methods
+
+        ///// <summary>
+        ///// Configure the ninjascript with the options passed by <see cref="Action{SessionsIteratorOptions}"/> delegate.
+        ///// </summary>
+        ///// <param name="options">The options to configure the ninjascript.</param>
+        ///// <returns>The builder to continue construction the ninjascript.</returns>
+        //public SessionsIteratorBuilder Configure(Action<SessionsIteratorOptions> options) =>
+        //    (SessionsIteratorBuilder)Configure<SessionsIterator, SessionsIteratorOptions>(options);
+
+        ///// <summary>
+        ///// Configure the ninjascript with the options passed by <see cref="SessionFiltersOptions"/> object.
+        ///// </summary>
+        ///// <param name="options">The options to configure the ninjascript.</param>
+        ///// <returns>The builder to continue construction the ninjascript.</returns>
+        //public SessionsIteratorBuilder Configure(SessionsIteratorOptions options) =>
+        //    (SessionsIteratorBuilder)Configure<SessionsIterator, SessionsIteratorOptions>(options);
+
+        #endregion
+
 
     }
 }

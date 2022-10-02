@@ -16,12 +16,11 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
-        /// Creates <see cref="BaseStrategiesManagerBuilder{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
+        /// Creates <see cref="BaseStrategiesManagerBuilder"/> default instance.
         /// </summary>
-        public BaseStrategiesManagerBuilder(TManagerOptions options, List<INinjascript> scripts) : base(options,scripts)
+        /// <param name="script">The script to build.</param>
+        public BaseStrategiesManagerBuilder(IManager script) : base(script)
         {
-            Options = options;
-            Scripts = scripts;
         }
 
         #endregion

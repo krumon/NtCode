@@ -1,4 +1,6 @@
-﻿namespace Nt.Core
+﻿using System;
+
+namespace Nt.Core
 {
     /// <summary>
     /// The base class to session scripts builders
@@ -12,11 +14,11 @@
         #region Constructors
 
         /// <summary>
-        /// Creates <see cref="BaseSessionBuilder{TSession, TSessionOptions, TSessionBuilder}"/> default instance.
+        /// Creates <see cref="BaseSessionBuilder"/> default instance.
         /// </summary>
-        public BaseSessionBuilder(TSessionOptions options) : base(options)
+        /// <param name="script">The script to build.</param>
+        public BaseSessionBuilder(INinjascript script) : base(script)
         {
-            Options = options;
         }
 
         #endregion

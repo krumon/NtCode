@@ -20,8 +20,7 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            SessionsManager sm = null;
-            ISessionsManager sessionsManager = (ISessionsManager)SessionsManager.CreateManagerBuilder(sm.Configuration, sm.Scripts)
+            INinjascript sessionsManager = new SessionsManager().CreateSessionsManagerBuilder()
                 .AddSessionFilters((op) =>
                 {
                     op.Name = "Session Filters";
@@ -41,15 +40,15 @@ namespace ConsoleApp
                 })
                 .Build();
 
-            //INinjascript sessionStats = SessionStats.CreateDefaultBuilder()
-            //    .Build();
+            INinjascript sessionStats = new SessionStats().CreateSessionStatsBuilder()
+                .Build();
 
-            //INinjascript sessionHoursList = SessionHoursList.CreateDefaultBuilder()
-            //    .Configure<SessionHoursList,SessionHoursListOptions>((op) =>
-            //    {
-            //        op.MaxSessionsToStored = 13;
-            //    })
-                //.Build();
+            INinjascript sessionHoursList = new SessionHoursList().CreateSessionHoursListBuilder()
+                .Configure<SessionHoursList, SessionHoursListOptions>((op) =>
+                {
+                    op.MaxSessionsToStored = 13;
+                })
+                .Build();
 
             Wait();
 

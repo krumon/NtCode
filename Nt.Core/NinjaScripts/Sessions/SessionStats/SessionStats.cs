@@ -2,8 +2,11 @@
 
 namespace Nt.Core
 {
-    // TODO: Cambiar los parámetros genéricos
-    public class SessionStats : BaseSession<SessionStats, SessionStatsOptions,SessionStatsBuilder>
+
+    /// <summary>
+    /// Represents the session stats.
+    /// </summary>
+    public class SessionStats : BaseSession<SessionStats, SessionStatsOptions,SessionStatsBuilder>, ISessionStats
     {
 
         #region Private members
@@ -23,12 +26,22 @@ namespace Nt.Core
 
         #region Constructors
 
+        ///// <summary>
+        ///// Creates <see cref="SessionStats"/> default instance.
+        ///// </summary>
+        //protected SessionStats() : base()
+        //{
+        //}
+
+        #endregion
+
+        #region Implementation methods
+
         /// <summary>
-        /// Creates <see cref="SessionStats"/> default instance.
+        /// Creates the <see cref="SessionHoursBuilder"/> to construct the <see cref="SessionHours"/> object.
         /// </summary>
-        protected SessionStats() : base()
-        {
-        }
+        /// <returns>The <see cref="SessionHoursBuilder"/> to construct the <see cref="SessionHours"/> object.</returns>
+        public ISessionStatsBuilder CreateSessionStatsBuilder() => CreateBuilder<SessionStats, SessionStatsBuilder>();
 
         #endregion
 

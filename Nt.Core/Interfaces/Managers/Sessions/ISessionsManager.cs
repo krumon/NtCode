@@ -6,6 +6,13 @@
     /// </summary>
     public interface ISessionsManager : IManager
     {
+
+        /// <summary>
+        /// Creates the <see cref="SessionsManagerBuilder"/> to construct the <see cref="SessionsManager"/> object.
+        /// </summary>
+        /// <returns>The <see cref="SessionsManagerBuilder"/> to construct the <see cref="SessionsManager"/> object.</returns>
+        ISessionsManagerBuilder CreateSessionsManagerBuilder();
+
     }
 
 }

@@ -11,12 +11,13 @@
 
         #region Constructors
 
+
         /// <summary>
         /// Creates <see cref="BaseStrategyBuilder"/> default instance.
         /// </summary>
-        public BaseStrategyBuilder(TOptions options) : base(options)
+        /// <param name="script">The script to build.</param>
+        public BaseStrategyBuilder(INinjascript script) : base(script)
         {
-            Options = options;
         }
 
         #endregion

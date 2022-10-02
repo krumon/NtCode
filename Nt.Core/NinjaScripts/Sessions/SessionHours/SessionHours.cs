@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the SessionHours of the day trading.
     /// </summary>
-    public class SessionHours : BaseSession<SessionHours,SessionHoursOptions,SessionHoursBuilder>
+    public class SessionHours : BaseSession<SessionHours,SessionHoursOptions,SessionHoursBuilder>, ISessionHours
     {
 
         #region Private members
@@ -101,12 +101,22 @@ namespace Nt.Core
 
         #region Constructors
 
+        ///// <summary>
+        ///// Creates <see cref="SessionHours"/> default instance.
+        ///// </summary>
+        //protected SessionHours() : base()
+        //{
+        //}
+
+        #endregion
+
+        #region Implementation methods
+
         /// <summary>
-        /// Creates <see cref="SessionHours"/> default instance.
+        /// Creates the <see cref="SessionHoursBuilder"/> to construct the <see cref="SessionHours"/> object.
         /// </summary>
-        protected SessionHours() : base()
-        {
-        }
+        /// <returns>The <see cref="SessionHoursBuilder"/> to construct the <see cref="SessionHours"/> object.</returns>
+        public ISessionHoursBuilder CreateSessionHoursBuilder() => CreateBuilder<SessionHours, SessionHoursBuilder>();
 
         #endregion
 

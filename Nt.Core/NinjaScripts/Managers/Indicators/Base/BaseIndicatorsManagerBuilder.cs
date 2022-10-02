@@ -14,12 +14,11 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
-        /// Creates <see cref="BaseIndicatorsManagerBuilder{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
+        /// Creates <see cref="BaseIndicatorsManagerBuilder"/> default instance.
         /// </summary>
-        public BaseIndicatorsManagerBuilder(TManagerOptions options, List<INinjascript> scripts) : base(options,scripts)
+        /// <param name="script">The script to build.</param>
+        public BaseIndicatorsManagerBuilder(IManager script) : base(script)
         {
-            Options = options;
-            Scripts = scripts;
         }
 
         #endregion

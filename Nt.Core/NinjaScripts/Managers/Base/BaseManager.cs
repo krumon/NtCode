@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace Nt.Core
@@ -14,13 +16,19 @@ namespace Nt.Core
         where TManagerOptions : BaseManagerOptions<TManagerOptions>, IManagerOptions
         where TManagerBuilder : BaseManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IManagerBuilder
     {
+        public void Add (INinjascript script)
+        {
+            if(scripts == null)
+                scripts = new List<INinjascript> ();
+            scripts.Add(script);
+        }
 
         #region Private members
 
         /// <summary>
         /// Nijascripts collection
         /// </summary>
-        //protected List<INinjascript> scripts;
+        protected List<INinjascript> scripts;
 
         #endregion
 
@@ -29,41 +37,43 @@ namespace Nt.Core
         /// <summary>
         /// Nijascripts collection
         /// </summary>
-        public List<INinjascript> Scripts { get;protected set; }
+        public List<INinjascript> Scripts
+        {
+            get 
+            { 
+                if (scripts == null)
+                    return new List<INinjascript>();
+
+                return scripts; 
+            }
+        }
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        /// Creates <see cref="BaseManager{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
-        /// </summary>
-        protected BaseManager() : base()
-        {
-        }
+        ///// <summary>
+        ///// Creates <see cref="BaseManager{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
+        ///// </summary>
+        //protected BaseManager() : base()
+        //{
+        //}
 
         #endregion
 
         #region Public methods
 
-        /// <summary>
-        /// Create a ninjascript default builder.
-        /// </summary>
-        /// <returns>Default instance of <see cref="IBuilder"/>.</returns>
-        public override IBuilder CreateBuilder()
-        {
-            return (IBuilder)CreateManagerBuilder(Configuration, Scripts);
-        }
-
-        /// <summary>
-        /// Create a ninjascript default builder.
-        /// </summary>
-        /// <returns>Default instance of <see cref="IBuilder"/>.</returns>
-        public override TManagerBuilder CreateDefaultBuilder()
-        {
-            return CreateManagerBuilder(Configuration,Scripts);
-        }
-
+        ///// <summary>
+        ///// Creates ninjascript builder to construct the script.
+        ///// </summary>
+        ///// <typeparam name="Script">The ninhascript to construct.</typeparam>
+        ///// <typeparam name="Builder">The ninjascript builder.</typeparam>
+        ///// <returns>The ninjascript builder.</returns>
+        ///// <exception cref="Exception">Any type is wrong.</exception>
+        //public override Builder CreateBuilder<Script, Builder>()
+        //{
+        //    return (Builder)CreateBuilderInstance(Configuration, Scripts);
+        //}
 
         /// <summary>
         /// Gets script to the scripts collection.
@@ -105,9 +115,27 @@ namespace Nt.Core
         /// <param name="methodName"></param>
         public void SetScripts(List<INinjascript> scripts, [CallerMemberName] string methodName = null)
         {
-            if (methodName == nameof(IManagerBuilder.Build) || methodName == "OnBuild")
-                this.Scripts = scripts;
+            if (methodName == "BaseManagerBuilder" || methodName == "Configure" || methodName == "Build" || methodName == "Add")
+                this.scripts = scripts;
         }
+
+        #endregion
+
+        #region Private methods
+
+        /// <summary>
+        /// Creates a new <see cref="IBuilder"/> instance.
+        /// </summary>
+        /// <returns>The constructor can not be invoke.</returns>
+        protected IManagerBuilder CreateManagerBuilderInstance()
+        {
+            ConstructorInfo construct = typeof(TManagerBuilder).GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(TManagerScript) }, null);
+            if (construct != null)
+                return (TManagerBuilder)construct.Invoke(new object[] { this });
+            else
+                throw new NullReferenceException();
+        }
+
 
         #endregion
 

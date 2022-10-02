@@ -14,12 +14,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        /// <summary>
-        /// Creates <see cref="BaseIndicator{TScript, TOptions, TBuilder}"/> default instance.
-        /// </summary>
-        protected BaseIndicator() : base()
-        {
-        }
+        ///// <summary>
+        ///// Creates <see cref="BaseIndicator{TScript, TOptions, TBuilder}"/> default instance.
+        ///// </summary>
+        //protected BaseIndicator() : base()
+        //{
+        //}
 
         #endregion
 
@@ -34,13 +34,13 @@ namespace Nt.Core
             IndicatorBase indicator = (IndicatorBase)ninjascript;
 
             // Copy the indicator properties
-            indicator.IsOverlay = Configuration.IsOverlay;
-            indicator.DisplayInDataBox = Configuration.DisplayInDataBox;
-            indicator.ScaleJustification = Configuration.ScaleJustification;
-            indicator.DrawHorizontalGridLines = Configuration.DrawHorizontalGridLines;
-            indicator.DrawVerticalGridLines = Configuration.DrawVerticalGridLines;
-            indicator.DrawOnPricePanel = Configuration.DrawOnPricePanel;
-            indicator.PaintPriceMarkers = Configuration.PaintPriceMarkers;
+            indicator.IsOverlay = configuration.IsOverlay;
+            indicator.DisplayInDataBox = configuration.DisplayInDataBox;
+            indicator.ScaleJustification = configuration.ScaleJustification;
+            indicator.DrawHorizontalGridLines = configuration.DrawHorizontalGridLines;
+            indicator.DrawVerticalGridLines = configuration.DrawVerticalGridLines;
+            indicator.DrawOnPricePanel = configuration.DrawOnPricePanel;
+            indicator.PaintPriceMarkers = configuration.PaintPriceMarkers;
         }
 
 

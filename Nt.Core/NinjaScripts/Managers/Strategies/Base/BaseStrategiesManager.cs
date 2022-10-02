@@ -17,12 +17,12 @@
 
         #region Constructors
 
-        /// <summary>
-        /// Creates <see cref="BaseStrategiesManager{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
-        /// </summary>
-        protected BaseStrategiesManager() : base()
-        {
-        }
+        ///// <summary>
+        ///// Creates <see cref="BaseStrategiesManager{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
+        ///// </summary>
+        //protected BaseStrategiesManager() : base()
+        //{
+        //}
 
         #endregion
 

@@ -18,20 +18,29 @@ namespace Nt.Core
         /// <summary>
         /// Ninjascripts collection.
         /// </summary>
-        public List<INinjascript> Scripts { get; protected set; }
+        //public List<INinjascript> Scripts { get; protected set; }
 
         #endregion
 
         #region Constructors
 
+        ///// <summary>
+        ///// Creates <see cref="BaseManagerBuilder"/> default instance.
+        ///// </summary>
+        //public BaseManagerBuilder(TManagerOptions options, List<INinjascript> scripts) : base(options)
+        //{
+        //    Options = options;
+        //    Scripts = scripts;
+        //}
+
         /// <summary>
         /// Creates <see cref="BaseManagerBuilder"/> default instance.
         /// </summary>
-        public BaseManagerBuilder(TManagerOptions options, List<INinjascript> scripts) : base(options)
+        /// <param name="script">The script to build.</param>
+        public BaseManagerBuilder(IManager script) : base(script)
         {
-            Options = options;
-            Scripts = scripts;
         }
+
 
         #endregion
 
@@ -42,13 +51,10 @@ namespace Nt.Core
         /// </summary>
         /// <param name="script">The ninjascript object to build.</param>
         /// <param name="ninjascript">The ninjatrader script.</param>
-        protected override void OnBuild(TManagerScript script, NinjaScriptBase ninjascript)
+        protected override void Build()
         {
-            // Call the parent.
-            base.OnBuild(script, ninjascript);
-
             // Configure the ninjascripts
-            script.SetScripts(Scripts);
+            //script.SetScripts(Scripts);
 
         }
 
@@ -59,18 +65,17 @@ namespace Nt.Core
         /// <typeparam name="Options">The <see cref="INinjascript"/> configuration object.</typeparam>
         /// <param name="options">The specific configuration to add.</param>
         /// <returns>Returns the builder to continue building the object.</returns>
-        public IManagerBuilder Add<Script, Options>(Action<Options> options)
+        public IManagerBuilder Add<Script, Options, Builder>(Action<Options> options)
             where Script : INinjascript
+            where Options : IOptions
+            where Builder : IBuilder
         {
             Script script = CreateNinjascriptInstance<Script>();
-                
-            script.CreateBuilder().Configure<Script,Options>(options).Build();
 
-            if (Scripts == null)
-                Scripts = new List<INinjascript>();
+            script.CreateBuilder<Script, Builder>().Configure<Script, Options>(options).Build();
 
-            Scripts.Add(script);
-
+            this.script.Add(script);
+            
             return this;
 
         }

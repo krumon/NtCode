@@ -21,12 +21,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        /// <summary>
-        /// Creates <see cref="BaseIndicatorsManager{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
-        /// </summary>
-        protected BaseIndicatorsManager() : base()
-        {
-        }
+        ///// <summary>
+        ///// Creates <see cref="BaseIndicatorsManager{TManagerScript, TManagerOptions, TManagerBuilder}"/> default instance.
+        ///// </summary>
+        //protected BaseIndicatorsManager() : base()
+        //{
+        //}
 
         #endregion
 

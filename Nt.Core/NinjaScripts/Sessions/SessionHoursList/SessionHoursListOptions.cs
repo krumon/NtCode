@@ -5,7 +5,7 @@ namespace Nt.Core
     /// <summary>
     /// Options to create <see cref="SessionHoursList"/> object.
     /// </summary>
-    public class SessionHoursListOptions : BaseSessionOptions<SessionHoursListOptions>
+    public class SessionHoursListOptions : BaseSessionOptions<SessionHoursListOptions>, ISessionHoursListOptions
     {
 
         #region Default values

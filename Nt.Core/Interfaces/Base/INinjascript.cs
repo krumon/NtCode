@@ -1,6 +1,5 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
-using SharpDX;
 using System;
 using System.Runtime.CompilerServices;
 
@@ -24,6 +23,16 @@ namespace Nt.Core
         /// The bars of the chart control.
         /// </summary>
         Bars Bars { get; }
+
+        /// <summary>
+        /// The script configure.
+        /// </summary>
+        IOptions Configuration { get;}
+
+        /// <summary>
+        /// Indicates if the session is configured.
+        /// </summary>
+        bool IsConfigured { get; }
 
         #endregion
 
@@ -67,30 +76,22 @@ namespace Nt.Core
 
         #endregion
 
-        #region Configure methods
+        #region Public Methods
 
         /// <summary>
-        /// Create a ninjascript default builder.
+        /// Gets the <see cref="INinjascript"/> builder object.
         /// </summary>
-        /// <returns>Default instance of <see cref="TBuilder"/>.</returns>
-        IBuilder CreateBuilder();
-
-        #endregion
-
-        #region Public Methods
+        /// <typeparam name="Script">The <see cref="INinjascript"/> object.</typeparam>
+        /// <typeparam name="Builder">The <see cref="IBuilder"/> object.</typeparam>
+        /// <returns></returns>
+        Builder CreateBuilder<Script, Builder>()
+            where Script : INinjascript
+            where Builder : IBuilder;
 
         /// <summary>
         /// Sets the script configuration
         /// </summary>
         void SetOptions(IOptions options, [CallerMemberName] string methodName = null);
-
-        /// <summary>
-        /// Gets the builder object
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        T GetBuilder<T>()
-            where T : IBuilder;
 
         /// <summary>
         /// Gets the type of the script.

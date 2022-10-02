@@ -6,7 +6,7 @@ namespace Nt.Core
     /// <summary>
     /// Options to create <see cref="SessionFilters"/> object.
     /// </summary>
-    public class SessionFiltersOptions : BaseSessionOptions<SessionFiltersOptions>
+    public class SessionFiltersOptions : BaseSessionOptions<SessionFiltersOptions>, ISessionFiltersOptions
     {
 
         #region Default values

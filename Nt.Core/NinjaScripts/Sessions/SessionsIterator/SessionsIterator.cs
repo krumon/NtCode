@@ -6,10 +6,11 @@ using System.Collections.Generic;
 
 namespace Nt.Core
 {
+
     /// <summary>
     /// Represents the trading hours session definition.
     /// </summary>
-    public class SessionsIterator : BaseSession<SessionsIterator, SessionsIteratorOptions,SessionsIteratorBuilder>
+    public class SessionsIterator : BaseSession<SessionsIterator, SessionsIteratorOptions,SessionsIteratorBuilder>, ISessionsIterator
     {
 
         #region Test Properties
@@ -143,12 +144,22 @@ namespace Nt.Core
 
         #region Constructors
 
+        ///// <summary>
+        ///// Creates <see cref="SessionsIterator"/> default instance.
+        ///// </summary>
+        //protected SessionsIterator() : base()
+        //{
+        //}
+
+        #endregion
+
+        #region Implementation methods
+
         /// <summary>
-        /// Creates <see cref="SessionsIterator"/> default instance.
+        /// Creates the <see cref="SessionsIteratorBuilder"/> to construct the <see cref="SessionsIterator"/> object.
         /// </summary>
-        protected SessionsIterator() : base()
-        {
-        }
+        /// <returns>The <see cref="SessionsIteratorBuilder"/> to construct the <see cref="SessionsIterator"/> object.</returns>
+        public ISessionsIteratorBuilder CreateSessionsIteratorBuilder() => CreateBuilder<SessionsIterator, SessionsIteratorBuilder>();
 
         #endregion
 

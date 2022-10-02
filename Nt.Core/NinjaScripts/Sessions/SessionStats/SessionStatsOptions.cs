@@ -3,7 +3,7 @@
     /// <summary>
     /// Options to create <see cref="SessionStats"/> object.
     /// </summary>
-    public class SessionStatsOptions : BaseSessionOptions<SessionStatsOptions>
+    public class SessionStatsOptions : BaseSessionOptions<SessionStatsOptions>, ISessionStatsOptions
     {
     }
 }

@@ -7,7 +7,7 @@ namespace Nt.Core
     /// <summary>
     /// Contents the filters for any session
     /// </summary>
-    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions,SessionFiltersBuilder>
+    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions,SessionFiltersBuilder>, ISessionFilters
     {
 
         #region static consts
@@ -69,12 +69,22 @@ namespace Nt.Core
 
         #region Constructors
 
+        ///// <summary>
+        ///// Creates <see cref="SessionFilters"/> default instance.
+        ///// </summary>
+        //protected SessionFilters() : base()
+        //{
+        //}
+
+        #endregion
+
+        #region Implementation methods
+
         /// <summary>
-        /// Creates <see cref="SessionFilters"/> default instance.
+        /// Creates the <see cref="SessionsManagerBuilder"/> to construct the <see cref="SessionsManager"/> object.
         /// </summary>
-        protected SessionFilters() : base()
-        {
-        }
+        /// <returns>The <see cref="SessionsManagerBuilder"/> to construct the <see cref="SessionsManager"/> object.</returns>
+        public ISessionFiltersBuilder CreateSessionFiltersBuilder() => CreateBuilder<SessionFilters, SessionFiltersBuilder>();
 
         #endregion
 
@@ -187,9 +197,9 @@ namespace Nt.Core
         /// <returns></returns>
         public bool Check()
         {
-            bool historicalDataFilter   =   Configuration.IncludeHistoricalData || currentDateTime > startTime;
-            bool dateFilter             =   Configuration.InitialDate <= currentDateTime && Configuration.FinalDate >= currentDateTime;
-            bool holidaysFilter         =   Configuration.IncludePartialHolidays == IsPartialHoliday && Configuration.IncludeEarlyEnd == IsEarlyEnd && Configuration.IncludeLateBegin == IsLateBegin;
+            bool historicalDataFilter   =   configuration.IncludeHistoricalData || currentDateTime > startTime;
+            bool dateFilter             =   configuration.InitialDate <= currentDateTime && configuration.FinalDate >= currentDateTime;
+            bool holidaysFilter         =   configuration.IncludePartialHolidays == IsPartialHoliday && configuration.IncludeEarlyEnd == IsEarlyEnd && configuration.IncludeLateBegin == IsLateBegin;
             bool dayOfWeekFilters       =   true;
             bool monthOfYearFilters     =   true;
 

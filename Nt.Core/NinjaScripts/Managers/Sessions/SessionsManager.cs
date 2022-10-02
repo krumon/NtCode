@@ -92,12 +92,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        /// <summary>
-        /// Creates <see cref="SessionsManager"/> default instance.
-        /// </summary>
-        protected SessionsManager() : base()
-        {
-        }
+        ///// <summary>
+        ///// Creates <see cref="SessionsManager"/> default instance.
+        ///// </summary>
+        //protected SessionsManager() : base()
+        //{
+        //}
 
         #endregion
 
@@ -116,7 +116,7 @@ namespace Nt.Core
             // If we need the session iterator...create him.
             // TODO: Make Sure we need the session iterator object.
             if (Get<SessionsIterator>() == null)
-                CreateManagerBuilder(Configuration,Scripts).Add<SessionsIterator,SessionsIteratorOptions>((op) => { }).Build();
+                CreateManagerBuilderInstance().Add<SessionsIterator,SessionsIteratorOptions, SessionsIteratorBuilder>((op) => { }).Build();
 
             Get<SessionsIterator>()?.Load(ninjascript, bars);
 
@@ -233,6 +233,12 @@ namespace Nt.Core
         #endregion
 
         #region Configure methods
+
+        /// <summary>
+        /// Creates the <see cref="SessionsManagerBuilder"/> to construct the <see cref="SessionsManager"/> object.
+        /// </summary>
+        /// <returns>The <see cref="SessionsManagerBuilder"/> to construct the <see cref="SessionsManager"/> object.</returns>
+        public ISessionsManagerBuilder CreateSessionsManagerBuilder() => CreateBuilder<SessionsManager, SessionsManagerBuilder>();
 
         ///// <summary>
         ///// Add <see cref="SessionsManagerOptions"/> to <see cref="SessionsManager"/> configure.

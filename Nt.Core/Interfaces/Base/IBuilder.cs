@@ -9,12 +9,14 @@ namespace Nt.Core
     public interface IBuilder
     {
 
-        #region Protected members
+        #region Public properties
 
-        /// <summary>
-        /// The script options.
-        /// </summary>
-        IOptions Options {get;}
+        ///// <summary>
+        ///// The script options.
+        ///// </summary>
+        //IOptions Options {get;}
+
+        INinjascript Script { get; }
 
         #endregion
 
@@ -45,7 +47,7 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options">Delegate method with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        IBuilder Configure<Script, Options>(IOptions options)
+        IBuilder Configure<Script, Options>(Options options)
             where Options : IOptions;
 
         /// <summary>
@@ -53,14 +55,14 @@ namespace Nt.Core
         /// </summary>
         /// <param name="options">Delegate method with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        IBuilder Configure(Action<IOptions> options);
+        //IBuilder Configure(Action<IOptions> options);
 
         /// <summary>
         /// Configure the ninjascript properties passed by the <paramref name="options"/>.
         /// </summary>
         /// <param name="options"><see cref="IOptions"/> object with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
-        IBuilder Configure(IOptions options);
+        //IBuilder Configure(IOptions options);
 
         #endregion
 

@@ -8,7 +8,7 @@ namespace Nt.Core
     /// <summary>
     /// Represents the SessionHours of the day trading.
     /// </summary>
-    public class SessionHoursList : BaseSession<SessionHoursList, SessionHoursListOptions,SessionHoursListBuilder>
+    public class SessionHoursList : BaseSession<SessionHoursList, SessionHoursListOptions,SessionHoursListBuilder>, ISessionHoursList
     {
         #region Private members
 
@@ -81,12 +81,22 @@ namespace Nt.Core
 
         #region Constructors
 
+        ///// <summary>
+        ///// Creates <see cref="SessionHoursList"/> default instance.
+        ///// </summary>
+        //protected SessionHoursList() : base()
+        //{
+        //}
+
+        #endregion
+
+        #region Implementation methods
+
         /// <summary>
-        /// Creates <see cref="SessionHoursList"/> default instance.
+        /// Creates the <see cref="SessionHoursListBuilder"/> to construct the <see cref="SessionHoursList"/> object.
         /// </summary>
-        protected SessionHoursList() : base()
-        {
-        }
+        /// <returns>The <see cref="SessionHoursListBuilder"/> to construct the <see cref="SessionHoursList"/> object.</returns>
+        public ISessionHoursListBuilder CreateSessionHoursListBuilder() => CreateBuilder<SessionHoursList, SessionHoursListBuilder>();
 
         #endregion
 
@@ -124,7 +134,7 @@ namespace Nt.Core
         {
             // Update actual session
             lastSession = actualSession;
-            actualSession = (SessionHours)SessionHours.CreateDefaultBuilder().Build();
+            actualSession = new SessionHours();
             actualSession.SetValues(e);
             // TODO: Revisar esta asignación.
             actualSession.N = e.N;

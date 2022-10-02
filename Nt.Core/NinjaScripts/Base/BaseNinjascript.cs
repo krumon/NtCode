@@ -1,7 +1,6 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -52,7 +51,7 @@ namespace Nt.Core
         }
 
         #endregion
-        
+
         #region State changed methods
 
         /// <summary>
@@ -145,7 +144,6 @@ namespace Nt.Core
 
         #endregion
 
-
     }
 
 
@@ -164,26 +162,26 @@ namespace Nt.Core
         #region Private members
 
         /// <summary>
-        /// Represents the script options
+        /// The script configure.
         /// </summary>
-        //private TOptions configuration;
+        protected TOptions configuration;
 
         #endregion
 
         #region Public properties
 
         /// <summary>
-        /// Gets the script options
+        /// Gets the script configure.
         /// </summary>
-        public TOptions Configuration { get; protected set; }
+        public IOptions Configuration => configuration;
 
         /// <summary>
-        /// Indicates if the session is configured
+        /// Indicates if the session is configured.
         /// </summary>
         public bool ConfigurationError => Configuration == null;
 
         /// <summary>
-        /// Indicates if the session is configured
+        /// Indicates if the session is configured.
         /// </summary>
         public bool IsConfigured => Configuration != null;
 
@@ -191,12 +189,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        /// <summary>
-        /// Creates <see cref="BaseNinjascript"/> default instance.
-        /// </summary>
-        protected BaseNinjascript()
-        {
-        }
+        ///// <summary>
+        ///// Creates <see cref="BaseNinjascript"/> default instance.
+        ///// </summary>
+        //protected BaseNinjascript()
+        //{
+        //}
 
         #endregion
 
@@ -219,36 +217,31 @@ namespace Nt.Core
         /// </summary>
         public void SetOptions(IOptions options, [CallerMemberName] string methodName = null)
         {
-            if (methodName == nameof(IBuilder.Build))
-                Configuration = (TOptions)options;
-        }
-
-        /// <summary>
-        /// Create a ninjascript default builder.
-        /// </summary>
-        /// <returns>Default instance of <see cref="IBuilder"/>.</returns>
-        public virtual IBuilder CreateBuilder()
-        {
-            return CreateNinjascriptBuilder(Configuration);
-        }
-
-        /// <summary>
-        /// Create a ninjascript default builder.
-        /// </summary>
-        /// <returns>Default instance of <see cref="IBuilder"/>.</returns>
-        public virtual TBuilder CreateDefaultBuilder()
-        {
-            return CreateNinjascriptBuilder(Configuration);
+            if (methodName == ".ctor" || methodName == "Configure" || methodName == "Build")
+                configuration = (TOptions)options;
         }
 
         #endregion
 
         #region Public Methods
 
-        public T GetBuilder<T>()
-            where T : IBuilder
+        /// <summary>
+        /// Creates ninjascript builder to construct the script.
+        /// </summary>
+        /// <typeparam name="Script">The ninhascript to construct.</typeparam>
+        /// <typeparam name="Builder">The ninjascript builder.</typeparam>
+        /// <returns>The ninjascript builder.</returns>
+        /// <exception cref="Exception">Any type is wrong.</exception>
+        public virtual Builder CreateBuilder<Script,Builder>()
+            where Script : INinjascript
+            where Builder : IBuilder
         {
-            return (T)CreateBuilder();
+            // Make sure the types are correct.
+            //if (typeof(Script) == typeof(TScript) && typeof(Builder) == typeof(TBuilder))
+            if (typeof(Script).IsAssignableFrom(typeof(TScript)) && typeof(Builder).IsAssignableFrom(typeof(TBuilder)))
+                return (Builder)CreateNinjascriptBuilderInstance((TScript)this);
+
+            throw new Exception("The builder can not be created");
         }
 
         /// <summary>
@@ -274,27 +267,14 @@ namespace Nt.Core
         #region Private methods
 
         /// <summary>
-        /// Creates a new <see cref="TScript"/> instance.
+        /// Creates a new <see cref="IBuilder"/> instance.
         /// </summary>
-        /// <returns></returns>
-        public static TBuilder CreateNinjascriptBuilder(TOptions configuration)
+        /// <returns>The constructor can not be invoke.</returns>
+        protected IBuilder CreateNinjascriptBuilderInstance(TScript script)
         {
-            ConstructorInfo construct = typeof(TBuilder).GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(TOptions) }, null);
+            ConstructorInfo construct = typeof(TBuilder).GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(TScript) }, null);
             if (construct != null)
-                return (TBuilder)construct.Invoke(new object[] { configuration });
-            else
-                throw new NullReferenceException();
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="TScript"/> instance.
-        /// </summary>
-        /// <returns></returns>
-        public static TBuilder CreateManagerBuilder(TOptions configuration, List<INinjascript> scripts)
-        {
-            ConstructorInfo construct = typeof(TBuilder).GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(TOptions), typeof(List<INinjascript>) }, null);
-            if (construct != null)
-                return (TBuilder)construct.Invoke(new object[] { configuration, scripts });
+                return (TBuilder)construct.Invoke(new object[] { this });
             else
                 throw new NullReferenceException();
         }

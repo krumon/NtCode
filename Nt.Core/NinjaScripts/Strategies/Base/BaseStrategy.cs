@@ -13,12 +13,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        /// <summary>
-        /// Creates <see cref="BaseStrategy{TScript, TOptions, TBuilder}"/> default instance.
-        /// </summary>
-        protected BaseStrategy() : base()
-        {
-        }
+        ///// <summary>
+        ///// Creates <see cref="BaseStrategy{TScript, TOptions, TBuilder}"/> default instance.
+        ///// </summary>
+        //protected BaseStrategy() : base()
+        //{
+        //}
 
         #endregion
 

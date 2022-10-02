@@ -9,6 +9,12 @@ namespace Nt.Core
     /// </summary>
     public interface IManager : INinjascript
     {
+
+        /// <summary>
+        /// Nijascripts collection
+        /// </summary>
+        List<INinjascript> Scripts { get; }
+
         /// <summary>
         /// Sets the ninjascripts collection from <see cref="IManagerBuilder"/> object.
         /// </summary>
