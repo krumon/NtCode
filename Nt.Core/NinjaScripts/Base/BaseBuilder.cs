@@ -1,5 +1,4 @@
-﻿using Kr.Core;
-using NinjaTrader.NinjaScript;
+﻿using NinjaTrader.NinjaScript;
 using System;
 using System.Reflection;
 
@@ -15,11 +14,6 @@ namespace Nt.Core
     {
 
         #region Protected members
-
-        ///// <summary>
-        ///// The script options.
-        ///// </summary>
-        //protected IOptions options;
 
         /// <summary>
         /// The script to build.
@@ -38,14 +32,6 @@ namespace Nt.Core
         #endregion
 
         #region Constructors
-
-        /// <summary>
-        /// Creates <see cref="BaseBuilder"/> default instance.
-        /// </summary>
-        //public BaseBuilder(TOptions options)
-        //{
-        //    Options = options;
-        //}
 
         /// <summary>
         /// Creates <see cref="BaseBuilder"/> default instance.
@@ -162,43 +148,6 @@ namespace Nt.Core
         /// <returns>The builder to continue construction the ninjascript.</returns>
         public TBuilder Configure(TOptions options) =>
             (TBuilder)Configure<TScript, TOptions>(options);
-
-
-        /// <summary>
-        /// Configure the ninjascript properties passed by the <paramref name="op"/>.
-        /// </summary>
-        /// <param name="op">Delegate method with the new properties to configure the script.</param>
-        /// <returns>The script builder to continue the construction.</returns>
-        //public IBuilder Configure(Action<IOptions> op)
-        //{
-        //    // Create default options to rewriter the new properties passed by the options object.
-        //    if (Options == null)
-        //        Options = Activator.CreateInstance<TOptions>();
-
-        //    // Add custom options and properties
-        //    op?.Invoke((TOptions)Options);
-
-        //    // Return the builder
-        //    return this;
-        //}
-
-        /// <summary>
-        /// Configure the ninjascript properties passed by the <paramref name="options"/>.
-        /// </summary>
-        /// <param name="options"><see cref="TOptions"/> object with the new properties to configure the script.</param>
-        /// <returns>The script builder to continue the construction.</returns>
-        //public IBuilder Configure(IOptions options)
-        //{
-        //    // Create default options to rewriter the new properties passed by the options object.
-        //    if (Options == null)
-        //        Options = Activator.CreateInstance<TOptions>();
-
-        //    // Copy to the options object the options passed by parameter.
-        //    this.Options = options;
-
-        //    // Return the builder
-        //    return this;
-        //}
 
         #endregion
 

@@ -195,6 +195,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\NinjascriptErrors.cs" />
     <Compile Include="Interfaces\Managers\Base\IManagerBuilder.cs" />
     <Compile Include="Interfaces\Managers\Base\IManagerOptions.cs" />
     <Compile Include="Interfaces\Managers\Indicators\IIndicatorsManagerBuilder.cs" />

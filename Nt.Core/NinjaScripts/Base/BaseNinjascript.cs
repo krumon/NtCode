@@ -1,5 +1,6 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
+using Nt.Core.Exceptions;
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -39,6 +40,11 @@ namespace Nt.Core
         /// </summary>
         public Bars Bars => bars;
 
+        /// <summary>
+        /// Indicates if the session is configured.
+        /// </summary>
+        public bool IsLoaded { get; protected set; }
+
         #endregion
 
         #region Constructors
@@ -46,7 +52,7 @@ namespace Nt.Core
         /// <summary>
         /// Creates <see cref="BaseNinjascript"/> default instance.
         /// </summary>
-        protected BaseNinjascript()
+        public BaseNinjascript()
         {
         }
 
@@ -69,14 +75,24 @@ namespace Nt.Core
         /// <param name="bars">The chart bars object.</param>
         public virtual void Load(NinjaScriptBase ninjascript, Bars bars)
         {
-            // Make sure the parameters are not null.
-            if (ninjascript == null || bars == null)
-                throw new Exception($"Load parameters can not be null"); // return null;
-
-            // Set values.
-            this.ninjascript = ninjascript;
-            this.bars = bars;
-
+            try
+            {
+                // Sets ninjascript value.
+                this.ninjascript = ninjascript ?? throw new ArgumentNullException(NinjascriptErrors.NinjascriptLoadParametersException);
+                // Sets bars value.
+                this.bars = bars ?? throw new ArgumentNullException(NinjascriptErrors.NinjascriptLoadParametersException);
+                // Indicates that the ninjascript is loaded.
+                IsLoaded = true;
+            }
+            catch (Exception e)
+            {
+                // TODO: ILogger implementation to register errors.
+                Console.WriteLine(e.Message);
+                if (ninjascript == null)
+                    Console.WriteLine($"If {nameof(ninjascript)} parameter is null, the {nameof(BaseNinjascript)} object never entry on event driven methods.");
+                if (bars == null)
+                    Console.WriteLine($"If {nameof(bars)} parameter is null, the {nameof(BaseNinjascript)} object cannot use some objects. For example the \"SessionsIterator\" object cannot be used.");
+            }
         }
 
         /// <summary>
@@ -95,6 +111,8 @@ namespace Nt.Core
         /// </summary>
         public virtual void OnBarUpdate()
         {
+            if (!IsLoaded)
+                throw new Exception(NinjascriptErrors.NinjascriptLoadedException);
         }
 
         /// <summary>
@@ -104,6 +122,8 @@ namespace Nt.Core
         /// </summary>
         public virtual void OnMarketData()
         {
+            if (!IsLoaded)
+                throw new Exception(NinjascriptErrors.NinjascriptLoadedException);
         }
 
         #endregion
@@ -153,7 +173,7 @@ namespace Nt.Core
     /// <typeparam name="TScript">The ninjascript object.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options object.</typeparam>
     /// <typeparam name="TBuilder">The ninjascript bulder object.</typeparam>
-    public abstract class BaseNinjascript<TScript, TOptions,TBuilder> : BaseNinjascript, INinjascript // INinjascript<TScript,TOptions,TBuilder>
+    public abstract class BaseNinjascript<TScript, TOptions,TBuilder> : BaseNinjascript, INinjascript
         where TScript : BaseNinjascript<TScript,TOptions,TBuilder>, INinjascript
         where TOptions : BaseOptions<TOptions>, IOptions
         where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>, IBuilder
@@ -178,23 +198,7 @@ namespace Nt.Core
         /// <summary>
         /// Indicates if the session is configured.
         /// </summary>
-        public bool ConfigurationError => Configuration == null;
-
-        /// <summary>
-        /// Indicates if the session is configured.
-        /// </summary>
         public bool IsConfigured => Configuration != null;
-
-        #endregion
-
-        #region Constructors
-
-        ///// <summary>
-        ///// Creates <see cref="BaseNinjascript"/> default instance.
-        ///// </summary>
-        //protected BaseNinjascript()
-        //{
-        //}
 
         #endregion
 
@@ -206,10 +210,31 @@ namespace Nt.Core
         /// <param name="ninjascript">The ninjascript parent object.</param>
         public override void SetDefault(NinjaScriptBase ninjascript)
         {
-            // Copy the new options
-            ninjascript.Name = Configuration.Name;
-            ninjascript.Calculate = Configuration.Calculate;
-            ninjascript.BarsRequiredToPlot = Configuration.BarsRequiredToPlot;
+            try
+            {
+                Exception e = new Exception("\"SetDefault\" Exceptions: ");
+
+                if (!IsConfigured)
+                    e.Data["ConfigureException"] = NinjascriptErrors.NinjascriptConfigureException;
+
+                if (ninjascript == null)
+                    e.Data["NinjaTraderException"] = NinjascriptErrors.NinjaTraderNinjaScriptNullReferenceException;
+
+                if (e.Data.Count > 0)
+                    throw e;
+
+                // Copy the new options
+                ninjascript.Name = Configuration.Name;
+                ninjascript.Calculate = Configuration.Calculate;
+                ninjascript.BarsRequiredToPlot = Configuration.BarsRequiredToPlot;
+            }
+            catch(Exception e)
+            {
+                // TODO: Implementar ILogger para registrar los errores.
+                Console.WriteLine(e);
+                Console.WriteLine("  {0}", e.Data["ConfigureException"]);
+                Console.WriteLine("  {0}", e.Data["NinjaTraderException"]);
+            }
         }
 
         /// <summary>
