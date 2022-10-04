@@ -3,7 +3,6 @@ using NinjaTrader.NinjaScript;
 using Nt.Core.Resources;
 using System;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace Nt.Core
 {
@@ -31,30 +30,9 @@ namespace Nt.Core
         #region Public properties
 
         /// <summary>
-        /// The ninjascript parent of the class.
-        /// </summary>
-        public NinjaScriptBase Ninjascript => ninjascript;
-
-        /// <summary>
-        /// The bars of the chart control.
-        /// </summary>
-        public Bars Bars => bars;
-
-        /// <summary>
         /// Indicates if the session is configured.
         /// </summary>
         public bool IsLoaded { get; protected set; }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Creates <see cref="BaseNinjascript"/> default instance.
-        /// </summary>
-        public BaseNinjascript()
-        {
-        }
 
         #endregion
 
@@ -64,7 +42,7 @@ namespace Nt.Core
         /// Method to set default properties in the script in "OnStateChanged.Configure" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript parent object.</param>
-        public virtual void SetDefault(NinjaScriptBase ninjascript)
+        protected virtual void SetDefault(NinjaScriptBase ninjascript)
         {
         }
 
@@ -150,7 +128,6 @@ namespace Nt.Core
         public virtual void TryLoad(NinjaScriptBase ninjascript, Bars bars)
         {
         }
-
 
         #endregion
 
@@ -250,14 +227,9 @@ namespace Nt.Core
         #region Public properties
 
         /// <summary>
-        /// Gets the script configure.
-        /// </summary>
-        public IOptions Configuration => configuration;
-
-        /// <summary>
         /// Indicates if the session is configured.
         /// </summary>
-        public bool IsConfigured => Configuration != null;
+        public bool IsConfigured => configuration != null;
 
         #endregion
 
@@ -267,7 +239,7 @@ namespace Nt.Core
         /// Method to set default properties in the script in "OnStateChanged.Configure" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript parent object.</param>
-        public override void SetDefault(NinjaScriptBase ninjascript)
+        protected override void SetDefault(NinjaScriptBase ninjascript)
         {
             try
             {
@@ -278,34 +250,15 @@ namespace Nt.Core
                     throw new SetDefaultException(ExceptionMessages.SetDefaultNinjaScriptException, new NullReferenceException(), typeof(TOptions).ToString());
 
                 // Copy the new options
-                ninjascript.Name = Configuration.Name;
-                ninjascript.Calculate = Configuration.Calculate;
-                ninjascript.BarsRequiredToPlot = Configuration.BarsRequiredToPlot;
+                ninjascript.Name = configuration.Name;
+                ninjascript.Calculate = configuration.Calculate;
+                ninjascript.BarsRequiredToPlot = configuration.BarsRequiredToPlot;
             }
             catch(SetDefaultException e)
             {
                 // TODO: Implementar ILogger para registrar los errores.
                 Console.WriteLine(e.Message);
-                // TODO: Resolver la excepción.
-                throw;
-            }
-        }
-
-        /// <summary>
-        /// Sets the script configuration
-        /// </summary>
-        public void SetOptions(IOptions options, [CallerMemberName] string methodName = null)
-        {
-            try
-            {
-                if (methodName == ".ctor" || methodName == "Configure" || methodName == "Build")
-                    configuration = (TOptions)options;
-                else
-                    throw new SetOptionsException(ExceptionMessages.SetOptionsCallerException, methodName);
-            }
-            catch
-            {
-                // TODO: ILogger implementation to register errors.
+                // TODO: Controlar la excepción.
                 throw;
             }
         }
@@ -362,13 +315,13 @@ namespace Nt.Core
 
         #endregion
 
-        #region Private methods
+        #region Instance methods
 
         /// <summary>
         /// Creates a new <see cref="IBuilder"/> instance.
         /// </summary>
         /// <returns>The constructor can not be invoke.</returns>
-        protected IBuilder CreateNinjascriptBuilderInstance(TScript script)
+        protected static IBuilder CreateNinjascriptBuilderInstance(TScript script)
         {
             try
             {
@@ -377,7 +330,7 @@ namespace Nt.Core
                 {
                     try
                     {
-                        return (TBuilder)construct.Invoke(new object[] { this });
+                        return (TBuilder)construct.Invoke(new object[] { script });
                     }
                     catch(Exception e)
                     {
@@ -394,6 +347,43 @@ namespace Nt.Core
                 // TODO: ILogger implementation to register errors.
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="INinjascript"/> instance.
+        /// </summary>
+        /// <returns></returns>
+        protected static TScript CreateNinjascriptInstance()
+        {
+            ConstructorInfo construct = typeof(TScript).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+            if (construct != null)
+                return (TScript)construct.Invoke(new object[] { });
+            else
+                throw new NullReferenceException();
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="INinjascript"/> instance.
+        /// </summary>
+        /// <returns></returns>
+        protected static T CreateNinjascriptInstance<T>()
+            where T : INinjascript
+        {
+            ConstructorInfo construct = typeof(T).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+            if (construct != null)
+                return (T)construct.Invoke(new object[] { });
+            else
+                throw new NullReferenceException();
+        }
+
+        /// <summary>
+        /// Creates <see cref="TBuilder"/> for the <see cref="TScript"/> object default instance.
+        /// </summary>
+        /// <returns>The <see cref="TBuilder"/> default instance.</returns>
+        public static TBuilder CreateDefaultBuilder()
+        {
+            TScript script = CreateNinjascriptInstance();
+            return (TBuilder)CreateNinjascriptBuilderInstance(script); 
         }
 
         #endregion

@@ -1,7 +1,6 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using System;
-using System.Runtime.CompilerServices;
 
 namespace Nt.Core
 {
@@ -15,19 +14,9 @@ namespace Nt.Core
         #region Protected members
 
         /// <summary>
-        /// The ninjascript parent of the class.
+        /// Indicates if the session is configured.
         /// </summary>
-        NinjaScriptBase Ninjascript { get; }
-
-        /// <summary>
-        /// The bars of the chart control.
-        /// </summary>
-        Bars Bars { get; }
-
-        /// <summary>
-        /// The script configure.
-        /// </summary>
-        IOptions Configuration { get;}
+        bool IsLoaded { get; }
 
         /// <summary>
         /// Indicates if the session is configured.
@@ -37,12 +26,6 @@ namespace Nt.Core
         #endregion
 
         #region State changed methods
-
-        /// <summary>
-        /// Method to set default properties in the script in "OnStateChanged.Configure" method.
-        /// </summary>
-        /// <param name="ninjascript">The ninjascript parent object.</param>
-        void SetDefault(NinjaScriptBase ninjascript);
 
         /// <summary>
         /// Loaded the Script in OnStateChanged method.
@@ -87,11 +70,6 @@ namespace Nt.Core
         Builder CreateBuilder<Script, Builder>()
             where Script : INinjascript
             where Builder : IBuilder;
-
-        /// <summary>
-        /// Sets the script configuration
-        /// </summary>
-        void SetOptions(IOptions options, [CallerMemberName] string methodName = null);
 
         /// <summary>
         /// Gets the type of the script.

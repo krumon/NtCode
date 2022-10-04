@@ -101,12 +101,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        ///// <summary>
-        ///// Creates <see cref="SessionHours"/> default instance.
-        ///// </summary>
-        //protected SessionHours() : base()
-        //{
-        //}
+        /// <summary>
+        /// Creates <see cref="SessionHours"/> default instance.
+        /// </summary>
+        protected SessionHours() : base()
+        {
+        }
 
         #endregion
 
@@ -127,7 +127,7 @@ namespace Nt.Core
         /// This method is executed when "ConfigureProperties" methods is raised.
         /// </summary>
         /// <param name="ninjascript">The ninjascript parent object.</param>
-        public override void SetDefault(NinjaScriptBase ninjascript)
+        protected override void SetDefault(NinjaScriptBase ninjascript)
         {
         }
 

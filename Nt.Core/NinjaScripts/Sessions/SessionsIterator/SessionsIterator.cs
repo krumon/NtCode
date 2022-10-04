@@ -144,12 +144,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        ///// <summary>
-        ///// Creates <see cref="SessionsIterator"/> default instance.
-        ///// </summary>
-        //protected SessionsIterator() : base()
-        //{
-        //}
+        /// <summary>
+        /// Creates <see cref="SessionsIterator"/> default instance.
+        /// </summary>
+        protected SessionsIterator() : base()
+        {
+        }
 
         #endregion
 
@@ -165,10 +165,10 @@ namespace Nt.Core
 
         #region State Changed methods
 
-        public override void SetDefault(NinjaScriptBase ninjascript)
+        protected override void SetDefault(NinjaScriptBase ninjascript)
         {
-            NinjaTrader.Data.TradingHours.Get("").CopyTo(bars.TradingHours);
-            NinjaTrader.Data.TradingHours.String2TradingHours("").CopyTo(bars.TradingHours);
+            TradingHours.Get("").CopyTo(bars.TradingHours);
+            TradingHours.String2TradingHours("").CopyTo(bars.TradingHours);
         }
 
         /// <summary>

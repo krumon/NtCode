@@ -26,12 +26,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        ///// <summary>
-        ///// Creates <see cref="SessionStats"/> default instance.
-        ///// </summary>
-        //protected SessionStats() : base()
-        //{
-        //}
+        /// <summary>
+        /// Creates <see cref="SessionStats"/> default instance.
+        /// </summary>
+        protected SessionStats() : base()
+        {
+        }
 
         #endregion
 

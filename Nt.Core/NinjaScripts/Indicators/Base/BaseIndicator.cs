@@ -25,7 +25,7 @@ namespace Nt.Core
 
         #region Configure methods
 
-        public override void SetDefault(NinjaScriptBase ninjascript)
+        protected override void SetDefault(NinjaScriptBase ninjascript)
         {
             // Copy the ninjascript properties in the parent
             base.SetDefault(ninjascript);

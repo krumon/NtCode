@@ -81,12 +81,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        ///// <summary>
-        ///// Creates <see cref="SessionHoursList"/> default instance.
-        ///// </summary>
-        //protected SessionHoursList() : base()
-        //{
-        //}
+        /// <summary>
+        /// Creates <see cref="SessionHoursList"/> default instance.
+        /// </summary>
+        protected SessionHoursList() : base()
+        {
+        }
 
         #endregion
 
@@ -134,7 +134,7 @@ namespace Nt.Core
         {
             // Update actual session
             lastSession = actualSession;
-            actualSession = new SessionHours();
+            actualSession = (SessionHours)SessionHours.CreateDefaultBuilder().Build();
             actualSession.SetValues(e);
             // TODO: Revisar esta asignación.
             actualSession.N = e.N;

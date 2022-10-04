@@ -17,10 +17,10 @@ namespace Nt.Core
         /// <typeparam name="Builder">The <see cref="IBuilder"/> to construct the script.</typeparam>
         /// <param name="options">The specific configuration to add.</param>
         /// <returns>Returns the builder to continue building the object.</returns>
-        IManagerBuilder Add<Script, Options,Builder>(Action<Options> options)
-            where Script : INinjascript
-            where Options : IOptions
-            where Builder : IBuilder;
+        IManagerBuilder Add<Script, Options, Builder>(Action<Options> options)
+            where Script : BaseNinjascript<Script, Options, Builder>, INinjascript
+            where Options : BaseOptions<Options>, IOptions
+            where Builder : BaseBuilder<Script, Options, Builder>, IBuilder;
 
     }
 

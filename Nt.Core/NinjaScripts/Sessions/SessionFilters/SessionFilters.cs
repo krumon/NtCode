@@ -69,12 +69,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        ///// <summary>
-        ///// Creates <see cref="SessionFilters"/> default instance.
-        ///// </summary>
-        //protected SessionFilters() : base()
-        //{
-        //}
+        /// <summary>
+        /// Creates <see cref="SessionFilters"/> default instance.
+        /// </summary>
+        protected SessionFilters() : base()
+        {
+        }
 
         #endregion
 

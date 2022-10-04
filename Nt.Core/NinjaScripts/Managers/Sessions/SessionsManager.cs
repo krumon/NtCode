@@ -92,12 +92,12 @@ namespace Nt.Core
 
         #region Constructors
 
-        ///// <summary>
-        ///// Creates <see cref="SessionsManager"/> default instance.
-        ///// </summary>
-        //protected SessionsManager() : base()
-        //{
-        //}
+        /// <summary>
+        /// Creates <see cref="SessionsManager"/> default instance.
+        /// </summary>
+        protected SessionsManager() : base()
+        {
+        }
 
         #endregion
 
