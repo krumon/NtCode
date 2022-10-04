@@ -50,6 +50,12 @@ namespace ConsoleApp
                 })
                 .Build();
 
+            // Code to throw errors.
+            //INinjascript CreateBuilderException = new SessionFilters().CreateBuilder<SessionFilters, SessionStatsBuilder>().Build();
+            //INinjascript CreateSetOptionsException = new SessionFilters();
+            //CreateSetOptionsException.SetOptions(new SessionFiltersOptions());
+
+
             Wait();
 
             //var th = NinjaTrader.Data.TradingHours.Get("CME US Index Futures ETH");

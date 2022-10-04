@@ -1,6 +1,6 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
-using Nt.Core.Exceptions;
+using Nt.Core.Resources;
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -77,21 +77,15 @@ namespace Nt.Core
         {
             try
             {
-                // Sets ninjascript value.
-                this.ninjascript = ninjascript ?? throw new ArgumentNullException(NinjascriptErrors.NinjascriptLoadParametersException);
-                // Sets bars value.
-                this.bars = bars ?? throw new ArgumentNullException(NinjascriptErrors.NinjascriptLoadParametersException);
-                // Indicates that the ninjascript is loaded.
-                IsLoaded = true;
+                // Try load the ninjascript object
+                IsLoaded = OnTryLoad(ninjascript, bars);
             }
-            catch (Exception e)
+            catch (LoadException e)
             {
                 // TODO: ILogger implementation to register errors.
+                Console.WriteLine("Unhandler Exception on BaseNinjascript.Load method.");
+                Console.WriteLine(e);
                 Console.WriteLine(e.Message);
-                if (ninjascript == null)
-                    Console.WriteLine($"If {nameof(ninjascript)} parameter is null, the {nameof(BaseNinjascript)} object never entry on event driven methods.");
-                if (bars == null)
-                    Console.WriteLine($"If {nameof(bars)} parameter is null, the {nameof(BaseNinjascript)} object cannot use some objects. For example the \"SessionsIterator\" object cannot be used.");
             }
         }
 
@@ -111,8 +105,16 @@ namespace Nt.Core
         /// </summary>
         public virtual void OnBarUpdate()
         {
-            if (!IsLoaded)
-                throw new Exception(NinjascriptErrors.NinjascriptLoadedException);
+            try
+            {
+                if (!IsLoaded)
+                    throw new OnBarUpdateException(ExceptionMessages.BarUpdateLoadException);
+            }
+            catch 
+            {
+                // TODO: ILogger implementation to register errors.
+                Console.WriteLine("Unhandler Exception on OnBarUpdate.Load method.");
+            }
         }
 
         /// <summary>
@@ -122,8 +124,65 @@ namespace Nt.Core
         /// </summary>
         public virtual void OnMarketData()
         {
-            if (!IsLoaded)
-                throw new Exception(NinjascriptErrors.NinjascriptLoadedException);
+            // Make sure the ninjascript is loaded
+            try
+            {
+                if (!IsLoaded)
+                    throw new OnBarUpdateException(ExceptionMessages.LoadException);
+            }
+            catch(OnBarUpdateException e) 
+            {
+                // TODO: ILogger implementation to register errors.
+                Console.WriteLine(e);
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Method to try load the ninjascript object. If the object is loaded
+        /// </summary>
+        /// <param name="ninjascript"></param>
+        /// <param name="bars"></param>
+        public virtual void TryLoad(NinjaScriptBase ninjascript, Bars bars)
+        {
+        }
+
+
+        #endregion
+
+        #region Private methods
+
+        /// <summary>
+        /// Method to make sure if the Load method parameters is not null.
+        /// </summary>
+        /// <param name="ninjascript"></param>
+        /// <param name="bars"></param>
+        /// <returns>True if the method doesn't throw an exception.</returns>
+        /// <exception cref="LoadException">If any Load method parameter is null, throw an exception.</exception>
+        public bool OnTryLoad(NinjaScriptBase ninjascript, Bars bars)
+        {
+            try
+            {
+                // Sets ninjascript value.
+                this.ninjascript = ninjascript ?? throw new LoadException(ExceptionMessages.LoadParameterException, new ArgumentNullException(), typeof(NinjaScriptBase).ToString());
+                // Sets bars value.
+                this.bars = bars ?? throw new LoadException(ExceptionMessages.LoadParameterException, new ArgumentNullException(), typeof(Bars).ToString());
+
+                // Call to parent
+                TryLoad(ninjascript, bars);
+
+                return true;
+            }
+            catch
+            {
+                // TODO: Delete. Borrar throw y habilitar return. 
+                throw;
+                //return false;
+            }
         }
 
         #endregion
@@ -212,28 +271,23 @@ namespace Nt.Core
         {
             try
             {
-                Exception e = new Exception("\"SetDefault\" Exceptions: ");
-
-                if (!IsConfigured)
-                    e.Data["ConfigureException"] = NinjascriptErrors.NinjascriptConfigureException;
+                if (configuration == null)
+                    throw new SetDefaultException(ExceptionMessages.SetDefaultConfigureException, new NullReferenceException(), typeof(TOptions).ToString());
 
                 if (ninjascript == null)
-                    e.Data["NinjaTraderException"] = NinjascriptErrors.NinjaTraderNinjaScriptNullReferenceException;
-
-                if (e.Data.Count > 0)
-                    throw e;
+                    throw new SetDefaultException(ExceptionMessages.SetDefaultNinjaScriptException, new NullReferenceException(), typeof(TOptions).ToString());
 
                 // Copy the new options
                 ninjascript.Name = Configuration.Name;
                 ninjascript.Calculate = Configuration.Calculate;
                 ninjascript.BarsRequiredToPlot = Configuration.BarsRequiredToPlot;
             }
-            catch(Exception e)
+            catch(SetDefaultException e)
             {
                 // TODO: Implementar ILogger para registrar los errores.
-                Console.WriteLine(e);
-                Console.WriteLine("  {0}", e.Data["ConfigureException"]);
-                Console.WriteLine("  {0}", e.Data["NinjaTraderException"]);
+                Console.WriteLine(e.Message);
+                // TODO: Resolver la excepción.
+                throw;
             }
         }
 
@@ -242,8 +296,18 @@ namespace Nt.Core
         /// </summary>
         public void SetOptions(IOptions options, [CallerMemberName] string methodName = null)
         {
-            if (methodName == ".ctor" || methodName == "Configure" || methodName == "Build")
-                configuration = (TOptions)options;
+            try
+            {
+                if (methodName == ".ctor" || methodName == "Configure" || methodName == "Build")
+                    configuration = (TOptions)options;
+                else
+                    throw new SetOptionsException(ExceptionMessages.SetOptionsCallerException, methodName);
+            }
+            catch
+            {
+                // TODO: ILogger implementation to register errors.
+                throw;
+            }
         }
 
         #endregion
@@ -262,11 +326,20 @@ namespace Nt.Core
             where Builder : IBuilder
         {
             // Make sure the types are correct.
-            //if (typeof(Script) == typeof(TScript) && typeof(Builder) == typeof(TBuilder))
-            if (typeof(Script).IsAssignableFrom(typeof(TScript)) && typeof(Builder).IsAssignableFrom(typeof(TBuilder)))
-                return (Builder)CreateNinjascriptBuilderInstance((TScript)this);
+            try
+            {
+                if (typeof(Script).IsAssignableFrom(typeof(TScript)) && typeof(Builder).IsAssignableFrom(typeof(TBuilder)))
+                    return (Builder)CreateNinjascriptBuilderInstance((TScript)this);
 
-            throw new Exception("The builder can not be created");
+                throw new CreateBuilderException(ExceptionMessages.CreateBuilderAssignableException, typeof(Script), typeof(TScript), typeof(Builder), typeof(TBuilder));
+
+            }
+            catch
+            {
+                // TODO: ILogger implementation to register errors.
+                throw;
+            }
+
         }
 
         /// <summary>
@@ -297,11 +370,30 @@ namespace Nt.Core
         /// <returns>The constructor can not be invoke.</returns>
         protected IBuilder CreateNinjascriptBuilderInstance(TScript script)
         {
-            ConstructorInfo construct = typeof(TBuilder).GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(TScript) }, null);
-            if (construct != null)
-                return (TBuilder)construct.Invoke(new object[] { this });
-            else
-                throw new NullReferenceException();
+            try
+            {
+                ConstructorInfo construct = typeof(TBuilder).GetConstructor(BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(TScript) }, null);
+                if (construct != null)
+                {
+                    try
+                    {
+                        return (TBuilder)construct.Invoke(new object[] { this });
+                    }
+                    catch(Exception e)
+                    {
+                        // TODO: ILogger implementation to register errors.
+                        throw new CreateBuilderException(ExceptionMessages.CreateBuilderCtorInvokeException,e);
+                    }
+                }
+                else
+                    // TODO: ILogger implementation to register errors.
+                    throw new CreateBuilderException(ExceptionMessages.CreateBuilderGetConstructorException, new NullReferenceException());
+            }
+            catch
+            {
+                // TODO: ILogger implementation to register errors.
+                throw;
+            }
         }
 
         #endregion

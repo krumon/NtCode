@@ -195,7 +195,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\CreateBuilderException.cs" />
+    <Compile Include="Exceptions\SetOptionsException.cs" />
+    <Compile Include="Exceptions\SetDefaultException.cs" />
     <Compile Include="Exceptions\NinjascriptErrors.cs" />
+    <Compile Include="Exceptions\OnBarUpdateException.cs" />
+    <Compile Include="Exceptions\LoadException.cs" />
     <Compile Include="Interfaces\Managers\Base\IManagerBuilder.cs" />
     <Compile Include="Interfaces\Managers\Base\IManagerOptions.cs" />
     <Compile Include="Interfaces\Managers\Indicators\IIndicatorsManagerBuilder.cs" />
@@ -219,6 +224,11 @@
     <Compile Include="Interfaces\Scripts\Sessions\SessionStats\ISessionStats.cs" />
     <Compile Include="Interfaces\Scripts\Sessions\SessionStats\ISessionStatsBuilder.cs" />
     <Compile Include="Interfaces\Scripts\Sessions\SessionStats\ISessionStatsOptions.cs" />
+    <Compile Include="Resources\ExceptionMessages.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionMessages.resx</DependentUpon>
+    </Compile>
     <Compile Include="zToDelete\BaseNinjascriptsManager.cs" />
     <Compile Include="zToDelete\BaseNinjascriptsManagerBuilder.cs" />
     <Compile Include="NinjaScripts\Base\BaseBuilder.cs" />
@@ -367,6 +377,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="NinjaScripts\Caches\Base\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\ExceptionMessages.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionMessages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
