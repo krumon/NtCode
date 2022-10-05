@@ -232,6 +232,11 @@ namespace Nt.Core.Ninjascript
         /// </summary>
         public bool IsConfigured => configuration != null;
 
+        /// <summary>
+        /// Inidicates if allow more than one element in the manager collection.
+        /// </summary>
+        public bool AllowManagerMultiUse => configuration.AllowManagerMultiUse;
+
         #endregion
 
         #region Configure methods
@@ -297,6 +302,14 @@ namespace Nt.Core.Ninjascript
         }
 
         /// <summary>
+        /// Gets an order for an event driven method.
+        /// </summary>
+        /// <param name="eventType">The event type.</param>
+        /// <returns>The ninjascript order in the event driven method.</returns>
+        public int GetOrder(EventType eventType) =>
+            configuration.GetOrder(eventType);
+
+        /// <summary>
         /// Returns the type of the script.
         /// </summary>
         /// <returns></returns>
@@ -309,7 +322,7 @@ namespace Nt.Core.Ninjascript
         /// Returns the type of the options.
         /// </summary>
         /// <returns></returns>
-        public Type GetOptionsType()
+        public Type GetConfigurationType()
         {
             return typeof(TOptions);
         }

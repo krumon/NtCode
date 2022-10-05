@@ -33,21 +33,5 @@ namespace Nt.Core.Ninjascript
 
         #endregion
 
-        #region Public methods
-
-        /// <summary>
-        /// Copy properties from script to nijatrader ninjascript.
-        /// </summary>
-        /// <param name="ninjascript">The ninjatrader script.</param>
-        //void CopyToNinjascript(NinjaScriptBase ninjascript);
-
-        /// <summary>
-        /// Copy options to ninjascript options
-        /// </summary>
-        /// <param name="options"></param>
-        //void CopyTo(IOptions options);
-
-        #endregion
-
     }
 }

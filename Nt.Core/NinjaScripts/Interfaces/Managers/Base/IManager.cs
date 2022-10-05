@@ -11,11 +11,6 @@ namespace Nt.Core.Ninjascript
     {
 
         /// <summary>
-        /// Nijascripts collection
-        /// </summary>
-        List<INinjascript> Scripts { get; }
-
-        /// <summary>
         /// Sets the ninjascripts collection from <see cref="IManagerBuilder"/> object.
         /// </summary>
         /// <param name="scripts"></param>

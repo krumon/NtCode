@@ -88,7 +88,7 @@ namespace ConsoleApp
             EnumHelpers.Writer<TradingTime>();
 
             NewLine();
-            EnumHelpers.Iterator<TradingTime>((t) =>
+            EnumHelpers.ForEach<TradingTime>((t) =>
             {
                 if (t != TradingTime.Custom)
                     Console.WriteLine(t.ToSessionTime().ToString("Local"));

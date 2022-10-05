@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using static ConsoleApp.ConsoleHelpers;
 using Nt.Core.Ninjascript;
+using Nt.Core;
 
 namespace ConsoleApp
 {
@@ -29,10 +30,16 @@ namespace ConsoleApp
                     op.AddDateFilters(year: 2020, isInitial: true);
                     op.AddDateFilters(year: 2022, isInitial: false);
                     op.AddDateFilters(new DateTime(2020, 6, 12), new DateTime(2022, 9, 20));
+                    op.AddOrder(EventType.Configure, 2);
                 })
                 .AddSessionHours((op) =>
                 {
                     op.Name = "Session Hours";
+                    op.AddOrder(EventType.Configure, 3);
+                })
+                .AddSessionStats((op) =>
+                {
+                    op.AddOrder(EventType.Configure,1);
                 })
                 .Configure((op) =>
                 {

@@ -23,6 +23,11 @@ namespace Nt.Core.Ninjascript
         /// </summary>
         bool IsConfigured { get; }
 
+        /// <summary>
+        /// Inidicates if allow more than one element in the manager collection.
+        /// </summary>
+        bool AllowManagerMultiUse { get; }
+
         #endregion
 
         #region State changed methods
@@ -72,6 +77,13 @@ namespace Nt.Core.Ninjascript
             where Builder : IBuilder;
 
         /// <summary>
+        /// Gets an order for an event driven method.
+        /// </summary>
+        /// <param name="eventType">The event type.</param>
+        /// <returns>The ninjascript order in the event driven method.</returns>
+        int GetOrder(EventType eventType);
+
+        /// <summary>
         /// Gets the type of the script.
         /// </summary>
         /// <returns></returns>
@@ -81,7 +93,7 @@ namespace Nt.Core.Ninjascript
         /// Gets the type of the options.
         /// </summary>
         /// <returns></returns>
-        Type GetOptionsType();
+        Type GetConfigurationType();
 
         #endregion
 

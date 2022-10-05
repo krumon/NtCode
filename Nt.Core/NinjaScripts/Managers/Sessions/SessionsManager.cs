@@ -120,8 +120,8 @@ namespace Nt.Core.Ninjascript
             Get<SessionsIterator>()?.Load(ninjascript, bars);
 
             // Load the elements...
-            if (Scripts != null && Scripts.Count > 0)
-                foreach (var script in Scripts)
+            if (scripts != null && scripts.Count > 0)
+                foreach (var script in scripts)
                     script?.Load(ninjascript, bars);
 
 

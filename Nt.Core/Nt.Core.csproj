@@ -195,6 +195,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\EventType.cs" />
     <Compile Include="Events\SessionChangedEventArgs.cs" />
     <Compile Include="Exceptions\CreateBuilderException.cs" />
     <Compile Include="Exceptions\SetConfigurationException.cs" />
@@ -344,6 +345,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Attributes\" />
     <Folder Include="NinjaScripts\Caches\Base\" />
     <Folder Include="zToDelete\" />
   </ItemGroup>

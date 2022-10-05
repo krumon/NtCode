@@ -94,7 +94,7 @@ namespace ConsoleApp
             EnumHelpers.Writer<TradingSession>();
 
             NewLine();
-            EnumHelpers.Iterator<TradingSession>((t) =>
+            EnumHelpers.ForEach<TradingSession>((t) =>
             {
                 if (t != TradingSession.Custom)
                     Console.WriteLine(t.ToSessionHours().ToString());

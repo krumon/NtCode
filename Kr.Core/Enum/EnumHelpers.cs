@@ -26,7 +26,7 @@ namespace Kr.Core
         /// </summary>
         /// <typeparam name="T">Any object enum.</typeparam>
         /// <param name="action">Delegate method to execute for each enum member.</param>
-        public static void Iterator<T>(Action<T> action)
+        public static void ForEach<T>(Action<T> action)
             where T : Enum
         {
             Array array = Enum.GetValues(typeof(T));

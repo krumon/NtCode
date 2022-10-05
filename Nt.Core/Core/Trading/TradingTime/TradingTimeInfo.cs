@@ -290,7 +290,7 @@ namespace Nt.Core
             TradingTimeInfo st = CreateSessionTimeByType(tradingTime);
             TradingTimeInfo st_tmp;
 
-            EnumHelpers.Iterator<TradingTime>((t) =>
+            EnumHelpers.ForEach<TradingTime>((t) =>
             {
                 if (!exist)
                 {

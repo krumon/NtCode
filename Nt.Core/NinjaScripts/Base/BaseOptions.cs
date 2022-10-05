@@ -1,5 +1,6 @@
-﻿using NinjaTrader.NinjaScript;
-using System.Xml.Linq;
+﻿using Kr.Core;
+using NinjaTrader.NinjaScript;
+using System.Collections.Generic;
 
 namespace Nt.Core.Ninjascript
 {
@@ -12,6 +13,11 @@ namespace Nt.Core.Ninjascript
     {
 
         #region Private members / Default values
+
+        /// <summary>
+        /// The element order.
+        /// </summary>
+        private readonly Dictionary<EventType, int> orders;
 
         /// <summary>
         /// Represents the ninjascript description.
@@ -85,7 +91,52 @@ namespace Nt.Core.Ninjascript
         /// </summary>
         public int BarsRequiredToPlot { get { return barsRequiredToPlot; } set { barsRequiredToPlot = value; } }
 
+        /// <summary>
+        /// Inidicates if allow more than one element in the manager collection.
+        /// </summary>
+        public bool AllowManagerMultiUse { get; set; }
+
         #endregion
 
+        #region Constructors
+
+        /// <summary>
+        /// Create default <see cref="BaseOptions{TOptions}"/> instance.
+        /// </summary>
+        public BaseOptions()
+        {
+            // If orders is null Initialize the orders dictionary.
+            if (orders == null)
+            {
+                orders = new Dictionary<EventType, int>();
+                EnumHelpers.ForEach<EventType>((t) => orders.Add(t, 99));
+            }
+        }
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Sets order to an event driven method.
+        /// </summary>
+        /// <param name="eventType">The event type.</param>
+        /// <param name="order">The ninjascript order in the event driven meythod.</param>
+        public void AddOrder(EventType eventType, int order)
+        {
+            orders[eventType] = order;
+        }
+
+        /// <summary>
+        /// Gets an order for an event driven method.
+        /// </summary>
+        /// <param name="eventType">The event type.</param>
+        /// <returns>The ninjascript order in the event driven method.</returns>
+        public int GetOrder(EventType eventType)
+        {
+            return orders[eventType];
+        }
+
+        #endregion
     }
 }
