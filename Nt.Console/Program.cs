@@ -2,12 +2,12 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NinjaTrader.NinjaScript;
-using Nt.Core;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 using static ConsoleApp.ConsoleHelpers;
+using Nt.Core.Ninjascript;
 
 namespace ConsoleApp
 {

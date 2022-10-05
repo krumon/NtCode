@@ -10,11 +10,12 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Serialization;
 using NTRes.NinjaTrader.Gui.Chart;
-using Nt.Core;
 using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows;
 using System.ComponentModel.DataAnnotations;
+using Nt.Core.Drawing;
+using Nt.Core.Ninjascript;
 
 #endregion
 

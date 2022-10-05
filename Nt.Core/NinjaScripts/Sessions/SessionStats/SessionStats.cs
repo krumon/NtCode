@@ -1,6 +1,6 @@
 ﻿using NinjaTrader.NinjaScript;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
 
     /// <summary>

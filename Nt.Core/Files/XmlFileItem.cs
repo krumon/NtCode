@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml.Serialization;
 
-namespace Nt.Core
+namespace Nt.Core.Files
 {
     public class XmlFileItem
     {

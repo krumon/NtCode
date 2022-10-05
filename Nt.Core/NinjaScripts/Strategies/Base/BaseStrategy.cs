@@ -1,6 +1,4 @@
-﻿using NinjaTrader.NinjaScript;
-
-namespace Nt.Core
+﻿namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// Base class for any strategy.

@@ -1,5 +1,6 @@
 ﻿using Nt.Core;
 using NinjaTrader.Gui;
+using Nt.Core.Drawing;
 
 namespace NinjaTrader.NinjaScript.DrawingTools
 {
@@ -26,7 +27,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 			if (State == State.SetDefaults)
 			{
 				LabelType = LabelLineType.Price;
-				Name = Nt.Core.Texts.PriceLineDisplayName;
+				Name = "PriceLineDisplayName"; // Implementar diccionario con cadenas
 				//Anchor.DisplayName = Nt.Core.Resources.Texts.AnchorYDisplayName;
 				//Anchor.IsXPropertiesVisible = false;
 				DisplayOnChartsMenus = true;

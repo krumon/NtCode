@@ -1,8 +1,9 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
+using Nt.Core.Events;
 using System;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// Contents the filters for any session

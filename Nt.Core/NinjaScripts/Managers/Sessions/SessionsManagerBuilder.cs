@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// <see cref="SessionsManager"/> builder.

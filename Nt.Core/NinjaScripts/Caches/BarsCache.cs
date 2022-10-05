@@ -2,7 +2,7 @@
 using NinjaTrader.NinjaScript;
 using System;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
     public class BarsCache : Cache<Bar>
     {

@@ -1,10 +1,11 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
+using Nt.Core.Exceptions;
 using Nt.Core.Resources;
 using System;
 using System.Reflection;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
 
     /// <summary>

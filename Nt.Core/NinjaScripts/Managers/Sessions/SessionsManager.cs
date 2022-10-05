@@ -1,9 +1,8 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
-using System;
-using System.Collections.Generic;
+using Nt.Core.Events;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// Represents consts, fields and properties of the Ninjatrader user configuration.

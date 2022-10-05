@@ -1,6 +1,6 @@
 ﻿using NinjaTrader.Gui.Chart;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// The indicator options

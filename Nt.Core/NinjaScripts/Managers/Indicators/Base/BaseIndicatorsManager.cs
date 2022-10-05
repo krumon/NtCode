@@ -2,7 +2,7 @@
 using NinjaTrader.NinjaScript;
 using System.Collections.Generic;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
 
     /// <summary>

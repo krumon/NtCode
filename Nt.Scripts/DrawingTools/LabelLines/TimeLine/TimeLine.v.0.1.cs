@@ -1,4 +1,5 @@
 ﻿using Nt.Core;
+using Nt.Core.Drawing;
 
 namespace NinjaTrader.NinjaScript.DrawingTools
 {
@@ -22,8 +23,8 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 			if (State == State.SetDefaults)
 			{
 				LabelType = LabelLineType.Time;
-				Name = Nt.Core.Texts.TimeLineDisplayName;
-				Anchor.DisplayName = Nt.Core.Texts.AnchorXDisplayName;
+				Name = "TimeLineDisplayName"; // Implementar diccionario con cadenas
+				Anchor.DisplayName = "AnchorXDisplayName"; // Implementar diccionario con cadenas
 				Anchor.IsYPropertyVisible = false;
 				DisplayOnChartsMenus = true;
 			}

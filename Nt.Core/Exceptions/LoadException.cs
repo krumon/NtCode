@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nt.Core
+namespace Nt.Core.Exceptions
 {
     [Serializable]
     public class LoadException : Exception

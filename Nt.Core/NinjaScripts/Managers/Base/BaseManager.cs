@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
 
     /// <summary>

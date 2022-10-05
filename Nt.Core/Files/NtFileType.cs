@@ -1,4 +1,4 @@
-﻿namespace Nt.Core
+﻿namespace Nt.Core.Files
 {
     /// <summary>
     /// The type price of the bar.

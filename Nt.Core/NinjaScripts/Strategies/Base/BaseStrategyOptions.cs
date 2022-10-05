@@ -1,4 +1,4 @@
-﻿namespace Nt.Core
+﻿namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// The base class to strategy options.

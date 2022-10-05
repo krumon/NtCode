@@ -13,8 +13,8 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Serialization;
-
-using Nt.Core;
+using Nt.Core.Drawing;
+using Nt.Core.Ninjascript;
 
 #endregion
 
@@ -183,7 +183,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 				{
 					IsEditing = true,
 					DrawingTool = this,
-					DisplayName = Nt.Core.Texts.LabelLineDisplayName,
+					DisplayName = "LabelLineDisplayName", // Implentar diciconario con cadenas
 					IsBrowsable = true
 				};
 				

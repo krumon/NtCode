@@ -1,7 +1,7 @@
 ﻿using NinjaTrader.NinjaScript;
 using System.Xml.Linq;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
 
     /// <summary>

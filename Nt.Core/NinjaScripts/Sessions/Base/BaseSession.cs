@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Nt.Core.Events;
+using System;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// The base class to ninjascript sessions

@@ -1,7 +1,6 @@
-﻿using NinjaTrader.Gui.Chart;
-using NinjaTrader.NinjaScript;
+﻿using NinjaTrader.NinjaScript;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// Base class for any ninjascript indicator.

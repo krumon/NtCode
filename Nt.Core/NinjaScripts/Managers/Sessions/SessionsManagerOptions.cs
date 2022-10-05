@@ -1,4 +1,4 @@
-﻿namespace Nt.Core
+﻿namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// Options to create <see cref="SessionsManager"/> object.

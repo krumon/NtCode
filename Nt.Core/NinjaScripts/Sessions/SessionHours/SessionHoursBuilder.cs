@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nt.Core
+namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// The builder class of <see cref="SessionHours"/>.
