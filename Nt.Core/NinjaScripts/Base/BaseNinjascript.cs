@@ -1,5 +1,6 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
+using Nt.Core.Events;
 using Nt.Core.Exceptions;
 using Nt.Core.Resources;
 using System;
@@ -43,7 +44,7 @@ namespace Nt.Core.Ninjascript
         /// Method to set default properties in the script in "OnStateChanged.Configure" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript parent object.</param>
-        protected virtual void SetDefault(NinjaScriptBase ninjascript)
+        protected virtual void SetDefasult(NinjaScriptBase ninjascript)
         {
         }
 
@@ -141,7 +142,7 @@ namespace Nt.Core.Ninjascript
         /// <param name="bars"></param>
         /// <returns>True if the method doesn't throw an exception.</returns>
         /// <exception cref="LoadException">If any Load method parameter is null, throw an exception.</exception>
-        public bool OnTryLoad(NinjaScriptBase ninjascript, Bars bars)
+        private bool OnTryLoad(NinjaScriptBase ninjascript, Bars bars)
         {
             try
             {
@@ -245,7 +246,7 @@ namespace Nt.Core.Ninjascript
         /// Method to set default properties in the script in "OnStateChanged.Configure" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript parent object.</param>
-        protected override void SetDefault(NinjaScriptBase ninjascript)
+        protected override void SetDefasult(NinjaScriptBase ninjascript)
         {
             try
             {
@@ -308,6 +309,33 @@ namespace Nt.Core.Ninjascript
         /// <returns>The ninjascript order in the event driven method.</returns>
         public int GetOrder(EventType eventType) =>
             configuration.GetOrder(eventType);
+
+        /// <summary>
+        /// Execute the ninjascript handler methods.
+        /// </summary>
+        /// <param name="eventType"></param>
+        /// <param name="e"></param>
+        public virtual void ExecuteHandlerMethod(EventType eventType, SessionChangedEventArgs e = null)
+        {
+            switch (eventType)
+            {
+                case EventType.SetDefaults:
+                    SetDefasult(null);
+                    break;
+                case EventType.DataLoaded:
+                    Load(ninjascript, bars);
+                    break;
+                case EventType.BarUpdate:
+                    OnBarUpdate();
+                    break;
+                case EventType.MarketData:
+                    OnMarketData();
+                    break;
+                default:
+                    break;
+            }
+
+        }
 
         /// <summary>
         /// Returns the type of the script.

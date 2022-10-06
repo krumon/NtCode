@@ -166,7 +166,7 @@ namespace Nt.Core.Ninjascript
 
         #region State Changed methods
 
-        protected override void SetDefault(NinjaScriptBase ninjascript)
+        protected override void SetDefasult(NinjaScriptBase ninjascript)
         {
             TradingHours.Get("").CopyTo(bars.TradingHours);
             TradingHours.String2TradingHours("").CopyTo(bars.TradingHours);

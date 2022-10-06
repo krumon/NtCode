@@ -128,7 +128,7 @@ namespace Nt.Core.Ninjascript
         /// This method is executed when "ConfigureProperties" methods is raised.
         /// </summary>
         /// <param name="ninjascript">The ninjascript parent object.</param>
-        protected override void SetDefault(NinjaScriptBase ninjascript)
+        protected override void SetDefasult(NinjaScriptBase ninjascript)
         {
         }
 
@@ -246,11 +246,11 @@ namespace Nt.Core.Ninjascript
         /// <returns></returns>
         public override string ToString()
         {
-            return 
-                $"TNinjaScript: {N}. {TradingDay} \t" +
-                $"{BeginTime.ToShortDateString()} at {BeginTime.ToLongTimeString()} --> " +
-                $"{EndTime.ToShortDateString()} at {EndTime.ToLongTimeString()} \t" +
-                $"{holidayText}";
+            return base.ToString();
+                //$"TNinjaScript: {N}. {TradingDay} \t" +
+                //$"{BeginTime.ToShortDateString()} at {BeginTime.ToLongTimeString()} --> " +
+                //$"{EndTime.ToShortDateString()} at {EndTime.ToLongTimeString()} \t" +
+                //$"{holidayText}";
             
         }
 

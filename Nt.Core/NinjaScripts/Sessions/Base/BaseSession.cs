@@ -28,40 +28,6 @@ namespace Nt.Core.Ninjascript
 
         #endregion
 
-        #region Configure methods
-
-        /// <summary>
-        /// Add <see cref="BaseSessionOptions{T}"/> to Session configure.
-        /// </summary>
-        /// <param name="options"></param>
-        /// <returns></returns>
-        //public TSession ConfigureSession<T,O>(T session, Action<O> options = null)
-        //    where T : BaseSession<TSession, TOptions>, new()
-        //    where O : TOptions, new()
-        //{
-        //    // Make sure session filters is not null.
-        //    if (session == null)
-        //        session = new T();
-
-        //    // Configure....options and properties
-        //    session.Configure(options);
-
-        //    return (TSession)this;
-        //}
-
-        #endregion
-
-        #region Constructors
-
-        ///// <summary>
-        ///// Creates <see cref="BaseSession{TSession, TSessionOptions, TSessionBuilder}"/> default instance.
-        ///// </summary>
-        //public BaseSession() : base()
-        //{
-        //}
-
-        #endregion
-
         #region Market data Delegates
 
         /// <summary>
@@ -80,6 +46,27 @@ namespace Nt.Core.Ninjascript
         protected void ExecuteInSessionChangedMethod(Action action)
         {
             action?.Invoke();
+        }
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Execute the ninjascript handler methods.
+        /// </summary>
+        /// <param name="eventType"></param>
+        /// <param name="e"></param>
+        public override void ExecuteHandlerMethod(EventType eventType, SessionChangedEventArgs e = null)
+        {
+
+            if (eventType == EventType.SessionChanged)
+            {
+                OnSessionChanged(e);
+                return;
+            }
+            // Call to parent
+            base.ExecuteHandlerMethod(eventType, e);
         }
 
         #endregion

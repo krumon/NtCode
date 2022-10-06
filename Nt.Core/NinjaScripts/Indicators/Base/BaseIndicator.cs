@@ -24,10 +24,10 @@ namespace Nt.Core.Ninjascript
 
         #region Configure methods
 
-        protected override void SetDefault(NinjaScriptBase ninjascript)
+        protected override void SetDefasult(NinjaScriptBase ninjascript)
         {
             // Copy the ninjascript properties in the parent
-            base.SetDefault(ninjascript);
+            base.SetDefasult(ninjascript);
 
             // Cast the element to IndicatorBase
             IndicatorBase indicator = (IndicatorBase)ninjascript;

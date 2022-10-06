@@ -6,9 +6,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using static ConsoleApp.ConsoleHelpers;
 using Nt.Core.Ninjascript;
 using Nt.Core;
+using static ConsoleApp.ConsoleHelpers;
 
 namespace ConsoleApp
 {
@@ -21,7 +21,7 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            INinjascript sessionsManager = SessionsManager.CreateDefaultBuilder()
+            IManager sessionsManager = (IManager)SessionsManager.CreateDefaultBuilder()
                 .AddSessionFilters((op) =>
                 {
                     op.Name = "Session Filters";
@@ -30,16 +30,34 @@ namespace ConsoleApp
                     op.AddDateFilters(year: 2020, isInitial: true);
                     op.AddDateFilters(year: 2022, isInitial: false);
                     op.AddDateFilters(new DateTime(2020, 6, 12), new DateTime(2022, 9, 20));
-                    op.AddOrder(EventType.Configure, 2);
+                    op.AddOrder(EventType.Configure, 5);
+                    op.AddOrder(EventType.BarUpdate, 1);
                 })
                 .AddSessionHours((op) =>
                 {
-                    op.Name = "Session Hours";
+                    op.Name = "Session Hours 1";
+                    op.AddOrder(EventType.Configure, 4);
+                    op.AddOrder(EventType.BarUpdate, 2);
+                })
+                .AddSessionHours((op) =>
+                {
+                    op.Name = "Session Hours 2";
                     op.AddOrder(EventType.Configure, 3);
+                    op.AllowManagerMultiUse = true;
+                    op.AddOrder(EventType.BarUpdate, 3);
                 })
                 .AddSessionStats((op) =>
                 {
+                    op.Name = "Session Stats 1";
+                    op.AddOrder(EventType.Configure,2);
+                    op.AddOrder(EventType.BarUpdate, 4);
+                })
+                .AddSessionStats((op) =>
+                {
+                    op.Name = "Session Stats 2";
                     op.AddOrder(EventType.Configure,1);
+                    op.AddOrder(EventType.BarUpdate, 5);
+                    op.AllowManagerMultiUse=true;
                 })
                 .Configure((op) =>
                 {
@@ -47,19 +65,11 @@ namespace ConsoleApp
                 })
                 .Build();
 
-            INinjascript sessionStats = SessionStats.CreateDefaultBuilder()
-                .Build();
+            var list = sessionsManager.GetSortedList(EventType.BarUpdate);
+            //sessionsManager.OnBarUpdate();
 
-            INinjascript sessionHoursList = SessionHoursList.CreateDefaultBuilder()
-                .Configure<SessionHoursList, SessionHoursListOptions>((op) =>
-                {
-                    op.MaxSessionsToStored = 13;
-                })
-                .Build();
+            
 
-            var builder = SessionsManager.CreateDefaultBuilder();
-            
-            
             // Code to throw errors.
             //INinjascript CreateBuilderException = new SessionFilters().CreateBuilder<SessionFilters, SessionStatsBuilder>().Build();
             //INinjascript CreateSetOptionsException = new SessionFilters();

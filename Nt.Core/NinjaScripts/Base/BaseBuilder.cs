@@ -157,7 +157,7 @@ namespace Nt.Core.Ninjascript
         /// </summary>
         /// <param name="ninjascript"></param>
         private void SetDefault(NinjaScriptBase ninjascript) =>
-            script.GetType().GetMethod("SetDefault", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(null, new object[] { ninjascript });
+            script.GetType().GetMethod("SetDefasult", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(null, new object[] { ninjascript });
 
         #endregion
 

@@ -17,76 +17,6 @@ namespace Nt.Core.Ninjascript
         /// </summary>
         private SessionsIterator sessionsIterator;
 
-        /// <summary>
-        /// Represents the <see cref="SessionFilters"/> of the main sessions.
-        /// </summary>
-        private SessionFilters sessionFilters;
-
-        /// <summary>
-        /// Represents the <see cref="SessionStats"/> of the main sessions.
-        /// </summary>
-        private SessionStats sessionStats;
-
-        /// <summary>
-        /// Represents the <see cref="SessionHoursList"/> of the main session.
-        /// </summary>
-        private SessionHoursList sessionHoursList;
-
-        #endregion
-
-        #region Protected members
-
-        /// <summary>
-        /// Nijascripts collection
-        /// </summary>
-        //protected new List<ISession> scripts;
-
-        //protected Dictionary<Type, ISession> sessions = new Dictionary<Type, ISession>();
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        /// Gets the configured sessions.
-        /// </summary>
-        //public List<ISession> Scripts => scripts;
-
-        /// <summary>
-        /// Gets true if any sessionHoursList are stored.
-        /// </summary>
-        public bool HasSessionHours => sessionHoursList != null;
-
-        /// <summary>
-        /// Gets true if <see cref="SessionsManager"/> has <see cref="SessionFilters"/>.
-        /// </summary>
-        public bool HasSessionFilters => sessionFilters != null;
-
-        /// <summary>
-        /// Gets true if <see cref="SessionsManager"/> has <see cref="SessionStats"/>.
-        /// </summary>
-        public bool HasSessionStats => sessionStats != null;
-
-        /// <summary>
-        /// Gets the <see cref="SessionHoursList"/> of the manager.
-        /// </summary>
-        public SessionHoursList SessionHours => sessionHoursList;
-
-        /// <summary>
-        /// Gets the <see cref="SessionFilters"/> cof the manager.
-        /// </summary>
-        public SessionFilters SessionFilters => sessionFilters;
-
-        /// <summary>
-        /// Gets the <see cref="SessionStats"/> of the manager.
-        /// </summary>
-        public SessionStats SessionStats => sessionStats;
-
-        /// <summary>
-        /// Gets the <see cref="SessionsIterator"/> of the manager.
-        /// </summary>
-        public SessionsIterator SessionsIterator => sessionsIterator;
-
         #endregion
 
         #region Constructors
@@ -115,18 +45,14 @@ namespace Nt.Core.Ninjascript
             // If we need the session iterator...create him.
             // TODO: Make Sure we need the session iterator object.
             if (Get<SessionsIterator>() == null)
-                CreateManagerBuilderInstance().Add<SessionsIterator,SessionsIteratorOptions, SessionsIteratorBuilder>((op) => { }).Build();
+                sessionsIterator =
+                    (SessionsIterator)CreateManagerBuilderInstance()
+                    .Add<SessionsIterator, SessionsIteratorOptions, SessionsIteratorBuilder>(op => op.AddOrder(EventType.Configure, 0)).Build();
 
-            Get<SessionsIterator>()?.Load(ninjascript, bars);
-
-            // Load the elements...
-            if (scripts != null && scripts.Count > 0)
-                foreach (var script in scripts)
-                    script?.Load(ninjascript, bars);
-
+            // TODO: Configure the order.
+            ExecuteHandlerMethod(EventType.DataLoaded);
 
             // Aggregate the delegates
-
             ((ISessionsIterator)Get<SessionsIterator>()).SessionChanged += OnSessionChanged;
 
         }
@@ -140,13 +66,15 @@ namespace Nt.Core.Ninjascript
             sessionsIterator.SessionChanged -= OnSessionChanged;
 
             // Terminated the elements
-            sessionsIterator.Terminated();
-            if (HasSessionFilters)
-                sessionFilters.Terminated();
-            if (HasSessionHours)
-                sessionHoursList.Terminated();
-            if (HasSessionStats)
-                sessionStats.Terminated();
+            // TODO: Configure the order.
+            ExecuteHandlerMethod(EventType.Terminated);
+
+            //if (HasSessionFilters)
+            //    sessionFilters.Terminated();
+            //if (HasSessionHours)
+            //    sessionHoursList.Terminated();
+            //if (HasSessionStats)
+            //    sessionStats.Terminated();
 
         }
 
@@ -162,23 +90,25 @@ namespace Nt.Core.Ninjascript
         public override void OnBarUpdate()
         {
             // First...update the session iterator
-            sessionsIterator.OnBarUpdate();
 
-            // Update the filters
-            if (HasSessionFilters)
-                sessionFilters.OnBarUpdate();
+            // TODO: Configure the order.
+            ExecuteHandlerMethod(EventType.BarUpdate);
 
-            // Opcion 1
-            if (HasSessionFilters && sessionFilters.OnBarUpdateAndCheckFilters())
-            {
-                // Enter the code
-            }
+            //// Update the filters
+            //if (HasSessionFilters)
+            //    sessionFilters.OnBarUpdate();
 
-            // Opcion 2            
-            if (sessionFilters.CanEntry())
-            {
-                // Enter the code
-            }
+            //// Opcion 1
+            //if (HasSessionFilters && sessionFilters.OnBarUpdateAndCheckFilters())
+            //{
+            //    // Enter the code
+            //}
+
+            //// Opcion 2            
+            //if (sessionFilters.CanEntry())
+            //{
+            //    // Enter the code
+            //}
             
             // TODO: No funcionan los filtros. Arreglarlo!!!!!
             // Entry to the method if the filters are ok.
@@ -195,18 +125,8 @@ namespace Nt.Core.Ninjascript
         /// </summary>
         public override void OnMarketData()
         {
-            // Update the filters
-            if (sessionFilters != null)
-                sessionFilters.OnBarUpdate();
-
-            // TODO: No funcionan los filtros. Arreglarlo!!!!!
-            // Entry to the method if the filters are ok.
-            //if (HasSessionFilters && !(sessionFilters.CanEntry()))
-            //    return;
-
-            // Update the session iterator
-            if (sessionsIterator != null)
-                sessionsIterator.OnBarUpdate();
+            // TODO: Configure the order.
+            ExecuteHandlerMethod(EventType.MarketData);
 
             ExecuteInMarketDataMethod(MarketDataAction);
         }
@@ -217,15 +137,17 @@ namespace Nt.Core.Ninjascript
         /// <param name="e"></param>
         public void OnSessionChanged(SessionChangedEventArgs e)
         {
-            // Update Holiday filters
-            if (HasSessionFilters)
-                sessionFilters.OnSessionChanged(e);
+            ExecuteHandlerMethod(EventType.SessionChanged, e);
 
-            // Update the session hours list.
-            if (HasSessionHours)
-                sessionHoursList.OnSessionChanged(e);
+            //// Update Holiday filters
+            //if (HasSessionFilters)
+            //    sessionFilters.OnSessionChanged(e);
 
-            // Execute delegate method.
+            //// Update the session hours list.
+            //if (HasSessionHours)
+            //    sessionHoursList.OnSessionChanged(e);
+
+            //// Execute delegate method.
             //ExecuteInSessionHoursChangedMethod(SessionHoursChangedAction);
         }
 
@@ -340,13 +262,13 @@ namespace Nt.Core.Ninjascript
 
         #region ToString methods
 
-        public override string ToString()
-        {
-            if (HasSessionHours)
-                return sessionHoursList.ToString();
-            else 
-                return $"{nameof(SessionsManager)} is empty";
-        }
+        //public override string ToString()
+        //{
+        //    if (HasSessionHours)
+        //        return sessionHoursList.ToString();
+        //    else 
+        //        return $"{nameof(SessionsManager)} is empty";
+        //}
 
         #endregion
 

@@ -1,6 +1,8 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
+using Nt.Core.Events;
 using System;
+using System.Collections.Generic;
 
 namespace Nt.Core.Ninjascript
 {
@@ -84,16 +86,11 @@ namespace Nt.Core.Ninjascript
         int GetOrder(EventType eventType);
 
         /// <summary>
-        /// Gets the type of the script.
+        /// Execute the ninjascript handler methods.
         /// </summary>
-        /// <returns></returns>
-        Type GetScriptType();
-
-        /// <summary>
-        /// Gets the type of the options.
-        /// </summary>
-        /// <returns></returns>
-        Type GetConfigurationType();
+        /// <param name="eventType"></param>
+        /// <param name="e"></param>
+        void ExecuteHandlerMethod(EventType eventType, SessionChangedEventArgs e = null);
 
         #endregion
 
