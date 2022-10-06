@@ -19,7 +19,7 @@ namespace Nt.Core.Hosting
 
         public static IConfiguration Configuration => Services.GetRequiredService<IConfiguration>();
 
-        public static 
+        public static IHostEnvironment environment;
 
         public static IHost CreateHost()
         {
@@ -39,7 +39,11 @@ namespace Nt.Core.Hosting
                     .ConfigureAppConfiguration((context,builder) =>
                     {
                         builder.SetBasePath(Path.Combine(Assembly.GetExecutingAssembly().Location))
-                            .AddJsonFile()
+                            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                            .AddEnvironmentVariables((configure) =>
+                            {
+                                configure.Prefix = "PROCESSOR_";
+                            });
                     })
                     .Build();
         }

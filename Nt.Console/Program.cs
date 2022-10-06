@@ -113,12 +113,12 @@ namespace ConsoleApp
 
                 IConfigurationRoot configurationRoot = configurationBuilder.Build();
 
-                TransientFaultHandlingOptions options = new TransientFaultHandlingOptions();
-                configurationRoot.GetSection(nameof(TransientFaultHandlingOptions))
-                                 .Bind(options);
+                //TransientFaultHandlingOptions options = new TransientFaultHandlingOptions();
+                //configurationRoot.GetSection(nameof(TransientFaultHandlingOptions))
+                //                 .Bind(options);
 
-                Console.WriteLine($"TransientFaultHandlingOptions.Enabled={options.Enabled}");
-                Console.WriteLine($"TransientFaultHandlingOptions.AutoRetryDelay={options.AutoRetryDelay}");
+                //Console.WriteLine($"TransientFaultHandlingOptions.Enabled={options.Enabled}");
+                //Console.WriteLine($"TransientFaultHandlingOptions.AutoRetryDelay={options.AutoRetryDelay}");
 
             }).Build())
             { 
