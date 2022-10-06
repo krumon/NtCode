@@ -13,8 +13,8 @@ namespace Nt.Core.Services
 
         private readonly IDisposable _onChangeToken;
         private NinjascriptConsoleLoggerConfiguration _currentConfig;
-        private readonly ConcurrentDictionary<string, NinjascriptConsoleLogger> _loggers =
-            new ConcurrentDictionary<string, NinjascriptConsoleLogger>(StringComparer.OrdinalIgnoreCase);
+        private readonly ConcurrentDictionary<string, NinjascriptConsoleLoggerService> _loggers =
+            new ConcurrentDictionary<string, NinjascriptConsoleLoggerService>(StringComparer.OrdinalIgnoreCase);
 
         #endregion
 
@@ -32,7 +32,7 @@ namespace Nt.Core.Services
         #region Implementation methods
 
         public ILogger CreateLogger(string categoryName) =>
-            _loggers.GetOrAdd(categoryName, name => new NinjascriptConsoleLogger(name, GetCurrentConfig));
+            _loggers.GetOrAdd(categoryName, name => new NinjascriptConsoleLoggerService(name, GetCurrentConfig));
 
         public void Dispose()
         {

@@ -1,7 +1,12 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Nt.Core.Services;
 using System;
+using System.IO;
+using System.Reflection;
+using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace Nt.Core.Hosting
@@ -11,6 +16,10 @@ namespace Nt.Core.Hosting
         private static IHost ninjascriptHost;
 
         public static IServiceProvider Services => ninjascriptHost.Services;
+
+        public static IConfiguration Configuration => Services.GetRequiredService<IConfiguration>();
+
+        public static 
 
         public static IHost CreateHost()
         {
@@ -27,9 +36,10 @@ namespace Nt.Core.Hosting
                         });
                         
                     })
-                    .ConfigureAppConfiguration(builder =>
+                    .ConfigureAppConfiguration((context,builder) =>
                     {
-
+                        builder.SetBasePath(Path.Combine(Assembly.GetExecutingAssembly().Location))
+                            .AddJsonFile()
                     })
                     .Build();
         }

@@ -4,7 +4,7 @@ using System;
 namespace Nt.Core.Services
 {
 
-    public sealed class NinjascriptConsoleLogger : ILogger
+    public sealed class NinjascriptConsoleLoggerService : ILogger
     {
 
         #region Private members
@@ -24,11 +24,11 @@ namespace Nt.Core.Services
         #region Constructors
 
         /// <summary>
-        /// Creates <see cref="NinjascriptConsoleLogger"/> default instance.
+        /// Creates <see cref="NinjascriptConsoleLoggerService"/> default instance.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="getCurrentConfig"></param>
-        public NinjascriptConsoleLogger(
+        public NinjascriptConsoleLoggerService(
             string name,
             Func<NinjascriptConsoleLoggerConfiguration> getCurrentConfig) =>
             (_name, _getCurrentConfig) = (name, getCurrentConfig);

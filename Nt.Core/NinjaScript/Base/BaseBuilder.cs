@@ -80,7 +80,7 @@ namespace Nt.Core.Ninjascript
             {
                 // Add custom options by reflection
                 //FieldInfo fieldInfo = script.GetType().GetField("configuration", BindingFlags.Instance | BindingFlags.NonPublic);
-                TConfiguration actualOptions = GetScriptFieldValue("configuration",script);
+                TConfiguration actualOptions = GetScriptFieldValue("Configuration",script);
 
                 op?.Invoke(actualOptions);
             }
@@ -100,7 +100,7 @@ namespace Nt.Core.Ninjascript
                 // Add custom options by reflection
                 //FieldInfo fieldInfo = script.GetType().GetField("configuration", BindingFlags.Instance | BindingFlags.NonPublic);
                 //fieldInfo.SetValue(script, options);
-                SetScriptFieldValue("configuration", script, options);
+                SetScriptFieldValue("Configuration", script, options);
 
             return (TBuilder)this;
         }

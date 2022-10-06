@@ -72,7 +72,10 @@ namespace Nt.Core.Ninjascript
         /// <summary>
         /// Free the memory of the script.
         /// </summary>
-        public virtual void Terminated() { }
+        public virtual void Terminated() 
+        { 
+            Dispose();
+        }
 
         #endregion
 

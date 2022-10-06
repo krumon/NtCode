@@ -7,7 +7,7 @@ using System;
 namespace Nt.Core.Services
 {
     /// <summary>
-    /// Builder extensions methods for <see cref="NinjascriptConsoleLogger"/>.
+    /// Builder extensions methods for <see cref="NinjascriptConsoleLoggerService"/>.
     /// </summary>
     public static class NinjascriptConsoleLoggerExtensions
     {

@@ -82,7 +82,7 @@ namespace ConsoleApp
 
                 await NinjascriptHost.RunAsync();
             }
-
+            
             Wait();
 
 
@@ -95,7 +95,7 @@ namespace ConsoleApp
         {
             using (IHost host = Host.CreateDefaultBuilder().ConfigureAppConfiguration((hostingContext, configurationBuilder) =>
             {
-                //configurationBuilder.Sources.Clear();
+                configurationBuilder.Sources.Clear();
 
                 IHostEnvironment env = hostingContext.HostingEnvironment;
                 var path = "appsettings.json"; // Path.Combine(env.ContentRootPath, "appsettings.json");
