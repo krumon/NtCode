@@ -5,10 +5,10 @@ namespace Nt.Core.Ninjascript
     /// <summary>
     /// The base class to ninjascript builders
     /// </summary>
-    public abstract class BaseIndicatorsManagerBuilder<TManagerScript, TManagerOptions,TManagerBuilder> : BaseManagerBuilder<TManagerScript, TManagerOptions,TManagerBuilder>, IIndicatorsManagerBuilder
-        where TManagerScript : BaseIndicatorsManager<TManagerScript, TManagerOptions, TManagerBuilder>, IIndicatorsManager
-        where TManagerOptions : BaseIndicatorsManagerOptions<TManagerOptions>, IIndicatorsManagerOptions
-        where TManagerBuilder : BaseIndicatorsManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IIndicatorsManagerBuilder
+    public abstract class BaseIndicatorsManagerBuilder<TManagerScript, TManagerConfiguration,TManagerBuilder> : BaseManagerBuilder<TManagerScript, TManagerConfiguration,TManagerBuilder>, IIndicatorsManagerBuilder
+        where TManagerScript : BaseIndicatorsManager<TManagerScript, TManagerConfiguration, TManagerBuilder>, IIndicatorsManager
+        where TManagerConfiguration : BaseIndicatorsManagerConfiguration<TManagerConfiguration>, IIndicatorsManagerConfiguration
+        where TManagerBuilder : BaseIndicatorsManagerBuilder<TManagerScript,TManagerConfiguration,TManagerBuilder>, IIndicatorsManagerBuilder
     {
 
         #region Constructors

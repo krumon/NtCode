@@ -6,9 +6,9 @@ using System;
 namespace Nt.Core.Ninjascript
 {
     /// <summary>
-    /// Contents the filters for any session
+    /// Represents the filters for any session object.
     /// </summary>
-    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersOptions,SessionFiltersBuilder>, ISessionFilters
+    public class SessionFilters : BaseSession<SessionFilters,SessionFiltersConfiguration,SessionFiltersBuilder>, ISessionFilters
     {
 
         #region static consts

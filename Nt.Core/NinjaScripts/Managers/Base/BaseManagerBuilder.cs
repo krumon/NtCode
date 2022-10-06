@@ -5,10 +5,10 @@ namespace Nt.Core.Ninjascript
     /// <summary>
     /// The base class to ninjascripts manager builders.
     /// </summary>
-    public abstract class BaseManagerBuilder<TManagerScript, TManagerOptions, TManagerBuilder> : BaseBuilder<TManagerScript, TManagerOptions, TManagerBuilder>, IManagerBuilder
-        where TManagerScript : BaseManager<TManagerScript, TManagerOptions,TManagerBuilder>, IManager
-        where TManagerOptions : BaseManagerOptions<TManagerOptions>, IManagerOptions
-        where TManagerBuilder : BaseManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IManagerBuilder
+    public abstract class BaseManagerBuilder<TManagerScript, TManagerConfiguration, TManagerBuilder> : BaseBuilder<TManagerScript, TManagerConfiguration, TManagerBuilder>, IManagerBuilder
+        where TManagerScript : BaseManager<TManagerScript, TManagerConfiguration,TManagerBuilder>, IManager
+        where TManagerConfiguration : BaseManagerConfiguration<TManagerConfiguration>, IManagerConfiguration
+        where TManagerBuilder : BaseManagerBuilder<TManagerScript,TManagerConfiguration,TManagerBuilder>, IManagerBuilder
     {
 
         #region Constructors
@@ -34,7 +34,7 @@ namespace Nt.Core.Ninjascript
         /// <returns>Returns the builder to continue building the object.</returns>
         public IManagerBuilder Add<Script, Options, Builder>(Action<Options> options)
             where Script : BaseNinjascript<Script, Options, Builder>, INinjascript
-            where Options : BaseOptions<Options>, IOptions
+            where Options : BaseConfiguration<Options>, IConfiguration
             where Builder : BaseBuilder<Script,Options,Builder>, IBuilder
         {
             Script script = 

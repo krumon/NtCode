@@ -5,10 +5,10 @@ namespace Nt.Core.Ninjascript
     /// <summary>
     /// Base class for any ninjascript indicator.
     /// </summary>
-    public abstract class BaseIndicator<TScript, TOptions,TBuilder> : BaseNinjascript<TScript, TOptions, TBuilder>, IIndicator
-        where TScript : BaseIndicator<TScript, TOptions,TBuilder>, IIndicator
-        where TOptions : BaseIndicatorOptions<TOptions>, IIndicatorOptions
-        where TBuilder : BaseIndicatorBuilder<TScript,TOptions,TBuilder>, IIndicatorBuilder
+    public abstract class BaseIndicator<TScript, TConfiguration,TBuilder> : BaseNinjascript<TScript, TConfiguration, TBuilder>, IIndicator
+        where TScript : BaseIndicator<TScript, TConfiguration,TBuilder>, IIndicator
+        where TConfiguration : BaseIndicatorConfiguration<TConfiguration>, IIndicatorConfiguration
+        where TBuilder : BaseIndicatorBuilder<TScript,TConfiguration,TBuilder>, IIndicatorBuilder
     {
 
         #region Constructors

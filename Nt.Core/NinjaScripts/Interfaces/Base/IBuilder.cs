@@ -31,7 +31,7 @@ namespace Nt.Core.Ninjascript
         /// <param name="options">Delegate method with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
         IBuilder Configure<Script, Options>(Options options)
-            where Options : IOptions;
+            where Options : IConfiguration;
 
         #endregion
 

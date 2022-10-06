@@ -3,9 +3,9 @@
 namespace Nt.Core.Ninjascript
 {
     /// <summary>
-    /// The builder class of <see cref="SessionFilters"/>.
+    /// Represents the <see cref="SessionFilters"/> builder.
     /// </summary>
-    public class SessionFiltersBuilder : BaseSessionBuilder<SessionFilters, SessionFiltersOptions,SessionFiltersBuilder>, ISessionFiltersBuilder
+    public class SessionFiltersBuilder : BaseSessionBuilder<SessionFilters, SessionFiltersConfiguration,SessionFiltersBuilder>, ISessionFiltersBuilder
     {
 
         #region Constructors

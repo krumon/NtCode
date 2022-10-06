@@ -9,9 +9,9 @@ namespace Nt.Core.Ninjascript
 {
 
     /// <summary>
-    /// Represents the trading hours session definition.
+    /// Controller the user configure session inside the ninjascrips.
     /// </summary>
-    public class SessionsIterator : BaseSession<SessionsIterator, SessionsIteratorOptions,SessionsIteratorBuilder>, ISessionsIterator
+    public class SessionsIterator : BaseSession<SessionsIterator, SessionsIteratorConfiguration,SessionsIteratorBuilder>, ISessionsIterator
     {
 
         #region Test Properties

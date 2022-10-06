@@ -4,9 +4,9 @@ namespace Nt.Core.Ninjascript
 {
 
     /// <summary>
-    /// Represents the session stats.
+    /// Controller the stats of any session.
     /// </summary>
-    public class SessionStats : BaseSession<SessionStats, SessionStatsOptions,SessionStatsBuilder>, ISessionStats
+    public class SessionStats : BaseSession<SessionStats, SessionStatsConfiguration,SessionStatsBuilder>, ISessionStats
     {
 
         #region Private members

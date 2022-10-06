@@ -13,10 +13,10 @@ namespace Nt.Core.Ninjascript
     /// </summary>
     /// <typeparam name="TScript">The ninjascript.</typeparam>
     /// <typeparam name="TOptions">The ninjascript options.</typeparam>
-    public abstract class BaseIndicatorsManager<TManagerScript, TManagerOptions,TManagerBuilder> : BaseManager<TManagerScript, TManagerOptions,TManagerBuilder>, IIndicatorsManager
-        where TManagerScript : BaseIndicatorsManager<TManagerScript, TManagerOptions,TManagerBuilder>, IIndicatorsManager
-        where TManagerOptions : BaseIndicatorsManagerOptions<TManagerOptions>, IIndicatorsManagerOptions
-        where TManagerBuilder : BaseIndicatorsManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IIndicatorsManagerBuilder
+    public abstract class BaseIndicatorsManager<TManagerScript, TManagerConfiguration,TManagerBuilder> : BaseManager<TManagerScript, TManagerConfiguration,TManagerBuilder>, IIndicatorsManager
+        where TManagerScript : BaseIndicatorsManager<TManagerScript, TManagerConfiguration,TManagerBuilder>, IIndicatorsManager
+        where TManagerConfiguration : BaseIndicatorsManagerConfiguration<TManagerConfiguration>, IIndicatorsManagerConfiguration
+        where TManagerBuilder : BaseIndicatorsManagerBuilder<TManagerScript,TManagerConfiguration,TManagerBuilder>, IIndicatorsManagerBuilder
     {
 
         #region Constructors

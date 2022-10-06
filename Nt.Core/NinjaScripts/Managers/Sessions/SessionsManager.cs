@@ -7,7 +7,7 @@ namespace Nt.Core.Ninjascript
     /// <summary>
     /// Represents consts, fields and properties of the Ninjatrader user configuration.
     /// </summary>
-    public class SessionsManager : BaseManager<SessionsManager, SessionsManagerOptions,SessionsManagerBuilder>, ISessionsManager
+    public class SessionsManager : BaseManager<SessionsManager, SessionsManagerConfiguration,SessionsManagerBuilder>, ISessionsManager
     {
 
         #region Private members
@@ -47,7 +47,7 @@ namespace Nt.Core.Ninjascript
             if (Get<SessionsIterator>() == null)
                 sessionsIterator =
                     (SessionsIterator)CreateManagerBuilderInstance()
-                    .Add<SessionsIterator, SessionsIteratorOptions, SessionsIteratorBuilder>(op => op.AddOrder(EventType.Configure, 0)).Build();
+                    .Add<SessionsIterator, SessionsIteratorConfiguration, SessionsIteratorBuilder>(op => op.AddOrder(EventType.Configure, 0)).Build();
 
             // TODO: Configure the order.
             ExecuteHandlerMethod(EventType.DataLoaded);
@@ -216,7 +216,7 @@ namespace Nt.Core.Ninjascript
         /// <param name="options"></param>
         /// <returns></returns>
         public SessionsManager ConfigureSession<TOptions>(TOptions options = null)
-            where TOptions : SessionsManagerOptions, new()
+            where TOptions : SessionsManagerConfiguration, new()
 
         {
             //if (options is SessionHoursListOptions shOptions)

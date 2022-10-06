@@ -1,8 +1,6 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using Nt.Core.Events;
-using System;
-using System.Collections.Generic;
 
 namespace Nt.Core.Ninjascript
 {

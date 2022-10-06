@@ -7,10 +7,10 @@ namespace Nt.Core.Ninjascript
     /// <summary>
     /// The base class to ninjascript builders
     /// </summary>
-    public abstract class BaseStrategiesManagerBuilder<TManagerScript, TManagerOptions,TManagerBuilder> : BaseManagerBuilder<TManagerScript, TManagerOptions,TManagerBuilder>, IStrategiesManagerBuilder
-        where TManagerScript : BaseStrategiesManager<TManagerScript, TManagerOptions,TManagerBuilder>, IStrategiesManager
-        where TManagerOptions : BaseStrategiesManagerOptions<TManagerOptions>, IStrategiesManagerOptions
-        where TManagerBuilder : BaseStrategiesManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IStrategiesManagerBuilder
+    public abstract class BaseStrategiesManagerBuilder<TManagerScript, TManagerConfiguration,TManagerBuilder> : BaseManagerBuilder<TManagerScript, TManagerConfiguration,TManagerBuilder>, IStrategiesManagerBuilder
+        where TManagerScript : BaseStrategiesManager<TManagerScript, TManagerConfiguration,TManagerBuilder>, IStrategiesManager
+        where TManagerConfiguration : BaseStrategiesManagerConfiguration<TManagerConfiguration>, IStrategiesManagerConfiguration
+        where TManagerBuilder : BaseStrategiesManagerBuilder<TManagerScript,TManagerConfiguration,TManagerBuilder>, IStrategiesManagerBuilder
     {
 
         #region Constructors

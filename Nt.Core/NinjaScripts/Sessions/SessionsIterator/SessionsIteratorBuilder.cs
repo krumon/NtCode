@@ -3,9 +3,9 @@
 namespace Nt.Core.Ninjascript
 {
     /// <summary>
-    /// The builder class of <see cref="SessionsIterator"/>.
+    /// Represents the <see cref="SessionsIterator"/> builder.
     /// </summary>
-    public class SessionsIteratorBuilder : BaseSessionBuilder<SessionsIterator, SessionsIteratorOptions,SessionsIteratorBuilder>, ISessionsIteratorBuilder
+    public class SessionsIteratorBuilder : BaseSessionBuilder<SessionsIterator, SessionsIteratorConfiguration,SessionsIteratorBuilder>, ISessionsIteratorBuilder
     {
 
         #region Constructors

@@ -1,11 +1,11 @@
 ﻿namespace Nt.Core.Ninjascript
 {
     /// <summary>
-    /// The base class to strategy builders
+    /// The base class of any strategy builder.
     /// </summary>
     public abstract class BaseStrategyBuilder<TScript,TOptions,TBuilder> : BaseBuilder<TScript,TOptions,TBuilder>, IStrategyBuilder
         where TScript : BaseStrategy<TScript,TOptions,TBuilder>, IStrategy
-        where TOptions : BaseStrategyOptions<TOptions>, IStrategyOptions
+        where TOptions : BaseStrategyConfiguration<TOptions>, IStrategyConfiguration
         where TBuilder : BaseStrategyBuilder<TScript,TOptions,TBuilder>, IStrategyBuilder
     {
 

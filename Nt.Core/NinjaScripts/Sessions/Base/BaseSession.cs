@@ -7,12 +7,12 @@ namespace Nt.Core.Ninjascript
     /// The base class to ninjascript sessions
     /// </summary>
     /// <typeparam name="TSession">The session type</typeparam>
-    /// <typeparam name="TSessionOptions">The session options type to configure the object.</typeparam>
+    /// <typeparam name="TSessionConfiguration">The session options type to configure the object.</typeparam>
     /// <typeparam name="TSessionBuilder">The session builder to construct the object.</typeparam>
-    public abstract class BaseSession<TSession,TSessionOptions,TSessionBuilder> : BaseNinjascript<TSession,TSessionOptions,TSessionBuilder>, ISession
-        where TSession : BaseSession<TSession,TSessionOptions,TSessionBuilder>, ISession
-        where TSessionOptions : BaseSessionOptions<TSessionOptions>, ISessionOptions
-        where TSessionBuilder : BaseSessionBuilder<TSession,TSessionOptions,TSessionBuilder>, ISessionBuilder
+    public abstract class BaseSession<TSession,TSessionConfiguration,TSessionBuilder> : BaseNinjascript<TSession,TSessionConfiguration,TSessionBuilder>, ISession
+        where TSession : BaseSession<TSession,TSessionConfiguration,TSessionBuilder>, ISession
+        where TSessionConfiguration : BaseSessionConfiguration<TSessionConfiguration>, ISessionConfiguration
+        where TSessionBuilder : BaseSessionBuilder<TSession,TSessionConfiguration,TSessionBuilder>, ISessionBuilder
     {
 
 

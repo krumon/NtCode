@@ -12,11 +12,11 @@ namespace Nt.Core.Ninjascript
     /// Base class for any ninjascripts manager.
     /// </summary>
     /// <typeparam name="TManagerScript">The ninjascripts manager.</typeparam>
-    /// <typeparam name="TManagerOptions">The ninjascripts manager options.</typeparam>
-    public abstract class BaseManager<TManagerScript, TManagerOptions,TManagerBuilder> : BaseNinjascript<TManagerScript, TManagerOptions,TManagerBuilder>, IManager
-        where TManagerScript : BaseManager<TManagerScript, TManagerOptions, TManagerBuilder>, IManager
-        where TManagerOptions : BaseManagerOptions<TManagerOptions>, IManagerOptions
-        where TManagerBuilder : BaseManagerBuilder<TManagerScript,TManagerOptions,TManagerBuilder>, IManagerBuilder
+    /// <typeparam name="TManagerConfiguration">The ninjascripts manager options.</typeparam>
+    public abstract class BaseManager<TManagerScript, TManagerConfiguration,TManagerBuilder> : BaseNinjascript<TManagerScript, TManagerConfiguration,TManagerBuilder>, IManager
+        where TManagerScript : BaseManager<TManagerScript, TManagerConfiguration, TManagerBuilder>, IManager
+        where TManagerConfiguration : BaseManagerConfiguration<TManagerConfiguration>, IManagerConfiguration
+        where TManagerBuilder : BaseManagerBuilder<TManagerScript,TManagerConfiguration,TManagerBuilder>, IManagerBuilder
     {
 
         #region Private members

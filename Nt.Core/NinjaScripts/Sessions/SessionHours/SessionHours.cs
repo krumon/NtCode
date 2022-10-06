@@ -7,9 +7,9 @@ using System.Collections.Generic;
 namespace Nt.Core.Ninjascript
 {
     /// <summary>
-    /// Represents the SessionHours of the day trading.
+    /// Represents the trading hours for any session.
     /// </summary>
-    public class SessionHours : BaseSession<SessionHours,SessionHoursOptions,SessionHoursBuilder>, ISessionHours
+    public class SessionHours : BaseSession<SessionHours,SessionHoursConfiguration,SessionHoursBuilder>, ISessionHours
     {
 
         #region Private members

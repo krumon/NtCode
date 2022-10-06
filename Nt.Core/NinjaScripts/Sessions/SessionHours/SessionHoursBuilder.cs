@@ -3,9 +3,9 @@
 namespace Nt.Core.Ninjascript
 {
     /// <summary>
-    /// The builder class of <see cref="SessionHours"/>.
+    /// Represents the <see cref="SessionHours"/> builder.
     /// </summary>
-    public class SessionHoursBuilder : BaseSessionBuilder<SessionHours, SessionHoursOptions,SessionHoursBuilder>, ISessionHoursBuilder
+    public class SessionHoursBuilder : BaseSessionBuilder<SessionHours, SessionHoursConfiguration,SessionHoursBuilder>, ISessionHoursBuilder
     {
 
         #region Constructors

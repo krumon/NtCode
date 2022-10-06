@@ -5,10 +5,10 @@ namespace Nt.Core.Ninjascript
     /// <summary>
     /// The base class to session scripts builders
     /// </summary>
-    public abstract class BaseSessionBuilder<TSession,TSessionOptions,TSessionBuilder> : BaseBuilder<TSession,TSessionOptions,TSessionBuilder>, ISessionBuilder
-        where TSession : BaseSession<TSession,TSessionOptions,TSessionBuilder>, ISession
-        where TSessionOptions : BaseSessionOptions<TSessionOptions>, ISessionOptions
-        where TSessionBuilder : BaseSessionBuilder<TSession, TSessionOptions, TSessionBuilder>, ISessionBuilder
+    public abstract class BaseSessionBuilder<TSession,TSessionConfiguration,TSessionBuilder> : BaseBuilder<TSession,TSessionConfiguration,TSessionBuilder>, ISessionBuilder
+        where TSession : BaseSession<TSession,TSessionConfiguration,TSessionBuilder>, ISession
+        where TSessionConfiguration : BaseSessionConfiguration<TSessionConfiguration>, ISessionConfiguration
+        where TSessionBuilder : BaseSessionBuilder<TSession, TSessionConfiguration, TSessionBuilder>, ISessionBuilder
     {
 
         #region Constructors

@@ -209,12 +209,12 @@ namespace Nt.Core.Ninjascript
     /// Base class for any ninjascript.
     /// </summary>
     /// <typeparam name="TScript">The ninjascript object.</typeparam>
-    /// <typeparam name="TOptions">The ninjascript options object.</typeparam>
+    /// <typeparam name="TConfiguration">The ninjascript options object.</typeparam>
     /// <typeparam name="TBuilder">The ninjascript bulder object.</typeparam>
-    public abstract class BaseNinjascript<TScript, TOptions,TBuilder> : BaseNinjascript, INinjascript
-        where TScript : BaseNinjascript<TScript,TOptions,TBuilder>, INinjascript
-        where TOptions : BaseOptions<TOptions>, IOptions
-        where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>, IBuilder
+    public abstract class BaseNinjascript<TScript, TConfiguration,TBuilder> : BaseNinjascript, INinjascript
+        where TScript : BaseNinjascript<TScript,TConfiguration,TBuilder>, INinjascript
+        where TConfiguration : BaseConfiguration<TConfiguration>, IConfiguration
+        where TBuilder : BaseBuilder<TScript,TConfiguration,TBuilder>, IBuilder
     {
 
         #region Private members
@@ -222,7 +222,7 @@ namespace Nt.Core.Ninjascript
         /// <summary>
         /// The script configure.
         /// </summary>
-        protected TOptions configuration;
+        protected TConfiguration configuration;
 
         #endregion
 
@@ -251,10 +251,10 @@ namespace Nt.Core.Ninjascript
             try
             {
                 if (configuration == null)
-                    throw new SetDefaultException(ExceptionMessages.SetDefaultConfigureException, new NullReferenceException(), typeof(TOptions).ToString());
+                    throw new SetDefaultException(ExceptionMessages.SetDefaultConfigureException, new NullReferenceException(), typeof(TConfiguration).ToString());
 
                 if (ninjascript == null)
-                    throw new SetDefaultException(ExceptionMessages.SetDefaultNinjaScriptException, new NullReferenceException(), typeof(TOptions).ToString());
+                    throw new SetDefaultException(ExceptionMessages.SetDefaultNinjaScriptException, new NullReferenceException(), typeof(TConfiguration).ToString());
 
                 // Copy the new options
                 ninjascript.Name = configuration.Name;
@@ -352,7 +352,7 @@ namespace Nt.Core.Ninjascript
         /// <returns></returns>
         public Type GetConfigurationType()
         {
-            return typeof(TOptions);
+            return typeof(TConfiguration);
         }
 
         #endregion

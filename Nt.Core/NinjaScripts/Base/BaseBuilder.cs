@@ -7,10 +7,10 @@ namespace Nt.Core.Ninjascript
     /// <summary>
     /// The base class to ninjascript builders
     /// </summary>
-    public abstract class BaseBuilder<TScript, TOptions,TBuilder>: IBuilder
-        where TScript : BaseNinjascript<TScript, TOptions,TBuilder>, INinjascript
-        where TOptions : BaseOptions<TOptions>, IOptions
-        where TBuilder : BaseBuilder<TScript,TOptions,TBuilder>, IBuilder
+    public abstract class BaseBuilder<TScript, TConfiguration,TBuilder>: IBuilder
+        where TScript : BaseNinjascript<TScript, TConfiguration,TBuilder>, INinjascript
+        where TConfiguration : BaseConfiguration<TConfiguration>, IConfiguration
+        where TBuilder : BaseBuilder<TScript,TConfiguration,TBuilder>, IBuilder
     {
 
         #region Protected members
@@ -40,7 +40,7 @@ namespace Nt.Core.Ninjascript
             // Make sure configuration is not null
             if (!script.IsConfigured)
             {
-                TOptions op = Activator.CreateInstance<TOptions>();
+                TConfiguration op = Activator.CreateInstance<TConfiguration>();
                 //Script.SetConfiguration(op);
                 Configure(op);
             }
@@ -76,11 +76,11 @@ namespace Nt.Core.Ninjascript
         public IBuilder Configure<Script, Options>(Action<Options> options)
         {
             // Make sure options is a valid object and configure the script.
-            if (typeof(Script) == typeof(TScript) && options is Action<TOptions> op)
+            if (typeof(Script) == typeof(TScript) && options is Action<TConfiguration> op)
             {
                 // Add custom options by reflection
                 //FieldInfo fieldInfo = script.GetType().GetField("configuration", BindingFlags.Instance | BindingFlags.NonPublic);
-                TOptions actualOptions = GetScriptFieldValue("configuration",script);
+                TConfiguration actualOptions = GetScriptFieldValue("configuration",script);
 
                 op?.Invoke(actualOptions);
             }
@@ -93,10 +93,10 @@ namespace Nt.Core.Ninjascript
         /// <param name="options">Delegate method with the new properties to configure the script.</param>
         /// <returns>The script builder to continue the construction.</returns>
         public IBuilder Configure<Script, Options>(Options options)
-            where Options : IOptions
+            where Options : IConfiguration
         {
             // Make sure options is a valid object and configure the script.
-            if (typeof(Script) == typeof(TScript) && typeof(Options) == typeof(TOptions))
+            if (typeof(Script) == typeof(TScript) && typeof(Options) == typeof(TConfiguration))
                 // Add custom options by reflection
                 //FieldInfo fieldInfo = script.GetType().GetField("configuration", BindingFlags.Instance | BindingFlags.NonPublic);
                 //fieldInfo.SetValue(script, options);
@@ -110,16 +110,16 @@ namespace Nt.Core.Ninjascript
         /// </summary>
         /// <param name="options">the options to configure the ninjascript.</param>
         /// <returns>The builder to continue construction the ninjascript.</returns>
-        public TBuilder Configure(Action<TOptions> options) =>
-            (TBuilder)Configure<TScript,TOptions>(options);
+        public TBuilder Configure(Action<TConfiguration> options) =>
+            (TBuilder)Configure<TScript,TConfiguration>(options);
 
         /// <summary>
-        /// Configure the ninjascript with the options passed by <see cref="SessionFiltersOptions"/> object.
+        /// Configure the ninjascript with the options passed by <see cref="SessionFiltersConfiguration"/> object.
         /// </summary>
         /// <param name="options">The options to configure the ninjascript.</param>
         /// <returns>The builder to continue construction the ninjascript.</returns>
-        public TBuilder Configure(TOptions options) =>
-            (TBuilder)Configure<TScript, TOptions>(options);
+        public TBuilder Configure(TConfiguration options) =>
+            (TBuilder)Configure<TScript, TConfiguration>(options);
 
         #endregion
 
@@ -135,10 +135,10 @@ namespace Nt.Core.Ninjascript
         /// </summary>
         /// <param name="script">The script configuration to gets.</param>
         /// <returns>The script configuration.</returns>
-        protected TOptions GetScriptFieldValue(string name, TScript script)
+        protected TConfiguration GetScriptFieldValue(string name, TScript script)
         {
             FieldInfo fieldInfo = script.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
-            return (TOptions)fieldInfo.GetValue(script);
+            return (TConfiguration)fieldInfo.GetValue(script);
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Nt.Core.Ninjascript
         /// </summary>
         /// <param name="script">The script where sets the value.</param>
         /// <param name="options">The configuration to sets.</param>
-        protected void SetScriptFieldValue(string name, TScript script, IOptions options)
+        protected void SetScriptFieldValue(string name, TScript script, IConfiguration options)
         {
             FieldInfo fieldInfo = script.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic);
             fieldInfo.SetValue(script, options);

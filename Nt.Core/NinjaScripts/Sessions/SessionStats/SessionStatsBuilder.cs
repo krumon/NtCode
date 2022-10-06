@@ -3,9 +3,9 @@
 namespace Nt.Core.Ninjascript
 {
     /// <summary>
-    /// The builder class of <see cref="SessionStats"/>.
+    /// Represents the <see cref="SessionStats"/> builder.
     /// </summary>
-    public class SessionStatsBuilder : BaseSessionBuilder<SessionStats, SessionStatsOptions,SessionStatsBuilder>, ISessionStatsBuilder
+    public class SessionStatsBuilder : BaseSessionBuilder<SessionStats, SessionStatsConfiguration,SessionStatsBuilder>, ISessionStatsBuilder
     {
 
         #region Constructors
