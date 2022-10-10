@@ -5,50 +5,63 @@ using Microsoft.Extensions.Logging;
 using Nt.Core.Services;
 using System;
 using System.IO;
-using System.Reflection;
-using System.Security.Policy;
 using System.Threading.Tasks;
 
 namespace Nt.Core.Hosting
 {
-    public static class NinjascriptHost
+    public class NinjascriptHost : IDisposable
     {
-        private static IHost ninjascriptHost;
+        private IHost ninjascriptHost;
 
-        public static IServiceProvider Services => ninjascriptHost.Services;
+        public IServiceProvider Services => ninjascriptHost.Services;
 
-        public static IConfiguration Configuration => Services.GetRequiredService<IConfiguration>();
+        public IConfiguration Configuration => Services.GetRequiredService<IConfiguration>();
 
-        public static IHostEnvironment environment;
+        public IHostEnvironment Environment => Services.GetRequiredService<IHostEnvironment>();
 
-        public static IHost CreateHost()
+        public IHostBuilder CreateDefaultBuilder()
         {
-            return ninjascriptHost = Host.CreateDefaultBuilder()
-                    .ConfigureLogging((builder) =>
+            return Host
+                .CreateDefaultBuilder()
+                //.UseEnvironment("Development")
+                .ConfigureServices(services =>
+                {
+                    services.AddHostedService<NinjascriptLifetimeHostedService>();
+                })
+                .ConfigureLogging((builder) =>
+                {
+                    builder.ClearProviders()
+                    .AddNinjascriptConsoleLogger(configuration =>
                     {
-                        builder.ClearProviders()
-                        .AddNinjascriptConsoleLogger(configuration =>
-                        {
-                            // Replace warning value from appsettings.json of "Cyan"
-                            configuration.LogLevelToColorMap[LogLevel.Warning] = ConsoleColor.Cyan;
-                            // Replace warning value from appsettings.jsno of "Red"
-                            configuration.LogLevelToColorMap[LogLevel.Error] = ConsoleColor.Red;
-                        });
-                        
-                    })
-                    .ConfigureAppConfiguration((context,builder) =>
-                    {
-                        builder.SetBasePath(Path.Combine(Assembly.GetExecutingAssembly().Location))
-                            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                            .AddEnvironmentVariables((configure) =>
-                            {
-                                configure.Prefix = "PROCESSOR_";
-                            });
-                    })
-                    .Build();
+                        // Replace warning value from appsettings.json of "Cyan"
+                        configuration.LogLevelToColorMap[LogLevel.Warning] = ConsoleColor.Magenta;
+                        // Replace warning value from appsettings.jsno of "Red"
+                        configuration.LogLevelToColorMap[LogLevel.Error] = ConsoleColor.DarkRed;
+                    });
+                });
+                //.ConfigureHostConfiguration(builder =>
+                //{
+                //    builder.AddEnvironmentVariables("DOTNET_");
+                //});
         }
 
-        public static Task RunAsync() => ninjascriptHost?.RunAsync();
+        public IHost Build()
+        {
+            return ninjascriptHost = CreateDefaultBuilder().Build();
+        }
 
+        public async Task<bool> RunAsync() 
+        { 
+            await ninjascriptHost?.RunAsync(); 
+
+            return true;
+        }
+        public async Task StartAsync() => await ninjascriptHost?.StartAsync();
+        public async Task StopAsync() => await ninjascriptHost?.StopAsync();
+
+        public void Dispose()
+        {
+            ninjascriptHost?.Dispose();
+        }
     }
 }

@@ -204,6 +204,7 @@
     <Compile Include="Exceptions\LoadException.cs" />
     <Compile Include="Hosting\NinjascriptHost.cs" />
     <Compile Include="Services\Configuration\NinjatraderConfigurationService.cs" />
+    <Compile Include="Services\Lifetime\NinjascriptLifetimeHostedService.cs" />
     <Compile Include="Services\Logging\NinjascriptConsoleLoggerService.cs" />
     <Compile Include="Services\Logging\NinjascriptConsoleLoggerConfiguration.cs" />
     <Compile Include="Services\Logging\NinjascriptConsoleLoggerExtensions.cs" />
@@ -282,7 +283,7 @@
     <Compile Include="NinjaScript\Sessions\SessionsIterator\SessionsIteratorConfiguration.cs" />
     <Compile Include="NinjaScript\Strategies\Base\BaseStrategy.cs" />
     <Compile Include="Core\Base\BaseElement.cs" />
-    <Compile Include="Services\Files\FileService.cs" />
+    <Compile Include="Services\Files\NinjatraderFiles.cs" />
     <Compile Include="Core\Data\Bar.cs" />
     <Compile Include="Core\Patterns\Swing\SwingLevel.cs" />
     <Compile Include="Core\Patterns\Swing\SwingPoint.cs" />

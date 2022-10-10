@@ -1,6 +1,6 @@
 ﻿namespace Nt.Core.Services
 {
-    public class FileService
+    public class NinjatraderFiles
     {
     }
 }
