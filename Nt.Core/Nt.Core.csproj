@@ -202,6 +202,7 @@
     <Compile Include="Exceptions\SetDefaultException.cs" />
     <Compile Include="Exceptions\OnBarUpdateException.cs" />
     <Compile Include="Exceptions\LoadException.cs" />
+    <Compile Include="Hosting\INinjascriptHost.cs" />
     <Compile Include="Hosting\NinjascriptHost.cs" />
     <Compile Include="Services\Configuration\NinjatraderConfigurationService.cs" />
     <Compile Include="Services\Lifetime\NinjascriptLifetimeHostedService.cs" />
