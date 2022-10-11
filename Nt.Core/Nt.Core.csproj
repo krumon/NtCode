@@ -203,13 +203,21 @@
     <Compile Include="Exceptions\OnBarUpdateException.cs" />
     <Compile Include="Exceptions\LoadException.cs" />
     <Compile Include="Hosting\INinjascriptHost.cs" />
+    <Compile Include="Hosting\NinjascriptDI.cs" />
+    <Compile Include="Hosting\NinjascriptServiceBuilderExtensions.cs" />
+    <Compile Include="Hosting\NinjascriptServiceBuilder.cs" />
+    <Compile Include="Hosting\NinjascriptService.cs" />
     <Compile Include="Hosting\NinjascriptHost.cs" />
     <Compile Include="Services\Configuration\NinjatraderConfigurationService.cs" />
+    <Compile Include="Services\Environment\INinjascriptEnvironment.cs" />
+    <Compile Include="Services\Environment\NinjascriptEnvironment.cs" />
+    <Compile Include="Services\Exceptions\IExceptionHandler.cs" />
+    <Compile Include="Services\Exceptions\BaseExceptionHandler.cs" />
     <Compile Include="Services\Lifetime\NinjascriptLifetimeHostedService.cs" />
-    <Compile Include="Services\Logging\NinjascriptConsoleLoggerService.cs" />
-    <Compile Include="Services\Logging\NinjascriptConsoleLoggerConfiguration.cs" />
-    <Compile Include="Services\Logging\NinjascriptConsoleLoggerExtensions.cs" />
-    <Compile Include="Services\Logging\NinjascriptConsoleLoggerProvider.cs" />
+    <Compile Include="Services\Logging\Console\NinjascriptConsoleLoggerService.cs" />
+    <Compile Include="Services\Logging\Console\NinjascriptConsoleLoggerConfiguration.cs" />
+    <Compile Include="Services\Logging\Console\NinjascriptConsoleLoggerExtensions.cs" />
+    <Compile Include="Services\Logging\Console\NinjascriptConsoleLoggerProvider.cs" />
     <Compile Include="NinjaScript\.Interfaces\Managers\Base\IManagerBuilder.cs" />
     <Compile Include="NinjaScript\.Interfaces\Managers\Base\IManagerConfiguration.cs" />
     <Compile Include="NinjaScript\.Interfaces\Managers\Indicators\IIndicatorsManagerBuilder.cs" />
@@ -338,6 +346,12 @@
     <Compile Include="Drawing\Data\Margin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Core\Trading\TradingTime\TradingTimeInfo.cs" />
+    <Compile Include="Services\Logging\Default\LoggerExtensions.cs" />
+    <Compile Include="Services\Logging\Default\LoggerSourceFormatter.cs" />
+    <Compile Include="Services\Logging\File\FileLogger.cs" />
+    <Compile Include="Services\Logging\File\FileLoggerExtensions.cs" />
+    <Compile Include="Services\Logging\File\FileLoggerProvider.cs" />
+    <Compile Include="Services\Logging\File\FileLoggerConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kr.Core\Kr.Core.csproj">

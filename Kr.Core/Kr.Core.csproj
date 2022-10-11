@@ -8,7 +8,6 @@
   <ItemGroup>
     <Folder Include="Math\" />
     <Folder Include="Files\" />
-    <Folder Include="String\" />
   </ItemGroup>
 
   <ItemGroup>
