@@ -18,7 +18,7 @@ namespace Nt.Core.Services
 
         #endregion
 
-        #region Configuration
+        #region Constructors
 
         public NinjascriptConsoleLoggerProvider(
             IOptionsMonitor<NinjascriptConsoleLoggerConfiguration> config)
