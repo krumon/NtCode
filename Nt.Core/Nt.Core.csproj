@@ -203,6 +203,8 @@
     <Compile Include="Exceptions\OnBarUpdateException.cs" />
     <Compile Include="Exceptions\LoadException.cs" />
     <Compile Include="Hosting\INinjascriptServiceCollection.cs" />
+    <Compile Include="Hosting\INinjascriptServiceProvider.cs" />
+    <Compile Include="Hosting\NinjascriptServiceProvider.cs" />
     <Compile Include="Hosting\NinjascriptServiceDescriptor.cs" />
     <Compile Include="Hosting\WithMSExtensions\INinjascriptHost.cs" />
     <Compile Include="Hosting\WithMSExtensions\NinjascriptDI.cs" />
