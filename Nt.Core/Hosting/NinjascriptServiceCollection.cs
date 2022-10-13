@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -15,6 +16,7 @@ namespace Nt.Core.Hosting
             ServiceCollection sc = null;
             ServiceDescriptor sd = null;
             ServiceProvider sp = null;
+            HostBuilder builder;
         }
 
         #region Private membres
