@@ -13,7 +13,7 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Provides convenience for creating instances of <see cref="IHostBuilder"/> with preconfigured defaults.
         /// </summary>
-        private INinjascriptHost ninjascriptHost;
+        private INinjascriptHosting ninjascriptHost;
 
         public string displayText;
 
@@ -49,10 +49,10 @@ namespace Nt.Core.Hosting
         /// Run the given actions to initialize the host. This can only be called once.
         /// </summary>
         /// <returns>An initialized host.</returns>
-        private INinjascriptHost Build(params string[] args)
+        private INinjascriptHosting Build(params string[] args)
         {
             displayText = "The ninjascript host is building...";
-            return (INinjascriptHost)CreateDefaultBuilder(args).Build();
+            return (INinjascriptHosting)CreateDefaultBuilder(args).Build();
 
         }
 

@@ -2,7 +2,7 @@
 
 namespace Nt.Core.Hosting
 {
-    public interface INinjascriptHost : IHost
+    public interface INinjascriptHosting : IHost
     {
     }
 }
