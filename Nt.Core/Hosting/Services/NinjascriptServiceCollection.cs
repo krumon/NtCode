@@ -14,10 +14,11 @@ namespace Nt.Core.Hosting
 
         public NinjascriptServiceCollection()
         {
-            ServiceCollection sc = null;
-            ServiceDescriptor sd = null;
-            ServiceProvider sp = null;
-            HostBuilder builder;
+            //ServiceCollection sc = null;
+            //ServiceDescriptor sd = null;
+            //ServiceProvider sp = null;
+            //HostBuilder builder;
+            //IHost host = Host.CreateDefaultBuilder().Build();
         }
 
         #region Private membres

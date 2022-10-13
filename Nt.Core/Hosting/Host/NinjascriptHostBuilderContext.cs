@@ -2,10 +2,11 @@
 
 namespace Nt.Core.Hosting
 {
+    /// <summary>
+    /// Context containing the common services on the <see cref="INinjascriptHost" />. Some properties may be null until set by the <see cref="IHost" />.
+    /// </summary>
     public class NinjascriptHostBuilderContext
     {
-
-        #region Copy from microsoft
 
         public NinjascriptHostBuilderContext(IDictionary<object, object> properties)
         {
@@ -18,15 +19,14 @@ namespace Nt.Core.Hosting
         public IDictionary<object, object> Properties { get; }
 
         /// <summary>
-        /// The <see cref="INinjascriptHostEnvironment" /> initialized by the <see cref="IHost" />.
+        /// The <see cref="INinjascriptEnvironment" /> initialized by the <see cref="IHost" />.
         /// </summary>
-        public INinjascriptHostEnvironment HostingEnvironment { get; set; }
+        public INinjascriptEnvironment HostingEnvironment { get; set; }
 
         /// <summary>
-        /// The <see cref="INinjascriptHostConfiguration" /> containing the merged configuration of the application and the <see cref="IHost" />.
+        /// The <see cref="INinjascriptConfiguration" /> containing the merged configuration of the application and the <see cref="IHost" />.
         /// </summary>
-        public INinjascriptHostConfiguration Configuration { get; set; }
+        public INinjascriptConfiguration Configuration { get; set; }
 
-        #endregion
     }
 }

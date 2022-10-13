@@ -26,8 +26,8 @@ namespace Nt.Core.Hosting
                 .AddEnvironmentVariables();
 
             // If we are not on a mobile platform...
-            if (!builder.Environment.IsMobile)
-            {
+            //if (!builder.Environment.IsMobile)
+            //{
                 // Add file based configuration
 
                 // Set base path for Json files as the startup location of the application
@@ -35,8 +35,8 @@ namespace Nt.Core.Hosting
 
                 // Add application settings json files
                 configurationBuilder.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                configurationBuilder.AddJsonFile($"appsettings.{builder.Environment.Configuration}.json", optional: true, reloadOnChange: true);
-            }
+                //configurationBuilder.AddJsonFile($"appsettings.{builder.Environment.Configuration}.json", optional: true, reloadOnChange: true);
+            //}
 
             // Let custom configuration happen
             configure?.Invoke(configurationBuilder);
