@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Nt.Core.Hosting
 {
-    public class NinjascriptHost
+    public class NinjascriptHosting
     {
         /// <summary>
         /// Provides convenience for creating instances of <see cref="IHostBuilder"/> with preconfigured defaults.
@@ -68,7 +68,7 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Runs the <see cref="NinjascriptHost"/> and returns a <see cref="Task"/> that only completes when 
+        /// Runs the <see cref="NinjascriptHosting"/> and returns a <see cref="Task"/> that only completes when 
         /// </summary>
         /// <returns></returns>
         public async Task RunAsync(CancellationToken startToken = default) 
@@ -86,13 +86,13 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Start the ninjascript host.
         /// </summary>
-        /// <returns>A <see cref="Task"/> that will be completed when the <see cref="NinjascriptHost"/> starts.</returns>
+        /// <returns>A <see cref="Task"/> that will be completed when the <see cref="NinjascriptHosting"/> starts.</returns>
         //public async Task StartAsync() => await ninjascriptHost?.StartAsync();
 
         /// <summary>
-        /// Attempts to gracefully stop the <see cref="NinjascriptHost"/>.
+        /// Attempts to gracefully stop the <see cref="NinjascriptHosting"/>.
         /// </summary>
-        /// <returns>A <see cref="Task"/> that will be completed when the <see cref="NinjascriptHost"/> stops.</returns>
+        /// <returns>A <see cref="Task"/> that will be completed when the <see cref="NinjascriptHosting"/> stops.</returns>
         //public async Task StopAsync() 
         //{
         //    displayText = "The ninjascript host is stopping...";

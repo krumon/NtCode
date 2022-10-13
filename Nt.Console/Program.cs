@@ -25,7 +25,7 @@ namespace ConsoleApp
         {
             Task waittingTheHost;
 
-            NinjascriptHost host = new NinjascriptHost();
+            NinjascriptHosting host = new NinjascriptHosting();
             host.Build();
             waittingTheHost = host.RunAsync();
 

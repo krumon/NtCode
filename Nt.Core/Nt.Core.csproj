@@ -202,9 +202,16 @@
     <Compile Include="Exceptions\SetDefaultException.cs" />
     <Compile Include="Exceptions\OnBarUpdateException.cs" />
     <Compile Include="Exceptions\LoadException.cs" />
+    <Compile Include="Hosting\NinjascriptsHost.cs" />
+    <Compile Include="Hosting\INinjascriptHostBuilder.cs" />
+    <Compile Include="Hosting\INinjascriptHostConfiguration.cs" />
+    <Compile Include="Hosting\INinjascriptHostEnvironment.cs" />
+    <Compile Include="Hosting\Internal\NinjascriptHost.cs" />
     <Compile Include="Hosting\INinjascriptHost.cs" />
     <Compile Include="Hosting\INinjascriptServiceCollection.cs" />
     <Compile Include="Hosting\INinjascriptServiceProvider.cs" />
+    <Compile Include="Hosting\NinjascriptHostBuilder.cs" />
+    <Compile Include="Hosting\NinjascriptHostBuilderContext.cs" />
     <Compile Include="Hosting\NinjascriptServiceProvider.cs" />
     <Compile Include="Hosting\NinjascriptServiceDescriptor.cs" />
     <Compile Include="Hosting\WithMSExtensions\INinjascriptHosting.cs" />
@@ -212,7 +219,7 @@
     <Compile Include="Hosting\WithMSExtensions\NinjascriptServiceBuilderExtensions.cs" />
     <Compile Include="Hosting\WithMSExtensions\NinjascriptServiceBuilder.cs" />
     <Compile Include="Hosting\WithMSExtensions\NinjascriptService.cs" />
-    <Compile Include="Hosting\WithMSExtensions\NinjascriptHost.cs" />
+    <Compile Include="Hosting\WithMSExtensions\NinjascriptHosting.cs" />
     <Compile Include="Hosting\NinjascriptServiceCollection.cs" />
     <Compile Include="Services\Configuration\NinjatraderConfigurationService.cs" />
     <Compile Include="Services\Environment\INinjascriptEnvironment.cs" />
