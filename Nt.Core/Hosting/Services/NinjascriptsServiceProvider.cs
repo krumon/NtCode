@@ -7,20 +7,17 @@ using System.Threading.Tasks;
 namespace Nt.Core.Hosting
 {
     /// <summary>
-    /// Default <see cref="INinjascriptServiceProvider"/>.
+    /// Default <see cref="INinjascriptsServiceProvider"/>.
     /// </summary>
-    public abstract class NinjascriptServiceProvider : INinjascriptServiceProvider, IDisposable, IAsyncDisposable
+    public abstract class NinjascriptsServiceProvider : INinjascriptsServiceProvider, IDisposable, IAsyncDisposable
     {
 
         #region Private members
 
         private bool _dispose;
-
         private ConcurrentDictionary<Type, Func<Type,object>> _realizedServices;
-
         private object _createService;
-
-        NinjascriptServiceDescriptor[] _descriptors;
+        NinjascriptsServiceDescriptor[] _descriptors;
 
         #endregion
 
@@ -34,7 +31,7 @@ namespace Nt.Core.Hosting
         public object GetService(Type serviceType)
         {
             if (_dispose)
-                throw new ObjectDisposedException(nameof(NinjascriptServiceProvider));
+                throw new ObjectDisposedException(nameof(NinjascriptsServiceProvider));
 
             if (ValidateService(serviceType))
             {
@@ -66,7 +63,7 @@ namespace Nt.Core.Hosting
 
         #region Constructors
 
-        public NinjascriptServiceProvider(ICollection<NinjascriptServiceDescriptor> descriptors)
+        public NinjascriptsServiceProvider(ICollection<NinjascriptsServiceDescriptor> descriptors)
         {
             _realizedServices = new ConcurrentDictionary<Type, Func<Type,object>>();
             ValidateDescriptors(descriptors);
@@ -82,9 +79,9 @@ namespace Nt.Core.Hosting
             _dispose = true;
         }
 
-        private NinjascriptServiceDescriptor[] ValidateDescriptors(ICollection<NinjascriptServiceDescriptor> descriptors)
+        private NinjascriptsServiceDescriptor[] ValidateDescriptors(ICollection<NinjascriptsServiceDescriptor> descriptors)
         {
-            _descriptors = new NinjascriptServiceDescriptor[descriptors.Count];
+            _descriptors = new NinjascriptsServiceDescriptor[descriptors.Count];
             descriptors.CopyTo(_descriptors, 0);
             return _descriptors;
         }

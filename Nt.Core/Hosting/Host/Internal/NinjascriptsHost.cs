@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Nt.Core.Hosting.Internal
 {
-    internal class NinjascriptHost : INinjascriptHost, IAsyncDisposable
+    internal class NinjascriptsHost : INinjascriptsHost, IAsyncDisposable
     {
 
         #region Private members

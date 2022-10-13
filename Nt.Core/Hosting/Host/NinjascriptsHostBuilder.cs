@@ -1,68 +1,112 @@
-﻿using System.Collections.Generic;
+﻿using Nt.Core.Hosting.Configuration;
+using Nt.Core.Hosting.Services;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Nt.Core.Hosting
 {
-    public class NinjascriptHostBuilder : INinjascriptHostBuilder
+    public class NinjascriptsHostBuilder : INinjascriptsHostBuilder
     {
+
+        #region Private members
+
+        private List<Action<INinjascriptsConfigurationBuilder>> _configureHostConfigActions = new List<Action<INinjascriptsConfigurationBuilder>>();
+        private List<Action<NinjascriptsHostBuilderContext, INinjascriptsConfigurationBuilder>> _configureAppConfigActions = new List<Action<NinjascriptsHostBuilderContext, INinjascriptsConfigurationBuilder>>();
+        private List<Action<NinjascriptsHostBuilderContext, INinjascriptsServiceCollection>> _configureServicesActions = new List<Action<NinjascriptsHostBuilderContext, INinjascriptsServiceCollection>>();
+        //private List<IConfigureContainerAdapter> _configureContainerActions = new List<IConfigureContainerAdapter>();
+        //private IServiceFactoryAdapter _serviceProviderFactory = new ServiceFactoryAdapter<IServiceCollection>(new DefaultServiceProviderFactory());
+        private bool _hostBuilt;
+        private INinjascriptsConfiguration _hostConfiguration;
+        private INinjascriptsConfiguration _appConfiguration;
+        private NinjascriptsHostBuilderContext _hostBuilderContext;
+        //private HostingEnvironment _hostingEnvironment;
+        private INinjascriptsServiceProvider _appServices;
+        //private PhysicalFileProvider _defaultProvider;
+
+        #endregion
+
+        #region Public properties
+
         /// <inheritdoc/>
         public IDictionary<object, object> Properties => throw new System.NotImplementedException();
-        
+
+        #endregion
+
+        #region Public methods
+
         /// <inheritdoc/>
-        public INinjascriptHost Build()
+        public INinjascriptsHost Build()
         {
-//            if (_hostBuilt)
-//            {
-//                throw new InvalidOperationException(SR.BuildCalled);
-//            }
-//            _hostBuilt = true;
+            if (_hostBuilt)
+            {
+                throw new InvalidOperationException("The Ninjascript host can only be built once.");
+            }
+            _hostBuilt = true;
 
-//            // REVIEW: If we want to raise more events outside of these calls then we will need to
-//            // stash this in a field.
-//            using var diagnosticListener = new DiagnosticListener("Microsoft.Extensions.Hosting");
-//            const string hostBuildingEventName = "HostBuilding";
-//            const string hostBuiltEventName = "HostBuilt";
+            // REVIEW: If we want to raise more events outside of these calls then we will need to
+            // stash this in a field.
+            using (var diagnosticListener = new DiagnosticListener("Nt.Code.Hosting"))
+            {
+                const string hostBuildingEventName = "HostBuilding";
+                const string hostBuiltEventName = "HostBuilt";
 
-//            if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
-//            {
-//                Write(diagnosticListener, hostBuildingEventName, this);
-//            }
+                if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
+                {
+                    Write(diagnosticListener, hostBuildingEventName, this);
+                }
 
-//            BuildHostConfiguration();
-//            CreateHostingEnvironment();
-//            CreateHostBuilderContext();
-//            BuildAppConfiguration();
-//            CreateServiceProvider();
+                BuildHostConfiguration();
+                CreateHostingEnvironment();
+                CreateHostBuilderContext();
+                BuildAppConfiguration();
+                CreateServiceProvider();
 
-//            var host = _appServices.GetRequiredService<IHost>();
-//            if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
-//            {
-//                Write(diagnosticListener, hostBuiltEventName, host);
-//            }
-
-//            return host;
-              throw new System.NotImplementedException();
-
+                var host = _appServices.GetRequiredService<INinjascriptsHost>();
+                if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
+                {
+                    Write(diagnosticListener, hostBuiltEventName, host);
+                }
+                return host;
+            }
         }
 
-        #region Copy from microsoft
+        #endregion
 
-        //        private List<Action<IConfigurationBuilder>> _configureHostConfigActions = new List<Action<IConfigurationBuilder>>();
-        //        private List<Action<HostBuilderContext, IConfigurationBuilder>> _configureAppConfigActions = new List<Action<HostBuilderContext, IConfigurationBuilder>>();
-        //        private List<Action<HostBuilderContext, IServiceCollection>> _configureServicesActions = new List<Action<HostBuilderContext, IServiceCollection>>();
-        //        private List<IConfigureContainerAdapter> _configureContainerActions = new List<IConfigureContainerAdapter>();
-        //        private IServiceFactoryAdapter _serviceProviderFactory = new ServiceFactoryAdapter<IServiceCollection>(new DefaultServiceProviderFactory());
-        //        private bool _hostBuilt;
-        //        private IConfiguration _hostConfiguration;
-        //        private IConfiguration _appConfiguration;
-        //        private HostBuilderContext _hostBuilderContext;
-        //        private HostingEnvironment _hostingEnvironment;
-        //        private IServiceProvider _appServices;
-        //        private PhysicalFileProvider _defaultProvider;
+        #region Private methods
 
-        //        /// <summary>
-        //        /// A central location for sharing state between components during the host building process.
-        //        /// </summary>
-        //        public IDictionary<object, object> Properties { get; } = new Dictionary<object, object>();
+        private void BuildHostConfiguration()
+        {
+        }
+
+        private void CreateHostingEnvironment()
+        {
+        }
+
+        private void CreateHostBuilderContext()
+        {
+        }
+
+        private void BuildAppConfiguration()
+        {
+        }
+
+        private void CreateServiceProvider()
+        {
+        }
+
+        //[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:UnrecognizedReflectionPattern",Justification = "The values being passed into Write are being consumed by the application already.")]
+        private void Write(
+            DiagnosticSource diagnosticSource, 
+            string name, 
+            object value)
+        {
+            diagnosticSource.Write(name, value);
+        }
+
+        #endregion
+
+        #region Copy from MS
 
         //        /// <summary>
         //        /// Set up the configuration for the builder itself. This will be used to initialize the <see cref="IHostEnvironment"/>
@@ -142,53 +186,6 @@ namespace Nt.Core.Hosting
         //            return this;
         //        }
 
-        //        /// <summary>
-        //        /// Run the given actions to initialize the host. This can only be called once.
-        //        /// </summary>
-        //        /// <returns>An initialized <see cref="IHost"/></returns>
-        //        public IHost Build()
-        //        {
-        //            if (_hostBuilt)
-        //            {
-        //                throw new InvalidOperationException(SR.BuildCalled);
-        //            }
-        //            _hostBuilt = true;
-
-        //            // REVIEW: If we want to raise more events outside of these calls then we will need to
-        //            // stash this in a field.
-        //            using var diagnosticListener = new DiagnosticListener("Microsoft.Extensions.Hosting");
-        //            const string hostBuildingEventName = "HostBuilding";
-        //            const string hostBuiltEventName = "HostBuilt";
-
-        //            if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
-        //            {
-        //                Write(diagnosticListener, hostBuildingEventName, this);
-        //            }
-
-        //            BuildHostConfiguration();
-        //            CreateHostingEnvironment();
-        //            CreateHostBuilderContext();
-        //            BuildAppConfiguration();
-        //            CreateServiceProvider();
-
-        //            var host = _appServices.GetRequiredService<IHost>();
-        //            if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
-        //            {
-        //                Write(diagnosticListener, hostBuiltEventName, host);
-        //            }
-
-        //            return host;
-        //        }
-
-        //        [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:UnrecognizedReflectionPattern",
-        //            Justification = "The values being passed into Write are being consumed by the application already.")]
-        //        private static void Write<T>(
-        //            DiagnosticSource diagnosticSource,
-        //            string name,
-        //            T value)
-        //        {
-        //            diagnosticSource.Write(name, value);
-        //        }
 
         //        private void BuildHostConfiguration()
         //        {

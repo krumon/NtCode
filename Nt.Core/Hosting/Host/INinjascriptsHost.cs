@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Nt.Core.Hosting
 {
-    public interface INinjascriptHost : IDisposable
+    public interface INinjascriptsHost : IDisposable
     {
         /// <summary>
         /// The ninjascript configured services.

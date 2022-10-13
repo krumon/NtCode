@@ -7,18 +7,19 @@ using System.Collections.Generic;
 namespace Nt.Core.Hosting
 {
     /// <summary>
-    /// Default implementation of <see cref="INinjascriptServiceCollection"/>.
+    /// Default implementation of <see cref="INinjascriptsServiceCollection"/>.
     /// </summary>
-    public class NinjascriptServiceCollection : INinjascriptServiceCollection
+    public class NinjascriptsServiceCollection : INinjascriptsServiceCollection
     {
 
-        public NinjascriptServiceCollection()
+        public NinjascriptsServiceCollection()
         {
             //ServiceCollection sc = null;
             //ServiceDescriptor sd = null;
             //ServiceProvider sp = null;
             //HostBuilder builder;
             //IHost host = Host.CreateDefaultBuilder().Build();
+            //ApplicationLifetime lifetime;
         }
 
         #region Private membres
@@ -26,14 +27,14 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Represents the descriptors collection.
         /// </summary>
-        private readonly IList<NinjascriptServiceDescriptor> _descriptors = new List<NinjascriptServiceDescriptor>();
+        private readonly IList<NinjascriptsServiceDescriptor> _descriptors = new List<NinjascriptsServiceDescriptor>();
 
         #endregion
 
         #region Implamentation
 
         /// <inheritdoc />
-        public NinjascriptServiceDescriptor this[int index]
+        public NinjascriptsServiceDescriptor this[int index]
         {
             get => _descriptors[index];
             set => _descriptors[index] = value;
@@ -46,7 +47,7 @@ namespace Nt.Core.Hosting
         public bool IsReadOnly => false;
 
         /// <inheritdoc />
-        public void Add(NinjascriptServiceDescriptor item)
+        public void Add(NinjascriptsServiceDescriptor item)
         {
             _descriptors.Add(item);
         }
@@ -58,37 +59,37 @@ namespace Nt.Core.Hosting
         }
 
         /// <inheritdoc />
-        public bool Contains(NinjascriptServiceDescriptor item)
+        public bool Contains(NinjascriptsServiceDescriptor item)
         {
             return _descriptors.Contains(item);
         }
 
         /// <inheritdoc />
-        public void CopyTo(NinjascriptServiceDescriptor[] array, int arrayIndex)
+        public void CopyTo(NinjascriptsServiceDescriptor[] array, int arrayIndex)
         {
             _descriptors.CopyTo(array, arrayIndex);
         }
 
         /// <inheritdoc />
-        public IEnumerator<NinjascriptServiceDescriptor> GetEnumerator()
+        public IEnumerator<NinjascriptsServiceDescriptor> GetEnumerator()
         {
             return _descriptors.GetEnumerator();
         }
 
         /// <inheritdoc />
-        public int IndexOf(NinjascriptServiceDescriptor item)
+        public int IndexOf(NinjascriptsServiceDescriptor item)
         {
             return _descriptors.IndexOf(item);
         }
 
         /// <inheritdoc />
-        public void Insert(int index, NinjascriptServiceDescriptor item)
+        public void Insert(int index, NinjascriptsServiceDescriptor item)
         {
             _descriptors.Insert(index, item);
         }
 
         /// <inheritdoc />
-        public bool Remove(NinjascriptServiceDescriptor item)
+        public bool Remove(NinjascriptsServiceDescriptor item)
         {
             return _descriptors.Remove(item);
         }

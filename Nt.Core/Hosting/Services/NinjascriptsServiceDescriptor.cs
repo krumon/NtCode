@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Nt.Core.Hosting
 {
-    public class NinjascriptServiceDescriptor
+    public class NinjascriptsServiceDescriptor
     {
 
         #region Public properties
@@ -42,12 +42,12 @@ namespace Nt.Core.Hosting
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of <see cref="NinjascriptServiceDescriptor"/> with the specified <paramref name="implementationType"/>.
+        /// Initializes a new instance of <see cref="NinjascriptsServiceDescriptor"/> with the specified <paramref name="implementationType"/>.
         /// </summary>
         /// <param name="serviceType">The <see cref="Type"/> of the service.</param>
         /// <param name="implementationType">The <see cref="Type"/> implementing the service.</param>
         /// <param name="lifetime">The <see cref="ServiceLifetime"/> of the service.</param>
-        public NinjascriptServiceDescriptor(
+        public NinjascriptsServiceDescriptor(
             Type serviceType,
             Type implementationType,
             ServiceLifetime lifetime)
@@ -60,12 +60,12 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="NinjascriptServiceDescriptor"/> with the specified <paramref name="instance"/>
+        /// Initializes a new instance of <see cref="NinjascriptsServiceDescriptor"/> with the specified <paramref name="instance"/>
         /// as a <see cref="ServiceLifetime.Singleton"/>.
         /// </summary>
         /// <param name="serviceType">The <see cref="Type"/> of the service.</param>
         /// <param name="instance">The instance implementing the service.</param>
-        public NinjascriptServiceDescriptor(
+        public NinjascriptsServiceDescriptor(
             Type serviceType,
             object instance)
             : this(serviceType, ServiceLifetime.Singleton)
@@ -77,12 +77,12 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Initializes a new instance of <see cref="NinjascriptServiceDescriptor"/> with the specified <paramref name="factory"/>.
+        /// Initializes a new instance of <see cref="NinjascriptsServiceDescriptor"/> with the specified <paramref name="factory"/>.
         /// </summary>
         /// <param name="serviceType">The <see cref="Type"/> of the service.</param>
         /// <param name="factory">A factory used for creating service instances.</param>
         /// <param name="lifetime">The <see cref="ServiceLifetime"/> of the service.</param>
-        public NinjascriptServiceDescriptor(
+        public NinjascriptsServiceDescriptor(
             Type serviceType,
             Func<IServiceProvider, object> factory,
             ServiceLifetime lifetime)
@@ -94,7 +94,7 @@ namespace Nt.Core.Hosting
             ImplementationFactory = factory ?? throw new ArgumentNullException(nameof(factory));
         }
 
-        private NinjascriptServiceDescriptor(Type serviceType, ServiceLifetime lifetime)
+        private NinjascriptsServiceDescriptor(Type serviceType, ServiceLifetime lifetime)
         {
             Lifetime = lifetime;
             ServiceType = serviceType;
@@ -140,14 +140,14 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="NinjascriptServiceDescriptor"/> with the specified
+        /// Creates an instance of <see cref="NinjascriptsServiceDescriptor"/> with the specified
         /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
         /// and the <see cref="ServiceLifetime.Transient"/> lifetime.
         /// </summary>
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
-        /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
-        public static NinjascriptServiceDescriptor Transient<TService,TImplementation>()
+        /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
+        public static NinjascriptsServiceDescriptor Transient<TService,TImplementation>()
             where TService : class
             where TImplementation : class, TService
         {
@@ -155,14 +155,14 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="NinjascriptServiceDescriptor"/> with the specified
+        /// Creates an instance of <see cref="NinjascriptsServiceDescriptor"/> with the specified
         /// <paramref name="service"/> and <paramref name="implementationType"/>
         /// and the <see cref="ServiceLifetime.Transient"/> lifetime.
         /// </summary>
         /// <param name="service">The type of the service.</param>
         /// <param name="implementationType">The type of the implementation.</param>
-        /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
-        public static NinjascriptServiceDescriptor Transient(
+        /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
+        public static NinjascriptsServiceDescriptor Transient(
             Type service,
             Type implementationType)
         {
@@ -176,7 +176,7 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="NinjascriptServiceDescriptor"/> with the specified
+        /// Creates an instance of <see cref="NinjascriptsServiceDescriptor"/> with the specified
         /// <typeparamref name="TService"/>, <typeparamref name="TImplementation"/>,
         /// <paramref name="implementationFactory"/>,
         /// and the <see cref="ServiceLifetime.Transient"/> lifetime.
@@ -184,8 +184,8 @@ namespace Nt.Core.Hosting
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation.</typeparam>
         /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
-        /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
-        public static NinjascriptServiceDescriptor Transient<TService, TImplementation>(
+        /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
+        public static NinjascriptsServiceDescriptor Transient<TService, TImplementation>(
             Func<IServiceProvider, TImplementation> implementationFactory)
             where TService : class
             where TImplementation : class, TService
@@ -197,14 +197,14 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="NinjascriptServiceDescriptor"/> with the specified
+        /// Creates an instance of <see cref="NinjascriptsServiceDescriptor"/> with the specified
         /// <typeparamref name="TService"/>, <paramref name="implementationFactory"/>,
         /// and the <see cref="ServiceLifetime.Transient"/> lifetime.
         /// </summary>
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
-        /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
-        public static NinjascriptServiceDescriptor Transient<TService>(Func<IServiceProvider, TService> implementationFactory)
+        /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
+        public static NinjascriptsServiceDescriptor Transient<TService>(Func<IServiceProvider, TService> implementationFactory)
             where TService : class
         {
             if (implementationFactory == null)
@@ -214,14 +214,14 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="NinjascriptServiceDescriptor"/> with the specified
+        /// Creates an instance of <see cref="NinjascriptsServiceDescriptor"/> with the specified
         /// <paramref name="service"/>, <paramref name="implementationFactory"/>,
         /// and the <see cref="ServiceLifetime.Transient"/> lifetime.
         /// </summary>
         /// <param name="service">The type of the service.</param>
         /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
-        /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
-        public static NinjascriptServiceDescriptor Transient(Type service, Func<IServiceProvider, object> implementationFactory)
+        /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
+        public static NinjascriptsServiceDescriptor Transient(Type service, Func<IServiceProvider, object> implementationFactory)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -233,7 +233,7 @@ namespace Nt.Core.Hosting
         }
 
 
-        private static NinjascriptServiceDescriptor Describe<TService, TImplementation>(ServiceLifetime lifetime)
+        private static NinjascriptsServiceDescriptor Describe<TService, TImplementation>(ServiceLifetime lifetime)
             where TService : class
             where TImplementation : class, TService
         {
@@ -244,34 +244,34 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="NinjascriptServiceDescriptor"/> with the specified
+        /// Creates an instance of <see cref="NinjascriptsServiceDescriptor"/> with the specified
         /// <paramref name="serviceType"/>, <paramref name="implementationType"/>,
         /// and <paramref name="lifetime"/>.
         /// </summary>
         /// <param name="serviceType">The type of the service.</param>
         /// <param name="implementationType">The type of the implementation.</param>
         /// <param name="lifetime">The lifetime of the service.</param>
-        /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
-        public static NinjascriptServiceDescriptor Describe(
+        /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
+        public static NinjascriptsServiceDescriptor Describe(
             Type serviceType,
             Type implementationType,
             ServiceLifetime lifetime)
         {
-            return new NinjascriptServiceDescriptor(serviceType, implementationType, lifetime);
+            return new NinjascriptsServiceDescriptor(serviceType, implementationType, lifetime);
         }
 
         /// <summary>
-        /// Creates an instance of <see cref="NinjascriptServiceDescriptor"/> with the specified
+        /// Creates an instance of <see cref="NinjascriptsServiceDescriptor"/> with the specified
         /// <paramref name="serviceType"/>, <paramref name="implementationFactory"/>,
         /// and <paramref name="lifetime"/>.
         /// </summary>
         /// <param name="serviceType">The type of the service.</param>
         /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
         /// <param name="lifetime">The lifetime of the service.</param>
-        /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
-        public static NinjascriptServiceDescriptor Describe(Type serviceType, Func<IServiceProvider, object> implementationFactory, ServiceLifetime lifetime)
+        /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
+        public static NinjascriptsServiceDescriptor Describe(Type serviceType, Func<IServiceProvider, object> implementationFactory, ServiceLifetime lifetime)
         {
-            return new NinjascriptServiceDescriptor(serviceType, implementationFactory, lifetime);
+            return new NinjascriptsServiceDescriptor(serviceType, implementationFactory, lifetime);
         }
 
         #endregion
