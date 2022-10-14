@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Nt.Core.Hosting.Configuration
+namespace Nt.Core.Hosting
 {
     internal class NinjascriptsConfigurationRoot : INinjascriptsConfigurationRoot
     {

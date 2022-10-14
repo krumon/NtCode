@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Nt.Core.Hosting.Services
+namespace Nt.Core.Hosting
 {
     /// <summary>
     /// Extension methods for getting services from an <see cref="IServiceProvider" />.

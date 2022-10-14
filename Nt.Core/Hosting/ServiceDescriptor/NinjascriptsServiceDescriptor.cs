@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
+﻿using System;
 using System.Diagnostics;
 
 namespace Nt.Core.Hosting
@@ -35,7 +34,7 @@ namespace Nt.Core.Hosting
         /// Gets the action thats factory (fabrica) the ninjascript service.
         /// Can be null.
         /// </summary>
-        public Func<IServiceProvider, object> ImplementationFactory { get; }
+        public Func<INinjascriptsServiceProvider, object> ImplementationFactory { get; }
 
         #endregion
 
@@ -50,8 +49,8 @@ namespace Nt.Core.Hosting
         public NinjascriptsServiceDescriptor(
             Type serviceType,
             Type implementationType,
-            ServiceLifetime lifetime)
-            : this(serviceType, lifetime)
+            ServiceLifetime lifeTime)
+            : this(serviceType, lifeTime)
         {
             if (serviceType == null)
                 throw new ArgumentNullException(nameof(serviceType));
@@ -84,7 +83,7 @@ namespace Nt.Core.Hosting
         /// <param name="lifetime">The <see cref="ServiceLifetime"/> of the service.</param>
         public NinjascriptsServiceDescriptor(
             Type serviceType,
-            Func<IServiceProvider, object> factory,
+            Func<INinjascriptsServiceProvider, object> factory,
             ServiceLifetime lifetime)
             : this(serviceType, lifetime)
         {
@@ -96,6 +95,7 @@ namespace Nt.Core.Hosting
 
         private NinjascriptsServiceDescriptor(Type serviceType, ServiceLifetime lifetime)
         {
+            //Lifetime = lifetime;
             Lifetime = lifetime;
             ServiceType = serviceType;
         }
@@ -186,7 +186,7 @@ namespace Nt.Core.Hosting
         /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
         /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
         public static NinjascriptsServiceDescriptor Transient<TService, TImplementation>(
-            Func<IServiceProvider, TImplementation> implementationFactory)
+            Func<INinjascriptsServiceProvider, TImplementation> implementationFactory)
             where TService : class
             where TImplementation : class, TService
         {
@@ -204,7 +204,7 @@ namespace Nt.Core.Hosting
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
         /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
-        public static NinjascriptsServiceDescriptor Transient<TService>(Func<IServiceProvider, TService> implementationFactory)
+        public static NinjascriptsServiceDescriptor Transient<TService>(Func<INinjascriptsServiceProvider, TService> implementationFactory)
             where TService : class
         {
             if (implementationFactory == null)
@@ -221,7 +221,7 @@ namespace Nt.Core.Hosting
         /// <param name="service">The type of the service.</param>
         /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
         /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
-        public static NinjascriptsServiceDescriptor Transient(Type service, Func<IServiceProvider, object> implementationFactory)
+        public static NinjascriptsServiceDescriptor Transient(Type service, Func<INinjascriptsServiceProvider, object> implementationFactory)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -269,7 +269,10 @@ namespace Nt.Core.Hosting
         /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
         /// <param name="lifetime">The lifetime of the service.</param>
         /// <returns>A new instance of <see cref="NinjascriptsServiceDescriptor"/>.</returns>
-        public static NinjascriptsServiceDescriptor Describe(Type serviceType, Func<IServiceProvider, object> implementationFactory, ServiceLifetime lifetime)
+        public static NinjascriptsServiceDescriptor Describe(
+            Type serviceType, 
+            Func<INinjascriptsServiceProvider, object> implementationFactory, 
+            ServiceLifetime lifetime)
         {
             return new NinjascriptsServiceDescriptor(serviceType, implementationFactory, lifetime);
         }

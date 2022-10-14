@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Nt.Core.Hosting.Configuration
+namespace Nt.Core.Hosting
 {
     public class NinjascriptsConfigurationBuilder : INinjascriptsConfigurationBuilder
     {

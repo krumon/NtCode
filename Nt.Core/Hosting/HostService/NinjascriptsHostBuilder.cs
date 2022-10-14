@@ -1,5 +1,4 @@
-﻿using Nt.Core.Hosting.Configuration;
-using Nt.Core.Hosting.Services;
+﻿using Nt.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,10 +17,10 @@ namespace Nt.Core.Hosting
         //private IServiceFactoryAdapter _serviceProviderFactory = new ServiceFactoryAdapter<IServiceCollection>(new DefaultServiceProviderFactory());
         private bool _hostBuilt;
         private INinjascriptsConfiguration _hostConfiguration;
-        private INinjascriptsConfiguration _appConfiguration;
+        private INinjascriptsConfiguration _ninjascriptsConfiguration;
         private NinjascriptsHostBuilderContext _hostBuilderContext;
-        //private HostingEnvironment _hostingEnvironment;
-        private INinjascriptsServiceProvider _appServices;
+        private NinjascriptsHostEnvironment _hostEnvironment;
+        private INinjascriptsServiceProvider _ninjascriptServices;
         //private PhysicalFileProvider _defaultProvider;
 
         #endregion
@@ -62,7 +61,7 @@ namespace Nt.Core.Hosting
                 BuildAppConfiguration();
                 CreateServiceProvider();
 
-                var host = _appServices.GetRequiredService<INinjascriptsHost>();
+                var host = _ninjascriptServices.GetRequiredService<INinjascriptsHost>();
                 if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
                 {
                     Write(diagnosticListener, hostBuiltEventName, host);
@@ -85,6 +84,11 @@ namespace Nt.Core.Hosting
 
         private void CreateHostBuilderContext()
         {
+            _hostBuilderContext = new NinjascriptsHostBuilderContext(Properties)
+            {
+                HostingEnvironment = _hostEnvironment,
+                Configuration = _hostConfiguration
+            };
         }
 
         private void BuildAppConfiguration()
@@ -93,6 +97,49 @@ namespace Nt.Core.Hosting
 
         private void CreateServiceProvider()
         {
+
+            var services = new NinjascriptsServiceCollection();
+            services.AddSingleton<INinjascriptsHostEnvironment>(_hostEnvironment);
+            services.AddSingleton(_hostBuilderContext);
+            // register configuration as factory to make it dispose with the service provider
+            services.AddSingleton(_ => _ninjascriptsConfiguration);
+            services.AddSingleton<INinjascriptLifetime, NinjascriptLifetime>();
+            AddLifetime(services);
+            services.AddSingleton<INinjascriptsHost>(_ =>
+            {
+                return new Internal.Host(_ninjascriptServices,
+                    _hostEnvironment,
+                    _fileProvider,
+                    _ninjascriptServices.GetRequiredService<INinjascriptLifetime>(),
+                    _ninjascriptServices.GetRequiredService<ILogger<Internal.Host>>(),
+                    _ninjascriptServices.GetRequiredService<IHostLifetime>(),
+                    _ninjascriptServices.GetRequiredService<IOptions<HostOptions>>());
+            });
+            services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
+            services.AddLogging();
+
+            foreach (Action<HostBuilderContext, IServiceCollection> configureServicesAction in _configureServicesActions)
+            {
+                configureServicesAction(_hostBuilderContext, services);
+            }
+
+            object containerBuilder = _serviceProviderFactory.CreateBuilder(services);
+
+            foreach (IConfigureContainerAdapter containerAction in _configureContainerActions)
+            {
+                containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
+            }
+
+            _ninjascriptServices = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
+
+            if (_ninjascriptServices == null)
+            {
+                throw new InvalidOperationException(SR.NullIServiceProvider);
+            }
+
+            // resolve configuration explicitly once to mark it as resolved within the
+            // service provider, ensuring it will be properly disposed with the provider
+            _ = _ninjascriptServices.GetService<IConfiguration>();
         }
 
         //[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:UnrecognizedReflectionPattern",Justification = "The values being passed into Write are being consumed by the application already.")]
@@ -228,15 +275,6 @@ namespace Nt.Core.Hosting
         //                return contentRootPath;
         //            }
         //            return Path.Combine(Path.GetFullPath(basePath), contentRootPath);
-        //        }
-
-        //        private void CreateHostBuilderContext()
-        //        {
-        //            _hostBuilderContext = new HostBuilderContext(Properties)
-        //            {
-        //                HostingEnvironment = _hostingEnvironment,
-        //                Configuration = _hostConfiguration
-        //            };
         //        }
 
         //        private void BuildAppConfiguration()

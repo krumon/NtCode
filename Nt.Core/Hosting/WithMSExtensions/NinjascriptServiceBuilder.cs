@@ -86,9 +86,9 @@ namespace Nt.Core.Hosting
         #region Configure methods
 
         /// <summary>
-        /// Use the given configuration to the <see cref="NinjascriptService"/>.
+        /// Use the given configuration to the <see cref="NinjascriptsService"/>.
         /// </summary>
-        /// <param name="configuration">The configuration to use in the <see cref="NinjascriptService"/>.</param>
+        /// <param name="configuration">The configuration to use in the <see cref="NinjascriptsService"/>.</param>
         /// <returns></returns>
         public NinjascriptServiceBuilder UseConfiguration (IConfiguration configuration)
         {

@@ -22,26 +22,26 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Gets the configuration
         /// </summary>
-        public static IConfiguration Configuration => NinjascriptService.Provider?.GetService<IConfiguration>();
+        public static IConfiguration Configuration => NinjascriptsService.Provider?.GetService<IConfiguration>();
 
         /// <summary>
         /// Gets the default logger
         /// </summary>
-        public static ILogger Logger => NinjascriptService.Provider?.GetService<ILogger>();
+        public static ILogger Logger => NinjascriptsService.Provider?.GetService<ILogger>();
 
         /// <summary>
         /// Gets the logger factory for creating loggers
         /// </summary>
-        public static ILoggerFactory LoggerFactory => NinjascriptService.Provider?.GetService<ILoggerFactory>();
+        public static ILoggerFactory LoggerFactory => NinjascriptsService.Provider?.GetService<ILoggerFactory>();
 
         /// <summary>
         /// Gets the framework environment
         /// </summary>
-        public static INinjascriptEnvironment FrameworkEnvironment => NinjascriptService.Provider?.GetService<INinjascriptEnvironment>();
+        public static INinjascriptEnvironment FrameworkEnvironment => NinjascriptsService.Provider?.GetService<INinjascriptEnvironment>();
 
         /// <summary>
         /// Gets the framework exception handler
         /// </summary>
-        public static IExceptionHandler ExceptionHandler => NinjascriptService.Provider?.GetService<IExceptionHandler>();
+        public static IExceptionHandler ExceptionHandler => NinjascriptsService.Provider?.GetService<IExceptionHandler>();
     }
 }

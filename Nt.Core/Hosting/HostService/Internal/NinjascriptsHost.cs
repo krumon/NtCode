@@ -53,7 +53,7 @@ namespace Nt.Core.Hosting.Internal
 
         #endregion
 
-        #region Copy from microsoft
+        #region Copy from MS
 
         //private readonly ILogger<Host> _logger;
         //private readonly IHostLifetime _hostLifetime;

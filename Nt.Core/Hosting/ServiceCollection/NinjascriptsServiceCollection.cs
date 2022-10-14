@@ -1,7 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Hosting.Internal;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 
 namespace Nt.Core.Hosting
@@ -11,16 +8,6 @@ namespace Nt.Core.Hosting
     /// </summary>
     public class NinjascriptsServiceCollection : INinjascriptsServiceCollection
     {
-
-        public NinjascriptsServiceCollection()
-        {
-            //ServiceCollection sc = null;
-            //ServiceDescriptor sd = null;
-            //ServiceProvider sp = null;
-            //HostBuilder builder;
-            //IHost host = Host.CreateDefaultBuilder().Build();
-            //ApplicationLifetime lifetime;
-        }
 
         #region Private membres
 

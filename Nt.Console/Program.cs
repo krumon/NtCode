@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+//using Microsoft.Extensions.Hosting;
 using NinjaTrader.NinjaScript;
 using System;
 using System.IO;
@@ -23,6 +23,10 @@ namespace ConsoleApp
 
         public static async Task Main(string[] args)
         {
+            //INinjascriptsHost testHost = NinjascriptsHost.CreateHostBuilder().Build();
+            var sc = new ServiceCollection();
+            Microsoft.Extensions.DependencyInjection.ServiceLifetime lifetime;
+            sc.AddSingleton(new object());
             Task waittingTheHost;
 
             NinjascriptHosting host = new NinjascriptHosting();

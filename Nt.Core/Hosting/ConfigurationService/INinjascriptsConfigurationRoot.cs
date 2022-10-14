@@ -1,4 +1,4 @@
-﻿namespace Nt.Core.Hosting.Configuration
+﻿namespace Nt.Core.Hosting
 {
     public interface INinjascriptsConfigurationRoot
     {

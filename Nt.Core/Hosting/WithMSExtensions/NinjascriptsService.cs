@@ -3,7 +3,7 @@ using System;
 
 namespace Nt.Core.Hosting
 {
-    public static class NinjascriptService
+    public static class NinjascriptsService
     {
 
         #region Public properties
