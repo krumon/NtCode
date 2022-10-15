@@ -148,7 +148,7 @@ namespace Nt.Core.Ninjascript
         /// <summary>
         /// Creates <see cref="SessionsIterator"/> default instance.
         /// </summary>
-        protected SessionsIterator() : base()
+        public SessionsIterator() : base()
         {
         }
 

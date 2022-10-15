@@ -4,12 +4,12 @@ using System.Collections.Generic;
 namespace Nt.Core.Hosting
 {
     /// <summary>
-    /// Context containing the common services on the <see cref="INinjascriptsHost" />. Some properties may be null until set by the <see cref="IHost" />.
+    /// Context containing the common services on the <see cref="INinjascriptHost" />. Some properties may be null until set by the <see cref="IHost" />.
     /// </summary>
-    public class NinjascriptsHostBuilderContext
+    public class NinjascriptHostBuilderContext
     {
 
-        public NinjascriptsHostBuilderContext(IDictionary<object, object> properties)
+        public NinjascriptHostBuilderContext(IDictionary<object, object> properties)
         {
             Properties = properties ?? throw new System.ArgumentNullException(nameof(properties));
         }
@@ -25,9 +25,9 @@ namespace Nt.Core.Hosting
         public INinjascriptsHostEnvironment HostingEnvironment { get; set; }
 
         /// <summary>
-        /// The <see cref="INinjascriptsConfiguration" /> containing the merged configuration of the application and the <see cref="IHost" />.
+        /// The <see cref="INinjascriptConfiguration" /> containing the merged configuration of the application and the <see cref="IHost" />.
         /// </summary>
-        public INinjascriptsConfiguration Configuration { get; set; }
+        public INinjascriptConfiguration Configuration { get; set; }
 
     }
 }

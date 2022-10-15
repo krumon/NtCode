@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Nt.Core.Hosting
 {
     /// <summary>
-    /// Default implementation of <see cref="INinjascriptsServiceCollection"/>.
+    /// Default implementation of <see cref="INinjascriptServiceCollection"/>.
     /// </summary>
-    public class NinjascriptsServiceCollection : INinjascriptsServiceCollection
+    public class NinjascriptServiceCollection : INinjascriptServiceCollection
     {
 
         #region Private membres

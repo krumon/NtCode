@@ -6,16 +6,16 @@ namespace Nt.Core.Hosting
     /// <summary>
     /// Extension methods for getting services from an <see cref="IServiceProvider" />.
     /// </summary>
-    public static class NinjascriptsServiceProviderExtensions
+    public static class NinjascriptServiceProviderExtensions
     {
 
         /// <summary>
-        /// Get service of type <typeparamref name="T"/> from the <see cref="INinjascriptsServiceProvider"/>.
+        /// Get service of type <typeparamref name="T"/> from the <see cref="INinjascriptServiceProvider"/>.
         /// </summary>
         /// <typeparam name="T">The type of service object to get.</typeparam>
-        /// <param name="provider">The <see cref="INinjascriptsServiceProvider"/> to retrieve the service object from.</param>
+        /// <param name="provider">The <see cref="INinjascriptServiceProvider"/> to retrieve the service object from.</param>
         /// <returns>A service object of type <typeparamref name="T"/> or null if there is no such service.</returns>
-        public static T GetService<T>(this INinjascriptsServiceProvider provider)
+        public static T GetService<T>(this INinjascriptServiceProvider provider)
         {
             if (provider == null)
             {
@@ -26,13 +26,13 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Get service of type <paramref name="serviceType"/> from the <see cref="INinjascriptsServiceProvider"/>.
+        /// Get service of type <paramref name="serviceType"/> from the <see cref="INinjascriptServiceProvider"/>.
         /// </summary>
-        /// <param name="provider">The <see cref="INinjascriptsServiceProvider"/> to retrieve the service object from.</param>
+        /// <param name="provider">The <see cref="INinjascriptServiceProvider"/> to retrieve the service object from.</param>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
         /// <returns>A service object of type <paramref name="serviceType"/>.</returns>
         /// <exception cref="System.InvalidOperationException">There is no service of type <paramref name="serviceType"/>.</exception>
-        public static object GetRequiredService(this INinjascriptsServiceProvider provider, Type serviceType)
+        public static object GetRequiredService(this INinjascriptServiceProvider provider, Type serviceType)
         {
             if (provider == null)
             {
@@ -59,13 +59,13 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Get service of type <typeparamref name="T"/> from the <see cref="INinjascriptsServiceProvider"/>.
+        /// Get service of type <typeparamref name="T"/> from the <see cref="INinjascriptServiceProvider"/>.
         /// </summary>
         /// <typeparam name="T">The type of service object to get.</typeparam>
-        /// <param name="provider">The <see cref="INinjascriptsServiceProvider"/> to retrieve the service object from.</param>
+        /// <param name="provider">The <see cref="INinjascriptServiceProvider"/> to retrieve the service object from.</param>
         /// <returns>A service object of type <typeparamref name="T"/>.</returns>
         /// <exception cref="System.InvalidOperationException">There is no service of type <typeparamref name="T"/>.</exception>
-        public static T GetRequiredService<T>(this INinjascriptsServiceProvider provider) // where T : notnull
+        public static T GetRequiredService<T>(this INinjascriptServiceProvider provider) // where T : notnull
         {
             if (provider == null)
             {
@@ -76,12 +76,12 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Get an enumeration of services of type <typeparamref name="T"/> from the <see cref="INinjascriptsServiceProvider"/>.
+        /// Get an enumeration of services of type <typeparamref name="T"/> from the <see cref="INinjascriptServiceProvider"/>.
         /// </summary>
         /// <typeparam name="T">The type of service object to get.</typeparam>
-        /// <param name="provider">The <see cref="INinjascriptsServiceProvider"/> to retrieve the services from.</param>
+        /// <param name="provider">The <see cref="INinjascriptServiceProvider"/> to retrieve the services from.</param>
         /// <returns>An enumeration of services of type <typeparamref name="T"/>.</returns>
-        public static IEnumerable<T> GetServices<T>(this INinjascriptsServiceProvider provider)
+        public static IEnumerable<T> GetServices<T>(this INinjascriptServiceProvider provider)
         {
             if (provider == null)
             {
@@ -92,12 +92,12 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
-        /// Get an enumeration of services of type <paramref name="serviceType"/> from the <see cref="INinjascriptsServiceProvider"/>.
+        /// Get an enumeration of services of type <paramref name="serviceType"/> from the <see cref="INinjascriptServiceProvider"/>.
         /// </summary>
-        /// <param name="provider">The <see cref="INinjascriptsServiceProvider"/> to retrieve the services from.</param>
+        /// <param name="provider">The <see cref="INinjascriptServiceProvider"/> to retrieve the services from.</param>
         /// <param name="serviceType">An object that specifies the type of service object to get.</param>
         /// <returns>An enumeration of services of type <paramref name="serviceType"/>.</returns>
-        public static IEnumerable<object> GetServices(this INinjascriptsServiceProvider provider, Type serviceType)
+        public static IEnumerable<object> GetServices(this INinjascriptServiceProvider provider, Type serviceType)
         {
             if (provider == null)
             {

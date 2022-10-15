@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Nt.Core.Hosting.Internal
 {
-    internal class NinjascriptsHost : INinjascriptsHost, IAsyncDisposable
+    internal class NinjascriptsHost : INinjascriptHost, IAsyncDisposable
     {
 
         #region Private members
@@ -24,14 +24,14 @@ namespace Nt.Core.Hosting.Internal
         #region Public properties
 
         /// <inheritdoc/>
-        public INinjascriptsServiceProvider Services { get; }
+        public INinjascriptServiceProvider Services { get; }
 
         #endregion
 
         #region Constructors
 
         public NinjascriptsHost(
-            INinjascriptsServiceProvider services,
+            INinjascriptServiceProvider services,
             INinjascriptsHostEnvironment hostEnvironment,
             //PhysicalFileProvider defaultProvider,
             INinjascriptLifetime ninjascriptLifetime,

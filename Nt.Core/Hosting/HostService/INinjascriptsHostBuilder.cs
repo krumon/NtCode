@@ -13,8 +13,8 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Run the given actions to initialize the host. This can only be called once.
         /// </summary>
-        /// <returns>An initialized <see cref="INinjascriptsHost"/></returns>
-        INinjascriptsHost Build();
+        /// <returns>An initialized <see cref="INinjascriptHost"/></returns>
+        INinjascriptHost Build();
 
         //
         // Resumen:

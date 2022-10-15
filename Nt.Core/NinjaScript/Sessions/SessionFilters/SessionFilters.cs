@@ -73,7 +73,7 @@ namespace Nt.Core.Ninjascript
         /// <summary>
         /// Creates <see cref="SessionFilters"/> default instance.
         /// </summary>
-        protected SessionFilters() : base()
+        public SessionFilters() : base()
         {
         }
 

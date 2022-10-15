@@ -5,7 +5,7 @@ namespace Nt.Core.Hosting
     /// <summary>
     /// Defines an engine to gets a service object.
     /// </summary>
-    public interface INinjascriptsServiceProvider
+    public interface INinjascriptServiceProvider
     {
 
         /// <summary>

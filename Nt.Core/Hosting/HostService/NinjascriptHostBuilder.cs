@@ -5,22 +5,22 @@ using System.Diagnostics;
 
 namespace Nt.Core.Hosting
 {
-    public class NinjascriptsHostBuilder : INinjascriptsHostBuilder
+    public class NinjascriptHostBuilder : INinjascriptsHostBuilder
     {
 
         #region Private members
 
-        private List<Action<INinjascriptsConfigurationBuilder>> _configureHostConfigActions = new List<Action<INinjascriptsConfigurationBuilder>>();
-        private List<Action<NinjascriptsHostBuilderContext, INinjascriptsConfigurationBuilder>> _configureAppConfigActions = new List<Action<NinjascriptsHostBuilderContext, INinjascriptsConfigurationBuilder>>();
-        private List<Action<NinjascriptsHostBuilderContext, INinjascriptsServiceCollection>> _configureServicesActions = new List<Action<NinjascriptsHostBuilderContext, INinjascriptsServiceCollection>>();
+        //private List<Action<INinjascriptsConfigurationBuilder>> _configureHostConfigActions = new List<Action<INinjascriptsConfigurationBuilder>>();
+        //private List<Action<NinjascriptHostBuilderContext, INinjascriptsConfigurationBuilder>> _configureAppConfigActions = new List<Action<NinjascriptHostBuilderContext, INinjascriptsConfigurationBuilder>>();
         //private List<IConfigureContainerAdapter> _configureContainerActions = new List<IConfigureContainerAdapter>();
         //private IServiceFactoryAdapter _serviceProviderFactory = new ServiceFactoryAdapter<IServiceCollection>(new DefaultServiceProviderFactory());
+        private List<Action<NinjascriptHostBuilderContext, INinjascriptServiceCollection>> _configureServicesActions = new List<Action<NinjascriptHostBuilderContext, INinjascriptServiceCollection>>();
         private bool _hostBuilt;
-        private INinjascriptsConfiguration _hostConfiguration;
-        private INinjascriptsConfiguration _ninjascriptsConfiguration;
-        private NinjascriptsHostBuilderContext _hostBuilderContext;
+        private INinjascriptConfiguration _hostConfiguration;
+        private INinjascriptConfiguration _ninjascriptConfiguration;
+        private NinjascriptHostBuilderContext _hostBuilderContext;
         private NinjascriptsHostEnvironment _hostEnvironment;
-        private INinjascriptsServiceProvider _ninjascriptServices;
+        private INinjascriptServiceProvider _ninjascriptServices;
         //private PhysicalFileProvider _defaultProvider;
 
         #endregion
@@ -35,7 +35,7 @@ namespace Nt.Core.Hosting
         #region Public methods
 
         /// <inheritdoc/>
-        public INinjascriptsHost Build()
+        public INinjascriptHost Build()
         {
             if (_hostBuilt)
             {
@@ -56,12 +56,12 @@ namespace Nt.Core.Hosting
                 }
 
                 BuildHostConfiguration();
-                CreateHostingEnvironment();
+                CreateHostEnvironment();
                 CreateHostBuilderContext();
-                BuildAppConfiguration();
-                CreateServiceProvider();
+                BuildNinjascriptConfiguration();
+                CreateNinjascriptServiceProvider();
 
-                var host = _ninjascriptServices.GetRequiredService<INinjascriptsHost>();
+                var host = _ninjascriptServices.GetRequiredService<INinjascriptHost>();
                 if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
                 {
                     Write(diagnosticListener, hostBuiltEventName, host);
@@ -78,34 +78,34 @@ namespace Nt.Core.Hosting
         {
         }
 
-        private void CreateHostingEnvironment()
+        private void CreateHostEnvironment()
         {
         }
 
         private void CreateHostBuilderContext()
         {
-            _hostBuilderContext = new NinjascriptsHostBuilderContext(Properties)
+            _hostBuilderContext = new NinjascriptHostBuilderContext(Properties)
             {
                 HostingEnvironment = _hostEnvironment,
                 Configuration = _hostConfiguration
             };
         }
 
-        private void BuildAppConfiguration()
+        private void BuildNinjascriptConfiguration()
         {
         }
 
-        private void CreateServiceProvider()
+        private void CreateNinjascriptServiceProvider()
         {
 
-            var services = new NinjascriptsServiceCollection();
+            var services = new NinjascriptServiceCollection();
             //services.AddSingleton<INinjascriptsHostEnvironment>(_hostEnvironment);
             services.AddSingleton(_hostBuilderContext);
             // register configuration as factory to make it dispose with the service provider
-            services.AddSingleton(_ => _ninjascriptsConfiguration);
+            services.AddSingleton(_ => _ninjascriptConfiguration);
             services.AddSingleton<INinjascriptLifetime, NinjascriptLifetime>();
             AddLifetime(services);
-            services.AddSingleton<INinjascriptsHost>(_ =>
+            services.AddSingleton<INinjascriptHost>(_ =>
             {
                 return new Internal.NinjascriptsHost(
                     _ninjascriptServices,
@@ -120,7 +120,7 @@ namespace Nt.Core.Hosting
             //services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
             //services.AddLogging();
 
-            foreach (Action<NinjascriptsHostBuilderContext, INinjascriptsServiceCollection> configureServicesAction in _configureServicesActions)
+            foreach (Action<NinjascriptHostBuilderContext, INinjascriptServiceCollection> configureServicesAction in _configureServicesActions)
             {
                 configureServicesAction(_hostBuilderContext, services);
             }
@@ -153,7 +153,7 @@ namespace Nt.Core.Hosting
             diagnosticSource.Write(name, value);
         }
 
-        private static void AddLifetime(NinjascriptsServiceCollection services)
+        private static void AddLifetime(NinjascriptServiceCollection services)
         {
             // Add the console lifetime service to listens for Ctrl+C or SIGTERM and initiates shutdown.
             //services.AddSingleton<IHostLifetime, ConsoleLifetime>();

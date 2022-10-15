@@ -12,6 +12,7 @@ using static ConsoleApp.ConsoleHelpers;
 using Nt.Core.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
+using ServiceLifetime = Nt.Core.Hosting.ServiceLifetime;
 
 namespace ConsoleApp
 {
@@ -22,17 +23,21 @@ namespace ConsoleApp
         //static SessionTimeTests sessionTimeTests = new SessionTimeTests();
         //static SessionHoursTests sessionHoursTests = new SessionHoursTests();
 
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             //INinjascriptsHost testHost = NinjascriptsHost.CreateHostBuilder().Build();
-            var sc = new ServiceCollection();
-            Microsoft.Extensions.DependencyInjection.ServiceLifetime lifetime;
-            sc.AddSingleton(new object());
+            var sc1 = new ServiceCollection();
+            ServiceLifetime lifetime;
+            sc1.AddSingleton(new object());
             ServiceProvider sp;
             HostBuilder hostBuilder;
             Task waittingTheHost;
+            
+            NinjascriptServiceCollection sc = new NinjascriptServiceCollection();
+            sc.AddSingleton(typeof(SessionFilters),new SessionFilters());
 
-            INinjascriptsHost host = NinjascriptsHost.CreateDefaultBuilder().Build();
+            sc = null;
+            //INinjascriptsHost host = NinjascriptsHost.CreateDefaultBuilder().Build();
 
             IManager sessionsManager = (IManager)SessionsManager.CreateDefaultBuilder()
             .AddSessionFilters((op) =>

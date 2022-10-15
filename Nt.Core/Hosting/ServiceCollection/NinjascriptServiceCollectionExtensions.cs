@@ -3,21 +3,21 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Nt.Core.Hosting
 {
-    public static class NinjascriptsServiceCollectionExtensions
+    public static class NinjascriptServiceCollectionExtensions
     {
 
         /// <summary>
         /// Adds a singleton service of the type specified in <paramref name="serviceType"/> with an
         /// implementation of the type specified in <paramref name="implementationType"/> to the
-        /// specified <see cref="INinjascriptsServiceCollection"/>.
+        /// specified <see cref="INinjascriptServiceCollection"/>.
         /// </summary>
-        /// <param name="services">The <see cref="INinjascriptsServiceCollection"/> to add the service to.</param>
+        /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <param name="serviceType">The type of the service to register.</param>
         /// <param name="implementationType">The implementation type of the service.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptsServiceCollection AddSingleton(
-            this INinjascriptsServiceCollection services,
+        public static INinjascriptServiceCollection AddSingleton(
+            this INinjascriptServiceCollection services,
             Type serviceType,
             Type implementationType) // [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
         {
@@ -42,17 +42,17 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Adds a singleton service of the type specified in <paramref name="serviceType"/> with a
         /// factory specified in <paramref name="implementationFactory"/> to the
-        /// specified <see cref="INinjascriptsServiceCollection"/>.
+        /// specified <see cref="INinjascriptServiceCollection"/>.
         /// </summary>
-        /// <param name="services">The <see cref="INinjascriptsServiceCollection"/> to add the service to.</param>
+        /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <param name="serviceType">The type of the service to register.</param>
         /// <param name="implementationFactory">The factory that creates the service.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptsServiceCollection AddSingleton(
-            this INinjascriptsServiceCollection services,
+        public static INinjascriptServiceCollection AddSingleton(
+            this INinjascriptServiceCollection services,
             Type serviceType,
-            Func<INinjascriptsServiceProvider, object> implementationFactory)
+            Func<INinjascriptServiceProvider, object> implementationFactory)
         {
             if (services == null)
             {
@@ -75,14 +75,14 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Adds a singleton service of the type specified in <typeparamref name="TService"/> with an
         /// implementation type specified in <typeparamref name="TImplementation"/> to the
-        /// specified <see cref="INinjascriptsServiceCollection"/>.
+        /// specified <see cref="INinjascriptServiceCollection"/>.
         /// </summary>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
-        /// <param name="services">The <see cref="INinjascriptsServiceCollection"/> to add the service to.</param>
+        /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptsServiceCollection AddSingleton<TService, TImplementation>(this INinjascriptsServiceCollection services) // [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+        public static INinjascriptServiceCollection AddSingleton<TService, TImplementation>(this INinjascriptServiceCollection services) // [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
             where TService : class
             where TImplementation : class, TService
         {
@@ -96,14 +96,14 @@ namespace Nt.Core.Hosting
 
         /// <summary>
         /// Adds a singleton service of the type specified in <paramref name="serviceType"/> to the
-        /// specified <see cref="INinjascriptsServiceCollection"/>.
+        /// specified <see cref="INinjascriptServiceCollection"/>.
         /// </summary>
-        /// <param name="services">The <see cref="INinjascriptsServiceCollection"/> to add the service to.</param>
+        /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <param name="serviceType">The type of the service to register and the implementation to use.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptsServiceCollection AddSingleton(
-            this INinjascriptsServiceCollection services,
+        public static INinjascriptServiceCollection AddSingleton(
+            this INinjascriptServiceCollection services,
             Type serviceType) // [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
         {
             if (services == null)
@@ -121,13 +121,13 @@ namespace Nt.Core.Hosting
 
         /// <summary>
         /// Adds a singleton service of the type specified in <typeparamref name="TService"/> to the
-        /// specified <see cref="INinjascriptsServiceCollection"/>.
+        /// specified <see cref="INinjascriptServiceCollection"/>.
         /// </summary>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
-        /// <param name="services">The <see cref="INinjascriptsServiceCollection"/> to add the service to.</param>
+        /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptsServiceCollection AddSingleton<TService>(this INinjascriptsServiceCollection services) // [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+        public static INinjascriptServiceCollection AddSingleton<TService>(this INinjascriptServiceCollection services) // [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
             where TService : class
         {
             if (services == null)
@@ -141,16 +141,16 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Adds a singleton service of the type specified in <typeparamref name="TService"/> with a
         /// factory specified in <paramref name="implementationFactory"/> to the
-        /// specified <see cref="INinjascriptsServiceCollection"/>.
+        /// specified <see cref="INinjascriptServiceCollection"/>.
         /// </summary>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
-        /// <param name="services">The <see cref="INinjascriptsServiceCollection"/> to add the service to.</param>
+        /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <param name="implementationFactory">The factory that creates the service.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptsServiceCollection AddSingleton<TService>(
-            this INinjascriptsServiceCollection services,
-            Func<INinjascriptsServiceProvider, TService> implementationFactory)
+        public static INinjascriptServiceCollection AddSingleton<TService>(
+            this INinjascriptServiceCollection services,
+            Func<INinjascriptServiceProvider, TService> implementationFactory)
             where TService : class
         {
             if (services == null)
@@ -170,17 +170,17 @@ namespace Nt.Core.Hosting
         /// Adds a singleton service of the type specified in <typeparamref name="TService"/> with an
         /// implementation type specified in <typeparamref name="TImplementation" /> using the
         /// factory specified in <paramref name="implementationFactory"/> to the
-        /// specified <see cref="INinjascriptsServiceCollection"/>.
+        /// specified <see cref="INinjascriptServiceCollection"/>.
         /// </summary>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
-        /// <param name="services">The <see cref="INinjascriptsServiceCollection"/> to add the service to.</param>
+        /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <param name="implementationFactory">The factory that creates the service.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptsServiceCollection AddSingleton<TService, TImplementation>(
-            this INinjascriptsServiceCollection services,
-            Func<INinjascriptsServiceProvider, TImplementation> implementationFactory)
+        public static INinjascriptServiceCollection AddSingleton<TService, TImplementation>(
+            this INinjascriptServiceCollection services,
+            Func<INinjascriptServiceProvider, TImplementation> implementationFactory)
             where TService : class
             where TImplementation : class, TService
         {
@@ -200,15 +200,15 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Adds a singleton service of the type specified in <paramref name="serviceType"/> with an
         /// instance specified in <paramref name="implementationInstance"/> to the
-        /// specified <see cref="INinjascriptsServiceCollection"/>.
+        /// specified <see cref="INinjascriptServiceCollection"/>.
         /// </summary>
-        /// <param name="services">The <see cref="INinjascriptsServiceCollection"/> to add the service to.</param>
+        /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <param name="serviceType">The type of the service to register.</param>
         /// <param name="implementationInstance">The instance of the service.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptsServiceCollection AddSingleton(
-            this INinjascriptsServiceCollection services,
+        public static INinjascriptServiceCollection AddSingleton(
+            this INinjascriptServiceCollection services,
             Type serviceType,
             object implementationInstance)
         {
@@ -235,14 +235,14 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Adds a singleton service of the type specified in <typeparamref name="TService" /> with an
         /// instance specified in <paramref name="implementationInstance"/> to the
-        /// specified <see cref="INinjascriptsServiceCollection"/>.
+        /// specified <see cref="INinjascriptServiceCollection"/>.
         /// </summary>
-        /// <param name="services">The <see cref="INinjascriptsServiceCollection"/> to add the service to.</param>
+        /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <param name="implementationInstance">The instance of the service.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptsServiceCollection AddSingleton<TService>(
-            this INinjascriptsServiceCollection services,
+        public static INinjascriptServiceCollection AddSingleton<TService>(
+            this INinjascriptServiceCollection services,
             TService implementationInstance)
             where TService : class
         {
@@ -259,8 +259,8 @@ namespace Nt.Core.Hosting
             return services.AddSingleton(typeof(TService), implementationInstance);
         }
 
-        private static INinjascriptsServiceCollection Add(
-            INinjascriptsServiceCollection collection,
+        private static INinjascriptServiceCollection Add(
+            INinjascriptServiceCollection collection,
             Type serviceType,
             Type implementationType,
             ServiceLifetime lifetime)
@@ -270,10 +270,10 @@ namespace Nt.Core.Hosting
             return collection;
         }
 
-        private static INinjascriptsServiceCollection Add(
-            INinjascriptsServiceCollection collection,
+        private static INinjascriptServiceCollection Add(
+            INinjascriptServiceCollection collection,
             Type serviceType,
-            Func<INinjascriptsServiceProvider, object> implementationFactory,
+            Func<INinjascriptServiceProvider, object> implementationFactory,
             ServiceLifetime lifetime)
         {
             var descriptor = new NinjascriptServiceDescriptor(serviceType, implementationFactory, lifetime);

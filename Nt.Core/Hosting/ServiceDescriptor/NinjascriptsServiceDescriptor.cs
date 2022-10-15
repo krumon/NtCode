@@ -34,7 +34,7 @@ namespace Nt.Core.Hosting
         /// Gets the action thats factory (fabrica) the ninjascript service.
         /// Can be null.
         /// </summary>
-        public Func<INinjascriptsServiceProvider, object> ImplementationFactory { get; }
+        public Func<INinjascriptServiceProvider, object> ImplementationFactory { get; }
 
         #endregion
 
@@ -83,7 +83,7 @@ namespace Nt.Core.Hosting
         /// <param name="lifetime">The <see cref="ServiceLifetime"/> of the service.</param>
         public NinjascriptServiceDescriptor(
             Type serviceType,
-            Func<INinjascriptsServiceProvider, object> factory,
+            Func<INinjascriptServiceProvider, object> factory,
             ServiceLifetime lifetime)
             : this(serviceType, lifetime)
         {
@@ -186,7 +186,7 @@ namespace Nt.Core.Hosting
         /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
         /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
         public static NinjascriptServiceDescriptor Singleton<TService, TImplementation>(
-            Func<INinjascriptsServiceProvider, TImplementation> implementationFactory)
+            Func<INinjascriptServiceProvider, TImplementation> implementationFactory)
             where TService : class
             where TImplementation : class, TService
         {
@@ -205,7 +205,7 @@ namespace Nt.Core.Hosting
         /// <param name="implementationFactory">A factory to create new instances of the service implementation.</param>
         /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
         public static NinjascriptServiceDescriptor Singleton<TService>(
-            Func<INinjascriptsServiceProvider, TService> implementationFactory)
+            Func<INinjascriptServiceProvider, TService> implementationFactory)
             where TService : class
         {
             if (implementationFactory == null)
@@ -224,7 +224,7 @@ namespace Nt.Core.Hosting
         /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
         public static NinjascriptServiceDescriptor Singleton(
             Type service, 
-            Func<INinjascriptsServiceProvider, object> implementationFactory)
+            Func<INinjascriptServiceProvider, object> implementationFactory)
         {
             if (service == null)
                 throw new ArgumentNullException(nameof(service));
@@ -274,7 +274,7 @@ namespace Nt.Core.Hosting
         /// <returns>A new instance of <see cref="NinjascriptServiceDescriptor"/>.</returns>
         public static NinjascriptServiceDescriptor Describe(
             Type serviceType, 
-            Func<INinjascriptsServiceProvider, object> implementationFactory, 
+            Func<INinjascriptServiceProvider, object> implementationFactory, 
             ServiceLifetime lifetime)
         {
             return new NinjascriptServiceDescriptor(serviceType, implementationFactory, lifetime);

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Nt.Core.Hosting
 {
-    public class NinjascriptsConfigurationBuilder : INinjascriptsConfigurationBuilder
+    public class NinjascriptConfigurationBuilder : INinjascriptConfigurationBuilder
     {
 
         /// <summary>
         /// Returns the sources used to obtain configuration values.
         /// </summary>
-        public IList<INinjascriptsConfigurationSource> Sources { get; } = new List<INinjascriptsConfigurationSource>();
+        public IList<INinjascriptConfigurationSource> Sources { get; } = new List<INinjascriptConfigurationSource>();
 
         /// <summary>
         /// Gets a key/value collection that can be used to share data between the <see cref="IConfigurationBuilder"/>
@@ -22,7 +22,7 @@ namespace Nt.Core.Hosting
         /// </summary>
         /// <param name="source">The configuration source to add.</param>
         /// <returns>The same <see cref="IConfigurationBuilder"/>.</returns>
-        public INinjascriptsConfigurationBuilder Add(INinjascriptsConfigurationSource source)
+        public INinjascriptConfigurationBuilder Add(INinjascriptConfigurationSource source)
         {
             if (source == null)
             {
@@ -38,15 +38,15 @@ namespace Nt.Core.Hosting
         /// <see cref="Sources"/>.
         /// </summary>
         /// <returns>An <see cref="IConfigurationRoot"/> with keys and values from the registered providers.</returns>
-        public INinjascriptsConfigurationRoot Build()
+        public INinjascriptConfigurationRoot Build()
         {
-            var providers = new List<INinjascriptsConfigurationProvider>();
-            foreach (INinjascriptsConfigurationSource source in Sources)
+            var providers = new List<INinjascriptConfigurationProvider>();
+            foreach (INinjascriptConfigurationSource source in Sources)
             {
-                INinjascriptsConfigurationProvider provider = source.Build(this);
+                INinjascriptConfigurationProvider provider = source.Build(this);
                 providers.Add(provider);
             }
-            return new NinjascriptsConfigurationRoot(providers);
+            return new NinjascriptConfigurationRoot(providers);
         }
 
     }
