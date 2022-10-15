@@ -17,7 +17,7 @@ namespace Nt.Core.Hosting
         private bool _dispose;
         private ConcurrentDictionary<Type, Func<Type,object>> _realizedServices;
         private object _createService;
-        NinjascriptsServiceDescriptor[] _descriptors;
+        NinjascriptServiceDescriptor[] _descriptors;
 
         #endregion
 
@@ -63,7 +63,7 @@ namespace Nt.Core.Hosting
 
         #region Constructors
 
-        public NinjascriptsServiceProvider(ICollection<NinjascriptsServiceDescriptor> descriptors)
+        public NinjascriptsServiceProvider(ICollection<NinjascriptServiceDescriptor> descriptors)
         {
             _realizedServices = new ConcurrentDictionary<Type, Func<Type,object>>();
             ValidateDescriptors(descriptors);
@@ -79,9 +79,9 @@ namespace Nt.Core.Hosting
             _dispose = true;
         }
 
-        private NinjascriptsServiceDescriptor[] ValidateDescriptors(ICollection<NinjascriptsServiceDescriptor> descriptors)
+        private NinjascriptServiceDescriptor[] ValidateDescriptors(ICollection<NinjascriptServiceDescriptor> descriptors)
         {
-            _descriptors = new NinjascriptsServiceDescriptor[descriptors.Count];
+            _descriptors = new NinjascriptServiceDescriptor[descriptors.Count];
             descriptors.CopyTo(_descriptors, 0);
             return _descriptors;
         }

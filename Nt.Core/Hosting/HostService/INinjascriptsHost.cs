@@ -9,7 +9,7 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// The ninjascript configured services.
         /// </summary>
-        IServiceProvider Services { get; }
+        INinjascriptsServiceProvider Services { get; }
 
         /// <summary>
         /// Start the ninjascript.

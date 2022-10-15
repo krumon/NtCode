@@ -7,9 +7,9 @@ namespace Nt.Core.Hosting
     /// Specifies the contract for a collection of ninjascript service descriptors.
     /// </summary>
     public interface INinjascriptsServiceCollection : 
-        IList<NinjascriptsServiceDescriptor>, 
-        ICollection<NinjascriptsServiceDescriptor>, 
-        IEnumerable<NinjascriptsServiceDescriptor>, 
+        IList<NinjascriptServiceDescriptor>, 
+        ICollection<NinjascriptServiceDescriptor>, 
+        IEnumerable<NinjascriptServiceDescriptor>, 
         IEnumerable
     {
     }

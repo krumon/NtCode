@@ -11,6 +11,7 @@ using Nt.Core;
 using static ConsoleApp.ConsoleHelpers;
 using Nt.Core.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 
 namespace ConsoleApp
 {
@@ -27,11 +28,11 @@ namespace ConsoleApp
             var sc = new ServiceCollection();
             Microsoft.Extensions.DependencyInjection.ServiceLifetime lifetime;
             sc.AddSingleton(new object());
+            ServiceProvider sp;
+            HostBuilder hostBuilder;
             Task waittingTheHost;
 
-            NinjascriptHosting host = new NinjascriptHosting();
-            host.Build();
-            waittingTheHost = host.RunAsync();
+            INinjascriptsHost host = NinjascriptsHost.CreateDefaultBuilder().Build();
 
             IManager sessionsManager = (IManager)SessionsManager.CreateDefaultBuilder()
             .AddSessionFilters((op) =>
@@ -92,7 +93,6 @@ namespace ConsoleApp
 
             //var th = NinjaTrader.Data.TradingHours.Get("CME US Index Futures ETH");
             //var th2 = NinjaTrader.Data.TradingHours.String2TradingHours("CME US Index Futures ETH");
-            await waittingTheHost;
             
         }
 

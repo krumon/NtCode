@@ -14,14 +14,14 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Represents the descriptors collection.
         /// </summary>
-        private readonly IList<NinjascriptsServiceDescriptor> _descriptors = new List<NinjascriptsServiceDescriptor>();
+        private readonly IList<NinjascriptServiceDescriptor> _descriptors = new List<NinjascriptServiceDescriptor>();
 
         #endregion
 
         #region Implamentation
 
         /// <inheritdoc />
-        public NinjascriptsServiceDescriptor this[int index]
+        public NinjascriptServiceDescriptor this[int index]
         {
             get => _descriptors[index];
             set => _descriptors[index] = value;
@@ -34,7 +34,7 @@ namespace Nt.Core.Hosting
         public bool IsReadOnly => false;
 
         /// <inheritdoc />
-        public void Add(NinjascriptsServiceDescriptor item)
+        public void Add(NinjascriptServiceDescriptor item)
         {
             _descriptors.Add(item);
         }
@@ -46,37 +46,37 @@ namespace Nt.Core.Hosting
         }
 
         /// <inheritdoc />
-        public bool Contains(NinjascriptsServiceDescriptor item)
+        public bool Contains(NinjascriptServiceDescriptor item)
         {
             return _descriptors.Contains(item);
         }
 
         /// <inheritdoc />
-        public void CopyTo(NinjascriptsServiceDescriptor[] array, int arrayIndex)
+        public void CopyTo(NinjascriptServiceDescriptor[] array, int arrayIndex)
         {
             _descriptors.CopyTo(array, arrayIndex);
         }
 
         /// <inheritdoc />
-        public IEnumerator<NinjascriptsServiceDescriptor> GetEnumerator()
+        public IEnumerator<NinjascriptServiceDescriptor> GetEnumerator()
         {
             return _descriptors.GetEnumerator();
         }
 
         /// <inheritdoc />
-        public int IndexOf(NinjascriptsServiceDescriptor item)
+        public int IndexOf(NinjascriptServiceDescriptor item)
         {
             return _descriptors.IndexOf(item);
         }
 
         /// <inheritdoc />
-        public void Insert(int index, NinjascriptsServiceDescriptor item)
+        public void Insert(int index, NinjascriptServiceDescriptor item)
         {
             _descriptors.Insert(index, item);
         }
 
         /// <inheritdoc />
-        public bool Remove(NinjascriptsServiceDescriptor item)
+        public bool Remove(NinjascriptServiceDescriptor item)
         {
             return _descriptors.Remove(item);
         }
