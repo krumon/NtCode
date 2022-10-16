@@ -32,7 +32,7 @@ namespace Nt.Core.Services
 
         #region Constructor
 
-        internal NinjascriptServiceProvider(ICollection<NinjascriptServiceDescriptor> serviceDescriptors) //, ServiceProviderOptions options)
+        internal NinjascriptServiceProvider(ICollection<NinjascriptServiceDescriptor> serviceDescriptors, NinjascriptServiceProviderOptions options)
         {
             // note that Root needs to be set before calling GetEngine(), because the engine may need to access Root
             Root = new ServiceProviderEngineScope(this, isRootScope: true);
@@ -47,15 +47,12 @@ namespace Nt.Core.Services
             //CallSiteFactory.Add(typeof(IServiceScopeFactory), new ConstantCallSite(typeof(IServiceScopeFactory), Root));
             //CallSiteFactory.Add(typeof(IServiceProviderIsService), new ConstantCallSite(typeof(IServiceProviderIsService), CallSiteFactory));
 
-            // Replace the options in the constructor
-            string options = "ValidateOnBuild";
-
-            if (options == "ValidateScopes")
+            if (options.ValidateScopes)
             {
                 _callSiteValidator = new CallSiteValidator();
             }
 
-            if (options == "ValidateOnBuild")
+            if (options.ValidateOnBuild)
             {
                 List<Exception> exceptions = null;
                 foreach (NinjascriptServiceDescriptor serviceDescriptor in serviceDescriptors)

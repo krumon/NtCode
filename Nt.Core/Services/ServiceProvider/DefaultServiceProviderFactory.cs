@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace Nt.Core.Services
 {
     /// <summary>
@@ -6,31 +8,25 @@ namespace Nt.Core.Services
     /// </summary>
     public class DefaultServiceProviderFactory : IServiceProviderFactory<INinjascriptServiceCollection>
     {
-        //private readonly ServiceProviderOptions _options;
+        private readonly NinjascriptServiceProviderOptions _options;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultServiceProviderFactory"/> class
         /// with default options.
         /// </summary>
-        //public DefaultServiceProviderFactory() : this(ServiceProviderOptions.Default)
-        //{
-
-        //}
+        public DefaultServiceProviderFactory() : this(NinjascriptServiceProviderOptions.Default)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultServiceProviderFactory"/> class
         /// with the specified <paramref name="options"/>.
         /// </summary>
         /// <param name="options">The options to use for this instance.</param>
-        //public DefaultServiceProviderFactory(ServiceProviderOptions options)
-        //{
-        //    if (options == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(options));
-        //    }
-
-        //    _options = options;
-        //}
+        public DefaultServiceProviderFactory(NinjascriptServiceProviderOptions options)
+        {
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+        }
 
         /// <inheritdoc />
         public INinjascriptServiceCollection CreateBuilder(INinjascriptServiceCollection services)
@@ -41,8 +37,7 @@ namespace Nt.Core.Services
         /// <inheritdoc />
         public INinjascriptServiceProvider CreateServiceProvider(INinjascriptServiceCollection containerBuilder)
         {
-            return default;
-            //return containerBuilder.BuildServiceProvider(_options);
+            return containerBuilder.BuildServiceProvider(_options);
         }
     }
 }

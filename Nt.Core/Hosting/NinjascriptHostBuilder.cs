@@ -1,12 +1,13 @@
 ﻿using Nt.Core.Configuration;
 using Nt.Core.Services;
+using Nt.Core.Services.Internal;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Nt.Core.Hosting
 {
-    public class NinjascriptHostBuilder : INinjascriptsHostBuilder
+    public class NinjascriptHostBuilder : INinjascriptHostBuilder
     {
 
         #region Private members
@@ -34,6 +35,42 @@ namespace Nt.Core.Hosting
         #endregion
 
         #region Public methods
+
+        /// <summary>
+        /// Adds services to the container. This can be called multiple times and the results will be additive.
+        /// </summary>
+        /// <param name="configureDelegate">The delegate for configuring the <see cref="IConfigurationBuilder"/> that will be used
+        /// to construct the <see cref="IConfiguration"/> for the host.</param>
+        /// <returns>The same instance of the <see cref="INinjascriptHostBuilder"/> for chaining.</returns>
+        public INinjascriptHostBuilder ConfigureServices(Action<NinjascriptHostBuilderContext, INinjascriptServiceCollection> configureDelegate)
+        {
+            _configureServicesActions.Add(configureDelegate ?? throw new ArgumentNullException(nameof(configureDelegate)));
+            return this;
+        }
+
+        /// <summary>
+        /// Overrides the factory used to create the service provider.
+        /// </summary>
+        /// <typeparam name="TContainerBuilder">The type of the builder to create.</typeparam>
+        /// <param name="factory">A factory used for creating service providers.</param>
+        /// <returns>The same instance of the <see cref="INinjascriptHostBuilder"/> for chaining.</returns>
+        public INinjascriptHostBuilder UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory)
+        {
+            _serviceProviderFactory = new ServiceFactoryAdapter<TContainerBuilder>(factory ?? throw new ArgumentNullException(nameof(factory)));
+            return this;
+        }
+
+        /// <summary>
+        /// Overrides the factory used to create the service provider.
+        /// </summary>
+        /// <param name="factory">A factory used for creating service providers.</param>
+        /// <typeparam name="TContainerBuilder">The type of the builder to create.</typeparam>
+        /// <returns>The same instance of the <see cref="INinjascriptHostBuilder"/> for chaining.</returns>
+        public INinjascriptHostBuilder UseServiceProviderFactory<TContainerBuilder>(Func<NinjascriptHostBuilderContext, IServiceProviderFactory<TContainerBuilder>> factory)
+        {
+            _serviceProviderFactory = new ServiceFactoryAdapter<TContainerBuilder>(() => _hostBuilderContext, factory ?? throw new ArgumentNullException(nameof(factory)));
+            return this;
+        }
 
         /// <inheritdoc/>
         public INinjascriptHost Build()
@@ -118,6 +155,7 @@ namespace Nt.Core.Hosting
                     //_ninjascriptServices.GetRequiredService<IOptions<HostOptions>>()
                     );
             });
+
             //services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
             //services.AddLogging();
 
@@ -126,14 +164,14 @@ namespace Nt.Core.Hosting
                 configureServicesAction(_hostBuilderContext, services);
             }
 
-            //object containerBuilder = _serviceProviderFactory.CreateBuilder(services);
+            object containerBuilder = _serviceProviderFactory.CreateBuilder(services);
 
             //foreach (IConfigureContainerAdapter containerAction in _configureContainerActions)
             //{
             //    containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
             //}
 
-            //_ninjascriptServices = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
+            _ninjascriptServices = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
 
             //if (_ninjascriptServices == null)
             //{
@@ -188,42 +226,6 @@ namespace Nt.Core.Hosting
         //        public IHostBuilder ConfigureAppConfiguration(Action<HostBuilderContext, IConfigurationBuilder> configureDelegate)
         //        {
         //            _configureAppConfigActions.Add(configureDelegate ?? throw new ArgumentNullException(nameof(configureDelegate)));
-        //            return this;
-        //        }
-
-        //        /// <summary>
-        //        /// Adds services to the container. This can be called multiple times and the results will be additive.
-        //        /// </summary>
-        //        /// <param name="configureDelegate">The delegate for configuring the <see cref="IConfigurationBuilder"/> that will be used
-        //        /// to construct the <see cref="IConfiguration"/> for the host.</param>
-        //        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        //        public IHostBuilder ConfigureServices(Action<HostBuilderContext, IServiceCollection> configureDelegate)
-        //        {
-        //            _configureServicesActions.Add(configureDelegate ?? throw new ArgumentNullException(nameof(configureDelegate)));
-        //            return this;
-        //        }
-
-        //        /// <summary>
-        //        /// Overrides the factory used to create the service provider.
-        //        /// </summary>
-        //        /// <typeparam name="TContainerBuilder">The type of the builder to create.</typeparam>
-        //        /// <param name="factory">A factory used for creating service providers.</param>
-        //        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        //        public IHostBuilder UseServiceProviderFactory<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory)
-        //        {
-        //            _serviceProviderFactory = new ServiceFactoryAdapter<TContainerBuilder>(factory ?? throw new ArgumentNullException(nameof(factory)));
-        //            return this;
-        //        }
-
-        //        /// <summary>
-        //        /// Overrides the factory used to create the service provider.
-        //        /// </summary>
-        //        /// <param name="factory">A factory used for creating service providers.</param>
-        //        /// <typeparam name="TContainerBuilder">The type of the builder to create.</typeparam>
-        //        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        //        public IHostBuilder UseServiceProviderFactory<TContainerBuilder>(Func<HostBuilderContext, IServiceProviderFactory<TContainerBuilder>> factory)
-        //        {
-        //            _serviceProviderFactory = new ServiceFactoryAdapter<TContainerBuilder>(() => _hostBuilderContext, factory ?? throw new ArgumentNullException(nameof(factory)));
         //            return this;
         //        }
 

@@ -228,13 +228,15 @@
     <Compile Include="Services\.Interfaces\IServiceScope.cs" />
     <Compile Include="Services\.Interfaces\IServiceScopeFactory.cs" />
     <Compile Include="Services\.Internal\ServiceProviderEngine.cs" />
+    <Compile Include="Services\ServiceProvider\ServiceCollectionToServiceProviderExtensions.cs" />
+    <Compile Include="Services\ServiceProvider\NinjascriptServiceProviderOptions.cs" />
     <Compile Include="Services\ServiceProvider\ServiceProviderEngineScope.cs" />
     <Compile Include="Services\.Interfaces\IHostLifetime.cs" />
     <Compile Include="Services\Lifetime\HostLifetime.cs" />
     <Compile Include="Services\Lifetime\NinjascriptLifetime.cs" />
     <Compile Include="Services\.Interfaces\INinjascriptLifetime.cs" />
     <Compile Include="Hosting\NinjascriptHost.cs" />
-    <Compile Include="Hosting\Interfaces\INinjascriptsHostBuilder.cs" />
+    <Compile Include="Hosting\Interfaces\INinjascriptHostBuilder.cs" />
     <Compile Include="Configuration\Interfaces\INinjascriptConfiguration.cs" />
     <Compile Include="Services\.Interfaces\IRequiredService.cs" />
     <Compile Include="Services\ServiceProvider\NinjascriptServiceProviderExtensions.cs" />

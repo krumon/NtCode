@@ -19,7 +19,7 @@
         ///   </list>
         /// </remarks>
         /// <returns>The initialized <see cref="IHostBuilder"/>.</returns>
-        public static INinjascriptsHostBuilder CreateDefaultBuilder()
+        public static INinjascriptHostBuilder CreateDefaultBuilder()
         {
             //HostBuilder builder = new();
             //return builder.ConfigureDefaults(args);
