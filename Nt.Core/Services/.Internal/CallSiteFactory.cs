@@ -1,16 +1,16 @@
-﻿namespace Nt.Core.Services.Internal
+﻿
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+
+namespace Nt.Core.Services.Internal
 {
-    internal sealed class CallSiteFactory
+    internal sealed class CallSiteFactory : IServiceProviderIsService
     {
-
-        #region Copy from MS
-
-        //internal sealed class CallSiteFactory : IServiceProviderIsService
-        //{
         //    private const int DefaultSlot = 0;
         //    private readonly ServiceDescriptor[] _descriptors;
         //    private readonly ConcurrentDictionary<ServiceCacheKey, ServiceCallSite> _callSiteCache = new ConcurrentDictionary<ServiceCacheKey, ServiceCallSite>();
-        //    private readonly Dictionary<Type, ServiceDescriptorCacheItem> _descriptorLookup = new Dictionary<Type, ServiceDescriptorCacheItem>();
+        private readonly Dictionary<Type, ServiceDescriptorCacheItem> _descriptorLookup = new Dictionary<Type, ServiceDescriptorCacheItem>();
         //    private readonly ConcurrentDictionary<Type, object> _callSiteLocks = new ConcurrentDictionary<Type, object>();
 
         //    private readonly StackGuard _stackGuard;
@@ -522,129 +522,126 @@
         //        _callSiteCache[new ServiceCacheKey(type, DefaultSlot)] = serviceCallSite;
         //    }
 
-        //    public bool IsService(Type serviceType)
-        //    {
-        //        if (serviceType is null)
-        //        {
-        //            throw new ArgumentNullException(nameof(serviceType));
-        //        }
+        public bool IsService(Type serviceType)
+        {
+            if (serviceType is null)
+            {
+                throw new ArgumentNullException(nameof(serviceType));
+            }
 
-        //        // Querying for an open generic should return false (they aren't resolvable)
-        //        if (serviceType.IsGenericTypeDefinition)
-        //        {
-        //            return false;
-        //        }
+            // Querying for an open generic should return false (they aren't resolvable)
+            if (serviceType.IsGenericTypeDefinition)
+            {
+                return false;
+            }
 
-        //        if (_descriptorLookup.ContainsKey(serviceType))
-        //        {
-        //            return true;
-        //        }
+            if (_descriptorLookup.ContainsKey(serviceType))
+            {
+                return true;
+            }
 
-        //        if (serviceType.IsConstructedGenericType && serviceType.GetGenericTypeDefinition() is Type genericDefinition)
-        //        {
-        //            // We special case IEnumerable since it isn't explicitly registered in the container
-        //            // yet we can manifest instances of it when requested.
-        //            return genericDefinition == typeof(IEnumerable<>) || _descriptorLookup.ContainsKey(genericDefinition);
-        //        }
+            if (serviceType.IsConstructedGenericType && serviceType.GetGenericTypeDefinition() is Type genericDefinition)
+            {
+                // We special case IEnumerable since it isn't explicitly registered in the container
+                // yet we can manifest instances of it when requested.
+                return genericDefinition == typeof(IEnumerable<>) || _descriptorLookup.ContainsKey(genericDefinition);
+            }
 
-        //        // These are the built in service types that aren't part of the list of service descriptors
-        //        // If you update these make sure to also update the code in ServiceProvider.ctor
-        //        return serviceType == typeof(IServiceProvider) ||
-        //               serviceType == typeof(IServiceScopeFactory) ||
-        //               serviceType == typeof(IServiceProviderIsService);
-        //    }
+            // These are the built in service types that aren't part of the list of service descriptors
+            // If you update these make sure to also update the code in ServiceProvider.ctor
+            return serviceType == typeof(INinjascriptServiceProvider) ||
+                   serviceType == typeof(IServiceScopeFactory) ||
+                   serviceType == typeof(IServiceProviderIsService);
+        }
 
-        //    private struct ServiceDescriptorCacheItem
-        //    {
-        //        private ServiceDescriptor _item;
+        private struct ServiceDescriptorCacheItem
+        {
+            private NinjascriptServiceDescriptor _item;
 
-        //        private List<ServiceDescriptor> _items;
+            private List<NinjascriptServiceDescriptor> _items;
 
-        //        public ServiceDescriptor Last
-        //        {
-        //            get
-        //            {
-        //                if (_items != null && _items.Count > 0)
-        //                {
-        //                    return _items[_items.Count - 1];
-        //                }
+            public NinjascriptServiceDescriptor Last
+            {
+                get
+                {
+                    if (_items != null && _items.Count > 0)
+                    {
+                        return _items[_items.Count - 1];
+                    }
 
-        //                Debug.Assert(_item != null);
-        //                return _item;
-        //            }
-        //        }
+                    Debug.Assert(_item != null);
+                    return _item;
+                }
+            }
 
-        //        public int Count
-        //        {
-        //            get
-        //            {
-        //                if (_item == null)
-        //                {
-        //                    Debug.Assert(_items == null);
-        //                    return 0;
-        //                }
+            public int Count
+            {
+                get
+                {
+                    if (_item == null)
+                    {
+                        Debug.Assert(_items == null);
+                        return 0;
+                    }
 
-        //                return 1 + (_items?.Count ?? 0);
-        //            }
-        //        }
+                    return 1 + (_items?.Count ?? 0);
+                }
+            }
 
-        //        public ServiceDescriptor this[int index]
-        //        {
-        //            get
-        //            {
-        //                if (index >= Count)
-        //                {
-        //                    throw new ArgumentOutOfRangeException(nameof(index));
-        //                }
+            public NinjascriptServiceDescriptor this[int index]
+            {
+                get
+                {
+                    if (index >= Count)
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(index));
+                    }
 
-        //                if (index == 0)
-        //                {
-        //                    return _item;
-        //                }
+                    if (index == 0)
+                    {
+                        return _item;
+                    }
 
-        //                return _items[index - 1];
-        //            }
-        //        }
+                    return _items[index - 1];
+                }
+            }
 
-        //        public int GetSlot(ServiceDescriptor descriptor)
-        //        {
-        //            if (descriptor == _item)
-        //            {
-        //                return Count - 1;
-        //            }
+            public int GetSlot(NinjascriptServiceDescriptor descriptor)
+            {
+                if (descriptor == _item)
+                {
+                    return Count - 1;
+                }
 
-        //            if (_items != null)
-        //            {
-        //                int index = _items.IndexOf(descriptor);
-        //                if (index != -1)
-        //                {
-        //                    return _items.Count - (index + 1);
-        //                }
-        //            }
+                if (_items != null)
+                {
+                    int index = _items.IndexOf(descriptor);
+                    if (index != -1)
+                    {
+                        return _items.Count - (index + 1);
+                    }
+                }
 
-        //            throw new InvalidOperationException(SR.ServiceDescriptorNotExist);
-        //        }
+                throw new InvalidOperationException("Service descriptor not exists.");
+            }
 
-        //        public ServiceDescriptorCacheItem Add(ServiceDescriptor descriptor)
-        //        {
-        //            var newCacheItem = default(ServiceDescriptorCacheItem);
-        //            if (_item == null)
-        //            {
-        //                Debug.Assert(_items == null);
-        //                newCacheItem._item = descriptor;
-        //            }
-        //            else
-        //            {
-        //                newCacheItem._item = _item;
-        //                newCacheItem._items = _items ?? new List<ServiceDescriptor>();
-        //                newCacheItem._items.Add(descriptor);
-        //            }
-        //            return newCacheItem;
-        //        }
-        //    }
-        //}
+            public ServiceDescriptorCacheItem Add(NinjascriptServiceDescriptor descriptor)
+            {
+                var newCacheItem = default(ServiceDescriptorCacheItem);
+                if (_item == null)
+                {
+                    Debug.Assert(_items == null);
+                    newCacheItem._item = descriptor;
+                }
+                else
+                {
+                    newCacheItem._item = _item;
+                    newCacheItem._items = _items ?? new List<NinjascriptServiceDescriptor>();
+                    newCacheItem._items.Add(descriptor);
+                }
+                return newCacheItem;
+            }
+        }
 
-
-        #endregion
     }
 }

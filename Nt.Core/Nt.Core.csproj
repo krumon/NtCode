@@ -211,6 +211,10 @@
     <Compile Include="Configuration\Interfaces\INinjascriptConfigurationSource.cs" />
     <Compile Include="Configuration\NinjascriptConfigurationBuilder.cs" />
     <Compile Include="Configuration\NinjascriptConfigurationRoot.cs" />
+    <Compile Include="Services\.Internal\CallSiteResultCacheLocation.cs" />
+    <Compile Include="Services\.Internal\CallSiteVisitor.cs" />
+    <Compile Include="Services\.Interfaces\IServiceProviderIsService.cs" />
+    <Compile Include="Services\.Internal\StackGuard.cs" />
     <Compile Include="Services\.Internal\ServiceCacheKey.cs" />
     <Compile Include="Services\.Internal\ServiceCallSite.cs" />
     <Compile Include="Services\ServiceCollection\NinjascriptServiceCollectionExtensions.cs" />
@@ -239,7 +243,7 @@
     <Compile Include="Hosting\NinjascriptHostBuilder.cs" />
     <Compile Include="Hosting\NinjascriptHostBuilderContext.cs" />
     <Compile Include="Services\ServiceProvider\NinjascriptServiceProvider.cs" />
-    <Compile Include="Services\ServiceDescriptor\NinjascriptsServiceDescriptor.cs" />
+    <Compile Include="Services\ServiceDescriptor\NinjascriptServiceDescriptor.cs" />
     <Compile Include="Hosting\WithMSExtensions\INinjascriptHosting.cs" />
     <Compile Include="Hosting\WithMSExtensions\NinjascriptDI.cs" />
     <Compile Include="Hosting\WithMSExtensions\NinjascriptServiceBuilderExtensions.cs" />

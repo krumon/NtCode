@@ -50,37 +50,37 @@ namespace Nt.Core.Services
             //CallSiteFactory.Add(typeof(IServiceScopeFactory), new ConstantCallSite(typeof(IServiceScopeFactory), Root));
             //CallSiteFactory.Add(typeof(IServiceProviderIsService), new ConstantCallSite(typeof(IServiceProviderIsService), CallSiteFactory));
 
-            //// Replace the options in the constructor
-            //string options = "ValidateOnBuild";
+            // Replace the options in the constructor
+            string options = "ValidateOnBuild";
 
-            //if (options == "ValidateScopes")
-            //{
-            //    _callSiteValidator = new CallSiteValidator();
-            //}
+            if (options == "ValidateScopes")
+            {
+                _callSiteValidator = new CallSiteValidator();
+            }
 
-            //if (options == "ValidateOnBuild")
-            //{
-            //    List<Exception> exceptions = null;
-            //    foreach (NinjascriptServiceDescriptor serviceDescriptor in serviceDescriptors)
-            //    {
-            //        try
-            //        {
-            //            ValidateService(serviceDescriptor);
-            //        }
-            //        catch (Exception e)
-            //        {
-            //            exceptions = exceptions ?? new List<Exception>();
-            //            exceptions.Add(e);
-            //        }
-            //    }
+            if (options == "ValidateOnBuild")
+            {
+                List<Exception> exceptions = null;
+                foreach (NinjascriptServiceDescriptor serviceDescriptor in serviceDescriptors)
+                {
+                    try
+                    {
+                        ValidateService(serviceDescriptor);
+                    }
+                    catch (Exception e)
+                    {
+                        exceptions = exceptions ?? new List<Exception>();
+                        exceptions.Add(e);
+                    }
+                }
 
-            //    if (exceptions != null)
-            //    {
-            //        throw new AggregateException("Some services are not able to be constructed", exceptions.ToArray());
-            //    }
-            //}
+                if (exceptions != null)
+                {
+                    throw new AggregateException("Some services are not able to be constructed", exceptions.ToArray());
+                }
+            }
 
-            ////DependencyInjectionEventSource.Log.ServiceProviderBuilt(this);
+            //DependencyInjectionEventSource.Log.ServiceProviderBuilt(this);
         }
 
         #endregion
