@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using Nt.Core.Services;
 using ServiceLifetime = Microsoft.Extensions.DependencyInjection.ServiceLifetime;
-using Microsoft.Extensions.Options;
+using DefaultServiceProviderFactory = Nt.Core.Services.DefaultServiceProviderFactory;
 
 namespace ConsoleApp
 {
@@ -34,10 +34,11 @@ namespace ConsoleApp
             ServiceProvider sp;
             HostBuilder hostBuilder;
             Task waittingTheHost;
+            DefaultServiceProviderFactory factory;
             
             NinjascriptServiceCollection sc = new NinjascriptServiceCollection();
             sc.AddSingleton(typeof(SessionFilters),new SessionFilters());
-
+            INinjascriptHost ninjascriptHost = NinjascriptHost.CreateDefaultBuilder().Build();
             sc = null;
             //INinjascriptsHost host = NinjascriptsHost.CreateDefaultBuilder().Build();
 

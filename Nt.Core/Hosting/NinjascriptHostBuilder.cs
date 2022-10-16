@@ -14,7 +14,7 @@ namespace Nt.Core.Hosting
         //private List<Action<INinjascriptsConfigurationBuilder>> _configureHostConfigActions = new List<Action<INinjascriptsConfigurationBuilder>>();
         //private List<Action<NinjascriptHostBuilderContext, INinjascriptsConfigurationBuilder>> _configureAppConfigActions = new List<Action<NinjascriptHostBuilderContext, INinjascriptsConfigurationBuilder>>();
         //private List<IConfigureContainerAdapter> _configureContainerActions = new List<IConfigureContainerAdapter>();
-        //private IServiceFactoryAdapter _serviceProviderFactory = new ServiceFactoryAdapter<IServiceCollection>(new DefaultServiceProviderFactory());
+        private IServiceFactoryAdapter _serviceProviderFactory = new ServiceFactoryAdapter<INinjascriptServiceCollection>(new DefaultServiceProviderFactory());
         private List<Action<NinjascriptHostBuilderContext, INinjascriptServiceCollection>> _configureServicesActions = new List<Action<NinjascriptHostBuilderContext, INinjascriptServiceCollection>>();
         private bool _hostBuilt;
         private INinjascriptConfiguration _hostConfiguration;

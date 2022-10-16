@@ -18,16 +18,13 @@ namespace Nt.Core.Services
 
         private readonly CallSiteValidator _callSiteValidator;
         private readonly Func<Type, Func<ServiceProviderEngineScope, object>> _createServiceAccessor;
-        //internal ServiceProviderEngine _engine;
+        internal ServiceProviderEngine _engine;
         private bool _disposed;
-        //private ConcurrentDictionary<Type, Func<Type,object>> _realizedServices;
         private ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>> _realizedServices;
-        //For texts
-        private ConcurrentDictionary<Type, Func<Type, object>> _realizedServicesTest;
         internal CallSiteFactory CallSiteFactory { get; }
         internal ServiceProviderEngineScope Root { get; }
         internal static bool VerifyOpenGenericServiceTrimmability { get; } =
-            AppContext.TryGetSwitch("Microsoft.Extensions.DependencyInjection.VerifyOpenGenericServiceTrimmability", out bool verifyOpenGenerics) ? verifyOpenGenerics : false;
+            AppContext.TryGetSwitch("VerifyOpenGenericServiceTrimmability", out bool verifyOpenGenerics) && verifyOpenGenerics;
         private object _createService;
         NinjascriptServiceDescriptor[] _descriptors;
 
@@ -37,8 +34,8 @@ namespace Nt.Core.Services
 
         internal NinjascriptServiceProvider(ICollection<NinjascriptServiceDescriptor> serviceDescriptors) //, ServiceProviderOptions options)
         {
-            //// note that Root needs to be set before calling GetEngine(), because the engine may need to access Root
-            //Root = new ServiceProviderEngineScope(this, isRootScope: true);
+            // note that Root needs to be set before calling GetEngine(), because the engine may need to access Root
+            Root = new ServiceProviderEngineScope(this, isRootScope: true);
             ////_engine = GetEngine();
             //_createServiceAccessor = CreateServiceAccessor;
             //_realizedServices = new ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>>();

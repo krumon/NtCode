@@ -211,9 +211,13 @@
     <Compile Include="Configuration\Interfaces\INinjascriptConfigurationSource.cs" />
     <Compile Include="Configuration\NinjascriptConfigurationBuilder.cs" />
     <Compile Include="Configuration\NinjascriptConfigurationRoot.cs" />
+    <Compile Include="Services\.Interfaces\IServiceFactoryAdapter.cs" />
+    <Compile Include="Services\.Interfaces\IServiceProviderFactory.cs" />
     <Compile Include="Services\.Internal\CallSiteResultCacheLocation.cs" />
     <Compile Include="Services\.Internal\CallSiteVisitor.cs" />
     <Compile Include="Services\.Interfaces\IServiceProviderIsService.cs" />
+    <Compile Include="Services\.Internal\ServiceFactoryAdapter.cs" />
+    <Compile Include="Services\ServiceProvider\DefaultServiceProviderFactory.cs" />
     <Compile Include="Services\.Internal\StackGuard.cs" />
     <Compile Include="Services\.Internal\ServiceCacheKey.cs" />
     <Compile Include="Services\.Internal\ServiceCallSite.cs" />
