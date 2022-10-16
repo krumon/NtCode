@@ -195,6 +195,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\ExceptionResource.cs" />
+    <Compile Include="Exceptions\ExceptionArgument.cs" />
+    <Compile Include="Exceptions\ThrowHelper.cs" />
     <Compile Include="Events\EventType.cs" />
     <Compile Include="Events\SessionChangedEventArgs.cs" />
     <Compile Include="Exceptions\CreateBuilderException.cs" />
@@ -208,15 +211,16 @@
     <Compile Include="Hosting\Configuration\INinjascriptConfigurationSource.cs" />
     <Compile Include="Hosting\Configuration\NinjascriptConfigurationBuilder.cs" />
     <Compile Include="Hosting\Configuration\NinjascriptConfigurationRoot.cs" />
+    <Compile Include="Hosting\Internal\ServiceCacheKey.cs" />
     <Compile Include="Hosting\Internal\ServiceCallSite.cs" />
     <Compile Include="Hosting\ServiceCollection\NinjascriptServiceCollectionExtensions.cs" />
     <Compile Include="Hosting\ServiceDescriptor\ServiceLifetime.cs" />
     <Compile Include="Hosting\ServiceProvider\CallSiteFactory.cs" />
     <Compile Include="Hosting\ServiceProvider\CallSiteValidator.cs" />
-    <Compile Include="Hosting\ServiceProvider\IServiceScope.cs" />
-    <Compile Include="Hosting\ServiceProvider\IServiceScopeFactory.cs" />
+    <Compile Include="Hosting\Internal\IServiceScope.cs" />
+    <Compile Include="Hosting\Internal\IServiceScopeFactory.cs" />
     <Compile Include="Hosting\Internal\ServiceProviderEngine.cs" />
-    <Compile Include="Hosting\ServiceProvider\ServiceProviderEngineScope.cs" />
+    <Compile Include="Hosting\Internal\ServiceProviderEngineScope.cs" />
     <Compile Include="Services\Lifetime\IHostLifetime.cs" />
     <Compile Include="Services\Lifetime\HostLifetime.cs" />
     <Compile Include="Services\Lifetime\NinjascriptLifetime.cs" />

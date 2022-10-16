@@ -1,4 +1,4 @@
-﻿namespace Nt.Core.Hosting
+﻿namespace Nt.Core.Hosting.Internal
 {
 
     /// <summary>
