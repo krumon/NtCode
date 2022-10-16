@@ -12,7 +12,9 @@ using static ConsoleApp.ConsoleHelpers;
 using Nt.Core.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
-using ServiceLifetime = Nt.Core.Hosting.ServiceLifetime;
+using Nt.Core.Services;
+using ServiceLifetime = Microsoft.Extensions.DependencyInjection.ServiceLifetime;
+using Microsoft.Extensions.Options;
 
 namespace ConsoleApp
 {
