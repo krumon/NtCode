@@ -137,7 +137,7 @@ namespace Nt.Core.Hosting
         {
 
             var services = new NinjascriptServiceCollection();
-            //services.AddSingleton<INinjascriptsHostEnvironment>(_hostEnvironment);
+            services.AddSingleton<INinjascriptsHostEnvironment>(_hostEnvironment);
             services.AddSingleton(_hostBuilderContext);
             // register configuration as factory to make it dispose with the service provider
             services.AddSingleton(_ => _ninjascriptConfiguration);

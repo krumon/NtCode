@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -7,119 +8,114 @@ namespace Nt.Core.Services.Internal
 {
     internal sealed class CallSiteFactory : IServiceProviderIsService
     {
-        //    private const int DefaultSlot = 0;
-        //    private readonly ServiceDescriptor[] _descriptors;
-        //    private readonly ConcurrentDictionary<ServiceCacheKey, ServiceCallSite> _callSiteCache = new ConcurrentDictionary<ServiceCacheKey, ServiceCallSite>();
+        private const int DefaultSlot = 0;
+        private readonly NinjascriptServiceDescriptor[] _descriptors;
+        private readonly ConcurrentDictionary<ServiceCacheKey, ServiceCallSite> _callSiteCache = new ConcurrentDictionary<ServiceCacheKey, ServiceCallSite>();
         private readonly Dictionary<Type, ServiceDescriptorCacheItem> _descriptorLookup = new Dictionary<Type, ServiceDescriptorCacheItem>();
-        //    private readonly ConcurrentDictionary<Type, object> _callSiteLocks = new ConcurrentDictionary<Type, object>();
+        private readonly ConcurrentDictionary<Type, object> _callSiteLocks = new ConcurrentDictionary<Type, object>();
 
-        //    private readonly StackGuard _stackGuard;
+        private readonly StackGuard _stackGuard;
 
-        //    public CallSiteFactory(ICollection<ServiceDescriptor> descriptors)
-        //    {
-        //        _stackGuard = new StackGuard();
-        //        _descriptors = new ServiceDescriptor[descriptors.Count];
-        //        descriptors.CopyTo(_descriptors, 0);
+        public CallSiteFactory(ICollection<NinjascriptServiceDescriptor> descriptors)
+        {
+            _stackGuard = new StackGuard();
+            _descriptors = new NinjascriptServiceDescriptor[descriptors.Count];
+            descriptors.CopyTo(_descriptors, 0);
 
-        //        Populate();
-        //    }
+            Populate();
+        }
 
-        //    internal ServiceDescriptor[] Descriptors => _descriptors;
+        internal NinjascriptServiceDescriptor[] Descriptors => _descriptors;
 
-        //    private void Populate()
-        //    {
-        //        foreach (ServiceDescriptor descriptor in _descriptors)
-        //        {
-        //            Type serviceType = descriptor.ServiceType;
-        //            if (serviceType.IsGenericTypeDefinition)
-        //            {
-        //                Type implementationType = descriptor.ImplementationType;
+        private void Populate()
+        {
+            foreach (NinjascriptServiceDescriptor descriptor in _descriptors)
+            {
+                Type serviceType = descriptor.ServiceType;
+                if (serviceType.IsGenericTypeDefinition)
+                {
+                    Type implementationType = descriptor.ImplementationType;
 
-        //                if (implementationType == null || !implementationType.IsGenericTypeDefinition)
-        //                {
-        //                    throw new ArgumentException(
-        //                        SR.Format(SR.OpenGenericServiceRequiresOpenGenericImplementation, serviceType),
-        //                        "descriptors");
-        //                }
+                    if (implementationType == null || !implementationType.IsGenericTypeDefinition)
+                    {
+                        throw new ArgumentException("OpenGenericServiceRequiresOpenGenericImplementation");
+                    }
 
-        //                if (implementationType.IsAbstract || implementationType.IsInterface)
-        //                {
-        //                    throw new ArgumentException(
-        //                        SR.Format(SR.TypeCannotBeActivated, implementationType, serviceType));
-        //                }
+                    if (implementationType.IsAbstract || implementationType.IsInterface)
+                    {
+                        throw new ArgumentException("TypeCannotBeActivated");
+                    }
 
-        //                Type[] serviceTypeGenericArguments = serviceType.GetGenericArguments();
-        //                Type[] implementationTypeGenericArguments = implementationType.GetGenericArguments();
-        //                if (serviceTypeGenericArguments.Length != implementationTypeGenericArguments.Length)
-        //                {
-        //                    throw new ArgumentException(
-        //                        SR.Format(SR.ArityOfOpenGenericServiceNotEqualArityOfOpenGenericImplementation, serviceType, implementationType), "descriptors");
-        //                }
+                    Type[] serviceTypeGenericArguments = serviceType.GetGenericArguments();
+                    Type[] implementationTypeGenericArguments = implementationType.GetGenericArguments();
+                    if (serviceTypeGenericArguments.Length != implementationTypeGenericArguments.Length)
+                    {
+                        throw new ArgumentException("ArityOfOpenGenericServiceNotEqualArityOfOpenGenericImplementation");
+                    }
 
-        //                if (ServiceProvider.VerifyOpenGenericServiceTrimmability)
-        //                {
-        //                    ValidateTrimmingAnnotations(serviceType, serviceTypeGenericArguments, implementationType, implementationTypeGenericArguments);
-        //                }
-        //            }
-        //            else if (descriptor.ImplementationInstance == null && descriptor.ImplementationFactory == null)
-        //            {
-        //                Debug.Assert(descriptor.ImplementationType != null);
-        //                Type implementationType = descriptor.ImplementationType;
+                    if (NinjascriptServiceProvider.VerifyOpenGenericServiceTrimmability)
+                    {
+                        ValidateTrimmingAnnotations(serviceType, serviceTypeGenericArguments, implementationType, implementationTypeGenericArguments);
+                    }
+                }
+                else if (descriptor.ImplementationInstance == null && descriptor.ImplementationFactory == null)
+                {
+                    Debug.Assert(descriptor.ImplementationType != null);
+                    Type implementationType = descriptor.ImplementationType;
 
-        //                if (implementationType.IsGenericTypeDefinition ||
-        //                    implementationType.IsAbstract ||
-        //                    implementationType.IsInterface)
-        //                {
-        //                    throw new ArgumentException(
-        //                        SR.Format(SR.TypeCannotBeActivated, implementationType, serviceType));
-        //                }
-        //            }
+                    if (implementationType.IsGenericTypeDefinition ||
+                        implementationType.IsAbstract ||
+                        implementationType.IsInterface)
+                    {
+                        throw new ArgumentException("TypeCannotBeActivated");
+                    }
+                }
 
-        //            Type cacheKey = serviceType;
-        //            _descriptorLookup.TryGetValue(cacheKey, out ServiceDescriptorCacheItem cacheItem);
-        //            _descriptorLookup[cacheKey] = cacheItem.Add(descriptor);
-        //        }
-        //    }
+                Type cacheKey = serviceType;
+                _descriptorLookup.TryGetValue(cacheKey, out ServiceDescriptorCacheItem cacheItem);
+                _descriptorLookup[cacheKey] = cacheItem.Add(descriptor);
+            }
+        }
 
-        //    /// <summary>
-        //    /// Validates that two generic type definitions have compatible trimming annotations on their generic arguments.
-        //    /// </summary>
-        //    /// <remarks>
-        //    /// When open generic types are used in DI, there is an error when the concrete implementation type
-        //    /// has [DynamicallyAccessedMembers] attributes on a generic argument type, but the interface/service type
-        //    /// doesn't have matching annotations. The problem is that the trimmer doesn't see the members that need to
-        //    /// be preserved on the type being passed to the generic argument. But when the interface/service type also has
-        //    /// the annotations, the trimmer will see which members need to be preserved on the closed generic argument type.
-        //    /// </remarks>
-        //    private static void ValidateTrimmingAnnotations(
-        //        Type serviceType,
-        //        Type[] serviceTypeGenericArguments,
-        //        Type implementationType,
-        //        Type[] implementationTypeGenericArguments)
-        //    {
-        //        Debug.Assert(serviceTypeGenericArguments.Length == implementationTypeGenericArguments.Length);
+        /// <summary>
+        /// Validates that two generic type definitions have compatible trimming annotations on their generic arguments.
+        /// </summary>
+        /// <remarks>
+        /// When open generic types are used in DI, there is an error when the concrete implementation type
+        /// has [DynamicallyAccessedMembers] attributes on a generic argument type, but the interface/service type
+        /// doesn't have matching annotations. The problem is that the trimmer doesn't see the members that need to
+        /// be preserved on the type being passed to the generic argument. But when the interface/service type also has
+        /// the annotations, the trimmer will see which members need to be preserved on the closed generic argument type.
+        /// </remarks>
+        private static void ValidateTrimmingAnnotations(
+            Type serviceType,
+            Type[] serviceTypeGenericArguments,
+            Type implementationType,
+            Type[] implementationTypeGenericArguments)
+        {
+            Debug.Assert(serviceTypeGenericArguments.Length == implementationTypeGenericArguments.Length);
 
-        //        for (int i = 0; i < serviceTypeGenericArguments.Length; i++)
-        //        {
-        //            Type serviceGenericType = serviceTypeGenericArguments[i];
-        //            Type implementationGenericType = implementationTypeGenericArguments[i];
+            for (int i = 0; i < serviceTypeGenericArguments.Length; i++)
+            {
+                Type serviceGenericType = serviceTypeGenericArguments[i];
+                Type implementationGenericType = implementationTypeGenericArguments[i];
 
-        //            DynamicallyAccessedMemberTypes serviceDynamicallyAccessedMembers = GetDynamicallyAccessedMemberTypes(serviceGenericType);
-        //            DynamicallyAccessedMemberTypes implementationDynamicallyAccessedMembers = GetDynamicallyAccessedMemberTypes(implementationGenericType);
+                DynamicallyAccessedMemberTypes serviceDynamicallyAccessedMembers = GetDynamicallyAccessedMemberTypes(serviceGenericType);
+                DynamicallyAccessedMemberTypes implementationDynamicallyAccessedMembers = GetDynamicallyAccessedMemberTypes(implementationGenericType);
 
-        //            if (!AreCompatible(serviceDynamicallyAccessedMembers, implementationDynamicallyAccessedMembers))
-        //            {
-        //                throw new ArgumentException(SR.Format(SR.TrimmingAnnotationsDoNotMatch, implementationType.FullName, serviceType.FullName));
-        //            }
+                if (!AreCompatible(serviceDynamicallyAccessedMembers, implementationDynamicallyAccessedMembers))
+                {
+                    throw new ArgumentException("TrimmingAnnotationsDoNotMatch");
+                }
 
-        //            bool serviceHasNewConstraint = serviceGenericType.GenericParameterAttributes.HasFlag(GenericParameterAttributes.DefaultConstructorConstraint);
-        //            bool implementationHasNewConstraint = implementationGenericType.GenericParameterAttributes.HasFlag(GenericParameterAttributes.DefaultConstructorConstraint);
-        //            if (implementationHasNewConstraint && !serviceHasNewConstraint)
-        //            {
-        //                throw new ArgumentException(SR.Format(SR.TrimmingAnnotationsDoNotMatch_NewConstraint, implementationType.FullName, serviceType.FullName));
-        //            }
-        //        }
-        //    }
+                bool serviceHasNewConstraint = serviceGenericType.GenericParameterAttributes.HasFlag(GenericParameterAttributes.DefaultConstructorConstraint);
+                bool implementationHasNewConstraint = implementationGenericType.GenericParameterAttributes.HasFlag(GenericParameterAttributes.DefaultConstructorConstraint);
+                if (implementationHasNewConstraint && !serviceHasNewConstraint)
+                {
+                    throw new ArgumentException("TrimmingAnnotationsDoNotMatch_NewConstraint");
+                }
+            }
+        }
 
         //    private static DynamicallyAccessedMemberTypes GetDynamicallyAccessedMemberTypes(Type serviceGenericType)
         //    {

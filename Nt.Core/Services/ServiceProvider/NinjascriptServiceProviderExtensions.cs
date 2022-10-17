@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Nt.Core.Services
 {
     /// <summary>
-    /// Extension methods for getting services from an <see cref="IServiceProvider" />.
+    /// Extension methods for getting services from an <see cref="INinjascriptServiceProvider" />.
     /// </summary>
     public static class NinjascriptServiceProviderExtensions
     {

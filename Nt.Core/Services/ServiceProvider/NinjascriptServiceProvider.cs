@@ -101,9 +101,6 @@ namespace Nt.Core.Services
             return default;
         }
 
-        //public abstract object CreateService(Type serviceType);
-        //public abstract bool ValidateService(Type serviceType);
-
         #endregion
 
         #region Private methods
@@ -113,21 +110,12 @@ namespace Nt.Core.Services
             if (_disposed)
                 throw new ObjectDisposedException(nameof(NinjascriptServiceProvider));
 
-            //if (ValidateService(serviceType))
-            //{
-            //    Func<Type, object> realizedService = _realizedServicesTest.GetOrAdd(serviceType.GetType(), CreateService);
-            //    var result = realizedService.Invoke(serviceType);
-            //    return result;
-            //}
-
-            return default;
-
-            //Func<ServiceProviderEngineScope, object> realizedService = _realizedServices.GetOrAdd(serviceType, _createServiceAccessor);
-            //OnResolve(serviceType, serviceProviderEngineScope);
+            Func<ServiceProviderEngineScope, object> realizedService = _realizedServices.GetOrAdd(serviceType, _createServiceAccessor);
+            OnResolve(serviceType, serviceProviderEngineScope);
             //DependencyInjectionEventSource.Log.ServiceResolved(this, serviceType);
-            //var result = realizedService.Invoke(serviceProviderEngineScope);
-            //System.Diagnostics.Debug.Assert(result is null || CallSiteFactory.IsService(serviceType));
-            //return result;
+            var result = realizedService.Invoke(serviceProviderEngineScope);
+            System.Diagnostics.Debug.Assert(result is null || CallSiteFactory.IsService(serviceType));
+            return result;
         }
 
         private void ValidateService(NinjascriptServiceDescriptor descriptor)
@@ -139,11 +127,11 @@ namespace Nt.Core.Services
 
             try
             {
-                //ServiceCallSite callSite = CallSiteFactory.GetCallSite(descriptor, new CallSiteChain());
-                //if (callSite != null)
-                //{
-                //    OnCreate(callSite);
-                //}
+                ServiceCallSite callSite = CallSiteFactory.GetCallSite(descriptor, new CallSiteChain());
+                if (callSite != null)
+                {
+                    OnCreate(callSite);
+                }
             }
             catch (Exception e)
             {
@@ -151,31 +139,31 @@ namespace Nt.Core.Services
             }
         }
 
-        //private Func<ServiceProviderEngineScope, object> CreateServiceAccessor(Type serviceType)
-        //{
-        //    ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
-        //    if (callSite != null)
-        //    {
-        //        //DependencyInjectionEventSource.Log.CallSiteBuilt(this, serviceType, callSite);
-        //        OnCreate(callSite);
+        private Func<ServiceProviderEngineScope, object> CreateServiceAccessor(Type serviceType)
+        {
+            ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
+            if (callSite != null)
+            {
+                //DependencyInjectionEventSource.Log.CallSiteBuilt(this, serviceType, callSite);
+                OnCreate(callSite);
 
-        //        // Optimize singleton case
-        //        if (callSite.Cache.Location == CallSiteResultCacheLocation.Root)
-        //        {
-        //            object value = CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
-        //            return scope => value;
-        //        }
+                // Optimize singleton case
+                if (callSite.Cache.Location == CallSiteResultCacheLocation.Root)
+                {
+                    object value = CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
+                    return scope => value;
+                }
 
-        //        return _engine.RealizeService(callSite);
-        //    }
+                return _engine.RealizeService(callSite);
+            }
 
-        //    return _ => null;
-        //}
+            return _ => null;
+        }
 
-        //internal void ReplaceServiceAccessor(ServiceCallSite callSite, Func<ServiceProviderEngineScope, object> accessor)
-        //{
-        //    _realizedServices[callSite.ServiceType] = accessor;
-        //}
+        internal void ReplaceServiceAccessor(ServiceCallSite callSite, Func<ServiceProviderEngineScope, object> accessor)
+        {
+            _realizedServices[callSite.ServiceType] = accessor;
+        }
 
         internal IServiceScope CreateScope()
         {
@@ -212,42 +200,15 @@ namespace Nt.Core.Services
             _disposed = true;
         }
 
-        //private void OnCreate(ServiceCallSite callSite)
-        //{
-        //    _callSiteValidator?.ValidateCallSite(callSite);
-        //}
-
-        //private void OnResolve(Type serviceType, IServiceScope scope)
-        //{
-        //    _callSiteValidator?.ValidateResolution(serviceType, scope, Root);
-        //}
-
-
-        // Esto es mío
-        private NinjascriptServiceDescriptor[] ValidateDescriptors(ICollection<NinjascriptServiceDescriptor> descriptors)
+        private void OnCreate(ServiceCallSite callSite)
         {
-            _descriptors = new NinjascriptServiceDescriptor[descriptors.Count];
-            descriptors.CopyTo(_descriptors, 0);
-            return _descriptors;
+            _callSiteValidator?.ValidateCallSite(callSite);
         }
 
-        private object CreateServiceByDefault(Type serviceType)
+        private void OnResolve(Type serviceType, IServiceScope scope)
         {
-            try
-            {
-                if (!ValidateServiceByDefault())
-                    return default;
-
-                return _createService = Activator.CreateInstance(serviceType);
-            }
-            catch
-            {
-                Debugger.Break();
-                return default;
-            }
+            _callSiteValidator?.ValidateResolution(serviceType, scope, Root);
         }
-
-        private bool ValidateServiceByDefault() => true;
 
         #endregion
 
