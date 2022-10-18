@@ -3,6 +3,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 
 namespace Nt.Core.Services.Internal
 {
@@ -102,7 +104,7 @@ namespace Nt.Core.Services.Internal
 
                 DynamicallyAccessedMemberTypes serviceDynamicallyAccessedMembers = GetDynamicallyAccessedMemberTypes(serviceGenericType);
                 DynamicallyAccessedMemberTypes implementationDynamicallyAccessedMembers = GetDynamicallyAccessedMemberTypes(implementationGenericType);
-
+                
                 if (!AreCompatible(serviceDynamicallyAccessedMembers, implementationDynamicallyAccessedMembers))
                 {
                     throw new ArgumentException("TrimmingAnnotationsDoNotMatch");
@@ -117,20 +119,20 @@ namespace Nt.Core.Services.Internal
             }
         }
 
-        //    private static DynamicallyAccessedMemberTypes GetDynamicallyAccessedMemberTypes(Type serviceGenericType)
-        //    {
-        //        foreach (CustomAttributeData attributeData in serviceGenericType.GetCustomAttributesData())
-        //        {
-        //            if (attributeData.AttributeType.FullName == "System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute" &&
-        //                attributeData.ConstructorArguments.Count == 1 &&
-        //                attributeData.ConstructorArguments[0].ArgumentType.FullName == "System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes")
-        //            {
-        //                return (DynamicallyAccessedMemberTypes)(int)attributeData.ConstructorArguments[0].Value;
-        //            }
-        //        }
+        private static DynamicallyAccessedMemberTypes GetDynamicallyAccessedMemberTypes(Type serviceGenericType)
+        {
+            foreach (CustomAttributeData attributeData in serviceGenericType.GetCustomAttributesData())
+            {
+                if (attributeData.AttributeType.FullName == "System.Diagnostics.CodeAnalysis.DynamicallyAccessedMembersAttribute" &&
+                    attributeData.ConstructorArguments.Count == 1 &&
+                    attributeData.ConstructorArguments[0].ArgumentType.FullName == "System.Diagnostics.CodeAnalysis.DynamicallyAccessedMemberTypes")
+                {
+                    return (DynamicallyAccessedMemberTypes)(int)attributeData.ConstructorArguments[0].Value;
+                }
+            }
 
-        //        return DynamicallyAccessedMemberTypes.None;
-        //    }
+            return DynamicallyAccessedMemberTypes.None;
+        }
 
         //    private static bool AreCompatible(DynamicallyAccessedMemberTypes serviceDynamicallyAccessedMembers, DynamicallyAccessedMemberTypes implementationDynamicallyAccessedMembers)
         //    {
