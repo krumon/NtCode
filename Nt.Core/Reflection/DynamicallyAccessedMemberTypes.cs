@@ -1,61 +1,40 @@
 ﻿using System;
 
-namespace Nt.Core.Services.Internal
+namespace Nt.Core.Reflection
 {
     [Flags]
-    internal enum DynamicallyAccessedMemberType
+    public enum DynamicallyAccessedMemberTypes
     {
         /// <summary>
         /// Specifies no members.
         /// </summary>
         None = 0x0,
-        //
-        // Resumen:
-        //     Specifies the default, parameterless public constructor.
         /// <summary>
-        /// 
+        /// Specifies the default, parameterless public constructor.
         /// </summary>
         PublicParameterlessConstructor = 0x1,
-        //
-        // Resumen:
-        //     Specifies all public constructors.
         /// <summary>
-        /// 
+        /// Specifies all public constructors.
         /// </summary>
         PublicConstructors = 0x3,
-        //
-        // Resumen:
-        //     Specifies all non-public constructors.
         /// <summary>
-        /// 
+        /// Specifies all non-public constructors.
         /// </summary>
         NonPublicConstructors = 0x4,
-        //
-        // Resumen:
-        //     Specifies all public methods.
         /// <summary>
-        /// 
+        /// Specifies all public methods.
         /// </summary>
         PublicMethods = 0x8,
-        //
-        // Resumen:
-        //     Specifies all non-public methods.
         /// <summary>
-        /// 
+        /// Specifies all non-public methods.
         /// </summary>
         NonPublicMethods = 0x10,
-        //
-        // Resumen:
-        //     Specifies all public fields.
         /// <summary>
-        /// 
+        /// Specifies all public fields.
         /// </summary>
         PublicFields = 0x20,
-        //
-        // Resumen:
-        //     Specifies all non-public fields.
         /// <summary>
-        /// 
+        /// Specifies all non-public fields.
         /// </summary>
         NonPublicFields = 0x40,
         //     Specifies all public nested types.

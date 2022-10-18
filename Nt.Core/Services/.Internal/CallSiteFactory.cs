@@ -1,9 +1,9 @@
-﻿
+﻿using Nt.Core.Attributes;
+using Nt.Core.Reflection;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace Nt.Core.Services.Internal
@@ -134,391 +134,395 @@ namespace Nt.Core.Services.Internal
             return DynamicallyAccessedMemberTypes.None;
         }
 
-        //    private static bool AreCompatible(DynamicallyAccessedMemberTypes serviceDynamicallyAccessedMembers, DynamicallyAccessedMemberTypes implementationDynamicallyAccessedMembers)
-        //    {
-        //        // The DynamicallyAccessedMemberTypes don't need to exactly match.
-        //        // The service type needs to preserve a superset of the members required by the implementation type.
-        //        return serviceDynamicallyAccessedMembers.HasFlag(implementationDynamicallyAccessedMembers);
-        //    }
+        private static bool AreCompatible(DynamicallyAccessedMemberTypes serviceDynamicallyAccessedMembers, DynamicallyAccessedMemberTypes implementationDynamicallyAccessedMembers)
+        {
+            // The DynamicallyAccessedMemberTypes don't need to exactly match.
+            // The service type needs to preserve a superset of the members required by the implementation type.
+            return serviceDynamicallyAccessedMembers.HasFlag(implementationDynamicallyAccessedMembers);
+        }
 
-        //    // For unit testing
-        //    internal int? GetSlot(ServiceDescriptor serviceDescriptor)
-        //    {
-        //        if (_descriptorLookup.TryGetValue(serviceDescriptor.ServiceType, out ServiceDescriptorCacheItem item))
-        //        {
-        //            return item.GetSlot(serviceDescriptor);
-        //        }
+        // For unit testing
+        internal int? GetSlot(NinjascriptServiceDescriptor serviceDescriptor)
+        {
+            if (_descriptorLookup.TryGetValue(serviceDescriptor.ServiceType, out ServiceDescriptorCacheItem item))
+            {
+                return item.GetSlot(serviceDescriptor);
+            }
 
-        //        return null;
-        //    }
+            return null;
+        }
 
-        //    internal ServiceCallSite GetCallSite(Type serviceType, CallSiteChain callSiteChain) =>
-        //        _callSiteCache.TryGetValue(new ServiceCacheKey(serviceType, DefaultSlot), out ServiceCallSite site) ? site :
-        //        CreateCallSite(serviceType, callSiteChain);
+        internal ServiceCallSite GetCallSite(Type serviceType, CallSiteChain callSiteChain) =>
+            _callSiteCache.TryGetValue(new ServiceCacheKey(serviceType, DefaultSlot), out ServiceCallSite site) ? site :
+            CreateCallSite(serviceType, callSiteChain);
 
-        //    internal ServiceCallSite GetCallSite(ServiceDescriptor serviceDescriptor, CallSiteChain callSiteChain)
-        //    {
-        //        if (_descriptorLookup.TryGetValue(serviceDescriptor.ServiceType, out ServiceDescriptorCacheItem descriptor))
-        //        {
-        //            return TryCreateExact(serviceDescriptor, serviceDescriptor.ServiceType, callSiteChain, descriptor.GetSlot(serviceDescriptor));
-        //        }
+        internal ServiceCallSite GetCallSite(NinjascriptServiceDescriptor serviceDescriptor, CallSiteChain callSiteChain)
+        {
+            if (_descriptorLookup.TryGetValue(serviceDescriptor.ServiceType, out ServiceDescriptorCacheItem descriptor))
+            {
+                return TryCreateExact(serviceDescriptor, serviceDescriptor.ServiceType, callSiteChain, descriptor.GetSlot(serviceDescriptor));
+            }
 
-        //        Debug.Fail("_descriptorLookup didn't contain requested serviceDescriptor");
-        //        return null;
-        //    }
+            Debug.Fail("_descriptorLookup didn't contain requested serviceDescriptor");
+            return null;
+        }
 
-        //    private ServiceCallSite CreateCallSite(Type serviceType, CallSiteChain callSiteChain)
-        //    {
-        //        if (!_stackGuard.TryEnterOnCurrentStack())
-        //        {
-        //            return _stackGuard.RunOnEmptyStack((type, chain) => CreateCallSite(type, chain), serviceType, callSiteChain);
-        //        }
+        private ServiceCallSite CreateCallSite(Type serviceType, CallSiteChain callSiteChain)
+        {
+            if (!_stackGuard.TryEnterOnCurrentStack())
+            {
+                return _stackGuard.RunOnEmptyStack((type, chain) => CreateCallSite(type, chain), serviceType, callSiteChain);
+            }
 
-        //        // We need to lock the resolution process for a single service type at a time:
-        //        // Consider the following:
-        //        // C -> D -> A
-        //        // E -> D -> A
-        //        // Resolving C and E in parallel means that they will be modifying the callsite cache concurrently
-        //        // to add the entry for C and E, but the resolution of D and A is synchronized
-        //        // to make sure C and E both reference the same instance of the callsite.
+            // We need to lock the resolution process for a single service type at a time:
+            // Consider the following:
+            // C -> D -> A
+            // E -> D -> A
+            // Resolving C and E in parallel means that they will be modifying the callsite cache concurrently
+            // to add the entry for C and E, but the resolution of D and A is synchronized
+            // to make sure C and E both reference the same instance of the callsite.
 
-        //        // This is to make sure we can safely store singleton values on the callsites themselves
+            // This is to make sure we can safely store singleton values on the callsites themselves
 
-        //        var callsiteLock = _callSiteLocks.GetOrAdd(serviceType, static _ => new object());
+            var callsiteLock = _callSiteLocks.GetOrAdd(serviceType, _ => new object());
 
-        //        lock (callsiteLock)
-        //        {
-        //            callSiteChain.CheckCircularDependency(serviceType);
+            lock (callsiteLock)
+            {
+                callSiteChain.CheckCircularDependency(serviceType);
 
-        //            ServiceCallSite callSite = TryCreateExact(serviceType, callSiteChain) ??
-        //                                       TryCreateOpenGeneric(serviceType, callSiteChain) ??
-        //                                       TryCreateEnumerable(serviceType, callSiteChain);
+                ServiceCallSite callSite = TryCreateExact(serviceType, callSiteChain) ??
+                                           TryCreateOpenGeneric(serviceType, callSiteChain) ??
+                                           TryCreateEnumerable(serviceType, callSiteChain);
 
-        //            return callSite;
-        //        }
-        //    }
+                return callSite;
+            }
+        }
 
-        //    private ServiceCallSite TryCreateExact(Type serviceType, CallSiteChain callSiteChain)
-        //    {
-        //        if (_descriptorLookup.TryGetValue(serviceType, out ServiceDescriptorCacheItem descriptor))
-        //        {
-        //            return TryCreateExact(descriptor.Last, serviceType, callSiteChain, DefaultSlot);
-        //        }
+        private ServiceCallSite TryCreateExact(Type serviceType, CallSiteChain callSiteChain)
+        {
+            if (_descriptorLookup.TryGetValue(serviceType, out ServiceDescriptorCacheItem descriptor))
+            {
+                return TryCreateExact(descriptor.Last, serviceType, callSiteChain, DefaultSlot);
+            }
 
-        //        return null;
-        //    }
+            return null;
+        }
 
-        //    private ServiceCallSite TryCreateOpenGeneric(Type serviceType, CallSiteChain callSiteChain)
-        //    {
-        //        if (serviceType.IsConstructedGenericType
-        //            && _descriptorLookup.TryGetValue(serviceType.GetGenericTypeDefinition(), out ServiceDescriptorCacheItem descriptor))
-        //        {
-        //            return TryCreateOpenGeneric(descriptor.Last, serviceType, callSiteChain, DefaultSlot, true);
-        //        }
+        private ServiceCallSite TryCreateOpenGeneric(Type serviceType, CallSiteChain callSiteChain)
+        {
+            if (serviceType.IsConstructedGenericType
+                && _descriptorLookup.TryGetValue(serviceType.GetGenericTypeDefinition(), out ServiceDescriptorCacheItem descriptor))
+            {
+                return TryCreateOpenGeneric(descriptor.Last, serviceType, callSiteChain, DefaultSlot, true);
+            }
 
-        //        return null;
-        //    }
+            return null;
+        }
 
-        //    private ServiceCallSite TryCreateEnumerable(Type serviceType, CallSiteChain callSiteChain)
-        //    {
-        //        ServiceCacheKey callSiteKey = new ServiceCacheKey(serviceType, DefaultSlot);
-        //        if (_callSiteCache.TryGetValue(callSiteKey, out ServiceCallSite serviceCallSite))
-        //        {
-        //            return serviceCallSite;
-        //        }
+        private ServiceCallSite TryCreateEnumerable(Type serviceType, CallSiteChain callSiteChain)
+        {
+            ServiceCacheKey callSiteKey = new ServiceCacheKey(serviceType, DefaultSlot);
+            if (_callSiteCache.TryGetValue(callSiteKey, out ServiceCallSite serviceCallSite))
+            {
+                return serviceCallSite;
+            }
 
-        //        try
-        //        {
-        //            callSiteChain.Add(serviceType);
+            try
+            {
+                callSiteChain.Add(serviceType);
 
-        //            if (serviceType.IsConstructedGenericType &&
-        //                serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
-        //            {
-        //                Type itemType = serviceType.GenericTypeArguments[0];
-        //                CallSiteResultCacheLocation cacheLocation = CallSiteResultCacheLocation.Root;
+                if (serviceType.IsConstructedGenericType &&
+                    serviceType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                {
+                    Type itemType = serviceType.GenericTypeArguments[0];
+                    CallSiteResultCacheLocation cacheLocation = CallSiteResultCacheLocation.Root;
 
-        //                var callSites = new List<ServiceCallSite>();
+                    var callSites = new List<ServiceCallSite>();
 
-        //                // If item type is not generic we can safely use descriptor cache
-        //                if (!itemType.IsConstructedGenericType &&
-        //                    _descriptorLookup.TryGetValue(itemType, out ServiceDescriptorCacheItem descriptors))
-        //                {
-        //                    for (int i = 0; i < descriptors.Count; i++)
-        //                    {
-        //                        ServiceDescriptor descriptor = descriptors[i];
+                    // If item type is not generic we can safely use descriptor cache
+                    if (!itemType.IsConstructedGenericType &&
+                        _descriptorLookup.TryGetValue(itemType, out ServiceDescriptorCacheItem descriptors))
+                    {
+                        for (int i = 0; i < descriptors.Count; i++)
+                        {
+                            NinjascriptServiceDescriptor descriptor = descriptors[i];
 
-        //                        // Last service should get slot 0
-        //                        int slot = descriptors.Count - i - 1;
-        //                        // There may not be any open generics here
-        //                        ServiceCallSite callSite = TryCreateExact(descriptor, itemType, callSiteChain, slot);
-        //                        Debug.Assert(callSite != null);
+                            // Last service should get slot 0
+                            int slot = descriptors.Count - i - 1;
+                            // There may not be any open generics here
+                            ServiceCallSite callSite = TryCreateExact(descriptor, itemType, callSiteChain, slot);
+                            Debug.Assert(callSite != null);
 
-        //                        cacheLocation = GetCommonCacheLocation(cacheLocation, callSite.Cache.Location);
-        //                        callSites.Add(callSite);
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    int slot = 0;
-        //                    // We are going in reverse so the last service in descriptor list gets slot 0
-        //                    for (int i = _descriptors.Length - 1; i >= 0; i--)
-        //                    {
-        //                        ServiceDescriptor descriptor = _descriptors[i];
-        //                        ServiceCallSite callSite = TryCreateExact(descriptor, itemType, callSiteChain, slot) ??
-        //                                       TryCreateOpenGeneric(descriptor, itemType, callSiteChain, slot, false);
+                            cacheLocation = GetCommonCacheLocation(cacheLocation, callSite.Cache.Location);
+                            callSites.Add(callSite);
+                        }
+                    }
+                    else
+                    {
+                        int slot = 0;
+                        // We are going in reverse so the last service in descriptor list gets slot 0
+                        for (int i = _descriptors.Length - 1; i >= 0; i--)
+                        {
+                            NinjascriptServiceDescriptor descriptor = _descriptors[i];
+                            ServiceCallSite callSite = TryCreateExact(descriptor, itemType, callSiteChain, slot) ??
+                                           TryCreateOpenGeneric(descriptor, itemType, callSiteChain, slot, false);
 
-        //                        if (callSite != null)
-        //                        {
-        //                            slot++;
+                            if (callSite != null)
+                            {
+                                slot++;
 
-        //                            cacheLocation = GetCommonCacheLocation(cacheLocation, callSite.Cache.Location);
-        //                            callSites.Add(callSite);
-        //                        }
-        //                    }
+                                cacheLocation = GetCommonCacheLocation(cacheLocation, callSite.Cache.Location);
+                                callSites.Add(callSite);
+                            }
+                        }
 
-        //                    callSites.Reverse();
-        //                }
-
-
-        //                ResultCache resultCache = ResultCache.None;
-        //                if (cacheLocation == CallSiteResultCacheLocation.Scope || cacheLocation == CallSiteResultCacheLocation.Root)
-        //                {
-        //                    resultCache = new ResultCache(cacheLocation, callSiteKey);
-        //                }
-
-        //                return _callSiteCache[callSiteKey] = new IEnumerableCallSite(resultCache, itemType, callSites.ToArray());
-        //            }
-
-        //            return null;
-        //        }
-        //        finally
-        //        {
-        //            callSiteChain.Remove(serviceType);
-        //        }
-        //    }
-
-        //    private CallSiteResultCacheLocation GetCommonCacheLocation(CallSiteResultCacheLocation locationA, CallSiteResultCacheLocation locationB)
-        //    {
-        //        return (CallSiteResultCacheLocation)Math.Max((int)locationA, (int)locationB);
-        //    }
-
-        //    private ServiceCallSite TryCreateExact(ServiceDescriptor descriptor, Type serviceType, CallSiteChain callSiteChain, int slot)
-        //    {
-        //        if (serviceType == descriptor.ServiceType)
-        //        {
-        //            ServiceCacheKey callSiteKey = new ServiceCacheKey(serviceType, slot);
-        //            if (_callSiteCache.TryGetValue(callSiteKey, out ServiceCallSite serviceCallSite))
-        //            {
-        //                return serviceCallSite;
-        //            }
-
-        //            ServiceCallSite callSite;
-        //            var lifetime = new ResultCache(descriptor.Lifetime, serviceType, slot);
-        //            if (descriptor.ImplementationInstance != null)
-        //            {
-        //                callSite = new ConstantCallSite(descriptor.ServiceType, descriptor.ImplementationInstance);
-        //            }
-        //            else if (descriptor.ImplementationFactory != null)
-        //            {
-        //                callSite = new FactoryCallSite(lifetime, descriptor.ServiceType, descriptor.ImplementationFactory);
-        //            }
-        //            else if (descriptor.ImplementationType != null)
-        //            {
-        //                callSite = CreateConstructorCallSite(lifetime, descriptor.ServiceType, descriptor.ImplementationType, callSiteChain);
-        //            }
-        //            else
-        //            {
-        //                throw new InvalidOperationException(SR.InvalidServiceDescriptor);
-        //            }
-
-        //            return _callSiteCache[callSiteKey] = callSite;
-        //        }
-
-        //        return null;
-        //    }
-
-        //    [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2055:MakeGenericType",
-        //        Justification = "MakeGenericType here is used to create a closed generic implementation type given the closed service type. " +
-        //        "Trimming annotations on the generic types are verified when 'Microsoft.Extensions.DependencyInjection.VerifyOpenGenericServiceTrimmability' is set, which is set by default when PublishTrimmed=true. " +
-        //        "That check informs developers when these generic types don't have compatible trimming annotations.")]
-        //    private ServiceCallSite TryCreateOpenGeneric(ServiceDescriptor descriptor, Type serviceType, CallSiteChain callSiteChain, int slot, bool throwOnConstraintViolation)
-        //    {
-        //        if (serviceType.IsConstructedGenericType &&
-        //            serviceType.GetGenericTypeDefinition() == descriptor.ServiceType)
-        //        {
-        //            ServiceCacheKey callSiteKey = new ServiceCacheKey(serviceType, slot);
-        //            if (_callSiteCache.TryGetValue(callSiteKey, out ServiceCallSite serviceCallSite))
-        //            {
-        //                return serviceCallSite;
-        //            }
-
-        //            Debug.Assert(descriptor.ImplementationType != null, "descriptor.ImplementationType != null");
-        //            var lifetime = new ResultCache(descriptor.Lifetime, serviceType, slot);
-        //            Type closedType;
-        //            try
-        //            {
-        //                closedType = descriptor.ImplementationType.MakeGenericType(serviceType.GenericTypeArguments);
-        //            }
-        //            catch (ArgumentException)
-        //            {
-        //                if (throwOnConstraintViolation)
-        //                {
-        //                    throw;
-        //                }
-
-        //                return null;
-        //            }
-
-        //            return _callSiteCache[callSiteKey] = CreateConstructorCallSite(lifetime, serviceType, closedType, callSiteChain);
-        //        }
-
-        //        return null;
-        //    }
-
-        //    private ServiceCallSite CreateConstructorCallSite(
-        //        ResultCache lifetime,
-        //        Type serviceType,
-        //        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementationType,
-        //        CallSiteChain callSiteChain)
-        //    {
-        //        try
-        //        {
-        //            callSiteChain.Add(serviceType, implementationType);
-        //            ConstructorInfo[] constructors = implementationType.GetConstructors();
-
-        //            ServiceCallSite[] parameterCallSites = null;
-
-        //            if (constructors.Length == 0)
-        //            {
-        //                throw new InvalidOperationException(SR.Format(SR.NoConstructorMatch, implementationType));
-        //            }
-        //            else if (constructors.Length == 1)
-        //            {
-        //                ConstructorInfo constructor = constructors[0];
-        //                ParameterInfo[] parameters = constructor.GetParameters();
-        //                if (parameters.Length == 0)
-        //                {
-        //                    return new ConstructorCallSite(lifetime, serviceType, constructor);
-        //                }
-
-        //                parameterCallSites = CreateArgumentCallSites(
-        //                    implementationType,
-        //                    callSiteChain,
-        //                    parameters,
-        //                    throwIfCallSiteNotFound: true);
-
-        //                return new ConstructorCallSite(lifetime, serviceType, constructor, parameterCallSites);
-        //            }
-
-        //            Array.Sort(constructors,
-        //                (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
-
-        //            ConstructorInfo bestConstructor = null;
-        //            HashSet<Type> bestConstructorParameterTypes = null;
-        //            for (int i = 0; i < constructors.Length; i++)
-        //            {
-        //                ParameterInfo[] parameters = constructors[i].GetParameters();
-
-        //                ServiceCallSite[] currentParameterCallSites = CreateArgumentCallSites(
-        //                    implementationType,
-        //                    callSiteChain,
-        //                    parameters,
-        //                    throwIfCallSiteNotFound: false);
-
-        //                if (currentParameterCallSites != null)
-        //                {
-        //                    if (bestConstructor == null)
-        //                    {
-        //                        bestConstructor = constructors[i];
-        //                        parameterCallSites = currentParameterCallSites;
-        //                    }
-        //                    else
-        //                    {
-        //                        // Since we're visiting constructors in decreasing order of number of parameters,
-        //                        // we'll only see ambiguities or supersets once we've seen a 'bestConstructor'.
-
-        //                        if (bestConstructorParameterTypes == null)
-        //                        {
-        //                            bestConstructorParameterTypes = new HashSet<Type>();
-        //                            foreach (ParameterInfo p in bestConstructor.GetParameters())
-        //                            {
-        //                                bestConstructorParameterTypes.Add(p.ParameterType);
-        //                            }
-        //                        }
-
-        //                        foreach (ParameterInfo p in parameters)
-        //                        {
-        //                            if (!bestConstructorParameterTypes.Contains(p.ParameterType))
-        //                            {
-        //                                // Ambiguous match exception
-        //                                throw new InvalidOperationException(string.Join(
-        //                                    Environment.NewLine,
-        //                                    SR.Format(SR.AmbiguousConstructorException, implementationType),
-        //                                    bestConstructor,
-        //                                    constructors[i]));
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-
-        //            if (bestConstructor == null)
-        //            {
-        //                throw new InvalidOperationException(
-        //                    SR.Format(SR.UnableToActivateTypeException, implementationType));
-        //            }
-        //            else
-        //            {
-        //                Debug.Assert(parameterCallSites != null);
-        //                return new ConstructorCallSite(lifetime, serviceType, bestConstructor, parameterCallSites);
-        //            }
-        //        }
-        //        finally
-        //        {
-        //            callSiteChain.Remove(serviceType);
-        //        }
-        //    }
-
-        //    private ServiceCallSite[] CreateArgumentCallSites(
-        //        Type implementationType,
-        //        CallSiteChain callSiteChain,
-        //        ParameterInfo[] parameters,
-        //        bool throwIfCallSiteNotFound)
-        //    {
-        //        var parameterCallSites = new ServiceCallSite[parameters.Length];
-        //        for (int index = 0; index < parameters.Length; index++)
-        //        {
-        //            Type parameterType = parameters[index].ParameterType;
-        //            ServiceCallSite callSite = GetCallSite(parameterType, callSiteChain);
-
-        //            if (callSite == null && ParameterDefaultValue.TryGetDefaultValue(parameters[index], out object defaultValue))
-        //            {
-        //                callSite = new ConstantCallSite(parameterType, defaultValue);
-        //            }
-
-        //            if (callSite == null)
-        //            {
-        //                if (throwIfCallSiteNotFound)
-        //                {
-        //                    throw new InvalidOperationException(SR.Format(SR.CannotResolveService,
-        //                        parameterType,
-        //                        implementationType));
-        //                }
-
-        //                return null;
-        //            }
-
-        //            parameterCallSites[index] = callSite;
-        //        }
-
-        //        return parameterCallSites;
-        //    }
+                        callSites.Reverse();
+                    }
 
 
-        //    public void Add(Type type, ServiceCallSite serviceCallSite)
-        //    {
-        //        _callSiteCache[new ServiceCacheKey(type, DefaultSlot)] = serviceCallSite;
-        //    }
+                    ResultCache resultCache = ResultCache.None;
+                    if (cacheLocation == CallSiteResultCacheLocation.Scope || cacheLocation == CallSiteResultCacheLocation.Root)
+                    {
+                        resultCache = new ResultCache(cacheLocation, callSiteKey);
+                    }
+
+                    return _callSiteCache[callSiteKey] = new IEnumerableCallSite(resultCache, itemType, callSites.ToArray());
+                }
+
+                return null;
+            }
+            finally
+            {
+                callSiteChain.Remove(serviceType);
+            }
+        }
+
+        private CallSiteResultCacheLocation GetCommonCacheLocation(CallSiteResultCacheLocation locationA, CallSiteResultCacheLocation locationB)
+        {
+            return (CallSiteResultCacheLocation)Math.Max((int)locationA, (int)locationB);
+        }
+
+        private ServiceCallSite TryCreateExact(NinjascriptServiceDescriptor descriptor, Type serviceType, CallSiteChain callSiteChain, int slot)
+        {
+            if (serviceType == descriptor.ServiceType)
+            {
+                ServiceCacheKey callSiteKey = new ServiceCacheKey(serviceType, slot);
+                if (_callSiteCache.TryGetValue(callSiteKey, out ServiceCallSite serviceCallSite))
+                {
+                    return serviceCallSite;
+                }
+
+                ServiceCallSite callSite;
+                var lifetime = new ResultCache(descriptor.Lifetime, serviceType, slot);
+                if (descriptor.ImplementationInstance != null)
+                {
+                    callSite = new ConstantCallSite(descriptor.ServiceType, descriptor.ImplementationInstance);
+                }
+                else if (descriptor.ImplementationFactory != null)
+                {
+                    callSite = new FactoryCallSite(lifetime, descriptor.ServiceType, descriptor.ImplementationFactory);
+                }
+                else if (descriptor.ImplementationType != null)
+                {
+                    callSite = CreateConstructorCallSite(lifetime, descriptor.ServiceType, descriptor.ImplementationType, callSiteChain);
+                }
+                else
+                {
+                    throw new InvalidOperationException("InvalidServiceDescriptor");
+                }
+
+                return _callSiteCache[callSiteKey] = callSite;
+            }
+
+            return null;
+        }
+
+        //[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2055:MakeGenericType",
+        //    Justification = "MakeGenericType here is used to create a closed generic implementation type given the closed service type. " +
+        //    "Trimming annotations on the generic types are verified when 'Microsoft.Extensions.DependencyInjection.VerifyOpenGenericServiceTrimmability' is set, which is set by default when PublishTrimmed=true. " +
+        //    "That check informs developers when these generic types don't have compatible trimming annotations.")]
+        private ServiceCallSite TryCreateOpenGeneric(
+            NinjascriptServiceDescriptor descriptor, 
+            Type serviceType, 
+            CallSiteChain callSiteChain, 
+            int slot, 
+            bool throwOnConstraintViolation
+            )
+        {
+            if (serviceType.IsConstructedGenericType &&
+                serviceType.GetGenericTypeDefinition() == descriptor.ServiceType)
+            {
+                ServiceCacheKey callSiteKey = new ServiceCacheKey(serviceType, slot);
+                if (_callSiteCache.TryGetValue(callSiteKey, out ServiceCallSite serviceCallSite))
+                {
+                    return serviceCallSite;
+                }
+
+                Debug.Assert(descriptor.ImplementationType != null, "descriptor.ImplementationType != null");
+                var lifetime = new ResultCache(descriptor.Lifetime, serviceType, slot);
+                Type closedType;
+                try
+                {
+                    closedType = descriptor.ImplementationType.MakeGenericType(serviceType.GenericTypeArguments);
+                }
+                catch (ArgumentException)
+                {
+                    if (throwOnConstraintViolation)
+                    {
+                        throw;
+                    }
+
+                    return null;
+                }
+
+                return _callSiteCache[callSiteKey] = CreateConstructorCallSite(lifetime, serviceType, closedType, callSiteChain);
+            }
+
+            return null;
+        }
+
+        private ServiceCallSite CreateConstructorCallSite(
+            ResultCache lifetime,
+            Type serviceType,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementationType,
+            CallSiteChain callSiteChain)
+        {
+            try
+            {
+                callSiteChain.Add(serviceType, implementationType);
+                ConstructorInfo[] constructors = implementationType.GetConstructors();
+
+                ServiceCallSite[] parameterCallSites = null;
+
+                if (constructors.Length == 0)
+                {
+                    throw new InvalidOperationException("NoConstructorMatch");
+                }
+                else if (constructors.Length == 1)
+                {
+                    ConstructorInfo constructor = constructors[0];
+                    ParameterInfo[] parameters = constructor.GetParameters();
+                    if (parameters.Length == 0)
+                    {
+                        return new ConstructorCallSite(lifetime, serviceType, constructor);
+                    }
+
+                    parameterCallSites = CreateArgumentCallSites(
+                        implementationType,
+                        callSiteChain,
+                        parameters,
+                        throwIfCallSiteNotFound: true);
+
+                    return new ConstructorCallSite(lifetime, serviceType, constructor, parameterCallSites);
+                }
+
+                Array.Sort(constructors,
+                    (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
+
+                ConstructorInfo bestConstructor = null;
+                HashSet<Type> bestConstructorParameterTypes = null;
+                for (int i = 0; i < constructors.Length; i++)
+                {
+                    ParameterInfo[] parameters = constructors[i].GetParameters();
+
+                    ServiceCallSite[] currentParameterCallSites = CreateArgumentCallSites(
+                        implementationType,
+                        callSiteChain,
+                        parameters,
+                        throwIfCallSiteNotFound: false);
+
+                    if (currentParameterCallSites != null)
+                    {
+                        if (bestConstructor == null)
+                        {
+                            bestConstructor = constructors[i];
+                            parameterCallSites = currentParameterCallSites;
+                        }
+                        else
+                        {
+                            // Since we're visiting constructors in decreasing order of number of parameters,
+                            // we'll only see ambiguities or supersets once we've seen a 'bestConstructor'.
+
+                            if (bestConstructorParameterTypes == null)
+                            {
+                                bestConstructorParameterTypes = new HashSet<Type>();
+                                foreach (ParameterInfo p in bestConstructor.GetParameters())
+                                {
+                                    bestConstructorParameterTypes.Add(p.ParameterType);
+                                }
+                            }
+
+                            foreach (ParameterInfo p in parameters)
+                            {
+                                if (!bestConstructorParameterTypes.Contains(p.ParameterType))
+                                {
+                                    // Ambiguous match exception
+                                    throw new InvalidOperationException(string.Join(
+                                        Environment.NewLine,
+                                        "AmbiguousConstructorException",
+                                        bestConstructor,
+                                        constructors[i]));
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (bestConstructor == null)
+                {
+                    throw new InvalidOperationException("UnableToActivateTypeException");
+                }
+                else
+                {
+                    Debug.Assert(parameterCallSites != null);
+                    return new ConstructorCallSite(lifetime, serviceType, bestConstructor, parameterCallSites);
+                }
+            }
+            finally
+            {
+                callSiteChain.Remove(serviceType);
+            }
+        }
+
+        private ServiceCallSite[] CreateArgumentCallSites(
+            Type implementationType,
+            CallSiteChain callSiteChain,
+            ParameterInfo[] parameters,
+            bool throwIfCallSiteNotFound)
+        {
+            var parameterCallSites = new ServiceCallSite[parameters.Length];
+            for (int index = 0; index < parameters.Length; index++)
+            {
+                Type parameterType = parameters[index].ParameterType;
+                ServiceCallSite callSite = GetCallSite(parameterType, callSiteChain);
+                object defaultValue = null;
+
+                if (callSite == null && ParameterDefaultValue.TryGetDefaultValue(parameters[index], out defaultValue))
+                {
+                    callSite = new ConstantCallSite(parameterType, defaultValue);
+                }
+
+                if (callSite == null)
+                {
+                    if (throwIfCallSiteNotFound)
+                    {
+                        throw new InvalidOperationException("CannotResolveService");
+                    }
+
+                    return null;
+                }
+
+                parameterCallSites[index] = callSite;
+            }
+
+            return parameterCallSites;
+        }
+
+
+        public void Add(Type type, ServiceCallSite serviceCallSite)
+        {
+            _callSiteCache[new ServiceCacheKey(type, DefaultSlot)] = serviceCallSite;
+        }
 
         public bool IsService(Type serviceType)
         {

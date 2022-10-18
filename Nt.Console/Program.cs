@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Nt.Core.Services;
 using ServiceLifetime = Microsoft.Extensions.DependencyInjection.ServiceLifetime;
 using DefaultServiceProviderFactory = Nt.Core.Services.DefaultServiceProviderFactory;
+using System.Collections.Generic;
+using System.Text;
 
 namespace ConsoleApp
 {
@@ -31,10 +33,12 @@ namespace ConsoleApp
             var sc1 = new ServiceCollection();
             ServiceLifetime lifetime;
             sc1.AddSingleton(new object());
+            
             ServiceProvider sp;
             HostBuilder hostBuilder;
             Task waittingTheHost;
             DefaultServiceProviderFactory factory;
+            
             
             NinjascriptServiceCollection sc = new NinjascriptServiceCollection();
             sc.AddSingleton(typeof(SessionFilters),new SessionFilters());

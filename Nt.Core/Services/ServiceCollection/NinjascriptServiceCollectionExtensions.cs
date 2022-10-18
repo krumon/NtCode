@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Nt.Core.Attributes;
+using Nt.Core.Reflection;
+using System;
 
 namespace Nt.Core.Services
 {
@@ -18,7 +20,7 @@ namespace Nt.Core.Services
         public static INinjascriptServiceCollection AddSingleton(
             this INinjascriptServiceCollection services,
             Type serviceType,
-            Type implementationType) // [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementationType)  
         {
             if (services == null)
             {
@@ -81,7 +83,7 @@ namespace Nt.Core.Services
         /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptServiceCollection AddSingleton<TService, TImplementation>(this INinjascriptServiceCollection services) // [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+        public static INinjascriptServiceCollection AddSingleton<TService, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TImplementation>(this INinjascriptServiceCollection services) 
             where TService : class
             where TImplementation : class, TService
         {
@@ -103,7 +105,7 @@ namespace Nt.Core.Services
         /// <seealso cref="ServiceLifetime.Singleton"/>
         public static INinjascriptServiceCollection AddSingleton(
             this INinjascriptServiceCollection services,
-            Type serviceType) // [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type serviceType) 
         {
             if (services == null)
             {
@@ -126,7 +128,7 @@ namespace Nt.Core.Services
         /// <param name="services">The <see cref="INinjascriptServiceCollection"/> to add the service to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
         /// <seealso cref="ServiceLifetime.Singleton"/>
-        public static INinjascriptServiceCollection AddSingleton<TService>(this INinjascriptServiceCollection services) // [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+        public static INinjascriptServiceCollection AddSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TService>(this INinjascriptServiceCollection services) 
             where TService : class
         {
             if (services == null)
@@ -261,7 +263,7 @@ namespace Nt.Core.Services
         private static INinjascriptServiceCollection Add(
             INinjascriptServiceCollection collection,
             Type serviceType,
-            Type implementationType,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementationType,
             ServiceLifetime lifetime)
         {
             var descriptor = new NinjascriptServiceDescriptor(serviceType, implementationType, lifetime);
