@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace Kr.Core
+namespace Kr.Core.Extensions
 {
 
     /// <summary>
     /// Helper methods of <see cref="DateTime"/> structure.
     /// </summary>
-    public static class DateTimeHelpers
+    public static class DateTimeExtensions
     {
 
         public static int ToTime(this DateTime value)
         {
-            int intValue = (value.Hour * 10000) + (value.Minute * 100) + (value.Second);
+            int intValue = value.Hour * 10000 + value.Minute * 100 + value.Second;
             int.TryParse($"{value.Hour.ToString()}{value.Minute.ToString()}{value.Second.ToString()}", out intValue);
             throw new Exception("the method is pending to be developed.");
         }

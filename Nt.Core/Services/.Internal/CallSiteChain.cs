@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System;
+using Kr.Core.Helpers;
 
 namespace Nt.Core.Services.Internal
 {

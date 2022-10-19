@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Kr.Core
+namespace Kr.Core.Helpers
 {
 
     /// <summary>

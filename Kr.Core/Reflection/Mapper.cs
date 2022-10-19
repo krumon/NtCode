@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System;
 
-namespace Kr.Core
+namespace Kr.Core.Reflection
 {
     /// <summary>
     /// Represents the helper methods to mapper objects.

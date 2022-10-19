@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace Kr.Core
+namespace Kr.Core.Extensions
 {
     /// <summary>
     /// Extension methods for arrays

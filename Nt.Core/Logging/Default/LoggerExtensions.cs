@@ -1,4 +1,4 @@
-﻿using Kr.Core;
+﻿using Kr.Core.Extensions;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿namespace Kr.Core.String
+﻿namespace Kr.Core.Extensions
 {
     /// <summary>
     /// Extension methods for strings

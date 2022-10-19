@@ -1,4 +1,4 @@
-﻿using Kr.Core;
+﻿using Kr.Core.Helpers;
 using NinjaTrader.NinjaScript;
 using System.Collections.Generic;
 
