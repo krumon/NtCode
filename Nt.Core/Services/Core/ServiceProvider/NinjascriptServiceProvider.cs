@@ -15,18 +15,26 @@ namespace Nt.Core.Services
     {
 
         #region Private members
-
-        private readonly CallSiteValidator _callSiteValidator;
-        private readonly Func<Type, Func<ServiceProviderEngineScope, object>> _createServiceAccessor;
-        internal ServiceProviderEngine _engine;
+        // Check the service provider is disposed.
         private bool _disposed;
-        private ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>> _realizedServices;
-        internal CallSiteFactory CallSiteFactory { get; }
+        // Store the service descriptors.
+        private NinjascriptServiceDescriptor[] _descriptors;
+        // The root of the service providers engine.
         internal ServiceProviderEngineScope Root { get; }
+        // The service provider engine.
+        internal ServiceProviderEngine _engine;
+        // Function to create the service accesor.
+        private readonly Func<Type, Func<ServiceProviderEngineScope, object>> _createServiceAccessor;
+        // Collection of the realized services.
+        private ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>> _realizedServices;
+
+        internal CallSiteFactory CallSiteFactory { get; }
+        private readonly CallSiteValidator _callSiteValidator;
+
         internal static bool VerifyOpenGenericServiceTrimmability { get; } =
             AppContext.TryGetSwitch("VerifyOpenGenericServiceTrimmability", out bool verifyOpenGenerics) && verifyOpenGenerics;
+
         private object _createService;
-        NinjascriptServiceDescriptor[] _descriptors;
 
         #endregion
 
@@ -37,10 +45,12 @@ namespace Nt.Core.Services
             // note that Root needs to be set before calling GetEngine(), because the engine may need to access Root
             Root = new ServiceProviderEngineScope(this, isRootScope: true);
             ////_engine = GetEngine();
+            // Sets the service accesor function.
             _createServiceAccessor = CreateServiceAccessor;
-            //_realizedServices = new ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>>();
-
-            //CallSiteFactory = new CallSiteFactory(serviceDescriptors);
+            // Initilize the realized services
+            _realizedServices = new ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>>();
+            // Initialize the call site factory
+            CallSiteFactory = new CallSiteFactory(serviceDescriptors);
             //// The list of built in services that aren't part of the list of service descriptors
             //// keep this in sync with CallSiteFactory.IsService
             //CallSiteFactory.Add(typeof(INinjascriptServiceProvider), new ServiceProviderCallSite());
