@@ -1,6 +1,6 @@
 ﻿namespace Nt.Core.Services
 {
-    internal class NinjascriptsHostEnvironment : INinjascriptsHostEnvironment
+    internal class NinjascriptHostEnvironment : INinjascriptHostEnvironment
     {
         public string EnvironmentName { get; set; }
 

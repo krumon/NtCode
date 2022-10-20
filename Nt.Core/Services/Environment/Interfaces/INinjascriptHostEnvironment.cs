@@ -1,6 +1,6 @@
 ﻿namespace Nt.Core.Services
 {
-    public interface INinjascriptsHostEnvironment
+    public interface INinjascriptHostEnvironment
     {
 
         string EnvironmentName { get; set; }

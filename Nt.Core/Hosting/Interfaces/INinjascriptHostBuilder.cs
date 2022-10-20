@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Nt.Core.Configuration;
+using Nt.Core.Services;
+using System;
+using System.Collections.Generic;
 
 namespace Nt.Core.Hosting
 {
@@ -16,52 +19,35 @@ namespace Nt.Core.Hosting
         /// <returns>An initialized <see cref="INinjascriptHost"/></returns>
         INinjascriptHost Build();
 
-        //
-        // Resumen:
-        //     Set up the configuration for the builder itself. This will be used to initialize
-        //     the Microsoft.Extensions.Hosting.IHostEnvironment for use later in the build
-        //     process. This can be called multiple times and the results will be additive.
-        //
-        // Parámetros:
-        //   configureDelegate:
-        //     The delegate for configuring the Microsoft.Extensions.Configuration.IConfigurationBuilder
-        //     that will be used to construct the Microsoft.Extensions.Configuration.IConfiguration
-        //     for the host.
-        //
-        // Devuelve:
-        //     The same instance of the Microsoft.Extensions.Hosting.IHostBuilder for chaining.
-        //INinjascriptHostBuilder ConfigureHostConfiguration(Action<IConfigurationBuilder> configureDelegate);
+        /// <summary>
+        /// Set up the configuration for the builder itself. This will be used to initialize 
+        /// the <see cref="INinjascriptHostEnvironment"/> for use later in the build process. 
+        /// This can be called multiple times and the results will be additive.
+        /// </summary>
+        /// <param name="configureDelegate">The delegate for configuring the 
+        /// <see cref="INinjascriptConfigurationBuilder"/> that will be used 
+        /// to construct the <see cref="INinjascriptConfiguration"/> for the host.</param>
+        /// <returns>The same instance of the <see cref="INinjascriptHostBuilder"/> for chaining.</returns>
+        INinjascriptHostBuilder ConfigureHostConfiguration(Action<INinjascriptConfigurationBuilder> configureDelegate);
 
-        //
-        // Resumen:
-        //     Sets up the configuration for the remainder of the build process and application.
-        //     This can be called multiple times and the results will be additive. The results
-        //     will be available at Microsoft.Extensions.Hosting.HostBuilderContext.Configuration
-        //     for subsequent operations, as well as in Microsoft.Extensions.Hosting.IHost.Services.
-        //
-        // Parámetros:
-        //   configureDelegate:
-        //     The delegate for configuring the Microsoft.Extensions.Configuration.IConfigurationBuilder
-        //     that will be used to construct the Microsoft.Extensions.Configuration.IConfiguration
-        //     for the application.
-        //
-        // Devuelve:
-        //     The same instance of the Microsoft.Extensions.Hosting.IHostBuilder for chaining.
-        //INinjascriptHostBuilder ConfigureAppConfiguration(Action<HostBuilderContext, IConfigurationBuilder> configureDelegate);
+        /// <summary>
+        /// Sets up the configuration for the remainder of the build process and application.
+        /// This can be called multiple times and the results will be additive. The results
+        /// will be available at <see cref="NinjascriptHostBuilderContext.Configuration"/>
+        /// for subsequent operations, as well as in <see cref="INinjascriptHost.Services"/>.
+        /// </summary>
+        /// <param name="configureDelegate">The delegate for configuring the <see cref="INinjascriptConfigurationBuilder"/>
+        /// that will be used to construct the <see cref="INinjascriptConfiguration"/> for the application.</param>
+        /// <returns>The same instance of the <see cref="INinjascriptHostBuilder"/> for chaining.</returns>
+        INinjascriptHostBuilder ConfigureAppConfiguration(Action<NinjascriptHostBuilderContext, INinjascriptConfigurationBuilder> configureDelegate);
 
-        //
-        // Resumen:
-        //     Adds services to the container. This can be called multiple times and the results
-        //     will be additive.
-        //
-        // Parámetros:
-        //   configureDelegate:
-        //     The delegate for configuring the Microsoft.Extensions.DependencyInjection.IServiceCollection
-        //     that will be used to construct the System.IServiceProvider.
-        //
-        // Devuelve:
-        //     The same instance of the Microsoft.Extensions.Hosting.IHostBuilder for chaining.
-        //INinjascriptHostBuilder ConfigureServices(Action<HostBuilderContext, IServiceCollection> configureDelegate);
+        /// <summary>
+        /// Adds services to the container. This can be called multiple times and the results will be additive.
+        /// </summary>
+        /// <param name="configureDelegate">The delegate for configuring the <see cref="INinjascriptServiceCollection"/>
+        /// that will be used to construct the <see cref="INinjascriptServiceProvider"/>.</param>
+        /// <returns>The same instance of the <see cref="INinjascriptHostBuilder"/> for chaining.</returns>
+        INinjascriptHostBuilder ConfigureServices(Action<NinjascriptHostBuilderContext, INinjascriptServiceCollection> configureDelegate);
 
     }
 }

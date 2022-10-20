@@ -32,7 +32,7 @@ namespace ConsoleApp
             var sc1 = new ServiceCollection();
             ServiceLifetime lifetime;
             sc1.AddSingleton(new object());
-            
+
             ServiceProvider sp;
             HostBuilder hostBuilder;
             Task waittingTheHost;
@@ -40,7 +40,11 @@ namespace ConsoleApp
             
             NinjascriptServiceCollection sc = new NinjascriptServiceCollection();
             sc.AddSingleton(typeof(SessionFilters),new SessionFilters());
-            INinjascriptHost ninjascriptHost = NinjascriptHost.CreateDefaultBuilder().Build();
+            sc.AddSingleton<ISession,SessionStats>();
+            sc.AddSingleton(typeof(SessionHoursList));
+            sc.AddSingleton<ISession, SessionHours>();
+            INinjascriptHostBuilder builder = NinjascriptHost.CreateDefaultBuilder();
+            INinjascriptHost ninjascriptHost = builder.Build();
             sc = null;
             //INinjascriptsHost host = NinjascriptsHost.CreateDefaultBuilder().Build();
 

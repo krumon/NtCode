@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Nt.Core.Hosting.Internal
 {
-    internal class NinjascriptsHost : INinjascriptHost, IAsyncDisposable
+    internal class NinjascriptHost : INinjascriptHost, IAsyncDisposable
     {
 
         #region Private members
@@ -14,7 +14,7 @@ namespace Nt.Core.Hosting.Internal
         private readonly IHostLifetime _hostLifetime;
         private readonly NinjascriptLifetime _ninjascriptLifetime;
         //private readonly HostOptions _options;
-        private readonly INinjascriptsHostEnvironment _hostEnvironment;
+        private readonly INinjascriptHostEnvironment _hostEnvironment;
         //private readonly PhysicalFileProvider _defaultProvider;
         //private IEnumerable<IHostedService> _hostedServices;
         private volatile bool _stopCalled;
@@ -30,9 +30,9 @@ namespace Nt.Core.Hosting.Internal
 
         #region Constructors
 
-        public NinjascriptsHost(
+        public NinjascriptHost(
             INinjascriptServiceProvider services,
-            INinjascriptsHostEnvironment hostEnvironment,
+            INinjascriptHostEnvironment hostEnvironment,
             //PhysicalFileProvider defaultProvider,
             INinjascriptLifetime ninjascriptLifetime,
             //ILogger<Host> logger,

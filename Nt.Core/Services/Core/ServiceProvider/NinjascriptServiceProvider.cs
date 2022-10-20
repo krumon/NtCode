@@ -150,7 +150,8 @@ namespace Nt.Core.Services
                 // Optimize singleton case
                 if (callSite.Cache.Location == CallSiteResultCacheLocation.Root)
                 {
-                    object value = CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
+                    // TODO: To test.
+                    object value = null; // CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
                     return scope => value;
                 }
 

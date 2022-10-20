@@ -23,7 +23,7 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// The <see cref="INinjascriptEnvironment" /> initialized by the <see cref="IHost" />.
         /// </summary>
-        public INinjascriptsHostEnvironment HostingEnvironment { get; set; }
+        public INinjascriptHostEnvironment HostingEnvironment { get; set; }
 
         /// <summary>
         /// The <see cref="INinjascriptConfiguration" /> containing the merged configuration of the application and the <see cref="IHost" />.
