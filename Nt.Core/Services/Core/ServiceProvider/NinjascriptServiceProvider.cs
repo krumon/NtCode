@@ -37,7 +37,7 @@ namespace Nt.Core.Services
             // note that Root needs to be set before calling GetEngine(), because the engine may need to access Root
             Root = new ServiceProviderEngineScope(this, isRootScope: true);
             ////_engine = GetEngine();
-            //_createServiceAccessor = CreateServiceAccessor;
+            _createServiceAccessor = CreateServiceAccessor;
             //_realizedServices = new ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>>();
 
             //CallSiteFactory = new CallSiteFactory(serviceDescriptors);
@@ -47,11 +47,13 @@ namespace Nt.Core.Services
             //CallSiteFactory.Add(typeof(IServiceScopeFactory), new ConstantCallSite(typeof(IServiceScopeFactory), Root));
             //CallSiteFactory.Add(typeof(IServiceProviderIsService), new ConstantCallSite(typeof(IServiceProviderIsService), CallSiteFactory));
 
+            // Default is false
             if (options.ValidateScopes)
             {
                 _callSiteValidator = new CallSiteValidator();
             }
 
+            // Default is false
             if (options.ValidateOnBuild)
             {
                 List<Exception> exceptions = null;
@@ -114,7 +116,7 @@ namespace Nt.Core.Services
             OnResolve(serviceType, serviceProviderEngineScope);
             //DependencyInjectionEventSource.Log.ServiceResolved(this, serviceType);
             var result = realizedService.Invoke(serviceProviderEngineScope);
-            System.Diagnostics.Debug.Assert(result is null || CallSiteFactory.IsService(serviceType));
+            Debug.Assert(result is null || CallSiteFactory.IsService(serviceType));
             return result;
         }
 

@@ -260,10 +260,10 @@ namespace Nt.Core.Hosting
 
             _ninjascriptServices = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
 
-            //if (_ninjascriptServices == null)
-            //{
-            //    throw new InvalidOperationException(SR.NullIServiceProvider);
-            //}
+            if (_ninjascriptServices == null)
+            {
+                throw new InvalidOperationException("NullIServiceProvider");
+            }
 
             //// resolve configuration explicitly once to mark it as resolved within the
             //// service provider, ensuring it will be properly disposed with the provider

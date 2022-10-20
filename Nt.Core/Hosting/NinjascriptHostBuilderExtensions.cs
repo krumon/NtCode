@@ -160,18 +160,18 @@ namespace Nt.Core.Hosting
         //}
 
         /// <summary>
-        /// Configures an existing <see cref="IHostBuilder"/> instance with pre-configured defaults. This will overwrite
+        /// Configures an existing <see cref="INinjascriptHostBuilder"/> instance with pre-configured defaults. This will overwrite
         /// previously configured values and is intended to be called before additional configuration calls.
         /// </summary>
         /// <remarks>
         ///   The following defaults are applied to the <see cref="IHostBuilder"/>:
-        ///     * set the <see cref="IHostEnvironment.ContentRootPath"/> to the result of <see cref="Directory.GetCurrentDirectory()"/>
-        ///     * load host <see cref="IConfiguration"/> from "DOTNET_" prefixed environment variables
-        ///     * load host <see cref="IConfiguration"/> from supplied command line args
-        ///     * load app <see cref="IConfiguration"/> from 'appsettings.json' and 'appsettings.[<see cref="IHostEnvironment.EnvironmentName"/>].json'
-        ///     * load app <see cref="IConfiguration"/> from User Secrets when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development' using the entry assembly
-        ///     * load app <see cref="IConfiguration"/> from environment variables
-        ///     * load app <see cref="IConfiguration"/> from supplied command line args
+        ///     * set the <see cref="INinjascriptHostEnvironment.ContentRootPath"/> to the result of <see cref="Directory.GetCurrentDirectory()"/>
+        ///     * load host <see cref="INinjascriptConfiguration"/> from "DOTNET_" prefixed environment variables
+        ///     * load host <see cref="INinjascriptConfiguration"/> from supplied command line args
+        ///     * load app <see cref="INinjascriptConfiguration"/> from 'appsettings.json' and 'appsettings.[<see cref="IHostEnvironment.EnvironmentName"/>].json'
+        ///     * load app <see cref="INinjascriptConfiguration"/> from User Secrets when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development' using the entry assembly
+        ///     * load app <see cref="INinjascriptConfiguration"/> from environment variables
+        ///     * load app <see cref="INinjascriptConfiguration"/> from supplied command line args
         ///     * configure the <see cref="ILoggerFactory"/> to log to the console, debug, and event source output
         ///     * enables scope validation on the dependency injection container when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development'
         /// </remarks>
