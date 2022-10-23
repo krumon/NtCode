@@ -1,21 +1,18 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using ConsoleApp.Tests;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 //using Microsoft.Extensions.Hosting;
 using NinjaTrader.NinjaScript;
+using Nt.Core;
+using Nt.Core.Hosting;
+using Nt.Core.Ninjascript;
+using Nt.Core.Services;
 using System;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using Nt.Core.Ninjascript;
-using Nt.Core;
-using static ConsoleApp.ConsoleHelpers;
-using Nt.Core.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Hosting;
-using Nt.Core.Services;
-using ServiceLifetime = Microsoft.Extensions.DependencyInjection.ServiceLifetime;
 using DefaultServiceProviderFactory = Nt.Core.Services.DefaultServiceProviderFactory;
-using System.Collections.Generic;
 
 namespace ConsoleApp
 {
@@ -25,14 +22,10 @@ namespace ConsoleApp
         //static SimulatorTests simulatorTests = new SimulatorTests();
         //static SessionTimeTests sessionTimeTests = new SessionTimeTests();
         //static SessionHoursTests sessionHoursTests = new SessionHoursTests();
+        static CallSiteTests callSite = new CallSiteTests();
 
         public static void Main(string[] args)
         {
-            //INinjascriptsHost testHost = NinjascriptsHost.CreateHostBuilder().Build();
-            var sc1 = new ServiceCollection();
-            ServiceLifetime lifetime;
-            sc1.AddSingleton(new object());
-
             ServiceProvider sp;
             HostBuilder hostBuilder;
             Task waittingTheHost;

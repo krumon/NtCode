@@ -3,7 +3,7 @@ using Nt.Core;
 using System;
 using System.Threading;
 
-namespace ConsoleApp
+namespace ConsoleApp.Tests
 {
     internal class SimulatorTests : BaseTests
     {

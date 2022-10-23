@@ -5,7 +5,7 @@ namespace Nt.Core.Services
     /// Provides an extension point for creating a container specific builder and an <see cref="INinjascriptServiceProvider"/>.
     /// </summary>
     /// <typeparam name="TContainerBuilder"></typeparam>
-    public interface IServiceProviderFactory<TContainerBuilder>
+    public interface IServiceProviderFactory<TContainerBuilder> // where TContainerBuilder : notnull
     {
         /// <summary>
         /// Creates a container builder from an <see cref="INinjascriptServiceCollection"/>.

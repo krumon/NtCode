@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp
+namespace ConsoleApp.Tests
 {
     internal abstract class BaseTests
     {

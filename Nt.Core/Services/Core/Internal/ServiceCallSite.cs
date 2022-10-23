@@ -62,7 +62,6 @@ namespace Nt.Core.Services.Internal
         public override CallSiteKind Kind { get; } = CallSiteKind.Constructor;
 
     }
-
     internal sealed class IEnumerableCallSite : ServiceCallSite
     {
         internal Type ItemType { get; }
@@ -82,7 +81,6 @@ namespace Nt.Core.Services.Internal
         public override Type ImplementationType => ItemType.MakeArrayType();
         public override CallSiteKind Kind { get; } = CallSiteKind.IEnumerable;
     }
-
     internal sealed class ConstantCallSite : ServiceCallSite
     {
         private readonly Type _serviceType;
@@ -106,7 +104,6 @@ namespace Nt.Core.Services.Internal
         public override Type ImplementationType => DefaultValue?.GetType() ?? _serviceType;
         public override CallSiteKind Kind { get; } = CallSiteKind.Constant;
     }
-
     internal sealed class ServiceProviderCallSite : ServiceCallSite
     {
         public ServiceProviderCallSite() : base(ResultCache.None)
@@ -117,7 +114,6 @@ namespace Nt.Core.Services.Internal
         public override Type ImplementationType { get; } = typeof(NinjascriptServiceProvider);
         public override CallSiteKind Kind { get; } = CallSiteKind.ServiceProvider;
     }
-
     internal sealed class FactoryCallSite : ServiceCallSite
     {
         public Func<INinjascriptServiceProvider, object> Factory { get; }
@@ -137,7 +133,6 @@ namespace Nt.Core.Services.Internal
 
         public override CallSiteKind Kind { get; } = CallSiteKind.Factory;
     }
-
     internal enum CallSiteKind
     {
         Factory,
@@ -149,7 +144,6 @@ namespace Nt.Core.Services.Internal
         Transient,
         Singleton
     }
-
     internal struct ResultCache
     {
         public ServiceCacheKey Key { get; set; }

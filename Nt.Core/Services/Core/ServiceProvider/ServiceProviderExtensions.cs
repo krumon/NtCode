@@ -6,7 +6,7 @@ namespace Nt.Core.Services
     /// <summary>
     /// Extension methods for getting services from an <see cref="INinjascriptServiceProvider" />.
     /// </summary>
-    public static class NinjascriptServiceProviderExtensions
+    public static class ServiceProviderExtensions
     {
 
         /// <summary>

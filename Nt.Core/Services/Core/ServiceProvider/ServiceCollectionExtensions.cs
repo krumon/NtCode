@@ -5,7 +5,7 @@ namespace Nt.Core.Services
     /// <summary>
     /// Extension methods for building a <see cref="NinjascriptServiceProvider"/> from an <see cref="INinjascriptServiceCollection"/>.
     /// </summary>
-    public static class ServiceCollectionToServiceProviderExtensions
+    public static class ServiceCollectionExtensions
     {
 
         /// <summary>
