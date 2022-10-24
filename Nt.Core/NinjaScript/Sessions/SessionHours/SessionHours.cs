@@ -1,6 +1,7 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using Nt.Core.Events;
+using Nt.Core.Trading;
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +18,7 @@ namespace Nt.Core.Ninjascript
         /// <summary>
         /// Store the minor sessions in the main session.
         /// </summary>
-        private List<TradingSessionInfo> sessions;
+        private List<TradingSession> sessions;
 
         /// <summary>
         /// String that contents the type of day (regular or partial holiday).
@@ -57,12 +58,12 @@ namespace Nt.Core.Ninjascript
         /// <summary>
         /// Collection of <see cref="TradingSessionInfo"/>.
         /// </summary>
-        public List<TradingSessionInfo> Sessions 
+        public List<TradingSession> Sessions 
         {
             get 
             {
                 if (sessions == null) 
-                    sessions = new List<TradingSessionInfo>();
+                    sessions = new List<TradingSession>();
 
                 return sessions;
             }
@@ -211,7 +212,7 @@ namespace Nt.Core.Ninjascript
         /// Adds <see cref="TradingSessionInfo"/> list to session hours sessions.
         /// </summary>
         /// <param name="sessionsInfo"></param>
-        public void AddSessions(params TradingSessionInfo[] sessionsInfo)
+        public void AddSessions(params TradingSession[] sessionsInfo)
         {
             foreach (var sessionInfo in sessionsInfo)
                 Sessions.Add(sessionInfo);
@@ -219,7 +220,7 @@ namespace Nt.Core.Ninjascript
 
 
 
-        public void Remove(TradingSessionInfo session)
+        public void Remove(TradingSession session)
         {
             if (session == null)
                 throw new ArgumentNullException(nameof(session));
@@ -274,8 +275,8 @@ namespace Nt.Core.Ninjascript
         /// <param name="includeInitialBalance"></param>
         /// <param name="includeFinalBalance"></param>
         private void AddSession(
-            TradingSession sessionType,
-            InstrumentCode instrumentCode = InstrumentCode.Default,
+            TradingSessionType sessionType,
+            TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default,
             int includeInitialBalance = 0,
             int includeFinalBalance = 0)
         {
@@ -286,7 +287,7 @@ namespace Nt.Core.Ninjascript
 
         // TODO: Codificar el método "Add" para añadir sesiones conforme al enum TradingSession
         //       y organizando según queramos que se vean las sesiones.
-        private void Add(TradingSessionInfo session)
+        private void Add(TradingSession session)
         {
             if (session == null)
                 throw new ArgumentNullException(nameof(session));

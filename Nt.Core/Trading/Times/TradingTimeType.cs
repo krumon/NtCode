@@ -1,10 +1,10 @@
 ﻿
-namespace Nt.Core
+namespace Nt.Core.Trading
 {
     /// <summary>
     /// The type price of the bar.
     /// </summary>
-    public enum TradingTime
+    public enum TradingTimeType
     {
         // Custom session
         Custom,                         // Custom TradingSessionInfo.

@@ -1,10 +1,10 @@
 ﻿
-namespace Nt.Core
+namespace Nt.Core.Trading
 {
     /// <summary>
     /// The unique code of financial instruments.
     /// </summary>
-    public enum InstrumentCode
+    public enum TradingInstrumentCode
     {
         Default = 0,
         MES     = 1,

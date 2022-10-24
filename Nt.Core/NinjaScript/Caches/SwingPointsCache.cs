@@ -1,5 +1,6 @@
 ﻿using NinjaTrader.NinjaScript;
 using Nt.Core.Ninjascript;
+using Nt.Core.Trading;
 using System;
 
 namespace Nt.Core.Ninjascripts
@@ -63,7 +64,7 @@ namespace Nt.Core.Ninjascripts
 
         #region Private methods
 
-        private void BarsCache_ElementAdded(Bar obj)
+        private void BarsCache_ElementAdded(TradingBar obj)
         {
             SwingPoint swingPoint = BarsCache.GetSwing(minSwingStrength);
 

@@ -1,9 +1,9 @@
-﻿namespace Nt.Core
+﻿namespace Nt.Core.Trading
 {
     /// <summary>
     /// The type price of the bar.
     /// </summary>
-    public enum CandleStickPrice
+    public enum CandleStickBar
     {
 
         /// <summary>

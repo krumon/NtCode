@@ -1,9 +1,9 @@
-﻿namespace Nt.Core
+﻿namespace Nt.Core.Trading
 {
     /// <summary>
-    /// The type price of the bar.
+    /// The type pattern of the chart.
     /// </summary>
-    public enum ChartPattern
+    public enum TradingPattern
     {
 
         /// <summary>

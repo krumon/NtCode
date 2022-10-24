@@ -1,10 +1,10 @@
 ﻿
-namespace Nt.Core
+namespace Nt.Core.Trading
 {
     /// <summary>
     /// Trading session types.
     /// </summary>
-    public enum TradingSession
+    public enum TradingSessionType
     {
         // Main session
         Electronic,                 // Electronic TradingSessionInfo  

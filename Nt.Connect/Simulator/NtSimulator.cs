@@ -1,4 +1,5 @@
 ﻿using Nt.Core;
+using Nt.Core.Trading;
 using System;
 using System.Timers;
 
@@ -9,7 +10,7 @@ namespace Nt.Connect
 
         #region Events
 
-        public event Action<Bar> BarUpdated = (currentBar) => { };
+        public event Action<TradingBar> BarUpdated = (currentBar) => { };
 
         #endregion
 
@@ -19,7 +20,7 @@ namespace Nt.Connect
         private int speedFactor=0;
         
         protected Timer timer;
-        protected Bar bar;
+        protected TradingBar bar;
 
         #endregion
 
@@ -111,7 +112,7 @@ namespace Nt.Connect
 
         #region Virtual methods
 
-        public virtual void OnBarUpdate(Bar currentBar)
+        public virtual void OnBarUpdate(TradingBar currentBar)
         {
         }
 
@@ -122,7 +123,7 @@ namespace Nt.Connect
         private void BarUpdate()
         {
             if (bar == null)
-                bar = new Bar(0, 0, 0, 0, 0, 0, DateTime.Now);
+                bar = new TradingBar(0, 0, 0, 0, 0, 0, DateTime.Now);
             else
             {
                 bar.Idx++;

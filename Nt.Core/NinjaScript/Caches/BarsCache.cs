@@ -1,10 +1,11 @@
 ﻿using NinjaTrader.Core.FloatingPoint;
 using NinjaTrader.NinjaScript;
+using Nt.Core.Trading;
 using System;
 
 namespace Nt.Core.Ninjascript
 {
-    public class BarsCache : Cache<Bar>
+    public class BarsCache : Cache<TradingBar>
     {
 
         #region Constructors
@@ -25,9 +26,9 @@ namespace Nt.Core.Ninjascript
             Add(CreateCacheElement());
         }
 
-        public override Bar CreateCacheElement()
+        public override TradingBar CreateCacheElement()
         {
-            return new Bar(
+            return new TradingBar(
                 Idx, 
                 ninjascript.Open[Displacement], 
                 ninjascript.High[Displacement], 
@@ -41,17 +42,17 @@ namespace Nt.Core.Ninjascript
 
         #region Public global methods
 
-        public bool HasPattern(ChartPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
+        public bool HasPattern(TradingPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
         {
             return GetCacheIdx(pattern, strength, instance, barsAgo, searchMode) != -1;
         }
 
-        public BaseElement GetPattern(ChartPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
+        public BaseElement GetPattern(TradingPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
         {
             return GetCachePattern(pattern, strength, instance, barsAgo, searchMode);
         }
 
-        public int GetPatternBarsAgo(ChartPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
+        public int GetPatternBarsAgo(TradingPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
         {
             return (CurrentBar - GetPattern(pattern, strength, instance, barsAgo, searchMode)?.Idx) ?? -1;
         }
@@ -65,20 +66,20 @@ namespace Nt.Core.Ninjascript
             return text;
         }
 
-        public string ToString(CandleStickPrice priceType)
+        public string ToString(CandleStickBar priceType)
         {
             string text = "Bars Cache = [ ";
             for (int i = 0; i < Count; i++)
             {
                 switch (priceType)
                 {
-                    case (CandleStickPrice.Open):
+                    case (CandleStickBar.Open):
                         text += (this[i].Close).ToString("N2") + " ";
                         break;
-                    case (CandleStickPrice.High):
+                    case (CandleStickBar.High):
                         text += (this[i].High).ToString("N2") + " ";
                         break;
-                    case (CandleStickPrice.Low):
+                    case (CandleStickBar.Low):
                         text += (this[i].Low).ToString("N2") + " ";
                         break;
                     default:
@@ -143,7 +144,7 @@ namespace Nt.Core.Ninjascript
 
         #region Private methods
 
-        private int GetCacheIdx(ChartPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
+        private int GetCacheIdx(TradingPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
         {
             if (instance < 1)
                 throw new Exception(string.Format("Instance should be greater or equal than one.", GetType().Name, instance));
@@ -154,18 +155,18 @@ namespace Nt.Core.Ninjascript
 
             switch (pattern)
             {
-                case (ChartPattern.SwingHigh):
+                case (TradingPattern.SwingHigh):
                     return GetCacheIdxOfSwingPattern(SwingType.High, strength, instance, barsAgo, searchMode);
-                case (ChartPattern.SwingLow):
+                case (TradingPattern.SwingLow):
                     return GetCacheIdxOfSwingPattern(SwingType.Low, strength, instance, barsAgo, searchMode);
-                case (ChartPattern.Swing):
+                case (TradingPattern.Swing):
                     return GetCacheIdxOfSwingPattern(SwingType.Indifferent, strength, instance, barsAgo, searchMode);
                 default:
                     return -1;
             }
         }
 
-        private BaseElement GetCachePattern(ChartPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
+        private BaseElement GetCachePattern(TradingPattern pattern, int strength = 0, int instance = 1, int barsAgo = 0, CacheSearchMode searchMode = CacheSearchMode.Current)
         {
             if (instance < 1)
                 throw new Exception(string.Format("Instance should be greater or equal than one.", GetType().Name, instance));
@@ -176,11 +177,11 @@ namespace Nt.Core.Ninjascript
 
             switch (pattern)
             {
-                case (ChartPattern.SwingHigh):
+                case (TradingPattern.SwingHigh):
                     return GetSwing(SwingType.High, strength, instance, barsAgo, searchMode);
-                case (ChartPattern.SwingLow):
+                case (TradingPattern.SwingLow):
                     return GetSwing(SwingType.Low, strength, instance, barsAgo, searchMode);
-                case (ChartPattern.Swing):
+                case (TradingPattern.Swing):
                     return GetSwing(strength, instance, barsAgo, searchMode);
                 default:
                     return null;

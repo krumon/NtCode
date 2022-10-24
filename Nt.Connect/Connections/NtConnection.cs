@@ -1,5 +1,6 @@
 ﻿using NinjaTrader.Client;
 using Nt.Core;
+using Nt.Core.Trading;
 using System;
 using System.Timers;
 
@@ -42,7 +43,7 @@ namespace Nt.Connect
 
         #region Constructors
 
-        public NtConnection(InstrumentCode instrumentCode)
+        public NtConnection(TradingInstrumentCode instrumentCode)
         {
             masterInstrument = instrumentCode.ToString();
         }

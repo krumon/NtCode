@@ -1,5 +1,6 @@
 ﻿using Kr.Core.Helpers;
 using Nt.Core;
+using Nt.Core.Trading;
 using System;
 
 namespace ConsoleApp.Tests
@@ -32,11 +33,11 @@ namespace ConsoleApp.Tests
         {
             InstanceTests();
             Clear();
-            ToStringTests(TradingTime.American_RS_EOD_Close);
+            ToStringTests(TradingTimeType.American_RS_EOD_Close);
             Clear();
             SessionTimeEnumTests();
             Clear();
-            OperatorTests(TradingTime.Asian_Open,TradingTime.American_RS_EOD_Close);
+            OperatorTests(TradingTimeType.Asian_Open, TradingTimeType.American_RS_EOD_Close);
             WaitAndClear();
         }
 
@@ -49,19 +50,19 @@ namespace ConsoleApp.Tests
             // Create a custom instance.
             Title("Test of Instance methods.");
 
-            TradingTimeInfo st = TradingTimeInfo.CreateCustomSessionTime(9,15,0,TimeZoneInfo.Local);
+            TradingTime st = TradingTime.CreateCustomSessionTime(9,15,0,TimeZoneInfo.Local);
             Console.WriteLine($"Method ToString() => {st}");
             Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
             Console.WriteLine($"Method ToLongString() => {st.ToLongString()}");
 
-            st = TradingTimeInfo.CreateCustomSessionTime(new TimeSpan(9,0,0),TimeZoneInfo.Local);
+            st = TradingTime.CreateCustomSessionTime(new TimeSpan(9,0,0),TimeZoneInfo.Local);
             NewLine();
             Console.WriteLine($"Method ToString() => {st}");
             Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
             Console.WriteLine($"Method ToLongString() => {st.ToLongString()}");
 
             // Create instance by type
-            st = TradingTimeInfo.CreateSessionTimeByType(TradingTime.European_Open);
+            st = TradingTime.CreateSessionTimeByType(TradingTimeType.European_Open);
             NewLine();
             Console.WriteLine($"Method ToString() => {st}");
             Console.WriteLine($"Method ToShortString() => {st.ToShortString()}");
@@ -69,10 +70,10 @@ namespace ConsoleApp.Tests
 
         }
 
-        private void ToStringTests(TradingTime type)
+        private void ToStringTests(TradingTimeType type)
         {
             // Create a session time by type.
-            TradingTimeInfo st = TradingTimeInfo.CreateSessionTimeByType(type);
+            TradingTime st = TradingTime.CreateSessionTimeByType(type);
 
             Title("Test of To String methods.");
             Console.WriteLine(st.ToString());
@@ -85,29 +86,29 @@ namespace ConsoleApp.Tests
         private void SessionTimeEnumTests()
         {
             Title("Test of iteration and check methods.");
-            EnumHelpers.Writer<TradingTime>();
+            EnumHelpers.Writer<TradingTimeType>();
 
             NewLine();
-            EnumHelpers.ForEach<TradingTime>((t) =>
+            EnumHelpers.ForEach<TradingTimeType>((t) =>
             {
-                if (t != TradingTime.Custom)
+                if (t != TradingTimeType.Custom)
                     Console.WriteLine(t.ToSessionTime().ToString("Local"));
             });
 
             NewLine();
-            TradingTime tt = TradingTime.American_Open;
-            bool exist = TradingTimeInfo.Exist(tt);
+            TradingTimeType tt = TradingTimeType.American_Open;
+            bool exist = TradingTime.Exist(tt);
 
             string s = exist ? "exist" : "don't exist";
             Write(tt.ToString());
-            Write($"{tt} {s} in {nameof(TradingTime)} enum.");
+            Write($"{tt} {s} in {nameof(TradingTimeType)} enum.");
 
         }
 
-        private void OperatorTests(TradingTime t1, TradingTime t2)
+        private void OperatorTests(TradingTimeType t1, TradingTimeType t2)
         {
-            TradingTimeInfo st1 = TradingTimeInfo.CreateSessionTimeByType(t1);
-            TradingTimeInfo st2 = TradingTimeInfo.CreateSessionTimeByType(t2);
+            TradingTime st1 = TradingTime.CreateSessionTimeByType(t1);
+            TradingTime st2 = TradingTime.CreateSessionTimeByType(t2);
             int i;
             bool b;
             string s = string.Empty;
@@ -120,7 +121,7 @@ namespace ConsoleApp.Tests
             #region Compare tests
             
             Title("Test of Compare methods.");
-            i = TradingTimeInfo.Compare(st1,st2);
+            i = TradingTime.Compare(st1,st2);
             method = "CompareTo(st1,st2) =>";
 
             if (i < 0)
@@ -148,7 +149,7 @@ namespace ConsoleApp.Tests
             #region Equal tests
 
             Title("Test of Equal methods.");
-            b = TradingTimeInfo.Equals(st1,st2);
+            b = TradingTime.Equals(st1,st2);
             s = string.Empty;
             method = "Equals(st1,st2) =>";
 

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Nt.Core
+namespace Nt.Core.Trading
 {
     /// <summary>
     /// Contents trading session information.
     /// </summary>
-    public class TradingSessionInfo : BaseElement
+    public class TradingSession : BaseElement
     {
 
         #region Consts
@@ -21,7 +21,7 @@ namespace Nt.Core
         /// <summary>
         /// The trading session type.
         /// </summary>
-        private TradingSession genericSession;
+        private TradingSessionType genericSession;
 
         #endregion
 
@@ -30,13 +30,13 @@ namespace Nt.Core
         /// <summary>
         /// The trading session type.
         /// </summary>
-        public TradingSession GenericSession
+        public TradingSessionType GenericSession
         {
             private set
             {
                 genericSession = value;
 
-                if (genericSession == TradingSession.Custom)
+                if (genericSession == TradingSessionType.Custom)
                 {
                     Code = ToDefaultCode();
                     if (string.IsNullOrEmpty(Description))
@@ -52,24 +52,24 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Gets the unique code of the <see cref="TradingSessionInfo"/>.
+        /// Gets the unique code of the <see cref="TradingSession"/>.
         /// </summary>
         public string Code { get; private set; }
 
         /// <summary>
-        /// Gets the description of the <see cref="TradingSessionInfo"/>.
+        /// Gets the description of the <see cref="TradingSession"/>.
         /// </summary>
         public string Description { get; private set; }
 
         /// <summary>
-        /// The initial <see cref="TradingTimeInfo"/>.
+        /// The initial <see cref="TradingTime"/>.
         /// </summary>
-        public TradingTimeInfo BeginSessionTime { get; set; }
+        public TradingTime BeginSessionTime { get; set; }
 
         /// <summary>
-        /// The final <see cref="TradingTimeInfo"/>.
+        /// The final <see cref="TradingTime"/>.
         /// </summary>
-        public TradingTimeInfo EndSessionTime { get; set; }
+        public TradingTime EndSessionTime { get; set; }
 
         /// <summary>
         /// TradingSessionInfo hours duration.
@@ -81,9 +81,9 @@ namespace Nt.Core
         #region Constructors
 
         /// <summary>
-        /// Create a default instance of <see cref="TradingSessionInfo"/> class.
+        /// Create a default instance of <see cref="TradingSession"/> class.
         /// </summary>
-        private TradingSessionInfo()
+        private TradingSession()
         {
         }
 
@@ -92,15 +92,15 @@ namespace Nt.Core
         #region Instance methods
 
         /// <summary>
-        /// Create a new instance of <see cref="TradingSessionInfo"/> class with <see cref="Core.TradingSession"/>.
+        /// Create a new instance of <see cref="TradingSession"/> class with <see cref="Core.TradingSession"/>.
         /// </summary>
-        /// <param name="genericSession">the <see cref="Core.TradingSession"/> to create the <see cref="TradingSessionInfo"/> class.</param>
+        /// <param name="genericSession">the <see cref="Core.TradingSession"/> to create the <see cref="TradingSession"/> class.</param>
         /// <param name="instrumentCode">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
-        /// <returns>A new instance of <see cref="TradingSessionInfo"/> class.</returns>
-        public static TradingSessionInfo CreateSessionHoursByType(TradingSession genericSession, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        /// <returns>A new instance of <see cref="TradingSession"/> class.</returns>
+        public static TradingSession CreateSessionHoursByType(TradingSessionType genericSession, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
-            return new TradingSessionInfo
+            return new TradingSession
             {
                 BeginSessionTime = genericSession.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
                 EndSessionTime = genericSession.ToEndSessionTime(instrumentCode, endTimeDisplacement),
@@ -110,132 +110,132 @@ namespace Nt.Core
 
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSessionInfo"/> objects with specific <see cref="TradingTime"/> types and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTimeType"/> types and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTradingSession">The initial <see cref="TradingTime"/> type of the <see cref="TradingSessionInfo"/> object.</param>
-        /// <param name="endTradingSession">The final <see cref="TradingTime"/> type of the <see cref="TradingSessionInfo"/> object.</param>
+        /// <param name="beginTradingSession">The initial <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
+        /// <param name="endTradingSession">The final <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new custom instance of <see cref="TradingSessionInfo"/> object.</returns>
-        public static TradingSessionInfo CreateCustomSessionHours(TradingTime beginTradingSession, TradingTime endTradingSession, string description = "")
+        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
+        public static TradingSession CreateCustomSessionHours(TradingTimeType beginTradingSession, TradingTimeType endTradingSession, string description = "")
         {
-            return new TradingSessionInfo
+            return new TradingSession
             {
-                BeginSessionTime = TradingTimeInfo.CreateSessionTimeByType(beginTradingSession),
-                EndSessionTime = TradingTimeInfo.CreateSessionTimeByType(endTradingSession),
+                BeginSessionTime = TradingTime.CreateSessionTimeByType(beginTradingSession),
+                EndSessionTime = TradingTime.CreateSessionTimeByType(endTradingSession),
                 Description = description,
-                GenericSession = TradingSession.Custom,
+                GenericSession = TradingSessionType.Custom,
             };
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSessionInfo"/> objects with specific <see cref="TradingTimeInfo"/> object, <see cref="TradingTime"/> type and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTime"/> object, <see cref="TradingTimeType"/> type and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginSessionTime">The initial <see cref="TradingTimeInfo"/> of the <see cref="TradingSessionInfo"/> object.</param>
-        /// <param name="endTradingSession">The final <see cref="TradingTime"/> type of the <see cref="TradingSessionInfo"/> object.</param>
+        /// <param name="beginSessionTime">The initial <see cref="TradingTime"/> of the <see cref="TradingSession"/> object.</param>
+        /// <param name="endTradingSession">The final <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new custom instance of <see cref="TradingSessionInfo"/> object.</returns>
-        public static TradingSessionInfo CreateCustomSessionHours(TradingTimeInfo beginSessionTime, TradingTime endTradingSession, string description = "")
+        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
+        public static TradingSession CreateCustomSessionHours(TradingTime beginSessionTime, TradingTimeType endTradingSession, string description = "")
         {
-            return new TradingSessionInfo
+            return new TradingSession
             {
                 BeginSessionTime = beginSessionTime,
-                EndSessionTime = TradingTimeInfo.CreateSessionTimeByType(endTradingSession),
+                EndSessionTime = TradingTime.CreateSessionTimeByType(endTradingSession),
                 Description = description,
-                GenericSession = TradingSession.Custom,
+                GenericSession = TradingSessionType.Custom,
             };
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSessionInfo"/> objects with specific <see cref="TradingTimeInfo"/> object, <see cref="TradingTime"/> type and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTime"/> object, <see cref="TradingTimeType"/> type and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTradingSession">The initial <see cref="TradingTime"/> type of the <see cref="TradingSessionInfo"/> object.</param>
-        /// <param name="endSessionTime">The final <see cref="TradingTimeInfo"/> of the <see cref="TradingSessionInfo"/> object.</param>
+        /// <param name="beginTradingSession">The initial <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
+        /// <param name="endSessionTime">The final <see cref="TradingTime"/> of the <see cref="TradingSession"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new custom instance of <see cref="TradingSessionInfo"/> object.</returns>
-        public static TradingSessionInfo CreateCustomSessionHours(TradingTime beginTradingSession, TradingTimeInfo endSessionTime, string description = "")
+        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
+        public static TradingSession CreateCustomSessionHours(TradingTimeType beginTradingSession, TradingTime endSessionTime, string description = "")
         {
-            return new TradingSessionInfo
+            return new TradingSession
             {
-                BeginSessionTime = TradingTimeInfo.CreateSessionTimeByType(beginTradingSession),
+                BeginSessionTime = TradingTime.CreateSessionTimeByType(beginTradingSession),
                 EndSessionTime = endSessionTime,
                 Description = description,
-                GenericSession = TradingSession.Custom,
+                GenericSession = TradingSessionType.Custom,
             };
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSessionInfo"/> objects with specific <see cref="TradingTimeInfo"/> objects and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTime"/> objects and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginSessionTime">The initial <see cref="TradingTimeInfo"/> of the <see cref="TradingSessionInfo"/> object.</param>
-        /// <param name="endSessionTime">The final <see cref="TradingTimeInfo"/> of the <see cref="TradingSessionInfo"/> object.</param>
+        /// <param name="beginSessionTime">The initial <see cref="TradingTime"/> of the <see cref="TradingSession"/> object.</param>
+        /// <param name="endSessionTime">The final <see cref="TradingTime"/> of the <see cref="TradingSession"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new custom instance of <see cref="TradingSessionInfo"/> object.</returns>
-        public static TradingSessionInfo CreateCustomSessionHours(TradingTimeInfo beginSessionTime, TradingTimeInfo endSessionTime, string description = "")
+        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
+        public static TradingSession CreateCustomSessionHours(TradingTime beginSessionTime, TradingTime endSessionTime, string description = "")
         {
-            return new TradingSessionInfo
+            return new TradingSession
             {
                 BeginSessionTime = beginSessionTime,
                 EndSessionTime = endSessionTime,
                 Description = description,
-                GenericSession = TradingSession.Custom,
+                GenericSession = TradingSessionType.Custom,
             };
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSessionInfo"/> objects with specific <see cref="TradingTime"/>, <see cref="TradingTimeInfo"/> properties and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTimeType"/>, <see cref="TradingTime"/> properties and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSessionInfo"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSessionInfo"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTradingTime">The final <see cref="TradingTime"/> type of the <see cref="TradingSessionInfo"/> object.</param>
+        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTradingTime">The final <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new custom instance of <see cref="TradingSessionInfo"/> object.</returns>
-        public static TradingSessionInfo CreateCustomSessionHours(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTime endTradingTime, string description = "")
+        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
+        public static TradingSession CreateCustomSessionHours(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTimeType endTradingTime, string description = "")
         {
-            return new TradingSessionInfo
+            return new TradingSession
             {
-                BeginSessionTime = TradingTimeInfo.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
-                EndSessionTime = TradingTimeInfo.CreateSessionTimeByType(endTradingTime),
+                BeginSessionTime = TradingTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
+                EndSessionTime = TradingTime.CreateSessionTimeByType(endTradingTime),
                 Description = description,
-                GenericSession = TradingSession.Custom,
+                GenericSession = TradingSessionType.Custom,
             };
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSessionInfo"/> objects with specific <see cref="TradingTime"/>, <see cref="TradingTimeInfo"/> properties and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTimeType"/>, <see cref="TradingTime"/> properties and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTradingTime">The initial <see cref="TradingTime"/> type of the <see cref="TradingSessionInfo"/> object.</param>
-        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSessionInfo"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSessionInfo"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTradingTime">The initial <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
+        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
         /// <param name="description"></param>
-        /// <returns>A new custom instance of <see cref="TradingSessionInfo"/> object.</returns>
-        public static TradingSessionInfo CreateCustomSessionHours(TradingTime beginTradingTime, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
+        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
+        public static TradingSession CreateCustomSessionHours(TradingTimeType beginTradingTime, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
-            return new TradingSessionInfo
+            return new TradingSession
             {
-                BeginSessionTime = TradingTimeInfo.CreateSessionTimeByType(beginTradingTime),
-                EndSessionTime = TradingTimeInfo.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
+                BeginSessionTime = TradingTime.CreateSessionTimeByType(beginTradingTime),
+                EndSessionTime = TradingTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
                 Description = description,
-                GenericSession = TradingSession.Custom,
+                GenericSession = TradingSessionType.Custom,
             };
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSessionInfo"/> objects with specific <see cref="TradingTimeInfo"/> properties and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTime"/> properties and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSessionInfo"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSessionInfo"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSessionInfo"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSessionInfo"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
         /// <param name="description"></param>
-        /// <returns>A new custom instance of <see cref="TradingSessionInfo"/> object.</returns>
-        public static TradingSessionInfo CreateCustomSessionHours(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
+        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
+        public static TradingSession CreateCustomSessionHours(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
-            return new TradingSessionInfo
+            return new TradingSession
             {
-                BeginSessionTime = TradingTimeInfo.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom TradingSessionInfo - Open Time" : description + " - Open"),
-                EndSessionTime = TradingTimeInfo.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom TradingSessionInfo - Close Time" : description + " - Close"),
+                BeginSessionTime = TradingTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom TradingSessionInfo - Open Time" : description + " - Open"),
+                EndSessionTime = TradingTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom TradingSessionInfo - Close Time" : description + " - Close"),
                 Description = description,
-                GenericSession = TradingSession.Custom,
+                GenericSession = TradingSessionType.Custom,
             };
         }
 
@@ -244,7 +244,7 @@ namespace Nt.Core
         #region Public Methods
 
         /// <summary>
-        /// Gets the initial <see cref="DateTime"/> of the <see cref="TradingSessionInfo"/>.
+        /// Gets the initial <see cref="DateTime"/> of the <see cref="TradingSession"/>.
         /// </summary>
         /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
         public DateTime GetBeginTime(DateTime time)
@@ -253,7 +253,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="TradingSessionInfo"/>.
+        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
         /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
@@ -263,7 +263,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="TradingSessionInfo"/>.
+        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
         /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
@@ -277,7 +277,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Gets the end <see cref="DateTime"/> structure of the <see cref="TradingSessionInfo"/>.
+        /// Gets the end <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
         /// </summary>
         /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
         public DateTime GetEndTime(DateTime time)
@@ -286,7 +286,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Gets the end <see cref="DateTime"/> structure of the <see cref="TradingSessionInfo"/>.
+        /// Gets the end <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
         /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
@@ -296,7 +296,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Gets the end <see cref="DateTime"/> structure of the <see cref="TradingSessionInfo"/>.
+        /// Gets the end <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
         /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
@@ -340,7 +340,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Gets the final <see cref="DateTime"/> structure of the <see cref="TradingSessionInfo"/>.
+        /// Gets the final <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
         /// </summary>
         /// <param name="currentDate">The current date time.</param>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
@@ -360,7 +360,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Gets the final <see cref="DateTime"/> structure of the <see cref="TradingSessionInfo"/>.
+        /// Gets the final <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
         /// </summary>
         /// <param name="currentDate">The current date time.</param>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
@@ -398,27 +398,27 @@ namespace Nt.Core
         #region Operator, Compare and Equity methods
 
         /// <summary>
-        /// Compare <see cref="TradingTimeInfo"/> objects and return true if the elements are equals.
-        /// the <see cref="TradingTimeInfo"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// Compare <see cref="TradingTime"/> objects and return true if the elements are equals.
+        /// the <see cref="TradingTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
         /// </summary>
         /// <param name="obj">The object to compare.</param>
         /// <returns>True if the objects are equal otherwise false.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is TradingSessionInfo sh)
+            if (obj is TradingSession sh)
                 return BeginSessionTime.Equals(sh.BeginSessionTime) && EndSessionTime.Equals(sh.EndSessionTime) && this.Code == sh.Code;
 
             return false;
         }
 
         /// <summary>
-        /// Compare <see cref="TradingTimeInfo"/> objects and return true if the elements are equals.
-        /// the <see cref="TradingTimeInfo"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// Compare <see cref="TradingTime"/> objects and return true if the elements are equals.
+        /// the <see cref="TradingTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
         /// </summary>
-        /// <param name="value">The <see cref="TradingTimeInfo"/> to compare with the instance.</param>
-        /// <returns>True if the pair of <see cref="TradingTimeInfo"/> are equals.</returns>
-        /// <exception cref="ArgumentException">The <see cref="TradingTimeInfo"/>object passed as parameter cannot be null.</exception>
-        public bool Equals(TradingSessionInfo sh)
+        /// <param name="value">The <see cref="TradingTime"/> to compare with the instance.</param>
+        /// <returns>True if the pair of <see cref="TradingTime"/> are equals.</returns>
+        /// <exception cref="ArgumentException">The <see cref="TradingTime"/>object passed as parameter cannot be null.</exception>
+        public bool Equals(TradingSession sh)
         {
 
             if (sh is null)
@@ -428,14 +428,14 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Compare <see cref="TradingTimeInfo"/> objects and return true if the elements are equals.
-        /// the <see cref="TradingTimeInfo"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// Compare <see cref="TradingTime"/> objects and return true if the elements are equals.
+        /// the <see cref="TradingTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
         /// </summary>
-        /// <param name="sh1">The first <see cref="TradingTimeInfo"/> object to compare with the second.</param>
-        /// <param name="sh2">The second <see cref="TradingTimeInfo"/> object to compare with the first.</param>
-        /// <returns>True if <see cref="TradingTimeInfo"/> objects are equals.</returns>
-        /// <exception cref="ArgumentException">The <see cref="TradingTimeInfo"/>objects passed as parameter cannot be null.</exception>
-        public static bool Equals(TradingSessionInfo sh1, TradingSessionInfo sh2)
+        /// <param name="sh1">The first <see cref="TradingTime"/> object to compare with the second.</param>
+        /// <param name="sh2">The second <see cref="TradingTime"/> object to compare with the first.</param>
+        /// <returns>True if <see cref="TradingTime"/> objects are equals.</returns>
+        /// <exception cref="ArgumentException">The <see cref="TradingTime"/>objects passed as parameter cannot be null.</exception>
+        public static bool Equals(TradingSession sh1, TradingSession sh2)
         {
 
             if (sh1 is null && sh2 is null)
@@ -444,21 +444,21 @@ namespace Nt.Core
             if (sh1 is null || sh2 is null)
                 return false;
 
-            return TradingTimeInfo.Equals(sh1.BeginSessionTime, sh2.BeginSessionTime) && TradingTimeInfo.Equals(sh1.EndSessionTime, sh2.EndSessionTime) && sh1.Code == sh2.Code;
+            return TradingTime.Equals(sh1.BeginSessionTime, sh2.BeginSessionTime) && TradingTime.Equals(sh1.EndSessionTime, sh2.EndSessionTime) && sh1.Code == sh2.Code;
 
         }
 
         /// <summary>
-        /// Compare <see cref="TradingSessionInfo"/> objects and return 1 if <paramref name="sh1"/> is greater than <paramref name="sh2"/>, 
+        /// Compare <see cref="TradingSession"/> objects and return 1 if <paramref name="sh1"/> is greater than <paramref name="sh2"/>, 
         /// otherwise returns -1 and 0 if the objects are equals.
         /// </summary>
-        /// <param name="sh1">The first <see cref="TradingSessionInfo"/> object to compare with the second.</param>
-        /// <param name="sh2">The second <see cref="TradingSessionInfo"/> object to compare with the first.</param>
+        /// <param name="sh1">The first <see cref="TradingSession"/> object to compare with the second.</param>
+        /// <param name="sh2">The second <see cref="TradingSession"/> object to compare with the first.</param>
         /// <returns>1 if <paramref name="sh1"/>is greater than <paramref name="sh2"/>,
         /// -1 if <paramref name="sh1"/>is minor than <paramref name="sh1"/>,
         /// otherwise are equals and returns 0.</returns>
-        /// <exception cref="ArgumentException">The <see cref="TradingSessionInfo"/>objects passed as parameter cannot be null.</exception>
-        public static int Compare(TradingSessionInfo sh1, TradingSessionInfo sh2)
+        /// <exception cref="ArgumentException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
+        public static int Compare(TradingSession sh1, TradingSession sh2)
         {
             if (sh1 == null || sh2 == null)
                 throw new ArgumentException("The arguments can not be null.");
@@ -495,7 +495,7 @@ namespace Nt.Core
                 throw new ArgumentException("Argument cannot be null");
             }
 
-            if (value is TradingSessionInfo sh)
+            if (value is TradingSession sh)
             {
                 TimeSpan utcTime = this.BeginSessionTime.Time + this.EndSessionTime.Time;
                 TimeSpan shUtcTime = sh.EndSessionTime.Time + sh.EndSessionTime.Time;
@@ -517,12 +517,12 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Compare <see cref="TradingSessionInfo"/> to <see cref="TradingSessionInfo"/> instance and return 1 
+        /// Compare <see cref="TradingSession"/> to <see cref="TradingSession"/> instance and return 1 
         /// if the instance is major than the second, 
         /// otherwise returns -1 and 0 if the objects are equals.
         /// <param name="value">The target object to compare.</param>
         /// <returns></returns>
-        public int CompareTo(TradingSessionInfo value)
+        public int CompareTo(TradingSession value)
         {
             if (value == null)
             {
@@ -530,7 +530,7 @@ namespace Nt.Core
             }
 
             TimeSpan thisUtcTime = this.BeginSessionTime.Time + this.EndSessionTime.Time;
-            TimeSpan valueUtcTime = ((TradingSessionInfo)value).EndSessionTime.Time + ((TradingSessionInfo)value).EndSessionTime.Time;
+            TimeSpan valueUtcTime = ((TradingSession)value).EndSessionTime.Time + ((TradingSession)value).EndSessionTime.Time;
 
             if (thisUtcTime > valueUtcTime)
             {
@@ -546,12 +546,12 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSessionInfo"/> that is greater than another specified.
+        /// Determines whether two specified instances of <see cref="TradingSession"/> that is greater than another specified.
         /// </summary>
         /// <param name="sh1">The first object to compare.</param>
         /// <param name="sh2">The second object to compare.</param>
         /// <returns>True if <paramref name="sh1"/> is greater than <paramref name="sh2"/>; otherwise, false.</returns>
-        public static bool operator >(TradingSessionInfo sh1, TradingSessionInfo sh2)
+        public static bool operator >(TradingSession sh1, TradingSession sh2)
         {
             if (sh1 is null)
                 throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
@@ -563,12 +563,12 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSessionInfo"/> that is earlier than another specified.
+        /// Determines whether two specified instances of <see cref="TradingSession"/> that is earlier than another specified.
         /// </summary>
         /// <param name="sh1">The first object to compare.</param>
         /// <param name="sh2">The second object to compare.</param>
         /// <returns>True if <paramref name="sh1"/> is less than <paramref name="sh2"/>; otherwise, false.</returns>
-        public static bool operator <(TradingSessionInfo sh1, TradingSessionInfo sh2)
+        public static bool operator <(TradingSession sh1, TradingSession sh2)
         {
             if (sh1 is null)
                 throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
@@ -580,12 +580,12 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSessionInfo"/> that is the same as or greater than another specified.
+        /// Determines whether two specified instances of <see cref="TradingSession"/> that is the same as or greater than another specified.
         /// </summary>
         /// <param name="sh1">The first object to compare.</param>
         /// <param name="sh2">The second object to compare.</param>
         /// <returns>True if <paramref name="sh1"/> is equal to or greater than <paramref name="sh2"/>; otherwise, false.</returns>
-        public static bool operator >=(TradingSessionInfo sh1, TradingSessionInfo sh2)
+        public static bool operator >=(TradingSession sh1, TradingSession sh2)
         {
             if (sh1 is null)
                 throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
@@ -596,12 +596,12 @@ namespace Nt.Core
             return false;
         }
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSessionInfo"/> that is the same as or earlier than another specified.
+        /// Determines whether two specified instances of <see cref="TradingSession"/> that is the same as or earlier than another specified.
         /// </summary>
         /// <param name="sh1">The first object to compare.</param>
         /// <param name="sh2">The second object to compare.</param>
         /// <returns>True if <paramref name="sh1"/> is equal to or less than <paramref name="sh2"/>; otherwise, false.</returns>
-        public static bool operator <=(TradingSessionInfo sh1, TradingSessionInfo sh2)
+        public static bool operator <=(TradingSession sh1, TradingSession sh2)
         {
 
             if (sh1 is null)
@@ -614,12 +614,12 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSessionInfo"/> have the same <see cref="Time"/>.
+        /// Determines whether two specified instances of <see cref="TradingSession"/> have the same <see cref="Time"/>.
         /// </summary>
         /// <param name="sh1">The first object to compare.</param>
         /// <param name="sh2">The second object to compare.</param>
         /// <returns>True if <paramref name="sh1"/> and <paramref name="sh2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
-        public static bool operator ==(TradingSessionInfo sh1, TradingSessionInfo sh2)
+        public static bool operator ==(TradingSession sh1, TradingSession sh2)
         {
             if (sh1 is null && sh2 is null)
                 return true;
@@ -631,12 +631,12 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSessionInfo"/> haven't the same <see cref="Time"/>.
+        /// Determines whether two specified instances of <see cref="TradingSession"/> haven't the same <see cref="Time"/>.
         /// </summary>
         /// <param name="sh1">The first object to compare.</param>
         /// <param name="sh2">The second object to compare.</param>
         /// <returns>True if <paramref name="sh1"/> and <paramref name="sh2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
-        public static bool operator !=(TradingSessionInfo sh1, TradingSessionInfo sh2)
+        public static bool operator !=(TradingSession sh1, TradingSession sh2)
         {
             if (sh1 is null && sh2 is null)
                 return false;
@@ -657,7 +657,7 @@ namespace Nt.Core
         /// <param name="sh2">TradingSessionInfo time value to add.</param>
         /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="sh1"/> and <paramref name="sh2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator +(TradingSessionInfo sh1, TradingSessionInfo sh2)
+        public static TimeSpan operator +(TradingSession sh1, TradingSession sh2)
         {
             if (sh1 is null)
                 throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
@@ -675,7 +675,7 @@ namespace Nt.Core
         /// <param name="ts">Time span value to add.</param>
         /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="sh"/> and <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator +(TradingSessionInfo sh, TimeSpan ts)
+        public static TimeSpan operator +(TradingSession sh, TimeSpan ts)
         {
             if (sh is null)
                 throw new ArgumentNullException($"the argument {nameof(sh)} cannot be null.");
@@ -690,7 +690,7 @@ namespace Nt.Core
         /// <param name="sh2">TradingSessionInfo time value to substract.</param>
         /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="sh1"/> minus the value of <paramref name="sh2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator -(TradingSessionInfo sh1, TradingSessionInfo sh2)
+        public static TimeSpan operator -(TradingSession sh1, TradingSession sh2)
         {
             if (sh1 is null)
                 throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
@@ -708,7 +708,7 @@ namespace Nt.Core
         /// <param name="ts">Time span value to add.</param>
         /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="sh"/> minus the value of <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator -(TradingSessionInfo sh, TimeSpan ts)
+        public static TimeSpan operator -(TradingSession sh, TimeSpan ts)
         {
             if (sh is null)
                 throw new ArgumentNullException($"the argument {nameof(sh)} cannot be null.");
@@ -721,7 +721,7 @@ namespace Nt.Core
         #region ToString methods
 
         /// <summary>
-        /// Converts the <see cref="TradingSessionInfo"/> to string.
+        /// Converts the <see cref="TradingSession"/> to string.
         /// </summary>
         /// <returns></returns>
         public string ToString(bool onlyActualSession)
@@ -739,7 +739,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSessionInfo"/> to string.
+        /// Converts the <see cref="TradingSession"/> to string.
         /// </summary>
         /// <returns></returns>
         public string ToString(DateTime referenceDateTime)
@@ -749,7 +749,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSessionInfo"/> to string.
+        /// Converts the <see cref="TradingSession"/> to string.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
@@ -758,7 +758,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTimeInfo"/>.
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTime"/>.
         /// </summary>
         /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
         /// <returns></returns>
@@ -770,7 +770,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSessionInfo"/> to short string.
+        /// Converts the <see cref="TradingSession"/> to short string.
         /// </summary>
         /// <returns></returns>
         public string ToShortString()
@@ -779,7 +779,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTimeInfo"/>.
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTime"/>.
         /// </summary>
         /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
         /// <returns></returns>
@@ -791,7 +791,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSessionInfo"/> to long string.
+        /// Converts the <see cref="TradingSession"/> to long string.
         /// </summary>
         /// <returns></returns>
         public string ToLongString()
@@ -800,7 +800,7 @@ namespace Nt.Core
         }
 
         /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTimeInfo"/>.
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTime"/>.
         /// </summary>
         /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
         /// <returns></returns>
@@ -828,79 +828,79 @@ namespace Nt.Core
 
         #region Helpèr methods
 
-        public TradingSessionInfo GetRegularSession()
+        public TradingSession GetRegularSession()
         {
-            return CreateSessionHoursByType(TradingSession.Regular);
+            return CreateSessionHoursByType(TradingSessionType.Regular);
         }
 
-        public TradingSessionInfo GetOvernightSession()
+        public TradingSession GetOvernightSession()
         {
-            return CreateSessionHoursByType(TradingSession.OVN);
+            return CreateSessionHoursByType(TradingSessionType.OVN);
         }
 
-        public TradingSessionInfo GetEuropeanSession()
+        public TradingSession GetEuropeanSession()
         {
-            return CreateSessionHoursByType(TradingSession.European);
+            return CreateSessionHoursByType(TradingSessionType.European);
         }
 
-        public TradingSessionInfo GetAsianSession()
+        public TradingSession GetAsianSession()
         {
-            return CreateSessionHoursByType(TradingSession.Asian);
+            return CreateSessionHoursByType(TradingSessionType.Asian);
         }
 
-        public TradingSessionInfo GetAmericanSession()
+        public TradingSession GetAmericanSession()
         {
-            return CreateSessionHoursByType(TradingSession.American);
+            return CreateSessionHoursByType(TradingSessionType.American);
         }
 
-        public TradingSessionInfo GetAmericanAndEuropeanSession()
+        public TradingSession GetAmericanAndEuropeanSession()
         {
-            return CreateSessionHoursByType(TradingSession.AmericanAndEuropean);
+            return CreateSessionHoursByType(TradingSessionType.AmericanAndEuropean);
         }
 
-        public TradingSessionInfo GetAmericanResidualSession()
+        public TradingSession GetAmericanResidualSession()
         {
-            return CreateSessionHoursByType(TradingSession.American_RS); ;
+            return CreateSessionHoursByType(TradingSessionType.American_RS); ;
         }
 
-        public TradingSessionInfo GetAsianResidualSession()
+        public TradingSession GetAsianResidualSession()
         {
-            return CreateSessionHoursByType(TradingSession.Asian_RS); ;
+            return CreateSessionHoursByType(TradingSessionType.Asian_RS); ;
         }
 
-        public TradingSessionInfo GetAmericanResidualExtraTimeSession()
+        public TradingSession GetAmericanResidualExtraTimeSession()
         {
-            return CreateSessionHoursByType(TradingSession.American_RS_EXT); ;
+            return CreateSessionHoursByType(TradingSessionType.American_RS_EXT); ;
         }
 
-        public TradingSessionInfo GetAmericanResidualEndOfDaySession()
+        public TradingSession GetAmericanResidualEndOfDaySession()
         {
-            return CreateSessionHoursByType(TradingSession.American_RS_EOD); ;
+            return CreateSessionHoursByType(TradingSessionType.American_RS_EOD); ;
         }
 
-        public TradingSessionInfo GetAmericanResidualNewDaySession()
+        public TradingSession GetAmericanResidualNewDaySession()
         {
-            return CreateSessionHoursByType(TradingSession.American_RS_NWD); ;
+            return CreateSessionHoursByType(TradingSessionType.American_RS_NWD); ;
         }
 
-        public List<TradingSessionInfo> GetAmericanSessions()
+        public List<TradingSession> GetAmericanSessions()
         {
-            List<TradingSessionInfo> sessions = new List<TradingSessionInfo>
+            List<TradingSession> sessions = new List<TradingSession>
             {
-                CreateSessionHoursByType(TradingSession.AmericanAndEuropean),
-                CreateSessionHoursByType(TradingSession.American),
+                CreateSessionHoursByType(TradingSessionType.AmericanAndEuropean),
+                CreateSessionHoursByType(TradingSessionType.American),
             };
 
             return sessions;
         }
 
-        public List<TradingSessionInfo> GetAmericanResidualSessions()
+        public List<TradingSession> GetAmericanResidualSessions()
         {
-            List<TradingSessionInfo> sessions = new List<TradingSessionInfo>
+            List<TradingSession> sessions = new List<TradingSession>
             {
-                CreateSessionHoursByType(TradingSession.American_RS_EXT),
-                CreateSessionHoursByType(TradingSession.American_RS_EXT),
-                CreateSessionHoursByType(TradingSession.American_RS_NWD)
+                CreateSessionHoursByType(TradingSessionType.American_RS_EXT),
+                CreateSessionHoursByType(TradingSessionType.American_RS_EXT),
+                CreateSessionHoursByType(TradingSessionType.American_RS_NWD)
             };
 
             return sessions;

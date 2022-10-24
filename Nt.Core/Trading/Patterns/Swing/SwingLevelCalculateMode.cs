@@ -1,4 +1,4 @@
-﻿namespace Nt.Core
+﻿namespace Nt.Core.Trading
 {
     /// <summary>
     /// The calculate mode for the swing level.

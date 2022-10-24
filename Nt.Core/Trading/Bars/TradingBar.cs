@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Nt.Core
+namespace Nt.Core.Trading
 {
-    public class Bar : BaseElement
+    public class TradingBar : BaseElement
     {
 
         #region Public properties
@@ -31,7 +31,7 @@ namespace Nt.Core
         /// <param name="close">Close price.</param>
         /// <param name="volume">Represents the volume of the bar.</param>
         /// <param name="time">Represents the time of the bar.</param>
-        public Bar(int idx, double open, double high, double low, double close, long volume, DateTime time)
+        public TradingBar(int idx, double open, double high, double low, double close, long volume, DateTime time)
         {
             Idx = idx;
             Open = open;

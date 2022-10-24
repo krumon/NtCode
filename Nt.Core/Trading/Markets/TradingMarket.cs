@@ -1,10 +1,10 @@
 ﻿
-namespace Nt.Core
+namespace Nt.Core.Trading
 {
     /// <summary>
     /// The market exchange types.
     /// </summary>
-    public enum MarketExchange
+    public enum TradingMarket
     {
         CME_Future_Index = 0,
     }

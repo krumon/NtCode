@@ -1,22 +1,22 @@
 ﻿
-namespace Nt.Core
+namespace Nt.Core.Trading
 {
     /// <summary>
     /// Represents any financial instrument.
     /// </summary>
-    public class Instrument
+    public class TradingInstrument
     {
         #region Public properties
 
         /// <summary>
         /// The instrument unique code.
         /// </summary>
-        public InstrumentCode InstrumentCode { get; set; }
+        public TradingInstrumentCode InstrumentCode { get; set; }
 
         /// <summary>
         /// The market exchange owner of the instrument.
         /// </summary>
-        public MarketExchange MarketExchange { get; set; }
+        public TradingMarket MarketExchange { get; set; }
 
         /// <summary>
         /// The instrument description.

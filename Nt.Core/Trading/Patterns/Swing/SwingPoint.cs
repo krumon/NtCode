@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Nt.Core
+namespace Nt.Core.Trading
 {
     public class SwingPoint : BaseElement
     {
@@ -10,7 +10,7 @@ namespace Nt.Core
         #region Private members
 
         private readonly SwingType swingType;
-        private readonly List<Bar> swingBars = new List<Bar>();
+        private readonly List<TradingBar> swingBars = new List<TradingBar>();
 
         #endregion
 
@@ -20,13 +20,13 @@ namespace Nt.Core
         public int Strength { get; set; }
 
         public SwingType Type => swingType;
-        public List<Bar> SwingBars => swingBars;
+        public List<TradingBar> SwingBars => swingBars;
 
         #endregion
 
         #region Constructors
 
-        public SwingPoint(SwingType swingType, List<Bar> swingBars)
+        public SwingPoint(SwingType swingType, List<TradingBar> swingBars)
         {
             this.swingBars = swingBars;
             this.swingType = swingType;
@@ -34,7 +34,7 @@ namespace Nt.Core
             Value = Type == SwingType.High ? swingBars[Strength].High : swingBars[Strength].Low;
         }
 
-        public SwingPoint(List<Bar> swingBars)
+        public SwingPoint(List<TradingBar> swingBars)
         {
             this.swingBars = swingBars;
             Strength = (swingBars.Count - 1) / 2;

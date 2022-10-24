@@ -1,5 +1,6 @@
 ﻿using Nt.Connect;
 using Nt.Core;
+using Nt.Core.Trading;
 using System;
 using System.Threading;
 
@@ -71,7 +72,7 @@ namespace ConsoleApp.Tests
 
         #region Private methods
 
-        private void Simulator_BarUpdated(Bar bar)
+        private void Simulator_BarUpdated(TradingBar bar)
         {
             currentDateTime = bar.Time;
             // TODO: Borrar. Es KrSession el que debe tener el iterador.
