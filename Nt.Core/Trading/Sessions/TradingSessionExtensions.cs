@@ -1,206 +1,151 @@
-﻿using System;
-using System.Linq;
-
-namespace Nt.Core.Trading
+﻿namespace Nt.Core.Trading
 {
-
     /// <summary>
-    /// <see cref="TradingSessionType"/> enum helper methods.
+    /// Extension methods to create generic sessions.
     /// </summary>
     public static class TradingSessionExtensions
     {
-
         /// <summary>
-        /// Returns the unique code of the <see cref="TradingSessionType"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.Regular"/>.
         /// </summary>
-        /// <param name="tradingSessionType">The specific trading session.</param>
-        /// <returns>String that represents the unique code of the <see cref="TradingSessionType"/>.</returns>
-        /// <exception cref="Exception">The <see cref="TradingSessionType"/> doesn´t exists.</exception>
-        public static string ToCode(this TradingSessionType tradingSessionType)
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.Regular"/></returns>
+        public static TradingSession CreateRegularSession(this TradingSession _)
         {
-            switch (tradingSessionType)
-            {
-                // SESSIONS
-                case TradingSessionType.Electronic:
-                    return "EL";
-                case TradingSessionType.Regular:
-                    return "RG";
-                case TradingSessionType.OVN:
-                    return "OV";
-                case TradingSessionType.American:
-                    return "AM";
-                case TradingSessionType.AmericanAndEuropean:
-                    return "AE";
-                case TradingSessionType.Asian:
-                    return "AS";
-                case TradingSessionType.European:
-                    return "EU";
-                case TradingSessionType.American_RS:
-                    return "AM-RS";
-                case TradingSessionType.Asian_RS:
-                    return "AS-RS";
-                case TradingSessionType.American_RS_EXT:
-                    return "AM-RS-EXT";
-                case TradingSessionType.American_RS_EOD:
-                    return "AM-RS-EOD";
-                case TradingSessionType.American_RS_NWD:
-                    return "AM-RS-NWD";
-
-                default:
-                    throw new Exception("The specific trading session doesn't exists.");
-            }
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.Regular);
         }
 
         /// <summary>
-        /// Returns the description of the <see cref="TradingSessionType"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.OVN"/>.
         /// </summary>
-        /// <param name="tradingSessionType">The specific trading session.</param>
-        /// <returns>String that represents the description of the <see cref="TradingSessionType"/>.</returns>
-        /// <exception cref="Exception">The <see cref="TradingSessionType"/> doesn´t exists.</exception>
-        public static string ToDescription(this TradingSessionType tradingSessionType)
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.OVN"/></returns>
+        public static TradingSession CreateOvernightSession(this TradingSession _)
         {
-            switch (tradingSessionType)
-            {
-                // SESSIONS
-                case TradingSessionType.Electronic:
-                    return "Electronic TradingSessionInfo.";
-                case TradingSessionType.Regular:
-                    return "Regular TradingSessionInfo.";
-                case TradingSessionType.OVN:
-                    return "Overnight TradingSessionInfo.";
-                case TradingSessionType.American:
-                    return "American TradingSessionInfo.";
-                case TradingSessionType.AmericanAndEuropean:
-                    return "American and European TradingSessionInfo.";
-                case TradingSessionType.Asian:
-                    return "Asian TradingSessionInfo.";
-                case TradingSessionType.European:
-                    return "Asian TradingSessionInfo.";
-                case TradingSessionType.American_RS:
-                    return "American Residual TradingSessionInfo.";
-                case TradingSessionType.Asian_RS:
-                    return "Asian Residual TradingSessionInfo.";
-                case TradingSessionType.American_RS_EXT:
-                    return "American Residual Extra time TradingSessionInfo.";
-                case TradingSessionType.American_RS_EOD:
-                    return "American Residual End Of Day TradingSessionInfo.";
-                case TradingSessionType.American_RS_NWD:
-                    return "American Residual New Day TradingSessionInfo.";
-
-                default:
-                    throw new Exception("The specific trading doesn't exists.");
-            }
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.OVN);
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSessionType"/> to initial <see cref="TradingTime"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.European"/>.
         /// </summary>
-        /// <param name="tradingSessionType"></param>
-        /// <returns>Initial <see cref="TradingTime"/> of the <see cref="TradingSessionType"/>.</returns>
-        public static TradingTime ToBeginSessionTime(this TradingSessionType tradingSessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.European"/></returns>
+        public static TradingSession CreateEuropeanSession(this TradingSession _)
         {
-            switch (instrumentCode)
-            {
-                case (TradingInstrumentCode.Default):
-                case (TradingInstrumentCode.MES):
-                {
-
-                    switch (tradingSessionType)
-                    {
-                        case (TradingSessionType.Electronic):
-                            return TradingTimeType.Electronic_Open.ToSessionTime(instrumentCode,offset);
-                        case (TradingSessionType.Regular):
-                            return TradingTimeType.Regular_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.OVN):
-                            return TradingTimeType.OVN_Open.ToSessionTime(instrumentCode, offset);
-
-                        case (TradingSessionType.American):
-                            return TradingTimeType.American_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.AmericanAndEuropean):
-                            return TradingTimeType.AmericanAndEuropean_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.Asian):
-                            return TradingTimeType.Asian_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.European):
-                            return TradingTimeType.European_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.American_RS):
-                            return TradingTimeType.American_RS_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.Asian_RS):
-                            return TradingTimeType.Asian_RS_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.American_RS_EXT):
-                            return TradingTimeType.American_RS_EXT_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.American_RS_EOD):
-                            return TradingTimeType.American_RS_EOD_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.American_RS_NWD):
-                            return TradingTimeType.American_RS_NWD_Open.ToSessionTime(instrumentCode, offset);
-
-                        default:
-                            throw new Exception("The trading session doesn't exists.");
-                    }
-                }
-                default:
-                    throw new Exception("The instrument code doesn't exists.");
-            }
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.European);
         }
 
         /// <summary>
-        /// Method to convert the <see cref="TradingSessionType"/> to final <see cref="TradingTime"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.Asian"/>.
         /// </summary>
-        /// <param name="tradingSessionType"></param>
-        /// <returns>Final <see cref="TradingTime"/> of the <see cref="TradingSessionType"/>.</returns>
-        public static TradingTime ToEndSessionTime(this TradingSessionType tradingSessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.Asian"/></returns>
+        public static TradingSession CreateAsianSession(this TradingSession _)
         {
-            switch (instrumentCode)
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.Asian);
+        }
+
+        /// <summary>
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.American"/>.
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.American"/></returns>
+        public static TradingSession CreateAmericanSession(this TradingSession _)
+        {
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.American);
+        }
+
+        /// <summary>
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.AmericanAndEuropean"/>.
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.AmericanAndEuropean"/></returns>
+        public static TradingSession CreateAmericanAndEuropeanSession(this TradingSession _)
+        {
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.AmericanAndEuropean);
+        }
+
+        /// <summary>
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.American_RS"/>.
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.American_RS"/></returns>
+        public static TradingSession CreateAmericanResidualSession(this TradingSession _)
+        {
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.American_RS);
+        }
+
+        /// <summary>
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.Asian_RS"/>.
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.Asian_RS"/></returns>
+        public static TradingSession CreateAsianResidualSession(this TradingSession _)
+        {
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.Asian_RS);
+        }
+
+        /// <summary>
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.American_RS_EXT"/>.
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.American_RS_EXT"/></returns>
+        public static TradingSession CreateAmericanResidualExtraTimeSession(this TradingSession _)
+        {
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.American_RS_EXT);
+        }
+
+        /// <summary>
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.American_RS_EOD"/>.
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.American_RS_EOD"/></returns>
+        public static TradingSession CreateAmericanResidualEndOfDaySession(this TradingSession _)
+        {
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.American_RS_EOD);
+        }
+
+        /// <summary>
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.American_RS_NWD"/>.
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="TradingSessionType.American_RS_NWD"/></returns>
+        public static TradingSession CreateAmericanResidualNewDaySession(this TradingSession _)
+        {
+            return TradingSession.CreateTradingSessionByType(TradingSessionType.American_RS_NWD);
+        }
+
+        /// <summary>
+        /// Create a <see cref="TradingSession"/> instance with the generic american sessions types.
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic american sessions types.</returns>
+        public static TradingSessionCollection CreateAmericanSessions(this TradingSession _)
+        {
+            TradingSessionCollection tradingSessions = new TradingSessionCollection
             {
-                case (TradingInstrumentCode.Default):
-                case (TradingInstrumentCode.MES):
-                    {
+                TradingSessionType.AmericanAndEuropean,
+                TradingSessionType.American
+            };
 
-                        switch (tradingSessionType)
-                        {
-                            case (TradingSessionType.Electronic):
-                                return TradingTimeType.Electronic_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.Regular):
-                                return TradingTimeType.Regular_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.OVN):
-                                return TradingTimeType.OVN_Close.ToSessionTime(instrumentCode, offset);
-
-                            case (TradingSessionType.American):
-                                return TradingTimeType.American_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.AmericanAndEuropean):
-                                return TradingTimeType.AmericanAndEuropean_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.Asian):
-                                return TradingTimeType.Asian_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.European):
-                                return TradingTimeType.European_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.American_RS):
-                                return TradingTimeType.American_RS_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.Asian_RS):
-                                return TradingTimeType.Asian_RS_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.American_RS_EXT):
-                                return TradingTimeType.American_RS_EXT_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.American_RS_EOD):
-                                return TradingTimeType.American_RS_EOD_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.American_RS_NWD):
-                                return TradingTimeType.American_RS_NWD_Close.ToSessionTime(instrumentCode, offset);
-
-                            default:
-                                throw new Exception("The trading session doesn't exists.");
-                        }
-                    }
-                default:
-                    throw new Exception("The instrument code doesn't exists.");
-            }
-
+            return tradingSessions;
         }
 
-        public static TradingSession ToSessionHours(this TradingSessionType type, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int balanceMinutes = 0)
+        /// <summary>
+        /// Create a <see cref="TradingSession"/> instance with the generic american residual sessions types.
+        /// </summary>
+        /// <param name="_"></param>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic american residual sessions types.</returns>
+        public static TradingSessionCollection CreateAmericanResidualSessions(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(type,instrumentCode,balanceMinutes);
-        }
+            TradingSessionCollection tradingSessions = new TradingSessionCollection
+            {
+                TradingSessionType.American_RS_EXT,
+                TradingSessionType.American_RS_EOD,
+                TradingSessionType.American_RS_NWD
+            };
 
-        public static TradingSessionType[] ToArray(this TradingSessionType type)
-        {
-            return Enum.GetValues(typeof(TradingSessionType)).Cast<TradingSessionType>().ToArray();
+            return tradingSessions;
         }
 
     }

@@ -24,6 +24,11 @@ namespace Nt.Core.Trading
         /// </summary>
         private TradingSessionType _sessionType;
 
+        /// <summary>
+        /// The children sessions.
+        /// </summary>
+        private TradingSessionCollection _sessions;
+
         #endregion
 
         #region Public properties
@@ -51,6 +56,11 @@ namespace Nt.Core.Trading
             }
             get => _sessionType;
         }
+
+        /// <summary>
+        /// The children sessions.
+        /// </summary>
+        public TradingSessionCollection Sessions => _sessions;
 
         /// <summary>
         /// Gets the unique code of the <see cref="TradingSession"/>.
@@ -1072,88 +1082,6 @@ namespace Nt.Core.Trading
             // Alert an calculate error
             Debug.Assert(false);
             return TradingSessionCompareResult.Major;
-        }
-
-        #endregion
-
-        #region Helpèr methods
-
-        public TradingSession GetRegularSession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.Regular);
-        }
-
-        public TradingSession GetOvernightSession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.OVN);
-        }
-
-        public TradingSession GetEuropeanSession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.European);
-        }
-
-        public TradingSession GetAsianSession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.Asian);
-        }
-
-        public TradingSession GetAmericanSession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.American);
-        }
-
-        public TradingSession GetAmericanAndEuropeanSession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.AmericanAndEuropean);
-        }
-
-        public TradingSession GetAmericanResidualSession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.American_RS); ;
-        }
-
-        public TradingSession GetAsianResidualSession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.Asian_RS); ;
-        }
-
-        public TradingSession GetAmericanResidualExtraTimeSession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.American_RS_EXT); ;
-        }
-
-        public TradingSession GetAmericanResidualEndOfDaySession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.American_RS_EOD); ;
-        }
-
-        public TradingSession GetAmericanResidualNewDaySession()
-        {
-            return CreateTradingSessionByType(TradingSessionType.American_RS_NWD); ;
-        }
-
-        public List<TradingSession> GetAmericanSessions()
-        {
-            List<TradingSession> sessions = new List<TradingSession>
-            {
-                CreateTradingSessionByType(TradingSessionType.AmericanAndEuropean),
-                CreateTradingSessionByType(TradingSessionType.American),
-            };
-
-            return sessions;
-        }
-
-        public List<TradingSession> GetAmericanResidualSessions()
-        {
-            List<TradingSession> sessions = new List<TradingSession>
-            {
-                CreateTradingSessionByType(TradingSessionType.American_RS_EXT),
-                CreateTradingSessionByType(TradingSessionType.American_RS_EXT),
-                CreateTradingSessionByType(TradingSessionType.American_RS_NWD)
-            };
-
-            return sessions;
         }
 
         #endregion
