@@ -208,9 +208,11 @@
     <Compile Include="Tests\BaseTests.cs" />
     <Compile Include="Tests\CallSiteTests.cs" />
     <Compile Include="Tests\NtConnectionTests.cs" />
-    <Compile Include="Tests\SessionHoursTests.cs" />
+    <Compile Include="Tests\NinjascriptHostingTests.cs" />
+    <Compile Include="Tests\SessionsManagerTests.cs" />
+    <Compile Include="Tests\TradingSessionTests.cs" />
     <Compile Include="Tests\SimulatorTests.cs" />
-    <Compile Include="Tests\SessionTimeTests.cs" />
+    <Compile Include="Tests\TradingTimeTests.cs" />
     <Compile Include="Tests\TransientFaultHandlingOptions.cs" />
   </ItemGroup>
   <ItemGroup>

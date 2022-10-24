@@ -27,7 +27,7 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The children sessions.
         /// </summary>
-        private TradingSessionCollection _sessions;
+        private readonly TradingSessionCollection _sessions;
 
         #endregion
 
@@ -932,6 +932,91 @@ namespace Nt.Core.Trading
         /// Converts the <see cref="TradingSession"/> to string.
         /// </summary>
         /// <returns></returns>
+        public override string ToString() => ToString(string.Empty);
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="TradingSession"/>.
+        /// </summary>
+        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <returns></returns>
+        public string ToString(string format)
+        {
+            if (format == null)
+                throw new ArgumentNullException(nameof(format));
+
+            string f = format.ToUpper();
+            bool showTimeZoneInfo = true;
+
+            if (f == "U" || f == "UTC" || f == "L" || f == "LOCAL")
+                showTimeZoneInfo = false;
+            else if (BeginSessionTime.TimeZoneInfo == EndSessionTime.TimeZoneInfo)
+                showTimeZoneInfo = false;
+
+            return $"{SessionType.ToName()} - Begin: {BeginSessionTime.ToShortString(format,showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(format,true)}";
+        }
+
+        /// <summary>
+        /// Converts the <see cref="TradingSession"/> to short string.
+        /// </summary>
+        /// <returns></returns>
+        public string ToShortString()
+        {
+            return String.Format($"{BeginSessionTime.ToShortString()} => {EndSessionTime.ToShortString()}");
+        }
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTime"/>.
+        /// </summary>
+        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <returns></returns>
+        public string ToShortString(string format)
+        {
+            if (format == null)
+                throw new ArgumentNullException(nameof(format));
+
+            string f = format.ToUpper();
+            bool showTimeZoneInfo = true;
+
+            if (f == "U" || f == "UTC" || f == "L" || f == "LOCAL")
+                showTimeZoneInfo = false;
+            else if (BeginSessionTime.TimeZoneInfo == EndSessionTime.TimeZoneInfo)
+                showTimeZoneInfo = false;
+
+            return $"{SessionType.ToName()} - Begin: {BeginSessionTime.ToShortString(format, showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(format, true)}";
+
+        }
+
+        /// <summary>
+        /// Converts the <see cref="TradingSession"/> to long string.
+        /// </summary>
+        /// <returns></returns>
+        public string ToLongString() => ToLongString(string.Empty);
+
+        /// <summary>
+        /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTime"/>.
+        /// </summary>
+        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <returns></returns>
+        public string ToLongString(string format)
+        {
+            if (format == null)
+                throw new ArgumentNullException(nameof(format));
+
+            string f = format.ToUpper();
+            bool showTimeZoneInfo = true;
+
+            if (f == "U" || f == "UTC" || f == "L" || f == "LOCAL")
+                showTimeZoneInfo = false;
+            else if (BeginSessionTime.TimeZoneInfo == EndSessionTime.TimeZoneInfo)
+                showTimeZoneInfo = false;
+
+            return $"{SessionType.ToDescription()} - Begin: {BeginSessionTime.ToShortString(format, showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(format, true)}";
+        }
+
+        /// <summary>
+        /// Converts the <see cref="TradingSession"/> to string.
+        /// </summary>
+        /// <returns></returns>
         public string ToString(bool onlyActualSession)
         {
             DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
@@ -954,69 +1039,6 @@ namespace Nt.Core.Trading
         {
             DateTime[] sessionDateTimes = GetNextDateTimes(referenceDateTime);
             return String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
-        }
-
-        /// <summary>
-        /// Converts the <see cref="TradingSession"/> to string.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return String.Format($"{Description} || Begin Time: {BeginSessionTime.ToString("Local")} || End Time: {EndSessionTime.ToShortString()}");
-        }
-
-        /// <summary>
-        /// Returns the string that represents the <see cref="TradingSession"/>.
-        /// </summary>
-        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
-        /// <returns></returns>
-        public string ToString(string format)
-        {
-            string f = format.ToUpper();
-
-            return String.Format($"{Description} || Begin Time: {BeginSessionTime.ToShortString(f)} || End Time: {EndSessionTime.ToShortString(f)}");
-        }
-
-        /// <summary>
-        /// Converts the <see cref="TradingSession"/> to short string.
-        /// </summary>
-        /// <returns></returns>
-        public string ToShortString()
-        {
-            return String.Format($"{BeginSessionTime.ToShortString()} => {EndSessionTime.ToShortString()}");
-        }
-
-        /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTime"/>.
-        /// </summary>
-        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
-        /// <returns></returns>
-        public string ToShortString(string format)
-        {
-            string f = format.ToUpper();
-
-            return String.Format($"{BeginSessionTime.ToShortString(f)} => {EndSessionTime.ToShortString(f)}");
-        }
-
-        /// <summary>
-        /// Converts the <see cref="TradingSession"/> to long string.
-        /// </summary>
-        /// <returns></returns>
-        public string ToLongString()
-        {
-            return String.Format($"{Code} || {Description} || Begin Time: {BeginSessionTime.ToLongString()} || End Time: {EndSessionTime.ToLongString()}");
-        }
-
-        /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTime"/>.
-        /// </summary>
-        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
-        /// <returns></returns>
-        public string ToLongString(string format)
-        {
-            string f = format.ToUpper();
-
-            return String.Format($"{Code} || {Description} || Begin Time: {BeginSessionTime.ToLongString(f)} || End Time: {EndSessionTime.ToLongString(f)}");
         }
 
         #endregion

@@ -63,32 +63,73 @@ namespace Nt.Core.Trading
             {
                 // SESSIONS
                 case TradingSessionType.Electronic:
-                    return "Electronic TradingSessionInfo.";
+                    return "Electronic TradingSession.";
                 case TradingSessionType.Regular:
-                    return "Regular TradingSessionInfo.";
+                    return "Regular TradingSession.";
                 case TradingSessionType.OVN:
-                    return "Overnight TradingSessionInfo.";
+                    return "Overnight TradingSession.";
                 case TradingSessionType.American:
-                    return "American TradingSessionInfo.";
+                    return "American TradingSession.";
                 case TradingSessionType.AmericanAndEuropean:
-                    return "American and European TradingSessionInfo.";
+                    return "American and European TradingSession.";
                 case TradingSessionType.Asian:
-                    return "Asian TradingSessionInfo.";
+                    return "Asian TradingSession.";
                 case TradingSessionType.European:
-                    return "Asian TradingSessionInfo.";
+                    return "Asian TradingSession.";
                 case TradingSessionType.American_RS:
-                    return "American Residual TradingSessionInfo.";
+                    return "American Residual TradingSession.";
                 case TradingSessionType.Asian_RS:
-                    return "Asian Residual TradingSessionInfo.";
+                    return "Asian Residual TradingSession.";
                 case TradingSessionType.American_RS_EXT:
-                    return "American Residual Extra time TradingSessionInfo.";
+                    return "American Residual Extra time TradingSession.";
                 case TradingSessionType.American_RS_EOD:
-                    return "American Residual End Of Day TradingSessionInfo.";
+                    return "American Residual End Of Day TradingSession.";
                 case TradingSessionType.American_RS_NWD:
-                    return "American Residual New Day TradingSessionInfo.";
+                    return "American Residual New Day TradingSession.";
 
                 default:
-                    throw new Exception("The specific trading doesn't exists.");
+                    return "TradingSession Custom";
+            }
+        }
+
+        /// <summary>
+        /// Returns the name of the <see cref="TradingSessionType"/>.
+        /// </summary>
+        /// <param name="tradingSessionType">The specific trading session.</param>
+        /// <returns>String that represents the name of the <see cref="TradingSessionType"/>.</returns>
+        /// <exception cref="Exception">The <see cref="TradingSessionType"/> doesn´t exists.</exception>
+        public static string ToName(this TradingSessionType tradingSessionType)
+        {
+            switch (tradingSessionType)
+            {
+                // SESSIONS
+                case TradingSessionType.Electronic:
+                    return "TradingSession - Electronic";
+                case TradingSessionType.Regular:
+                    return "TradingSession - Regular";
+                case TradingSessionType.OVN:
+                    return "TradingSession - Overnight";
+                case TradingSessionType.American:
+                    return "TradingSession - American";
+                case TradingSessionType.AmericanAndEuropean:
+                    return "TradingSession - AmericanAndEuropean";
+                case TradingSessionType.Asian:
+                    return "TradingSession - Asian";
+                case TradingSessionType.European:
+                    return "TradingSession - European";
+                case TradingSessionType.American_RS:
+                    return "TradingSession - AmericanResidual";
+                case TradingSessionType.Asian_RS:
+                    return "TradingSession - AsianResidual";
+                case TradingSessionType.American_RS_EXT:
+                    return "TradingSession - AmericanResidualExtratime";
+                case TradingSessionType.American_RS_EOD:
+                    return "TradingSession - AmericanResidialEndOfDay";
+                case TradingSessionType.American_RS_NWD:
+                    return "TradingSession - AmericanResidualNewDay";
+
+                default:
+                    return "TradingSession - Custom";
             }
         }
 

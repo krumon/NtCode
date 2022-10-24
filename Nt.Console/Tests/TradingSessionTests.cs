@@ -4,7 +4,7 @@ using System;
 
 namespace ConsoleApp.Tests
 {
-    internal class SessionHoursTests : BaseTests
+    internal class TradingSessionTests : BaseTests
     {
 
         #region Private members
@@ -20,9 +20,9 @@ namespace ConsoleApp.Tests
         #region Constructor
 
         /// <summary>
-        /// Create a <see cref="SessionHoursTests"/> default instance.
+        /// Create a <see cref="TradingSessionTests"/> default instance.
         /// </summary>
-        public SessionHoursTests()
+        public TradingSessionTests()
         {
 
         }
@@ -37,8 +37,8 @@ namespace ConsoleApp.Tests
             WaitAndClear();
             ToStringTests(TradingSessionType.American_RS);
             WaitAndClear();
-            //SessionHoursEnumTest();
-            //WaitAndClear();
+            SessionHoursEnumTest();
+            WaitAndClear();
             //OperatorTests(TradingSession.Asian, TradingSession.European);
             //WaitAndClear();
         }
@@ -50,47 +50,42 @@ namespace ConsoleApp.Tests
         private void InstanceTests()
         {
             // Create a custom instance.
-            Title("Test of Instance methods.");
-
-            TradingSession sh = TradingSession.CreateCustomTradingSession(
+            Title("Instance tests");
+            Subtitle("Custom instance with trading session types");
+            TradingSession ts = TradingSession.CreateCustomTradingSession(
                 TradingTimeType.American_Open,
                 TradingTimeType.Asian_Close,
-                "My Custom TradingSessionInfo Hours");
-            Console.WriteLine($"Method ToString() => {sh}");
-            Console.WriteLine($"Method ToShortString() => {sh.ToShortString("u")}");
-            Console.WriteLine($"Method ToLongString() => {sh.ToLongString("l")}");
-
-            sh = TradingSession.CreateCustomTradingSession(new TimeSpan(12,15,0),TimeZoneInfo.Local,TradingTimeType.European_Close);
+                "My Custom TradingSession");
+            WriteLine(ts.ToString());
             NewLine();
-            Console.WriteLine($"Method ToString() => {sh}");
-            Console.WriteLine($"Method ToShortString() => {sh.ToShortString("u")}");
-            Console.WriteLine($"Method ToLongString() => {sh.ToLongString("l")}");
 
-            // Create instance by type
-            sh = TradingSession.CreateTradingSessionByType(TradingSessionType.American);
+            Subtitle("Custom instance with Time Span, Time Zone Info and Trading Session Type");
+            ts = TradingSession.CreateCustomTradingSession(new TimeSpan(12,15,0),TimeZoneInfo.Local,TradingTimeType.European_Close);
+            WriteLine(ts.ToShortString("u"));
             NewLine();
-            Console.WriteLine($"Method ToString() => {sh}");
-            Console.WriteLine($"Method ToShortString() => {sh.ToShortString("l")}");
-            Console.WriteLine($"Method ToLongString() => {sh.ToLongString("u")}");
 
+            Subtitle("Instance by generic types");
+            ts = TradingSession.CreateTradingSessionByType(TradingSessionType.American);
+            WriteLine(ts.ToLongString("l"));
+            NewLine();
         }
 
         private void ToStringTests(TradingSessionType type)
         {
-            // Create a session time by type.
-            TradingSession sh = TradingSession.CreateTradingSessionByType(type);
+            // Create a trading session by type.
+            TradingSession ts = TradingSession.CreateTradingSessionByType(type);
 
-            Title("Test of To String methods.");
-            Console.WriteLine(sh.ToString());
-            Console.WriteLine(sh.ToShortString());
-            Console.WriteLine(sh.ToLongString());
-            //Console.WriteLine(sh.ToString("LOCAL"));
-            //Console.WriteLine(sh.ToString("UTC"));
+            Title("Test of To String methods");
+            Console.WriteLine($"Method ToString() => {ts}");
+            Console.WriteLine($"Method ToShortString('u') => {ts.ToShortString("u")}");
+            Console.WriteLine($"Method ToLongString('l') => {ts.ToLongString("l")}");
+            Console.WriteLine($"Method ToShortString('UTC') => {ts.ToShortString("UTC")}");
+            Console.WriteLine($"Method ToLongString('LOCAL') => {ts.ToLongString("LOCAL")}");
         }
 
         private void SessionHoursEnumTest()
         {
-            Title("Test of iteration and check methods.");
+            Title("Test of iteration and check methods");
             EnumHelpers.Writer<TradingSessionType>();
 
             NewLine();
@@ -135,7 +130,7 @@ namespace ConsoleApp.Tests
                 s = $"{method} {sh1.Code} is major than {sh2.Code}.";
             if (i == 0)
                 s = $"{method} {sh1.Code} and {sh2.Code} have the same time.";
-            Write(s);
+            WriteLine(s);
 
             i = sh1.CompareTo(sh2);
             s = string.Empty;
@@ -147,7 +142,7 @@ namespace ConsoleApp.Tests
                 s = $"{method} {sh1.Code} is major than {sh2.Code}.";
             if (i == 0)
                 s = $"{method} {sh1.Code} and {sh2.Code} have the same time.";
-            Write(s);
+            WriteLine(s);
 
             #endregion
 
@@ -162,7 +157,7 @@ namespace ConsoleApp.Tests
                 s = $"{method} {sh1.Code} and {sh2.Code} are equals.";
             else
                 s = $"{method} {sh1.Code} and {sh2.Code} are not equals.";
-            Write(s);
+            WriteLine(s);
 
             b = sh1.Equals(sh2);
             s = string.Empty;
@@ -173,7 +168,7 @@ namespace ConsoleApp.Tests
             else
                 s = $"{method} {nameof(sh1)} and {nameof(sh2)} are not equals.";
 
-            Write(s);
+            WriteLine(s);
 
             #endregion
 

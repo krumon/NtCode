@@ -375,7 +375,7 @@
     <Compile Include="Trading\Sessions\TradingSessionExtensions.cs" />
     <Compile Include="Trading\Sessions\TradingSessionTypeExtensions.cs" />
     <Compile Include="NinjaScript\Sessions\SessionHours\SessionHours.cs" />
-    <Compile Include="Trading\Times\TradingTimeExtensions.cs" />
+    <Compile Include="Trading\Times\TradingTimeTypeExtensions.cs" />
     <Compile Include="Users\UserAccount.cs" />
     <Compile Include="NinjaScript\Managers\Sessions\SessionsManager.cs" />
     <Compile Include="Users\UserSettings.cs" />

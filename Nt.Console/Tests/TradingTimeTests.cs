@@ -5,7 +5,7 @@ using System;
 
 namespace ConsoleApp.Tests
 {
-    internal class SessionTimeTests : BaseTests
+    internal class TradingTimeTests : BaseTests
     {
 
         #region Private members
@@ -19,9 +19,9 @@ namespace ConsoleApp.Tests
         #region Constructor
 
         /// <summary>
-        /// Create a <see cref="SessionTimeTests"/> default instance.
+        /// Create a <see cref="TradingTimeTests"/> default instance.
         /// </summary>
-        public SessionTimeTests()
+        public TradingTimeTests()
         {
         }
 
@@ -100,8 +100,8 @@ namespace ConsoleApp.Tests
             bool exist = TradingTime.Exist(tt);
 
             string s = exist ? "exist" : "don't exist";
-            Write(tt.ToString());
-            Write($"{tt} {s} in {nameof(TradingTimeType)} enum.");
+            WriteLine(tt.ToString());
+            WriteLine($"{tt} {s} in {nameof(TradingTimeType)} enum.");
 
         }
 
@@ -130,7 +130,7 @@ namespace ConsoleApp.Tests
                 s = $"{method} {st1.Code} is major than {st2.Code}.";
             if (i == 0)
                 s = $"{method} {st1.Code} and {st2.Code} have the same time.";
-            Write(s);
+            WriteLine(s);
 
             i = st1.CompareTo(st2);
             s = string.Empty;
@@ -142,7 +142,7 @@ namespace ConsoleApp.Tests
                 s = $"{method} {st1.Code} is major than {st2.Code}.";
             if (i == 0)
                 s = $"{method} {st1.Code} and {st2.Code} have the same time.";
-            Write(s);
+            WriteLine(s);
 
             #endregion
 
@@ -157,7 +157,7 @@ namespace ConsoleApp.Tests
                 s = $"{method} {st1.Code} and {st2.Code} are equals.";
             else
                 s = $"{method} {st1.Code} and {st2.Code} are not equals.";
-            Write(s);
+            WriteLine(s);
 
             b = st1.Equals(st2);
             s = string.Empty;
@@ -168,7 +168,7 @@ namespace ConsoleApp.Tests
             else
                 s = $"{method} {nameof(st1)} and {nameof(st2)} are not equals.";
 
-            Write(s);
+            WriteLine(s);
 
             #endregion
 

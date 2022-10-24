@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ConsoleApp.Tests
 {
@@ -11,14 +12,24 @@ namespace ConsoleApp.Tests
             string line = string.Empty;
             foreach (char c in title)
                 line += "-";
-            Console.WriteLine(line);
-            Console.WriteLine(title.ToUpper());
-            Console.WriteLine(line);
+            WriteLine(line);
+            WriteLine(title.ToUpper());
+            WriteLine(line);
         }
         
-        public void Write(string msg = "")
+        public void Subtitle(string subtitle)
         {
-            Console.WriteLine(msg);
+            WriteLine($"*** {subtitle.ToUpper()} ***");
+        }
+        
+        public void WriteLine(object o = null)
+        {
+            if (o == null)
+            {
+                Console.WriteLine();
+                return;
+            }
+            Console.WriteLine(o.ToString());
         }
 
         public void NewLine()
