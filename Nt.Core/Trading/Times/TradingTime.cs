@@ -14,7 +14,7 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The trading time type.
         /// </summary>
-        private TradingTimeType tradingTime;
+        private TradingTimeType tradingTimeType;
 
         #endregion
 
@@ -23,13 +23,13 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The trading time type.
         /// </summary>
-        public TradingTimeType TradingTimeKind 
+        public TradingTimeType TradingTimeType 
         {
             private set 
             { 
-                tradingTime = value;
+                tradingTimeType = value;
 
-                if (tradingTime == TradingTimeType.Custom)
+                if (tradingTimeType == TradingTimeType.Custom)
                 {
                     Code = ToDefaultCode();
                     if (string.IsNullOrEmpty(Description))
@@ -37,20 +37,20 @@ namespace Nt.Core.Trading
                 }
                 else
                 {
-                    Code = tradingTime.ToCode();
-                    Description = tradingTime.ToDescription();
+                    Code = tradingTimeType.ToCode();
+                    Description = tradingTimeType.ToDescription();
                 }
             }
-            get => tradingTime;
+            get => tradingTimeType;
         }
 
         /// <summary>
-        /// Gets the unique code of the <see cref="Core.TradingTime"/>.
+        /// Gets the unique code of the <see cref="TradingTime"/>.
         /// </summary>
         public string Code { get; private set; }
 
         /// <summary>
-        /// Gets the description of the <see cref="Core.TradingTime"/>.
+        /// Gets the description of the <see cref="TradingTime"/>.
         /// </summary>
         public string Description {get; private set; }
 
@@ -138,36 +138,36 @@ namespace Nt.Core.Trading
         /// <summary>
         /// Create a default instance of <see cref="Core.TradingTime"/> by specific <see cref="Nt.Core.TradingTimeKind"/>.
         /// </summary>
-        /// <param name="tradingTimeKind">The specific session time to create the instance.</param>
+        /// <param name="tradingTimeType">The specific session time to create the instance.</param>
         /// <param name="e">The snew session args.</param>
         /// <param name="instrumentCode">The unique code of the financial instrument session.</param>
         /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
         /// <returns>The session time instance.</returns>
-        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeKind, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int timeDisplacement = 0)
+        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int timeDisplacement = 0)
         {
             return new TradingTime 
             {
-                TimeZoneInfo = tradingTimeKind.ToTimeZoneInfo(instrumentCode),
-                Time = tradingTimeKind.ToTime(instrumentCode, timeDisplacement),
-                TradingTimeKind = tradingTimeKind
+                TimeZoneInfo = tradingTimeType.ToTimeZoneInfo(instrumentCode),
+                Time = tradingTimeType.ToTime(instrumentCode, timeDisplacement),
+                TradingTimeType = tradingTimeType
             };
         }
 
         /// <summary>
         /// Create a default instance of <see cref="Core.TradingTime"/> by specific <see cref="Nt.Core.TradingTimeKind"/>.
         /// </summary>
-        /// <param name="tradingTimeKind">The specific session time to create the instance.</param>
+        /// <param name="tradingTimeType">The specific session time to create the instance.</param>
         /// <param name="e">The snew session args.</param>
         /// <param name="instrumentCode">The unique code of the financial instrument session.</param>
         /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
         /// <returns>The session time instance.</returns>
-        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeKind, SessionChangedEventArgs e, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int timeDisplacement = 0)
+        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, SessionChangedEventArgs e, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int timeDisplacement = 0)
         {
             return new TradingTime 
             {
-                TimeZoneInfo = tradingTimeKind.ToTimeZoneInfo(instrumentCode),
-                Time = tradingTimeKind.ToTime(instrumentCode, timeDisplacement),
-                TradingTimeKind = tradingTimeKind
+                TimeZoneInfo = tradingTimeType.ToTimeZoneInfo(instrumentCode),
+                Time = tradingTimeType.ToTime(instrumentCode, timeDisplacement),
+                TradingTimeType = tradingTimeType
             };
         }
 
@@ -186,7 +186,7 @@ namespace Nt.Core.Trading
                 Time = time,
                 TimeZoneInfo = timeZoneInfo,
                 Description = description,
-                TradingTimeKind = TradingTimeType.Custom,
+                TradingTimeType = TradingTimeType.Custom,
             };
         }
 
@@ -207,7 +207,7 @@ namespace Nt.Core.Trading
                 Time = new TimeSpan(hour, minute, seconds),
                 TimeZoneInfo = timeZoneInfo,
                 Description = description,
-                TradingTimeKind = TradingTimeType.Custom,
+                TradingTimeType = TradingTimeType.Custom,
             };
         }
 
@@ -307,7 +307,7 @@ namespace Nt.Core.Trading
         }
 
         /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="Core.TradingTime"/>.
+        /// Returns the string that represents the <see cref="TradingTime"/>.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
@@ -316,7 +316,7 @@ namespace Nt.Core.Trading
         }
 
         /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="Core.TradingTime"/>.
+        /// Returns the string that represents the <see cref="TradingTime"/>.
         /// </summary>
         /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
         /// <returns></returns>
@@ -334,7 +334,7 @@ namespace Nt.Core.Trading
         }
 
         /// <summary>
-        /// Returns the string that represents the <see cref="Code"/> and the <see cref="Time"/> of the <see cref="Core.TradingTime"/>.
+        /// Returns the string that represents the code and the time of the <see cref="TradingTime"/>.
         /// </summary>
         /// <returns></returns>
         public string ToShortString()
@@ -343,7 +343,7 @@ namespace Nt.Core.Trading
         }
 
         /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="Core.TradingTime"/>.
+        /// Returns the string that represents the time of the <see cref="TradingTime"/>.
         /// </summary>
         /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
         /// <returns></returns>
@@ -361,20 +361,22 @@ namespace Nt.Core.Trading
         }
 
         /// <summary>
-        /// Returns the string that represents the <see cref="Code"/>, <see cref="Description"/>, 
-        /// <see cref="Time"/> and <see cref="TimeZoneInfo"/> of the <see cref="Core.TradingTime"/>. 
+        /// Returns the string that represents the code, description, 
+        /// time and <see cref="TimeZoneInfo"/> of the <see cref="TradingTime"/>. 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The short string that represents the <see cref="TradingTime"/> in the specific time format,
+        /// "L" for local time, "U" for UTC time, otherwise returns the specific time of the <see cref="TradingTime"/>.</returns>
         public string ToLongString()
         {
             return $"Code: {Code} | Description: {Description} | Time: {Time} | TimeZoneInfo: {TimeZoneInfo.StandardName}";
         }
 
         /// <summary>
-        /// Returns the string that represents the <see cref="Time"/> of the <see cref="Core.TradingTime"/>.
+        /// Returns the string that represents the <see cref="TradingTime"/>.
         /// </summary>
-        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
-        /// <returns></returns>
+        /// <param name="format">The specific time to represents in the string. The time can be Utc, Local or Unspecific.</param>
+        /// <returns>The long string that represents the <see cref="TradingTime"/> in the specific time format,
+        /// "L" for local time, "U" for UTC time, otherwise returns the specific time of the <see cref="TradingTime"/></returns>
         public string ToLongString(string format)
         {
             string f = format.ToUpper();
@@ -402,80 +404,80 @@ namespace Nt.Core.Trading
         #region Operator, Compare and Equity methods
 
         /// <summary>
-        /// Compare <see cref="Core.TradingTime"/> objects and return true if the elements are equals.
-        /// the <see cref="Core.TradingTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// Compare <see cref="TradingTime"/> objects and return true if the elements are equals.
+        /// the <see cref="TradingTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
         /// </summary>
         /// <param name="obj">The object to compare.</param>
         /// <returns>True if the objects are equal otherwise false.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is TradingTime st)
-                return this.Time == st.Time && this.UtcTime == st.UtcTime && this.Code == st.Code;
+            if (obj is TradingTime tt)
+                return Time == tt.Time && UtcTime == tt.UtcTime && Code == tt.Code;
 
             return false;
         }
 
         /// <summary>
-        /// Compare <see cref="Core.TradingTime"/> objects and return true if the elements are equals.
-        /// the <see cref="Core.TradingTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// Compare <see cref="TradingTime"/> objects and return true if the elements are equals.
+        /// the <see cref="TradingTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
         /// </summary>
-        /// <param name="value">The <see cref="Core.TradingTime"/> to compare with the instance.</param>
-        /// <returns>True if the pair of <see cref="Core.TradingTime"/> are equals.</returns>
-        /// <exception cref="ArgumentException">The <see cref="Core.TradingTime"/>object passed as parameter cannot be null.</exception>
-        public bool Equals(TradingTime st)
+        /// <param name="value">The <see cref="TradingTime"/> to compare with the instance.</param>
+        /// <returns>True if the pair of <see cref="TradingTime"/> are equals.</returns>
+        /// <exception cref="ArgumentException">The <see cref="TradingTime"/>object passed as parameter cannot be null.</exception>
+        public bool Equals(TradingTime tt)
         {
 
-            if (st is null)
+            if (tt is null)
                 return false;
 
-            return this.Time == st.Time && this.UtcTime == st.UtcTime && this.Code == st.Code;
+            return this.Time == tt.Time && this.UtcTime == tt.UtcTime && this.Code == tt.Code;
         }
 
         /// <summary>
-        /// Compare <see cref="Core.TradingTime"/> objects and return true if the elements are equals.
-        /// the <see cref="Core.TradingTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// Compare <see cref="TradingTime"/> objects and return true if the elements are equals.
+        /// the <see cref="TradingTime"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
         /// </summary>
-        /// <param name="st1">The first <see cref="Core.TradingTime"/> object to compare with the second.</param>
-        /// <param name="st2">The second <see cref="Core.TradingTime"/> object to compare with the first.</param>
-        /// <returns>True if <see cref="Core.TradingTime"/> objects are equals.</returns>
-        /// <exception cref="ArgumentException">The <see cref="Core.TradingTime"/>objects passed as parameter cannot be null.</exception>
-        public static bool Equals(TradingTime st1, TradingTime st2)
+        /// <param name="tt1">The first <see cref="TradingTime"/> object to compare with the second.</param>
+        /// <param name="tt2">The second <see cref="TradingTime"/> object to compare with the first.</param>
+        /// <returns>True if <see cref="TradingTime"/> objects are equals.</returns>
+        /// <exception cref="ArgumentException">The <see cref="TradingTime"/>objects passed as parameter cannot be null.</exception>
+        public static bool Equals(TradingTime tt1, TradingTime tt2)
         {
 
-            if (st1 is null && st2 is null)
+            if (tt1 is null && tt2 is null)
                 return true;
 
-            if (st1 is null || st2 is null)
+            if (tt1 is null || tt2 is null)
                 return false;
 
-            return st1.Time == st2.Time && st1.UtcTime == st2.UtcTime & st1.Code == st2.Code;
+            return tt1.Time == tt2.Time && tt1.UtcTime == tt2.UtcTime & tt1.Code == tt2.Code;
 
         }
 
         /// <summary>
-        /// Compare <see cref="Core.TradingTime"/> objects and return 1 if <paramref name="st1"/> is major than <paramref name="st2"/>, 
+        /// Compare <see cref="TradingTime"/> objects and return 1 if <paramref name="tt1"/> is major than <paramref name="tt2"/>, 
         /// otherwise returns -1 and 0 if the objects are equals.
         /// </summary>
-        /// <param name="st1">The first <see cref="Core.TradingTime"/> object to compare with the second.</param>
-        /// <param name="st2">The second <see cref="Core.TradingTime"/> object to compare with the first.</param>
-        /// <returns>1 if <paramref name="st1"/>is major than <paramref name="st2"/>,
-        /// -1 if <paramref name="st1"/>is minor than <paramref name="st1"/>,
+        /// <param name="tt1">The first <see cref="TradingTime"/> object to compare with the second.</param>
+        /// <param name="tt2">The second <see cref="TradingTime"/> object to compare with the first.</param>
+        /// <returns>1 if <paramref name="tt1"/>is major than <paramref name="tt2"/>,
+        /// -1 if <paramref name="tt1"/>is minor than <paramref name="tt1"/>,
         /// otherwise are equals and returns 0.</returns>
-        /// <exception cref="ArgumentException">The <see cref="Core.TradingTime"/>objects passed as parameter cannot be null.</exception>
-        public static int Compare(TradingTime st1, TradingTime st2)
+        /// <exception cref="ArgumentException">The <see cref="TradingTime"/>objects passed as parameter cannot be null.</exception>
+        public static int Compare(TradingTime tt1, TradingTime tt2)
         {
-            if (st1 == null || st2 == null)
+            if (tt1 == null || tt2 == null)
                 throw new ArgumentException("The arguments can not be null.");
 
-            TimeSpan st1UtcTime = st1.UtcTime;
-            TimeSpan st2UtcTime = st2.UtcTime;
+            TimeSpan tt1UtcTime = tt1.UtcTime;
+            TimeSpan tt2UtcTime = tt2.UtcTime;
 
-            if (st1UtcTime > st2UtcTime)
+            if (tt1UtcTime > tt2UtcTime)
             {
                 return 1;
             }
 
-            if (st1UtcTime < st2UtcTime)
+            if (tt1UtcTime < tt2UtcTime)
             {
                 return -1;
             }
@@ -489,7 +491,7 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="value">The object to compare.</param>
         /// <returns>1 if <paramref name="value"/>is minor than the object instance,
-        /// -1 if <paramref name="value"/>is major than <paramref name="st1"/>,
+        /// -1 if <paramref name="value"/>is major than the object instance,
         /// otherwise are equals and returns 0.</returns>
         /// <exception cref="ArgumentException">The object passed as parameter cannot be null.</exception>
         public int CompareTo(object value)
@@ -520,7 +522,7 @@ namespace Nt.Core.Trading
         }
 
         /// <summary>
-        /// Compare <see cref="Core.TradingTime"/> to <see cref="Core.TradingTime"/> instance and return 1 
+        /// Compare <see cref="TradingTime"/> to <see cref="TradingTime"/> instance and return 1 
         /// if the instance is major than the second, 
         /// otherwise returns -1 and 0 if the objects are equals.
         /// <param name="value">The target object to compare.</param>
@@ -550,172 +552,172 @@ namespace Nt.Core.Trading
         /// <summary>
         /// Determines whether two specified instances of <see cref="Core.TradingTime"/> that is greater than another specified.
         /// </summary>
-        /// <param name="st1">The first object to compare.</param>
-        /// <param name="st2">The second object to compare.</param>
-        /// <returns>True if <paramref name="st1"/> is greater than <paramref name="st2"/>; otherwise, false.</returns>
-        public static bool operator >(TradingTime st1, TradingTime st2)
+        /// <param name="tt1">The first object to compare.</param>
+        /// <param name="tt2">The second object to compare.</param>
+        /// <returns>True if <paramref name="tt1"/> is greater than <paramref name="tt2"/>; otherwise, false.</returns>
+        public static bool operator >(TradingTime tt1, TradingTime tt2)
         {
-            if (st1 is null)
-                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
+            if (tt1 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt1)} cannot be null.");
 
-            if (st2 is null)
-                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
+            if (tt2 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt2)} cannot be null.");
 
-            return st1.UtcTime > st2.UtcTime;
+            return tt1.UtcTime > tt2.UtcTime;
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="Core.TradingTime"/> that is earlier than another specified.
+        /// Determines whether two specified instances of <see cref="TradingTime"/> that is earlier than another specified.
         /// </summary>
-        /// <param name="st1">The first object to compare.</param>
-        /// <param name="st2">The second object to compare.</param>
-        /// <returns>True if <paramref name="st1"/> is less than <paramref name="st2"/>; otherwise, false.</returns>
-        public static bool operator <(TradingTime st1, TradingTime st2)
+        /// <param name="tt1">The first object to compare.</param>
+        /// <param name="tt2">The second object to compare.</param>
+        /// <returns>True if <paramref name="tt1"/> is less than <paramref name="tt2"/>; otherwise, false.</returns>
+        public static bool operator <(TradingTime tt1, TradingTime tt2)
         {
-            if (st1 is null)
-                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
+            if (tt1 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt1)} cannot be null.");
 
-            if (st2 is null)
-                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
+            if (tt2 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt2)} cannot be null.");
 
-            return st1.UtcTime < st2.UtcTime;
+            return tt1.UtcTime < tt2.UtcTime;
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="Core.TradingTime"/> that is the same as or greater than another specified.
+        /// Determines whether two specified instances of <see cref="TradingTime"/> that is the same as or greater than another specified.
         /// </summary>
-        /// <param name="st1">The first object to compare.</param>
-        /// <param name="st2">The second object to compare.</param>
-        /// <returns>True if <paramref name="st1"/> is equal to or greater than <paramref name="st2"/>; otherwise, false.</returns>
-        public static bool operator >=(TradingTime st1, TradingTime st2)
+        /// <param name="tt1">The first object to compare.</param>
+        /// <param name="tt2">The second object to compare.</param>
+        /// <returns>True if <paramref name="tt1"/> is equal to or greater than <paramref name="tt2"/>; otherwise, false.</returns>
+        public static bool operator >=(TradingTime tt1, TradingTime tt2)
         {
-            if (st1 is null)
-                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
+            if (tt1 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt1)} cannot be null.");
 
-            if (st2 is null)
-                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
+            if (tt2 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt2)} cannot be null.");
 
-            return st1.UtcTime >= st2.UtcTime;
+            return tt1.UtcTime >= tt2.UtcTime;
         }
         /// <summary>
-        /// Determines whether two specified instances of <see cref="Core.TradingTime"/> that is the same as or earlier than another specified.
+        /// Determines whether two specified instances of <see cref="TradingTime"/> that is the same as or earlier than another specified.
         /// </summary>
-        /// <param name="st1">The first object to compare.</param>
-        /// <param name="st2">The second object to compare.</param>
-        /// <returns>True if <paramref name="st1"/> is equal to or less than <paramref name="st2"/>; otherwise, false.</returns>
-        public static bool operator <=(TradingTime st1, TradingTime st2)
+        /// <param name="tt1">The first object to compare.</param>
+        /// <param name="tt2">The second object to compare.</param>
+        /// <returns>True if <paramref name="tt1"/> is equal to or less than <paramref name="tt2"/>; otherwise, false.</returns>
+        public static bool operator <=(TradingTime tt1, TradingTime tt2)
         {
 
-            if (st1 is null)
-                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
+            if (tt1 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt1)} cannot be null.");
 
-            if (st2 is null)
-                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
+            if (tt2 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt2)} cannot be null.");
 
-            return st1.UtcTime <= st2.UtcTime;
+            return tt1.UtcTime <= tt2.UtcTime;
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="Core.TradingTime"/> have the same <see cref="Time"/>.
+        /// Determines whether two specified instances of <see cref="TradingTime"/> have the same <see cref="Time"/>.
         /// </summary>
-        /// <param name="st1">The first object to compare.</param>
-        /// <param name="st2">The second object to compare.</param>
-        /// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
-        public static bool operator ==(TradingTime st1, TradingTime st2)
+        /// <param name="tt1">The first object to compare.</param>
+        /// <param name="tt2">The second object to compare.</param>
+        /// <returns>True if <paramref name="tt1"/> and <paramref name="tt2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
+        public static bool operator ==(TradingTime tt1, TradingTime tt2)
         {
-            if (st1 is null && st2 is null)
+            if (tt1 is null && tt2 is null)
                 return true;
 
-            if (st1 is null || st2 is null)
+            if (tt1 is null || tt2 is null)
                 return false;
 
-            return st1.UtcTime == st2.UtcTime;
+            return tt1.UtcTime == tt2.UtcTime;
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="Core.TradingTime"/> haven't the same <see cref="Time"/>.
+        /// Determines whether two specified instances of <see cref="TradingTime"/> haven't the same <see cref="Time"/>.
         /// </summary>
-        /// <param name="st1">The first object to compare.</param>
-        /// <param name="st2">The second object to compare.</param>
-        /// <returns>True if <paramref name="st1"/> and <paramref name="st2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
-        public static bool operator !=(TradingTime st1, TradingTime st2)
+        /// <param name="tt1">The first object to compare.</param>
+        /// <param name="tt2">The second object to compare.</param>
+        /// <returns>True if <paramref name="tt1"/> and <paramref name="tt2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
+        public static bool operator !=(TradingTime tt1, TradingTime tt2)
         {
-            if (st1 is null && st2 is null)
+            if (tt1 is null && tt2 is null)
                 return false;
 
-            if (st1 is null && !(st2 is null))
+            if (tt1 is null && !(tt2 is null))
                 return true;
 
-            if (!(st1 is null) || st2 is null)
+            if (!(tt1 is null) || tt2 is null)
                 return true;
 
-            return st1.UtcTime != st2.UtcTime;
+            return tt1.UtcTime != tt2.UtcTime;
         }
 
         /// <summary>
         /// Adds a specified session time to a specified session time, generating a new time span.
         /// </summary>
-        /// <param name="st1">TradingSessionInfo time value to add.</param>
-        /// <param name="st2">TradingSessionInfo time value to add.</param>
-        /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="st1"/> and <paramref name="st2"/>.</returns>
+        /// <param name="tt1">TradingSessionInfo time value to add.</param>
+        /// <param name="tt2">TradingSessionInfo time value to add.</param>
+        /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="tt1"/> and <paramref name="tt2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator+(TradingTime st1, TradingTime st2)
+        public static TimeSpan operator+(TradingTime tt1, TradingTime tt2)
         {
-            if (st1 is null)
-                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
+            if (tt1 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt1)} cannot be null.");
 
-            if (st2 is null)
-                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
+            if (tt2 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt2)} cannot be null.");
 
-            return st1.UtcTime + st2.UtcTime;
+            return tt1.UtcTime + tt2.UtcTime;
         }
 
         /// <summary>
         /// Adds a specified session time to a specified time span, generating a new time span.
         /// </summary>
-        /// <param name="st">TradingSessionInfo time value to add.</param>
+        /// <param name="tt">TradingSessionInfo time value to add.</param>
         /// <param name="ts">Time span value to add.</param>
-        /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="st"/> and <paramref name="ts"/>.</returns>
+        /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="tt"/> and <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator+(TradingTime st, TimeSpan ts)
+        public static TimeSpan operator+(TradingTime tt, TimeSpan ts)
         {
-            if (st is null)
-                throw new ArgumentNullException($"the argument {nameof(st)} cannot be null.");
+            if (tt is null)
+                throw new ArgumentNullException($"the argument {nameof(tt)} cannot be null.");
 
-            return new TimeSpan((st.UtcTime + ts).Ticks);
+            return new TimeSpan((tt.UtcTime + ts).Ticks);
         }
 
         /// <summary>
         /// Subtracts a specified session time from a specified session time value and returns a newtime span.
         /// </summary>
-        /// <param name="st1">TradingSessionInfo time value to substract.</param>
-        /// <param name="st2">TradingSessionInfo time value to substract.</param>
-        /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="st1"/> minus the value of <paramref name="st2"/>.</returns>
+        /// <param name="tt1">TradingSessionInfo time value to substract.</param>
+        /// <param name="tt2">TradingSessionInfo time value to substract.</param>
+        /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="tt1"/> minus the value of <paramref name="tt2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator-(TradingTime st1, TradingTime st2)
+        public static TimeSpan operator-(TradingTime tt1, TradingTime tt2)
         {
-            if (st1 is null)
-                throw new ArgumentNullException($"the argument {nameof(st1)} cannot be null.");
+            if (tt1 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt1)} cannot be null.");
 
-            if (st2 is null)
-                throw new ArgumentNullException($"the argument {nameof(st2)} cannot be null.");
+            if (tt2 is null)
+                throw new ArgumentNullException($"the argument {nameof(tt2)} cannot be null.");
 
-            return new TimeSpan((st1.UtcTime - st2.UtcTime).Ticks);
+            return new TimeSpan((tt1.UtcTime - tt2.UtcTime).Ticks);
         }
 
         /// <summary>
         /// Subtracts a specified time span from a specified session time value and returns a newtime span.
         /// </summary>
-        /// <param name="st">TradingSessionInfo time value to add.</param>
+        /// <param name="tt">TradingSessionInfo time value to add.</param>
         /// <param name="ts">Time span value to add.</param>
-        /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="st"/> minus the value of <paramref name="ts"/>.</returns>
+        /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="tt"/> minus the value of <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator -(TradingTime st, TimeSpan ts)
+        public static TimeSpan operator -(TradingTime tt, TimeSpan ts)
         {
-            if (st is null)
-                throw new ArgumentNullException($"the argument {nameof(st)} cannot be null.");
+            if (tt is null)
+                throw new ArgumentNullException($"the argument {nameof(tt)} cannot be null.");
 
-            return new TimeSpan((st.UtcTime - ts).Ticks);
+            return new TimeSpan((tt.UtcTime - ts).Ticks);
         }
 
         #endregion
@@ -736,7 +738,7 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="date"></param>
         /// <returns>The <see cref="DateTime"/> that represents the session time.</returns>
-        public DateTime ToSessionTime(DateTime date)
+        private DateTime ToSessionTime(DateTime date)
         {
             return new DateTime(date.Year, date.Month, date.Day, Time.Hours, date.Minute, date.Second, DateTimeKind.Unspecified);
         }

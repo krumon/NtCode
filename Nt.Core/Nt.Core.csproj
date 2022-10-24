@@ -370,6 +370,7 @@
     <Compile Include="NinjaScript\Sessions\SessionHoursList\SessionHoursListConfiguration.cs" />
     <Compile Include="NinjaScript\Managers\Sessions\SessionsManagerBuilder.cs" />
     <Compile Include="NinjaScript\Managers\Sessions\SessionsManagerConfiguration.cs" />
+    <Compile Include="Trading\Sessions\TradingSessionCompareResult.cs" />
     <Compile Include="Trading\Sessions\TradingSessionExtensions.cs" />
     <Compile Include="NinjaScript\Sessions\SessionHours\SessionHours.cs" />
     <Compile Include="Trading\Times\TradingTimeExtensions.cs" />

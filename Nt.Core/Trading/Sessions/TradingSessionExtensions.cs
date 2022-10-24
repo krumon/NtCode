@@ -13,12 +13,12 @@ namespace Nt.Core.Trading
         /// <summary>
         /// Returns the unique code of the <see cref="TradingSessionType"/>.
         /// </summary>
-        /// <param name="tradingSession">The specific trading session.</param>
+        /// <param name="tradingSessionType">The specific trading session.</param>
         /// <returns>String that represents the unique code of the <see cref="TradingSessionType"/>.</returns>
         /// <exception cref="Exception">The <see cref="TradingSessionType"/> doesn´t exists.</exception>
-        public static string ToCode(this TradingSessionType tradingSession)
+        public static string ToCode(this TradingSessionType tradingSessionType)
         {
-            switch (tradingSession)
+            switch (tradingSessionType)
             {
                 // SESSIONS
                 case TradingSessionType.Electronic:
@@ -54,12 +54,12 @@ namespace Nt.Core.Trading
         /// <summary>
         /// Returns the description of the <see cref="TradingSessionType"/>.
         /// </summary>
-        /// <param name="tradingSession">The specific trading session.</param>
+        /// <param name="tradingSessionType">The specific trading session.</param>
         /// <returns>String that represents the description of the <see cref="TradingSessionType"/>.</returns>
         /// <exception cref="Exception">The <see cref="TradingSessionType"/> doesn´t exists.</exception>
-        public static string ToDescription(this TradingSessionType tradingSession)
+        public static string ToDescription(this TradingSessionType tradingSessionType)
         {
-            switch (tradingSession)
+            switch (tradingSessionType)
             {
                 // SESSIONS
                 case TradingSessionType.Electronic:
@@ -95,9 +95,9 @@ namespace Nt.Core.Trading
         /// <summary>
         /// Converts the <see cref="TradingSessionType"/> to initial <see cref="TradingTime"/>.
         /// </summary>
-        /// <param name="tradingSession"></param>
+        /// <param name="tradingSessionType"></param>
         /// <returns>Initial <see cref="TradingTime"/> of the <see cref="TradingSessionType"/>.</returns>
-        public static TradingTime ToBeginSessionTime(this TradingSessionType tradingSession, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
+        public static TradingTime ToBeginSessionTime(this TradingSessionType tradingSessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
         {
             switch (instrumentCode)
             {
@@ -105,7 +105,7 @@ namespace Nt.Core.Trading
                 case (TradingInstrumentCode.MES):
                 {
 
-                    switch (tradingSession)
+                    switch (tradingSessionType)
                     {
                         case (TradingSessionType.Electronic):
                             return TradingTimeType.Electronic_Open.ToSessionTime(instrumentCode,offset);
@@ -145,9 +145,9 @@ namespace Nt.Core.Trading
         /// <summary>
         /// Method to convert the <see cref="TradingSessionType"/> to final <see cref="TradingTime"/>.
         /// </summary>
-        /// <param name="tradingSession"></param>
+        /// <param name="tradingSessionType"></param>
         /// <returns>Final <see cref="TradingTime"/> of the <see cref="TradingSessionType"/>.</returns>
-        public static TradingTime ToEndSessionTime(this TradingSessionType tradingSession, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
+        public static TradingTime ToEndSessionTime(this TradingSessionType tradingSessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
         {
             switch (instrumentCode)
             {
@@ -155,7 +155,7 @@ namespace Nt.Core.Trading
                 case (TradingInstrumentCode.MES):
                     {
 
-                        switch (tradingSession)
+                        switch (tradingSessionType)
                         {
                             case (TradingSessionType.Electronic):
                                 return TradingTimeType.Electronic_Close.ToSessionTime(instrumentCode, offset);
@@ -195,7 +195,7 @@ namespace Nt.Core.Trading
 
         public static TradingSession ToSessionHours(this TradingSessionType type, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int balanceMinutes = 0)
         {
-            return TradingSession.CreateSessionHoursByType(type,instrumentCode,balanceMinutes);
+            return TradingSession.CreateTradingSessionByType(type,instrumentCode,balanceMinutes);
         }
 
         public static TradingSessionType[] ToArray(this TradingSessionType type)

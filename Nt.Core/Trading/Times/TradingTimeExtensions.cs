@@ -12,11 +12,11 @@ namespace Nt.Core.Trading
         /// <summary>
         /// Converts the <see cref="TradingTimeType"/> to unique code.
         /// </summary>
-        /// <param name="tradingTime">The specific session time.</param>
+        /// <param name="tradingTimeType">The specific session time.</param>
         /// <returns></returns>
-        public static string ToCode(this TradingTimeType tradingTime)
+        public static string ToCode(this TradingTimeType tradingTimeType)
         {
-            switch (tradingTime)
+            switch (tradingTimeType)
             {
                 // MAIN SESSIONS
                 case TradingTimeType.Custom:
@@ -236,11 +236,11 @@ namespace Nt.Core.Trading
         /// <summary>
         /// Converts the <see cref="TradingTimeType"/> to description.
         /// </summary>
-        /// <param name="tradingTime">The specific session time.</param>
+        /// <param name="tradingTimeType">The specific session time.</param>
         /// <returns></returns>
-        public static string ToDescription(this TradingTimeType tradingTime)
+        public static string ToDescription(this TradingTimeType tradingTimeType)
         {
-            switch (tradingTime)
+            switch (tradingTimeType)
             {
                 // MAIN SESSIONS
                 case TradingTimeType.Custom:
@@ -640,9 +640,9 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="tradingTime"></param>
         /// <returns><see cref="TimeZoneInfo"/> of the <see cref="TradingTime"/>.</returns>
-        public static TimeZoneInfo ToTimeZoneInfo(this TradingTimeType tradingTime, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default)
+        public static TimeZoneInfo ToTimeZoneInfo(this TradingTimeType tradingTimeType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default)
         {
-                switch (tradingTime)
+                switch (tradingTimeType)
                 {
                     // MARKET EXCHANGE TIME ZONES
                     case (TradingTimeType.Electronic_Open):
@@ -690,11 +690,11 @@ namespace Nt.Core.Trading
         /// <summary>
         /// Converts the <see cref="TradingTimeType"/> type to <see cref="Time"/>.
         /// </summary>
-        /// <param name="tradingTime"></param>
+        /// <param name="tradingTimeType"></param>
         /// <returns><see cref="TimeSpan"/> of the <see cref="TradingTimeType"/>.</returns>
-        public static TimeSpan ToTime(this TradingTimeType tradingTime, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
+        public static TimeSpan ToTime(this TradingTimeType tradingTimeType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
         {
-                switch (tradingTime)
+                switch (tradingTimeType)
                 {
 
                     // MAIN SESSIONS TIMES
