@@ -7,7 +7,10 @@ namespace Nt.Core.Trading
     /// <summary>
     /// Represents a trading time information.
     /// </summary>
-    public class TradingTime : BaseElement
+    public class TradingTime : BaseElement,
+        IComparable,
+        IComparable<TradingTime>,
+        IEquatable<TradingTime>
     {
         #region Private members
 
@@ -79,14 +82,14 @@ namespace Nt.Core.Trading
 
                 TimeSpan utcTime = Time - TimeZoneInfo.BaseUtcOffset;
 
-                if (utcTime.TotalHours >= 24)
-                {
-                    utcTime -= TimeSpan.FromHours(24);
-                }
-                if (utcTime.TotalHours < 0)
-                {
-                    utcTime += TimeSpan.FromHours(24);
-                }
+                //if (utcTime.TotalHours >= 24)
+                //{
+                //    utcTime -= TimeSpan.FromHours(24);
+                //}
+                //if (utcTime.TotalHours < 0)
+                //{
+                //    utcTime += TimeSpan.FromHours(24);
+                //}
 
                 return utcTime;
             }
@@ -105,16 +108,16 @@ namespace Nt.Core.Trading
                 if (Time == null)
                     throw new ArgumentNullException(nameof(Time));
 
-                TimeSpan localTime = this.UtcTime + TimeZoneInfo.Local.BaseUtcOffset;
+                TimeSpan localTime = UtcTime + TimeZoneInfo.Local.BaseUtcOffset;
 
-                if (localTime.TotalHours >= 24)
-                {
-                    localTime -= TimeSpan.FromHours(24);
-                }
-                if (localTime.TotalHours < 0)
-                {
-                    localTime += TimeSpan.FromHours(24);
-                }
+                //if (localTime.TotalHours >= 24)
+                //{
+                //    localTime -= TimeSpan.FromHours(24);
+                //}
+                //if (localTime.TotalHours < 0)
+                //{
+                //    localTime += TimeSpan.FromHours(24);
+                //}
 
                 return localTime;
             }
@@ -307,10 +310,23 @@ namespace Nt.Core.Trading
         }
 
         /// <summary>
+        /// Returns the hash code.
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        #endregion
+
+        #region ToString methods
+
+        /// <summary>
         /// Returns the string that represents the <see cref="TradingTime"/>.
         /// </summary>
         /// <returns></returns>
-        public override string ToString() => ToString(String.Empty);
+        public override string ToString() => ToString("U");
 
         /// <summary>
         /// Returns the string that represents the <see cref="TradingTime"/>.
@@ -345,7 +361,7 @@ namespace Nt.Core.Trading
         /// Returns the string that represents the code and the time of the <see cref="TradingTime"/>.
         /// </summary>
         /// <returns></returns>
-        public string ToShortString(bool showTimeZoneInfo = true) => ToShortString(string.Empty,showTimeZoneInfo);
+        public string ToShortString(bool showTimeZoneInfo = true) => ToShortString("U", showTimeZoneInfo);
 
         /// <summary>
         /// Returns the string that represents the time of the <see cref="TradingTime"/>.
@@ -364,13 +380,13 @@ namespace Nt.Core.Trading
             if (f == "U" || f == "UTC")
             {
                 time = UtcTime;
-                timeZoneInfoName = System.TimeZoneInfo.Utc.StandardName;
+                timeZoneInfoName = "Hora Utc";
             }
 
             else if (f == "L" || f == "LOCAL")
             {
                 time = LocalTime;
-                timeZoneInfoName = System.TimeZoneInfo.Local.StandardName;
+                timeZoneInfoName = "Hora Local";
             }
             string s = $"{time:%h\\:mm}h";
             if (showTimeZoneInfo)
@@ -384,7 +400,7 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <returns>The short string that represents the <see cref="TradingTime"/> in the specific time format,
         /// "L" for local time, "U" for UTC time, otherwise returns the specific time of the <see cref="TradingTime"/>.</returns>
-        public string ToLongString() =>  ToLongString(string.Empty);
+        public string ToLongString() => ToLongString("U");
 
         /// <summary>
         /// Returns the string that represents the <see cref="TradingTime"/>.
@@ -413,18 +429,9 @@ namespace Nt.Core.Trading
             return $"{tradingTimeType.ToDescription()} - {time:%h\\:mm}h ({timeZoneInfoName})";
         }
 
-        /// <summary>
-        /// Returns the hash code.
-        /// </summary>
-        /// <returns></returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
         #endregion
 
-        #region Operator, Compare and Equity methods
+        #region Equals methods
 
         /// <summary>
         /// Compare <see cref="TradingTime"/> objects and return true if the elements are equals.
@@ -476,6 +483,10 @@ namespace Nt.Core.Trading
             return tt1.Time == tt2.Time && tt1.UtcTime == tt2.UtcTime & tt1.Code == tt2.Code;
 
         }
+
+        #endregion
+
+        #region Compare methods
 
         /// <summary>
         /// Compare <see cref="TradingTime"/> objects and return 1 if <paramref name="tt1"/> is major than <paramref name="tt2"/>, 
@@ -568,9 +579,13 @@ namespace Nt.Core.Trading
             {
                 return -1;
             }
-            
+
             return 0;
         }
+
+        #endregion
+
+        #region Operators methods
 
         /// <summary>
         /// Determines whether two specified instances of <see cref="Core.TradingTime"/> that is greater than another specified.
@@ -684,7 +699,7 @@ namespace Nt.Core.Trading
         /// <param name="tt2">TradingSessionInfo time value to add.</param>
         /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="tt1"/> and <paramref name="tt2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator+(TradingTime tt1, TradingTime tt2)
+        public static TradingTime operator +(TradingTime tt1, TradingTime tt2)
         {
             if (tt1 is null)
                 throw new ArgumentNullException($"the argument {nameof(tt1)} cannot be null.");
@@ -692,7 +707,8 @@ namespace Nt.Core.Trading
             if (tt2 is null)
                 throw new ArgumentNullException($"the argument {nameof(tt2)} cannot be null.");
 
-            return tt1.UtcTime + tt2.UtcTime;
+            TimeSpan newTime = (tt1.UtcTime + tt2.UtcTime)+tt1.TimeZoneInfo.BaseUtcOffset;
+            return TradingTime.CreateCustomSessionTime(newTime,tt1.TimeZoneInfo);
         }
 
         /// <summary>
@@ -700,14 +716,14 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="tt">TradingSessionInfo time value to add.</param>
         /// <param name="ts">Time span value to add.</param>
-        /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="tt"/> and <paramref name="ts"/>.</returns>
+        /// <returns><see cref="TradingTime"/> that is the sum of the values ​​of <paramref name="tt"/> and <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator+(TradingTime tt, TimeSpan ts)
+        public static TradingTime operator +(TradingTime tt, TimeSpan ts)
         {
             if (tt is null)
                 throw new ArgumentNullException($"the argument {nameof(tt)} cannot be null.");
-
-            return new TimeSpan((tt.UtcTime + ts).Ticks);
+            tt.Time += ts;
+            return tt;
         }
 
         /// <summary>
@@ -715,9 +731,9 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="tt1">TradingSessionInfo time value to substract.</param>
         /// <param name="tt2">TradingSessionInfo time value to substract.</param>
-        /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="tt1"/> minus the value of <paramref name="tt2"/>.</returns>
+        /// <returns>An <see cref="TradingTime"/> whose value is the value of <paramref name="tt1"/> minus the value of <paramref name="tt2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator-(TradingTime tt1, TradingTime tt2)
+        public static TradingTime operator -(TradingTime tt1, TradingTime tt2)
         {
             if (tt1 is null)
                 throw new ArgumentNullException($"the argument {nameof(tt1)} cannot be null.");
@@ -725,7 +741,8 @@ namespace Nt.Core.Trading
             if (tt2 is null)
                 throw new ArgumentNullException($"the argument {nameof(tt2)} cannot be null.");
 
-            return new TimeSpan((tt1.UtcTime - tt2.UtcTime).Ticks);
+            TimeSpan newTime = (tt1.UtcTime - tt2.UtcTime) + tt1.TimeZoneInfo.BaseUtcOffset;
+            return TradingTime.CreateCustomSessionTime(newTime, tt1.TimeZoneInfo);
         }
 
         /// <summary>
@@ -733,14 +750,15 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="tt">TradingSessionInfo time value to add.</param>
         /// <param name="ts">Time span value to add.</param>
-        /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="tt"/> minus the value of <paramref name="ts"/>.</returns>
+        /// <returns>An <see cref="TradingTime"/> whose value is the value of <paramref name="tt"/> minus the value of <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator -(TradingTime tt, TimeSpan ts)
+        public static TradingTime operator -(TradingTime tt, TimeSpan ts)
         {
             if (tt is null)
                 throw new ArgumentNullException($"the argument {nameof(tt)} cannot be null.");
 
-            return new TimeSpan((tt.UtcTime - ts).Ticks);
+            tt.Time -= ts;
+            return tt;
         }
 
         #endregion

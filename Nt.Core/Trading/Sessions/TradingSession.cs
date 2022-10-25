@@ -39,6 +39,7 @@ namespace Nt.Core.Trading
         /// </summary>
         private readonly IList<TradingSession> _sessions = new List<TradingSession>();
 
+        private TradingTime _endSessionTime;
         #endregion
 
         #region Public properties
@@ -90,12 +91,22 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The final <see cref="TradingTime"/>.
         /// </summary>
-        public TradingTime EndSessionTime { get; set; }
+        public TradingTime EndSessionTime 
+        {
+            get => _endSessionTime; 
+            set
+            {
+                _endSessionTime = value;
+
+                if (_endSessionTime <= BeginSessionTime)
+                    _endSessionTime += TimeSpan.FromDays(1);
+            }
+        }
 
         /// <summary>
         /// TradingSessionInfo hours duration.
         /// </summary>
-        public TimeSpan Duration => EndSessionTime >= BeginSessionTime ? EndSessionTime - BeginSessionTime : BeginSessionTime - EndSessionTime;
+        public TimeSpan Duration => EndSessionTime.Time - BeginSessionTime.Time;
 
         #endregion
 
@@ -289,7 +300,8 @@ namespace Nt.Core.Trading
                 return;
             }
             // Otherwise...
-            for (int i = 0; i < _sessions.Count; i++)
+            int count = _sessions.Count;
+            for (int i = 0; i < count; i++)
             {
                 TradingSessionCompareResult result = item.CompareSessionTo(_sessions[i]);
                 switch (result)
@@ -305,7 +317,11 @@ namespace Nt.Core.Trading
                         return;
                     case TradingSessionCompareResult.Major:
                     case TradingSessionCompareResult.MajorAndInner:
-                        break;
+                        {
+                            if (i == count - 1)
+                                _sessions.Add(item);
+                            break;
+                        }
                     case TradingSessionCompareResult.Parent:
                         {
                             TradingSession tradingSession = _sessions[i];
@@ -598,7 +614,7 @@ namespace Nt.Core.Trading
         public override bool Equals(object obj)
         {
             if (obj is TradingSession ts)
-                return BeginSessionTime.Equals(ts.BeginSessionTime) && EndSessionTime.Equals(ts.EndSessionTime) && this.Code == ts.Code;
+                return BeginSessionTime.Equals(ts.BeginSessionTime) && EndSessionTime.Equals(ts.EndSessionTime);
 
             return false;
         }
@@ -616,7 +632,7 @@ namespace Nt.Core.Trading
             if (ts is null)
                 return false;
 
-            return BeginSessionTime.Equals(ts.BeginSessionTime) && EndSessionTime.Equals(ts.EndSessionTime) && this.Code == ts.Code;
+            return BeginSessionTime.Equals(ts.BeginSessionTime) && EndSessionTime.Equals(ts.EndSessionTime);
         }
 
         /// <summary>
@@ -636,11 +652,9 @@ namespace Nt.Core.Trading
             if (ts1 is null || ts2 is null)
                 return false;
 
-            return TradingTime.Equals(ts1.BeginSessionTime, ts2.BeginSessionTime) && TradingTime.Equals(ts1.EndSessionTime, ts2.EndSessionTime) && ts1.Code == ts2.Code;
+            return TradingTime.Equals(ts1.BeginSessionTime, ts2.BeginSessionTime) && TradingTime.Equals(ts1.EndSessionTime, ts2.EndSessionTime);
 
         }
-
-
 
         #endregion
 
@@ -648,21 +662,13 @@ namespace Nt.Core.Trading
 
         /// <summary>
         /// Compare <paramref name="value1"/> and <paramref name="value2"/> objects and 
-        /// return 3 if <paramref name="value1"/> is the parent of <paramref name="value2"/>, 
-        /// return -3 if <paramref name="value1"/>is the child of the <paramref name="value2"/>,
-        /// return 2 if <paramref name="value1"/>is major and inner on the <paramref name="value2"/>,
-        /// return -2 if <paramref name="value1"/>is minor and inner on the <paramref name="value2"/>,
         /// return 1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
         /// return -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// return 0 if the objects are equals.
         /// </summary>
         /// <param name="value1">The first object to compare with the second.</param>
         /// <param name="value2">The second object to compare with the first.</param>
-        /// <returns>3 if <paramref name="value1"/> is the parent of <paramref name="value2"/>, 
-        /// -3 if <paramref name="value1"/>is the child of the <paramref name="value2"/>,
-        /// 2 if <paramref name="value1"/>is major and inner on the <paramref name="value2"/>,
-        /// -2 if <paramref name="value1"/>is minor and inner on the <paramref name="value2"/>,
-        /// 1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
+        /// <returns>1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
         /// -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// 0 if the objects are equals.</returns>
         /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
@@ -689,21 +695,13 @@ namespace Nt.Core.Trading
 
         /// <summary>
         /// Compare <see cref="TradingSession"/> objects and 
-        /// return 3 if <paramref name="value1"/> is the parent of <paramref name="value2"/>, 
-        /// return -3 if <paramref name="value1"/>is the child of the <paramref name="value2"/>,
-        /// return 2 if <paramref name="value1"/>is major and inner on the <paramref name="value2"/>,
-        /// return -2 if <paramref name="value1"/>is minor and inner on the <paramref name="value2"/>,
         /// return 1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
         /// return -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// return 0 if the objects are equals.
         /// </summary>
         /// <param name="value1">The first <see cref="TradingSession"/> object to compare with the second.</param>
         /// <param name="value2">The second <see cref="TradingSession"/> object to compare with the first.</param>
-        /// <returns>3 if <paramref name="value1"/> is the parent of <paramref name="value2"/>, 
-        /// -3 if <paramref name="value1"/>is the child of the <paramref name="value2"/>,
-        /// 2 if <paramref name="value1"/>is major and inner on the <paramref name="value2"/>,
-        /// -2 if <paramref name="value1"/>is minor and inner on the <paramref name="value2"/>,
-        /// 1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
+        /// <returns>1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
         /// -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// 0 if the objects are equals.</returns>
         /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
@@ -712,26 +710,18 @@ namespace Nt.Core.Trading
             if (value1 == null || value2 == null)
                 throw new ArgumentNullException("The arguments cannot be null.");
 
-            return (int)CompareSessions(value1, value2);
-            
+            //return (int)CompareSessions(value1, value2);
+            return value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
         }
 
         /// <summary>
         /// Compare the <see cref="TradingSession"/> to <paramref name="value"/> object and 
-        /// return 3 if <see cref="TradingSession"/> is the parent of the <paramref name="value"/>, 
-        /// return -3 if <see cref="TradingSession"/> is the parent,
-        /// return 2 if <see cref="TradingSession"/> is major and inner on the <paramref name="value"/>,
-        /// return -2 if <see cref="TradingSession"/> is minor and inner on the <paramref name="value"/>,
         /// return 1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
         /// return -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
         /// return 0 if the objects are equals.
         /// </summary>
         /// <param name="value">The object to compare with the <see cref="TradingSession"/>.</param>
-        /// <returns>3 if <see cref="TradingSession"/> is the parent of the <paramref name="value"/>, 
-        /// -3 if <see cref="TradingSession"/> is the parent,
-        /// 2 if <see cref="TradingSession"/> is major and inner on the <paramref name="value"/>,
-        /// -2 if <see cref="TradingSession"/> is minor and inner on the <paramref name="value"/>,
-        /// 1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
+        /// <returns>1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
         /// -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
         /// 0 if the objects are equals.
         /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
@@ -753,20 +743,12 @@ namespace Nt.Core.Trading
 
         /// <summary>
         /// Compare the <see cref="TradingSession"/> to <see cref="TradingSession"/> object and 
-        /// return 3 if <see cref="TradingSession"/> is the parent of the <paramref name="value"/>, 
-        /// return -3 if <see cref="TradingSession"/> is the parent,
-        /// return 2 if <see cref="TradingSession"/> is major and inner on the <paramref name="value"/>,
-        /// return -2 if <see cref="TradingSession"/> is minor and inner on the <paramref name="value"/>,
         /// return 1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
         /// return -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
         /// return 0 if the objects are equals.
         /// </summary>
         /// <param name="value">The object to compare with the <see cref="TradingSession"/>.</param>
-        /// <returns>3 if <see cref="TradingSession"/> is the parent of the <paramref name="value"/>, 
-        /// -3 if <see cref="TradingSession"/> is the parent,
-        /// 2 if <see cref="TradingSession"/> is major and inner on the <paramref name="value"/>,
-        /// -2 if <see cref="TradingSession"/> is minor and inner on the <paramref name="value"/>,
-        /// 1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
+        /// <returns>1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
         /// -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
         /// 0 if the objects are equals.
         /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
@@ -775,7 +757,7 @@ namespace Nt.Core.Trading
             if (value == null)
                 throw new ArgumentException("Argument cannot be null");
 
-            return (int)CompareSessions(this, value);
+            return Compare(this, value);
         }
 
         /// <summary>
@@ -929,7 +911,10 @@ namespace Nt.Core.Trading
                 throw new ArgumentNullException($"the argument {nameof(ts2)} cannot be null.");
 
             TradingSessionCompareResult result = CompareSessions(ts1, ts2);
-            if (result == TradingSessionCompareResult.Major || result == TradingSessionCompareResult.MajorAndInner)
+            if (
+                result == TradingSessionCompareResult.Major ||
+                result == TradingSessionCompareResult.MajorAndInner
+               )
                 return true;
 
             return false;
@@ -950,7 +935,10 @@ namespace Nt.Core.Trading
                 throw new ArgumentNullException($"the argument {nameof(ts2)} cannot be null.");
 
             TradingSessionCompareResult result = CompareSessions(ts1, ts2);
-            if (result == TradingSessionCompareResult.Minor || result == TradingSessionCompareResult.MinorAndInner)
+            if (
+                result == TradingSessionCompareResult.Minor ||
+                result == TradingSessionCompareResult.MinorAndInner
+               )
                 return true;
 
             return false;
@@ -971,7 +959,11 @@ namespace Nt.Core.Trading
                 throw new ArgumentNullException($"the argument {nameof(ts2)} cannot be null.");
 
             TradingSessionCompareResult result = CompareSessions(ts1, ts2);
-            if (result == TradingSessionCompareResult.Parent)
+            if (
+                result == TradingSessionCompareResult.Equals ||
+                result == TradingSessionCompareResult.Major ||
+                result == TradingSessionCompareResult.MajorAndInner
+               )
                 return true;
 
             return false;
@@ -992,7 +984,11 @@ namespace Nt.Core.Trading
                 throw new ArgumentNullException($"the argument {nameof(ts2)} cannot be null.");
 
             TradingSessionCompareResult result = CompareSessions(ts1, ts2);
-            if (result == TradingSessionCompareResult.Child)
+            if (
+                result == TradingSessionCompareResult.Equals ||
+                result == TradingSessionCompareResult.Minor ||
+                result == TradingSessionCompareResult.MinorAndInner
+               )
                 return true;
 
             return false;
@@ -1006,11 +1002,11 @@ namespace Nt.Core.Trading
         /// <returns>True if <paramref name="ts1"/> and <paramref name="ts2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
         public static bool operator ==(TradingSession ts1, TradingSession ts2)
         {
-            if (ts1 is null)
-                throw new ArgumentNullException($"the argument {nameof(ts1)} cannot be null.");
+            if (ts1 is null && ts2 is null)
+                return true;
 
-            if (ts2 is null)
-                throw new ArgumentNullException($"the argument {nameof(ts2)} cannot be null.");
+            if (ts1 is null || ts2 is null)
+                return false;
 
             TradingSessionCompareResult result = CompareSessions(ts1, ts2);
             if (result == TradingSessionCompareResult.Equals)
@@ -1027,17 +1023,7 @@ namespace Nt.Core.Trading
         /// <returns>True if <paramref name="ts1"/> and <paramref name="ts2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
         public static bool operator !=(TradingSession ts1, TradingSession ts2)
         {
-            if (ts1 is null)
-                throw new ArgumentNullException($"the argument {nameof(ts1)} cannot be null.");
-
-            if (ts2 is null)
-                throw new ArgumentNullException($"the argument {nameof(ts2)} cannot be null.");
-
-            TradingSessionCompareResult result = CompareSessions(ts1, ts2);
-            if (result != TradingSessionCompareResult.Equals)
-                return true;
-
-            return false;
+            return !(ts1 == ts2);
         }
 
         /// <summary>
@@ -1114,7 +1100,7 @@ namespace Nt.Core.Trading
         /// Converts the <see cref="TradingSession"/> to string.
         /// </summary>
         /// <returns></returns>
-        public override string ToString() => ToString(string.Empty);
+        public override string ToString() => ToString("U");
 
         /// <summary>
         /// Returns the string that represents the <see cref="TradingSession"/>.
@@ -1172,7 +1158,7 @@ namespace Nt.Core.Trading
         /// Converts the <see cref="TradingSession"/> to long string.
         /// </summary>
         /// <returns></returns>
-        public string ToLongString() => ToLongString(string.Empty);
+        public string ToLongString() => ToLongString("U");
 
         /// <summary>
         /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTime"/>.
