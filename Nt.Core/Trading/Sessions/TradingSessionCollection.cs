@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using Kr.Core.Helpers;
 
 namespace Nt.Core.Trading
 {
@@ -158,7 +160,36 @@ namespace Nt.Core.Trading
         public void Add(TradingSessionType type)
         {
             TradingSession ts = TradingSession.CreateTradingSessionByType(type);
-            _sessions.Add(ts);
+            Add(ts);
+        }
+
+        /// <summary>
+        /// Add a <see cref="TradingSessionType"/> array.
+        /// </summary>
+        /// <param name="types">The <see cref="TradingSession"/> array to add.</param>
+        public void Add(params TradingSessionType[] types) 
+        {
+            if (types == null)
+                throw new ArgumentNullException(nameof(types));
+
+            foreach (var type in types) 
+                Add(type);
+        }
+
+        /// <summary>
+        /// Add all <see cref="TradingSessionType"/> enums.
+        /// </summary>
+        /// <typeparam name="T">The generic parameter <see cref="TradingSessionType"/>.</typeparam>
+        public void Add<T>()
+            where T : Enum
+        {
+            if (typeof(T).Name == nameof(TradingSessionType))
+            {
+                EnumHelpers.ForEach<TradingSessionType>((type) =>
+                {
+                    Add(type);
+                });
+            }
         }
 
         #endregion

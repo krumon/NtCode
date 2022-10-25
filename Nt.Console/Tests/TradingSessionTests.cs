@@ -9,6 +9,16 @@ namespace ConsoleApp.Tests
 
         #region Private members
 
+        private TradingSession ts;
+        private TradingSessionType[] types = 
+            new TradingSessionType[] 
+            {
+                TradingSessionType.European,
+                TradingSessionType.AmericanAndEuropean,
+                TradingSessionType.American_RS_EOD,
+                TradingSessionType.Asian,
+                TradingSessionType.Electronic
+            };
 
         #endregion
 
@@ -33,12 +43,13 @@ namespace ConsoleApp.Tests
 
         public override void Run()
         {
-            InstanceTests();
-            WaitAndClear();
-            ToStringTests(TradingSessionType.American_RS);
-            WaitAndClear();
-            SessionHoursEnumTest();
-            WaitAndClear();
+            AddTests();
+            //InstanceTests();
+            //WaitAndClear();
+            //ToStringTests(TradingSessionType.American_RS);
+            //WaitAndClear();
+            //TradingSessionEnumTest();
+            //WaitAndClear();
             //OperatorTests(TradingSession.Asian, TradingSession.European);
             //WaitAndClear();
         }
@@ -52,7 +63,7 @@ namespace ConsoleApp.Tests
             // Create a custom instance.
             Title("Instance tests");
             Subtitle("Custom instance with trading session types");
-            TradingSession ts = TradingSession.CreateCustomTradingSession(
+            ts = TradingSession.CreateCustomTradingSession(
                 TradingTimeType.American_Open,
                 TradingTimeType.Asian_Close,
                 "My Custom TradingSession");
@@ -83,7 +94,7 @@ namespace ConsoleApp.Tests
             Console.WriteLine($"Method ToLongString('LOCAL') => {ts.ToLongString("LOCAL")}");
         }
 
-        private void SessionHoursEnumTest()
+        private void TradingSessionEnumTest()
         {
             Title("Test of iteration and check methods");
             EnumHelpers.Writer<TradingSessionType>();
@@ -103,6 +114,13 @@ namespace ConsoleApp.Tests
             //Write(sh.ToString());
             //Write($"{sh.Description} {s} in {nameof(TradingTime)} enum.");
 
+        }
+
+        private void AddTests()
+        {
+            ts = TradingSession.CreateTradingSessionByType(TradingSessionType.American);
+            ts.Clear();
+            ts.Add(types);
         }
 
         private void OperatorTests(TradingSessionType t1, TradingSessionType t2)
@@ -249,32 +267,6 @@ namespace ConsoleApp.Tests
 
         }
 
-        //private static void TimeSpanTester()
-        //{
-        //    TradingTimeInfo sessionTime1 = TradingTimeInfo.CreateCustomSessionTime(22,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
-        //    TradingTimeInfo sessionTime2 = TradingTimeInfo.CreateCustomSessionTime(2,0,0, TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time"));
-
-        //    Console.WriteLine(String.Format("Utc Offset: {0}",sessionTime1.TimeZoneInfo.BaseUtcOffset.ToString()));
-        //    Console.WriteLine(String.Format("Time 1: {0}",sessionTime1.ToUtcTime.ToString()));
-        //    Console.WriteLine(String.Format("Time 2: {0}",sessionTime2.ToUtcTime.ToString()));
-        //}
-
-        //private static void CreateAndPrintSession()
-        //{
-        //    // Create
-        //    NsSession session = new NsSession();
-
-        //    // Print
-        //    Console.WriteLine("NINJATRADER SESSION");
-        //    Console.WriteLine("-------------------");
-        //    Console.WriteLine(session.TradingSessionInfo.ToString());
-        //}
-
-        //private static void PrintTradingSessions()
-        //{
-        //    foreach (var timeZone in TradingSession.Asian.ToArray())
-        //        Console.WriteLine(timeZone.ToSessionHours().ToString());
-        //}
 
         #endregion
 

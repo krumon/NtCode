@@ -34,7 +34,5 @@ namespace Kr.Core.Helpers
                 action(t);
         }
 
-
-
     }
 }
