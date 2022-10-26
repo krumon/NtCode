@@ -1,4 +1,6 @@
-﻿using Nt.Core.Tests;
+﻿using Nt.Core;
+using Nt.Core.Tests;
+using Nt.Core.Trading;
 
 namespace ConsoleApp
 {
@@ -10,6 +12,9 @@ namespace ConsoleApp
             TradingSessionTests tradingSessionTests = new TradingSessionTests();
 
             tradingSessionTests.Run();
+
+            ITradingSession tradingSession = KrumonTrade.CreateTradingSessionBuilder()
+                .Build();
             
         }
     }

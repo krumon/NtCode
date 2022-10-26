@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace Nt.Core.Trading
 {
-    public class TradingSessionBuilder : ITradingSessionBuilder
+    public class SessionBuilder : ISessionBuilder
     {
         #region Private members
 
-        private IList<TradingSessionType> _types = new List<TradingSessionType>();
-        private TradingSessionCollection _sessionsCache;
-        private readonly TradingSession _tradingSession;
+        private IList<SessionCode> _types = new List<SessionCode>();
+        private SessionCollection _descriptors;
+        private readonly TradingSession _tradingSession = new TradingSession();
         private bool _isBuild;
 
         #endregion
@@ -20,10 +20,17 @@ namespace Nt.Core.Trading
 
         public ITradingSession Build()
         {
-            _isBuild = true;
+            // The trading session can be only once time created.
+            if (_isBuild)
+                return _tradingSession;
+
             AddTypesToTradingSessionCollection();
             SortTradingSessionCollection();
             CreateTradingSession();
+
+            // Sets the flag to indicate the Trading session is created.
+            _isBuild = true;
+
             return _tradingSession;
         }
 
@@ -31,7 +38,7 @@ namespace Nt.Core.Trading
 
         #region Public Methods
 
-        public ITradingSessionBuilder Add(TradingSessionType type)
+        public ISessionBuilder Add(SessionCode type)
         {
             if (_types.Contains(type))
                 return this;
@@ -39,7 +46,7 @@ namespace Nt.Core.Trading
             return this;
         }
 
-        public ITradingSessionBuilder Add(params TradingSessionType[] types)
+        public ISessionBuilder Add(params SessionCode[] types)
         {
             if (types == null)
                 throw new ArgumentNullException(nameof(types));
@@ -50,12 +57,12 @@ namespace Nt.Core.Trading
             return this;
         }
 
-        public ITradingSessionBuilder Add<T>()
+        public ISessionBuilder Add<T>()
             where T : Enum
         {
-            if (typeof(T).Name == nameof(TradingSessionType))
+            if (typeof(T).Name == nameof(SessionCode))
             {
-                EnumHelpers.ForEach<TradingSessionType>((type) =>
+                EnumHelpers.ForEach<SessionCode>((type) =>
                 {
                     Add(type);
                 });
@@ -70,17 +77,17 @@ namespace Nt.Core.Trading
 
         private void AddTypesToTradingSessionCollection()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void SortTradingSessionCollection()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         private void CreateTradingSession()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         #endregion

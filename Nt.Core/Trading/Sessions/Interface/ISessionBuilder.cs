@@ -1,6 +1,6 @@
 ﻿namespace Nt.Core.Trading
 {
-    public interface ITradingSessionBuilder
+    public interface ISessionBuilder
     {
         ITradingSession Build();
     }

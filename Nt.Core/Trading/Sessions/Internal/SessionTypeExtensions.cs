@@ -1,49 +1,49 @@
 ﻿using System;
 using System.Linq;
 
-namespace Nt.Core.Trading.Internal
+namespace Nt.Core.Trading
 {
 
     /// <summary>
-    /// <see cref="TradingSessionType"/> enum helper methods.
+    /// <see cref="SessionCode"/> enum helper methods.
     /// </summary>
-    internal static class TradingSessionTypeExtensions
+    internal static class SessionTypeExtensions
     {
 
         /// <summary>
-        /// Returns the unique code of the <see cref="TradingSessionType"/>.
+        /// Returns the unique code of the <see cref="SessionCode"/>.
         /// </summary>
         /// <param name="tradingSessionType">The specific trading session.</param>
-        /// <returns>String that represents the unique code of the <see cref="TradingSessionType"/>.</returns>
-        /// <exception cref="Exception">The <see cref="TradingSessionType"/> doesn´t exists.</exception>
-        public static string ToCode(this TradingSessionType tradingSessionType)
+        /// <returns>String that represents the unique code of the <see cref="SessionCode"/>.</returns>
+        /// <exception cref="Exception">The <see cref="SessionCode"/> doesn´t exists.</exception>
+        public static string ToCode(this SessionCode tradingSessionType)
         {
             switch (tradingSessionType)
             {
                 // SESSIONS
-                case TradingSessionType.Electronic:
+                case SessionCode.Electronic:
                     return "EL";
-                case TradingSessionType.Regular:
+                case SessionCode.Regular:
                     return "RG";
-                case TradingSessionType.OVN:
+                case SessionCode.OVN:
                     return "OV";
-                case TradingSessionType.American:
+                case SessionCode.American:
                     return "AM";
-                case TradingSessionType.AmericanAndEuropean:
+                case SessionCode.AmericanAndEuropean:
                     return "AE";
-                case TradingSessionType.Asian:
+                case SessionCode.Asian:
                     return "AS";
-                case TradingSessionType.European:
+                case SessionCode.European:
                     return "EU";
-                case TradingSessionType.American_RS:
+                case SessionCode.American_RS:
                     return "AM-RS";
-                case TradingSessionType.Asian_RS:
+                case SessionCode.Asian_RS:
                     return "AS-RS";
-                case TradingSessionType.American_RS_EXT:
+                case SessionCode.American_RS_EXT:
                     return "AM-RS-EXT";
-                case TradingSessionType.American_RS_EOD:
+                case SessionCode.American_RS_EOD:
                     return "AM-RS-EOD";
-                case TradingSessionType.American_RS_NWD:
+                case SessionCode.American_RS_NWD:
                     return "AM-RS-NWD";
 
                 default:
@@ -52,39 +52,39 @@ namespace Nt.Core.Trading.Internal
         }
 
         /// <summary>
-        /// Returns the description of the <see cref="TradingSessionType"/>.
+        /// Returns the description of the <see cref="SessionCode"/>.
         /// </summary>
         /// <param name="tradingSessionType">The specific trading session.</param>
-        /// <returns>String that represents the description of the <see cref="TradingSessionType"/>.</returns>
-        /// <exception cref="Exception">The <see cref="TradingSessionType"/> doesn´t exists.</exception>
-        public static string ToDescription(this TradingSessionType tradingSessionType)
+        /// <returns>String that represents the description of the <see cref="SessionCode"/>.</returns>
+        /// <exception cref="Exception">The <see cref="SessionCode"/> doesn´t exists.</exception>
+        public static string ToDescription(this SessionCode tradingSessionType)
         {
             switch (tradingSessionType)
             {
                 // SESSIONS
-                case TradingSessionType.Electronic:
+                case SessionCode.Electronic:
                     return "Electronic TradingSession.";
-                case TradingSessionType.Regular:
+                case SessionCode.Regular:
                     return "Regular TradingSession.";
-                case TradingSessionType.OVN:
+                case SessionCode.OVN:
                     return "Overnight TradingSession.";
-                case TradingSessionType.American:
+                case SessionCode.American:
                     return "American TradingSession.";
-                case TradingSessionType.AmericanAndEuropean:
+                case SessionCode.AmericanAndEuropean:
                     return "American and European TradingSession.";
-                case TradingSessionType.Asian:
+                case SessionCode.Asian:
                     return "Asian TradingSession.";
-                case TradingSessionType.European:
+                case SessionCode.European:
                     return "Asian TradingSession.";
-                case TradingSessionType.American_RS:
+                case SessionCode.American_RS:
                     return "American Residual TradingSession.";
-                case TradingSessionType.Asian_RS:
+                case SessionCode.Asian_RS:
                     return "Asian Residual TradingSession.";
-                case TradingSessionType.American_RS_EXT:
+                case SessionCode.American_RS_EXT:
                     return "American Residual Extra time TradingSession.";
-                case TradingSessionType.American_RS_EOD:
+                case SessionCode.American_RS_EOD:
                     return "American Residual End Of Day TradingSession.";
-                case TradingSessionType.American_RS_NWD:
+                case SessionCode.American_RS_NWD:
                     return "American Residual New Day TradingSession.";
 
                 default:
@@ -93,39 +93,39 @@ namespace Nt.Core.Trading.Internal
         }
 
         /// <summary>
-        /// Returns the name of the <see cref="TradingSessionType"/>.
+        /// Returns the name of the <see cref="SessionCode"/>.
         /// </summary>
         /// <param name="tradingSessionType">The specific trading session.</param>
-        /// <returns>String that represents the name of the <see cref="TradingSessionType"/>.</returns>
-        /// <exception cref="Exception">The <see cref="TradingSessionType"/> doesn´t exists.</exception>
-        public static string ToName(this TradingSessionType tradingSessionType)
+        /// <returns>String that represents the name of the <see cref="SessionCode"/>.</returns>
+        /// <exception cref="Exception">The <see cref="SessionCode"/> doesn´t exists.</exception>
+        public static string ToName(this SessionCode tradingSessionType)
         {
             switch (tradingSessionType)
             {
                 // SESSIONS
-                case TradingSessionType.Electronic:
+                case SessionCode.Electronic:
                     return "TradingSession - Electronic";
-                case TradingSessionType.Regular:
+                case SessionCode.Regular:
                     return "TradingSession - Regular";
-                case TradingSessionType.OVN:
+                case SessionCode.OVN:
                     return "TradingSession - Overnight";
-                case TradingSessionType.American:
+                case SessionCode.American:
                     return "TradingSession - American";
-                case TradingSessionType.AmericanAndEuropean:
+                case SessionCode.AmericanAndEuropean:
                     return "TradingSession - AmericanAndEuropean";
-                case TradingSessionType.Asian:
+                case SessionCode.Asian:
                     return "TradingSession - Asian";
-                case TradingSessionType.European:
+                case SessionCode.European:
                     return "TradingSession - European";
-                case TradingSessionType.American_RS:
+                case SessionCode.American_RS:
                     return "TradingSession - AmericanResidual";
-                case TradingSessionType.Asian_RS:
+                case SessionCode.Asian_RS:
                     return "TradingSession - AsianResidual";
-                case TradingSessionType.American_RS_EXT:
+                case SessionCode.American_RS_EXT:
                     return "TradingSession - AmericanResidualExtratime";
-                case TradingSessionType.American_RS_EOD:
+                case SessionCode.American_RS_EOD:
                     return "TradingSession - AmericanResidialEndOfDay";
-                case TradingSessionType.American_RS_NWD:
+                case SessionCode.American_RS_NWD:
                     return "TradingSession - AmericanResidualNewDay";
 
                 default:
@@ -134,11 +134,11 @@ namespace Nt.Core.Trading.Internal
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSessionType"/> to initial <see cref="TradingTime"/>.
+        /// Converts the <see cref="SessionCode"/> to initial <see cref="TradingTime"/>.
         /// </summary>
         /// <param name="tradingSessionType"></param>
-        /// <returns>Initial <see cref="TradingTime"/> of the <see cref="TradingSessionType"/>.</returns>
-        public static TradingTime ToBeginSessionTime(this TradingSessionType tradingSessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
+        /// <returns>Initial <see cref="TradingTime"/> of the <see cref="SessionCode"/>.</returns>
+        public static TradingTime ToBeginSessionTime(this SessionCode tradingSessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
         {
             switch (instrumentCode)
             {
@@ -148,30 +148,30 @@ namespace Nt.Core.Trading.Internal
 
                     switch (tradingSessionType)
                     {
-                        case (TradingSessionType.Electronic):
+                        case (SessionCode.Electronic):
                             return TradingTimeType.Electronic_Open.ToSessionTime(instrumentCode,offset);
-                        case (TradingSessionType.Regular):
+                        case (SessionCode.Regular):
                             return TradingTimeType.Regular_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.OVN):
+                        case (SessionCode.OVN):
                             return TradingTimeType.OVN_Open.ToSessionTime(instrumentCode, offset);
 
-                        case (TradingSessionType.American):
+                        case (SessionCode.American):
                             return TradingTimeType.American_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.AmericanAndEuropean):
+                        case (SessionCode.AmericanAndEuropean):
                             return TradingTimeType.AmericanAndEuropean_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.Asian):
+                        case (SessionCode.Asian):
                             return TradingTimeType.Asian_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.European):
+                        case (SessionCode.European):
                             return TradingTimeType.European_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.American_RS):
+                        case (SessionCode.American_RS):
                             return TradingTimeType.American_RS_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.Asian_RS):
+                        case (SessionCode.Asian_RS):
                             return TradingTimeType.Asian_RS_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.American_RS_EXT):
+                        case (SessionCode.American_RS_EXT):
                             return TradingTimeType.American_RS_EXT_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.American_RS_EOD):
+                        case (SessionCode.American_RS_EOD):
                             return TradingTimeType.American_RS_EOD_Open.ToSessionTime(instrumentCode, offset);
-                        case (TradingSessionType.American_RS_NWD):
+                        case (SessionCode.American_RS_NWD):
                             return TradingTimeType.American_RS_NWD_Open.ToSessionTime(instrumentCode, offset);
 
                         default:
@@ -184,11 +184,11 @@ namespace Nt.Core.Trading.Internal
         }
 
         /// <summary>
-        /// Method to convert the <see cref="TradingSessionType"/> to final <see cref="TradingTime"/>.
+        /// Method to convert the <see cref="SessionCode"/> to final <see cref="TradingTime"/>.
         /// </summary>
         /// <param name="tradingSessionType"></param>
-        /// <returns>Final <see cref="TradingTime"/> of the <see cref="TradingSessionType"/>.</returns>
-        public static TradingTime ToEndSessionTime(this TradingSessionType tradingSessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
+        /// <returns>Final <see cref="TradingTime"/> of the <see cref="SessionCode"/>.</returns>
+        public static TradingTime ToEndSessionTime(this SessionCode tradingSessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
         {
             switch (instrumentCode)
             {
@@ -198,30 +198,30 @@ namespace Nt.Core.Trading.Internal
 
                         switch (tradingSessionType)
                         {
-                            case (TradingSessionType.Electronic):
+                            case (SessionCode.Electronic):
                                 return TradingTimeType.Electronic_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.Regular):
+                            case (SessionCode.Regular):
                                 return TradingTimeType.Regular_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.OVN):
+                            case (SessionCode.OVN):
                                 return TradingTimeType.OVN_Close.ToSessionTime(instrumentCode, offset);
 
-                            case (TradingSessionType.American):
+                            case (SessionCode.American):
                                 return TradingTimeType.American_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.AmericanAndEuropean):
+                            case (SessionCode.AmericanAndEuropean):
                                 return TradingTimeType.AmericanAndEuropean_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.Asian):
+                            case (SessionCode.Asian):
                                 return TradingTimeType.Asian_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.European):
+                            case (SessionCode.European):
                                 return TradingTimeType.European_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.American_RS):
+                            case (SessionCode.American_RS):
                                 return TradingTimeType.American_RS_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.Asian_RS):
+                            case (SessionCode.Asian_RS):
                                 return TradingTimeType.Asian_RS_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.American_RS_EXT):
+                            case (SessionCode.American_RS_EXT):
                                 return TradingTimeType.American_RS_EXT_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.American_RS_EOD):
+                            case (SessionCode.American_RS_EOD):
                                 return TradingTimeType.American_RS_EOD_Close.ToSessionTime(instrumentCode, offset);
-                            case (TradingSessionType.American_RS_NWD):
+                            case (SessionCode.American_RS_NWD):
                                 return TradingTimeType.American_RS_NWD_Close.ToSessionTime(instrumentCode, offset);
 
                             default:
@@ -234,14 +234,14 @@ namespace Nt.Core.Trading.Internal
 
         }
 
-        public static TradingSession ToSessionHours(this TradingSessionType type, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int balanceMinutes = 0)
+        public static TradingSession ToSessionHours(this SessionCode type, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int balanceMinutes = 0)
         {
             return TradingSession.CreateTradingSessionByType(type,instrumentCode,balanceMinutes);
         }
 
-        public static TradingSessionType[] ToArray(this TradingSessionType type)
+        public static SessionCode[] ToArray(this SessionCode type)
         {
-            return Enum.GetValues(typeof(TradingSessionType)).Cast<TradingSessionType>().ToArray();
+            return Enum.GetValues(typeof(SessionCode)).Cast<SessionCode>().ToArray();
         }
 
     }

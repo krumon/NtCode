@@ -276,7 +276,7 @@ namespace Nt.Core.Ninjascript
         /// <param name="includeInitialBalance"></param>
         /// <param name="includeFinalBalance"></param>
         private void AddSession(
-            TradingSessionType sessionType,
+            SessionCode sessionType,
             TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default,
             int includeInitialBalance = 0,
             int includeFinalBalance = 0)

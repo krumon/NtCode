@@ -95,7 +95,7 @@ namespace Nt.Core.Tests
 
         }
 
-        private void ToStringTests(TradingSessionType type)
+        private void ToStringTests(SessionCode type)
         {
         }
 
