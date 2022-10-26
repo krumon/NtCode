@@ -6,16 +6,11 @@ namespace Nt.Core.Trading.Internal
     internal class SessionDescriptor
     {
 
-        #region Consts
-
-        DateTime TIME_REFERENCE = new DateTime(1978, 9, 20, 0, 0, 0, DateTimeKind.Local);
-
-        #endregion
-
         #region Private members
 
-        private SessionCode _sessionType;
-        private TradingTime _endSessionTime;
+        private SessionType _sessionType;
+        private TradingTime _beginTradingTime;
+        private TradingTime _endTradingTime;
 
         #endregion
 
@@ -24,21 +19,23 @@ namespace Nt.Core.Trading.Internal
         /// <summary>
         /// The session type.
         /// </summary>
-        public SessionCode SessionType
+        public SessionType SessionType
         {
             private set
             {
+                // Update the value
                 _sessionType = value;
 
-                if (_sessionType == SessionCode.Custom)
+                // Update the key, name and description values.
+                if (_sessionType == SessionType.Custom)
                 {
-                    Code = ToDefaultCode();
+                    Key = ToDefaultCode();
                     if (string.IsNullOrEmpty(Description))
-                        Description = $"Custom TradingSessionInfo Hours {BeginSessionTime.LocalTime.TotalHours}.{EndSessionTime.LocalTime.TotalHours}.";
+                        Description = $"Custom TradingSessionInfo Hours {_beginTradingTime.LocalTime.TotalHours}.{_endTradingTime.LocalTime.TotalHours}.";
                 }
                 else
                 {
-                    Code = _sessionType.ToCode();
+                    Key = _sessionType.ToCode();
                     Description = _sessionType.ToDescription();
                 }
             }
@@ -46,9 +43,14 @@ namespace Nt.Core.Trading.Internal
         }
 
         /// <summary>
+        /// Gets the session <see cref="TimeZoneInfo"/>.
+        /// </summary>
+        public TimeZoneInfo SessionTimeZoneInfo { get; private set; } = TimeZoneInfo.Local;
+
+        /// <summary>
         /// Gets the unique code of the <see cref="SessionDescriptor"/>.
         /// </summary>
-        public string Code { get; private set; }
+        public string Key { get; private set; }
 
         /// <summary>
         /// Gets the name of the <see cref="SessionDescriptor"/>.
@@ -61,38 +63,31 @@ namespace Nt.Core.Trading.Internal
         public string Description { get; private set; }
 
         /// <summary>
-        /// The initial <see cref="TradingTime"/>.
+        /// The session initial <see cref="TimeSpan"/>.
         /// </summary>
-        public TradingTime BeginSessionTime { get; set; }
+        public TimeSpan BeginTime => _beginTradingTime.GetTime(SessionTimeZoneInfo);
 
         /// <summary>
-        /// The final <see cref="TradingTime"/>.
+        /// The session final <see cref="TimeSpan"/>.
         /// </summary>
-        public TradingTime EndSessionTime
-        {
-            get => _endSessionTime;
-            set
-            {
-                _endSessionTime = value;
-
-                if (_endSessionTime <= BeginSessionTime)
-                    _endSessionTime += TimeSpan.FromDays(1);
-            }
-        }
+        public TimeSpan EndTime => _endTradingTime.GetTime(SessionTimeZoneInfo);
 
         /// <summary>
         /// Session duration.
         /// </summary>
-        public TimeSpan Duration => EndSessionTime.Time - BeginSessionTime.Time;
+        public TimeSpan Duration
+            => EndTime > BeginTime 
+            ? EndTime - BeginTime 
+            : EndTime - BeginTime + TimeSpan.FromDays(1);
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Create a default instance of <see cref="SessionDescriptor"/> class.
+        /// Create a default instance of <see cref="SessionDescriptor"/> object
         /// </summary>
-        private SessionDescriptor()
+        public SessionDescriptor()
         {
         }
 
@@ -107,12 +102,12 @@ namespace Nt.Core.Trading.Internal
         /// <param name="instrumentCode">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
         /// <returns>A new instance of <see cref="TradingSession"/> class.</returns>
-        public static SessionDescriptor CreateTradingSessionByType(SessionCode sessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static SessionDescriptor CreateTradingSessionByType(SessionType sessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             return new SessionDescriptor
             {
-                BeginSessionTime = sessionType.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
-                EndSessionTime = sessionType.ToEndSessionTime(instrumentCode, endTimeDisplacement),
+                _beginTradingTime = sessionType.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
+                _endTradingTime = sessionType.ToEndSessionTime(instrumentCode, endTimeDisplacement),
                 SessionType = sessionType,
             };
         }
@@ -125,7 +120,7 @@ namespace Nt.Core.Trading.Internal
         /// <param name="beginTimeDisplacement">The displacement minutes to the intial balance of the session.</param>
         /// <param name="endTimeDisplacement">The displacement minutes to the final balance of the session.</param>
         /// <returns>A new instance of <see cref="SessionDescriptor"/> collection.</returns>
-        public static SessionDescriptor[] CreateTradingSessionByTypes(SessionCode[] sessionTypes, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static SessionDescriptor[] CreateTradingSessionByTypes(SessionType[] sessionTypes, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             if (sessionTypes == null || sessionTypes.Length < 1)
                 throw new ArgumentNullException(nameof(sessionTypes));
@@ -151,10 +146,10 @@ namespace Nt.Core.Trading.Internal
         {
             return new SessionDescriptor
             {
-                BeginSessionTime = TradingTime.CreateSessionTimeByType(beginSessionTimeType),
-                EndSessionTime = TradingTime.CreateSessionTimeByType(endSessionTimeType),
+                _beginTradingTime = TradingTime.CreateSessionTimeByType(beginSessionTimeType),
+                _endTradingTime = TradingTime.CreateSessionTimeByType(endSessionTimeType),
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -169,10 +164,10 @@ namespace Nt.Core.Trading.Internal
         {
             return new SessionDescriptor
             {
-                BeginSessionTime = beginTradingTime,
-                EndSessionTime = TradingTime.CreateSessionTimeByType(endTradingTimeType),
+                _beginTradingTime = beginTradingTime,
+                _endTradingTime = TradingTime.CreateSessionTimeByType(endTradingTimeType),
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -187,10 +182,10 @@ namespace Nt.Core.Trading.Internal
         {
             return new SessionDescriptor
             {
-                BeginSessionTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType),
-                EndSessionTime = endTradingTime,
+                _beginTradingTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType),
+                _endTradingTime = endTradingTime,
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -205,18 +200,18 @@ namespace Nt.Core.Trading.Internal
         {
             return new SessionDescriptor
             {
-                BeginSessionTime = beginTradingTime,
-                EndSessionTime = endTradingTime,
+                _beginTradingTime = beginTradingTime,
+                _endTradingTime = endTradingTime,
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
         /// <summary>
         /// Create a new custom instance of <see cref="SessionDescriptor"/> objects with specific <see cref="TradingTimeType"/>, <see cref="TradingTime"/> properties and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionDescriptor"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionDescriptor"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionDescriptor"/> <see cref="BeginTime"/>.</param>
+        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionDescriptor"/> <see cref="BeginTime"/>.</param>
         /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="SessionDescriptor"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="SessionDescriptor"/> object.</returns>
@@ -224,10 +219,10 @@ namespace Nt.Core.Trading.Internal
         {
             return new SessionDescriptor
             {
-                BeginSessionTime = TradingTime.CreateCustomSessionTime(beginTime, beginTimeZoneInfo, description == "" ? "Custom Open Time" : description + " - Open"),
-                EndSessionTime = TradingTime.CreateSessionTimeByType(endTradingTimeType),
+                _beginTradingTime = TradingTime.CreateCustomSessionTime(beginTime, beginTimeZoneInfo, description == "" ? "Custom Open Time" : description + " - Open"),
+                _endTradingTime = TradingTime.CreateSessionTimeByType(endTradingTimeType),
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -235,185 +230,44 @@ namespace Nt.Core.Trading.Internal
         /// Create a new custom instance of <see cref="SessionDescriptor"/> objects with specific <see cref="TradingTimeType"/>, <see cref="TradingTime"/> properties and <paramref name="description"/>.
         /// </summary>
         /// <param name="beginTradingTimeType">The initial <see cref="TradingTimeType"/> type of the <see cref="SessionDescriptor"/> object.</param>
-        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionDescriptor"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionDescriptor"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionDescriptor"/> <see cref="BeginTime"/>.</param>
+        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionDescriptor"/> <see cref="BeginTime"/>.</param>
         /// <param name="description"></param>
         /// <returns>A new custom instance of <see cref="SessionDescriptor"/> object.</returns>
         public static SessionDescriptor CreateCustomTradingSession(TradingTimeType beginTradingTimeType, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
             return new SessionDescriptor
             {
-                BeginSessionTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType),
-                EndSessionTime = TradingTime.CreateCustomSessionTime(endTime, endTimeZoneInfo, description == "" ? "Custom Open Time" : description + " - Open"),
+                _beginTradingTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType),
+                _endTradingTime = TradingTime.CreateCustomSessionTime(endTime, endTimeZoneInfo, description == "" ? "Custom Open Time" : description + " - Open"),
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
         /// <summary>
         /// Create a new custom instance of <see cref="SessionDescriptor"/> objects with specific <see cref="TradingTime"/> properties and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionDescriptor"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionDescriptor"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionDescriptor"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionDescriptor"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionDescriptor"/> <see cref="BeginTime"/>.</param>
+        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionDescriptor"/> <see cref="BeginTime"/>.</param>
+        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="SessionDescriptor"/> <see cref="BeginTime"/>.</param>
+        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionDescriptor"/> <see cref="BeginTime"/>.</param>
         /// <param name="description"></param>
         /// <returns>A new custom instance of <see cref="SessionDescriptor"/> object.</returns>
         public static SessionDescriptor CreateCustomTradingSession(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
             return new SessionDescriptor
             {
-                BeginSessionTime = TradingTime.CreateCustomSessionTime(beginTime, beginTimeZoneInfo, description == "" ? "Custom TradingSessionInfo - Open Time" : description + " - Open"),
-                EndSessionTime = TradingTime.CreateCustomSessionTime(endTime, endTimeZoneInfo, description == "" ? "Custom TradingSessionInfo - Close Time" : description + " - Close"),
+                _beginTradingTime = TradingTime.CreateCustomSessionTime(beginTime, beginTimeZoneInfo, description == "" ? "Custom TradingSessionInfo - Open Time" : description + " - Open"),
+                _endTradingTime = TradingTime.CreateCustomSessionTime(endTime, endTimeZoneInfo, description == "" ? "Custom TradingSessionInfo - Close Time" : description + " - Close"),
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
         #endregion
 
         #region Public Methods
-
-        /// <summary>
-        /// Gets the initial <see cref="DateTime"/> of the <see cref="SessionDescriptor"/>.
-        /// </summary>
-        /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetBeginTime(DateTime time)
-        {
-            return BeginSessionTime.GetTime(time);
-        }
-
-        /// <summary>
-        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="SessionDescriptor"/>.
-        /// </summary>
-        /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
-        /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetBeginTime(DateTime time, TimeZoneInfo sourceTimeZoneInfo)
-        {
-            return BeginSessionTime.GetTime(time, sourceTimeZoneInfo);
-        }
-
-        /// <summary>
-        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="SessionDescriptor"/>.
-        /// </summary>
-        /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
-        /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
-        /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetBeginTime(
-            DateTime time,
-            TimeZoneInfo sourceTimeZoneInfo,
-            TimeZoneInfo destinationTimeZoneInfo)
-        {
-            return BeginSessionTime.GetTime(time, sourceTimeZoneInfo, destinationTimeZoneInfo);
-        }
-
-        /// <summary>
-        /// Gets the end <see cref="DateTime"/> structure of the <see cref="SessionDescriptor"/>.
-        /// </summary>
-        /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetEndTime(DateTime time)
-        {
-            return EndSessionTime.GetTime(time);
-        }
-
-        /// <summary>
-        /// Gets the end <see cref="DateTime"/> structure of the <see cref="SessionDescriptor"/>.
-        /// </summary>
-        /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
-        /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetEndTime(DateTime time, TimeZoneInfo sourceTimeZoneInfo)
-        {
-            return EndSessionTime.GetTime(time, sourceTimeZoneInfo);
-        }
-
-        /// <summary>
-        /// Gets the end <see cref="DateTime"/> structure of the <see cref="SessionDescriptor"/>.
-        /// </summary>
-        /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
-        /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
-        /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
-        public DateTime GetEndTime(
-            DateTime time,
-            TimeZoneInfo sourceTimeZoneInfo,
-            TimeZoneInfo destinationTimeZoneInfo)
-        {
-            return EndSessionTime.GetTime(time, sourceTimeZoneInfo, destinationTimeZoneInfo);
-        }
-
-        // TODO: Terminar este método. ES COMPLICADO!!!!!!
-
-        public DateTime? GetNextSessionEndTime(DateTime currentTime, DateTime actualSessionBeginTime, DateTime actualSessionEndTime)
-        {
-            TimeZoneInfo sourceTimeZoneInfo =
-                currentTime.Kind == DateTimeKind.Local ? TimeZoneInfo.Local :
-                currentTime.Kind == DateTimeKind.Utc ? TimeZoneInfo.Utc : null;
-
-            if (sourceTimeZoneInfo != null)
-            {
-                DateTime beginTime = GetBeginTime(currentTime);
-                DateTime endTime = GetEndTime(currentTime);
-
-                bool dayChanges = actualSessionEndTime.Date - actualSessionBeginTime.Date != TimeSpan.Zero;
-
-                if (endTime <= beginTime && dayChanges)
-                    return GetEndTime(actualSessionEndTime);
-
-                if (beginTime > actualSessionBeginTime)
-                {
-
-                }
-            }
-            // Returns the TradingTimeInfo TimeSpan for the date passed as parameter.
-            //return GetTime(time, sourceTimeZoneInfo);
-
-            throw new Exception("The kind of the " + nameof(currentTime) + " must be Local or Utc");
-
-        }
-
-        /// <summary>
-        /// Gets the final <see cref="DateTime"/> structure of the <see cref="SessionDescriptor"/>.
-        /// </summary>
-        /// <param name="currentDate">The current date time.</param>
-        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
-        /// <returns>The final <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/>.</returns>
-        public DateTime GetNextEndTime(
-            DateTime currentDate,
-            TimeZoneInfo sourceTimeZoneInfo = null,
-            TimeZoneInfo destinationTimeZoneInfo = null)
-        {
-            DateTime beginDateTime = BeginSessionTime.GetTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
-            DateTime endDateTime = EndSessionTime.GetTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
-
-            if (endDateTime <= beginDateTime)
-                return endDateTime.AddHours(24);
-
-            return EndSessionTime.GetTime(currentDate);
-        }
-
-        /// <summary>
-        /// Gets the final <see cref="DateTime"/> structure of the <see cref="SessionDescriptor"/>.
-        /// </summary>
-        /// <param name="currentDate">The current date time.</param>
-        /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
-        /// <returns>The initial and final <see cref="DateTime"/> structures of the next session since the <paramref name="currentTime"/>.</returns>
-        public DateTime[] GetNextDateTimes(
-            DateTime currentDate,
-            TimeZoneInfo sourceTimeZoneInfo = null,
-            TimeZoneInfo destinationTimeZoneInfo = null,
-            bool sessionComplete = false)
-        {
-            DateTime[] sessionDateTimes = new DateTime[2];
-            DateTime beginDateTime = BeginSessionTime.GetTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
-            DateTime endDateTime = EndSessionTime.GetTime(currentDate, sourceTimeZoneInfo, destinationTimeZoneInfo);
-
-            if (sessionComplete && (endDateTime <= beginDateTime))
-                endDateTime += TimeSpan.FromHours(24);
-
-            sessionDateTimes[0] = beginDateTime;
-            sessionDateTimes[1] = endDateTime;
-
-            return sessionDateTimes;
-        }
 
         /// <summary>
         /// Returns the hash code.
@@ -437,7 +291,7 @@ namespace Nt.Core.Trading.Internal
         public override bool Equals(object obj)
         {
             if (obj is SessionDescriptor descriptor)
-                return BeginSessionTime.Equals(descriptor.BeginSessionTime) && EndSessionTime.Equals(descriptor.EndSessionTime);
+                return BeginTime.Equals(descriptor.BeginTime) && EndTime.Equals(descriptor.EndTime);
 
             return false;
         }
@@ -455,7 +309,7 @@ namespace Nt.Core.Trading.Internal
             if (descriptor is null)
                 return false;
 
-            return BeginSessionTime.Equals(descriptor.BeginSessionTime) && EndSessionTime.Equals(descriptor.EndSessionTime);
+            return BeginTime.Equals(descriptor.BeginTime) && EndTime.Equals(descriptor.EndTime);
 
         }
 
@@ -476,7 +330,7 @@ namespace Nt.Core.Trading.Internal
             if (d1 is null || d2 is null)
                 return false;
 
-            return TradingTime.Equals(d1.BeginSessionTime, d2.BeginSessionTime) && TradingTime.Equals(d1.EndSessionTime, d2.EndSessionTime);
+            return TradingTime.Equals(d1.BeginTime, d2.BeginTime) && TradingTime.Equals(d1.EndTime, d2.EndTime);
 
         }
 
@@ -865,7 +719,7 @@ namespace Nt.Core.Trading.Internal
             if (d2 is null)
                 throw new ArgumentNullException($"the argument {nameof(d2)} cannot be null.");
 
-            return d1.BeginSessionTime.UtcTime + d2.EndSessionTime.UtcTime;
+            return d1.BeginTime + d2.EndTime;
         }
 
         /// <summary>
@@ -880,7 +734,7 @@ namespace Nt.Core.Trading.Internal
             if (d is null)
                 throw new ArgumentNullException($"the argument {nameof(d)} cannot be null.");
 
-            return new TimeSpan((d.EndSessionTime.UtcTime + t).Ticks);
+            return new TimeSpan((d.EndTime + t).Ticks);
         }
 
         /// <summary>
@@ -898,7 +752,7 @@ namespace Nt.Core.Trading.Internal
             if (d2 is null)
                 throw new ArgumentNullException($"the argument {nameof(d2)} cannot be null.");
 
-            return new TimeSpan((d1.EndSessionTime.UtcTime - d2.BeginSessionTime.UtcTime).Ticks);
+            return new TimeSpan((d1.EndTime - d2.BeginTime).Ticks);
         }
 
         /// <summary>
@@ -913,7 +767,7 @@ namespace Nt.Core.Trading.Internal
             if (d is null)
                 throw new ArgumentNullException($"the argument {nameof(d)} cannot be null.");
 
-            return new TimeSpan((d.BeginSessionTime.UtcTime - t).Ticks);
+            return new TimeSpan((d.BeginTime - t).Ticks);
         }
 
         #endregion
@@ -924,57 +778,51 @@ namespace Nt.Core.Trading.Internal
         /// Converts the <see cref="TradingSession"/> to string.
         /// </summary>
         /// <returns></returns>
-        public override string ToString() => ToString("U");
+        public override string ToString() => ToString(SessionTimeZoneInfo,true);
 
         /// <summary>
         /// Returns the string that represents the <see cref="SessionDescriptor"/>.
         /// </summary>
-        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <param name="timeZoneInfo">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <param name="showTimeZoneInfoName">Indicates if showed the trading time name.</param>
         /// <returns></returns>
-        public string ToString(string format)
+        public string ToString(TimeZoneInfo timeZoneInfo, bool showTimeZoneInfoName = true)
         {
-            if (format == null)
-                throw new ArgumentNullException(nameof(format));
+            if (timeZoneInfo == null)
+                throw new ArgumentNullException(nameof(timeZoneInfo));
 
-            string f = format.ToUpper();
-            bool showTimeZoneInfo = true;
+            string s = $"{SessionType.ToName()} - Begin: {_beginTradingTime.ToShortString(SessionTimeZoneInfo, false)} - End: {_endTradingTime.ToShortString(SessionTimeZoneInfo, false)}";
+            
+            if (showTimeZoneInfoName)
+                s += string.Format($" {TradingTime.GetTimeZoneInfoName(timeZoneInfo)}");
 
-            if (f == "U" || f == "UTC" || f == "L" || f == "LOCAL")
-                showTimeZoneInfo = false;
-            else if (BeginSessionTime.TimeZoneInfo == EndSessionTime.TimeZoneInfo)
-                showTimeZoneInfo = false;
+            return s;
 
-            return $"{SessionType.ToName()} - Begin: {BeginSessionTime.ToShortString(format, showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(format, true)}";
         }
 
         /// <summary>
         /// Converts the <see cref="SessionDescriptor"/> to short string.
         /// </summary>
         /// <returns></returns>
-        public string ToShortString()
-        {
-            return String.Format($"{BeginSessionTime.ToShortString()} => {EndSessionTime.ToShortString()}");
-        }
+        public string ToShortString() => ToShortString(SessionTimeZoneInfo,true);
 
         /// <summary>
         /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTime"/>.
         /// </summary>
-        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <param name="timeZoneInfo">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <param name="showTimeZoneInfoName">Indicates if showed the trading time name.</param>
         /// <returns></returns>
-        public string ToShortString(string format)
+        public string ToShortString(TimeZoneInfo timeZoneInfo, bool showTimeZoneInfoName = true)
         {
-            if (format == null)
-                throw new ArgumentNullException(nameof(format));
+            if (timeZoneInfo == null)
+                throw new ArgumentNullException(nameof(timeZoneInfo));
 
-            string f = format.ToUpper();
-            bool showTimeZoneInfo = true;
+            string s = $"{SessionType.ToName()} - Begin: {_beginTradingTime.ToShortString(SessionTimeZoneInfo, false)} - End: {_endTradingTime.ToShortString(SessionTimeZoneInfo, false)}";
 
-            if (f == "U" || f == "UTC" || f == "L" || f == "LOCAL")
-                showTimeZoneInfo = false;
-            else if (BeginSessionTime.TimeZoneInfo == EndSessionTime.TimeZoneInfo)
-                showTimeZoneInfo = false;
+            if (showTimeZoneInfoName)
+                s += string.Format($" {TradingTime.GetTimeZoneInfoName(timeZoneInfo)}");
 
-            return $"{SessionType.ToName()} - Begin: {BeginSessionTime.ToShortString(format, showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(format, true)}";
+            return s;
 
         }
 
@@ -982,55 +830,26 @@ namespace Nt.Core.Trading.Internal
         /// Converts the <see cref="SessionDescriptor"/> to long string.
         /// </summary>
         /// <returns></returns>
-        public string ToLongString() => ToLongString("U");
+        public string ToLongString() => ToLongString(SessionTimeZoneInfo, true);
 
         /// <summary>
         /// Returns the string that represents the <see cref="Time"/> of the <see cref="TradingTime"/>.
         /// </summary>
-        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <param name="timeZoneInfo">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <param name="showTimeZoneInfoName">Indicates if showed the trading time name.</param>
         /// <returns></returns>
-        public string ToLongString(string format)
+        public string ToLongString(TimeZoneInfo timeZoneInfo, bool showTimeZoneInfoName = true)
         {
-            if (format == null)
-                throw new ArgumentNullException(nameof(format));
+            if (timeZoneInfo == null)
+                throw new ArgumentNullException(nameof(timeZoneInfo));
 
-            string f = format.ToUpper();
-            bool showTimeZoneInfo = true;
+            string s = $"{SessionType.ToDescription()} - Begin: {_beginTradingTime.ToShortString(timeZoneInfo, false)} - End: {_endTradingTime.ToShortString(timeZoneInfo, false)}";
 
-            if (f == "U" || f == "UTC" || f == "L" || f == "LOCAL")
-                showTimeZoneInfo = false;
-            else if (BeginSessionTime.TimeZoneInfo == EndSessionTime.TimeZoneInfo)
-                showTimeZoneInfo = false;
+            if (showTimeZoneInfoName)
+                s += string.Format($" {TradingTime.GetTimeZoneInfoName(timeZoneInfo)}");
 
-            return $"{SessionType.ToDescription()} - Begin: {BeginSessionTime.ToShortString(format, showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(format, true)}";
-        }
+            return s;
 
-        /// <summary>
-        /// Converts the <see cref="SessionDescriptor"/> to string.
-        /// </summary>
-        /// <returns></returns>
-        public string ToString(bool onlyActualSession)
-        {
-            DateTime[] sessionDateTimes = GetNextDateTimes(DateTime.Now);
-            string sessions = String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
-            if (!onlyActualSession)
-            {
-                //if (HasSessionHours)
-                //    for (int i = 0; i < SessionHours.Count; i++)
-                //        sessionHoursList += Environment.NewLine + SessionHours[i].ToString(onlyActualSession);
-            }
-
-            return sessions;
-        }
-
-        /// <summary>
-        /// Converts the <see cref="SessionDescriptor"/> to string.
-        /// </summary>
-        /// <returns></returns>
-        public string ToString(DateTime referenceDateTime)
-        {
-            DateTime[] sessionDateTimes = GetNextDateTimes(referenceDateTime);
-            return String.Format("{0}{1,12}{2,20}{3,1}{4,20}{5,1}", "", Code, "Begin Time: ", sessionDateTimes[0].ToString(), "End Time: ", sessionDateTimes[1].ToString());
         }
 
         #endregion
@@ -1043,52 +862,55 @@ namespace Nt.Core.Trading.Internal
         /// <returns>Returns a string with the hours and minutes in specific time zone info and utc time zone info.</returns>
         private string ToDefaultCode()
         {
-            return $"CTM-{BeginSessionTime.Time.TotalHours}{EndSessionTime.Time.TotalHours}-{BeginSessionTime.UtcTime.TotalHours}{EndSessionTime.UtcTime.TotalHours}";
+            return $"{Key}-{BeginTime.TotalHours}{EndTime.TotalHours}";
         }
 
-        private static SessionCompareResult CompareSessions(SessionDescriptor d1, SessionDescriptor d2)
+        public bool IsMinor(SessionDescriptor d)
+            => Duration < d.Duration;
+
+        static SessionCompareResult CompareSessions(SessionDescriptor d1, SessionDescriptor d2)
         {
             if (
-                d1.BeginSessionTime == d2.BeginSessionTime &&
-                d1.EndSessionTime == d2.EndSessionTime
+                d1.BeginTime == d2.BeginTime &&
+                d1.EndTime == d2.EndTime
                 )
                 // Returns 0
                 return SessionCompareResult.Equals;
             else if (
-                d1.BeginSessionTime >= d2.BeginSessionTime &&
-                d1.EndSessionTime <= d2.EndSessionTime
+                d1.BeginTime >= d2.BeginTime &&
+                d1.EndTime <= d2.EndTime
                 )
                 // Returns -3
                 return SessionCompareResult.Inner;
             else if (
-                d1.BeginSessionTime <= d2.BeginSessionTime &&
-                d1.EndSessionTime >= d2.EndSessionTime
+                d1.BeginTime <= d2.BeginTime &&
+                d1.EndTime >= d2.EndTime
                 )
                 // Returns 3
                 return SessionCompareResult.Outer;
             else if (
-                d1.BeginSessionTime < d2.BeginSessionTime &&
-                d1.EndSessionTime <= d2.BeginSessionTime
+                d1.BeginTime < d2.BeginTime &&
+                d1.EndTime <= d2.BeginTime
                 )
                 // Returns -2
                 return SessionCompareResult.Before;
             else if (
-                d1.BeginSessionTime >= d2.EndSessionTime &&
-                d1.EndSessionTime > d2.EndSessionTime
+                d1.BeginTime >= d2.EndTime &&
+                d1.EndTime > d2.EndTime
                 )
                 // Returns 2
                 return SessionCompareResult.Later;
             else if (
-                d1.BeginSessionTime < d2.BeginSessionTime &&
-                d1.EndSessionTime > d2.BeginSessionTime &&
-                d1.EndSessionTime <= d2.EndSessionTime
+                d1.BeginTime < d2.BeginTime &&
+                d1.EndTime > d2.BeginTime &&
+                d1.EndTime <= d2.EndTime
                 )
                 // Returns -1
                 return SessionCompareResult.BeforeAndInner;
             else if (
-                d1.BeginSessionTime >= d2.BeginSessionTime &&
-                d1.BeginSessionTime < d2.EndSessionTime &&
-                d1.EndSessionTime > d2.EndSessionTime
+                d1.BeginTime >= d2.BeginTime &&
+                d1.BeginTime < d2.EndTime &&
+                d1.EndTime > d2.EndTime
                 )
                 // Returns 1
                 return SessionCompareResult.InnerAndLater;

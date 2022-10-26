@@ -34,13 +34,13 @@ namespace Nt.Core.Trading
 
                 if (tradingTimeType == TradingTimeType.Custom)
                 {
-                    Code = ToDefaultCode();
+                    Key = ToDefaultCode();
                     if (string.IsNullOrEmpty(Description))
                         Description = $"Custom TradingSessionInfo Time {LocalTime.TotalHours}.";
                 }
                 else
                 {
-                    Code = tradingTimeType.ToCode();
+                    Key = tradingTimeType.ToCode();
                     Description = tradingTimeType.ToDescription();
                 }
             }
@@ -48,9 +48,9 @@ namespace Nt.Core.Trading
         }
 
         /// <summary>
-        /// Gets the unique code of the <see cref="TradingTime"/>.
+        /// Gets the unique key of the <see cref="TradingTime"/>.
         /// </summary>
-        public string Code { get; private set; }
+        public string Key { get; private set; }
 
         /// <summary>
         /// Gets the description of the <see cref="TradingTime"/>.
@@ -58,17 +58,17 @@ namespace Nt.Core.Trading
         public string Description {get; private set; }
 
         /// <summary>
-        /// Gets or sets the <see cref="System.TimeZoneInfo"/> of the trading hour.
+        /// Gets or sets the <see cref="System.TimeZoneInfo"/> of the <see cref="TradingTime"/>.
         /// </summary>
         public TimeZoneInfo TimeZoneInfo { get; set; }
 
         /// <summary>
-        /// Gets or sets the time of the trading hour.
+        /// Gets or sets the time of the <see cref="TradingTime"/>.
         /// </summary>
         public TimeSpan Time { get; set; }
 
         /// <summary>
-        /// Converts the Time property to UTC time.
+        /// Converts the <see cref="Time"/> property to UTC time.
         /// </summary>
         public TimeSpan UtcTime
         {
@@ -81,15 +81,6 @@ namespace Nt.Core.Trading
                     throw new ArgumentNullException(nameof(Time));
 
                 TimeSpan utcTime = Time - TimeZoneInfo.BaseUtcOffset;
-
-                //if (utcTime.TotalHours >= 24)
-                //{
-                //    utcTime -= TimeSpan.FromHours(24);
-                //}
-                //if (utcTime.TotalHours < 0)
-                //{
-                //    utcTime += TimeSpan.FromHours(24);
-                //}
 
                 return utcTime;
             }
@@ -109,15 +100,6 @@ namespace Nt.Core.Trading
                     throw new ArgumentNullException(nameof(Time));
 
                 TimeSpan localTime = UtcTime + TimeZoneInfo.Local.BaseUtcOffset;
-
-                //if (localTime.TotalHours >= 24)
-                //{
-                //    localTime -= TimeSpan.FromHours(24);
-                //}
-                //if (localTime.TotalHours < 0)
-                //{
-                //    localTime += TimeSpan.FromHours(24);
-                //}
 
                 return localTime;
             }
@@ -228,6 +210,20 @@ namespace Nt.Core.Trading
         #region Public methods
 
         /// <summary>
+        /// Gets the session <see cref="Time"/> for the time passed as parameter.
+        /// </summary>
+        /// <param name="timeZoneInfo">The current date to create the date time structure.</param>
+        /// <returns></returns>
+        public TimeSpan GetTime(TimeZoneInfo timeZoneInfo)
+        {
+            if (timeZoneInfo == null)
+                throw new ArgumentNullException(nameof(timeZoneInfo));
+
+            return UtcTime + timeZoneInfo.BaseUtcOffset;
+
+        }
+
+        /// <summary>
         /// Gets the session <see cref="DateTime"/> for the time passed as parameter.
         /// </summary>
         /// <param name="time">The current date to create the date time structure.</param>
@@ -323,110 +319,81 @@ namespace Nt.Core.Trading
         #region ToString methods
 
         /// <summary>
-        /// Returns the string that represents the <see cref="TradingTime"/>.
+        /// The default string that represents the <see cref="TradingTime"/>.
         /// </summary>
         /// <returns></returns>
-        public override string ToString() => ToString("U");
+        public override string ToString() => ToString(TimeZoneInfo.Local,true);
 
         /// <summary>
-        /// Returns the string that represents the <see cref="TradingTime"/>.
+        /// The string that represents the <see cref="TradingTime"/>.
         /// </summary>
-        /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
+        /// <param name="timeZoneInfo">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
         /// <returns></returns>
-        public string ToString(string format)
+        public string ToString(TimeZoneInfo timeZoneInfo, bool showTimeZoneInfoName = true)
         {
-            if (format == null)
-                throw new ArgumentNullException(nameof(format));
+            if (timeZoneInfo == null)
+                throw new ArgumentNullException(nameof(timeZoneInfo));
 
-            string f = format.ToUpper();
-            TimeSpan time = Time;
-            string timeZoneInfoName = TimeZoneInfo.StandardName;
+            TimeSpan time = GetTime(timeZoneInfo);
+            string s = $"{tradingTimeType.ToName()} - {time:%h\\:mm}h";
 
-            if (f == "U" || f == "UTC")
-            {
-                time = UtcTime;
-                timeZoneInfoName = System.TimeZoneInfo.Utc.StandardName;
-            }
+            if (showTimeZoneInfoName)
+                s += string.Format($" {GetTimeZoneInfoName(timeZoneInfo)}");
 
-            else if (f == "L" || f == "LOCAL")
-            {
-                time = LocalTime;
-                timeZoneInfoName = System.TimeZoneInfo.Local.StandardName;
-            }
+            return s;
 
-            return $"{tradingTimeType.ToName()} - {time:%h\\:mm}h {timeZoneInfoName}";
         }
 
         /// <summary>
-        /// Returns the string that represents the code and the time of the <see cref="TradingTime"/>.
+        /// The default short string that represents the <see cref="TradingTime"/>.
         /// </summary>
         /// <returns></returns>
-        public string ToShortString(bool showTimeZoneInfo = true) => ToShortString("U", showTimeZoneInfo);
+        public string ToShortString() => ToShortString(TimeZoneInfo.Local, true);
 
         /// <summary>
-        /// Returns the string that represents the time of the <see cref="TradingTime"/>.
+        /// The short string that represents the <see cref="TradingTime"/>.
         /// </summary>
         /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
         /// <returns></returns>
-        public string ToShortString(string format, bool showTimeZoneInfo = true)
+        public string ToShortString(TimeZoneInfo timeZoneInfo, bool showTimeZoneInfoName = true)
         {
-            if (format == null)
-                throw new ArgumentNullException(nameof(format));
+            if (timeZoneInfo == null)
+                throw new ArgumentNullException(nameof(timeZoneInfo));
 
-            string f = format.ToUpper();
-            TimeSpan time = Time;
-            string timeZoneInfoName = TimeZoneInfo.StandardName;
-
-            if (f == "U" || f == "UTC")
-            {
-                time = UtcTime;
-                timeZoneInfoName = "Utc";
-            }
-
-            else if (f == "L" || f == "LOCAL")
-            {
-                time = LocalTime;
-                timeZoneInfoName = "Local";
-            }
+            TimeSpan time = GetTime(timeZoneInfo);
             string s = $"{time:%h\\:mm}h";
-            if (showTimeZoneInfo)
-                s += string.Format($" {timeZoneInfoName}");
+
+            if (showTimeZoneInfoName)
+                s += string.Format($" {GetTimeZoneInfoName(timeZoneInfo)}");
+
             return s;
         }
 
         /// <summary>
-        /// Returns the string that represents the code, description, 
-        /// time and <see cref="TimeZoneInfo"/> of the <see cref="TradingTime"/>. 
+        /// Gets the long string that represents the <see cref="TradingTime"/>. 
         /// </summary>
         /// <returns>The short string that represents the <see cref="TradingTime"/> in the specific time format,
         /// "L" for local time, "U" for UTC time, otherwise returns the specific time of the <see cref="TradingTime"/>.</returns>
-        public string ToLongString() => ToLongString("U");
+        public string ToLongString() => ToLongString(TimeZoneInfo.Local, true);
 
         /// <summary>
-        /// Returns the string that represents the <see cref="TradingTime"/>.
+        /// Gets the long string that represents the <see cref="TradingTime"/>.
         /// </summary>
         /// <param name="format">The specific time to represents in the string. The time can be Utc, Local or Unspecific.</param>
         /// <returns>The long string that represents the <see cref="TradingTime"/> in the specific time format,
         /// "L" for local time, "U" for UTC time, otherwise returns the specific time of the <see cref="TradingTime"/></returns>
-        public string ToLongString(string format)
+        public string ToLongString(TimeZoneInfo timeZoneInfo, bool showTimeZoneInfoName = true)
         {
-            string f = format.ToUpper();
-            TimeSpan time = Time;
-            string timeZoneInfoName = TimeZoneInfo.StandardName;
+            if (timeZoneInfo == null)
+                throw new ArgumentNullException(nameof(timeZoneInfo));
 
-            if (f == "U" || f == "UTC")
-            {
-                time = UtcTime;
-                timeZoneInfoName = System.TimeZoneInfo.Utc.StandardName;
-            }
+            TimeSpan time = GetTime(timeZoneInfo);
+            string s = $"{tradingTimeType.ToDescription()} - {time:%h\\:mm}h";
 
-            else if (f == "L" || f == "LOCAL")
-            {
-                time = LocalTime;
-                timeZoneInfoName = System.TimeZoneInfo.Local.StandardName;
-            }
+            if (showTimeZoneInfoName)
+                s += string.Format($" {GetTimeZoneInfoName(timeZoneInfo)}");
 
-            return $"{tradingTimeType.ToDescription()} - {time:%h\\:mm}h {timeZoneInfoName}";
+            return s;
         }
 
         #endregion
@@ -442,7 +409,7 @@ namespace Nt.Core.Trading
         public override bool Equals(object obj)
         {
             if (obj is TradingTime tt)
-                return Time == tt.Time && UtcTime == tt.UtcTime && Code == tt.Code;
+                return Time == tt.Time && UtcTime == tt.UtcTime && Key == tt.Key;
 
             return false;
         }
@@ -460,7 +427,7 @@ namespace Nt.Core.Trading
             if (tt is null)
                 return false;
 
-            return this.Time == tt.Time && this.UtcTime == tt.UtcTime && this.Code == tt.Code;
+            return this.Time == tt.Time && this.UtcTime == tt.UtcTime && this.Key == tt.Key;
         }
 
         /// <summary>
@@ -480,7 +447,7 @@ namespace Nt.Core.Trading
             if (tt1 is null || tt2 is null)
                 return false;
 
-            return tt1.Time == tt2.Time && tt1.UtcTime == tt2.UtcTime & tt1.Code == tt2.Code;
+            return tt1.Time == tt2.Time && tt1.UtcTime == tt2.UtcTime & tt1.Key == tt2.Key;
 
         }
 
@@ -782,6 +749,20 @@ namespace Nt.Core.Trading
         private DateTime ToSessionTime(DateTime date)
         {
             return new DateTime(date.Year, date.Month, date.Day, Time.Hours, date.Minute, date.Second, DateTimeKind.Unspecified);
+        }
+
+        internal static string GetTimeZoneInfoName(TimeZoneInfo timeZoneInfo)
+        {
+            string timeZoneInfoName = timeZoneInfo.StandardName;
+
+            if (timeZoneInfo == TimeZoneInfo.Local)
+                timeZoneInfoName = "Local";
+
+            else if (timeZoneInfo == TimeZoneInfo.Utc)
+                timeZoneInfoName = "Utc";
+
+            return timeZoneInfoName;
+
         }
 
         #endregion

@@ -6,113 +6,113 @@
     internal static class TradingSessionExtensions
     {
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.Regular"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.Regular"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.Regular"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.Regular"/></returns>
         public static TradingSession CreateRegularSession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.Regular);
+            return TradingSession.CreateTradingSessionByType(SessionType.Regular);
         }
 
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.OVN"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.OVN"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.OVN"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.OVN"/></returns>
         public static TradingSession CreateOvernightSession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.OVN);
+            return TradingSession.CreateTradingSessionByType(SessionType.OVN);
         }
 
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.European"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.European"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.European"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.European"/></returns>
         public static TradingSession CreateEuropeanSession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.European);
+            return TradingSession.CreateTradingSessionByType(SessionType.European);
         }
 
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.Asian"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.Asian"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.Asian"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.Asian"/></returns>
         public static TradingSession CreateAsianSession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.Asian);
+            return TradingSession.CreateTradingSessionByType(SessionType.Asian);
         }
 
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.American"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.American"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.American"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American"/></returns>
         public static TradingSession CreateAmericanSession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.American);
+            return TradingSession.CreateTradingSessionByType(SessionType.American);
         }
 
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.AmericanAndEuropean"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.AmericanAndEuropean"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.AmericanAndEuropean"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.AmericanAndEuropean"/></returns>
         public static TradingSession CreateAmericanAndEuropeanSession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.AmericanAndEuropean);
+            return TradingSession.CreateTradingSessionByType(SessionType.AmericanAndEuropean);
         }
 
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.American_RS"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.American_RS"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.American_RS"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American_RS"/></returns>
         public static TradingSession CreateAmericanResidualSession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.American_RS);
+            return TradingSession.CreateTradingSessionByType(SessionType.American_RS);
         }
 
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.Asian_RS"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.Asian_RS"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.Asian_RS"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.Asian_RS"/></returns>
         public static TradingSession CreateAsianResidualSession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.Asian_RS);
+            return TradingSession.CreateTradingSessionByType(SessionType.Asian_RS);
         }
 
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.American_RS_EXT"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.American_RS_EXT"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.American_RS_EXT"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American_RS_EXT"/></returns>
         public static TradingSession CreateAmericanResidualExtraTimeSession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.American_RS_EXT);
+            return TradingSession.CreateTradingSessionByType(SessionType.American_RS_EXT);
         }
 
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.American_RS_EOD"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.American_RS_EOD"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.American_RS_EOD"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American_RS_EOD"/></returns>
         public static TradingSession CreateAmericanResidualEndOfDaySession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.American_RS_EOD);
+            return TradingSession.CreateTradingSessionByType(SessionType.American_RS_EOD);
         }
 
         /// <summary>
-        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionCode.American_RS_NWD"/>.
+        /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.American_RS_NWD"/>.
         /// </summary>
         /// <param name="_"></param>
-        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionCode.American_RS_NWD"/></returns>
+        /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American_RS_NWD"/></returns>
         public static TradingSession CreateAmericanResidualNewDaySession(this TradingSession _)
         {
-            return TradingSession.CreateTradingSessionByType(SessionCode.American_RS_NWD);
+            return TradingSession.CreateTradingSessionByType(SessionType.American_RS_NWD);
         }
 
         ///// <summary>

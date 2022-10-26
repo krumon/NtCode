@@ -9,10 +9,21 @@ namespace Nt.Core.Trading
     {
         #region Private members
 
-        private IList<SessionCode> _types = new List<SessionCode>();
-        private SessionCollection _descriptors;
+        private SessionDescriptorCollection _descriptors = new SessionDescriptorCollection();
         private readonly TradingSession _tradingSession = new TradingSession();
         private bool _isBuild;
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Create <see cref="SessionBuilder"/> default instance.
+        /// </summary>
+        public SessionBuilder()
+        {
+
+        }
 
         #endregion
 
@@ -38,21 +49,25 @@ namespace Nt.Core.Trading
 
         #region Public Methods
 
-        public ISessionBuilder Add(SessionCode type)
+        public ISessionBuilder AddTradingSessionConfigure()
         {
-            if (_types.Contains(type))
-                return this;
-            _types.Add(type);
+            throw new NotImplementedException();
+        }
+
+        public ISessionBuilder AddDescriptor(SessionType type)
+        {
+            SessionDescriptor descriptor = SessionDescriptor.CreateTradingSessionByType(type);
+            _descriptors.Add(descriptor);
             return this;
         }
 
-        public ISessionBuilder Add(params SessionCode[] types)
+        public ISessionBuilder AddDescriptors(params SessionType[] types)
         {
             if (types == null)
                 throw new ArgumentNullException(nameof(types));
 
             foreach (var type in types)
-                Add(type);
+                AddDescriptor(type);
 
             return this;
         }
@@ -60,11 +75,11 @@ namespace Nt.Core.Trading
         public ISessionBuilder Add<T>()
             where T : Enum
         {
-            if (typeof(T).Name == nameof(SessionCode))
+            if (typeof(T).Name == nameof(SessionType))
             {
-                EnumHelpers.ForEach<SessionCode>((type) =>
+                EnumHelpers.ForEach<SessionType>((type) =>
                 {
-                    Add(type);
+                    AddDescriptor(type);
                 });
             }
 

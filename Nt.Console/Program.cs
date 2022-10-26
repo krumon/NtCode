@@ -14,6 +14,16 @@ namespace ConsoleApp
             tradingSessionTests.Run();
 
             ITradingSession tradingSession = KrumonTrade.CreateTradingSessionBuilder()
+                .AddDescriptors
+                    (
+                        SessionType.Asian, 
+                        SessionType.European,
+                        SessionType.American_RS_EOD,
+                        SessionType.Asian_RS,
+                        SessionType.AmericanAndEuropean,
+                        SessionType.Regular,
+                        SessionType.Electronic
+                    )
                 .Build();
             
         }

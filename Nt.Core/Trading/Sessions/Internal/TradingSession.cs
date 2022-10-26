@@ -23,7 +23,7 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The trading session type.
         /// </summary>
-        private SessionCode _sessionType;
+        private SessionType _sessionType;
 
         /// <summary>
         /// The children sessions.
@@ -38,13 +38,13 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The trading session type.
         /// </summary>
-        public SessionCode SessionType
+        public SessionType SessionType
         {
             private set
             {
                 _sessionType = value;
 
-                if (_sessionType == SessionCode.Custom)
+                if (_sessionType == SessionType.Custom)
                 {
                     Code = ToDefaultCode();
                     if (string.IsNullOrEmpty(Description))
@@ -121,7 +121,7 @@ namespace Nt.Core.Trading
         /// <param name="instrumentCode">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
         /// <returns>A new instance of <see cref="TradingSession"/> class.</returns>
-        public static TradingSession CreateTradingSessionByType(SessionCode sessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static TradingSession CreateTradingSessionByType(SessionType sessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             return new TradingSession
             {
@@ -132,14 +132,14 @@ namespace Nt.Core.Trading
         }
 
         /// <summary>
-        /// Create a new instance of <see cref="TradingSession"/> collection with <see cref="Trading.SessionCode"/> collection.
+        /// Create a new instance of <see cref="TradingSession"/> collection with <see cref="Trading.SessionType"/> collection.
         /// </summary>
-        /// <param name="sessionTypes">The <see cref="Trading.SessionCode"/> collection to create the <see cref="TradingSession"/> collection.</param>
+        /// <param name="sessionTypes">The <see cref="Trading.SessionType"/> collection to create the <see cref="TradingSession"/> collection.</param>
         /// <param name="instrumentCode">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The displacement minutes to the intial balance of the session.</param>
         /// <param name="endTimeDisplacement">The displacement minutes to the final balance of the session.</param>
         /// <returns>A new instance of <see cref="TradingSession"/> collection.</returns>
-        public static TradingSession[] CreateTradingSessionByTypes(SessionCode[] sessionTypes, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static TradingSession[] CreateTradingSessionByTypes(SessionType[] sessionTypes, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             if (sessionTypes == null || sessionTypes.Length < 1)
                 throw new ArgumentNullException(nameof(sessionTypes));
@@ -168,7 +168,7 @@ namespace Nt.Core.Trading
                 BeginSessionTime = TradingTime.CreateSessionTimeByType(beginSessionTimeType),
                 EndSessionTime = TradingTime.CreateSessionTimeByType(endSessionTimeType),
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -186,7 +186,7 @@ namespace Nt.Core.Trading
                 BeginSessionTime = beginTradingTime,
                 EndSessionTime = TradingTime.CreateSessionTimeByType(endTradingTimeType),
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -204,7 +204,7 @@ namespace Nt.Core.Trading
                 BeginSessionTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType),
                 EndSessionTime = endTradingTime,
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -222,7 +222,7 @@ namespace Nt.Core.Trading
                 BeginSessionTime = beginTradingTime,
                 EndSessionTime = endTradingTime,
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -241,7 +241,7 @@ namespace Nt.Core.Trading
                 BeginSessionTime = TradingTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
                 EndSessionTime = TradingTime.CreateSessionTimeByType(endTradingTimeType),
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -260,7 +260,7 @@ namespace Nt.Core.Trading
                 BeginSessionTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType),
                 EndSessionTime = TradingTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -280,7 +280,7 @@ namespace Nt.Core.Trading
                 BeginSessionTime = TradingTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom TradingSessionInfo - Open Time" : description + " - Open"),
                 EndSessionTime = TradingTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom TradingSessionInfo - Close Time" : description + " - Close"),
                 Description = description,
-                SessionType = SessionCode.Custom,
+                SessionType = SessionType.Custom,
             };
         }
 
@@ -452,17 +452,17 @@ namespace Nt.Core.Trading
         /// Add a <see cref="TradingSession"/> element by the generic type.
         /// </summary>
         /// <param name="type">the type of the trading session.</param>
-        public void Add(SessionCode type)
+        public void Add(SessionType type)
         {
             TradingSession ts = TradingSession.CreateTradingSessionByType(type);
             Add(ts);
         }
 
         /// <summary>
-        /// Add a <see cref="Trading.SessionCode"/> array.
+        /// Add a <see cref="Trading.SessionType"/> array.
         /// </summary>
         /// <param name="types">The <see cref="TradingSession"/> array to add.</param>
-        public void Add(params SessionCode[] types)
+        public void Add(params SessionType[] types)
         {
             if (types == null)
                 throw new ArgumentNullException(nameof(types));
@@ -472,15 +472,15 @@ namespace Nt.Core.Trading
         }
 
         /// <summary>
-        /// Add all <see cref="Trading.SessionCode"/> enums.
+        /// Add all <see cref="Trading.SessionType"/> enums.
         /// </summary>
-        /// <typeparam name="T">The generic parameter <see cref="Trading.SessionCode"/>.</typeparam>
+        /// <typeparam name="T">The generic parameter <see cref="Trading.SessionType"/>.</typeparam>
         public void Add<T>()
             where T : Enum
         {
-            if (typeof(T).Name == nameof(Trading.SessionCode))
+            if (typeof(T).Name == nameof(Trading.SessionType))
             {
-                EnumHelpers.ForEach<SessionCode>((type) =>
+                EnumHelpers.ForEach<SessionType>((type) =>
                 {
                     Add(type);
                 });
@@ -1165,7 +1165,7 @@ namespace Nt.Core.Trading
             else if (BeginSessionTime.TimeZoneInfo == EndSessionTime.TimeZoneInfo)
                 showTimeZoneInfo = false;
 
-            return $"{SessionType.ToName()} - Begin: {BeginSessionTime.ToShortString(format,showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(format,true)}";
+            return $"{SessionType.ToName()} - Begin: {BeginSessionTime.ToShortString(TimeZoneInfo.Local, showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(TimeZoneInfo.Local, true)}";
         }
 
         /// <summary>
@@ -1195,7 +1195,7 @@ namespace Nt.Core.Trading
             else if (BeginSessionTime.TimeZoneInfo == EndSessionTime.TimeZoneInfo)
                 showTimeZoneInfo = false;
 
-            return $"{SessionType.ToName()} - Begin: {BeginSessionTime.ToShortString(format, showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(format, true)}";
+            return $"{SessionType.ToName()} - Begin: {BeginSessionTime.ToShortString(TimeZoneInfo.Local, showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(TimeZoneInfo.Local, true)}";
 
         }
 
@@ -1223,7 +1223,8 @@ namespace Nt.Core.Trading
             else if (BeginSessionTime.TimeZoneInfo == EndSessionTime.TimeZoneInfo)
                 showTimeZoneInfo = false;
 
-            return $"{SessionType.ToDescription()} - Begin: {BeginSessionTime.ToShortString(format, showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(format, true)}";
+            // TODO: Cambiar los métodos ToString().
+            return $"{SessionType.ToDescription()} - Begin: {BeginSessionTime.ToShortString(TimeZoneInfo.Local, showTimeZoneInfo)} - End: {EndSessionTime.ToShortString(TimeZoneInfo.Local, true)}";
         }
 
         /// <summary>

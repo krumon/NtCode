@@ -13,14 +13,14 @@ namespace Nt.Core.Tests
 
         //private TradingSession ts;
         private TradingSession ts;
-        private SessionCode[] types = 
-            new SessionCode[] 
+        private SessionType[] types = 
+            new SessionType[] 
             {
-                SessionCode.European,
-                SessionCode.AmericanAndEuropean,
-                SessionCode.American_RS_EOD,
-                SessionCode.Asian,
-                SessionCode.Electronic
+                SessionType.European,
+                SessionType.AmericanAndEuropean,
+                SessionType.American_RS_EOD,
+                SessionType.Asian,
+                SessionType.Electronic
             };
 
         #endregion
@@ -79,12 +79,12 @@ namespace Nt.Core.Tests
             NewLine();
 
             Subtitle("Instance by generic types");
-            ts = TradingSession.CreateTradingSessionByType(SessionCode.American);
+            ts = TradingSession.CreateTradingSessionByType(SessionType.American);
             WriteLine(ts.ToLongString("l"));
             NewLine();
         }
 
-        private void ToStringTests(SessionCode type)
+        private void ToStringTests(SessionType type)
         {
             // Create a trading session by type.
             TradingSession ts = TradingSession.CreateTradingSessionByType(type);
@@ -100,17 +100,17 @@ namespace Nt.Core.Tests
         private void TradingSessionEnumTest()
         {
             Title("Test of iteration and check methods");
-            EnumHelpers.Writer<SessionCode>();
+            EnumHelpers.Writer<SessionType>();
 
             NewLine();
-            EnumHelpers.ForEach<SessionCode>((t) =>
+            EnumHelpers.ForEach<SessionType>((t) =>
             {
-                if (t != SessionCode.Custom)
+                if (t != SessionType.Custom)
                     Console.WriteLine(t.ToSessionHours().ToString());
             });
 
             NewLine();
-            TradingSession ts = TradingSession.CreateTradingSessionByType(SessionCode.American);
+            TradingSession ts = TradingSession.CreateTradingSessionByType(SessionType.American);
             //bool exist = ts.Exist();
 
             //string s = exist ? "exist" : "don't exist";
@@ -121,11 +121,11 @@ namespace Nt.Core.Tests
 
         private void AddTests()
         {
-            ts = TradingSession.CreateTradingSessionByType(SessionCode.European);
+            ts = TradingSession.CreateTradingSessionByType(SessionType.European);
             ts.Add(types);
         }
 
-        private void OperatorTests(SessionCode t1, SessionCode t2)
+        private void OperatorTests(SessionType t1, SessionType t2)
         {
             TradingSession sh1 = TradingSession.CreateTradingSessionByType(t1);
             TradingSession sh2 = TradingSession.CreateTradingSessionByType(t2);

@@ -87,7 +87,7 @@ namespace Nt.Core.Tests
 
         }
 
-        private void ToStringTests(SessionCode type)
+        private void ToStringTests(SessionType type)
         {
         }
 

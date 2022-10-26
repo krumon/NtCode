@@ -4,7 +4,7 @@ namespace Nt.Core.Trading
     /// <summary>
     /// Trading session types.
     /// </summary>
-    public enum SessionCode
+    public enum SessionType
     {
         // Main session
         Electronic,                 // Electronic TradingSessionInfo  

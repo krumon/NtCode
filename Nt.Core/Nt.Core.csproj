@@ -376,7 +376,7 @@
     <Compile Include="Trading\Sessions\Internal\SessionDescriptor.cs" />
     <Compile Include="Trading\Times\Interfaces\ITradingTime.cs" />
     <Compile Include="Trading\Sessions\SessionBuilder.cs" />
-    <Compile Include="Trading\Sessions\Internal\SessionCollection.cs" />
+    <Compile Include="Trading\Sessions\Internal\SessionDescriptorCollection.cs" />
     <Compile Include="Trading\Sessions\SessionCompareResult.cs" />
     <Compile Include="Trading\Sessions\Internal\TradingSessionExtensions.cs" />
     <Compile Include="Trading\Sessions\Internal\SessionTypeExtensions.cs" />
@@ -404,7 +404,7 @@
     <Compile Include="Trading\Prices\TradingPriceType.cs" />
     <Compile Include="Trading\Times\TradingTimeType.cs" />
     <Compile Include="Trading\Sessions\Internal\TradingSession.cs" />
-    <Compile Include="Trading\Sessions\SessionCode.cs" />
+    <Compile Include="Trading\Sessions\SessionType.cs" />
     <Compile Include="Files\XmlFileItem.cs" />
     <Compile Include="Drawing\Data\Margin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
