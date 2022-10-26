@@ -1,12 +1,13 @@
-﻿using NinjaTrader.NinjaScript;
+﻿using Kr.Core.Tests;
+using NinjaTrader.NinjaScript;
 using Nt.Core;
 using Nt.Core.Ninjascript;
 using Nt.Core.Trading;
 using System;
 
-namespace ConsoleApp.Tests
+namespace Nt.Core.Tests
 {
-    internal class SessionsManagerTests : BaseTests
+    internal class SessionsManagerTests : BaseConsoleTests
     {
 
         #region Private members

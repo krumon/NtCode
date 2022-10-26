@@ -7,7 +7,7 @@ namespace Nt.Core.Trading
     /// <summary>
     /// Represents a trading time information.
     /// </summary>
-    public class TradingTime : BaseElement,
+    internal class TradingTime : BaseElement,
         IComparable,
         IComparable<TradingTime>,
         IEquatable<TradingTime>
@@ -354,7 +354,7 @@ namespace Nt.Core.Trading
                 timeZoneInfoName = System.TimeZoneInfo.Local.StandardName;
             }
 
-            return $"{tradingTimeType.ToName()} - {time:%h\\:mm}h ({timeZoneInfoName})";
+            return $"{tradingTimeType.ToName()} - {time:%h\\:mm}h {timeZoneInfoName}";
         }
 
         /// <summary>
@@ -380,17 +380,17 @@ namespace Nt.Core.Trading
             if (f == "U" || f == "UTC")
             {
                 time = UtcTime;
-                timeZoneInfoName = "Hora Utc";
+                timeZoneInfoName = "Utc";
             }
 
             else if (f == "L" || f == "LOCAL")
             {
                 time = LocalTime;
-                timeZoneInfoName = "Hora Local";
+                timeZoneInfoName = "Local";
             }
             string s = $"{time:%h\\:mm}h";
             if (showTimeZoneInfo)
-                s += string.Format($" ({timeZoneInfoName})");
+                s += string.Format($" {timeZoneInfoName}");
             return s;
         }
 
@@ -426,7 +426,7 @@ namespace Nt.Core.Trading
                 timeZoneInfoName = System.TimeZoneInfo.Local.StandardName;
             }
 
-            return $"{tradingTimeType.ToDescription()} - {time:%h\\:mm}h ({timeZoneInfoName})";
+            return $"{tradingTimeType.ToDescription()} - {time:%h\\:mm}h {timeZoneInfoName}";
         }
 
         #endregion

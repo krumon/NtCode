@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Kr.Core.Helpers;
+using Nt.Core.Trading.Internal;
 
 namespace Nt.Core.Trading
 {
@@ -9,22 +10,22 @@ namespace Nt.Core.Trading
     /// Represents the ninjascript trading sessions
     /// </summary>
     public class TradingSessionCollection :
-        IList<TradingSession>,
-        ICollection<TradingSession>,
-        IEnumerable<TradingSession>,
+        IList<ITradingSession>,
+        ICollection<ITradingSession>,
+        IEnumerable<ITradingSession>,
         IEnumerable
     {
 
         #region Private members
 
-        private readonly IList<TradingSession> _sessions = new List<TradingSession>();
+        private readonly IList<ITradingSession> _sessions = new List<ITradingSession>();
 
         #endregion
 
         #region Implementation methods
 
         /// <inheritdoc/>
-        public TradingSession this[int index] 
+        public ITradingSession this[int index] 
         { 
             get => _sessions[index]; 
             set => _sessions[index] = value; 
@@ -37,7 +38,7 @@ namespace Nt.Core.Trading
         public bool IsReadOnly => false;
 
         /// <inheritdoc/>
-        public void Add(TradingSession item)
+        public void Add(ITradingSession item)
         {
             // Make sure item doesn't exist.
             if (_sessions.Contains(item))
@@ -65,7 +66,7 @@ namespace Nt.Core.Trading
                         break;
                     case TradingSessionCompareResult.Parent:
                         {
-                            TradingSession tradingSession = _sessions[i];
+                            ITradingSession tradingSession = _sessions[i];
                             //_sessions[i] = null;
                             item.Sessions.Add(tradingSession);
                             _sessions[i] = item;
@@ -92,7 +93,7 @@ namespace Nt.Core.Trading
         }
 
         /// <inheritdoc/>
-        public bool Contains(TradingSession item)
+        public bool Contains(ITradingSession item)
         {
             if (_sessions != null && _sessions.Count > 0)
             {
@@ -108,31 +109,31 @@ namespace Nt.Core.Trading
         }
 
         /// <inheritdoc/>
-        public void CopyTo(TradingSession[] array, int arrayIndex)
+        public void CopyTo(ITradingSession[] array, int arrayIndex)
         {
             _sessions.CopyTo(array,arrayIndex);
         }
 
         /// <inheritdoc/>
-        public IEnumerator<TradingSession> GetEnumerator()
+        public IEnumerator<ITradingSession> GetEnumerator()
         {
             return _sessions.GetEnumerator();
         }
 
         /// <inheritdoc/>
-        public int IndexOf(TradingSession item)
+        public int IndexOf(ITradingSession item)
         {
             return _sessions.IndexOf(item);
         }
 
         /// <inheritdoc/>
-        public void Insert(int index, TradingSession item)
+        public void Insert(int index, ITradingSession item)
         {
             _sessions.Insert(index, item);
         }
 
         /// <inheritdoc/>
-        public bool Remove(TradingSession item)
+        public bool Remove(ITradingSession item)
         {
             return _sessions.Remove(item);
         }
@@ -159,7 +160,7 @@ namespace Nt.Core.Trading
         /// <param name="type">the type of the trading session.</param>
         public void Add(TradingSessionType type)
         {
-            TradingSession ts = TradingSession.CreateTradingSessionByType(type);
+            ITradingSession ts = TradingSession.CreateTradingSessionByType(type);
             Add(ts);
         }
 

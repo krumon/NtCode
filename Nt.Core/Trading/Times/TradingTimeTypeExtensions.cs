@@ -6,7 +6,7 @@ namespace Nt.Core.Trading
     /// <summary>
     /// <see cref="TradingTimeType"/> helper methods.
     /// </summary>
-    public static class TradingTimeTypeExtensions
+    internal static class TradingTimeTypeExtensions
     {
 
         /// <summary>

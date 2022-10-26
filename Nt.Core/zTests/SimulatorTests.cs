@@ -1,17 +1,16 @@
-﻿using Nt.Connect;
-using Nt.Core;
+﻿using Kr.Core.Tests;
 using Nt.Core.Trading;
 using System;
 using System.Threading;
 
-namespace ConsoleApp.Tests
+namespace Nt.Core.Tests
 {
-    internal class SimulatorTests : BaseTests
+    internal class SimulatorTests : BaseConsoleTests
     {
 
         #region Private members
 
-        public NtSimulator simulator;
+        //public NtSimulator simulator;
         //public TradingSessions session;
 
         public static DateTime currentDateTime = DateTime.MinValue;
@@ -36,22 +35,22 @@ namespace ConsoleApp.Tests
         public override void Run()
         {
             // Inicializo el simulador con un intervalos de un segundo y un factor de tiempo de un minuto.
-            simulator = new NtSimulator
-            {
-                Interval = 1000,            // Reloj virtual que lanza un evento cada segundo.
-                SpeddFactor = 300,          // Cada segundo hago que pase un minute en el reloj de simulación.
-                ShowTimeInConsole = true,   // Muestro en consola el tiempo.
-                ShowBarInConsole = true,    // Muestro en pantalla los valores de la barra.
-            };
+            //simulator = new NtSimulator
+            //{
+            //    Interval = 1000,            // Reloj virtual que lanza un evento cada segundo.
+            //    SpeddFactor = 300,          // Cada segundo hago que pase un minute en el reloj de simulación.
+            //    ShowTimeInConsole = true,   // Muestro en consola el tiempo.
+            //    ShowBarInConsole = true,    // Muestro en pantalla los valores de la barra.
+            //};
 
-            // Me subscribo al evento BarUpdated para ejecutar las pruebas.
-            simulator.BarUpdated += Simulator_BarUpdated;
+            //// Me subscribo al evento BarUpdated para ejecutar las pruebas.
+            //simulator.BarUpdated += Simulator_BarUpdated;
 
             // Inicializo el indicador maestro de sesiones.
             //session = new NsTradingHours();
 
             // Comienzo la simulación.
-            simulator.Start();
+            //simulator.Start();
 
             // Pauso el hilo principal para que de tiempo a ejecutar todas las incializaciones antes de comenzar
             // el método de simulación.
@@ -85,8 +84,8 @@ namespace ConsoleApp.Tests
 
         private void Dispose()
         {
-            simulator.BarUpdated -= Simulator_BarUpdated;
-            simulator.Dispose();
+            //simulator.BarUpdated -= Simulator_BarUpdated;
+            //simulator.Dispose();
         }
 
         private static void KrSessionHoursIteratorTest()

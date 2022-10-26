@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp
+namespace Nt.Core.Tests
 {
     public class TransientFaultHandlingOptions
     {

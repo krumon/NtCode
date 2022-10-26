@@ -1,4 +1,4 @@
-﻿using ConsoleApp.Tests;
+﻿using Nt.Core.Tests;
 
 namespace ConsoleApp
 {

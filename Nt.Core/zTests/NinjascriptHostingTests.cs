@@ -1,13 +1,14 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Kr.Core.Tests;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Nt.Core.Trading;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace ConsoleApp.Tests
+namespace Nt.Core.Tests
 {
-    internal class NinjascriptHostingTests : BaseTests
+    internal class NinjascriptHostingTests : BaseConsoleTests
     {
 
         #region Private members

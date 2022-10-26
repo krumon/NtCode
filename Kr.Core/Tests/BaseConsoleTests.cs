@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 
-namespace ConsoleApp.Tests
+namespace Kr.Core.Tests
 {
-    internal abstract class BaseTests
+    public abstract class BaseConsoleTests
     {
         public abstract void Run();
         
@@ -30,6 +29,12 @@ namespace ConsoleApp.Tests
                 return;
             }
             Console.WriteLine(o.ToString());
+        }
+
+        public void Write(object o = null)
+        {
+            if (o != null)
+                Console.Write(o);
         }
 
         public void NewLine()

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
 
-namespace Nt.Core.Trading
+namespace Nt.Core.Trading.Internal
 {
 
     /// <summary>
     /// <see cref="TradingSessionType"/> enum helper methods.
     /// </summary>
-    public static class TradingSessionTypeExtensions
+    internal static class TradingSessionTypeExtensions
     {
 
         /// <summary>

@@ -1,9 +1,9 @@
-﻿namespace Nt.Core.Trading
+﻿namespace Nt.Core.Trading.Internal
 {
     /// <summary>
     /// Extension methods to create generic sessions.
     /// </summary>
-    public static class TradingSessionExtensions
+    internal static class TradingSessionExtensions
     {
         /// <summary>
         /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="TradingSessionType.Regular"/>.

@@ -348,6 +348,7 @@
     <Compile Include="NinjaScript\Strategies\Base\BaseStrategy.cs" />
     <Compile Include="Core\BaseElement.cs" />
     <Compile Include="Trading\Bars\TradingBar.cs" />
+    <Compile Include="Trading\DayTrading.cs" />
     <Compile Include="Trading\Patterns\Swing\SwingLevel.cs" />
     <Compile Include="Trading\Patterns\Swing\SwingPoint.cs" />
     <Compile Include="NinjaScript\Caches\BarsCache.cs" />
@@ -370,10 +371,14 @@
     <Compile Include="NinjaScript\Sessions\SessionHoursList\SessionHoursListConfiguration.cs" />
     <Compile Include="NinjaScript\Managers\Sessions\SessionsManagerBuilder.cs" />
     <Compile Include="NinjaScript\Managers\Sessions\SessionsManagerConfiguration.cs" />
+    <Compile Include="Trading\Sessions\Interface\ITradingSession.cs" />
+    <Compile Include="Trading\Sessions\Interface\ITradingSessionBuilder.cs" />
+    <Compile Include="Trading\Times\Interfaces\ITradingTime.cs" />
+    <Compile Include="Trading\Sessions\TradingSessionBuilder.cs" />
     <Compile Include="Trading\Sessions\TradingSessionCollection.cs" />
     <Compile Include="Trading\Sessions\TradingSessionCompareResult.cs" />
-    <Compile Include="Trading\Sessions\TradingSessionExtensions.cs" />
-    <Compile Include="Trading\Sessions\TradingSessionTypeExtensions.cs" />
+    <Compile Include="Trading\Sessions\Internal\TradingSessionExtensions.cs" />
+    <Compile Include="Trading\Sessions\Internal\TradingSessionTypeExtensions.cs" />
     <Compile Include="NinjaScript\Sessions\SessionHours\SessionHours.cs" />
     <Compile Include="Trading\Times\TradingTimeTypeExtensions.cs" />
     <Compile Include="Users\UserAccount.cs" />
@@ -397,7 +402,7 @@
     <Compile Include="Trading\Bars\CandleStickBar.cs" />
     <Compile Include="Trading\Prices\TradingPriceType.cs" />
     <Compile Include="Trading\Times\TradingTimeType.cs" />
-    <Compile Include="Trading\Sessions\TradingSession.cs" />
+    <Compile Include="Trading\Sessions\Internal\TradingSession.cs" />
     <Compile Include="Trading\Sessions\TradingSessionType.cs" />
     <Compile Include="Files\XmlFileItem.cs" />
     <Compile Include="Drawing\Data\Margin.cs" />
@@ -409,6 +414,14 @@
     <Compile Include="Services\Logging\File\FileLoggerExtensions.cs" />
     <Compile Include="Services\Logging\File\FileLoggerProvider.cs" />
     <Compile Include="Services\Logging\File\FileLoggerConfiguration.cs" />
+    <Compile Include="zTests\CallSiteTests.cs" />
+    <Compile Include="zTests\NinjascriptHostingTests.cs" />
+    <Compile Include="zTests\NtConnectionTests.cs" />
+    <Compile Include="zTests\SessionsManagerTests.cs" />
+    <Compile Include="zTests\SimulatorTests.cs" />
+    <Compile Include="zTests\TradingSessionTests.cs" />
+    <Compile Include="zTests\TradingTimeTests.cs" />
+    <Compile Include="zTests\TransientFaultHandlingOptions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kr.Core\Kr.Core.csproj">

@@ -2,6 +2,7 @@
 using NinjaTrader.NinjaScript;
 using Nt.Core.Events;
 using Nt.Core.Trading;
+using Nt.Core.Trading.Internal;
 using System;
 using System.Collections.Generic;
 
@@ -58,21 +59,21 @@ namespace Nt.Core.Ninjascript
         /// <summary>
         /// Collection of <see cref="TradingSessionInfo"/>.
         /// </summary>
-        public List<TradingSession> Sessions 
-        {
-            get 
-            {
-                if (sessions == null) 
-                    sessions = new List<TradingSession>();
+        //public List<TradingSession> Sessions
+        //{
+        //    get
+        //    {
+        //        if (sessions == null)
+        //            sessions = new List<TradingSession>();
 
-                return sessions;
-            }
-        }
+        //        return sessions;
+        //    }
+        //}
 
         /// <summary>
         /// Indicates if the <see cref="SessionHours"/> has sessionHoursList.
         /// </summary>
-        public bool HasSessions => Sessions != null && Sessions.Count >= 1;
+        //public bool HasSessions => Sessions != null && Sessions.Count >= 1;
 
         /// <summary>
         /// Indicates if the current time is in session.
@@ -212,33 +213,33 @@ namespace Nt.Core.Ninjascript
         /// Adds <see cref="TradingSessionInfo"/> list to session hours sessions.
         /// </summary>
         /// <param name="sessionsInfo"></param>
-        public void AddSessions(params TradingSession[] sessionsInfo)
-        {
-            foreach (var sessionInfo in sessionsInfo)
-                Sessions.Add(sessionInfo);
-        }
+        //public void AddSessions(params TradingSession[] sessionsInfo)
+        //{
+        //    foreach (var sessionInfo in sessionsInfo)
+        //        Sessions.Add(sessionInfo);
+        //}
 
 
 
-        public void Remove(TradingSession session)
-        {
-            if (session == null)
-                throw new ArgumentNullException(nameof(session));
+        //public void Remove(TradingSession session)
+        //{
+        //    if (session == null)
+        //        throw new ArgumentNullException(nameof(session));
 
-            if (Sessions == null)
-                throw new ArgumentNullException(nameof(SessionHours));
+        //    if (Sessions == null)
+        //        throw new ArgumentNullException(nameof(SessionHours));
 
-            Sessions.Remove(session);
+        //    Sessions.Remove(session);
 
-            if (Sessions.Count == 0)
-                sessions = null;
-        }
+        //    if (Sessions.Count == 0)
+        //        sessions = null;
+        //}
 
         public void Clear()
         {
-            Sessions.Clear();
+            //Sessions.Clear();
 
-            sessions = null;
+            //sessions = null;
         }
 
         /// <summary>
@@ -281,7 +282,7 @@ namespace Nt.Core.Ninjascript
             int includeFinalBalance = 0)
         {
 
-            Sessions.Add(sessionType.ToSessionHours(instrumentCode));
+            //Sessions.Add(sessionType.ToSessionHours(instrumentCode));
         }
 
 
@@ -303,7 +304,7 @@ namespace Nt.Core.Ninjascript
             //else
             //    SessionHours.Add(session);
 
-            Sessions.Add(session);
+            //Sessions.Add(session);
         }
 
         #endregion

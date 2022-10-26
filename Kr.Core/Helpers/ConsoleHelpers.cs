@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConsoleApp
+namespace Kr.Core.Helpers
 {
     public static class ConsoleHelpers
     {

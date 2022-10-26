@@ -1,8 +1,7 @@
-﻿using Nt.Core.Ninjascript;
-using Nt.Core.Services;
+﻿using Nt.Core.Services;
 using Nt.Core.Services.Internal;
 
-namespace ConsoleApp.Tests
+namespace Nt.Core.Tests
 {
     internal class CallSiteTests
     {

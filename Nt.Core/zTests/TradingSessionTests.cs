@@ -1,14 +1,17 @@
 ﻿using Kr.Core.Helpers;
+using Kr.Core.Tests;
 using Nt.Core.Trading;
+using Nt.Core.Trading.Internal;
 using System;
 
-namespace ConsoleApp.Tests
+namespace Nt.Core.Tests
 {
-    internal class TradingSessionTests : BaseTests
+    public class TradingSessionTests : BaseConsoleTests
     {
 
         #region Private members
 
+        //private TradingSession ts;
         private TradingSession ts;
         private TradingSessionType[] types = 
             new TradingSessionType[] 
@@ -60,7 +63,7 @@ namespace ConsoleApp.Tests
 
         private void InstanceTests()
         {
-            // Create a custom instance.
+            //Create a custom instance.
             Title("Instance tests");
             Subtitle("Custom instance with trading session types");
             ts = TradingSession.CreateCustomTradingSession(
@@ -71,7 +74,7 @@ namespace ConsoleApp.Tests
             NewLine();
 
             Subtitle("Custom instance with Time Span, Time Zone Info and Trading Session Type");
-            ts = TradingSession.CreateCustomTradingSession(new TimeSpan(12,15,0),TimeZoneInfo.Local,TradingTimeType.European_Close);
+            ts = TradingSession.CreateCustomTradingSession(new TimeSpan(12, 15, 0), TimeZoneInfo.Local, TradingTimeType.European_Close);
             WriteLine(ts.ToShortString("u"));
             NewLine();
 
@@ -107,19 +110,18 @@ namespace ConsoleApp.Tests
             });
 
             NewLine();
-            TradingSession sh = TradingSession.CreateTradingSessionByType(TradingSessionType.American);
-            //bool exist = sh.Exist();
+            TradingSession ts = TradingSession.CreateTradingSessionByType(TradingSessionType.American);
+            //bool exist = ts.Exist();
 
             //string s = exist ? "exist" : "don't exist";
-            //Write(sh.ToString());
-            //Write($"{sh.Description} {s} in {nameof(TradingTime)} enum.");
+            //Write(ts.ToString());
+            //Write($"{ts.Description} {s} in {nameof(TradingTime)} enum.");
 
         }
 
         private void AddTests()
         {
-            ts = TradingSession.CreateTradingSessionByType(TradingSessionType.American);
-            ts.Clear();
+            ts = TradingSession.CreateTradingSessionByType(TradingSessionType.European);
             ts.Add(types);
         }
 

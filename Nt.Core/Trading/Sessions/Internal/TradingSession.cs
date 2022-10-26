@@ -4,21 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Nt.Core.Trading
+namespace Nt.Core.Trading.Internal
 {
     /// <summary>
     /// Contents trading session information.
     /// </summary>
-    public class TradingSession : 
-        BaseElement, 
-        IComparable, 
-        IComparable<TradingSession>, 
-        IComparer, 
-        IComparer<TradingSession>,
-        IList<TradingSession>,
-        ICollection<TradingSession>,
-        IEnumerable<TradingSession>,
-        IEnumerable
+    internal class TradingSession : BaseElement, ITradingSession
     {
 
         #region Consts
@@ -37,7 +28,7 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The children sessions.
         /// </summary>
-        private readonly IList<TradingSession> _sessions = new List<TradingSession>();
+        private readonly IList<ITradingSession> _sessions = new List<ITradingSession>();
 
         private TradingTime _endSessionTime;
         #endregion
@@ -71,7 +62,7 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The children sessions.
         /// </summary>
-        public IList<TradingSession> Sessions => _sessions;
+        public IList<ITradingSession> Sessions => _sessions;
 
         /// <summary>
         /// Gets the unique code of the <see cref="TradingSession"/>.
@@ -138,6 +129,29 @@ namespace Nt.Core.Trading
                 EndSessionTime = sessionType.ToEndSessionTime(instrumentCode, endTimeDisplacement),
                 SessionType = sessionType,
             };
+        }
+
+        /// <summary>
+        /// Create a new instance of <see cref="TradingSession"/> collection with <see cref="TradingSessionType"/> collection.
+        /// </summary>
+        /// <param name="sessionTypes">The <see cref="TradingSessionType"/> collection to create the <see cref="TradingSession"/> collection.</param>
+        /// <param name="instrumentCode">The unique code of the instrument.</param>
+        /// <param name="beginTimeDisplacement">The displacement minutes to the intial balance of the session.</param>
+        /// <param name="endTimeDisplacement">The displacement minutes to the final balance of the session.</param>
+        /// <returns>A new instance of <see cref="TradingSession"/> collection.</returns>
+        public static TradingSession[] CreateTradingSessionByTypes(TradingSessionType[] sessionTypes, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        {
+            if (sessionTypes == null || sessionTypes.Length < 1)
+                throw new ArgumentNullException(nameof(sessionTypes));
+
+            TradingSession[] tradingSessions = new TradingSession[sessionTypes.Length];
+            for (int i = 0; i < sessionTypes.Length; i++)
+            {
+                TradingSession ts = TradingSession.CreateTradingSessionByType(sessionTypes[i]);
+                tradingSessions[i] = ts;
+            }
+
+            return tradingSessions;
         }
 
         /// <summary>
@@ -275,7 +289,7 @@ namespace Nt.Core.Trading
         #region Implementation methods
 
         /// <inheritdoc/>
-        public TradingSession this[int index]
+        public ITradingSession this[int index]
         {
             get => _sessions[index];
             set => _sessions[index] = value;
@@ -288,48 +302,67 @@ namespace Nt.Core.Trading
         public bool IsReadOnly => false;
 
         /// <inheritdoc/>
-        public void Add(TradingSession item)
+        public void Add(ITradingSession session)
         {
             // Make sure item doesn't exist.
-            if (_sessions.Contains(item))
+            if (_sessions.Contains(session))
                 return;
             // If item is the first element...
             if (_sessions.Count == 0)
             {
-                _sessions.Add(item);
+                _sessions.Add(session);
                 return;
             }
             // Otherwise...
-            int count = _sessions.Count;
-            for (int i = 0; i < count; i++)
+            // Search children
+            bool hasChildren = false;
+            for (int i = 0; i < Count; i++)
             {
-                TradingSessionCompareResult result = item.CompareSessionTo(_sessions[i]);
+                TradingSessionCompareResult result = session.CompareSessionTo(_sessions[i]);
+                if (result == TradingSessionCompareResult.Parent)
+                {
+                    // Store the child
+                    ITradingSession tradingSession = _sessions[i];
+                    // Clear the session item
+                    _sessions[i] = null;
+                    // Add the child to the item
+                    session.Add(tradingSession);
+                    // Sets the child flag
+                    if (!hasChildren)
+                        hasChildren = true;
+                    return;
+                }
+            }
+
+            // Clear the old children
+            if (hasChildren)
+            {
+                for (int i = 0; i < Count; i++)
+                    while(_sessions[i] == null)
+                        RemoveAt(i);
+            }
+
+            for (int i = 0; i < Count; i++)
+            {
+                TradingSessionCompareResult result = session.CompareSessionTo(_sessions[i]);
                 switch (result)
                 {
-                    case TradingSessionCompareResult.Equals:
-                        return;
                     case TradingSessionCompareResult.Minor:
                     case TradingSessionCompareResult.MinorAndInner:
-                        _sessions.Insert(i, item);
-                        return;
-                    case TradingSessionCompareResult.Child:
-                        _sessions[i].Sessions.Add(item);
+                        _sessions.Insert(i, session);
                         return;
                     case TradingSessionCompareResult.Major:
                     case TradingSessionCompareResult.MajorAndInner:
                         {
-                            if (i == count - 1)
-                                _sessions.Add(item);
+                            if (i == Count - 1)
+                                _sessions.Add(session);
                             break;
                         }
-                    case TradingSessionCompareResult.Parent:
-                        {
-                            TradingSession tradingSession = _sessions[i];
-                            //_sessions[i] = null;
-                            item.Sessions.Add(tradingSession);
-                            _sessions[i] = item;
-                            return;
-                        }
+                    case TradingSessionCompareResult.Child:
+                        _sessions[i].Add(session);
+                        break;
+                    case TradingSessionCompareResult.Equals:
+                        return;
                     default:
                         break;
                 }
@@ -351,7 +384,7 @@ namespace Nt.Core.Trading
         }
 
         /// <inheritdoc/>
-        public bool Contains(TradingSession item)
+        public bool Contains(ITradingSession item)
         {
             if (_sessions != null && _sessions.Count > 0)
             {
@@ -367,31 +400,31 @@ namespace Nt.Core.Trading
         }
 
         /// <inheritdoc/>
-        public void CopyTo(TradingSession[] array, int arrayIndex)
+        public void CopyTo(ITradingSession[] array, int arrayIndex)
         {
             _sessions.CopyTo(array, arrayIndex);
         }
 
         /// <inheritdoc/>
-        public IEnumerator<TradingSession> GetEnumerator()
+        public IEnumerator<ITradingSession> GetEnumerator()
         {
-            return _sessions.GetEnumerator();
+            return (IEnumerator<ITradingSession>)_sessions.GetEnumerator();
         }
 
         /// <inheritdoc/>
-        public int IndexOf(TradingSession item)
+        public int IndexOf(ITradingSession item)
         {
             return _sessions.IndexOf(item);
         }
 
         /// <inheritdoc/>
-        public void Insert(int index, TradingSession item)
+        public void Insert(int index, ITradingSession item)
         {
             _sessions.Insert(index, item);
         }
 
         /// <inheritdoc/>
-        public bool Remove(TradingSession item)
+        public bool Remove(ITradingSession item)
         {
             return _sessions.Remove(item);
         }
@@ -407,6 +440,9 @@ namespace Nt.Core.Trading
         {
             return GetEnumerator();
         }
+
+        /// <inheritdoc/>
+        public ITradingSessionBuilder CreateTradingSessionBuilder() => new TradingSessionBuilder();
 
         #endregion
 
@@ -626,13 +662,16 @@ namespace Nt.Core.Trading
         /// <param name="value">The <see cref="TradingSession"/> to compare with the instance.</param>
         /// <returns>True if the pair of <see cref="TradingSession"/> are equals.</returns>
         /// <exception cref="ArgumentException">The <see cref="TradingSession"/>object passed as parameter cannot be null.</exception>
-        public bool Equals(TradingSession ts)
+        public bool Equals(ITradingSession ts)
         {
 
             if (ts is null)
                 return false;
 
-            return BeginSessionTime.Equals(ts.BeginSessionTime) && EndSessionTime.Equals(ts.EndSessionTime);
+            if (ts is TradingSession t)
+                return BeginSessionTime.Equals(t.BeginSessionTime) && EndSessionTime.Equals(t.EndSessionTime);
+
+            return false;
         }
 
         /// <summary>
@@ -643,7 +682,7 @@ namespace Nt.Core.Trading
         /// <param name="ts2">The second <see cref="TradingSession"/> object to compare with the first.</param>
         /// <returns>True if <see cref="TradingSession"/> objects are equals.</returns>
         /// <exception cref="ArgumentException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
-        public static bool Equals(TradingSession ts1, TradingSession ts2)
+        public static bool Equals(ITradingSession ts1, ITradingSession ts2)
         {
 
             if (ts1 is null && ts2 is null)
@@ -652,8 +691,11 @@ namespace Nt.Core.Trading
             if (ts1 is null || ts2 is null)
                 return false;
 
-            return TradingTime.Equals(ts1.BeginSessionTime, ts2.BeginSessionTime) && TradingTime.Equals(ts1.EndSessionTime, ts2.EndSessionTime);
+            if (ts1 is TradingSession t1)
+                if (ts2 is TradingSession t2)
+                    return TradingTime.Equals(t1.BeginSessionTime, t2.BeginSessionTime) && TradingTime.Equals(t1.EndSessionTime, t2.EndSessionTime);
 
+            return false;
         }
 
         #endregion
@@ -705,13 +747,16 @@ namespace Nt.Core.Trading
         /// -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// 0 if the objects are equals.</returns>
         /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
-        public int Compare(TradingSession value1, TradingSession value2)
+        public int Compare(ITradingSession value1, ITradingSession value2)
         {
             if (value1 == null || value2 == null)
                 throw new ArgumentNullException("The arguments cannot be null.");
 
-            //return (int)CompareSessions(value1, value2);
-            return value1 < value2 ? -1 : value1 > value2 ? 1 : 0;
+            if (value1 is TradingSession v1)
+                if (value2 is TradingSession v2)
+                    return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
+
+            throw new ArgumentException("The arguments must be Nt.Core.Trading.TradingSession.");
         }
 
         /// <summary>
@@ -752,7 +797,7 @@ namespace Nt.Core.Trading
         /// -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
         /// 0 if the objects are equals.
         /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
-        public int CompareTo(TradingSession value)
+        public int CompareTo(ITradingSession value)
         {
             if (value == null)
                 throw new ArgumentException("Argument cannot be null");
@@ -821,12 +866,12 @@ namespace Nt.Core.Trading
         /// -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// 0 if the objects are equals.</returns>
         /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
-        public TradingSessionCompareResult CompareSession(TradingSession value1, TradingSession value2)
+        public TradingSessionCompareResult CompareSession(ITradingSession value1, ITradingSession value2)
         {
             if (value1 == null || value2 == null)
                 throw new ArgumentNullException("The arguments cannot be null.");
 
-            return CompareSessions(value1, value2);
+            return CompareSessions((TradingSession)value1, (TradingSession)value2);
             
         }
 
@@ -884,7 +929,7 @@ namespace Nt.Core.Trading
         /// -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
         /// 0 if the objects are equals.
         /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
-        public TradingSessionCompareResult CompareSessionTo(TradingSession value)
+        public TradingSessionCompareResult CompareSessionTo(ITradingSession value)
         {
             if (value == null)
                 throw new ArgumentException("Argument cannot be null");
