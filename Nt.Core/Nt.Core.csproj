@@ -371,9 +371,15 @@
     <Compile Include="NinjaScript\Sessions\SessionHoursList\SessionHoursListConfiguration.cs" />
     <Compile Include="NinjaScript\Managers\Sessions\SessionsManagerBuilder.cs" />
     <Compile Include="NinjaScript\Managers\Sessions\SessionsManagerConfiguration.cs" />
+    <Compile Include="Trading\Sessions\Interface\ISessionProvider.cs" />
     <Compile Include="Trading\Sessions\Interface\ITradingSession.cs" />
     <Compile Include="Trading\Sessions\Interface\ISessionBuilder.cs" />
+    <Compile Include="Trading\Sessions\Internal\TradingSessionCollection.cs" />
     <Compile Include="Trading\Sessions\Internal\SessionDescriptor.cs" />
+    <Compile Include="Trading\Sessions\Internal\SessionFactory.cs" />
+    <Compile Include="Trading\Sessions\Internal\TradingSessionConfiguration.cs" />
+    <Compile Include="Trading\Sessions\SessionProvider.cs" />
+    <Compile Include="Trading\Sessions\SessionProviderConfiguration.cs" />
     <Compile Include="Trading\Times\Interfaces\ITradingTime.cs" />
     <Compile Include="Trading\Sessions\SessionBuilder.cs" />
     <Compile Include="Trading\Sessions\Internal\SessionDescriptorCollection.cs" />

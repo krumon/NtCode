@@ -31,6 +31,7 @@ namespace Nt.Core.Trading
         private readonly IList<ITradingSession> _sessions = new List<ITradingSession>();
 
         private TradingTime _endSessionTime;
+
         #endregion
 
         #region Public properties

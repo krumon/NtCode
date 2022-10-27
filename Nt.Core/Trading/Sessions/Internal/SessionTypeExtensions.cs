@@ -102,34 +102,33 @@ namespace Nt.Core.Trading
         {
             switch (tradingSessionType)
             {
-                // SESSIONS
                 case SessionType.Electronic:
-                    return "TradingSession - Electronic";
+                    return "Electronic";
                 case SessionType.Regular:
-                    return "TradingSession - Regular";
+                    return "Regular";
                 case SessionType.OVN:
-                    return "TradingSession - Overnight";
+                    return "Overnight";
                 case SessionType.American:
-                    return "TradingSession - American";
+                    return "American";
                 case SessionType.AmericanAndEuropean:
-                    return "TradingSession - AmericanAndEuropean";
+                    return "AmericanAndEuropean";
                 case SessionType.Asian:
-                    return "TradingSession - Asian";
+                    return "Asian";
                 case SessionType.European:
-                    return "TradingSession - European";
+                    return "European";
                 case SessionType.American_RS:
-                    return "TradingSession - AmericanResidual";
+                    return "AmericanResidual";
                 case SessionType.Asian_RS:
-                    return "TradingSession - AsianResidual";
+                    return "AsianResidual";
                 case SessionType.American_RS_EXT:
-                    return "TradingSession - AmericanResidualExtratime";
+                    return "AmericanResidualExtratime";
                 case SessionType.American_RS_EOD:
-                    return "TradingSession - AmericanResidialEndOfDay";
+                    return "AmericanResidualEndOfDay";
                 case SessionType.American_RS_NWD:
-                    return "TradingSession - AmericanResidualNewDay";
+                    return "AmericanResidualNewDay";
 
                 default:
-                    return "TradingSession - Custom";
+                    return "Custom";
             }
         }
 

@@ -2,6 +2,6 @@
 {
     public interface ISessionBuilder
     {
-        ITradingSession Build();
+        ISessionProvider Build();
     }
 }

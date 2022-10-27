@@ -13,7 +13,7 @@ namespace ConsoleApp
 
             tradingSessionTests.Run();
 
-            ITradingSession tradingSession = KrumonTrade.CreateTradingSessionBuilder()
+            ISessionProvider sessionProvider = KrumonTrade.CreateTradingSessionBuilder()
                 .AddDescriptors
                     (
                         SessionType.Asian, 

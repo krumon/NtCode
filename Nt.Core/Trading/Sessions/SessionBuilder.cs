@@ -10,7 +10,10 @@ namespace Nt.Core.Trading
         #region Private members
 
         private SessionDescriptorCollection _descriptors = new SessionDescriptorCollection();
-        private readonly TradingSession _tradingSession = new TradingSession();
+        private SessionFactory _sessionFactory;
+        private SessionProvider _sessionProvider;
+        private List<Func<SessionProviderConfiguration, SessionBuilder>> _sessionProviderConfigureActions;
+        private Dictionary<string, Func<TradingSessionConfiguration, SessionProvider>> _tradingSessionConfigureActions;
         private bool _isBuild;
 
         #endregion
@@ -29,27 +32,33 @@ namespace Nt.Core.Trading
 
         #region Implementation methods
 
-        public ITradingSession Build()
+        public ISessionProvider Build()
         {
             // The trading session can be only once time created.
             if (_isBuild)
-                return _tradingSession;
+                return _sessionProvider;
 
-            AddTypesToTradingSessionCollection();
-            SortTradingSessionCollection();
-            CreateTradingSession();
+            if (_descriptors == null || _descriptors.Count < 1)
+                CreateDefaultSessionProvider();
+            else
+            {
+                _sessionFactory = new SessionFactory(_descriptors);
+                AddTypesToTradingSessionCollection();
+                SortTradingSessionCollection();
+                CreateTradingSession();
+            }
 
             // Sets the flag to indicate the Trading session is created.
             _isBuild = true;
 
-            return _tradingSession;
+            return _sessionProvider;
         }
 
         #endregion
 
         #region Public Methods
 
-        public ISessionBuilder AddTradingSessionConfigure()
+        public ISessionBuilder AddSessionConfigure()
         {
             throw new NotImplementedException();
         }
@@ -103,6 +112,11 @@ namespace Nt.Core.Trading
         private void CreateTradingSession()
         {
             //throw new NotImplementedException();
+        }
+
+        private void CreateDefaultSessionProvider()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

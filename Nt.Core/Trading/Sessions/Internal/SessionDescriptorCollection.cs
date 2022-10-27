@@ -53,7 +53,7 @@ namespace Nt.Core.Trading.Internal
                 }
                 if (i == Count - 1)
                 {
-                    _descriptors.Add(_descriptors[i]);
+                    _descriptors.Add(item);
                     break;
                 }
             }

@@ -791,12 +791,34 @@ namespace Nt.Core.Trading.Internal
             if (timeZoneInfo == null)
                 throw new ArgumentNullException(nameof(timeZoneInfo));
 
-            string s = $"{SessionType.ToName()} - Begin: {_beginTradingTime.ToShortString(SessionTimeZoneInfo, false)} - End: {_endTradingTime.ToShortString(SessionTimeZoneInfo, false)}";
+            int hours = Duration.Hours;
+            int minutes = Duration.Minutes;
+            int seconds = Duration.Seconds;
+
+            string h = string.Empty, m = string.Empty, s = string.Empty;
+            if (hours != 0)
+                h = $"{Duration.Hours}h";
+
+            if (minutes != 0 && hours != 0)
+                m = $":{Duration.Minutes}m";
+            else if (minutes != 0 )
+                m = $"{Duration.Minutes}m";
+            else if (minutes == 0 && hours != 0 && seconds != 0)
+                m = ":00m";
+
+            if (seconds != 0 && minutes != 0)
+                s = $":{Duration.Seconds}s";
+            else if (seconds != 0 )
+                s = $"{Duration.Seconds}s";
+
+            string durationString = $"{h}{m}{s}";
+
+            string text = $"{nameof(SessionDescriptor)} - Duration: {durationString} - {SessionType.ToName()} - Begin: {_beginTradingTime.ToShortString(SessionTimeZoneInfo, false)} - End: {_endTradingTime.ToShortString(SessionTimeZoneInfo, false)}";
             
             if (showTimeZoneInfoName)
-                s += string.Format($" {TradingTime.GetTimeZoneInfoName(timeZoneInfo)}");
+                text += string.Format($" {TradingTime.GetTimeZoneInfoName(timeZoneInfo)}");
 
-            return s;
+            return text;
 
         }
 
