@@ -58,37 +58,44 @@ namespace Nt.Core.Trading
 
         #region Public Methods
 
-        public ISessionBuilder AddSessionConfigure()
+        // Añadir sucesivamente todas las sesiones y sus configuraciones individuales
+        public ISessionBuilder ConfigureSessions()
         {
             throw new NotImplementedException();
         }
 
-        public ISessionBuilder AddDescriptor(SessionType type)
+        // Añadir las configuraciones generales
+        public ISessionBuilder ConfigureTradingSession()//Func<TradingSessionConfiguration, TradingSession> configureActions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SessionBuilder AddSessionByType(SessionType type)
         {
             SessionDescriptor descriptor = SessionDescriptor.CreateTradingSessionByType(type);
             _descriptors.Add(descriptor);
             return this;
         }
 
-        public ISessionBuilder AddDescriptors(params SessionType[] types)
+        public SessionBuilder AddSessionCollectionByTypes(params SessionType[] types)
         {
             if (types == null)
                 throw new ArgumentNullException(nameof(types));
 
             foreach (var type in types)
-                AddDescriptor(type);
+                AddSessionByType(type);
 
             return this;
         }
 
-        public ISessionBuilder Add<T>()
+        public SessionBuilder AddSessionEnum<T>()
             where T : Enum
         {
             if (typeof(T).Name == nameof(SessionType))
             {
                 EnumHelpers.ForEach<SessionType>((type) =>
                 {
-                    AddDescriptor(type);
+                    AddSessionByType(type);
                 });
             }
 

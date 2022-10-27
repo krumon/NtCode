@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nt.Core.Trading.Internal;
+using System;
 using System.Linq;
 
 namespace Nt.Core.Trading

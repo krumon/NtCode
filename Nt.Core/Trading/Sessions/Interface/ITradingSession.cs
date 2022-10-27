@@ -1,7 +1,7 @@
-﻿using System.Collections;
+﻿using Nt.Core.Trading.Internal;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using Nt.Core.Trading.Internal;
 
 namespace Nt.Core.Trading
 {
@@ -14,9 +14,10 @@ namespace Nt.Core.Trading
         ICollection<ITradingSession>,
         IEnumerable<ITradingSession>,
         IEnumerable
+
     {
         //ISessionBuilder CreateDefaultTradingSessionBuilder();
-        IList<ITradingSession> Sessions { get; }
+        ITradingSessionCollection Sessions { get; }
         SessionCompareResult CompareSessionTo(ITradingSession otherSession);
     }
 }

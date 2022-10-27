@@ -1,10 +1,9 @@
-﻿using Kr.Core.Helpers;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Nt.Core.Trading
+namespace Nt.Core.Trading.Internal
 {
     /// <summary>
     /// Contents trading session information.
@@ -28,7 +27,7 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The children sessions.
         /// </summary>
-        private readonly IList<ITradingSession> _sessions = new List<ITradingSession>();
+        private readonly TradingSessionCollection _sessions = new TradingSessionCollection();
 
         private TradingTime _endSessionTime;
 
@@ -63,7 +62,7 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The children sessions.
         /// </summary>
-        public IList<ITradingSession> Sessions => _sessions;
+        public ITradingSessionCollection Sessions => _sessions;
 
         /// <summary>
         /// Gets the unique code of the <see cref="TradingSession"/>.
@@ -305,99 +304,19 @@ namespace Nt.Core.Trading
         /// <inheritdoc/>
         public void Add(ITradingSession session)
         {
-            // Make sure item doesn't exist.
-            if (_sessions.Contains(session))
-                return;
-            // If item is the first element...
-            if (_sessions.Count == 0)
-            {
-                _sessions.Add(session);
-                return;
-            }
-            // Otherwise...
-            // Search children
-            bool hasChildren = false;
-            for (int i = 0; i < Count; i++)
-            {
-                SessionCompareResult result = session.CompareSessionTo(_sessions[i]);
-                if (result == SessionCompareResult.Outer)
-                {
-                    // Store the child
-                    ITradingSession tradingSession = _sessions[i];
-                    // Clear the session item
-                    _sessions[i] = null;
-                    // Add the child to the item
-                    session.Add(tradingSession);
-                    // Sets the child flag
-                    if (!hasChildren)
-                        hasChildren = true;
-                    return;
-                }
-            }
-
-            // Clear the old children
-            if (hasChildren)
-            {
-                for (int i = 0; i < Count; i++)
-                    while(_sessions[i] == null)
-                        RemoveAt(i);
-            }
-
-            for (int i = 0; i < Count; i++)
-            {
-                SessionCompareResult result = session.CompareSessionTo(_sessions[i]);
-                switch (result)
-                {
-                    case SessionCompareResult.Before:
-                    case SessionCompareResult.BeforeAndInner:
-                        _sessions.Insert(i, session);
-                        return;
-                    case SessionCompareResult.Later:
-                    case SessionCompareResult.InnerAndLater:
-                        {
-                            if (i == Count - 1)
-                                _sessions.Add(session);
-                            break;
-                        }
-                    case SessionCompareResult.Inner:
-                        _sessions[i].Add(session);
-                        break;
-                    case SessionCompareResult.Equals:
-                        return;
-                    default:
-                        break;
-                }
-            }
+            _sessions.Add(session);
         }
 
         /// <inheritdoc/>
         public void Clear()
         {
-            if (_sessions != null && _sessions.Count > 0)
-            {
-                foreach (TradingSession item in _sessions)
-                {
-                    if (item.Sessions != null && item.Sessions.Count > 0)
-                        item.Sessions.Clear();
-                }
-                _sessions.Clear();
-            }
+            _sessions.Clear();
         }
 
         /// <inheritdoc/>
         public bool Contains(ITradingSession item)
         {
-            if (_sessions != null && _sessions.Count > 0)
-            {
-                foreach (TradingSession ts in _sessions)
-                {
-                    if (ts.Sessions != null && ts.Sessions.Count > 0)
-                        ts.Sessions.Contains(item);
-                }
-                if (_sessions.Contains(item))
-                    return true;
-            }
-            return false;
+            return _sessions.Contains(item);
         }
 
         /// <inheritdoc/>
@@ -409,7 +328,7 @@ namespace Nt.Core.Trading
         /// <inheritdoc/>
         public IEnumerator<ITradingSession> GetEnumerator()
         {
-            return (IEnumerator<ITradingSession>)_sessions.GetEnumerator();
+            return _sessions.GetEnumerator();
         }
 
         /// <inheritdoc/>
@@ -442,51 +361,9 @@ namespace Nt.Core.Trading
             return GetEnumerator();
         }
 
-        /// <inheritdoc/>
-        //public ISessionBuilder CreateDefaultTradingSessionBuilder() => new SessionBuilder();
-
         #endregion
 
         #region Public Methods
-
-        /// <summary>
-        /// Add a <see cref="TradingSession"/> element by the generic type.
-        /// </summary>
-        /// <param name="type">the type of the trading session.</param>
-        public void Add(SessionType type)
-        {
-            TradingSession ts = TradingSession.CreateTradingSessionByType(type);
-            Add(ts);
-        }
-
-        /// <summary>
-        /// Add a <see cref="Trading.SessionType"/> array.
-        /// </summary>
-        /// <param name="types">The <see cref="TradingSession"/> array to add.</param>
-        public void Add(params SessionType[] types)
-        {
-            if (types == null)
-                throw new ArgumentNullException(nameof(types));
-
-            foreach (var type in types)
-                Add(type);
-        }
-
-        /// <summary>
-        /// Add all <see cref="Trading.SessionType"/> enums.
-        /// </summary>
-        /// <typeparam name="T">The generic parameter <see cref="Trading.SessionType"/>.</typeparam>
-        public void Add<T>()
-            where T : Enum
-        {
-            if (typeof(T).Name == nameof(Trading.SessionType))
-            {
-                EnumHelpers.ForEach<SessionType>((type) =>
-                {
-                    Add(type);
-                });
-            }
-        }
 
         /// <summary>
         /// Gets the initial <see cref="DateTime"/> of the <see cref="TradingSession"/>.

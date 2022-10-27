@@ -374,6 +374,7 @@
     <Compile Include="Trading\Sessions\Interface\ISessionProvider.cs" />
     <Compile Include="Trading\Sessions\Interface\ITradingSession.cs" />
     <Compile Include="Trading\Sessions\Interface\ISessionBuilder.cs" />
+    <Compile Include="Trading\Sessions\Interface\ITradingSessionCollection.cs" />
     <Compile Include="Trading\Sessions\Internal\TradingSessionCollection.cs" />
     <Compile Include="Trading\Sessions\Internal\SessionDescriptor.cs" />
     <Compile Include="Trading\Sessions\Internal\SessionFactory.cs" />

@@ -122,7 +122,7 @@ namespace Nt.Core.Tests
         private void AddTests()
         {
             ts = TradingSession.CreateTradingSessionByType(SessionType.European);
-            ts.Add(types);
+            //ts.Add(types);
         }
 
         private void OperatorTests(SessionType t1, SessionType t2)
