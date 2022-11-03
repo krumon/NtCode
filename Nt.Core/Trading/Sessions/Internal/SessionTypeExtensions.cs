@@ -138,12 +138,12 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="tradingSessionType"></param>
         /// <returns>Initial <see cref="TradingTime"/> of the <see cref="SessionType"/>.</returns>
-        public static TradingTime ToBeginSessionTime(this SessionType tradingSessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
+        public static TradingTime ToBeginSessionTime(this SessionType tradingSessionType, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
         {
             switch (instrumentCode)
             {
-                case (TradingInstrumentCode.Default):
-                case (TradingInstrumentCode.MES):
+                case (InstrumentCode.Default):
+                case (InstrumentCode.MES):
                 {
 
                     switch (tradingSessionType)
@@ -188,12 +188,12 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="tradingSessionType"></param>
         /// <returns>Final <see cref="TradingTime"/> of the <see cref="SessionType"/>.</returns>
-        public static TradingTime ToEndSessionTime(this SessionType tradingSessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int offset = 0)
+        public static TradingTime ToEndSessionTime(this SessionType tradingSessionType, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
         {
             switch (instrumentCode)
             {
-                case (TradingInstrumentCode.Default):
-                case (TradingInstrumentCode.MES):
+                case (InstrumentCode.Default):
+                case (InstrumentCode.MES):
                     {
 
                         switch (tradingSessionType)
@@ -234,7 +234,7 @@ namespace Nt.Core.Trading
 
         }
 
-        public static TradingSession ToSessionHours(this SessionType type, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int balanceMinutes = 0)
+        public static TradingSession ToSessionHours(this SessionType type, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
         {
             return TradingSession.CreateTradingSessionByType(type,instrumentCode,balanceMinutes);
         }

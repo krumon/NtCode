@@ -7,7 +7,7 @@ namespace Nt.Core.Trading
     /// <summary>
     /// Represents a trading time information.
     /// </summary>
-    internal class TradingTime : BaseElement,
+    public class TradingTime : BaseElement,
         IComparable,
         IComparable<TradingTime>,
         IEquatable<TradingTime>
@@ -109,11 +109,26 @@ namespace Nt.Core.Trading
 
         #region Constructors
 
+
+
         /// <summary>
-        /// Create a default instance of <see cref="Core.TradingTime"/>.
+        /// Create a default instance of <see cref="TradingTime"/>.
         /// </summary>
         private TradingTime()
         {
+        }
+
+        /// <summary>
+        /// Create <see cref="TradingTime"/> instance with a specific Time and TimeZoneInfo.
+        /// </summary>
+        /// <param name="time">The specific <see cref="TimeSpan"/> of the <see cref="TradingTime"/>.</param>
+        /// <param name="timeZoneInfo">the specific <see cref="TimeZoneInfo"/> of the <see cref="TradingTime"/>.</param>
+        public TradingTime(TimeSpan time, TimeZoneInfo timeZoneInfo)
+        {
+            TimeZoneInfo = timeZoneInfo;
+            Time = time;
+            // TODO: Esto tengo que modificarlo. No es un tipo "custom".
+            TradingTimeType = TradingTimeType.Custom;
         }
 
         #endregion
@@ -128,7 +143,7 @@ namespace Nt.Core.Trading
         /// <param name="instrumentCode">The unique code of the financial instrument session.</param>
         /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
         /// <returns>The session time instance.</returns>
-        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int timeDisplacement = 0)
+        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
         {
             return new TradingTime 
             {
@@ -146,7 +161,7 @@ namespace Nt.Core.Trading
         /// <param name="instrumentCode">The unique code of the financial instrument session.</param>
         /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
         /// <returns>The session time instance.</returns>
-        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, SessionChangedEventArgs e, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int timeDisplacement = 0)
+        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, SessionChangedEventArgs e, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
         {
             return new TradingTime 
             {

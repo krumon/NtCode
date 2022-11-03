@@ -102,7 +102,7 @@ namespace Nt.Core.Trading.Internal
         /// <param name="instrumentCode">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
         /// <returns>A new instance of <see cref="TradingSession"/> class.</returns>
-        public static SessionDescriptor CreateTradingSessionByType(SessionType sessionType, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static SessionDescriptor CreateTradingSessionByType(SessionType sessionType, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             return new SessionDescriptor
             {
@@ -120,7 +120,7 @@ namespace Nt.Core.Trading.Internal
         /// <param name="beginTimeDisplacement">The displacement minutes to the intial balance of the session.</param>
         /// <param name="endTimeDisplacement">The displacement minutes to the final balance of the session.</param>
         /// <returns>A new instance of <see cref="SessionDescriptor"/> collection.</returns>
-        public static SessionDescriptor[] CreateTradingSessionByTypes(SessionType[] sessionTypes, TradingInstrumentCode instrumentCode = TradingInstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static SessionDescriptor[] CreateTradingSessionByTypes(SessionType[] sessionTypes, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             if (sessionTypes == null || sessionTypes.Length < 1)
                 throw new ArgumentNullException(nameof(sessionTypes));

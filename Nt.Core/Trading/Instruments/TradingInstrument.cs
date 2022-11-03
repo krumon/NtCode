@@ -11,12 +11,12 @@ namespace Nt.Core.Trading
         /// <summary>
         /// The instrument unique code.
         /// </summary>
-        public TradingInstrumentCode InstrumentCode { get; set; }
+        public InstrumentCode InstrumentCode { get; set; }
 
         /// <summary>
         /// The market exchange owner of the instrument.
         /// </summary>
-        public TradingMarket MarketExchange { get; set; }
+        public MarketExchange MarketExchange { get; set; }
 
         /// <summary>
         /// The instrument description.
