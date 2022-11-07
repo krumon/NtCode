@@ -351,6 +351,8 @@
     <Compile Include="Trading\Bars\TradingBar.cs" />
     <Compile Include="Trading\Brokers\BrokerExtensions.cs" />
     <Compile Include="Trading\Brokers\Broker.cs" />
+    <Compile Include="Trading\Data\CandleStick.cs" />
+    <Compile Include="Trading\Data\BarsPeriodType.cs" />
     <Compile Include="Trading\Patterns\Swing\SwingLevel.cs" />
     <Compile Include="Trading\Patterns\Swing\SwingPoint.cs" />
     <Compile Include="NinjaScript\Caches\BarsCache.cs" />
@@ -411,7 +413,7 @@
     <Compile Include="Trading\Patterns\Swing\SwingLevelCalculateMode.cs" />
     <Compile Include="Trading\Patterns\Swing\SwingType.cs" />
     <Compile Include="Trading\Bars\CandleStickBar.cs" />
-    <Compile Include="Trading\Prices\TradingPriceType.cs" />
+    <Compile Include="Trading\Data\MarketDataType.cs" />
     <Compile Include="Trading\Times\TradingTimeType.cs" />
     <Compile Include="Trading\Sessions\Internal\TradingSession.cs" />
     <Compile Include="Trading\Sessions\SessionType.cs" />

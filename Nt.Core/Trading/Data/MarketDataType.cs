@@ -1,9 +1,9 @@
 ﻿namespace Nt.Core.Trading
 {
     /// <summary>
-    /// The type of the price.
+    /// The type of the market data price.
     /// </summary>
-    public enum TradingPriceType
+    public enum MarketDataType
     {
 
         /// <summary>
