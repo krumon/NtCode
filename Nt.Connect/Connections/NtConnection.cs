@@ -43,7 +43,7 @@ namespace Nt.Connect
 
         #region Constructors
 
-        public NtConnection(InstrumentCode instrumentCode)
+        public NtConnection(InstrumentKey instrumentCode)
         {
             masterInstrument = instrumentCode.ToString();
         }

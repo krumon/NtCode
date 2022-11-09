@@ -99,15 +99,15 @@ namespace Nt.Core.Trading.Internal
         /// Create a new instance of <see cref="TradingSession"/> class with <see cref="TradingSession"/>.
         /// </summary>
         /// <param name="sessionType">the <see cref="TradingSession"/> to create the <see cref="TradingSession"/> class.</param>
-        /// <param name="instrumentCode">The unique code of the instrument.</param>
+        /// <param name="instrumentKey">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
         /// <returns>A new instance of <see cref="TradingSession"/> class.</returns>
-        public static SessionDescriptor CreateTradingSessionByType(SessionType sessionType, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static SessionDescriptor CreateTradingSessionByType(SessionType sessionType, InstrumentKey instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             return new SessionDescriptor
             {
-                _beginTradingTime = sessionType.ToBeginSessionTime(instrumentCode, beginTimeDisplacement),
-                _endTradingTime = sessionType.ToEndSessionTime(instrumentCode, endTimeDisplacement),
+                _beginTradingTime = sessionType.ToBeginSessionTime(instrumentKey, beginTimeDisplacement),
+                _endTradingTime = sessionType.ToEndSessionTime(instrumentKey, endTimeDisplacement),
                 SessionType = sessionType,
             };
         }
@@ -120,7 +120,7 @@ namespace Nt.Core.Trading.Internal
         /// <param name="beginTimeDisplacement">The displacement minutes to the intial balance of the session.</param>
         /// <param name="endTimeDisplacement">The displacement minutes to the final balance of the session.</param>
         /// <returns>A new instance of <see cref="SessionDescriptor"/> collection.</returns>
-        public static SessionDescriptor[] CreateTradingSessionByTypes(SessionType[] sessionTypes, InstrumentCode instrumentCode = InstrumentCode.Default, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static SessionDescriptor[] CreateTradingSessionByTypes(InstrumentKey instrumentKey, SessionType[] sessionTypes, InstrumentKey instrumentCode, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             if (sessionTypes == null || sessionTypes.Length < 1)
                 throw new ArgumentNullException(nameof(sessionTypes));
@@ -128,7 +128,7 @@ namespace Nt.Core.Trading.Internal
             SessionDescriptor[] tradingSessions = new SessionDescriptor[sessionTypes.Length];
             for (int i = 0; i < sessionTypes.Length; i++)
             {
-                SessionDescriptor ts = CreateTradingSessionByType(sessionTypes[i]);
+                SessionDescriptor ts = CreateTradingSessionByType(sessionTypes[i],instrumentKey);
                 tradingSessions[i] = ts;
             }
 
@@ -142,12 +142,12 @@ namespace Nt.Core.Trading.Internal
         /// <param name="endSessionTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="SessionDescriptor"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="SessionDescriptor"/> object.</returns>
-        public static SessionDescriptor CreateCustomTradingSession(TradingTimeType beginSessionTimeType, TradingTimeType endSessionTimeType, string description = "")
+        public static SessionDescriptor CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTimeType beginSessionTimeType, TradingTimeType endSessionTimeType, string description = "")
         {
             return new SessionDescriptor
             {
-                _beginTradingTime = TradingTime.CreateSessionTimeByType(beginSessionTimeType),
-                _endTradingTime = TradingTime.CreateSessionTimeByType(endSessionTimeType),
+                _beginTradingTime = TradingTime.CreateSessionTimeByType(beginSessionTimeType, instrumentKey),
+                _endTradingTime = TradingTime.CreateSessionTimeByType(endSessionTimeType, instrumentKey),
                 Description = description,
                 SessionType = SessionType.Custom,
             };
@@ -160,12 +160,12 @@ namespace Nt.Core.Trading.Internal
         /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static SessionDescriptor CreateCustomTradingSession(TradingTime beginTradingTime, TradingTimeType endTradingTimeType, string description = "")
+        public static SessionDescriptor CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTime beginTradingTime, TradingTimeType endTradingTimeType, string description = "")
         {
             return new SessionDescriptor
             {
                 _beginTradingTime = beginTradingTime,
-                _endTradingTime = TradingTime.CreateSessionTimeByType(endTradingTimeType),
+                _endTradingTime = TradingTime.CreateSessionTimeByType(endTradingTimeType, instrumentKey),
                 Description = description,
                 SessionType = SessionType.Custom,
             };
@@ -178,11 +178,11 @@ namespace Nt.Core.Trading.Internal
         /// <param name="endTradingTime">The final <see cref="TradingTime"/> of the <see cref="SessionDescriptor"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static SessionDescriptor CreateCustomTradingSession(TradingTimeType beginTradingTimeType, TradingTime endTradingTime, string description = "")
+        public static SessionDescriptor CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTimeType beginTradingTimeType, TradingTime endTradingTime, string description = "")
         {
             return new SessionDescriptor
             {
-                _beginTradingTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType),
+                _beginTradingTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType, instrumentKey),
                 _endTradingTime = endTradingTime,
                 Description = description,
                 SessionType = SessionType.Custom,
@@ -215,12 +215,12 @@ namespace Nt.Core.Trading.Internal
         /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="SessionDescriptor"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="SessionDescriptor"/> object.</returns>
-        public static SessionDescriptor CreateCustomTradingSession(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTimeType endTradingTimeType, string description = "")
+        public static SessionDescriptor CreateCustomTradingSession(InstrumentKey instrumentKey, TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTimeType endTradingTimeType, string description = "")
         {
             return new SessionDescriptor
             {
                 _beginTradingTime = TradingTime.CreateCustomSessionTime(beginTime, beginTimeZoneInfo, description == "" ? "Custom Open Time" : description + " - Open"),
-                _endTradingTime = TradingTime.CreateSessionTimeByType(endTradingTimeType),
+                _endTradingTime = TradingTime.CreateSessionTimeByType(endTradingTimeType, instrumentKey),
                 Description = description,
                 SessionType = SessionType.Custom,
             };
@@ -234,11 +234,11 @@ namespace Nt.Core.Trading.Internal
         /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionDescriptor"/> <see cref="BeginTime"/>.</param>
         /// <param name="description"></param>
         /// <returns>A new custom instance of <see cref="SessionDescriptor"/> object.</returns>
-        public static SessionDescriptor CreateCustomTradingSession(TradingTimeType beginTradingTimeType, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
+        public static SessionDescriptor CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTimeType beginTradingTimeType, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
             return new SessionDescriptor
             {
-                _beginTradingTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType),
+                _beginTradingTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType, instrumentKey),
                 _endTradingTime = TradingTime.CreateCustomSessionTime(endTime, endTimeZoneInfo, description == "" ? "Custom Open Time" : description + " - Open"),
                 Description = description,
                 SessionType = SessionType.Custom,

@@ -138,41 +138,40 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="tradingSessionType"></param>
         /// <returns>Initial <see cref="TradingTime"/> of the <see cref="SessionType"/>.</returns>
-        public static TradingTime ToBeginSessionTime(this SessionType tradingSessionType, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
+        public static TradingTime ToBeginSessionTime(this SessionType tradingSessionType, InstrumentKey instrumentKey, int offset = 0)
         {
-            switch (instrumentCode)
+            switch (instrumentKey)
             {
-                case (InstrumentCode.Default):
-                case (InstrumentCode.MES):
+                case (InstrumentKey.MES):
                 {
 
                     switch (tradingSessionType)
                     {
                         case (SessionType.Electronic):
-                            return TradingTimeType.Electronic_Open.ToSessionTime(instrumentCode,offset);
+                            return TradingTimeType.Electronic_Open.ToSessionTime(instrumentKey,offset);
                         case (SessionType.Regular):
-                            return TradingTimeType.Regular_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.Regular_Open.ToSessionTime(instrumentKey, offset);
                         case (SessionType.OVN):
-                            return TradingTimeType.OVN_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.OVN_Open.ToSessionTime(instrumentKey, offset);
 
                         case (SessionType.American):
-                            return TradingTimeType.American_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.American_Open.ToSessionTime(instrumentKey, offset);
                         case (SessionType.AmericanAndEuropean):
-                            return TradingTimeType.AmericanAndEuropean_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.AmericanAndEuropean_Open.ToSessionTime(instrumentKey, offset);
                         case (SessionType.Asian):
-                            return TradingTimeType.Asian_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.Asian_Open.ToSessionTime(instrumentKey, offset);
                         case (SessionType.European):
-                            return TradingTimeType.European_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.European_Open.ToSessionTime(instrumentKey, offset);
                         case (SessionType.American_RS):
-                            return TradingTimeType.American_RS_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.American_RS_Open.ToSessionTime(instrumentKey, offset);
                         case (SessionType.Asian_RS):
-                            return TradingTimeType.Asian_RS_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.Asian_RS_Open.ToSessionTime(instrumentKey, offset);
                         case (SessionType.American_RS_EXT):
-                            return TradingTimeType.American_RS_EXT_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.American_RS_EXT_Open.ToSessionTime(instrumentKey, offset);
                         case (SessionType.American_RS_EOD):
-                            return TradingTimeType.American_RS_EOD_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.American_RS_EOD_Open.ToSessionTime(instrumentKey, offset);
                         case (SessionType.American_RS_NWD):
-                            return TradingTimeType.American_RS_NWD_Open.ToSessionTime(instrumentCode, offset);
+                            return TradingTimeType.American_RS_NWD_Open.ToSessionTime(instrumentKey, offset);
 
                         default:
                             throw new Exception("The trading session doesn't exists.");
@@ -188,41 +187,40 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="tradingSessionType"></param>
         /// <returns>Final <see cref="TradingTime"/> of the <see cref="SessionType"/>.</returns>
-        public static TradingTime ToEndSessionTime(this SessionType tradingSessionType, InstrumentCode instrumentCode = InstrumentCode.Default, int offset = 0)
+        public static TradingTime ToEndSessionTime(this SessionType tradingSessionType, InstrumentKey instrumentKey, int offset = 0)
         {
-            switch (instrumentCode)
+            switch (instrumentKey)
             {
-                case (InstrumentCode.Default):
-                case (InstrumentCode.MES):
+                case (InstrumentKey.MES):
                     {
 
                         switch (tradingSessionType)
                         {
                             case (SessionType.Electronic):
-                                return TradingTimeType.Electronic_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.Electronic_Close.ToSessionTime(instrumentKey, offset);
                             case (SessionType.Regular):
-                                return TradingTimeType.Regular_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.Regular_Close.ToSessionTime(instrumentKey, offset);
                             case (SessionType.OVN):
-                                return TradingTimeType.OVN_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.OVN_Close.ToSessionTime(instrumentKey, offset);
 
                             case (SessionType.American):
-                                return TradingTimeType.American_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.American_Close.ToSessionTime(instrumentKey, offset);
                             case (SessionType.AmericanAndEuropean):
-                                return TradingTimeType.AmericanAndEuropean_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.AmericanAndEuropean_Close.ToSessionTime(instrumentKey, offset);
                             case (SessionType.Asian):
-                                return TradingTimeType.Asian_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.Asian_Close.ToSessionTime(instrumentKey, offset);
                             case (SessionType.European):
-                                return TradingTimeType.European_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.European_Close.ToSessionTime(instrumentKey, offset);
                             case (SessionType.American_RS):
-                                return TradingTimeType.American_RS_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.American_RS_Close.ToSessionTime(instrumentKey, offset);
                             case (SessionType.Asian_RS):
-                                return TradingTimeType.Asian_RS_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.Asian_RS_Close.ToSessionTime(instrumentKey, offset);
                             case (SessionType.American_RS_EXT):
-                                return TradingTimeType.American_RS_EXT_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.American_RS_EXT_Close.ToSessionTime(instrumentKey, offset);
                             case (SessionType.American_RS_EOD):
-                                return TradingTimeType.American_RS_EOD_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.American_RS_EOD_Close.ToSessionTime(instrumentKey, offset);
                             case (SessionType.American_RS_NWD):
-                                return TradingTimeType.American_RS_NWD_Close.ToSessionTime(instrumentCode, offset);
+                                return TradingTimeType.American_RS_NWD_Close.ToSessionTime(instrumentKey, offset);
 
                             default:
                                 throw new Exception("The trading session doesn't exists.");
@@ -234,7 +232,7 @@ namespace Nt.Core.Trading
 
         }
 
-        public static TradingSession ToSessionHours(this SessionType type, InstrumentCode instrumentCode = InstrumentCode.Default, int balanceMinutes = 0)
+        public static TradingSession ToSessionHours(this SessionType type, InstrumentKey instrumentCode, int balanceMinutes = 0)
         {
             return TradingSession.CreateTradingSessionByType(type,instrumentCode,balanceMinutes);
         }

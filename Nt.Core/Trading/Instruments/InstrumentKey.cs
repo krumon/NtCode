@@ -4,10 +4,9 @@ namespace Nt.Core.Trading
     /// <summary>
     /// The unique code of financial instruments.
     /// </summary>
-    public enum InstrumentCode
+    public enum InstrumentKey
     {
-        Default = 0,
-        MES     = 1,
+        MES,
         ES,
         EMD,
         MNQ,

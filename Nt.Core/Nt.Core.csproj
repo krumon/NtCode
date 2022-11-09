@@ -357,11 +357,11 @@
     <Compile Include="Trading\Patterns\Swing\SwingPoint.cs" />
     <Compile Include="NinjaScript\Caches\BarsCache.cs" />
     <Compile Include="NinjaScript\DrawingTools\Lines\LabelLineHelpers.cs" />
-    <Compile Include="Trading\Instruments\TradingInstrument.cs" />
+    <Compile Include="Trading\Instruments\InstrumentProvider.cs" />
     <Compile Include="Trading\Markets\MarketExchangeExtensions.cs" />
     <Compile Include="Trading\Markets\MarketExchange.cs" />
-    <Compile Include="Trading\Instruments\InstrumentCode.cs" />
-    <Compile Include="Trading\Instruments\InstrumentCodeExtensions.cs" />
+    <Compile Include="Trading\Instruments\InstrumentKey.cs" />
+    <Compile Include="Trading\Instruments\InstrumentKeyExtensions.cs" />
     <Compile Include="Helpers\Math\ISeriesHelpers.cs" />
     <Compile Include="Events\SessionChangedEvent.cs" />
     <Compile Include="NinjaScript\Caches\SwingLevelsCache.cs" />
@@ -394,6 +394,8 @@
     <Compile Include="Trading\Sessions\Internal\SessionTypeExtensions.cs" />
     <Compile Include="NinjaScript\Sessions\SessionHours\SessionHours.cs" />
     <Compile Include="Trading\Times\TradingTimeTypeExtensions.cs" />
+    <Compile Include="Trading\TradingHours\TradingHoursKeyExtensions.cs" />
+    <Compile Include="Trading\TradingHours\TradingHoursKey.cs" />
     <Compile Include="Users\UserAccount.cs" />
     <Compile Include="NinjaScript\Managers\Sessions\SessionsManager.cs" />
     <Compile Include="Users\UserSettings.cs" />

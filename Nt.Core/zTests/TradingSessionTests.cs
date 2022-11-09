@@ -67,6 +67,7 @@ namespace Nt.Core.Tests
             Title("Instance tests");
             Subtitle("Custom instance with trading session types");
             ts = TradingSession.CreateCustomTradingSession(
+                InstrumentKey.MES,
                 TradingTimeType.American_Open,
                 TradingTimeType.Asian_Close,
                 "My Custom TradingSession");
@@ -74,12 +75,12 @@ namespace Nt.Core.Tests
             NewLine();
 
             Subtitle("Custom instance with Time Span, Time Zone Info and Trading Session Type");
-            ts = TradingSession.CreateCustomTradingSession(new TimeSpan(12, 15, 0), TimeZoneInfo.Local, TradingTimeType.European_Close);
+            ts = TradingSession.CreateCustomTradingSession(InstrumentKey.MES, new TimeSpan(12, 15, 0), TimeZoneInfo.Local, TradingTimeType.European_Close);
             WriteLine(ts.ToShortString("u"));
             NewLine();
 
             Subtitle("Instance by generic types");
-            ts = TradingSession.CreateTradingSessionByType(SessionType.American);
+            ts = TradingSession.CreateTradingSessionByType(SessionType.American, InstrumentKey.MES);
             WriteLine(ts.ToLongString("l"));
             NewLine();
         }
@@ -87,7 +88,7 @@ namespace Nt.Core.Tests
         private void ToStringTests(SessionType type)
         {
             // Create a trading session by type.
-            TradingSession ts = TradingSession.CreateTradingSessionByType(type);
+            TradingSession ts = TradingSession.CreateTradingSessionByType(type, InstrumentKey.MES);
 
             Title("Test of To String methods");
             Console.WriteLine($"Method ToString() => {ts}");
@@ -106,11 +107,11 @@ namespace Nt.Core.Tests
             EnumHelpers.ForEach<SessionType>((t) =>
             {
                 if (t != SessionType.Custom)
-                    Console.WriteLine(t.ToSessionHours().ToString());
+                    Console.WriteLine(t.ToSessionHours(InstrumentKey.MES).ToString());
             });
 
             NewLine();
-            TradingSession ts = TradingSession.CreateTradingSessionByType(SessionType.American);
+            TradingSession ts = TradingSession.CreateTradingSessionByType(SessionType.American, InstrumentKey.MES);
             //bool exist = ts.Exist();
 
             //string s = exist ? "exist" : "don't exist";
@@ -121,14 +122,14 @@ namespace Nt.Core.Tests
 
         private void AddTests()
         {
-            ts = TradingSession.CreateTradingSessionByType(SessionType.European);
+            ts = TradingSession.CreateTradingSessionByType(SessionType.European, InstrumentKey.MES);
             //ts.Add(types);
         }
 
         private void OperatorTests(SessionType t1, SessionType t2)
         {
-            TradingSession sh1 = TradingSession.CreateTradingSessionByType(t1);
-            TradingSession sh2 = TradingSession.CreateTradingSessionByType(t2);
+            TradingSession sh1 = TradingSession.CreateTradingSessionByType(t1, InstrumentKey.MES);
+            TradingSession sh2 = TradingSession.CreateTradingSessionByType(t2, InstrumentKey.MES);
             int i;
             bool b;
             string s = string.Empty;
@@ -260,7 +261,7 @@ namespace Nt.Core.Tests
                     return;
 
                 Console.WriteLine();
-                Console.WriteLine(String.Format("Código: {0} | {1} | {2}", session, session.ToTradingTime().ToSessionTime().LocalTime.ToString(), session.ToTradingTime().ToDescription()));
+                Console.WriteLine(String.Format("Código: {0} | {1} | {2}", session, session.ToTradingTime().ToSessionTime(InstrumentKey.MES).LocalTime.ToString(), session.ToTradingTime().ToDescription()));
                 Console.ReadKey();
                 Console.Clear();
 

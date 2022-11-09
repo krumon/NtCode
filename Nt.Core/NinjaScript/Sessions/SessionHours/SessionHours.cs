@@ -269,7 +269,7 @@ namespace Nt.Core.Ninjascript
         #region Private methods
 
         /// <summary>
-        /// Add <see cref="TradingSessionInfo"/> to the session hours sessions in the correct place.
+        /// Add <see cref="TradingSession"/> to the session hours sessions in the correct place.
         /// </summary>
         /// <param name="sessionType"></param>
         /// <param name="instrumentCode"></param>
@@ -277,7 +277,7 @@ namespace Nt.Core.Ninjascript
         /// <param name="includeFinalBalance"></param>
         private void AddSession(
             SessionType sessionType,
-            InstrumentCode instrumentCode = InstrumentCode.Default,
+            InstrumentKey instrumentCode,
             int includeInitialBalance = 0,
             int includeFinalBalance = 0)
         {

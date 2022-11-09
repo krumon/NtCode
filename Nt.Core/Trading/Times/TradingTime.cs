@@ -140,15 +140,15 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="tradingTimeType">The specific session time to create the instance.</param>
         /// <param name="e">The snew session args.</param>
-        /// <param name="instrumentCode">The unique code of the financial instrument session.</param>
+        /// <param name="instrumentKey">The unique code of the financial instrument session.</param>
         /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
         /// <returns>The session time instance.</returns>
-        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
+        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, InstrumentKey instrumentKey, int timeDisplacement = 0)
         {
             return new TradingTime 
             {
-                TimeZoneInfo = tradingTimeType.ToTimeZoneInfo(instrumentCode),
-                Time = tradingTimeType.ToTime(instrumentCode, timeDisplacement),
+                TimeZoneInfo = tradingTimeType.ToTimeZoneInfo(instrumentKey),
+                Time = tradingTimeType.ToTime(instrumentKey, timeDisplacement),
                 TradingTimeType = tradingTimeType
             };
         }
@@ -158,15 +158,15 @@ namespace Nt.Core.Trading
         /// </summary>
         /// <param name="tradingTimeType">The specific session time to create the instance.</param>
         /// <param name="e">The snew session args.</param>
-        /// <param name="instrumentCode">The unique code of the financial instrument session.</param>
+        /// <param name="instrumentKey">The unique code of the financial instrument session.</param>
         /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
         /// <returns>The session time instance.</returns>
-        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, SessionChangedEventArgs e, InstrumentCode instrumentCode = InstrumentCode.Default, int timeDisplacement = 0)
+        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, SessionChangedEventArgs e, InstrumentKey instrumentKey, int timeDisplacement = 0)
         {
             return new TradingTime 
             {
-                TimeZoneInfo = tradingTimeType.ToTimeZoneInfo(instrumentCode),
-                Time = tradingTimeType.ToTime(instrumentCode, timeDisplacement),
+                TimeZoneInfo = tradingTimeType.ToTimeZoneInfo(instrumentKey),
+                Time = tradingTimeType.ToTime(instrumentKey, timeDisplacement),
                 TradingTimeType = tradingTimeType
             };
         }
@@ -296,23 +296,17 @@ namespace Nt.Core.Trading
         /// <summary>
         /// Indicates if <paramref name="st"/> exists in the <see cref="TradingTime"/> enum.
         /// </summary>
-        /// <param name="tradingTime"><see cref="TradingTime"/> to check exists.</param>
+        /// <param name="tradingTimeType"><see cref="TradingTime"/> to check exists.</param>
         /// <returns>True if the session time object exists in the trading time type.</returns>
-        public static bool Exist(TradingTimeType tradingTime)
+        public static bool Exist(TradingTimeType tradingTimeType)
         {
             bool exist = false;
-            TradingTime st = CreateSessionTimeByType(tradingTime);
-            TradingTime st_tmp;
 
             EnumHelpers.ForEach<TradingTimeType>((t) =>
             {
                 if (!exist)
                 {
-                    if (t == TradingTimeType.Custom)
-                        return;
-
-                    st_tmp = CreateSessionTimeByType(t);
-                    if (st.Equals(st_tmp))
+                    if (t == tradingTimeType)
                         exist = true;
                 }
             });
