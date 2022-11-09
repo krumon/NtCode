@@ -1,5 +1,5 @@
 ﻿using NinjaTrader.Cbi;
-using Nt.Core.Trading;
+using Nt.Core.Providers;
 
 namespace Nt.Scripts.Providers
 {

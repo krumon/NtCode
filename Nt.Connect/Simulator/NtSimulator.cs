@@ -1,5 +1,4 @@
-﻿using Nt.Core;
-using Nt.Core.Trading;
+﻿using Nt.Core.Data;
 using System;
 using System.Timers;
 

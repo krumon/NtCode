@@ -1,8 +1,8 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
+using Nt.Core.Data;
+using Nt.Core.Data.Internal;
 using Nt.Core.Events;
-using Nt.Core.Trading;
-using Nt.Core.Trading.Internal;
 using System;
 using System.Collections.Generic;
 

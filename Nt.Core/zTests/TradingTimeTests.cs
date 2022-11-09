@@ -1,5 +1,5 @@
 ﻿using Kr.Core.Tests;
-using Nt.Core.Trading;
+using Nt.Core.Data;
 
 namespace ConsoleApp.Tests
 {

@@ -1,8 +1,7 @@
 ﻿using Kr.Core.Tests;
 using NinjaTrader.NinjaScript;
-using Nt.Core;
+using Nt.Core.Data;
 using Nt.Core.Ninjascript;
-using Nt.Core.Trading;
 using System;
 
 namespace Nt.Core.Tests

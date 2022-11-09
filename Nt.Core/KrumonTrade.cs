@@ -1,4 +1,4 @@
-﻿using Nt.Core.Trading;
+﻿using Nt.Core.Providers;
 
 namespace Nt.Core
 {

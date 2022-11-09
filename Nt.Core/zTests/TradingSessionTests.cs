@@ -1,7 +1,7 @@
 ﻿using Kr.Core.Helpers;
 using Kr.Core.Tests;
-using Nt.Core.Trading;
-using Nt.Core.Trading.Internal;
+using Nt.Core.Data;
+using Nt.Core.Data.Internal;
 using System;
 
 namespace Nt.Core.Tests
