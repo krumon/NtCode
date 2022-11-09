@@ -80,13 +80,12 @@ namespace Nt.Core.Trading
         /// <param name="key">The string to converts to enum.</param>
         /// <returns>The <see cref="InstrumentKey"/> enum.</returns>
         /// <exception cref="Exception">Returns a exception if the string cannot be convert.</exception>
-        public static InstrumentKey ToInstrumentKey(this string key)
+        public static bool TryGetInstrumentKey(this string key, out InstrumentKey instrumentKey)
         {
-
-            if (Enum.TryParse(key, out InstrumentKey instrumentKey))
-                return instrumentKey;
-
-            throw new Exception("The string 'key' cannot be convert to InstrumentKey enum.");
+            if (Enum.TryParse(key, out instrumentKey))
+                return true;
+            return false;
+            //throw new Exception("The string 'key' cannot be convert to InstrumentKey enum.");
         }
 
         /// <summary>

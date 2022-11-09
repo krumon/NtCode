@@ -357,7 +357,7 @@
     <Compile Include="Trading\Patterns\Swing\SwingPoint.cs" />
     <Compile Include="NinjaScript\Caches\BarsCache.cs" />
     <Compile Include="NinjaScript\DrawingTools\Lines\LabelLineHelpers.cs" />
-    <Compile Include="Trading\Instruments\InstrumentProvider.cs" />
+    <Compile Include="Trading\Instruments\BaseInstrumentProvider.cs" />
     <Compile Include="Trading\Markets\MarketExchangeExtensions.cs" />
     <Compile Include="Trading\Markets\MarketExchange.cs" />
     <Compile Include="Trading\Instruments\InstrumentKey.cs" />

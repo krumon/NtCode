@@ -14,7 +14,7 @@ namespace Nt.Core.Trading
         private SessionProvider _sessionProvider;
         private List<Func<SessionProviderConfiguration, SessionBuilder>> _sessionProviderConfigureActions;
         private Dictionary<string, Func<TradingSessionConfiguration, SessionProvider>> _tradingSessionConfigureActions;
-        private InstrumentProvider _instrumentProvider;
+        private BaseInstrumentProvider _instrumentProvider;
         private bool _isBuild;
 
         #endregion
