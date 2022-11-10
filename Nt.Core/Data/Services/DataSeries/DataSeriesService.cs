@@ -3,9 +3,9 @@
 namespace Nt.Core.Data
 {
     /// <summary>
-    /// Represents any financial instrument.
+    /// Represents any ninjascript data series.
     /// </summary>
-    public class InstrumentService
+    public class DataSeriesService
     {
 
         #region Private members
@@ -77,7 +77,7 @@ namespace Nt.Core.Data
         /// <summary>
         /// Create <see cref="InstrumentProvider"/> default instance.
         /// </summary>
-        public InstrumentService(string stringKey)
+        public DataSeriesService(string stringKey)
         {
             if (string.IsNullOrEmpty(stringKey))
                 throw new ArgumentException($"the parameter {nameof(stringKey)} cannot be null or empty");

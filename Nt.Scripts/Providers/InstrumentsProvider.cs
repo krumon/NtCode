@@ -14,7 +14,7 @@ namespace Nt.Scripts.Providers
         #region Private members
 
         private readonly List<InstrumentProvider> _instruments = new List<InstrumentProvider>();
-        private readonly InstrumentServiceCollection _series = new InstrumentServiceCollection();
+        private readonly DataSeriesCollection _series = new DataSeriesCollection();
 
         #endregion
 

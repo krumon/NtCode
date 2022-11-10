@@ -6,6 +6,7 @@ namespace Nt.Core.Data
     /// </summary>
     public enum InstrumentKey
     {
+        Default,
         MES,
         ES,
         EMD,
@@ -34,7 +35,5 @@ namespace Nt.Core.Data
         _6M,
         _6N,
         _6S
-
-
     }
 }

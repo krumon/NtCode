@@ -19,7 +19,7 @@ namespace Nt.Core.Data
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
         /// <returns>An <see cref="IServiceProvider"/>.</returns>
-        IServiceProvider CreateNinjascriptProvider(TContainerBuilder containerBuilder);
+        IServiceProvider CreateProvider(TContainerBuilder containerBuilder);
 
     }
 }

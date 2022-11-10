@@ -14,8 +14,8 @@ namespace Nt.Core.Data
 
         private readonly bool _instanceError;
         private readonly InstrumentKey _instrumentKey;
-        private InstrumentServiceDescriptor[] _descriptors;
-        private ConcurrentDictionary<string, InstrumentService> _createdServices;
+        private DataSeriesDescriptor[] _descriptors;
+        private ConcurrentDictionary<string, DataSeriesService> _createdServices;
 
         #endregion
 
@@ -78,14 +78,14 @@ namespace Nt.Core.Data
 
         #region Constructors
 
-        public InstrumentProvider(ICollection<InstrumentServiceDescriptor> descriptors, InstrumentProviderOptions options)
+        public InstrumentProvider(ICollection<DataSeriesDescriptor> descriptors, InstrumentProviderOptions options)
         {
             if (descriptors == null)
                 throw new ArgumentNullException(nameof(descriptors));
             if (descriptors.Count == 0)
                 throw new ArgumentException("Descriptors count cannot be 0");
 
-            _descriptors = new InstrumentServiceDescriptor[descriptors.Count];
+            _descriptors = new DataSeriesDescriptor[descriptors.Count];
             descriptors.CopyTo(_descriptors,0);
         }
 

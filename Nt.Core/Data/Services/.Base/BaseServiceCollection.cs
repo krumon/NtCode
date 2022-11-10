@@ -33,10 +33,16 @@ namespace Nt.Core.Data
         public bool IsReadOnly => false;
 
         /// <inheritdoc/>
-        public abstract void Add(T item);
+        public virtual void Add(T item)
+        {
+            _descriptors.Add(item);
+        }
 
         /// <inheritdoc/>
-        public abstract bool Remove(T item);
+        public virtual bool Remove(T item)
+        {
+            return _descriptors.Remove(item);
+        }
 
         /// <inheritdoc/>
         public void Clear()
@@ -84,6 +90,22 @@ namespace Nt.Core.Data
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        #endregion
+
+        #region Public methods
+
+        public bool Exist(T descriptor)
+        {
+            if (_descriptors == null || _descriptors.Count == 0)
+                return false;
+
+            foreach (T item in _descriptors)
+                if (item.Key == descriptor.Key)
+                    return true;
+
+            return false;
         }
 
         #endregion

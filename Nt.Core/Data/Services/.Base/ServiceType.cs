@@ -2,7 +2,7 @@
 {
     public enum ServiceType
     {
-        InstrumentService,
+        DataSeriesService,
         SessionService
     }
 }

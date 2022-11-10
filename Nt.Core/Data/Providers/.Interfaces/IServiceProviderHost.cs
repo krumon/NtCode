@@ -1,11 +1,18 @@
 ﻿namespace Nt.Core.Data
 {
-    public interface IServicesHost //: IDisposable
+    public interface IServiceProviderHost //: IDisposable
     {
         /// <summary>
-        /// The ninjascript configured services.
+        /// The ninjascript configured service provider.
         /// </summary>
         IServiceProvider[] Services { get; }
+
+        /// <summary>
+        /// Gets the service provider object with the specific key.
+        /// </summary>
+        /// <param name="key">The key of the service provider.</param>
+        /// <returns>The object of the ninjascript service provider or null if there aren't object.</returns>
+        IServiceProvider GetServiceProvider(string key);
 
         ///// <summary>
         ///// Start the ninjascript.

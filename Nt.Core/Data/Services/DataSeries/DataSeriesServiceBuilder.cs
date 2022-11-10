@@ -5,18 +5,18 @@ using System.Collections.Generic;
 namespace Nt.Core.Data
 {
     /// <summary>
-    /// Builds instruments provider objects.
+    /// Builds data series service objects.
     /// </summary>
-    public class InstrumentServiceBuilder
+    public class DataSeriesServiceBuilder
     {
 
         #region Private members
 
-        private readonly InstrumentServiceCollection _descriptors = new InstrumentServiceCollection();
+        private readonly DataSeriesCollection _descriptors = new DataSeriesCollection();
         private readonly InstrumentProvider _instrumentProvider;
 
         //private List<Func<DataSeriesConfiguration, InstrumentBuilder>> _dataSeriesConfigureActions;
-        private List<Func<InstrumentProviderOptions, InstrumentServiceBuilder>> _instrumentProviderConfigureActions;
+        private List<Func<InstrumentProviderOptions, DataSeriesServiceBuilder>> _instrumentProviderConfigureActions;
         
         private bool _isBuild;
 
@@ -27,7 +27,7 @@ namespace Nt.Core.Data
         /// <summary>
         /// Create <see cref="SessionBuilder"/> default instance.
         /// </summary>
-        public InstrumentServiceBuilder()
+        public DataSeriesServiceBuilder()
         {
         }
 
@@ -60,20 +60,20 @@ namespace Nt.Core.Data
         #region Public Methods
 
         // Añadir sucesivamente todas las sesiones y sus configuraciones individuales
-        public InstrumentServiceBuilder ConfigureInstrument()
+        public DataSeriesServiceBuilder ConfigureInstrument()
         {
             throw new NotImplementedException();
         }
 
-        public InstrumentServiceBuilder AddDataSeries(InstrumentKey key) =>
+        public DataSeriesServiceBuilder AddDataSeries(InstrumentKey key) =>
             AddDataSeries(key,PeriodType.Minute,1,key.ToDefaultTradingHoursKey());
 
-        public InstrumentServiceBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value) =>
+        public DataSeriesServiceBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value) =>
             AddDataSeries(key,period,value,key.ToDefaultTradingHoursKey());
 
-        public InstrumentServiceBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value, TradingHoursKey tradingHoursKey)
+        public DataSeriesServiceBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value, TradingHoursKey tradingHoursKey)
         {
-            InstrumentServiceDescriptor descriptor = new InstrumentServiceDescriptor(key,period,value,tradingHoursKey);
+            DataSeriesDescriptor descriptor = new DataSeriesDescriptor(key,period,value,tradingHoursKey);
             _descriptors.Add(descriptor);
             return this;
         }
