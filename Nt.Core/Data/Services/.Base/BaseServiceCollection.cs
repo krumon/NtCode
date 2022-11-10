@@ -1,17 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Nt.Core
+namespace Nt.Core.Data
 {
     /// <summary>
     /// Represents any implemented collection.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class BaseDescriptorCollection<T> :
-        IList<T>,
-        ICollection<T>,
-        IEnumerable<T>,
-        IEnumerable
+    public abstract class BaseServiceCollection<T> : IServiceCollection<T> 
+        where T : IServiceDescriptor
     {
 
         #region Private members

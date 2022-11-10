@@ -196,19 +196,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\DynamicallyAccessedMemberAttribute.cs" />
-    <Compile Include="Data\Providers\Instruments\InstrumentService.cs" />
-    <Compile Include="Data\Providers\Instruments\InstrumentBuilder.cs" />
-    <Compile Include="Data\Providers\Instruments\InstrumentProviderConfiguration.cs" />
-    <Compile Include="Data\Providers\Instruments\InstrumentConfiguration.cs" />
-    <Compile Include="Core\BaseDescriptorCollection.cs" />
+    <Compile Include="Data\Services\.Interfaces\IServiceBuilder.cs" />
+    <Compile Include="Data\Services\.Interfaces\IServiceDescriptor.cs" />
+    <Compile Include="Data\Providers\Host\IServicesHost.cs" />
+    <Compile Include="Data\Providers\Host\IServicesHostBuilder.cs" />
+    <Compile Include="Data\Providers\.Interfaces\IServiceProvider.cs" />
+    <Compile Include="Data\Services\.Interfaces\IServiceCollection.cs" />
+    <Compile Include="Data\Providers\.Interfaces\IRequiredService.cs" />
+    <Compile Include="Data\Providers\.Interfaces\IServiceProviderFactory.cs" />
+    <Compile Include="Data\Providers\Instruments\InstrumentProviderOptions.cs" />
+    <Compile Include="Data\Services\Instruments\InstrumentService.cs" />
+    <Compile Include="Data\Services\Instruments\InstrumentServiceBuilder.cs" />
+    <Compile Include="Data\Services\Instruments\InstrumentServiceConfiguration.cs" />
+    <Compile Include="Data\Services\.Base\BaseServiceCollection.cs" />
     <Compile Include="Data\Bars\BarsPeriod.cs" />
-    <Compile Include="Data\Providers\Instruments\InstrumentDescriptorCollection.cs" />
+    <Compile Include="Data\Services\Instruments\InstrumentServiceCollection.cs" />
     <Compile Include="Data\Providers\Sessions\BaseSessionProvider.cs" />
+    <Compile Include="Data\Services\ServiceType.cs" />
     <Compile Include="Data\Sessions\Session.cs" />
     <Compile Include="Data\Sessions\SessionCollection.cs" />
     <Compile Include="Data\Providers\Sessions\SessionConfiguration.cs" />
     <Compile Include="Data\Sessions\SessionExtensions.cs" />
-    <Compile Include="Data\Providers\Instruments\InstrumentDescriptor.cs" />
+    <Compile Include="Data\Services\Instruments\InstrumentServiceDescriptor.cs" />
     <Compile Include="Exceptions\ExceptionResource.cs" />
     <Compile Include="Exceptions\ExceptionArgument.cs" />
     <Compile Include="Exceptions\ThrowHelper.cs" />
@@ -369,7 +378,7 @@
     <Compile Include="Data\Patterns\Swing\SwingPoint.cs" />
     <Compile Include="NinjaScript\Caches\BarsCache.cs" />
     <Compile Include="NinjaScript\DrawingTools\Lines\LabelLineHelpers.cs" />
-    <Compile Include="Data\Providers\Instruments\BaseInstrumentProvider.cs" />
+    <Compile Include="Data\Providers\Instruments\InstrumentProvider.cs" />
     <Compile Include="Data\Exchanges\MarketExchangeExtensions.cs" />
     <Compile Include="Data\Exchanges\MarketExchange.cs" />
     <Compile Include="Data\Instruments\InstrumentKey.cs" />
@@ -464,7 +473,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Descriptors\" />
     <Folder Include="NinjaScript\Caches\Base\" />
     <Folder Include="Services\.Interfaces\" />
     <Folder Include="Services\Core\ServiceHosted\" />

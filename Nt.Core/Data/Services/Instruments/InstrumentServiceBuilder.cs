@@ -1,24 +1,22 @@
-﻿using Kr.Core.Helpers;
-using Nt.Core.Data.Internal;
-using Nt.Core.Providers;
-using System.Collections.Generic;
+﻿using Nt.Core.Providers;
 using System;
+using System.Collections.Generic;
 
 namespace Nt.Core.Data
 {
     /// <summary>
     /// Builds instruments provider objects.
     /// </summary>
-    public class InstrumentBuilder
+    public class InstrumentServiceBuilder
     {
 
         #region Private members
 
-        private readonly InstrumentDescriptorCollection _descriptors = new InstrumentDescriptorCollection();
-        private readonly BaseInstrumentProvider _instrumentProvider;
+        private readonly InstrumentServiceCollection _descriptors = new InstrumentServiceCollection();
+        private readonly InstrumentProvider _instrumentProvider;
 
         //private List<Func<DataSeriesConfiguration, InstrumentBuilder>> _dataSeriesConfigureActions;
-        private List<Func<InstrumentProviderConfiguration, InstrumentBuilder>> _instrumentProviderConfigureActions;
+        private List<Func<InstrumentProviderOptions, InstrumentServiceBuilder>> _instrumentProviderConfigureActions;
         
         private bool _isBuild;
 
@@ -29,7 +27,7 @@ namespace Nt.Core.Data
         /// <summary>
         /// Create <see cref="SessionBuilder"/> default instance.
         /// </summary>
-        public InstrumentBuilder()
+        public InstrumentServiceBuilder()
         {
         }
 
@@ -37,7 +35,7 @@ namespace Nt.Core.Data
 
         #region Implementation methods
 
-        public BaseInstrumentProvider Build() //Returns ISessionProvider
+        public InstrumentProvider Build() //Returns ISessionProvider
         {
             // The trading session can be only once time created.
             if (_isBuild)
@@ -62,20 +60,20 @@ namespace Nt.Core.Data
         #region Public Methods
 
         // Añadir sucesivamente todas las sesiones y sus configuraciones individuales
-        public InstrumentBuilder ConfigureInstrument()
+        public InstrumentServiceBuilder ConfigureInstrument()
         {
             throw new NotImplementedException();
         }
 
-        public InstrumentBuilder AddDataSeries(InstrumentKey key) =>
+        public InstrumentServiceBuilder AddDataSeries(InstrumentKey key) =>
             AddDataSeries(key,PeriodType.Minute,1,key.ToDefaultTradingHoursKey());
 
-        public InstrumentBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value) =>
+        public InstrumentServiceBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value) =>
             AddDataSeries(key,period,value,key.ToDefaultTradingHoursKey());
 
-        public InstrumentBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value, TradingHoursKey tradingHoursKey)
+        public InstrumentServiceBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value, TradingHoursKey tradingHoursKey)
         {
-            InstrumentDescriptor descriptor = new InstrumentDescriptor(key,period,value,tradingHoursKey);
+            InstrumentServiceDescriptor descriptor = new InstrumentServiceDescriptor(key,period,value,tradingHoursKey);
             _descriptors.Add(descriptor);
             return this;
         }

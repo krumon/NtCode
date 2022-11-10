@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents a deafault implementation of session descriptor collection.
     /// </summary>
-    public class SessionDescriptorCollection : BaseDescriptorCollection<SessionDescriptor>
+    public class SessionDescriptorCollection : BaseServiceCollection<SessionDescriptor>
     {
 
         #region Implementation methods

@@ -3,19 +3,19 @@
     /// <summary>
     /// Represents a default implementation of data series descriptor collection.
     /// </summary>
-    public class InstrumentDescriptorCollection : BaseDescriptorCollection<InstrumentDescriptor>
+    public class InstrumentServiceCollection : BaseServiceCollection<InstrumentServiceDescriptor>
     {
 
         #region Implementation methods
 
         /// <inheritdoc/>
-        public override void Add(InstrumentDescriptor item)
+        public override void Add(InstrumentServiceDescriptor item)
         {
             _descriptors.Add(item);
         }
 
         /// <inheritdoc/>
-        public override bool Remove(InstrumentDescriptor item)
+        public override bool Remove(InstrumentServiceDescriptor item)
         {
             return _descriptors.Remove(item);
         }

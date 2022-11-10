@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Nt.Core.Data
 {
-    public class SessionDescriptor
+    public class SessionDescriptor : IServiceDescriptor
     {
 
         #region Private members

@@ -6,7 +6,7 @@ namespace Nt.Scripts.Providers
     /// <summary>
     /// Ninjascripts instrumens provider.
     /// </summary>
-    public class InstrumentProvider : BaseInstrumentProvider
+    public class InstrumentProvider : Core.Data.InstrumentProvider
     {
 
         #region Constructors
