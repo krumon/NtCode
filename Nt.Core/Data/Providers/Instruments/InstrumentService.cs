@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 
 namespace Nt.Core.Data
 {
     /// <summary>
     /// Represents any financial instrument.
     /// </summary>
-    public class BaseInstrumentProvider
+    public class InstrumentService
     {
 
         #region Private members
 
         private readonly bool _instanceError;
         private readonly InstrumentKey _instrumentKey;
-        private InstrumentDescriptor[] _descriptors;
-        private ConcurrentDictionary<string, InstrumentService> _createdServices;
 
         #endregion
 
@@ -78,21 +74,10 @@ namespace Nt.Core.Data
 
         #region Constructors
 
-        public BaseInstrumentProvider(ICollection<InstrumentDescriptor> descriptors)
-        {
-            if (descriptors == null)
-                throw new ArgumentNullException(nameof(descriptors));
-            if (descriptors.Count == 0)
-                throw new ArgumentException("Descriptors count cannot be 0");
-
-            _descriptors = new InstrumentDescriptor[descriptors.Count];
-            descriptors.CopyTo(_descriptors,0);
-        }
-
         /// <summary>
         /// Create <see cref="BaseInstrumentProvider"/> default instance.
         /// </summary>
-        public BaseInstrumentProvider(string stringKey)
+        public InstrumentService(string stringKey)
         {
             if (string.IsNullOrEmpty(stringKey))
                 throw new ArgumentException($"the parameter {nameof(stringKey)} cannot be null or empty");

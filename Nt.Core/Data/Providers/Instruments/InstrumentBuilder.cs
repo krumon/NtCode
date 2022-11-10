@@ -14,7 +14,7 @@ namespace Nt.Core.Data
 
         #region Private members
 
-        private readonly DataSeriesDescriptorCollection _descriptors = new DataSeriesDescriptorCollection();
+        private readonly InstrumentDescriptorCollection _descriptors = new InstrumentDescriptorCollection();
         private readonly BaseInstrumentProvider _instrumentProvider;
 
         //private List<Func<DataSeriesConfiguration, InstrumentBuilder>> _dataSeriesConfigureActions;
@@ -67,15 +67,15 @@ namespace Nt.Core.Data
             throw new NotImplementedException();
         }
 
-        public InstrumentBuilder AddDataSerie(InstrumentKey key) =>
-            AddDataSerie(key,PeriodType.Minute,1,key.ToDefaultTradingHoursKey());
+        public InstrumentBuilder AddDataSeries(InstrumentKey key) =>
+            AddDataSeries(key,PeriodType.Minute,1,key.ToDefaultTradingHoursKey());
 
-        public InstrumentBuilder AddDataSerie(InstrumentKey key, PeriodType period, int value) =>
-            AddDataSerie(key,period,value,key.ToDefaultTradingHoursKey());
+        public InstrumentBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value) =>
+            AddDataSeries(key,period,value,key.ToDefaultTradingHoursKey());
 
-        public InstrumentBuilder AddDataSerie(InstrumentKey key, PeriodType period, int value, TradingHoursKey tradingHoursKey)
+        public InstrumentBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value, TradingHoursKey tradingHoursKey)
         {
-            DataSeriesDescriptor descriptor = new DataSeriesDescriptor(key,period,value,tradingHoursKey);
+            InstrumentDescriptor descriptor = new InstrumentDescriptor(key,period,value,tradingHoursKey);
             _descriptors.Add(descriptor);
             return this;
         }

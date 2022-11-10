@@ -3,13 +3,12 @@
     /// <summary>
     /// Represents a ninjascript instrument.
     /// </summary>
-    public class DataSeriesDescriptor
+    public class InstrumentDescriptor
     {
 
         #region Private members
 
         private int _periodValue = 1;
-        private string _key;
 
         #endregion
 
@@ -58,23 +57,23 @@
         #region Constructors
 
         /// <summary>
-        /// Create <see cref="DataSeriesDescriptor"/> default instance.
+        /// Create <see cref="InstrumentDescriptor"/> default instance.
         /// The <see cref="PeriodType"/> default value is Minute.
         /// The <see cref="PeriodValue"/> default value is one.
         /// </summary>
-        public DataSeriesDescriptor(InstrumentKey key) : this(key,PeriodType.Minute,1, key.ToDefaultTradingHoursKey())
+        public InstrumentDescriptor(InstrumentKey key) : this(key,PeriodType.Minute,1, key.ToDefaultTradingHoursKey())
         {
         }
 
-        public DataSeriesDescriptor(InstrumentKey key, PeriodType periodType) : this(key, periodType, 1, key.ToDefaultTradingHoursKey())
+        public InstrumentDescriptor(InstrumentKey key, PeriodType periodType) : this(key, periodType, 1, key.ToDefaultTradingHoursKey())
         {
         }
 
-        public DataSeriesDescriptor(InstrumentKey key, PeriodType periodType, int periodValue) : this(key, periodType, periodValue, key.ToDefaultTradingHoursKey())
+        public InstrumentDescriptor(InstrumentKey key, PeriodType periodType, int periodValue) : this(key, periodType, periodValue, key.ToDefaultTradingHoursKey())
         {
         }
 
-        public DataSeriesDescriptor(InstrumentKey key, PeriodType periodType, int periodValue, TradingHoursKey tradingHoursKey)
+        public InstrumentDescriptor(InstrumentKey key, PeriodType periodType, int periodValue, TradingHoursKey tradingHoursKey)
         {
             InstrumentKey = key;
             PeriodType = periodType;

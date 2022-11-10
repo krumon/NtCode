@@ -196,18 +196,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\DynamicallyAccessedMemberAttribute.cs" />
+    <Compile Include="Data\Providers\Instruments\InstrumentService.cs" />
     <Compile Include="Data\Providers\Instruments\InstrumentBuilder.cs" />
     <Compile Include="Data\Providers\Instruments\InstrumentProviderConfiguration.cs" />
     <Compile Include="Data\Providers\Instruments\InstrumentConfiguration.cs" />
-    <Compile Include="Data\Descriptors\BaseDescriptorCollection.cs" />
+    <Compile Include="Core\BaseDescriptorCollection.cs" />
     <Compile Include="Data\Bars\BarsPeriod.cs" />
-    <Compile Include="Data\Descriptors\DataSeriesDescriptorCollection.cs" />
+    <Compile Include="Data\Providers\Instruments\InstrumentDescriptorCollection.cs" />
     <Compile Include="Data\Providers\Sessions\BaseSessionProvider.cs" />
     <Compile Include="Data\Sessions\Session.cs" />
     <Compile Include="Data\Sessions\SessionCollection.cs" />
     <Compile Include="Data\Providers\Sessions\SessionConfiguration.cs" />
     <Compile Include="Data\Sessions\SessionExtensions.cs" />
-    <Compile Include="Data\Descriptors\DataSeriesDescriptor.cs" />
+    <Compile Include="Data\Providers\Instruments\InstrumentDescriptor.cs" />
     <Compile Include="Exceptions\ExceptionResource.cs" />
     <Compile Include="Exceptions\ExceptionArgument.cs" />
     <Compile Include="Exceptions\ThrowHelper.cs" />
@@ -392,14 +393,14 @@
     <Compile Include="Providers\Sessions\Interface\ISessionBuilder.cs" />
     <Compile Include="Data\Sessions\Interface\ITradingSessionCollection.cs" />
     <Compile Include="Data\Sessions\Internal\TradingSessionCollection.cs" />
-    <Compile Include="Data\Descriptors\SessionDescriptor.cs" />
+    <Compile Include="Data\Providers\Sessions\SessionDescriptor.cs" />
     <Compile Include="Data\Sessions\Internal\SessionFactory.cs" />
     <Compile Include="Data\Sessions\Internal\TradingSessionConfiguration.cs" />
     <Compile Include="Providers\Sessions\SessionProvider.cs" />
     <Compile Include="Providers\Sessions\SessionProviderConfiguration.cs" />
     <Compile Include="Data\Times\Interfaces\ITradingTime.cs" />
     <Compile Include="Providers\Sessions\SessionBuilder.cs" />
-    <Compile Include="Data\Descriptors\SessionDescriptorCollection.cs" />
+    <Compile Include="Data\Providers\Sessions\SessionDescriptorCollection.cs" />
     <Compile Include="Data\Sessions\SessionCompareResult.cs" />
     <Compile Include="Data\Sessions\Internal\TradingSessionExtensions.cs" />
     <Compile Include="Data\Sessions\SessionTypeExtensions.cs" />
@@ -463,6 +464,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\Descriptors\" />
     <Folder Include="NinjaScript\Caches\Base\" />
     <Folder Include="Services\.Interfaces\" />
     <Folder Include="Services\Core\ServiceHosted\" />
