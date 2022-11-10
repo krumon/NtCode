@@ -1,5 +1,4 @@
-﻿
-using Nt.Core.Data.Internal;
+﻿using Nt.Core.Data;
 
 namespace Nt.Core.Providers
 {
@@ -8,14 +7,9 @@ namespace Nt.Core.Providers
 
         #region Private Members
 
-        TradingSession _sessions;
+        Session _sessions;
 
         #endregion
 
-        #region Public properties
-
-
-
-        #endregion
     }
 }

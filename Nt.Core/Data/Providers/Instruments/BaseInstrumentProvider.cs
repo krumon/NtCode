@@ -1,8 +1,6 @@
-﻿
-using Nt.Core.Data;
-using System;
+﻿using System;
 
-namespace Nt.Core.Providers
+namespace Nt.Core.Data
 {
     /// <summary>
     /// Represents any financial instrument.

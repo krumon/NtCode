@@ -196,11 +196,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\DynamicallyAccessedMemberAttribute.cs" />
+    <Compile Include="Data\Providers\Instruments\InstrumentBuilder.cs" />
+    <Compile Include="Data\Providers\Instruments\InstrumentProviderConfiguration.cs" />
+    <Compile Include="Data\Providers\Instruments\InstrumentConfiguration.cs" />
+    <Compile Include="Data\Descriptors\BaseDescriptorCollection.cs" />
     <Compile Include="Data\Bars\BarsPeriod.cs" />
+    <Compile Include="Data\Descriptors\DataSeriesDescriptorCollection.cs" />
+    <Compile Include="Data\Providers\Sessions\BaseSessionProvider.cs" />
     <Compile Include="Data\Sessions\Session.cs" />
     <Compile Include="Data\Sessions\SessionCollection.cs" />
-    <Compile Include="Data\Sessions\SessionConfiguration.cs" />
-    <Compile Include="Data\Sessions\TradingSessionExtensions.cs" />
+    <Compile Include="Data\Providers\Sessions\SessionConfiguration.cs" />
+    <Compile Include="Data\Sessions\SessionExtensions.cs" />
+    <Compile Include="Data\Descriptors\DataSeriesDescriptor.cs" />
     <Compile Include="Exceptions\ExceptionResource.cs" />
     <Compile Include="Exceptions\ExceptionArgument.cs" />
     <Compile Include="Exceptions\ThrowHelper.cs" />
@@ -361,7 +368,7 @@
     <Compile Include="Data\Patterns\Swing\SwingPoint.cs" />
     <Compile Include="NinjaScript\Caches\BarsCache.cs" />
     <Compile Include="NinjaScript\DrawingTools\Lines\LabelLineHelpers.cs" />
-    <Compile Include="Providers\Instruments\BaseInstrumentProvider.cs" />
+    <Compile Include="Data\Providers\Instruments\BaseInstrumentProvider.cs" />
     <Compile Include="Data\Exchanges\MarketExchangeExtensions.cs" />
     <Compile Include="Data\Exchanges\MarketExchange.cs" />
     <Compile Include="Data\Instruments\InstrumentKey.cs" />
@@ -385,14 +392,14 @@
     <Compile Include="Providers\Sessions\Interface\ISessionBuilder.cs" />
     <Compile Include="Data\Sessions\Interface\ITradingSessionCollection.cs" />
     <Compile Include="Data\Sessions\Internal\TradingSessionCollection.cs" />
-    <Compile Include="Data\Sessions\Internal\SessionDescriptor.cs" />
+    <Compile Include="Data\Descriptors\SessionDescriptor.cs" />
     <Compile Include="Data\Sessions\Internal\SessionFactory.cs" />
     <Compile Include="Data\Sessions\Internal\TradingSessionConfiguration.cs" />
     <Compile Include="Providers\Sessions\SessionProvider.cs" />
     <Compile Include="Providers\Sessions\SessionProviderConfiguration.cs" />
     <Compile Include="Data\Times\Interfaces\ITradingTime.cs" />
     <Compile Include="Providers\Sessions\SessionBuilder.cs" />
-    <Compile Include="Data\Sessions\Internal\SessionDescriptorCollection.cs" />
+    <Compile Include="Data\Descriptors\SessionDescriptorCollection.cs" />
     <Compile Include="Data\Sessions\SessionCompareResult.cs" />
     <Compile Include="Data\Sessions\Internal\TradingSessionExtensions.cs" />
     <Compile Include="Data\Sessions\SessionTypeExtensions.cs" />

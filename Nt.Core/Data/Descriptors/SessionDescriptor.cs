@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Nt.Core.Data.Internal
+namespace Nt.Core.Data
 {
-    internal class SessionDescriptor
+    public class SessionDescriptor
     {
 
         #region Private members

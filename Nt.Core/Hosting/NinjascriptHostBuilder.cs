@@ -125,7 +125,7 @@ namespace Nt.Core.Hosting
 
             // REVIEW: If we want to raise more events outside of these calls then we will need to
             // stash this in a field.
-            using (var diagnosticListener = new DiagnosticListener("Nt.Key.Hosting"))
+            using (var diagnosticListener = new DiagnosticListener("Nt.InstrumentKey.Hosting"))
             {
                 const string hostBuildingEventName = "HostBuilding";
                 const string hostBuiltEventName = "HostBuilt";
