@@ -5,7 +5,7 @@ namespace Nt.Core.Data
     /// <summary>
     /// Builds data series service objects.
     /// </summary>
-    public class DataSeriesBuilder : IServiceProviderBuilder<DataSeriesProvider,DataSeriesBuilder, DataSeriesCollection, DataSeriesDescriptor>
+    public class DataSeriesBuilder : IDataSeriesBuilder // IServiceProviderBuilder<DataSeriesProvider,DataSeriesBuilder, DataSeriesCollection, DataSeriesDescriptor>
     {
 
         #region Private members

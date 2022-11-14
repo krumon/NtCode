@@ -30,6 +30,22 @@ namespace ConsoleApp
                 
                 .Build();
 
+            IHostService host = Host.CreateDefaultBuilder()
+                .ConfigureHostOptions((options) =>
+                {
+                    options.IsInDesignMode = true;
+                })
+                .UseDataSeries((builder) =>
+                {
+                    builder.ConfigureService((sc) =>
+                    {
+                        sc
+                        .AddDataSerie(InstrumentKey.Default, PeriodType.Minute, 5)
+                        .AddDataSerie(InstrumentKey.Default, PeriodType.Second, 5);
+                    });
+                })
+                .Build();
+
         }
     }
 }

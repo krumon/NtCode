@@ -201,25 +201,28 @@
     <Compile Include="Data\Host\HostBuilder.cs" />
     <Compile Include="Data\Host\Host.cs" />
     <Compile Include="Data\Host\Interfaces\IHostedService.cs" />
-    <Compile Include="Data\Providers\.Interfaces\IServiceProviderBuilder.cs" />
+    <Compile Include="Data\Host\Interfaces\IOptionalService.cs" />
+    <Compile Include="Data\Services\.Interfaces\IServiceProviderBuilder.cs" />
+    <Compile Include="Data\Services\.Types\RequiredServiceType.cs" />
     <Compile Include="Data\Services\DataSeries\DataSeriesProvider.cs" />
     <Compile Include="Data\Services\.Interfaces\IServiceDescriptor.cs" />
     <Compile Include="Data\Host\Interfaces\IHostService.cs" />
     <Compile Include="Data\Host\Interfaces\IHostBuilder.cs" />
-    <Compile Include="Data\Providers\.Interfaces\IServiceProvider.cs" />
+    <Compile Include="Data\Services\.Interfaces\IServiceProvider.cs" />
     <Compile Include="Data\Services\.Interfaces\IServiceCollection.cs" />
-    <Compile Include="Data\Providers\.Interfaces\IRequiredService.cs" />
-    <Compile Include="Data\Providers\.Interfaces\IServiceProviderFactory.cs" />
+    <Compile Include="Data\Host\Interfaces\IRequiredService.cs" />
+    <Compile Include="Data\Services\.Interfaces\IServiceProviderFactory.cs" />
     <Compile Include="Data\Providers\Instruments\InstrumentProviderOptions.cs" />
     <Compile Include="Data\Services\DataSeries\DataSeriesService.cs" />
     <Compile Include="Data\Services\DataSeries\DataSeriesBuilder.cs" />
     <Compile Include="Data\Services\DataSeries\DataSeriesConfiguration.cs" />
-    <Compile Include="Data\Services\BaseServiceCollection.cs" />
+    <Compile Include="Data\Services\.Base\BaseServiceCollection.cs" />
     <Compile Include="Data\Bars\BarsPeriod.cs" />
     <Compile Include="Data\Services\DataSeries\DataSeriesCollection.cs" />
     <Compile Include="Data\Providers\Sessions\BaseSessionProvider.cs" />
+    <Compile Include="Data\Services\DataSeries\Interfaces\IDataSeriesProvider.cs" />
     <Compile Include="Data\Services\Data\DataService.cs" />
-    <Compile Include="Data\Services\NinjascriptServiceType.cs" />
+    <Compile Include="Data\Services\.Types\OptionalServiceType.cs" />
     <Compile Include="Data\Services\DataSeries\Interfaces\IDataSeriesCollection.cs" />
     <Compile Include="Data\Services\DataSeries\Interfaces\IDataSeriesDescriptor.cs" />
     <Compile Include="Data\Sessions\Session.cs" />
@@ -482,6 +485,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\Providers\.Interfaces\" />
     <Folder Include="Data\Providers\DataSeries\" />
     <Folder Include="NinjaScript\Caches\Base\" />
     <Folder Include="Services\Core\ServiceHosted\" />

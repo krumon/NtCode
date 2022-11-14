@@ -12,7 +12,8 @@ namespace Nt.Core.Data
         private bool _built;
         private List<Action<HostOptions>> _configureHostOptionsActions;
         private List<Action<DataSeriesBuilder>> _configureDataSeriesActions;
-        private ConcurrentDictionary<object, IHostedService> _services = new ConcurrentDictionary<object, IHostedService>();
+        private ConcurrentDictionary<RequiredServiceType, IRequiredService> _requiredServices = new ConcurrentDictionary<RequiredServiceType, IRequiredService>();
+        private ConcurrentDictionary<OptionalServiceType, IOptionalService> _optionalServices = new ConcurrentDictionary<OptionalServiceType, IOptionalService>();
         private HostOptions _hostOptions = HostOptions.Default;
 
         public IHostBuilder ConfigureHostOptions(Action<HostOptions> optionsDelegate)
@@ -40,21 +41,34 @@ namespace Nt.Core.Data
             _built = true;
 
             if (_configureHostOptionsActions != null)
-                ConfigureOptions();
+                ConfigHostOptions();
 
-            ConfigureDataSeries();
+            AddRequiredServices();
+            AddOptionalServices();
 
-            var hostService = new HostService(_services,_hostOptions);
+            var hostService = new HostService(_requiredServices,_optionalServices,_hostOptions);
 
             return hostService;
 
         }
 
-
-        private void ConfigureOptions()
+        private void ConfigHostOptions()
         {
             foreach (Action<HostOptions> action in _configureHostOptionsActions)
                 action(_hostOptions);
+        }
+
+        private void AddRequiredServices()
+        {
+            DataService data = new DataService();
+            _requiredServices.TryAdd(RequiredServiceType.Data, data);
+        }
+
+        private void AddOptionalServices()
+        {
+            if (_configureDataSeriesActions != null)
+                ConfigureDataSeries();
+
         }
 
         private void ConfigureDataSeries()
@@ -64,7 +78,7 @@ namespace Nt.Core.Data
             {
                 action(builder);
             }
-            _services.TryAdd(NinjascriptServiceType.DataSeries,builder.Build());
+            _optionalServices.TryAdd(OptionalServiceType.DataSeries,builder.Build());
         }
 
     }

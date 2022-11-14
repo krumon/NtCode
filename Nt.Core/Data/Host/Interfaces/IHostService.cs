@@ -5,9 +5,14 @@ namespace Nt.Core.Data
     public interface IHostService : IServiceProvider //: IDisposable
     {
         /// <summary>
-        /// The hosted services.
+        /// Gets required hosted services.
         /// </summary>
-        ConcurrentDictionary<object,IHostedService> Services { get; }
+        ConcurrentDictionary<RequiredServiceType,IRequiredService> RequiredServices { get; }
+
+        /// <summary>
+        /// Gets optional hosted services.
+        /// </summary>
+        ConcurrentDictionary<OptionalServiceType,IOptionalService> OptionalServices { get; }
 
         ///// <summary>
         ///// Start the ninjascript.

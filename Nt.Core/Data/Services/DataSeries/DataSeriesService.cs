@@ -20,7 +20,7 @@ namespace Nt.Core.Data
         /// <summary>
         /// Gets the unique key of the service.
         /// </summary>
-        public NinjascriptServiceType Key { get; private set; }
+        public OptionalServiceType Key { get; private set; }
 
         /// <summary>
         /// The instrument unique code.

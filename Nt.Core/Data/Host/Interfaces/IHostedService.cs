@@ -1,16 +1,19 @@
-﻿namespace Nt.Core.Data
+﻿using System;
+
+namespace Nt.Core.Data
 {
 
     /// <summary>
-    /// Defines an engine to gets a service object.
+    /// Defines any optional configure service.
     /// </summary>
-    public interface IHostedService
+    public interface IHostedService<T>
+        where T : Enum
     {
 
         /// <summary>
-        /// Gets the type of the ninjascript service.
+        /// Gets the type of the service.
         /// </summary>
-        NinjascriptServiceType Key { get; }
+        T Key { get; }
 
     }
 }

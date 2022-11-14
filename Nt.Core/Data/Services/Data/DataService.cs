@@ -5,9 +5,11 @@ namespace Nt.Core.Data
     /// <summary>
     /// Represents the ninjascript general data to use bay the host.
     /// </summary>
-    public class DataService
+    public class DataService : IRequiredService
     {
         
+        public RequiredServiceType Key { get; private set; }
+
         /// <summary>
         /// The <see cref="TimeZoneInfo"/> configure by the user in the platform general options.
         /// </summary>

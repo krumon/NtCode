@@ -12,12 +12,18 @@ namespace Nt.Core.Data
         IHostService Build();
 
         /// <summary>
-        /// Adds services to the container. This can be called multiple times and the results will be additive.
+        /// Adds host options to the container. This can be called multiple times and the results will be additive.
         /// </summary>
-        /// <param name="configureDelegate">The delegate for configuring the <see cref="INinjascriptServiceCollection"/>
-        /// that will be used to construct the <see cref="INinjascriptServiceProvider"/>.</param>
-        /// <returns>The same instance of the <see cref="INinjascriptHostBuilder"/> for chaining.</returns>
+        /// <param name="optionsDelegate">The delegate for configuring the <see cref="IHostService"/>.
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         IHostBuilder ConfigureHostOptions(Action<HostOptions> optionsDelegate);
 
+        /// <summary>
+        /// Adds data series services to the container. This can be called multiple times and the results will be additive.
+        /// </summary>
+        /// <param name="dataSeriesDelegate">The delegate for configuring the <see cref="DataSeriesService"/>
+        /// that will be used to construct the <see cref="DataSeriesProvider"/>.</param>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+        IHostBuilder UseDataSeries(Action<DataSeriesBuilder> dataSeriesDelegate);
     }
 }

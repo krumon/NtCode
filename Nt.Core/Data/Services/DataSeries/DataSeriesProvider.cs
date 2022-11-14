@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Nt.Core.Data
 {
-    public class DataSeriesProvider : IHostedService, IServiceProvider
+    public class DataSeriesProvider : IOptionalService, IServiceProvider
     {
 
         #region Private members
@@ -19,7 +19,7 @@ namespace Nt.Core.Data
         #region Public properties
 
         /// <inheritdoc/>
-        public NinjascriptServiceType Key { get; private set; }
+        public OptionalServiceType Key { get; private set; }
 
         /// <summary>
         /// The instrument unique code.
