@@ -27,10 +27,10 @@ namespace Nt.Core.Data
         #region Public properties
 
         /// <inheritdoc/>
-        public ConcurrentDictionary<RequiredServiceType, IRequiredService> RequiredServices { get; }
+        public ConcurrentDictionary<RequiredServiceType, IRequiredService> RequiredServices => _requiredServices;
 
         /// <inheritdoc/>
-        public ConcurrentDictionary<OptionalServiceType, IOptionalService> OptionalServices { get; }
+        public ConcurrentDictionary<OptionalServiceType, IOptionalService> OptionalServices => _optionalServices;
 
         #endregion
 

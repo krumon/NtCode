@@ -202,6 +202,7 @@
     <Compile Include="Data\Host\Host.cs" />
     <Compile Include="Data\Host\Interfaces\IHostedService.cs" />
     <Compile Include="Data\Host\Interfaces\IOptionalService.cs" />
+    <Compile Include="Data\Services\.Interfaces\IOptions.cs" />
     <Compile Include="Data\Services\.Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="Data\Services\.Types\RequiredServiceType.cs" />
     <Compile Include="Data\Services\DataSeries\DataSeriesProvider.cs" />
@@ -215,7 +216,7 @@
     <Compile Include="Data\Providers\Instruments\InstrumentProviderOptions.cs" />
     <Compile Include="Data\Services\DataSeries\DataSeriesService.cs" />
     <Compile Include="Data\Services\DataSeries\DataSeriesBuilder.cs" />
-    <Compile Include="Data\Services\DataSeries\DataSeriesConfiguration.cs" />
+    <Compile Include="Data\Services\DataSeries\DataSeriesOptions.cs" />
     <Compile Include="Data\Services\.Base\BaseServiceCollection.cs" />
     <Compile Include="Data\Bars\BarsPeriod.cs" />
     <Compile Include="Data\Services\DataSeries\DataSeriesCollection.cs" />

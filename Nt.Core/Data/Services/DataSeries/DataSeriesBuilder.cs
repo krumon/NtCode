@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Nt.Core.Data
 {
@@ -11,11 +12,12 @@ namespace Nt.Core.Data
         #region Private members
 
         private readonly DataSeriesCollection _descriptors = new DataSeriesCollection();
-        private readonly IServiceProvider _dataSeriesProvider;
+        private readonly DataSeriesOptions _options = new DataSeriesOptions();
+        private DataSeriesProvider _dataSeriesProvider;
 
-        //private List<Func<DataSeriesConfiguration, InstrumentBuilder>> _dataSeriesConfigureActions;
-        //private List<Func<InstrumentProviderOptions, DataSeriesBuilder>> _instrumentProviderConfigureActions;
-        
+        private List<Action<DataSeriesOptions>> _dataSeriesOptionsActions;
+        private List<Action<DataSeriesCollection>> _dataSeriesServicesActions;
+
         private bool _isBuild;
 
         #endregion
@@ -37,27 +39,34 @@ namespace Nt.Core.Data
         {
             // The trading session can be only once time created.
             if (_isBuild)
-                return (DataSeriesProvider)_dataSeriesProvider;
+                return _dataSeriesProvider;
 
-            if (_descriptors != null && _descriptors.Count > 0)
-            {
-                //_sessionFactory = new SessionFactory(_descriptors);
-                //AddTypesToTradingSessionCollection();
-                //SortTradingSessionCollection();
-                //CreateTradingSession();
-            }
+            CreateDataSeriesOptions();
+            CreateDataSeriesDescriptors();
+
+            _dataSeriesProvider = new DataSeriesProvider(_descriptors, _dataSeriesOptionsActions == null ? _options.Value : _options);
 
             // Sets the flag to indicate the instrument provider is created.
             _isBuild = true;
 
-            return (DataSeriesProvider)_dataSeriesProvider;
+            return _dataSeriesProvider;
         }
 
-        public DataSeriesBuilder ConfigureService(Action<DataSeriesCollection> configureDelegate)
+        public DataSeriesBuilder ConfigureServiceOptions(Action<DataSeriesOptions> configureOptionsDelegate)
         {
-            throw new NotImplementedException();
+            if (_dataSeriesOptionsActions == null)
+                _dataSeriesOptionsActions = new List<Action<DataSeriesOptions>>();
+            _dataSeriesOptionsActions.Add(configureOptionsDelegate ?? throw new ArgumentNullException(nameof(configureOptionsDelegate)));
+            return this;
         }
 
+        public DataSeriesBuilder AddServices(Action<DataSeriesCollection> configureServiceDelegate)
+        {
+            if (_dataSeriesServicesActions == null)
+                _dataSeriesServicesActions = new List<Action<DataSeriesCollection>>();
+            _dataSeriesServicesActions.Add(configureServiceDelegate ?? throw new ArgumentNullException(nameof(configureServiceDelegate)));
+            return this;
+        }
 
         #endregion
 
@@ -68,19 +77,23 @@ namespace Nt.Core.Data
 
         #region Private methods
 
-        private DataSeriesBuilder AddDataSeries(InstrumentKey key) =>
-            AddDataSeries(key, PeriodType.Minute, 1, key.ToDefaultTradingHoursKey());
-
-        private DataSeriesBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value) =>
-            AddDataSeries(key, period, value, key.ToDefaultTradingHoursKey());
-
-        private DataSeriesBuilder AddDataSeries(InstrumentKey key, PeriodType period, int value, TradingHoursKey tradingHoursKey)
+        private void CreateDataSeriesOptions()
         {
-            DataSeriesDescriptor descriptor = new DataSeriesDescriptor(key, period, value, tradingHoursKey);
-            _descriptors.Add(descriptor);
-            return this;
+            if (_dataSeriesOptionsActions != null)
+            {
+                foreach (Action<DataSeriesOptions> action in _dataSeriesOptionsActions)
+                    action(_options);
+            }
         }
 
+        private void CreateDataSeriesDescriptors()
+        {
+            if (_dataSeriesServicesActions != null)
+            {
+                foreach (Action<DataSeriesCollection> action in _dataSeriesServicesActions)
+                    action(_descriptors);
+            }
+        }
 
         #endregion
 

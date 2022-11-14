@@ -10,6 +10,7 @@ namespace Nt.Core.Data
     public class HostBuilder : IHostBuilder
     {
         private bool _built;
+        private bool _requiredServicesIsAdded = true;
         private List<Action<HostOptions>> _configureHostOptionsActions;
         private List<Action<DataSeriesBuilder>> _configureDataSeriesActions;
         private ConcurrentDictionary<RequiredServiceType, IRequiredService> _requiredServices = new ConcurrentDictionary<RequiredServiceType, IRequiredService>();
@@ -32,6 +33,12 @@ namespace Nt.Core.Data
             return this;
         }
 
+        public IHostBuilder ConfigureDefaults(string[] args)
+        {
+            AddRequiredServices();
+            return this;
+        }
+
         public IHostService Build()
         {
             if (_built)
@@ -43,7 +50,8 @@ namespace Nt.Core.Data
             if (_configureHostOptionsActions != null)
                 ConfigHostOptions();
 
-            AddRequiredServices();
+            if (!_requiredServicesIsAdded)
+                AddRequiredServices();
             AddOptionalServices();
 
             var hostService = new HostService(_requiredServices,_optionalServices,_hostOptions);
@@ -61,7 +69,9 @@ namespace Nt.Core.Data
         private void AddRequiredServices()
         {
             DataService data = new DataService();
-            _requiredServices.TryAdd(RequiredServiceType.Data, data);
+            if (!_requiredServices.TryAdd(RequiredServiceType.Data, data))
+                _requiredServicesIsAdded = false;
+
         }
 
         private void AddOptionalServices()

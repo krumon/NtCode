@@ -43,8 +43,7 @@
         public static IHostBuilder CreateDefaultBuilder(string[] args)
         {
             HostBuilder builder = new HostBuilder();
-            return builder;
-            //return builder.ConfigureDefaults(args);
+            return builder.ConfigureDefaults(args);
         }
 
     }

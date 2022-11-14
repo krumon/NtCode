@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents default implementation of <see cref="DataSeriesProvider"/>.
     /// </summary>
-    public interface IDataSeriesBuilder : IServiceProviderBuilder<DataSeriesProvider, DataSeriesBuilder, DataSeriesCollection, DataSeriesDescriptor>
+    public interface IDataSeriesBuilder : IServiceProviderBuilder<DataSeriesProvider, DataSeriesBuilder, DataSeriesCollection, DataSeriesDescriptor,DataSeriesOptions>
     {
     }
 }

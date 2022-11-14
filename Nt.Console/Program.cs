@@ -1,9 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Nt.Core;
-using Nt.Core.Data;
-using Nt.Core.Providers;
-using Nt.Core.Tests;
+﻿using Nt.Core.Data;
 
 namespace ConsoleApp
 {
@@ -12,23 +7,23 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            TradingSessionTests tradingSessionTests = new TradingSessionTests();
+            //TradingSessionTests tradingSessionTests = new TradingSessionTests();
 
-            tradingSessionTests.Run();
+            //tradingSessionTests.Run();
 
-            ISessionProvider sessionProvider = KrumonTrade.CreateDefaultSessionBuilder()
-                .AddSessionCollectionByTypes
-                (
-                    SessionType.Asian, 
-                    SessionType.European,
-                    SessionType.American_RS_EOD,
-                    SessionType.Asian_RS,
-                    SessionType.AmericanAndEuropean,
-                    SessionType.Regular,
-                    SessionType.Electronic
-                )
+            //ISessionProvider sessionProvider = KrumonTrade.CreateDefaultSessionBuilder()
+            //    .AddSessionCollectionByTypes
+            //    (
+            //        SessionType.Asian, 
+            //        SessionType.European,
+            //        SessionType.American_RS_EOD,
+            //        SessionType.Asian_RS,
+            //        SessionType.AmericanAndEuropean,
+            //        SessionType.Regular,
+            //        SessionType.Electronic
+            //    )
                 
-                .Build();
+            //    .Build();
 
             IHostService host = Host.CreateDefaultBuilder()
                 .ConfigureHostOptions((options) =>
@@ -37,14 +32,20 @@ namespace ConsoleApp
                 })
                 .UseDataSeries((builder) =>
                 {
-                    builder.ConfigureService((sc) =>
+                    builder.AddServices((sc) =>
                     {
                         sc
                         .AddDataSerie(InstrumentKey.Default, PeriodType.Minute, 5)
                         .AddDataSerie(InstrumentKey.Default, PeriodType.Second, 5);
+                    })
+                    .ConfigureServiceOptions((options) =>
+                    {
+
                     });
                 })
                 .Build();
+
+            IServiceProvider provider = (IServiceProvider)host.GetService(OptionalServiceType.DataSeries);
 
         }
     }

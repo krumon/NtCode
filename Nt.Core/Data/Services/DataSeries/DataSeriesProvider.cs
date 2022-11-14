@@ -78,7 +78,7 @@ namespace Nt.Core.Data
 
         #region Constructors
 
-        public DataSeriesProvider(ICollection<DataSeriesDescriptor> descriptors, InstrumentProviderOptions options)
+        public DataSeriesProvider(ICollection<DataSeriesDescriptor> descriptors, DataSeriesOptions options)
         {
             if (descriptors == null)
                 throw new ArgumentNullException(nameof(descriptors));
@@ -87,21 +87,6 @@ namespace Nt.Core.Data
 
             _descriptors = new DataSeriesDescriptor[descriptors.Count];
             descriptors.CopyTo(_descriptors, 0);
-        }
-
-        /// <summary>
-        /// Create <see cref="InstrumentProvider"/> default instance.
-        /// </summary>
-        public DataSeriesProvider(string stringKey)
-        {
-            if (string.IsNullOrEmpty(stringKey))
-                throw new ArgumentException($"the parameter {nameof(stringKey)} cannot be null or empty");
-
-            if (!stringKey.TryGetInstrumentKey(out _instrumentKey))
-            {
-                _instanceError = true;
-                throw new Exception("Unknown string key passed bay parameter.");
-            }
         }
 
         #endregion
