@@ -196,12 +196,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\DynamicallyAccessedMemberAttribute.cs" />
-    <Compile Include="Data\Host\ServicesHostBuilder.cs" />
-    <Compile Include="Data\Host\ServicesHost.cs" />
+    <Compile Include="Data\Host\HostService.cs" />
+    <Compile Include="Data\Host\HostOptions.cs" />
+    <Compile Include="Data\Host\HostBuilder.cs" />
+    <Compile Include="Data\Host\Host.cs" />
+    <Compile Include="Data\Host\Interfaces\IHostedService.cs" />
     <Compile Include="Data\Providers\.Interfaces\IServiceProviderBuilder.cs" />
+    <Compile Include="Data\Services\DataSeries\DataSeriesProvider.cs" />
     <Compile Include="Data\Services\.Interfaces\IServiceDescriptor.cs" />
-    <Compile Include="Data\Host\Interfaces\IServicesHost.cs" />
-    <Compile Include="Data\Host\Interfaces\IServicesHostBuilder.cs" />
+    <Compile Include="Data\Host\Interfaces\IHostService.cs" />
+    <Compile Include="Data\Host\Interfaces\IHostBuilder.cs" />
     <Compile Include="Data\Providers\.Interfaces\IServiceProvider.cs" />
     <Compile Include="Data\Services\.Interfaces\IServiceCollection.cs" />
     <Compile Include="Data\Providers\.Interfaces\IRequiredService.cs" />
@@ -478,6 +482,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Data\Providers\DataSeries\" />
     <Folder Include="NinjaScript\Caches\Base\" />
     <Folder Include="Services\Core\ServiceHosted\" />
     <Folder Include="Services\Options\" />

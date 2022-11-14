@@ -3,13 +3,13 @@
     /// <summary>
     /// Represents a default implementation of data series descriptor collection.
     /// </summary>
-    public class DataSeriesCollection : BaseServiceCollection<IDataSeriesDescriptor>, IDataSeriesCollection
+    public class DataSeriesCollection : BaseServiceCollection<DataSeriesDescriptor>, IDataSeriesCollection
     {
 
         #region Implementation methods
 
         /// <inheritdoc/>
-        public override void Add(IDataSeriesDescriptor item)
+        public override void Add(DataSeriesDescriptor item)
         {
             if (item == null)
                 return;

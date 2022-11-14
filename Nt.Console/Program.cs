@@ -1,4 +1,6 @@
-﻿using Nt.Core;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
+using Nt.Core;
 using Nt.Core.Data;
 using Nt.Core.Providers;
 using Nt.Core.Tests;
@@ -27,7 +29,7 @@ namespace ConsoleApp
                 )
                 
                 .Build();
-            
+
         }
     }
 }

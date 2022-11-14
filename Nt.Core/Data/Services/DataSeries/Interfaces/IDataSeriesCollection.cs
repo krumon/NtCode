@@ -3,7 +3,7 @@
     /// <summary>
     /// Represents default implementation of <see cref="DataSeriesCollection"/>.
     /// </summary>
-    public interface IDataSeriesCollection : IServiceCollection<IDataSeriesDescriptor>
+    public interface IDataSeriesCollection //: IServiceCollection<IDataSeriesDescriptor>
     {
 
         /// <summary>

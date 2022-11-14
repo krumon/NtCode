@@ -1,18 +1,13 @@
-﻿namespace Nt.Core.Data
+﻿using System.Collections.Concurrent;
+
+namespace Nt.Core.Data
 {
-    public interface IServicesHost //: IDisposable
+    public interface IHostService : IServiceProvider //: IDisposable
     {
         /// <summary>
-        /// The ninjascript configured service provider.
+        /// The hosted services.
         /// </summary>
-        IServiceProvider[] Services { get; }
-
-        /// <summary>
-        /// Gets the service provider object with the specific key.
-        /// </summary>
-        /// <param name="key">The key of the service provider.</param>
-        /// <returns>The object of the ninjascript service provider or null if there aren't object.</returns>
-        IServiceProvider GetServiceProvider(string key);
+        ConcurrentDictionary<object,IHostedService> Services { get; }
 
         ///// <summary>
         ///// Start the ninjascript.
