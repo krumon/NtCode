@@ -18,9 +18,14 @@ namespace Nt.Core.Data
         #region Public properties
 
         /// <summary>
+        /// Gets the unique key of the service.
+        /// </summary>
+        public NinjascriptServiceType Key { get; private set; }
+
+        /// <summary>
         /// The instrument unique code.
         /// </summary>
-        public InstrumentKey Key => _instrumentKey;
+        public InstrumentKey InstrumentKey => _instrumentKey;
 
         /// <summary>
         /// The market exchange owner of the instrument.

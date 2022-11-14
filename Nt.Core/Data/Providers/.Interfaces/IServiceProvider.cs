@@ -8,6 +8,11 @@
     {
 
         /// <summary>
+        /// Gets the type of the ninjascript service.
+        /// </summary>
+        NinjascriptServiceType Key { get; }
+
+        /// <summary>
         /// Gets the service object with the specific type.
         /// </summary>
         /// <param name="key">The key of the ninjascript.</param>

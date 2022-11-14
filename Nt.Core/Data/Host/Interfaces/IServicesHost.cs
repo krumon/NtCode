@@ -1,6 +1,6 @@
 ﻿namespace Nt.Core.Data
 {
-    public interface IServiceProviderHost //: IDisposable
+    public interface IServicesHost //: IDisposable
     {
         /// <summary>
         /// The ninjascript configured service provider.

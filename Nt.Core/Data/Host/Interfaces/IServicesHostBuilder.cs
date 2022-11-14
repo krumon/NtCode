@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Nt.Core.Data
 {
-    public interface IServiceProviderHostBuilder
+    public interface IServicesHostBuilder
     {
 
         /// <summary>
@@ -15,7 +15,7 @@ namespace Nt.Core.Data
         /// Run the given actions to initialize the host. This can only be called once.
         /// </summary>
         /// <returns>An initialized <see cref="INinjascriptHost"/></returns>
-        IServiceProviderHost Build();
+        IServicesHost Build();
 
         ///// <summary>
         ///// Set up the configuration for the builder itself. This will be used to initialize 
@@ -34,7 +34,7 @@ namespace Nt.Core.Data
         /// <param name="configureDelegate">The delegate for configuring the <see cref="INinjascriptServiceCollection"/>
         /// that will be used to construct the <see cref="INinjascriptServiceProvider"/>.</param>
         /// <returns>The same instance of the <see cref="INinjascriptHostBuilder"/> for chaining.</returns>
-        IServiceProviderHostBuilder ConfigureServices(Action<IServiceCollection<IServiceDescriptor>> configureDelegate);
+        IServicesHostBuilder ConfigureServices(Action<IServiceCollection<IServiceDescriptor>> configureDelegate);
 
     }
 }

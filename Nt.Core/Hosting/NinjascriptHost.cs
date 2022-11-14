@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.Hosting;
-
-namespace Nt.Core.Hosting
+﻿namespace Nt.Core.Hosting
 {
     public static class NinjascriptHost
     {
@@ -20,7 +18,7 @@ namespace Nt.Core.Hosting
         ///     <item><description>enables scope validation on the dependency injection container when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development'</description></item>
         ///   </list>
         /// </remarks>
-        /// <returns>The initialized <see cref="IHostBuilder"/>.</returns>
+        /// <returns>The initialized <see cref="INinjascriptHostBuilder"/>.</returns>
         public static INinjascriptHostBuilder CreateDefaultBuilder() =>
             CreateDefaultBuilder(args: null);
 
@@ -39,7 +37,7 @@ namespace Nt.Core.Hosting
         ///     <item><description>enables scope validation on the dependency injection container when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development'</description></item>
         ///   </list>
         /// </remarks>
-        /// <returns>The initialized <see cref="IHostBuilder"/>.</returns>
+        /// <returns>The initialized <see cref="INinjascriptHostBuilder"/>.</returns>
         public static INinjascriptHostBuilder CreateDefaultBuilder(string[] args)
         {
             NinjascriptHostBuilder builder = new NinjascriptHostBuilder();
