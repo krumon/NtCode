@@ -60,7 +60,7 @@ namespace Nt.Core.Data
             return this;
         }
 
-        public DataSeriesBuilder AddServices(Action<DataSeriesCollection> configureServiceDelegate)
+        public DataSeriesBuilder ConfigureServices(Action<DataSeriesCollection> configureServiceDelegate)
         {
             if (_dataSeriesServicesActions == null)
                 _dataSeriesServicesActions = new List<Action<DataSeriesCollection>>();

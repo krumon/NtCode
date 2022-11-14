@@ -486,8 +486,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\Providers\.Interfaces\" />
-    <Folder Include="Data\Providers\DataSeries\" />
     <Folder Include="NinjaScript\Caches\Base\" />
     <Folder Include="Services\Core\ServiceHosted\" />
     <Folder Include="Services\Options\" />

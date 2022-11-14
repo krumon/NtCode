@@ -32,7 +32,7 @@ namespace ConsoleApp
                 })
                 .UseDataSeries((builder) =>
                 {
-                    builder.AddServices((sc) =>
+                    builder.ConfigureServices((sc) =>
                     {
                         sc
                         .AddDataSerie(InstrumentKey.Default, PeriodType.Minute, 5)
