@@ -5,7 +5,7 @@ namespace Nt.Core.Data
     /// <summary>
     /// Represents the ninjascript general data to use bay the host.
     /// </summary>
-    public class DataService : IRequiredService
+    public class ChartDataService : IRequiredService
     {
         
         public RequiredServiceType Key { get; private set; }

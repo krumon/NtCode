@@ -202,6 +202,7 @@
     <Compile Include="Data\Host\Host.cs" />
     <Compile Include="Data\Host\Interfaces\IHostedService.cs" />
     <Compile Include="Data\Host\Interfaces\IOptionalService.cs" />
+    <Compile Include="Data\ServiceCollection\ServiceDescriptor.cs" />
     <Compile Include="Data\Services\.Interfaces\IOptions.cs" />
     <Compile Include="Data\Services\.Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="Data\Services\.Types\RequiredServiceType.cs" />
@@ -222,7 +223,7 @@
     <Compile Include="Data\Services\DataSeries\DataSeriesCollection.cs" />
     <Compile Include="Data\Providers\Sessions\BaseSessionProvider.cs" />
     <Compile Include="Data\Services\DataSeries\Interfaces\IDataSeriesProvider.cs" />
-    <Compile Include="Data\Services\Data\DataService.cs" />
+    <Compile Include="Data\Services\ChartData\ChartDataService.cs" />
     <Compile Include="Data\Services\.Types\OptionalServiceType.cs" />
     <Compile Include="Data\Services\DataSeries\Interfaces\IDataSeriesCollection.cs" />
     <Compile Include="Data\Services\DataSeries\Interfaces\IDataSeriesDescriptor.cs" />

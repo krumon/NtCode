@@ -74,7 +74,7 @@ namespace Nt.Core.Services.Internal
             }
             if (state.Singleton != null)
             {
-                throw new InvalidOperationException("ScopedInSingletonException,scopedCallSite.ServiceType,state.Singleton.ServiceType,nameof(ServiceLifetime.Scoped).ToLowerInvariant(),nameof(ServiceLifetime.Singleton).ToLowerInvariant()");
+                throw new InvalidOperationException("ScopedInSingletonException,scopedCallSite.ServiceType,state.CreateInstance.ServiceType,nameof(ServiceLifetime.Scoped).ToLowerInvariant(),nameof(ServiceLifetime.CreateInstance).ToLowerInvariant()");
             }
 
             VisitCallSiteMain(scopedCallSite, state);

@@ -39,7 +39,7 @@ namespace Nt.Core.Services.Internal
         {
             if (_serviceProviderFactory == null)
             {
-                throw new InvalidOperationException("Create Builder Call Before Create Service Provider");
+                throw new InvalidOperationException("CreateInstance Builder Call Before CreateInstance Service Provider");
             }
 
             return _serviceProviderFactory.CreateServiceProvider((TContainerBuilder)containerBuilder);

@@ -68,7 +68,7 @@ namespace Nt.Core.Data
 
         private void AddRequiredServices()
         {
-            DataService data = new DataService();
+            ChartDataService data = new ChartDataService();
             if (!_requiredServices.TryAdd(RequiredServiceType.Data, data))
                 _requiredServicesIsAdded = false;
 
