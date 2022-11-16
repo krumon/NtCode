@@ -202,7 +202,10 @@
     <Compile Include="Data\Host\Host.cs" />
     <Compile Include="Data\Host\Interfaces\IHostedService.cs" />
     <Compile Include="Data\Host\Interfaces\IOptionalService.cs" />
-    <Compile Include="Data\ServiceCollection\ServiceDescriptor.cs" />
+    <Compile Include="Data\Services\.Base\ServiceProvider.cs" />
+    <Compile Include="Data\Services\.Base\ServiceCollection.cs" />
+    <Compile Include="Data\Services\.Base\ServiceCollectionExtensions.cs" />
+    <Compile Include="Data\Services\.Base\ServiceDescriptor.cs" />
     <Compile Include="Data\Services\.Interfaces\IOptions.cs" />
     <Compile Include="Data\Services\.Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="Data\Services\.Types\RequiredServiceType.cs" />

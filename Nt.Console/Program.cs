@@ -47,6 +47,7 @@ namespace ConsoleApp
 
             IServiceProvider dataSeries = (IServiceProvider)host.GetService(OptionalServiceType.DataSeries);
             IRequiredService chartData = (IRequiredService)host.GetService(RequiredServiceType.Data);
+             
 
         }
     }
