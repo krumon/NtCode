@@ -1,5 +1,4 @@
-﻿using Nt.Core.Exceptions;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,32 +13,39 @@ namespace Nt.Core.Data
     {
 
         #region Private members
+
         // Check the service provider is disposed.
         private bool _disposed;
         // Store the service descriptors.
         private ServiceDescriptor[] _descriptors;
-        // The root of the service providers engine.
-        internal ServiceProviderEngineScope Root { get; }
-        // The service provider engine.
-        internal ServiceProviderEngine _engine;
         // Function to create the service accesor.
         private readonly Func<Type, Func<ServiceProviderEngineScope, object>> _createServiceAccessor;
         // Collection of the realized services.
         private ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>> _realizedServices;
+        // The root of the service providers engine.
+        internal ServiceProviderEngineScope Root { get; }
 
-        internal CallSiteFactory CallSiteFactory { get; }
-        private readonly CallSiteValidator _callSiteValidator;
+        //internal CallSiteFactory CallSiteFactory { get; }
 
-        internal static bool VerifyOpenGenericServiceTrimmability { get; } =
-            AppContext.TryGetSwitch("VerifyOpenGenericServiceTrimmability", out bool verifyOpenGenerics) && verifyOpenGenerics;
 
-        private object _createService;
+        //// Collection of the realized services.
+        //private ConcurrentDictionary<Type, Func<Type, object>> _realizedServices;
+        //// Delagate to create the service
+        //private Func<Type, object> _createServiceAccessor;
+
+        //private readonly CallSiteValidator _callSiteValidator;
+
+        //private object _createService;
+
+        #endregion
+
+        #region Public properties
 
         #endregion
 
         #region Constructor
 
-        internal NinjascriptServiceProvider(ICollection<NinjascriptServiceDescriptor> serviceDescriptors, NinjascriptServiceProviderOptions options)
+        internal ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors, ServiceProviderOptions options)
         {
             // note that Root needs to be set before calling GetEngine(), because the engine may need to access Root
             Root = new ServiceProviderEngineScope(this, isRootScope: true);
@@ -49,7 +55,7 @@ namespace Nt.Core.Data
             // Initilize the realized services
             _realizedServices = new ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>>();
             // Initialize the call site factory
-            CallSiteFactory = new CallSiteFactory(serviceDescriptors);
+            //CallSiteFactory = new CallSiteFactory(serviceDescriptors);
             //// The list of built in services that aren't part of the list of service descriptors
             //// keep this in sync with CallSiteFactory.IsService
             //CallSiteFactory.Add(typeof(INinjascriptServiceProvider), new ServiceProviderCallSite());
@@ -59,14 +65,14 @@ namespace Nt.Core.Data
             // Default is false
             if (options.ValidateScopes)
             {
-                _callSiteValidator = new CallSiteValidator();
+                //_callSiteValidator = new CallSiteValidator();
             }
 
             // Default is false
             if (options.ValidateOnBuild)
             {
                 List<Exception> exceptions = null;
-                foreach (NinjascriptServiceDescriptor serviceDescriptor in serviceDescriptors)
+                foreach (ServiceDescriptor serviceDescriptor in serviceDescriptors)
                 {
                     try
                     {
@@ -116,32 +122,62 @@ namespace Nt.Core.Data
 
         #region Private methods
 
-        internal object GetService(Type serviceType, ServiceProviderEngineScope serviceProviderEngineScope)
+        internal object GetService(Type serviceType, ServiceProviderEngineScope serviceProviderEngineScope) 
         {
             if (_disposed)
-                throw new ObjectDisposedException(nameof(NinjascriptServiceProvider));
+                throw new ObjectDisposedException(nameof(ServiceProvider));
 
             Func<ServiceProviderEngineScope, object> realizedService = _realizedServices.GetOrAdd(serviceType, _createServiceAccessor);
-            OnResolve(serviceType, serviceProviderEngineScope);
-            //DependencyInjectionEventSource.Log.ServiceResolved(this, serviceType);
+            OnResolve(serviceType);
             var result = realizedService.Invoke(serviceProviderEngineScope);
-            Debug.Assert(result is null || CallSiteFactory.IsService(serviceType));
+            Debug.Assert(result is null); 
             return result;
         }
 
         private void ValidateService(ServiceDescriptor descriptor)
         {
-            if (descriptor.ServiceType.IsGenericType && !descriptor.ServiceType.IsConstructedGenericType)
+            Type serviceType = descriptor.ServiceType;
+            
+            if (serviceType.IsGenericType && !serviceType.IsConstructedGenericType)
             {
                 return;
             }
 
             try
             {
-                ServiceCallSite callSite = CallSiteFactory.GetCallSite(descriptor, new CallSiteChain());
-                if (callSite != null)
+                if (serviceType.IsGenericTypeDefinition)
                 {
-                    OnCreate(callSite);
+                    Type implementationType = descriptor.ImplementationType;
+
+                    if (implementationType == null || !implementationType.IsGenericTypeDefinition)
+                    {
+                        throw new ArgumentException("OpenGenericServiceRequiresOpenGenericImplementation");
+                    }
+
+                    if (implementationType.IsAbstract || implementationType.IsInterface)
+                    {
+                        throw new ArgumentException("TypeCannotBeActivated");
+                    }
+
+                    Type[] serviceTypeGenericArguments = serviceType.GetGenericArguments();
+                    Type[] implementationTypeGenericArguments = implementationType.GetGenericArguments();
+                    if (serviceTypeGenericArguments.Length != implementationTypeGenericArguments.Length)
+                    {
+                        throw new ArgumentException("ArityOfOpenGenericServiceNotEqualArityOfOpenGenericImplementation");
+                    }
+
+                }
+                else if (descriptor.ImplementationInstance == null)
+                {
+                    Debug.Assert(descriptor.ImplementationType != null);
+                    Type implementationType = descriptor.ImplementationType;
+
+                    if (implementationType.IsGenericTypeDefinition ||
+                        implementationType.IsAbstract ||
+                        implementationType.IsInterface)
+                    {
+                        throw new ArgumentException("TypeCannotBeActivated");
+                    }
                 }
             }
             catch (Exception e)
@@ -150,62 +186,43 @@ namespace Nt.Core.Data
             }
         }
 
-        private Func<ServiceProviderEngineScope, object> CreateServiceAccessor(Type serviceType)
+        private Func<ServiceProviderEngineScope,object> CreateServiceAccessor(Type serviceType)
         {
-            ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
-            if (callSite != null)
-            {
-                //DependencyInjectionEventSource.Log.CallSiteBuilt(this, serviceType, callSite);
-                OnCreate(callSite);
 
-                // Optimize singleton case
-                if (callSite.Cache.Location == CallSiteResultCacheLocation.Root)
-                {
-                    // TODO: To test.
-                    object value = null; // CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
-                    return scope => value;
-                }
 
-                return _engine.RealizeService(callSite);
-            }
+            //ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
+            //if (callSite != null)
+            //{
+            //    //DependencyInjectionEventSource.Log.CallSiteBuilt(this, serviceType, callSite);
+            //    OnCreate(callSite);
 
-            return _ => null;
+            //    // Optimize singleton case
+            //    if (callSite.Cache.Location == CallSiteResultCacheLocation.Root)
+            //    {
+            //        // TODO: To test.
+            //        object value = null; // CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
+            //        return scope => value;
+            //    }
+
+            //    return _engine.RealizeService(callSite);
+            //}
+
+            return null; // _ => null;
         }
-
-
-//        private ServiceProviderEngine GetEngine()
-//        {
-//            ServiceProviderEngine engine;
-
-//#if NETFRAMEWORK || NETSTANDARD2_0
-//            engine = new DynamicServiceProviderEngine(this);
-//#else
-//            if (RuntimeFeature.IsDynamicCodeCompiled)
-//            {
-//                engine = new DynamicServiceProviderEngine(this);
-//            }
-//            else
-//            {
-//                // Don't try to compile Expressions/IL if they are going to get interpreted
-//                engine = RuntimeServiceProviderEngine.Instance;
-//            }
-//#endif
-//            return engine;
-//        }
 
         private void DisposeCore()
         {
             _disposed = true;
         }
 
-        private void OnCreate(ServiceCallSite callSite)
+        private void OnCreate()
         {
-            _callSiteValidator?.ValidateCallSite(callSite);
+
         }
 
-        private void OnResolve(Type serviceType, IServiceScope scope)
+        private void OnResolve(Type serviceType)
         {
-            _callSiteValidator?.ValidateResolution(serviceType, scope, Root);
+
         }
 
         public object GetService(object key)

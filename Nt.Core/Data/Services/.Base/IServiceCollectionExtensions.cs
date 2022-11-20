@@ -4,7 +4,7 @@ using System;
 
 namespace Nt.Core.Data
 {
-    public static class ServiceCollectionExtensions
+    public static class IServiceCollectionExtensions
     {
     }
 }
