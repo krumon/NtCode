@@ -66,13 +66,11 @@ namespace Nt.Core.Data
             }
         }
 
-        private ServiceCallSite ConstructorCallSite(
-            Type serviceType,
-            Type implementationType)
+        private ServiceCallSite CreateConstructorCallSite(ServiceDescriptor serviceDescriptor)
         {
             try
             {
-                ConstructorInfo[] constructors = implementationType.GetConstructors();
+                ConstructorInfo[] constructors = serviceDescriptor.ImplementationType.GetConstructors();
                 ParameterInfo[] parameters;
                 if (constructors.Length == 0)
                 {
@@ -84,10 +82,10 @@ namespace Nt.Core.Data
                     parameters = constructor.GetParameters();
                     if (parameters.Length == 0)
                     {
-                        return new ConstructorCallSite(serviceType, constructor);
+                        return new ConstructorCallSite(serviceDescriptor.serviceType, constructor);
                     }
 
-                    return new ConstructorCallSite(serviceType, constructor, parameters);
+                    return new ConstructorCallSite(serviceDescriptor.serviceType, constructor, parameters);
                 }
 
                 Array.Sort(constructors,
@@ -221,9 +219,77 @@ namespace Nt.Core.Data
                    serviceType == typeof(IServiceProviderIsService);
         }
 
-        internal ServiceCallSite GetCallSite(Type serviceType, CallSiteChain callSiteChain) =>
-            _callSiteCache.TryGetValue(new ServiceCacheKey(serviceType, DefaultSlot), out ServiceCallSite site) ? site :
-            CreateCallSite(serviceType, callSiteChain);
+        //internal ServiceCallSite GetCallSite(Type serviceType, CallSiteChain callSiteChain) =>
+        //    _callSiteCache.TryGetValue(new ServiceCacheKey(serviceType, DefaultSlot), out ServiceCallSite site) ? site :
+        //    CreateCallSite(serviceType, callSiteChain);
+
+        internal ServiceCallSite GetCallSite(ServiceDescriptor serviceDescriptor)
+        {
+
+            if (_descriptorLookup.TryGetValue(serviceDescriptor.ServiceType, out ServiceDescriptorCacheItem descriptor))
+            {
+                return TryCreateExact(serviceDescriptor, serviceDescriptor.ServiceType, descriptor.GetSlot(serviceDescriptor));
+            }
+
+            Debug.Fail("_descriptorLookup didn't contain requested serviceDescriptor");
+            return null;
+        }
+
+        private ServiceCallSite CreateCallSite(Type serviceType)
+        {
+
+            // We need to lock the resolution process for a single service type at a time:
+            // Consider the following:
+            // C -> D -> A
+            // E -> D -> A
+            // Resolving C and E in parallel means that they will be modifying the callsite cache concurrently
+            // to add the entry for C and E, but the resolution of D and A is synchronized
+            // to make sure C and E both reference the same instance of the callsite.
+
+            // This is to make sure we can safely store singleton values on the callsites themselves
+
+            var callsiteLock = _callSiteLocks.GetOrAdd(serviceType, _ => new object());
+
+            lock (callsiteLock)
+            {
+                //callSiteChain.CheckCircularDependency(serviceType);
+
+                ServiceCallSite callSite = TryCreateExact();
+
+                return callSite;
+            }
+        }
+
+        private ServiceCallSite TryCreateExact(ServiceDescriptor descriptor, Type serviceType, int slot)
+        {
+            if (serviceType == descriptor.ServiceType)
+            {
+                ServiceCacheKey callSiteKey = new ServiceCacheKey(serviceType, slot);
+                if (_callSiteCache.TryGetValue(callSiteKey, out ServiceCallSite serviceCallSite))
+                {
+                    return serviceCallSite;
+                }
+
+                ServiceCallSite callSite;
+                if (descriptor.ImplementationInstance != null)
+                {
+                    callSite = new ConstantCallSite(descriptor.ServiceType, descriptor.ImplementationInstance);
+                }
+                else if (descriptor.ImplementationType != null)
+                {
+                    callSite = CreateConstructorCallSite(descriptor.ServiceType, descriptor.ImplementationType);
+                }
+                else
+                {
+                    throw new InvalidOperationException("InvalidServiceDescriptor");
+                }
+
+                return _callSiteCache[callSiteKey] = callSite;
+            }
+
+            return null;
+        }
+
 
     }
 }

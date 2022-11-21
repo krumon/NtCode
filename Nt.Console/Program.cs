@@ -24,7 +24,7 @@ namespace ConsoleApp
             //    )
                 
             //    .Build();
-
+            Microsoft.Extensions.Hosting.HostBuilder
             IHostService host = Host.CreateDefaultBuilder()
                 .ConfigureHostOptions((options) =>
                 {

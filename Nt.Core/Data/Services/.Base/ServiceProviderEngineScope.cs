@@ -54,8 +54,6 @@ namespace Nt.Core.Data
             return RootProvider.GetService(serviceType, this);
         }
 
-        public IServiceScope CreateScope() => RootProvider.CreateScope();
-
         public void Dispose()
         {
             List<object> toDispose = BeginDispose();

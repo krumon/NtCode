@@ -155,20 +155,7 @@ namespace Nt.Core.Services
         {
             ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
             if (callSite != null)
-            {
-                //DependencyInjectionEventSource.Log.CallSiteBuilt(this, serviceType, callSite);
-                OnCreate(callSite);
-
-                // Optimize singleton case
-                if (callSite.Cache.Location == CallSiteResultCacheLocation.Root)
-                {
-                    // TODO: To test.
-                    object value = null; // CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
-                    return scope => value;
-                }
-
-                return _engine.RealizeService(callSite);
-            }
+                return RealizeService(callSite);
 
             return _ => null;
         }
@@ -221,6 +208,11 @@ namespace Nt.Core.Services
         private void OnResolve(Type serviceType, IServiceScope scope)
         {
             _callSiteValidator?.ValidateResolution(serviceType, scope, Root);
+        }
+
+        private Func<ServiceProviderEngineScope, object> RealizeService(ServiceCallSite callSite)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
