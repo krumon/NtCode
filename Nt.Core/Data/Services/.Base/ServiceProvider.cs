@@ -145,14 +145,13 @@ namespace Nt.Core.Data
 
             else if(descriptor.ImplementationType != null)
             {
-                ConstructorInfo constructor = GetConstructor(descriptor);
-
+                ConstructorCallSite constructor = GetConstructor(descriptor);
             }
 
             return null;
         }
 
-        private ConstructorInfo GetConstructor(ServiceDescriptor serviceDescriptor)
+        private ConstructorCallSite GetConstructor(ServiceDescriptor serviceDescriptor)
         {
             try
             {
@@ -168,10 +167,10 @@ namespace Nt.Core.Data
                     parameters = constructor.GetParameters();
                     if (parameters.Length == 0)
                     {
-                        return new ConstructorCallSite(serviceDescriptor.serviceType, constructor);
+                        return new ConstructorCallSite(serviceDescriptor.ServiceType, constructor);
                     }
 
-                    return new ConstructorCallSite(serviceDescriptor.serviceType, constructor, parameters);
+                    return new ConstructorCallSite(serviceDescriptor.ServiceType, constructor, parameters);
                 }
 
                 //Array.Sort(constructors,

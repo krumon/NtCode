@@ -22,9 +22,9 @@ namespace ConsoleApp
             //        SessionType.Regular,
             //        SessionType.Electronic
             //    )
-                
+
             //    .Build();
-            Microsoft.Extensions.DependencyInjection.ServiceProvider
+            Microsoft.Extensions.DependencyInjection.ServiceProvider serviceProvider;
             IHostService host = Host.CreateDefaultBuilder()
                 .ConfigureHostOptions((options) =>
                 {
