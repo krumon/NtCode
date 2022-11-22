@@ -12,18 +12,19 @@ namespace Nt.Core.Data
         private readonly ServiceDescriptor[] _descriptors;
         private readonly ConcurrentDictionary<ServiceCacheKey, ServiceCallSite> _callSiteCache = new ConcurrentDictionary<ServiceCacheKey, ServiceCallSite>();
         private readonly ConcurrentDictionary<Type, object> _callSiteLocks = new ConcurrentDictionary<Type, object>();
+        private ServiceProvider _provider;
 
         public CallSiteFactory(ICollection<ServiceDescriptor> descriptors)
         {
             _descriptors = new ServiceDescriptor[descriptors.Count];
             descriptors.CopyTo(_descriptors, 0);
 
-            Populate();
+            Validate();
         }
 
         internal ServiceDescriptor[] Descriptors => _descriptors;
 
-        private void Populate()
+        private void Validate()
         {
             foreach (ServiceDescriptor descriptor in _descriptors)
             {
@@ -50,7 +51,7 @@ namespace Nt.Core.Data
                     }
 
                 }
-                else if (descriptor.ImplementationInstance == null)
+                else if (descriptor.ImplementationInstance == null && descriptor.ImplementationFactory == null)
                 {
                     Debug.Assert(descriptor.ImplementationType != null);
                     Type implementationType = descriptor.ImplementationType;
@@ -64,6 +65,21 @@ namespace Nt.Core.Data
                 }
 
             }
+        }
+
+        internal ServiceCallSite GetCallSite(Type serviceType) =>
+            CreateCallSite(serviceType);
+
+        internal ServiceCallSite GetCallSite(ServiceDescriptor serviceDescriptor)
+        {
+
+            if (_descriptorLookup.TryGetValue(serviceDescriptor.ServiceType, out ServiceDescriptorCacheItem descriptor))
+            {
+                return TryCreateExact(serviceDescriptor, serviceDescriptor.ServiceType, descriptor.GetSlot(serviceDescriptor));
+            }
+
+            Debug.Fail("_descriptorLookup didn't contain requested serviceDescriptor");
+            return null;
         }
 
         private ServiceCallSite CreateConstructorCallSite(ServiceDescriptor serviceDescriptor)
@@ -219,21 +235,6 @@ namespace Nt.Core.Data
                    serviceType == typeof(IServiceProviderIsService);
         }
 
-        //internal ServiceCallSite GetCallSite(Type serviceType, CallSiteChain callSiteChain) =>
-        //    _callSiteCache.TryGetValue(new ServiceCacheKey(serviceType, DefaultSlot), out ServiceCallSite site) ? site :
-        //    CreateCallSite(serviceType, callSiteChain);
-
-        internal ServiceCallSite GetCallSite(ServiceDescriptor serviceDescriptor)
-        {
-
-            if (_descriptorLookup.TryGetValue(serviceDescriptor.ServiceType, out ServiceDescriptorCacheItem descriptor))
-            {
-                return TryCreateExact(serviceDescriptor, serviceDescriptor.ServiceType, descriptor.GetSlot(serviceDescriptor));
-            }
-
-            Debug.Fail("_descriptorLookup didn't contain requested serviceDescriptor");
-            return null;
-        }
 
         private ServiceCallSite CreateCallSite(Type serviceType)
         {
@@ -254,7 +255,7 @@ namespace Nt.Core.Data
             {
                 //callSiteChain.CheckCircularDependency(serviceType);
 
-                ServiceCallSite callSite = TryCreateExact();
+                ServiceCallSite callSite = TryCreateExact(_provider.GetServiceDescriptor(serviceType), serviceType,0);
 
                 return callSite;
             }

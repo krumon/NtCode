@@ -205,11 +205,11 @@
     <Compile Include="Data\Services\.Base\CallSiteFactory.cs" />
     <Compile Include="Data\Services\.Base\ParameterDefaultValue.cs" />
     <Compile Include="Data\Services\.Base\ServiceCallSite.cs" />
-    <Compile Include="Data\Services\.Base\ServiceProviderEngineScope.cs" />
+    <Compile Include="Data\Services\.Base\eliminar\ServiceProviderEngineScope.cs" />
     <Compile Include="Data\Services\.Base\ServiceProviderOptions.cs" />
     <Compile Include="Data\Services\.Base\ServiceProvider.cs" />
     <Compile Include="Data\Services\.Base\ServiceCollection.cs" />
-    <Compile Include="Data\Services\.Base\IServiceCollectionExtensions.cs" />
+    <Compile Include="Data\Services\.Base\ServiceCollectionExtensions.cs" />
     <Compile Include="Data\Services\.Base\ServiceDescriptor.cs" />
     <Compile Include="Data\Services\.Interfaces\IOptions.cs" />
     <Compile Include="Data\Services\.Interfaces\IServiceProviderBuilder.cs" />

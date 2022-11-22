@@ -18,24 +18,13 @@ namespace Nt.Core.Data
         // Check the service provider is disposed.
         private bool _disposed;
         // Store the service descriptors.
-        private ServiceDescriptor[] _descriptors;
+        ServiceCollection _descriptors;
         // Collection of the realized services.
-        private ConcurrentDictionary<Type, object> _realizedServices;
+        private ConcurrentDictionary<Type, Func<Type, object>> _realizedServices;
         // The factory of the calls.
         internal CallSiteFactory CallSiteFactory { get; }
-
-        //// Collection of the realized services.
-        //private ConcurrentDictionary<Type, Func<Type, object>> _realizedServices;
-        //// Delagate to create the service
-        //private Func<Type, object> _createServiceAccessor;
-
-        //private readonly CallSiteValidator _callSiteValidator;
-
-        //private object _createService;
-
-        #endregion
-
-        #region Public properties
+        // Delagate to create the service
+        private Func<Type,object> _createServiceAccessor;
 
         #endregion
 
@@ -43,18 +32,15 @@ namespace Nt.Core.Data
 
         internal ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors, ServiceProviderOptions options)
         {
+            // Sets the descriptors value. (No es necesario, trabajo con CallSiteFactory)
+            _descriptors = (ServiceCollection)serviceDescriptors;
             // Initilize the realized services.
-            _realizedServices = new ConcurrentDictionary<Type, object>();
+            _realizedServices = new ConcurrentDictionary<Type, Func<Type, object>>();
             // Initialize the call site factory.
             CallSiteFactory = new CallSiteFactory(serviceDescriptors);
+            // Sets the delegate method.
+            _createServiceAccessor = CreateServiceAccessor;
 
-            //// The list of built in services that aren't part of the list of service descriptors
-            //// keep this in sync with CallSiteFactory.IsService
-            //CallSiteFactory.Add(typeof(INinjascriptServiceProvider), new ServiceProviderCallSite());
-            //CallSiteFactory.Add(typeof(IServiceScopeFactory), new ConstantCallSite(typeof(IServiceScopeFactory), Root));
-            //CallSiteFactory.Add(typeof(IServiceProviderIsService), new ConstantCallSite(typeof(IServiceProviderIsService), CallSiteFactory));
-
-            // Default is false
             if (options.ValidateOnBuild)
             {
                 List<Exception> exceptions = null;
@@ -76,8 +62,6 @@ namespace Nt.Core.Data
                     throw new AggregateException("Some services are not able to be constructed", exceptions.ToArray());
                 }
             }
-
-            //DependencyInjectionEventSource.Log.ServiceProviderBuilt(this);
         }
 
         #endregion
@@ -93,22 +77,10 @@ namespace Nt.Core.Data
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
-            var realizedService = _realizedServices.GetOrAdd(serviceType, CreateService);
-            Debug.Assert(realizedService is null);
+            Func<Type, object> realizedService = _realizedServices.GetOrAdd(serviceType, _createServiceAccessor);
+            var result = realizedService.Invoke(serviceType);
+            Debug.Assert(result is null);
             return realizedService;
-        }
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
-            DisposeCore();
-        }
-
-        /// <inheritdoc/>
-        public ValueTask DisposeAsync()
-        {
-            DisposeCore();
-            return default;
         }
 
         #endregion
@@ -132,6 +104,18 @@ namespace Nt.Core.Data
             {
                 throw new InvalidOperationException($"Error while validating the service descriptor '{descriptor}': {e.Message}", e);
             }
+        }
+
+        private object CreateServiceAccessor(Type serviceType)
+        {
+            ServiceCallSite callSite = CallSiteFactory.GetCallSite(GetServiceDescriptor(serviceType));
+            if (callSite != null)
+            {
+                object value = null; // CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
+                return value;
+            }
+
+            return null;
         }
 
         private object CreateService(Type serviceType)
@@ -170,7 +154,7 @@ namespace Nt.Core.Data
                         return new ConstructorCallSite(serviceDescriptor.ServiceType, constructor);
                     }
 
-                    return new ConstructorCallSite(serviceDescriptor.ServiceType, constructor, parameters);
+                    return new ConstructorCallSite(serviceDescriptor.ServiceType, constructor, null);
                 }
 
                 //Array.Sort(constructors,
@@ -246,7 +230,7 @@ namespace Nt.Core.Data
             return Array.Empty<Object>();
         }
 
-        private ServiceDescriptor GetServiceDescriptor(Type serviceType)
+        internal ServiceDescriptor GetServiceDescriptor(Type serviceType)
         {
             foreach (ServiceDescriptor descriptor in _descriptors)
             {
@@ -255,6 +239,23 @@ namespace Nt.Core.Data
             }
 
             return null;
+        }
+
+        #endregion
+
+        #region Dispose methods
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            DisposeCore();
+        }
+
+        /// <inheritdoc/>
+        public ValueTask DisposeAsync()
+        {
+            DisposeCore();
+            return default;
         }
 
         private void DisposeCore()

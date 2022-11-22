@@ -26,20 +26,19 @@ namespace Nt.Core.Data
     internal sealed class ConstructorCallSite : ServiceCallSite
     {
         internal ConstructorInfo ConstructorInfo { get; }
-        internal ParameterInfo[] Parameters { get; }
-        //internal ServiceCallSite[] ParameterCallSites { get; }
+        internal ServiceCallSite[] ParameterCallSites { get; }
 
         public ConstructorCallSite(
             Type serviceType, 
             ConstructorInfo constructorInfo) 
-            : this(serviceType, constructorInfo, Array.Empty<ParameterInfo>())
+            : this(serviceType, constructorInfo, Array.Empty<ServiceCallSite>())
         {
         }
 
         public ConstructorCallSite(
             Type serviceType,
             ConstructorInfo constructorInfo,
-            ParameterInfo[] parameters) 
+            ServiceCallSite[] parameters) 
             : base()
         {
             if (!serviceType.IsAssignableFrom(constructorInfo.DeclaringType))
@@ -49,7 +48,7 @@ namespace Nt.Core.Data
 
             ServiceType = serviceType;
             ConstructorInfo = constructorInfo;
-            Parameters = parameters;
+            ParameterCallSites = parameters;
         }
 
         public override Type ServiceType { get; }

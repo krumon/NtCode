@@ -132,54 +132,33 @@ namespace Nt.Core.Data
             return null;
         }
 
-        internal Type[] GetImplementationParameters()
-        {
-            ConstructorInfo[] constructors = GetImplementationType().GetConstructors();
-
-            if (constructors.Length != 1)
-                throw new Exception("The public constructor of the implementationType must be unique");
-
-            ParameterInfo[] parameters = constructors[0].GetParameters();
-            
-            if (parameters.Length > 0)
-            {
-                Type[] newTypes = new Type[parameters.Length];
-                for (int i= 0; i < newTypes.Length; i++)
-                    newTypes[i] = parameters[i].ParameterType;
-
-                return newTypes;
-            }
-
-            return Type.EmptyTypes;
-        }
-
         internal object GetCallSite()
         {
-            // ServiceCallSite callSite;
+            ServiceCallSite callSite;
             object service = null;
-            //if (ImplementationInstance != null)
-            //{
-            //    callSite = new ConstantCallSite(ServiceType, ImplementationInstance);
-            //}
-            //else if (ImplementationFactory != null)
-            //{
-            //    callSite = new FactoryCallSite(ServiceType, ImplementationFactory);
-            //}
-            //else if (ImplementationType != null)
-            //{
-            //    callSite = CreateConstructorCallSite(ServiceType, ImplementationType);
-            //}
-            //else
-            //{
-            //    throw new InvalidOperationException(SR.InvalidServiceDescriptor);
-            //}
+            if (ImplementationInstance != null)
+            {
+                callSite = new ConstantCallSite(ServiceType, ImplementationInstance);
+            }
+            else if (ImplementationFactory != null)
+            {
+                callSite = new FactoryCallSite(ServiceType, ImplementationFactory);
+            }
+            else if (ImplementationType != null)
+            {
+                callSite = CreateConstructorCallSite(ServiceType, ImplementationType);
+            }
+            else
+            {
+                throw new InvalidOperationException("Invalid Service Descriptor");
+            }
 
             return service;
 
             //return _callSiteCache[callSiteKey] = callSite;
         }
-
-        internal void CreateConstructorCallSite()
+        
+        internal ServiceCallSite CreateConstructorCallSite(Type serviceType, Type implementationType)
         {
             //try
             //{
@@ -276,6 +255,7 @@ namespace Nt.Core.Data
             //{
             //    callSiteChain.Remove(serviceType);
             //}
+            return default;
         }
 
         internal void CreateArgumentsCallSite()
@@ -307,6 +287,27 @@ namespace Nt.Core.Data
             //}
 
             //return parameterCallSites;
+        }
+
+        internal Type[] GetImplementationParameters()
+        {
+            ConstructorInfo[] constructors = GetImplementationType().GetConstructors();
+
+            if (constructors.Length != 1)
+                throw new Exception("The public constructor of the implementationType must be unique");
+
+            ParameterInfo[] parameters = constructors[0].GetParameters();
+
+            if (parameters.Length > 0)
+            {
+                Type[] newTypes = new Type[parameters.Length];
+                for (int i = 0; i < newTypes.Length; i++)
+                    newTypes[i] = parameters[i].ParameterType;
+
+                return newTypes;
+            }
+
+            return Type.EmptyTypes;
         }
 
         internal void GetParameterDefaultValue()
