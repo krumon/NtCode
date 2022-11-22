@@ -203,6 +203,7 @@
     <Compile Include="Data\Host\Interfaces\IHostedService.cs" />
     <Compile Include="Data\Host\Interfaces\IOptionalService.cs" />
     <Compile Include="Data\Services\.Base\CallSiteFactory.cs" />
+    <Compile Include="Data\Services\.Base\ParameterDefaultValue.cs" />
     <Compile Include="Data\Services\.Base\ServiceCallSite.cs" />
     <Compile Include="Data\Services\.Base\ServiceProviderEngineScope.cs" />
     <Compile Include="Data\Services\.Base\ServiceProviderOptions.cs" />

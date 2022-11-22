@@ -36,6 +36,11 @@ namespace Nt.Core.Data
         public object ImplementationInstance { get; }
 
         /// <summary>
+        /// Gets the delegate to construct an object instance.
+        /// </summary>
+        public Func<IServiceProvider, object> ImplementationFactory { get; }
+
+        /// <summary>
         /// Gets the ninjascript service implementation instance. 
         /// Can be null.
         /// </summary>
@@ -114,6 +119,15 @@ namespace Nt.Core.Data
             else if (ImplementationInstance != null)
                 return ImplementationInstance.GetType();
 
+            else if (ImplementationFactory != null)
+            {
+                Type[] typeArguments = ImplementationFactory.GetType().GenericTypeArguments;
+
+                Debug.Assert(typeArguments.Length == 2);
+
+                return typeArguments[1];
+            }
+
             Debug.Assert(false, "ImplementationType or ImplementationInstance must be non null");
             return null;
         }
@@ -137,6 +151,167 @@ namespace Nt.Core.Data
             }
 
             return Type.EmptyTypes;
+        }
+
+        internal object GetCallSite()
+        {
+            // ServiceCallSite callSite;
+            object service = null;
+            //if (ImplementationInstance != null)
+            //{
+            //    callSite = new ConstantCallSite(ServiceType, ImplementationInstance);
+            //}
+            //else if (ImplementationFactory != null)
+            //{
+            //    callSite = new FactoryCallSite(ServiceType, ImplementationFactory);
+            //}
+            //else if (ImplementationType != null)
+            //{
+            //    callSite = CreateConstructorCallSite(ServiceType, ImplementationType);
+            //}
+            //else
+            //{
+            //    throw new InvalidOperationException(SR.InvalidServiceDescriptor);
+            //}
+
+            return service;
+
+            //return _callSiteCache[callSiteKey] = callSite;
+        }
+
+        internal void CreateConstructorCallSite()
+        {
+            //try
+            //{
+            //    callSiteChain.Add(serviceType, implementationType);
+            //    ConstructorInfo[] constructors = implementationType.GetConstructors();
+
+            //    ServiceCallSite[] parameterCallSites = null;
+
+            //    if (constructors.Length == 0)
+            //    {
+            //        throw new InvalidOperationException(SR.Format(SR.NoConstructorMatch, implementationType));
+            //    }
+            //    else if (constructors.Length == 1)
+            //    {
+            //        ConstructorInfo constructor = constructors[0];
+            //        ParameterInfo[] parameters = constructor.GetParameters();
+            //        if (parameters.Length == 0)
+            //        {
+            //            return new ConstructorCallSite(lifetime, serviceType, constructor);
+            //        }
+
+            //        parameterCallSites = CreateArgumentCallSites(
+            //            implementationType,
+            //            callSiteChain,
+            //            parameters,
+            //            throwIfCallSiteNotFound: true);
+
+            //        return new ConstructorCallSite(lifetime, serviceType, constructor, parameterCallSites);
+            //    }
+
+            //    Array.Sort(constructors,
+            //        (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
+
+            //    ConstructorInfo bestConstructor = null;
+            //    HashSet<Type> bestConstructorParameterTypes = null;
+            //    for (int i = 0; i < constructors.Length; i++)
+            //    {
+            //        ParameterInfo[] parameters = constructors[i].GetParameters();
+
+            //        ServiceCallSite[] currentParameterCallSites = CreateArgumentCallSites(
+            //            implementationType,
+            //            callSiteChain,
+            //            parameters,
+            //            throwIfCallSiteNotFound: false);
+
+            //        if (currentParameterCallSites != null)
+            //        {
+            //            if (bestConstructor == null)
+            //            {
+            //                bestConstructor = constructors[i];
+            //                parameterCallSites = currentParameterCallSites;
+            //            }
+            //            else
+            //            {
+            //                // Since we're visiting constructors in decreasing order of number of parameters,
+            //                // we'll only see ambiguities or supersets once we've seen a 'bestConstructor'.
+
+            //                if (bestConstructorParameterTypes == null)
+            //                {
+            //                    bestConstructorParameterTypes = new HashSet<Type>();
+            //                    foreach (ParameterInfo p in bestConstructor.GetParameters())
+            //                    {
+            //                        bestConstructorParameterTypes.Add(p.ParameterType);
+            //                    }
+            //                }
+
+            //                foreach (ParameterInfo p in parameters)
+            //                {
+            //                    if (!bestConstructorParameterTypes.Contains(p.ParameterType))
+            //                    {
+            //                        // Ambiguous match exception
+            //                        throw new InvalidOperationException(string.Join(
+            //                            Environment.NewLine,
+            //                            SR.Format(SR.AmbiguousConstructorException, implementationType),
+            //                            bestConstructor,
+            //                            constructors[i]));
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //    if (bestConstructor == null)
+            //    {
+            //        throw new InvalidOperationException(
+            //            SR.Format(SR.UnableToActivateTypeException, implementationType));
+            //    }
+            //    else
+            //    {
+            //        Debug.Assert(parameterCallSites != null);
+            //        return new ConstructorCallSite(lifetime, serviceType, bestConstructor, parameterCallSites);
+            //    }
+            //}
+            //finally
+            //{
+            //    callSiteChain.Remove(serviceType);
+            //}
+        }
+
+        internal void CreateArgumentsCallSite()
+        {
+            //var parameterCallSites = new ServiceCallSite[parameters.Length];
+            //for (int index = 0; index < parameters.Length; index++)
+            //{
+            //    Type parameterType = parameters[index].ParameterType;
+            //    ServiceCallSite callSite = GetCallSite(parameterType, callSiteChain);
+
+            //    if (callSite == null && ParameterDefaultValue.TryGetDefaultValue(parameters[index], out object defaultValue))
+            //    {
+            //        callSite = new ConstantCallSite(parameterType, defaultValue);
+            //    }
+
+            //    if (callSite == null)
+            //    {
+            //        if (throwIfCallSiteNotFound)
+            //        {
+            //            throw new InvalidOperationException(SR.Format(SR.CannotResolveService,
+            //                parameterType,
+            //                implementationType));
+            //        }
+
+            //        return null;
+            //    }
+
+            //    parameterCallSites[index] = callSite;
+            //}
+
+            //return parameterCallSites;
+        }
+
+        internal void GetParameterDefaultValue()
+        {
+
         }
 
         /// <summary>
