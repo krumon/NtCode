@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 
 namespace Nt.Core.Data
 {
@@ -59,12 +60,8 @@ namespace Nt.Core.Data
             return hasDefaultValue;
         }
 
-        private static object CreateValueType(Type t)
-        {
-            if (t is typeof(int))
-            return Activator.CreateInstance(t);
-        }
-
-
+        private static object CreateValueType(Type t) 
+            => FormatterServices.GetUninitializedObject(t);
+        
     }
 }
