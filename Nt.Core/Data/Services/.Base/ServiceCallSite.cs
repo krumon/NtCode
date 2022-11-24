@@ -15,6 +15,7 @@ namespace Nt.Core.Data
 
         public abstract Type ServiceType { get; }
         public abstract Type ImplementationType { get; }
+        public abstract CallSiteKind Kind { get;}
         public object Value { get; set; }
 
         public bool CaptureDisposable =>
@@ -53,6 +54,7 @@ namespace Nt.Core.Data
 
         public override Type ServiceType { get; }
         public override Type ImplementationType => ConstructorInfo.DeclaringType;
+        public override CallSiteKind Kind { get; } = CallSiteKind.Constructor;
 
     }
     internal sealed class IEnumerableCallSite : ServiceCallSite
@@ -71,6 +73,7 @@ namespace Nt.Core.Data
 
         public override Type ServiceType => typeof(IEnumerable<>).MakeGenericType(ItemType);
         public override Type ImplementationType => ItemType.MakeArrayType();
+        public override CallSiteKind Kind { get; } = CallSiteKind.IEnumerable;
     }
     internal sealed class ConstantCallSite : ServiceCallSite
     {
@@ -93,6 +96,7 @@ namespace Nt.Core.Data
 
         public override Type ServiceType => _serviceType;
         public override Type ImplementationType => DefaultValue?.GetType() ?? _serviceType;
+        public override CallSiteKind Kind { get; } = CallSiteKind.Constant;
     }
     internal sealed class ServiceProviderCallSite : ServiceCallSite
     {
@@ -102,6 +106,7 @@ namespace Nt.Core.Data
 
         public override Type ServiceType { get; } = typeof(IServiceProvider);
         public override Type ImplementationType { get; } = typeof(ServiceProvider);
+        public override CallSiteKind Kind { get; } = CallSiteKind.ServiceProvider;
     }
     internal sealed class FactoryCallSite : ServiceCallSite
     {
@@ -118,6 +123,6 @@ namespace Nt.Core.Data
 
         public override Type ServiceType { get; }
         public override Type ImplementationType => null;
-
+        public override CallSiteKind Kind { get; } = CallSiteKind.Factory;
     }
 }

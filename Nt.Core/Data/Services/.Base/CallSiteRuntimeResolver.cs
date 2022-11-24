@@ -1,34 +1,46 @@
-﻿namespace Nt.Core.Data
+﻿using System;
+using System.Runtime.ExceptionServices;
+
+namespace Nt.Core.Data
 {
-    public sealed class CallSiteRuntimeResolver
+    internal class CallSiteRuntimeResolver
     {
 
-        public static CallSiteRuntimeResolver Instance { get; } = new();
+        public static CallSiteRuntimeResolver Instance { get; } = new CallSiteRuntimeResolver();
 
         private CallSiteRuntimeResolver()
         {
         }
 
-        public object Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+        public object Resolve(ServiceCallSite callSite, ServiceProvider serviceProvider)
         {
             // Fast path to avoid virtual calls if we already have the cached value in the root scope
-            if (scope.IsRootScope && callSite.Value is object cached)
+            if (callSite.Value is object cached)
             {
                 return cached;
             }
 
-            return VisitCallSite(callSite, new RuntimeResolverContext
-            {
-                Scope = scope
-            });
+            return VisitCallSite(callSite, serviceProvider);
         }
 
-        protected override object VisitDisposeCache(ServiceCallSite transientCallSite, RuntimeResolverContext context)
+        protected object VisitCallSite(ServiceCallSite callSite, ServiceProvider serviceProvider)
         {
-            return context.Scope.CaptureDisposable(VisitCallSiteMain(transientCallSite, context));
+            switch (callSite.Kind)
+            {
+                case CallSiteKind.Factory:
+                    return VisitFactory((FactoryCallSite)callSite, serviceProvider);
+                case CallSiteKind.IEnumerable:
+                    return VisitIEnumerable((IEnumerableCallSite)callSite, serviceProvider);
+                case CallSiteKind.Constructor:
+                    return VisitConstructor((ConstructorCallSite)callSite, serviceProvider);
+                case CallSiteKind.Constant:
+                    return VisitConstant((ConstantCallSite)callSite, serviceProvider);
+                default:
+                    throw new NotSupportedException($"CallSiteTypeNotSupported ({callSite.GetType()})");
+            }
         }
 
-        protected override object VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+        protected object VisitConstructor(ConstructorCallSite constructorCallSite, ServiceProvider context)
         {
             object[] parameterValues;
             if (constructorCallSite.ParameterCallSites.Length == 0)
@@ -44,7 +56,6 @@
                 }
             }
 
-#if NETFRAMEWORK || NETSTANDARD2_0
             try
             {
                 return constructorCallSite.ConstructorInfo.Invoke(parameterValues);
@@ -55,17 +66,14 @@
                 // The above line will always throw, but the compiler requires we throw explicitly.
                 throw;
             }
-#else
-            return constructorCallSite.ConstructorInfo.Invoke(BindingFlags.DoNotWrapExceptions, binder: null, parameters: parameterValues, culture: null);
-#endif
         }
 
-        protected override object VisitConstant(ConstantCallSite constantCallSite, RuntimeResolverContext context)
+        protected object VisitConstant(ConstantCallSite constantCallSite, ServiceProvider context)
         {
             return constantCallSite.DefaultValue;
         }
 
-        protected override object VisitIEnumerable(IEnumerableCallSite enumerableCallSite, RuntimeResolverContext context)
+        protected object VisitIEnumerable(IEnumerableCallSite enumerableCallSite, ServiceProvider context)
         {
             var array = Array.CreateInstance(
                 enumerableCallSite.ItemType,
@@ -79,9 +87,10 @@
             return array;
         }
 
-        protected override object VisitFactory(FactoryCallSite factoryCallSite, RuntimeResolverContext context)
+        protected object VisitFactory(FactoryCallSite factoryCallSite, ServiceProvider context)
         {
-            return factoryCallSite.Factory(context.Scope);
+            return factoryCallSite.Factory(context);
         }
+
     }
 }

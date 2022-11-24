@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace Nt.Core.Data
@@ -18,11 +17,11 @@ namespace Nt.Core.Data
         // Check the service provider is disposed.
         private bool _disposed;
         // Collection of the realized services.
-        private ConcurrentDictionary<Type, Func<Type, object>> _realizedServices;
+        private ConcurrentDictionary<Type, Func<ServiceProvider, object>> _realizedServices;
         // The factory of the calls.
         internal CallSiteFactory CallSiteFactory { get; }
         // Delagate to create the service
-        private Func<Type,object> _createServiceAccessor;
+        private Func<Type,Func<ServiceProvider,object>> _createServiceAccessor;
 
         #endregion
 
@@ -31,7 +30,7 @@ namespace Nt.Core.Data
         internal ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors, ServiceProviderOptions options)
         {
             // Initilize the realized services.
-            _realizedServices = new ConcurrentDictionary<Type, Func<Type, object>>();
+            _realizedServices = new ConcurrentDictionary<Type, Func<ServiceProvider, object>>();
             // Initialize the call site factory.
             CallSiteFactory = new CallSiteFactory(serviceDescriptors);
             // Sets the delegate method.
@@ -44,7 +43,7 @@ namespace Nt.Core.Data
                 {
                     try
                     {
-                        //ValidateService(serviceDescriptor);
+                        ValidateService(serviceDescriptor);
                     }
                     catch (Exception e)
                     {
@@ -73,8 +72,8 @@ namespace Nt.Core.Data
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
-            Func<Type, object> realizedService = _realizedServices.GetOrAdd(serviceType, _createServiceAccessor);
-            var result = realizedService.Invoke(serviceType);
+            Func<ServiceProvider, object> realizedService = _realizedServices.GetOrAdd(serviceType, _createServiceAccessor);
+            var result = realizedService.Invoke(this);
             Debug.Assert(result is null);
             return realizedService;
         }
@@ -102,13 +101,13 @@ namespace Nt.Core.Data
             }
         }
 
-        private object CreateServiceAccessor(Type serviceType)
+        private Func<ServiceProvider,object> CreateServiceAccessor(Type serviceType)
         {
             ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType);
             if (callSite != null)
             {
-                object value = null; // CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
-                return value;
+                object value = CallSiteRuntimeResolver.Instance.Resolve(callSite, this);
+                return sp => value;
             }
 
             return null;
