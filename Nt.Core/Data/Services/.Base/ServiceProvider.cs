@@ -91,7 +91,7 @@ namespace Nt.Core.Data
 
             try
             {
-                ServiceCallSite callSite = CallSiteFactory.GetCallSite(descriptor);
+                ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType);
                 if (callSite != null)
                     ValidateCallSite(callSite);
             }

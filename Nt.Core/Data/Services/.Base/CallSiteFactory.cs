@@ -77,170 +77,170 @@ namespace Nt.Core.Data
         internal ServiceCallSite GetCallSite(Type serviceType) =>
             CreateCallSite(serviceType);
 
-        internal ServiceCallSite GetCallSite(ServiceDescriptor serviceDescriptor)
-        {
+        //internal ServiceCallSite GetCallSite(ServiceDescriptor serviceDescriptor)
+        //{
 
-            if (_descriptorLookup.TryGetValue(serviceDescriptor.ServiceType, out ServiceDescriptorCacheItem descriptor))
-            {
-                return TryCreateExact(serviceDescriptor, serviceDescriptor.ServiceType, descriptor.GetSlot(serviceDescriptor));
-            }
+        //    if (_descriptorLookup.TryGetValue(serviceDescriptor.ServiceType, out ServiceDescriptorCacheItem descriptor))
+        //    {
+        //        return TryCreateExact(serviceDescriptor, serviceDescriptor.ServiceType, descriptor.GetSlot(serviceDescriptor));
+        //    }
 
-            Debug.Fail("_descriptorLookup didn't contain requested serviceDescriptor");
-            return null;
-        }
+        //    Debug.Fail("_descriptorLookup didn't contain requested serviceDescriptor");
+        //    return null;
+        //}
 
-        private ServiceCallSite CreateConstructorCallSite(ServiceDescriptor serviceDescriptor)
-        {
-            try
-            {
-                ConstructorInfo[] constructors = serviceDescriptor.ImplementationType.GetConstructors();
-                ParameterInfo[] parameters;
-                if (constructors.Length == 0)
-                {
-                    throw new InvalidOperationException("NoConstructorMatch");
-                }
-                else if (constructors.Length == 1)
-                {
-                    ConstructorInfo constructor = constructors[0];
-                    parameters = constructor.GetParameters();
-                    if (parameters.Length == 0)
-                    {
-                        return new ConstructorCallSite(serviceDescriptor.serviceType, constructor);
-                    }
+        //private ServiceCallSite CreateConstructorCallSite(ServiceDescriptor serviceDescriptor)
+        //{
+        //    try
+        //    {
+        //        ConstructorInfo[] constructors = serviceDescriptor.ImplementationType.GetConstructors();
+        //        ParameterInfo[] parameters;
+        //        if (constructors.Length == 0)
+        //        {
+        //            throw new InvalidOperationException("NoConstructorMatch");
+        //        }
+        //        else if (constructors.Length == 1)
+        //        {
+        //            ConstructorInfo constructor = constructors[0];
+        //            parameters = constructor.GetParameters();
+        //            if (parameters.Length == 0)
+        //            {
+        //                return new ConstructorCallSite(serviceDescriptor.serviceType, constructor);
+        //            }
 
-                    return new ConstructorCallSite(serviceDescriptor.serviceType, constructor, parameters);
-                }
+        //            return new ConstructorCallSite(serviceDescriptor.serviceType, constructor, parameters);
+        //        }
 
-                Array.Sort(constructors,
-                    (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
+        //        Array.Sort(constructors,
+        //            (a, b) => b.GetParameters().Length.CompareTo(a.GetParameters().Length));
 
-                ConstructorInfo bestConstructor = null;
-                HashSet<Type> bestConstructorParameterTypes = null;
-                for (int i = 0; i < constructors.Length; i++)
-                {
-                    parameters = constructors[i].GetParameters();
+        //        ConstructorInfo bestConstructor = null;
+        //        HashSet<Type> bestConstructorParameterTypes = null;
+        //        for (int i = 0; i < constructors.Length; i++)
+        //        {
+        //            parameters = constructors[i].GetParameters();
 
-                    currentParameterCallSites = CreateArgumentCallSites(
-                        implementationType,
-                        parameters);
+        //            currentParameterCallSites = CreateArgumentCallSites(
+        //                implementationType,
+        //                parameters);
 
-                    if (currentParameterCallSites != null)
-                    {
-                        if (bestConstructor == null)
-                        {
-                            bestConstructor = constructors[i];
-                            parameterCallSites = currentParameterCallSites;
-                        }
-                        else
-                        {
-                            // Since we're visiting constructors in decreasing order of number of parameters,
-                            // we'll only see ambiguities or supersets once we've seen a 'bestConstructor'.
+        //            if (currentParameterCallSites != null)
+        //            {
+        //                if (bestConstructor == null)
+        //                {
+        //                    bestConstructor = constructors[i];
+        //                    parameterCallSites = currentParameterCallSites;
+        //                }
+        //                else
+        //                {
+        //                    // Since we're visiting constructors in decreasing order of number of parameters,
+        //                    // we'll only see ambiguities or supersets once we've seen a 'bestConstructor'.
 
-                            if (bestConstructorParameterTypes == null)
-                            {
-                                bestConstructorParameterTypes = new HashSet<Type>();
-                                foreach (ParameterInfo p in bestConstructor.GetParameters())
-                                {
-                                    bestConstructorParameterTypes.Add(p.ParameterType);
-                                }
-                            }
+        //                    if (bestConstructorParameterTypes == null)
+        //                    {
+        //                        bestConstructorParameterTypes = new HashSet<Type>();
+        //                        foreach (ParameterInfo p in bestConstructor.GetParameters())
+        //                        {
+        //                            bestConstructorParameterTypes.Add(p.ParameterType);
+        //                        }
+        //                    }
 
-                            foreach (ParameterInfo p in parameters)
-                            {
-                                if (!bestConstructorParameterTypes.Contains(p.ParameterType))
-                                {
-                                    // Ambiguous match exception
-                                    throw new InvalidOperationException(string.Join(
-                                        Environment.NewLine,
-                                        "AmbiguousConstructorException",
-                                        bestConstructor,
-                                        constructors[i]));
-                                }
-                            }
-                        }
-                    }
-                }
+        //                    foreach (ParameterInfo p in parameters)
+        //                    {
+        //                        if (!bestConstructorParameterTypes.Contains(p.ParameterType))
+        //                        {
+        //                            // Ambiguous match exception
+        //                            throw new InvalidOperationException(string.Join(
+        //                                Environment.NewLine,
+        //                                "AmbiguousConstructorException",
+        //                                bestConstructor,
+        //                                constructors[i]));
+        //                        }
+        //                    }
+        //                }
+        //            }
+        //        }
 
-                if (bestConstructor == null)
-                {
-                    throw new InvalidOperationException("UnableToActivateTypeException");
-                }
-                else
-                {
-                    Debug.Assert(parameters != null);
-                    return new ConstructorCallSite(serviceType, bestConstructor, parameters);
-                }
-            }
-            finally
-            {
-                callSiteChain.Remove(serviceType);
-            }
-        }
+        //        if (bestConstructor == null)
+        //        {
+        //            throw new InvalidOperationException("UnableToActivateTypeException");
+        //        }
+        //        else
+        //        {
+        //            Debug.Assert(parameters != null);
+        //            return new ConstructorCallSite(serviceType, bestConstructor, parameters);
+        //        }
+        //    }
+        //    finally
+        //    {
+        //        callSiteChain.Remove(serviceType);
+        //    }
+        //}
 
-        private Type[] CreateArgumentCallSites(
-            Type implementationType,
-            ParameterInfo[] parameters)
-        {
-            var parameterCallSites = new ServiceCallSite[parameters.Length];
-            for (int index = 0; index < parameters.Length; index++)
-            {
-                Type parameterType = parameters[index].ParameterType;
-                ServiceCallSite callSite = GetCallSite(parameterType, callSiteChain);
-                object defaultValue = null;
+        //private Type[] CreateArgumentCallSites(
+        //    Type implementationType,
+        //    ParameterInfo[] parameters)
+        //{
+        //    var parameterCallSites = new ServiceCallSite[parameters.Length];
+        //    for (int index = 0; index < parameters.Length; index++)
+        //    {
+        //        Type parameterType = parameters[index].ParameterType;
+        //        ServiceCallSite callSite = GetCallSite(parameterType, callSiteChain);
+        //        object defaultValue = null;
 
-                if (callSite == null && ParameterDefaultValue.TryGetDefaultValue(parameters[index], out defaultValue))
-                {
-                    callSite = new ConstantCallSite(parameterType, defaultValue);
-                }
+        //        if (callSite == null && ParameterDefaultValue.TryGetDefaultValue(parameters[index], out defaultValue))
+        //        {
+        //            callSite = new ConstantCallSite(parameterType, defaultValue);
+        //        }
 
-                if (callSite == null)
-                {
-                    if (throwIfCallSiteNotFound)
-                    {
-                        throw new InvalidOperationException("CannotResolveService");
-                    }
+        //        if (callSite == null)
+        //        {
+        //            if (throwIfCallSiteNotFound)
+        //            {
+        //                throw new InvalidOperationException("CannotResolveService");
+        //            }
 
-                    return null;
-                }
+        //            return null;
+        //        }
 
-                parameterCallSites[index] = callSite;
-            }
+        //        parameterCallSites[index] = callSite;
+        //    }
 
-            return parameterCallSites;
-        }
+        //    return parameterCallSites;
+        //}
 
 
-        public bool IsService(Type serviceType)
-        {
-            if (serviceType is null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
-            }
+        //public bool IsService(Type serviceType)
+        //{
+        //    if (serviceType is null)
+        //    {
+        //        throw new ArgumentNullException(nameof(serviceType));
+        //    }
 
-            // Querying for an open generic should return false (they aren't resolvable)
-            if (serviceType.IsGenericTypeDefinition)
-            {
-                return false;
-            }
+        //    // Querying for an open generic should return false (they aren't resolvable)
+        //    if (serviceType.IsGenericTypeDefinition)
+        //    {
+        //        return false;
+        //    }
 
-            if (_descriptorLookup.ContainsKey(serviceType))
-            {
-                return true;
-            }
+        //    if (_descriptorLookup.ContainsKey(serviceType))
+        //    {
+        //        return true;
+        //    }
 
-            if (serviceType.IsConstructedGenericType && serviceType.GetGenericTypeDefinition() is Type genericDefinition)
-            {
-                // We special case IEnumerable since it isn't explicitly registered in the container
-                // yet we can manifest instances of it when requested.
-                return genericDefinition == typeof(IEnumerable<>) || _descriptorLookup.ContainsKey(genericDefinition);
-            }
+        //    if (serviceType.IsConstructedGenericType && serviceType.GetGenericTypeDefinition() is Type genericDefinition)
+        //    {
+        //        // We special case IEnumerable since it isn't explicitly registered in the container
+        //        // yet we can manifest instances of it when requested.
+        //        return genericDefinition == typeof(IEnumerable<>) || _descriptorLookup.ContainsKey(genericDefinition);
+        //    }
 
-            // These are the built in service types that aren't part of the list of service descriptors
-            // If you update these make sure to also update the code in ServiceProvider.ctor
-            return serviceType == typeof(IServiceProvider) ||
-                   serviceType == typeof(IServiceScopeFactory) ||
-                   serviceType == typeof(IServiceProviderIsService);
-        }
+        //    // These are the built in service types that aren't part of the list of service descriptors
+        //    // If you update these make sure to also update the code in ServiceProvider.ctor
+        //    return serviceType == typeof(IServiceProvider) ||
+        //           serviceType == typeof(IServiceScopeFactory) ||
+        //           serviceType == typeof(IServiceProviderIsService);
+        //}
 
 
         private ServiceCallSite CreateCallSite(Type serviceType)
@@ -262,41 +262,41 @@ namespace Nt.Core.Data
             {
                 //callSiteChain.CheckCircularDependency(serviceType);
 
-                ServiceCallSite callSite = TryCreateExact(_provider.GetServiceDescriptor(serviceType), serviceType,0);
+                ServiceCallSite callSite = null; // TryCreateExact(_provider.GetServiceDescriptor(serviceType), serviceType, 0);
 
                 return callSite;
             }
         }
 
-        private ServiceCallSite TryCreateExact(ServiceDescriptor descriptor, Type serviceType, int slot)
-        {
-            if (serviceType == descriptor.ServiceType)
-            {
-                ServiceCacheKey callSiteKey = new ServiceCacheKey(serviceType, slot);
-                if (_callSiteCache.TryGetValue(callSiteKey, out ServiceCallSite serviceCallSite))
-                {
-                    return serviceCallSite;
-                }
+        //private ServiceCallSite TryCreateExact(ServiceDescriptor descriptor, Type serviceType, int slot)
+        //{
+        //    if (serviceType == descriptor.ServiceType)
+        //    {
+        //        ServiceCacheKey callSiteKey = new ServiceCacheKey(serviceType, slot);
+        //        if (_callSiteCache.TryGetValue(callSiteKey, out ServiceCallSite serviceCallSite))
+        //        {
+        //            return serviceCallSite;
+        //        }
 
-                ServiceCallSite callSite;
-                if (descriptor.ImplementationInstance != null)
-                {
-                    callSite = new ConstantCallSite(descriptor.ServiceType, descriptor.ImplementationInstance);
-                }
-                else if (descriptor.ImplementationType != null)
-                {
-                    callSite = CreateConstructorCallSite(descriptor.ServiceType, descriptor.ImplementationType);
-                }
-                else
-                {
-                    throw new InvalidOperationException("InvalidServiceDescriptor");
-                }
+        //        ServiceCallSite callSite;
+        //        if (descriptor.ImplementationInstance != null)
+        //        {
+        //            callSite = new ConstantCallSite(descriptor.ServiceType, descriptor.ImplementationInstance);
+        //        }
+        //        else if (descriptor.ImplementationType != null)
+        //        {
+        //            callSite = CreateConstructorCallSite(descriptor.ServiceType, descriptor.ImplementationType);
+        //        }
+        //        else
+        //        {
+        //            throw new InvalidOperationException("InvalidServiceDescriptor");
+        //        }
 
-                return _callSiteCache[callSiteKey] = callSite;
-            }
+        //        return _callSiteCache[callSiteKey] = callSite;
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         #region From MS
 

@@ -73,6 +73,13 @@ namespace Nt.Core.Data
         }
 
         /// <inheritdoc/>
+        public object GetService(Type serviceType)
+        {
+
+            return default;
+        }
+
+        /// <inheritdoc/>
         public object GetService(object key)
         {
             if (key is Enum)

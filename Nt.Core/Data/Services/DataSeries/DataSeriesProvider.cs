@@ -38,7 +38,7 @@ namespace Nt.Core.Data
 
         #region Public methods
 
-        public object GetService(object key)
+        public object GetService(Type serviceType)
         {
             throw new NotImplementedException();
         }
