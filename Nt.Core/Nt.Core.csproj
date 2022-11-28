@@ -196,19 +196,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\DynamicallyAccessedMemberAttribute.cs" />
-    <Compile Include="Data\Host\HostService.cs" />
+    <Compile Include="Data\Host\Host.cs" />
     <Compile Include="Data\Host\HostOptions.cs" />
     <Compile Include="Data\Host\HostBuilder.cs" />
-    <Compile Include="Data\Host\Host.cs" />
+    <Compile Include="Data\Host\Hosting.cs" />
     <Compile Include="Data\Host\Interfaces\IHostedService.cs" />
+    <Compile Include="Data\Host\Interfaces\IHost.cs" />
     <Compile Include="Data\Host\Interfaces\IOptionalService.cs" />
     <Compile Include="Data\Services\.Base\CallSiteChain.cs" />
     <Compile Include="Data\Services\.Base\CallSiteFactory.cs" />
     <Compile Include="Data\Services\.Base\CallSiteKind.cs" />
     <Compile Include="Data\Services\.Base\CallSiteRuntimeResolver.cs" />
+    <Compile Include="Data\Services\.Base\ServiceProviderFactory.cs" />
     <Compile Include="Data\Services\.Base\ParameterDefaultValue.cs" />
     <Compile Include="Data\Services\.Base\ServiceCacheKey.cs" />
     <Compile Include="Data\Services\.Base\ServiceCallSite.cs" />
+    <Compile Include="Data\Services\.Base\ServiceProviderExtensions.cs" />
     <Compile Include="Data\Services\.Base\ServiceProviderOptions.cs" />
     <Compile Include="Data\Services\.Base\ServiceProvider.cs" />
     <Compile Include="Data\Services\.Base\ServiceCollection.cs" />

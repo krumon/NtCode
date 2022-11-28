@@ -27,6 +27,10 @@ namespace Nt.Core.Data
 
         #region Constructor
 
+        internal ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors) : this(serviceDescriptors, ServiceProviderOptions.Default)
+        {
+        }
+
         internal ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors, ServiceProviderOptions options)
         {
             // Initilize the realized services.

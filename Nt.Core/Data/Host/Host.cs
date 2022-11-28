@@ -1,50 +1,117 @@
-﻿namespace Nt.Core.Data
+﻿using System;
+using System.Collections.Concurrent;
+
+namespace Nt.Core.Data
 {
     /// <summary>
-    /// Default services host.
+    /// Represents the ninjascript host.
     /// </summary>
-    public static class Host 
+    public class Host : IHost
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HostBuilder"/> class with pre-configured defaults.
-        /// </summary>
-        /// <remarks>
-        ///   The following defaults are applied to the returned <see cref="HostBuilder"/>:
-        ///   <list type="bullet">
-        ///     <item><description>set the <see cref="IHostEnvironment.ContentRootPath"/> to the result of <see cref="Directory.GetCurrentDirectory()"/></description></item>
-        ///     <item><description>load host <see cref="IConfiguration"/> from "DOTNET_" prefixed environment variables</description></item>
-        ///     <item><description>load app <see cref="IConfiguration"/> from 'appsettings.json' and 'appsettings.[<see cref="IHostEnvironment.EnvironmentName"/>].json'</description></item>
-        ///     <item><description>load app <see cref="IConfiguration"/> from User Secrets when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development' using the entry assembly</description></item>
-        ///     <item><description>load app <see cref="IConfiguration"/> from environment variables</description></item>
-        ///     <item><description>configure the <see cref="ILoggerFactory"/> to log to the console, debug, and event source output</description></item>
-        ///     <item><description>enables scope validation on the dependency injection container when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development'</description></item>
-        ///   </list>
-        /// </remarks>
-        /// <returns>The initialized <see cref="INinjascriptHostBuilder"/>.</returns>
-        public static IHostBuilder CreateDefaultBuilder() =>
-            CreateDefaultBuilder(args: null);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="HostBuilder"/> class with pre-configured defaults.
-        /// </summary>
-        /// <remarks>
-        ///   The following defaults are applied to the returned <see cref="HostBuilder"/>:
-        ///   <list type="bullet">
-        ///     <item><description>set the <see cref="IHostEnvironment.ContentRootPath"/> to the result of <see cref="Directory.GetCurrentDirectory()"/></description></item>
-        ///     <item><description>load host <see cref="INinjascriptConfiguration"/> from "DOTNET_" prefixed environment variables</description></item>
-        ///     <item><description>load app <see cref="INinjascriptConfiguration"/> from 'appsettings.json' and 'appsettings.[<see cref="IHostEnvironment.EnvironmentName"/>].json'</description></item>
-        ///     <item><description>load app <see cref="INinjascriptConfiguration"/> from User Secrets when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development' using the entry assembly</description></item>
-        ///     <item><description>load app <see cref="INinjascriptConfiguration"/> from environment variables</description></item>
-        ///     <item><description>configure the <see cref="ILoggerFactory"/> to log to the console, debug, and event source output</description></item>
-        ///     <item><description>enables scope validation on the dependency injection container when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development'</description></item>
-        ///   </list>
-        /// </remarks>
-        /// <returns>The initialized <see cref="INinjascriptHostBuilder"/>.</returns>
-        public static IHostBuilder CreateDefaultBuilder(string[] args)
+        #region Private members
+
+        //private readonly ILogger<Host> _logger;
+        //private readonly IHostLifetime _hostLifetime;
+        //private readonly NinjascriptLifetime _ninjascriptLifetime;
+        //private readonly INinjascriptHostEnvironment _hostEnvironment;
+        //private readonly PhysicalFileProvider _defaultProvider;
+        //private IEnumerable<IHostedService> _hostedServices;
+        //private volatile bool _stopCalled;
+        private readonly HostOptions _options;
+        private readonly ConcurrentDictionary<RequiredServiceType, IRequiredService> _requiredServices;
+        private readonly ConcurrentDictionary<OptionalServiceType, IOptionalService> _optionalServices;
+
+        #endregion
+
+        #region Public properties
+
+        /// <inheritdoc/>
+        public ConcurrentDictionary<RequiredServiceType, IRequiredService> RequiredServices => _requiredServices;
+
+        /// <inheritdoc/>
+        public ConcurrentDictionary<OptionalServiceType, IOptionalService> OptionalServices => _optionalServices;
+
+        public IServiceProvider Services { get; }
+
+        #endregion
+
+        #region Constructors
+
+        public Host(
+            IServiceProvider services,
+            HostOptions options
+            )
         {
-            HostBuilder builder = new HostBuilder();
-            return builder.ConfigureDefaults(args);
+            Services = services ?? throw new ArgumentNullException(nameof(services));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+            //_requiredServices = requiredServices ?? throw new ArgumentNullException(nameof(requiredServices));
+            //_optionalServices = optionalServices ?? throw new ArgumentNullException(nameof(optionalServices));
         }
+
+        #endregion
+
+        #region Public methods
+
+        public object GetService<T>(IHostedService<T> key)
+            where T : Enum
+        {
+            if (key is RequiredServiceType requiredServiceKey)
+            {
+                if (_requiredServices.TryGetValue(requiredServiceKey, out var service))
+                    return service;
+                throw new Exception("The service doesn't exist and is required.");
+            }
+                
+            if (key is OptionalServiceType optionalServiceKey)
+            {
+                if (_optionalServices.TryGetValue(optionalServiceKey, out var service))
+                    return service;
+                return default;
+            }
+
+            return default;
+                
+        }
+
+        /// <inheritdoc/>
+        public object GetService(Type serviceType)
+        {
+
+            return default;
+        }
+
+        /// <inheritdoc/>
+        public object GetService(object key)
+        {
+            if (key is Enum)
+            {
+                if (key is RequiredServiceType requiredServiceKey)
+                    return GetRequiredService(requiredServiceKey);
+
+                if (key is OptionalServiceType optionalServiceKey)
+                    return GetOptionalService(optionalServiceKey);            }
+
+            return default;
+        }
+
+        /// <inheritdoc/>
+        public object GetRequiredService(RequiredServiceType key)
+        {
+            if (_requiredServices.TryGetValue(key, out var service))
+                return service;
+            throw new Exception("The service doesn't exist and is required.");
+        }
+
+        /// <inheritdoc/>
+        public object GetOptionalService(OptionalServiceType key)
+        {
+            if (_optionalServices.TryGetValue(key, out var service))
+                return service;
+            return default;
+        }
+
+        #endregion
 
     }
 }

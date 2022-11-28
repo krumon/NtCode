@@ -12,7 +12,7 @@ namespace Nt.Core.Data
         /// </summary>
         /// <param name="services">The collection of services.</param>
         /// <returns>A container builder that can be used to create an <see cref="IServiceProvider"/>.</returns>
-        TContainerBuilder CreateBuilder(IServiceCollection<IServiceDescriptor> services);
+        TContainerBuilder CreateBuilder(IServiceCollection services);
 
         /// <summary>
         /// Creates an <see cref="IServiceProvider"/> from the container builder.

@@ -26,10 +26,14 @@ namespace ConsoleApp
             //    .Build();
             //Microsoft.Extensions.DependencyInjection.ServiceProvider serviceProvider;
 
-            IHostService host = Host.CreateDefaultBuilder()
+            IHost host = Hosting.CreateDefaultBuilder()
                 .ConfigureHostOptions((options) =>
                 {
                     options.IsInDesignMode = true;
+                })
+                .ConfigureServices((sc) =>
+                {
+                    sc.Add<ChartDataService>();
                 })
                 .UseDataSeries((builder) =>
                 {
