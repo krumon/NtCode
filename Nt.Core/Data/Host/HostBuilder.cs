@@ -12,16 +12,37 @@ namespace Nt.Core.Data
         private bool _built;
         private bool _requiredServicesIsAdded = true;
         private List<Action<HostOptions>> _configureHostOptionsActions;
+        private List<Action<IServiceCollection>> _configureServicesActions;
+        private HostOptions _hostOptions = HostOptions.Default;
+       
         private List<Action<DataSeriesBuilder>> _configureDataSeriesActions;
         private ConcurrentDictionary<RequiredServiceType, IRequiredService> _requiredServices = new ConcurrentDictionary<RequiredServiceType, IRequiredService>();
         private ConcurrentDictionary<OptionalServiceType, IOptionalService> _optionalServices = new ConcurrentDictionary<OptionalServiceType, IOptionalService>();
-        private HostOptions _hostOptions = HostOptions.Default;
 
+        /// <summary>
+        /// Set up the options for the builder itself. This will be used to initialize the <see cref="Host"/>
+        /// for use later in the build process. This can be called multiple times and the results will be additive.
+        /// </summary>
+        /// <param name="optionsDelegate">The delegate for configuring the <see cref="IHostBuilder"/> that will be used
+        /// to construct the <see cref="IServiceProvider"/> for the host.</param>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         public IHostBuilder ConfigureHostOptions(Action<HostOptions> optionsDelegate)
         {
             if (_configureHostOptionsActions == null)
                 _configureHostOptionsActions= new List<Action<HostOptions>>();
             _configureHostOptionsActions.Add(optionsDelegate ?? throw new ArgumentNullException(nameof(optionsDelegate)));
+            return this;
+        }
+
+        /// <summary>
+        /// Adds services to the container. This can be called multiple times and the results will be additive.
+        /// </summary>
+        /// <param name="configureServicesDelegate">The delegate for configuring the <see cref="IConfigurationBuilder"/> that will be used
+        /// to construct the <see cref="IServiceProvider"/> for the host.</param>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+        public IHostBuilder ConfigureServices(Action<IServiceCollection> configureServicesDelegate)
+        {
+            _configureServicesActions.Add(configureServicesDelegate ?? throw new ArgumentNullException(nameof(configureServicesDelegate)));
             return this;
         }
 

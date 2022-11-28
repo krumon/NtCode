@@ -91,7 +91,7 @@ namespace Nt.Core.Data
 
             try
             {
-                ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType);
+                ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
                 if (callSite != null)
                     ValidateCallSite(callSite);
             }
@@ -103,7 +103,7 @@ namespace Nt.Core.Data
 
         private Func<ServiceProvider,object> CreateServiceAccessor(Type serviceType)
         {
-            ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType);
+            ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
             if (callSite != null)
             {
                 object value = CallSiteRuntimeResolver.Instance.Resolve(callSite, this);
