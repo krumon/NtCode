@@ -14,7 +14,7 @@ namespace Nt.Core.Data
         #region Private members
 
         private readonly bool _instanceError;
-        private readonly InstrumentKey _instrumentKey;
+        private readonly InstrumentCode _instrumentKey;
         private DataSeriesDescriptor[] _descriptors;
         private ConcurrentDictionary<string, DataSeriesService> _createdServices;
 
@@ -25,7 +25,7 @@ namespace Nt.Core.Data
         /// <summary>
         /// The instrument unique code.
         /// </summary>
-        public InstrumentKey Key => _instrumentKey;
+        public InstrumentCode Key => _instrumentKey;
 
         /// <summary>
         /// The market exchange owner of the instrument.
@@ -35,7 +35,7 @@ namespace Nt.Core.Data
         /// <summary>
         /// The trading hours key.
         /// </summary>
-        public TradingHoursKey TradingHoursKey {get;set;} = TradingHoursKey.Default;
+        public TradingHoursCode TradingHoursKey {get;set;} = TradingHoursCode.Default;
 
         /// <summary>
         /// Gets the instument name.
@@ -54,7 +54,7 @@ namespace Nt.Core.Data
         {
             get
             {
-                if (TradingHoursKey == TradingHoursKey.Default)
+                if (TradingHoursKey == TradingHoursCode.Default)
                     TradingHoursKey = _instrumentKey.ToDefaultTradingHoursKey();
 
                 return TradingHoursKey.ToName();

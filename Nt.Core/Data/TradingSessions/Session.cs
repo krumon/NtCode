@@ -8,7 +8,7 @@ namespace Nt.Core.Data
     /// <summary>
     /// Contents trading session information.
     /// </summary>
-    public class Session : BaseElement, ISession
+    public class Session : BaseElement, ISessions
     {
 
         #region Consts
@@ -121,7 +121,7 @@ namespace Nt.Core.Data
         /// <param name="instrumentKey">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
         /// <returns>A new instance of <see cref="Session"/> class.</returns>
-        public static Session CreateTradingSessionByType(SessionType sessionType, InstrumentKey instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static Session CreateTradingSessionByType(SessionType sessionType, InstrumentCode instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             return new Session
             {
@@ -139,7 +139,7 @@ namespace Nt.Core.Data
         /// <param name="beginTimeDisplacement">The displacement minutes to the intial balance of the session.</param>
         /// <param name="endTimeDisplacement">The displacement minutes to the final balance of the session.</param>
         /// <returns>A new instance of <see cref="Session"/> collection.</returns>
-        public static Session[] CreateTradingSessionByTypes(SessionType[] sessionTypes, InstrumentKey instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static Session[] CreateTradingSessionByTypes(SessionType[] sessionTypes, InstrumentCode instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             if (sessionTypes == null || sessionTypes.Length < 1)
                 throw new ArgumentNullException(nameof(sessionTypes));
@@ -161,7 +161,7 @@ namespace Nt.Core.Data
         /// <param name="endSessionTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="Session"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
-        public static Session CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTimeType beginSessionTimeType, TradingTimeType endSessionTimeType, string description = "")
+        public static Session CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginSessionTimeType, TradingTimeType endSessionTimeType, string description = "")
         {
             return new Session
             {
@@ -179,7 +179,7 @@ namespace Nt.Core.Data
         /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="Session"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
-        public static Session CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTime beginTradingTime, TradingTimeType endTradingTimeType, string description = "")
+        public static Session CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTime beginTradingTime, TradingTimeType endTradingTimeType, string description = "")
         {
             return new Session
             {
@@ -197,7 +197,7 @@ namespace Nt.Core.Data
         /// <param name="endTradingTime">The final <see cref="TradingTime"/> of the <see cref="Session"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
-        public static Session CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTimeType beginTradingTimeType, TradingTime endTradingTime, string description = "")
+        public static Session CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginTradingTimeType, TradingTime endTradingTime, string description = "")
         {
             return new Session
             {
@@ -234,7 +234,7 @@ namespace Nt.Core.Data
         /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="Session"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
-        public static Session CreateCustomTradingSession(InstrumentKey instrumentKey, TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTimeType endTradingTimeType, string description = "")
+        public static Session CreateCustomTradingSession(InstrumentCode instrumentKey, TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTimeType endTradingTimeType, string description = "")
         {
             return new Session
             {
@@ -253,7 +253,7 @@ namespace Nt.Core.Data
         /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="Session"/> <see cref="BeginSessionTime"/>.</param>
         /// <param name="description"></param>
         /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
-        public static Session CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTimeType beginTradingTimeType, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
+        public static Session CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginTradingTimeType, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
             return new Session
             {
@@ -289,7 +289,7 @@ namespace Nt.Core.Data
         #region Implementation methods
 
         /// <inheritdoc/>
-        public ISession this[int index]
+        public ISessions this[int index]
         {
             get => _sessions[index];
             set => _sessions[index] = value;
@@ -302,7 +302,7 @@ namespace Nt.Core.Data
         public bool IsReadOnly => false;
 
         /// <inheritdoc/>
-        public void Add(ISession session)
+        public void Add(ISessions session)
         {
             _sessions.Add(session);
         }
@@ -314,37 +314,37 @@ namespace Nt.Core.Data
         }
 
         /// <inheritdoc/>
-        public bool Contains(ISession item)
+        public bool Contains(ISessions item)
         {
             return _sessions.Contains(item);
         }
 
         /// <inheritdoc/>
-        public void CopyTo(ISession[] array, int arrayIndex)
+        public void CopyTo(ISessions[] array, int arrayIndex)
         {
             _sessions.CopyTo(array, arrayIndex);
         }
 
         /// <inheritdoc/>
-        public IEnumerator<ISession> GetEnumerator()
+        public IEnumerator<ISessions> GetEnumerator()
         {
             return _sessions.GetEnumerator();
         }
 
         /// <inheritdoc/>
-        public int IndexOf(ISession item)
+        public int IndexOf(ISessions item)
         {
             return _sessions.IndexOf(item);
         }
 
         /// <inheritdoc/>
-        public void Insert(int index, ISession item)
+        public void Insert(int index, ISessions item)
         {
             _sessions.Insert(index, item);
         }
 
         /// <inheritdoc/>
-        public bool Remove(ISession item)
+        public bool Remove(ISessions item)
         {
             return _sessions.Remove(item);
         }
@@ -540,7 +540,7 @@ namespace Nt.Core.Data
         /// <param name="value">The <see cref="Session"/> to compare with the instance.</param>
         /// <returns>True if the pair of <see cref="Session"/> are equals.</returns>
         /// <exception cref="ArgumentException">The <see cref="Session"/>object passed as parameter cannot be null.</exception>
-        public bool Equals(ISession ts)
+        public bool Equals(ISessions ts)
         {
 
             if (ts is null)
@@ -560,7 +560,7 @@ namespace Nt.Core.Data
         /// <param name="ts2">The second <see cref="Session"/> object to compare with the first.</param>
         /// <returns>True if <see cref="Session"/> objects are equals.</returns>
         /// <exception cref="ArgumentException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
-        public static bool Equals(ISession ts1, ISession ts2)
+        public static bool Equals(ISessions ts1, ISessions ts2)
         {
 
             if (ts1 is null && ts2 is null)
@@ -625,7 +625,7 @@ namespace Nt.Core.Data
         /// -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// 0 if the objects are equals.</returns>
         /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
-        public int Compare(ISession value1, ISession value2)
+        public int Compare(ISessions value1, ISessions value2)
         {
             if (value1 == null || value2 == null)
                 throw new ArgumentNullException("The arguments cannot be null.");
@@ -675,7 +675,7 @@ namespace Nt.Core.Data
         /// -1 if <see cref="Session"/> is minor than <paramref name="value"/>,
         /// 0 if the objects are equals.
         /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
-        public int CompareTo(ISession value)
+        public int CompareTo(ISessions value)
         {
             if (value == null)
                 throw new ArgumentException("Argument cannot be null");
@@ -744,7 +744,7 @@ namespace Nt.Core.Data
         /// -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// 0 if the objects are equals.</returns>
         /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
-        public SessionCompareResult CompareSession(ISession value1, ISession value2)
+        public SessionCompareResult CompareSession(ISessions value1, ISessions value2)
         {
             if (value1 == null || value2 == null)
                 throw new ArgumentNullException("The arguments cannot be null.");
@@ -807,7 +807,7 @@ namespace Nt.Core.Data
         /// -1 if <see cref="Session"/> is minor than <paramref name="value"/>,
         /// 0 if the objects are equals.
         /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
-        public SessionCompareResult CompareSessionTo(ISession value)
+        public SessionCompareResult CompareSessionTo(ISessions value)
         {
             if (value == null)
                 throw new ArgumentException("Argument cannot be null");

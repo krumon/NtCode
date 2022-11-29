@@ -4,19 +4,19 @@ using System.Collections.Generic;
 
 namespace Nt.Core.Data
 {
-    public interface ISession :
+    public interface ISessions :
         IComparable,
-        IComparable<ISession>,
+        IComparable<ISessions>,
         IComparer,
-        IComparer<ISession>,
-        IList<ISession>,
-        ICollection<ISession>,
-        IEnumerable<ISession>,
+        IComparer<ISessions>,
+        IList<ISessions>,
+        ICollection<ISessions>,
+        IEnumerable<ISessions>,
         IEnumerable
 
     {
         //ISessionBuilder CreateDefaultTradingSessionBuilder();
         ITradingSessionCollection Sessions { get; }
-        SessionCompareResult CompareSessionTo(ISession otherSession);
+        SessionCompareResult CompareSessionTo(ISessions otherSession);
     }
 }

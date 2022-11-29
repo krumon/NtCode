@@ -20,7 +20,7 @@ namespace Nt.Core.Services
         public string Key => $"{InstrumentKey}-{(int)PeriodType}-{PeriodValue}";
 
         /// <inheritdoc/>
-        public InstrumentKey InstrumentKey { get; set; }
+        public InstrumentCode InstrumentKey { get; set; }
 
         /// <inheritdoc/>
         public PeriodType PeriodType { get; set; }
@@ -42,7 +42,7 @@ namespace Nt.Core.Services
         }
 
         /// <inheritdoc/>
-        public TradingHoursKey TradingHoursKey { get; set; }
+        public TradingHoursCode TradingHoursKey { get; set; }
 
         #endregion
 
@@ -55,7 +55,7 @@ namespace Nt.Core.Services
         /// <param name="periodType"></param>
         /// <param name="periodValue"></param>
         /// <param name="tradingHoursKey"></param>
-        public DataSeriesDescriptor(InstrumentKey key, PeriodType periodType, int periodValue, TradingHoursKey tradingHoursKey)
+        public DataSeriesDescriptor(InstrumentCode key, PeriodType periodType, int periodValue, TradingHoursCode tradingHoursKey)
         {
             InstrumentKey = key;
             PeriodType = periodType;

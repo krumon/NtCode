@@ -103,7 +103,7 @@ namespace Nt.Core.Data
         /// <param name="instrumentKey">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
         /// <returns>A new instance of <see cref="TradingSession"/> class.</returns>
-        public static SessionDescriptor CreateTradingSessionByType(SessionType sessionType, InstrumentKey instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static SessionDescriptor CreateTradingSessionByType(SessionType sessionType, InstrumentCode instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             return new SessionDescriptor
             {
@@ -121,7 +121,7 @@ namespace Nt.Core.Data
         /// <param name="beginTimeDisplacement">The displacement minutes to the intial balance of the session.</param>
         /// <param name="endTimeDisplacement">The displacement minutes to the final balance of the session.</param>
         /// <returns>A new instance of <see cref="SessionDescriptor"/> collection.</returns>
-        public static SessionDescriptor[] CreateTradingSessionByTypes(InstrumentKey instrumentKey, SessionType[] sessionTypes, InstrumentKey instrumentCode, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        public static SessionDescriptor[] CreateTradingSessionByTypes(InstrumentCode instrumentKey, SessionType[] sessionTypes, InstrumentCode instrumentCode, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             if (sessionTypes == null || sessionTypes.Length < 1)
                 throw new ArgumentNullException(nameof(sessionTypes));
@@ -143,7 +143,7 @@ namespace Nt.Core.Data
         /// <param name="endSessionTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="SessionDescriptor"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="SessionDescriptor"/> object.</returns>
-        public static SessionDescriptor CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTimeType beginSessionTimeType, TradingTimeType endSessionTimeType, string description = "")
+        public static SessionDescriptor CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginSessionTimeType, TradingTimeType endSessionTimeType, string description = "")
         {
             return new SessionDescriptor
             {
@@ -161,7 +161,7 @@ namespace Nt.Core.Data
         /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static SessionDescriptor CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTime beginTradingTime, TradingTimeType endTradingTimeType, string description = "")
+        public static SessionDescriptor CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTime beginTradingTime, TradingTimeType endTradingTimeType, string description = "")
         {
             return new SessionDescriptor
             {
@@ -179,7 +179,7 @@ namespace Nt.Core.Data
         /// <param name="endTradingTime">The final <see cref="TradingTime"/> of the <see cref="SessionDescriptor"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static SessionDescriptor CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTimeType beginTradingTimeType, TradingTime endTradingTime, string description = "")
+        public static SessionDescriptor CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginTradingTimeType, TradingTime endTradingTime, string description = "")
         {
             return new SessionDescriptor
             {
@@ -216,7 +216,7 @@ namespace Nt.Core.Data
         /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="SessionDescriptor"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
         /// <returns>A new custom instance of <see cref="SessionDescriptor"/> object.</returns>
-        public static SessionDescriptor CreateCustomTradingSession(InstrumentKey instrumentKey, TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTimeType endTradingTimeType, string description = "")
+        public static SessionDescriptor CreateCustomTradingSession(InstrumentCode instrumentKey, TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTimeType endTradingTimeType, string description = "")
         {
             return new SessionDescriptor
             {
@@ -235,7 +235,7 @@ namespace Nt.Core.Data
         /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="SessionDescriptor"/> <see cref="BeginTime"/>.</param>
         /// <param name="description"></param>
         /// <returns>A new custom instance of <see cref="SessionDescriptor"/> object.</returns>
-        public static SessionDescriptor CreateCustomTradingSession(InstrumentKey instrumentKey, TradingTimeType beginTradingTimeType, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
+        public static SessionDescriptor CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginTradingTimeType, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
             return new SessionDescriptor
             {

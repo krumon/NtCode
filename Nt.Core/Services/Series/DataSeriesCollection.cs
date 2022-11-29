@@ -20,7 +20,7 @@ namespace Nt.Core.Services
         }
 
         /// <inheritdoc/>
-        public IDataSeriesCollection AddDataSerie(InstrumentKey instrumentKey, PeriodType periodType, int periodValue, TradingHoursKey tradingHoursKey)
+        public IDataSeriesCollection AddDataSerie(InstrumentCode instrumentKey, PeriodType periodType, int periodValue, TradingHoursCode tradingHoursKey)
         {
             DataSeriesDescriptor descriptor = new DataSeriesDescriptor(instrumentKey, periodType, periodValue, tradingHoursKey);
             Add(descriptor);
@@ -29,11 +29,11 @@ namespace Nt.Core.Services
 
         /// <inheritdoc/>
         public IDataSeriesCollection AddDataSerie(PeriodType periodType, int periodValue) =>
-            AddDataSerie(InstrumentKey.Default,periodType,periodValue,TradingHoursKey.Default);
+            AddDataSerie(InstrumentCode.Default,periodType,periodValue,TradingHoursCode.Default);
 
         /// <inheritdoc/>
-        public IDataSeriesCollection AddDataSerie(InstrumentKey instrumentKey, PeriodType periodType, int periodValue) =>
-            AddDataSerie(instrumentKey,periodType,periodValue,TradingHoursKey.Default);
+        public IDataSeriesCollection AddDataSerie(InstrumentCode instrumentKey, PeriodType periodType, int periodValue) =>
+            AddDataSerie(instrumentKey,periodType,periodValue,TradingHoursCode.Default);
 
         #endregion
 

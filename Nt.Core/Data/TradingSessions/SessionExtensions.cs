@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="Session"/> with the generic type <see cref="SessionType.Regular"/></returns>
-        public static Session CreateRegularSession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateRegularSession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.Regular, instrumentKey);
         }
@@ -20,7 +20,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="Session"/> with the generic type <see cref="SessionType.OVN"/></returns>
-        public static Session CreateOvernightSession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateOvernightSession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.OVN, instrumentKey);
         }
@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="Session"/> with the generic type <see cref="SessionType.European"/></returns>
-        public static Session CreateEuropeanSession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateEuropeanSession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.European, instrumentKey);
         }
@@ -40,7 +40,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="Session"/> with the generic type <see cref="SessionType.Asian"/></returns>
-        public static Session CreateAsianSession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateAsianSession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.Asian, instrumentKey);
         }
@@ -50,7 +50,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American"/></returns>
-        public static Session CreateAmericanSession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateAmericanSession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.American, instrumentKey);
         }
@@ -60,7 +60,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="Session"/> with the generic type <see cref="SessionType.AmericanAndEuropean"/></returns>
-        public static Session CreateAmericanAndEuropeanSession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateAmericanAndEuropeanSession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.AmericanAndEuropean, instrumentKey);
         }
@@ -70,7 +70,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American_RS"/></returns>
-        public static Session CreateAmericanResidualSession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateAmericanResidualSession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.American_RS, instrumentKey);
         }
@@ -80,7 +80,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="Session"/> with the generic type <see cref="SessionType.Asian_RS"/></returns>
-        public static Session CreateAsianResidualSession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateAsianResidualSession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.Asian_RS, instrumentKey);
         }
@@ -90,7 +90,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="Session"/> with the generic type <see cref="SessionType.American_RS_EXT"/></returns>
-        public static Session CreateAmericanResidualExtraTimeSession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateAmericanResidualExtraTimeSession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.American_RS_EXT, instrumentKey);
         }
@@ -100,7 +100,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American_RS_EOD"/></returns>
-        public static Session CreateAmericanResidualEndOfDaySession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateAmericanResidualEndOfDaySession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.American_RS_EOD, instrumentKey);
         }
@@ -110,7 +110,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="Session"/> with the generic type <see cref="SessionType.American_RS_NWD"/></returns>
-        public static Session CreateAmericanResidualNewDaySession(this Session _, InstrumentKey instrumentKey)
+        public static Session CreateAmericanResidualNewDaySession(this Session _, InstrumentCode instrumentKey)
         {
             return Session.CreateTradingSessionByType(SessionType.American_RS_NWD, instrumentKey);
         }

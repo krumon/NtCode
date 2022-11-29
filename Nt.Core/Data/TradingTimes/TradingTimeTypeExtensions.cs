@@ -710,7 +710,7 @@ namespace Nt.Core.Data
         /// </summary>
         /// <param name="tradingTime"></param>
         /// <returns><see cref="TimeZoneInfo"/> of the <see cref="TradingTime"/>.</returns>
-        public static TimeZoneInfo ToTimeZoneInfo(this TradingTimeType tradingTimeType, InstrumentKey instrumentKey)
+        public static TimeZoneInfo ToTimeZoneInfo(this TradingTimeType tradingTimeType, InstrumentCode instrumentKey)
         {
                 switch (tradingTimeType)
                 {
@@ -762,7 +762,7 @@ namespace Nt.Core.Data
         /// </summary>
         /// <param name="tradingTimeType"></param>
         /// <returns><see cref="TimeSpan"/> of the <see cref="TradingTimeType"/>.</returns>
-        public static TimeSpan ToTime(this TradingTimeType tradingTimeType, InstrumentKey instrumentKey, int offset = 0)
+        public static TimeSpan ToTime(this TradingTimeType tradingTimeType, InstrumentCode instrumentKey, int offset = 0)
         {
                 switch (tradingTimeType)
                 {
@@ -825,7 +825,7 @@ namespace Nt.Core.Data
         /// </summary>
         /// <param name="tradingTime"></param>
         /// <returns><see cref="TradingTime"/>.</returns>
-        public static TradingTime ToSessionTime(this TradingTimeType tradingTime, InstrumentKey instrumentCode, int timeDisplacement = 0)
+        public static TradingTime ToSessionTime(this TradingTimeType tradingTime, InstrumentCode instrumentCode, int timeDisplacement = 0)
         {
             return TradingTime.CreateSessionTimeByType(tradingTime, instrumentCode, timeDisplacement);
         }

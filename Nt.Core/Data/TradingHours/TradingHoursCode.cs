@@ -3,7 +3,7 @@
     /// <summary>
     /// Trading hours type enumeration.
     /// </summary>
-    public enum TradingHoursKey
+    public enum TradingHoursCode
     {
         Default = 0,
         CME_US_Index_Futures_ETH = 1,

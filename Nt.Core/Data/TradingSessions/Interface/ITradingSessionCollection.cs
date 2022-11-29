@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace Nt.Core.Data
 {
     public interface ITradingSessionCollection :
-        IList<ISession>,
-        ICollection<ISession>,
-        IEnumerable<ISession>,
+        IList<ISessions>,
+        ICollection<ISessions>,
+        IEnumerable<ISessions>,
         IEnumerable
     {
     }

@@ -12,7 +12,7 @@ namespace Nt.Core.Services
         /// <summary>
         /// Gets or sets the instrument key.
         /// </summary>
-        InstrumentKey InstrumentKey { get; }
+        InstrumentCode InstrumentKey { get; }
 
         /// <summary>
         /// Gets or sets the series period type.
@@ -27,7 +27,7 @@ namespace Nt.Core.Services
         /// <summary>
         /// Gets or sets the trading hours key.
         /// </summary>
-        TradingHoursKey TradingHoursKey { get; set; }
+        TradingHoursCode TradingHoursKey { get; set; }
 
     }
 }

@@ -9,14 +9,14 @@ namespace Nt.Core.Data.Internal
 
         #region Private members
 
-        private IList<ISession> _sessions = new List<ISession>();
+        private IList<ISessions> _sessions = new List<ISessions>();
 
         #endregion
 
         #region Implementation methods
 
         /// <inheritdoc/>
-        public ISession this[int index]
+        public ISessions this[int index]
         {
             get => _sessions[index];
             set => _sessions[index] = value;
@@ -29,7 +29,7 @@ namespace Nt.Core.Data.Internal
         public bool IsReadOnly => false;
 
         /// <inheritdoc/>
-        public void Add(ISession session)
+        public void Add(ISessions session)
         {
             // Make sure item doesn't exist.
             if (_sessions.Contains(session))
@@ -49,7 +49,7 @@ namespace Nt.Core.Data.Internal
                 if (result == SessionCompareResult.Outer)
                 {
                     // Store the child
-                    ISession tradingSession = _sessions[i];
+                    ISessions tradingSession = _sessions[i];
                     // Clear the session item
                     _sessions[i] = null;
                     // Add the child to the item
@@ -111,7 +111,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <inheritdoc/>
-        public bool Contains(ISession item)
+        public bool Contains(ISessions item)
         {
             if (_sessions != null && _sessions.Count > 0)
             {
@@ -127,31 +127,31 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <inheritdoc/>
-        public void CopyTo(ISession[] array, int arrayIndex)
+        public void CopyTo(ISessions[] array, int arrayIndex)
         {
             _sessions.CopyTo(array, arrayIndex);
         }
 
         /// <inheritdoc/>
-        public IEnumerator<ISession> GetEnumerator()
+        public IEnumerator<ISessions> GetEnumerator()
         {
             return _sessions.GetEnumerator();
         }
 
         /// <inheritdoc/>
-        public int IndexOf(ISession item)
+        public int IndexOf(ISessions item)
         {
             return _sessions.IndexOf(item);
         }
 
         /// <inheritdoc/>
-        public void Insert(int index, ISession item)
+        public void Insert(int index, ISessions item)
         {
             _sessions.Insert(index, item);
         }
 
         /// <inheritdoc/>
-        public bool Remove(ISession item)
+        public bool Remove(ISessions item)
         {
             return _sessions.Remove(item);
         }

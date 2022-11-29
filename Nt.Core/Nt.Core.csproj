@@ -196,8 +196,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\DynamicallyAccessedMemberAttribute.cs" />
+    <Compile Include="Data\Instruments\IInstrument.cs" />
     <Compile Include="Data\Instruments\Instrument.cs" />
+    <Compile Include="Data\PartialHolidays\IPartialHoliday.cs" />
     <Compile Include="Data\Series\DataSerie.cs" />
+    <Compile Include="Data\Sessions\ISession.cs" />
+    <Compile Include="Data\TradingHours\ITradingHours.cs" />
     <Compile Include="Hosting\Host.cs" />
     <Compile Include="Hosting\HostOptions.cs" />
     <Compile Include="Hosting\HostBuilder.cs" />
@@ -222,6 +226,12 @@
     <Compile Include="DependencyInjection\Interfaces\IOptions.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
+    <Compile Include="Services\Interfaces\IBarsDataService.cs" />
+    <Compile Include="Services\Interfaces\IMarketDataService.cs" />
+    <Compile Include="Services\Interfaces\IBarUpdateService.cs" />
+    <Compile Include="Services\Interfaces\IDataLoadedService.cs" />
+    <Compile Include="Services\Interfaces\IConfigureService.cs" />
+    <Compile Include="Services\Interfaces\IDataSeriesService.cs" />
     <Compile Include="zToDelete\DependencyInjection\.Types\RequiredServiceType.cs" />
     <Compile Include="Services\Data\ChartDataService_2.cs" />
     <Compile Include="Services\Series\DataSeriesProvider.cs" />
@@ -413,8 +423,8 @@
     <Compile Include="zToDelete\Providers\Instruments\InstrumentProvider.cs" />
     <Compile Include="Data\Exchanges\MarketExchangeExtensions.cs" />
     <Compile Include="Data\Exchanges\MarketExchange.cs" />
-    <Compile Include="Data\Instruments\InstrumentKey.cs" />
-    <Compile Include="Data\Instruments\InstrumentKeyExtensions.cs" />
+    <Compile Include="Data\Instruments\InstrumentCode.cs" />
+    <Compile Include="Data\Instruments\InstrumentCodeExtensions.cs" />
     <Compile Include="Helpers\Math\ISeriesHelpers.cs" />
     <Compile Include="Events\SessionChangedEvent.cs" />
     <Compile Include="zToDelete\NinjaScript\Caches\SwingLevelsCache.cs" />
@@ -430,7 +440,7 @@
     <Compile Include="zToDelete\NinjaScript\Managers\Sessions\SessionsManagerConfiguration.cs" />
     <Compile Include="Data\Platforms\Platform.cs" />
     <Compile Include="zToDelete\Providers\Sessions\Interface\ISessionProvider.cs" />
-    <Compile Include="Data\TradingSessions\Interface\ISession.cs" />
+    <Compile Include="Data\TradingSessions\Interface\ISessions.cs" />
     <Compile Include="zToDelete\Providers\Sessions\Interface\ISessionBuilder.cs" />
     <Compile Include="Data\TradingSessions\Interface\ITradingSessionCollection.cs" />
     <Compile Include="Data\TradingSessions\Internal\TradingSessionCollection.cs" />
@@ -447,8 +457,8 @@
     <Compile Include="Data\TradingSessions\SessionTypeExtensions.cs" />
     <Compile Include="zToDelete\NinjaScript\Sessions\SessionHours\SessionHours.cs" />
     <Compile Include="Data\TradingTimes\TradingTimeTypeExtensions.cs" />
-    <Compile Include="Data\TradingHours\TradingHoursKeyExtensions.cs" />
-    <Compile Include="Data\TradingHours\TradingHoursKey.cs" />
+    <Compile Include="Data\TradingHours\TradingHoursCodeExtensions.cs" />
+    <Compile Include="Data\TradingHours\TradingHoursCode.cs" />
     <Compile Include="Data\Users\UserAccount.cs" />
     <Compile Include="zToDelete\NinjaScript\Managers\Sessions\SessionsManager.cs" />
     <Compile Include="Data\Users\UserSettings.cs" />

@@ -277,7 +277,7 @@ namespace Nt.Core.Ninjascript
         /// <param name="includeFinalBalance"></param>
         private void AddSession(
             SessionType sessionType,
-            InstrumentKey instrumentCode,
+            InstrumentCode instrumentCode,
             int includeInitialBalance = 0,
             int includeFinalBalance = 0)
         {

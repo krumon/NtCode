@@ -10,7 +10,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.Regular"/></returns>
-        public static TradingSession CreateRegularSession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateRegularSession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.Regular, instrumentKey);
         }
@@ -20,7 +20,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.OVN"/></returns>
-        public static TradingSession CreateOvernightSession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateOvernightSession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.OVN, instrumentKey);
         }
@@ -30,7 +30,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.European"/></returns>
-        public static TradingSession CreateEuropeanSession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateEuropeanSession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.European, instrumentKey);
         }
@@ -40,7 +40,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.Asian"/></returns>
-        public static TradingSession CreateAsianSession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateAsianSession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.Asian, instrumentKey);
         }
@@ -50,7 +50,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American"/></returns>
-        public static TradingSession CreateAmericanSession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateAmericanSession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.American, instrumentKey);
         }
@@ -60,7 +60,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.AmericanAndEuropean"/></returns>
-        public static TradingSession CreateAmericanAndEuropeanSession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateAmericanAndEuropeanSession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.AmericanAndEuropean, instrumentKey);
         }
@@ -70,7 +70,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American_RS"/></returns>
-        public static TradingSession CreateAmericanResidualSession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateAmericanResidualSession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.American_RS, instrumentKey);
         }
@@ -80,7 +80,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.Asian_RS"/></returns>
-        public static TradingSession CreateAsianResidualSession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateAsianResidualSession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.Asian_RS, instrumentKey);
         }
@@ -90,7 +90,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American_RS_EXT"/></returns>
-        public static TradingSession CreateAmericanResidualExtraTimeSession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateAmericanResidualExtraTimeSession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.American_RS_EXT, instrumentKey);
         }
@@ -100,7 +100,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American_RS_EOD"/></returns>
-        public static TradingSession CreateAmericanResidualEndOfDaySession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateAmericanResidualEndOfDaySession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.American_RS_EOD, instrumentKey);
         }
@@ -110,7 +110,7 @@
         /// </summary>
         /// <param name="_"></param>
         /// <returns>An instance of <see cref="TradingSession"/> with the generic type <see cref="SessionType.American_RS_NWD"/></returns>
-        public static TradingSession CreateAmericanResidualNewDaySession(this TradingSession _, InstrumentKey instrumentKey)
+        public static TradingSession CreateAmericanResidualNewDaySession(this TradingSession _, InstrumentCode instrumentKey)
         {
             return TradingSession.CreateTradingSessionByType(SessionType.American_RS_NWD, instrumentKey);
         }

@@ -1,4 +1,5 @@
-﻿using Nt.Core.Data;
+﻿using NinjaTrader.Data;
+using Nt.Core.Data;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
@@ -41,8 +42,8 @@ namespace ConsoleApp
                     builder.ConfigureServices((sc) =>
                     {
                         sc
-                        .AddDataSerie(InstrumentKey.Default, PeriodType.Minute, 5)
-                        .AddDataSerie(InstrumentKey.Default, PeriodType.Second, 5);
+                        .AddDataSerie(InstrumentCode.Default, PeriodType.Minute, 5)
+                        .AddDataSerie(InstrumentCode.Default, PeriodType.Second, 5);
                     })
                     .ConfigureServiceOptions((options) =>
                     {
@@ -53,7 +54,7 @@ namespace ConsoleApp
 
             var chartDataService = host.Services.GetService<DataService>();
             var chartDataService_2 = host.Services.GetService<ChartDataService_2>();
-             
+
 
         }
     }

@@ -16,7 +16,7 @@ namespace Nt.Core.Services
         /// <param name="periodValue">The data serie period value.</param>
         /// <param name="tradingHoursKey">The data serie trading hours template.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        IDataSeriesCollection AddDataSerie(InstrumentKey instrumentKey, PeriodType periodType, int periodValue, TradingHoursKey tradingHoursKey);
+        IDataSeriesCollection AddDataSerie(InstrumentCode instrumentKey, PeriodType periodType, int periodValue, TradingHoursCode tradingHoursKey);
 
         /// <summary>
         /// Adds <see cref="DataSeriesDescriptor"/> to <see cref="DataSeriesCollection"/>.
@@ -33,7 +33,7 @@ namespace Nt.Core.Services
         /// <param name="periodType">The data serie period type.</param>
         /// <param name="periodValue">The data serie period value.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
-        IDataSeriesCollection AddDataSerie(InstrumentKey instrumentKey, PeriodType periodType, int periodValue);
+        IDataSeriesCollection AddDataSerie(InstrumentCode instrumentKey, PeriodType periodType, int periodValue);
 
     }
 }

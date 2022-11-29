@@ -4,7 +4,7 @@ namespace Nt.Core.Data
     /// <summary>
     /// The unique code of financial instruments.
     /// </summary>
-    public enum InstrumentKey
+    public enum InstrumentCode
     {
         Default,
         MES,
