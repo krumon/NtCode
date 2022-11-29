@@ -11,24 +11,6 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            //TradingSessionTests tradingSessionTests = new TradingSessionTests();
-
-            //tradingSessionTests.Run();
-
-            //ISessionProvider sessionProvider = KrumonTrade.CreateDefaultSessionBuilder()
-            //    .AddSessionCollectionByTypes
-            //    (
-            //        SessionType.Asian, 
-            //        SessionType.European,
-            //        SessionType.American_RS_EOD,
-            //        SessionType.Asian_RS,
-            //        SessionType.AmericanAndEuropean,
-            //        SessionType.Regular,
-            //        SessionType.Electronic
-            //    )
-
-            //    .Build();
-            //Microsoft.Extensions.DependencyInjection.ServiceProvider serviceProvider;
 
             IHost host = Hosting.CreateDefaultBuilder()
                 .ConfigureHostOptions((options) =>
@@ -37,7 +19,7 @@ namespace ConsoleApp
                 })
                 .ConfigureServices((sc) =>
                 {
-                    sc.Add<ChartDataService>(new ChartDataService()
+                    sc.Add<DataService>(new DataService()
                     {
                         UserTimeZoneInfo = TimeZoneInfo.Local,
                         InstrumentName = "MES",
@@ -45,7 +27,7 @@ namespace ConsoleApp
                     });
                     sc.Add<ChartDataService_2>((sp) =>
                     {
-                        var data = (ChartDataService)sp.GetService(typeof(ChartDataService));
+                        var data = (DataService)sp.GetService(typeof(DataService));
                         return new ChartDataService_2()
                         {
                             InstrumentName = data.InstrumentName,
@@ -69,10 +51,8 @@ namespace ConsoleApp
                 })
                 .Build();
 
-            var chartDataService = host.Services.GetService<ChartDataService>();
+            var chartDataService = host.Services.GetService<DataService>();
             var chartDataService_2 = host.Services.GetService<ChartDataService_2>();
-            //IServiceProvider dataSeries = (IServiceProvider)host.GetService(OptionalServiceType.DataSeries);
-            //IRequiredService chartData = (IRequiredService)host.GetService(RequiredServiceType.Data);
              
 
         }

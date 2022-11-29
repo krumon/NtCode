@@ -1,5 +1,6 @@
 ﻿using NinjaTrader.Cbi;
 using Nt.Core.Data;
+using Instrument = NinjaTrader.Cbi.Instrument;
 
 namespace Nt.Scripts.Providers
 {

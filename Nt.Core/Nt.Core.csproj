@@ -196,6 +196,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\DynamicallyAccessedMemberAttribute.cs" />
+    <Compile Include="Data\Instruments\Instrument.cs" />
+    <Compile Include="Data\Series\DataSerie.cs" />
     <Compile Include="Hosting\Host.cs" />
     <Compile Include="Hosting\HostOptions.cs" />
     <Compile Include="Hosting\HostBuilder.cs" />
@@ -221,8 +223,8 @@
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
     <Compile Include="zToDelete\DependencyInjection\.Types\RequiredServiceType.cs" />
-    <Compile Include="Services\ChartData\ChartDataService_2.cs" />
-    <Compile Include="Services\DataSeries\DataSeriesProvider.cs" />
+    <Compile Include="Services\Data\ChartDataService_2.cs" />
+    <Compile Include="Services\Series\DataSeriesProvider.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceDescriptor.cs" />
     <Compile Include="Hosting\Interfaces\IHostService.cs" />
     <Compile Include="Hosting\Interfaces\IHostBuilder.cs" />
@@ -231,23 +233,23 @@
     <Compile Include="Hosting\Interfaces\IRequiredService.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderFactory.cs" />
     <Compile Include="zToDelete\Providers\Instruments\InstrumentProviderOptions.cs" />
-    <Compile Include="Services\DataSeries\DataSeriesService.cs" />
-    <Compile Include="Services\DataSeries\DataSeriesBuilder.cs" />
-    <Compile Include="Services\DataSeries\DataSeriesOptions.cs" />
+    <Compile Include="Services\Series\DataSeriesService.cs" />
+    <Compile Include="Services\Series\DataSeriesBuilder.cs" />
+    <Compile Include="Services\Series\DataSeriesOptions.cs" />
     <Compile Include="zToDelete\DependencyInjection\.Base\BaseServiceCollection.cs" />
     <Compile Include="Data\Bars\BarsPeriod.cs" />
-    <Compile Include="Services\DataSeries\DataSeriesCollection.cs" />
+    <Compile Include="Services\Series\DataSeriesCollection.cs" />
     <Compile Include="zToDelete\Providers\Sessions_2\BaseSessionProvider.cs" />
-    <Compile Include="Services\DataSeries\Interfaces\IDataSeriesProvider.cs" />
-    <Compile Include="Services\ChartData\ChartDataService.cs" />
+    <Compile Include="Services\Series\Interfaces\IDataSeriesProvider.cs" />
+    <Compile Include="Services\Data\DataService.cs" />
     <Compile Include="zToDelete\DependencyInjection\.Types\OptionalServiceType.cs" />
-    <Compile Include="Services\DataSeries\Interfaces\IDataSeriesCollection.cs" />
-    <Compile Include="Services\DataSeries\Interfaces\IDataSeriesDescriptor.cs" />
+    <Compile Include="Services\Series\Interfaces\IDataSeriesCollection.cs" />
+    <Compile Include="Services\Series\Interfaces\IDataSeriesDescriptor.cs" />
     <Compile Include="Data\TradingSessions\Session.cs" />
     <Compile Include="Data\TradingSessions\SessionCollection.cs" />
     <Compile Include="zToDelete\Providers\Sessions_2\SessionConfiguration.cs" />
     <Compile Include="Data\TradingSessions\SessionExtensions.cs" />
-    <Compile Include="Services\DataSeries\DataSeriesDescriptor.cs" />
+    <Compile Include="Services\Series\DataSeriesDescriptor.cs" />
     <Compile Include="Exceptions\ExceptionResource.cs" />
     <Compile Include="Exceptions\ExceptionArgument.cs" />
     <Compile Include="Exceptions\ThrowHelper.cs" />

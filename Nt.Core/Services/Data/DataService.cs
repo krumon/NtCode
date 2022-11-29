@@ -1,16 +1,13 @@
-﻿using Nt.Core.Data;
-using System;
+﻿using System;
 
 namespace Nt.Core.Services
 {
     /// <summary>
     /// Represents the ninjascript general data to use bay the host.
     /// </summary>
-    public class ChartDataService
+    public class DataService
     {
         
-        public RequiredServiceType Key { get; private set; }
-
         /// <summary>
         /// The <see cref="TimeZoneInfo"/> configure by the user in the platform general options.
         /// </summary>
