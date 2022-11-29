@@ -1,10 +1,5 @@
 ﻿using Kr.Core.Tests;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 using Nt.Core.Data;
-using System.IO;
-using System.Reflection;
-using System.Threading.Tasks;
 
 namespace Nt.Core.Tests
 {

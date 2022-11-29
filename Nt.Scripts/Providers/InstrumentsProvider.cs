@@ -1,6 +1,5 @@
 ﻿using NinjaTrader.NinjaScript;
-using NinjaTrader.NinjaScript.DrawingTools;
-using Nt.Core.Data;
+using Nt.Core.Services;
 using System;
 using System.Collections.Generic;
 

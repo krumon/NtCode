@@ -1,4 +1,8 @@
 ﻿using Nt.Core.Data;
+using Nt.Core.DependencyInjection;
+using Nt.Core.Hosting;
+using Nt.Core.Services;
+using System;
 
 namespace ConsoleApp
 {
@@ -33,7 +37,22 @@ namespace ConsoleApp
                 })
                 .ConfigureServices((sc) =>
                 {
-                    sc.Add<ChartDataService>();
+                    sc.Add<ChartDataService>(new ChartDataService()
+                    {
+                        UserTimeZoneInfo = TimeZoneInfo.Local,
+                        InstrumentName = "MES",
+                        TradingHoursName = "Central Standard Time"
+                    });
+                    sc.Add<ChartDataService_2>((sp) =>
+                    {
+                        var data = (ChartDataService)sp.GetService(typeof(ChartDataService));
+                        return new ChartDataService_2()
+                        {
+                            InstrumentName = data.InstrumentName,
+                            TradingHoursName = "TH_2",
+                            UserTimeZoneInfo = data.UserTimeZoneInfo
+                        };
+                    });
                 })
                 .UseDataSeries((builder) =>
                 {
@@ -50,6 +69,8 @@ namespace ConsoleApp
                 })
                 .Build();
 
+            var chartDataService = host.Services.GetService<ChartDataService>();
+            var chartDataService_2 = host.Services.GetService<ChartDataService_2>();
             //IServiceProvider dataSeries = (IServiceProvider)host.GetService(OptionalServiceType.DataSeries);
             //IRequiredService chartData = (IRequiredService)host.GetService(RequiredServiceType.Data);
              

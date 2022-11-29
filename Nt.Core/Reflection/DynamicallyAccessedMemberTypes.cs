@@ -37,7 +37,6 @@ namespace Nt.Core.Reflection
         /// Specifies all non-public fields.
         /// </summary>
         NonPublicFields = 0x40,
-        //     Specifies all public nested types.
         /// <summary>
         /// Specifies all public nested types.
         /// </summary>
