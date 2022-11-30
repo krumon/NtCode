@@ -5,7 +5,7 @@ namespace Nt.Core.Services
     /// <summary>
     /// Represents the ninjascript general data to use bay the host.
     /// </summary>
-    public interface IChartDataService
+    public interface IChartDataService : IConfigureService
     {
         
         /// <summary>
@@ -23,11 +23,6 @@ namespace Nt.Core.Services
         /// The trading hours is configured by the user in "Traging Hours Template" UI.
         /// </summary>
         string TradingHoursName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the type of the price for the chart bars.
-        /// </summary>
-        PriceType PriceType { get; set; }
 
     }
 }

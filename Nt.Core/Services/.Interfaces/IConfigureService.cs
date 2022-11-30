@@ -5,6 +5,6 @@
         /// <summary>
         /// Method to configure the service in the ninjascript.
         /// </summary>
-        void Configure();
+        void Configure(object script);
     }
 }

@@ -18,7 +18,7 @@ namespace Nt.Core.DependencyInjection
         /// <param name="configureDelegate">The delegate for configuring the <see cref="IServiceCollection"/>
         /// that will be used to construct the <see cref="IServiceProvider"/>.</param>
         /// <returns>The same instance of the <see cref="IServiceProviderBuilder"/> for chaining.</returns>
-        IServiceProviderBuilder ConfigureService(Action<IServiceCollection<IServiceDescriptor>> configureDelegate);
+        IServiceProviderBuilder ConfigureServices(Action<IServiceCollection<IServiceDescriptor>> configureDelegate);
 
     }
 

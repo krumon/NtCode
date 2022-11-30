@@ -1,4 +1,5 @@
-﻿using Nt.Core.Data;
+﻿using NinjaTrader.Data;
+using Nt.Core.Data;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
@@ -49,7 +50,6 @@ namespace ConsoleApp
 
             var chartDataService = host.Services.GetService<ChartDataService>();
             var chartStyleService = host.Services.GetService<ChartStyleService>();
-
 
         }
     }

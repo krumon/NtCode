@@ -199,7 +199,6 @@
     <Compile Include="Data\Instruments\IInstrument.cs" />
     <Compile Include="Data\Instruments\Instrument.cs" />
     <Compile Include="Data\PartialHolidays\IPartialHoliday.cs" />
-    <Compile Include="Data\Prices\PriceType.cs" />
     <Compile Include="Data\Series\DataSerie.cs" />
     <Compile Include="Data\Sessions\ISession.cs" />
     <Compile Include="Data\TradingHours\ITradingHours.cs" />
@@ -227,7 +226,7 @@
     <Compile Include="DependencyInjection\Interfaces\IOptions.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
-    <Compile Include="Services\.Interfaces\IChartDataService.cs" />
+    <Compile Include="Services\Charts\Data\IChartDataService.cs" />
     <Compile Include="Services\.Interfaces\IMarketDataService.cs" />
     <Compile Include="Services\.Interfaces\IBarUpdateService.cs" />
     <Compile Include="Services\.Interfaces\IDataLoadedService.cs" />

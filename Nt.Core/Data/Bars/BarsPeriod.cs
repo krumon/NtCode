@@ -10,8 +10,14 @@
 
         #region Public properties
 
+        /// <summary>
+        /// Gets or sets bars period type.
+        /// </summary>
         public PeriodType PeriodType { get; set; }
 
+        /// <summary>
+        /// Gets or sets the bars period value.
+        /// </summary>
         public int PeriodValue 
         {
             get => _periodValue;
@@ -26,6 +32,11 @@
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the bars market data type.
+        /// </summary>
+        public MarketDataType MarketDataType { get; set; }
 
         #endregion
 

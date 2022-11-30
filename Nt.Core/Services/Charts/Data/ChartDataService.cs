@@ -26,7 +26,8 @@ namespace Nt.Core.Services
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public PriceType PriceType { get; set; }
-
+        public virtual void Configure(object script)
+        {
+        }
     }
 }
