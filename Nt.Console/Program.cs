@@ -50,7 +50,7 @@ namespace ConsoleApp
 
             var chartDataService = host.Services.GetService<ChartDataService>();
             var chartStyleService = host.Services.GetService<ChartStyleService>();
-
+                
         }
     }
 }
