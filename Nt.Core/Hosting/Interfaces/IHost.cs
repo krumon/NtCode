@@ -2,6 +2,9 @@
 
 namespace Nt.Core.Hosting
 {
+    /// <summary>
+    /// Represents the properties and methods to built a ninjascript host.
+    /// </summary>
     public interface IHost
     {
         /// <summary>

@@ -3,7 +3,7 @@
 namespace Nt.Core.Services
 {
     /// <summary>
-    /// Represents the ninjascript general data to use bay the host.
+    /// Represents the ninjatrader chart bars general data to use by the ninjascript objects.
     /// </summary>
     public interface IChartDataService : IConfigureService
     {

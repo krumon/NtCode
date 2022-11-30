@@ -5,6 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
 namespace Nt.Core.Hosting
@@ -65,7 +66,6 @@ namespace Nt.Core.Hosting
 
         public IHostBuilder ConfigureDefaults(string[] args)
         {
-            //AddRequiredServices();
             return this;
         }
 
@@ -102,18 +102,6 @@ namespace Nt.Core.Hosting
                 }
                 return host;
             }
-
-            //if (_configureHostOptionsActions != null)
-            //    ConfigHostOptions();
-
-            //if (!_requiredServicesIsAdded)
-            //    AddRequiredServices();
-            //AddOptionalServices();
-
-            //var hostService = new Host(_requiredServices,_optionalServices,_hostOptions);
-
-            //return hostService;
-
         }
 
 
@@ -233,14 +221,6 @@ namespace Nt.Core.Hosting
                 action(_hostOptions);
         }
 
-        //private void AddRequiredServices()
-        //{
-        //    ChartDataService data = new ChartDataService();
-        //    if (!_requiredServices.TryAdd(RequiredServiceType.Data, data))
-        //        _requiredServicesIsAdded = false;
-
-        //}
-
         private void AddOptionalServices()
         {
             //if (_configureDataSeriesActions != null)
@@ -248,36 +228,22 @@ namespace Nt.Core.Hosting
 
         }
 
-        //private void ConfigureDataSeries()
-        //{
-        //    DataSeriesBuilder builder = new DataSeriesBuilder();
-        //    foreach (Action<DataSeriesBuilder> action in _configureDataSeriesActions)
-        //    {
-        //        action(builder);
-        //    }
-        //    _optionalServices.TryAdd(OptionalServiceType.DataSeries,builder.Build());
-        //}
-
-        private void Write(
-            DiagnosticSource diagnosticSource,
-            string name,
-            object value)
+        private void Write(DiagnosticSource diagnosticSource,string name,object value)
         {
             diagnosticSource.Write(name, value);
         }
-
-        //        private string ResolveContentRootPath(string contentRootPath, string basePath)
-        //        {
-        //            if (string.IsNullOrEmpty(contentRootPath))
-        //            {
-        //                return basePath;
-        //            }
-        //            if (Path.IsPathRooted(contentRootPath))
-        //            {
-        //                return contentRootPath;
-        //            }
-        //            return Path.Combine(Path.GetFullPath(basePath), contentRootPath);
-        //        }
+        private string ResolveContentRootPath(string contentRootPath, string basePath)
+        {
+            if (string.IsNullOrEmpty(contentRootPath))
+            {
+                return basePath;
+            }
+            if (Path.IsPathRooted(contentRootPath))
+            {
+                return contentRootPath;
+            }
+            return Path.Combine(Path.GetFullPath(basePath), contentRootPath);
+        }
 
     }
 }

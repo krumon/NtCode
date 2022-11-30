@@ -70,11 +70,7 @@
     <Compile Include="Indicators\Templates\IndicatorTemplate.cs" />
     <Compile Include="Indicators\TradingZone\TradingZone.cs" />
     <Compile Include="Ninjascripts\Charts\ChartData.cs" />
-    <Compile Include="Ninjascripts\Data\Data.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\InstrumentProvider.cs" />
-    <Compile Include="Providers\InstrumentsProvider.cs" />
-    <Compile Include="Ninjascripts\Data\IData.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nt.Core\Nt.Core.csproj">
