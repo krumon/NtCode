@@ -1,5 +1,4 @@
-﻿using NinjaTrader.Data;
-using Nt.Core.Data;
+﻿using Nt.Core.Data;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
@@ -20,20 +19,16 @@ namespace ConsoleApp
                 })
                 .ConfigureServices((sc) =>
                 {
-                    sc.Add<DataService>(new DataService()
+                    sc.Add<ChartDataService>(new ChartDataService()
                     {
-                        UserTimeZoneInfo = TimeZoneInfo.Local,
                         InstrumentName = "MES",
                         TradingHoursName = "Central Standard Time"
                     });
-                    sc.Add<ChartDataService_2>((sp) =>
+                    sc.Add<ChartStyleService>((sp) =>
                     {
-                        var data = (DataService)sp.GetService(typeof(DataService));
-                        return new ChartDataService_2()
+                        var data = (ChartDataService)sp.GetService(typeof(ChartDataService));
+                        return new ChartStyleService()
                         {
-                            InstrumentName = data.InstrumentName,
-                            TradingHoursName = "TH_2",
-                            UserTimeZoneInfo = data.UserTimeZoneInfo
                         };
                     });
                 })
@@ -52,8 +47,8 @@ namespace ConsoleApp
                 })
                 .Build();
 
-            var chartDataService = host.Services.GetService<DataService>();
-            var chartDataService_2 = host.Services.GetService<ChartDataService_2>();
+            var chartDataService = host.Services.GetService<ChartDataService>();
+            var chartStyleService = host.Services.GetService<ChartStyleService>();
 
 
         }

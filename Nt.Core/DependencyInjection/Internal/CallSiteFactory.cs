@@ -42,7 +42,7 @@ namespace Nt.Core.DependencyInjection.Internal
 
                     if (implementationType.IsAbstract || implementationType.IsInterface)
                     {
-                        throw new ArgumentException("Type Cannot Be Activated");
+                        throw new ArgumentException("PeriodType Cannot Be Activated");
                     }
 
                     Type[] serviceTypeGenericArguments = serviceType.GetGenericArguments();
@@ -66,7 +66,7 @@ namespace Nt.Core.DependencyInjection.Internal
                         implementationType.IsAbstract ||
                         implementationType.IsInterface)
                     {
-                        throw new ArgumentException("Type Cannot Be Activated");
+                        throw new ArgumentException("PeriodType Cannot Be Activated");
                     }
                 }
 
@@ -258,7 +258,7 @@ namespace Nt.Core.DependencyInjection.Internal
                 if (bestConstructor == null)
                 {
                     throw new InvalidOperationException(
-                        "Unable To Activate Type Exception, implementationType");
+                        "Unable To Activate PeriodType Exception, implementationType");
                 }
                 else
                 {

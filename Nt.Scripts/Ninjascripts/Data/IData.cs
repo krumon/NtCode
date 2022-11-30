@@ -2,7 +2,7 @@
 
 namespace Nt.Scripts.Ninjascripts.Data
 {
-    public interface IData : IBarsDataService
+    public interface IData : IChartDataService
     {
     }
 }

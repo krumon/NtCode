@@ -44,7 +44,7 @@ namespace Nt.Core.DependencyInjection.Internal
         {
             if (!serviceType.IsAssignableFrom(constructorInfo.DeclaringType))
             {
-                throw new ArgumentException("Implementation Type Cant Be Converted To Service Type, the constructor type is not assignable from serviceType");
+                throw new ArgumentException("Implementation PeriodType Cant Be Converted To Service PeriodType, the constructor type is not assignable from serviceType");
             }
 
             ServiceType = serviceType;
@@ -88,7 +88,7 @@ namespace Nt.Core.DependencyInjection.Internal
             _serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
             if (defaultValue != null && !serviceType.IsInstanceOfType(defaultValue))
             {
-                throw new ArgumentException("Constant Cant Be Converted To Service Type, defaultValue.GetType(), serviceType");
+                throw new ArgumentException("Constant Cant Be Converted To Service PeriodType, defaultValue.GetType(), serviceType");
             }
 
             Value = defaultValue;

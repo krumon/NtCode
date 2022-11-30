@@ -49,7 +49,7 @@ namespace Nt.Core.Services.Internal
                 case CallSiteKind.ServiceProvider:
                     return VisitServiceProvider((ServiceProviderCallSite)callSite, argument);
                 default:
-                    throw new NotSupportedException("Call Site Type Not Supported, callSite.GetType()");
+                    throw new NotSupportedException("Call Site PeriodType Not Supported, callSite.GetType()");
             }
         }
 

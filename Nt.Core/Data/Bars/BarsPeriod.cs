@@ -4,25 +4,25 @@
     {
         #region Private members
 
-        private int _period; 
+        private int _periodValue; 
 
         #endregion
 
         #region Public properties
 
-        public PeriodType Type { get; set; }
+        public PeriodType PeriodType { get; set; }
 
-        public int Period 
+        public int PeriodValue 
         {
-            get => _period;
+            get => _periodValue;
             set
             {
-                if (_period != value)
+                if (_periodValue != value)
                 {
                     if (value < 1)
                         return;
 
-                    _period = value;
+                    _periodValue = value;
                 }
             }
         }
@@ -45,8 +45,8 @@
 
         public BarsPeriod(PeriodType type, int period)
         {
-            Type = type;
-            Period = period;
+            PeriodType = type;
+            PeriodValue = period;
         }
 
         #endregion

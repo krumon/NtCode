@@ -74,7 +74,7 @@ namespace Nt.Core.Tests
             WriteLine(ts.ToString());
             NewLine();
 
-            Subtitle("Custom instance with Time Span, Time Zone Info and Trading Session Type");
+            Subtitle("Custom instance with Time Span, Time Zone Info and Trading Session PeriodType");
             ts = TradingSession.CreateCustomTradingSession(InstrumentCode.MES, new TimeSpan(12, 15, 0), TimeZoneInfo.Local, TradingTimeType.European_Close);
             WriteLine(ts.ToShortString("u"));
             NewLine();

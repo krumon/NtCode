@@ -3,7 +3,7 @@ using Nt.Core.Services;
 
 namespace Nt.Scripts.Ninjascripts.Data
 {
-    public class Data : DataService, IData
+    public class Data : ChartDataService, IData
     {
         public NinjaScriptBase Ninjascript { get; private set; }
 

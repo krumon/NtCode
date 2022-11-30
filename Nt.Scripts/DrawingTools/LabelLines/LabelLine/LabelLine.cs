@@ -171,7 +171,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 		/// <summary>
 		/// Type of the arrow of the label.
 		/// </summary>
-		[Display(Name = "Arrow Type", Description = "The label arrow type", GroupName = "Label", Order = 3)]
+		[Display(Name = "Arrow PeriodType", Description = "The label arrow type", GroupName = "Label", Order = 3)]
 		public ArrowType LabelArrowType { get; set; } = ArrowType.Short;
 
 		/// <summary>
