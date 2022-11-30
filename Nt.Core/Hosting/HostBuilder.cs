@@ -15,17 +15,18 @@ namespace Nt.Core.Hosting
     /// </summary>
     public class HostBuilder : IHostBuilder
     {
+        //private bool _requiredServicesIsAdded = true;
+        //private ServiceProviderFactory _serviceProviderFactory = new ServiceProviderFactory();
+        //private ConcurrentDictionary<RequiredServiceType, IRequiredService> _requiredServices = new ConcurrentDictionary<RequiredServiceType, IRequiredService>();
+        //private ConcurrentDictionary<OptionalServiceType, IOptionalService> _optionalServices = new ConcurrentDictionary<OptionalServiceType, IOptionalService>();
+        
         private bool _built;
-        private bool _requiredServicesIsAdded = true;
-        private ServiceProviderFactory _serviceProviderFactory = new ServiceProviderFactory();
         private List<Action<HostOptions>> _configureHostOptionsActions;
         private List<Action<IServiceCollection>> _configureServicesActions;
         private HostOptions _hostOptions = HostOptions.Default;
         private IServiceProvider _services;
 
         private List<Action<DataSeriesBuilder>> _configureDataSeriesActions;
-        private ConcurrentDictionary<RequiredServiceType, IRequiredService> _requiredServices = new ConcurrentDictionary<RequiredServiceType, IRequiredService>();
-        private ConcurrentDictionary<OptionalServiceType, IOptionalService> _optionalServices = new ConcurrentDictionary<OptionalServiceType, IOptionalService>();
 
         /// <summary>
         /// Set up the options for the builder itself. This will be used to initialize the <see cref="Hosting"/>
@@ -89,7 +90,7 @@ namespace Nt.Core.Hosting
                     Write(diagnosticListener, hostBuildingEventName, this);
                 }
 
-                AddHostOptions();
+                ConfigHostOptions();
                 CreateHostEnvironment();
                 CreateHostBuilderContext();
                 BuildConfiguration();
@@ -104,19 +105,11 @@ namespace Nt.Core.Hosting
             }
         }
 
-
-        private void AddHostOptions()
+        private void ConfigHostOptions()
         {
-            //            IConfigurationBuilder configBuilder = new ConfigurationBuilder()
-            //                .AddInMemoryCollection(); // Make sure there's some default storage since there are no default providers
-
-            //            foreach (Action<IConfigurationBuilder> buildAction in _configureHostConfigActions)
-            //            {
-            //                buildAction(configBuilder);
-            //            }
-            //            _hostConfiguration = configBuilder.Build();
+            foreach (Action<HostOptions> action in _configureHostOptionsActions)
+                action(_hostOptions);
         }
-
         private void CreateHostEnvironment()
         {
             //_hostEnvironment = new NinjascriptHostEnvironment();
@@ -134,7 +127,6 @@ namespace Nt.Core.Hosting
 
             //            _hostingEnvironment.ContentRootFileProvider = _defaultProvider = new PhysicalFileProvider(_hostingEnvironment.ContentRootPath);
         }
-
         private void CreateHostBuilderContext()
         {
             //_hostBuilderContext = new NinjascriptHostBuilderContext(Properties)
@@ -143,7 +135,6 @@ namespace Nt.Core.Hosting
             //    Configuration = _hostConfiguration
             //};
         }
-
         private void BuildConfiguration()
         {
             //            IConfigurationBuilder configBuilder = new ConfigurationBuilder()
@@ -157,7 +148,6 @@ namespace Nt.Core.Hosting
             //            _appConfiguration = configBuilder.Build();
             //            _hostBuilderContext.Configuration = _appConfiguration;
         }
-
         private void CreateServiceProvider()
         {
             var services = new ServiceCollection();
@@ -184,6 +174,7 @@ namespace Nt.Core.Hosting
             //services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
             //services.AddLogging();
 
+            // Add the configure services by the delegates.
             foreach (Action<IServiceCollection> configureServicesAction in _configureServicesActions)
             {
                 configureServicesAction(services);
@@ -209,28 +200,20 @@ namespace Nt.Core.Hosting
             //// service provider, ensuring it will be properly disposed with the provider
             //_ = _ninjascriptServices.GetService<IConfiguration>();
         }
-
-
-
-
-
-
-        private void ConfigHostOptions()
-        {
-            foreach (Action<HostOptions> action in _configureHostOptionsActions)
-                action(_hostOptions);
-        }
-
-        private void AddOptionalServices()
-        {
-            //if (_configureDataSeriesActions != null)
-            //    ConfigureDataSeries();
-
-        }
-
         private void Write(DiagnosticSource diagnosticSource,string name,object value)
         {
             diagnosticSource.Write(name, value);
+        }
+        private void AddHostOptions()
+        {
+            //            IConfigurationBuilder configBuilder = new ConfigurationBuilder()
+            //                .AddInMemoryCollection(); // Make sure there's some default storage since there are no default providers
+
+            //            foreach (Action<IConfigurationBuilder> buildAction in _configureHostConfigActions)
+            //            {
+            //                buildAction(configBuilder);
+            //            }
+            //            _hostConfiguration = configBuilder.Build();
         }
         private string ResolveContentRootPath(string contentRootPath, string basePath)
         {

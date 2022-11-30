@@ -26,7 +26,7 @@ namespace Nt.Core.Services
         /// <summary>
         /// <inheritdoc/>
         /// </summary>
-        public virtual void Configure(object script)
+        public virtual void Configure(params object[] ninjascriptObjects)
         {
         }
     }

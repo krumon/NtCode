@@ -46,6 +46,11 @@ namespace Nt.Core.Services
             throw new NotImplementedException();
         }
 
+        public IEnumerable<T> GetAllServices<T>()
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
     }

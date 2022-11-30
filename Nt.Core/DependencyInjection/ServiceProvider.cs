@@ -83,6 +83,28 @@ namespace Nt.Core.DependencyInjection
             return result;
         }
 
+        /// <summary>
+        /// Gets all service objects of the specified type.
+        /// </summary>
+        /// <returns>The service collection that was produced.</returns>
+        public IEnumerable<T> GetAllServices<T>()
+        {
+            if (_disposed)
+                throw new ObjectDisposedException(nameof(ServiceProvider));
+            List<T> services = new List<T>();
+            foreach (ServiceDescriptor descriptor in CallSiteFactory.Descriptors)
+            {
+                Type serviceType = descriptor.ImplementationType;
+                if (typeof(T).IsAssignableFrom(serviceType))
+                {
+                    T service = (T)GetService(serviceType);
+                    if(service != null)
+                        services.Add(service);
+                }
+            }
+            return services.Count == 0 ? null : services;
+        }
+
         #endregion
 
         #region Private methods

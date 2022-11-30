@@ -1,6 +1,7 @@
-﻿using Nt.Core.Data;
+﻿using Nt.Core.Services;
 using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
 namespace Nt.Core.Hosting
@@ -21,25 +22,24 @@ namespace Nt.Core.Hosting
         //private IEnumerable<IHostedService> _hostedServices;
         //private volatile bool _stopCalled;
         private readonly HostOptions _options;
-        private readonly ConcurrentDictionary<RequiredServiceType, IRequiredService> _requiredServices;
-        private readonly ConcurrentDictionary<OptionalServiceType, IOptionalService> _optionalServices;
 
         #endregion
 
         #region Public properties
 
         /// <inheritdoc/>
-        public ConcurrentDictionary<RequiredServiceType, IRequiredService> RequiredServices => _requiredServices;
-
-        /// <inheritdoc/>
-        public ConcurrentDictionary<OptionalServiceType, IOptionalService> OptionalServices => _optionalServices;
-
         public IServiceProvider Services { get; }
 
         #endregion
 
         #region Constructors
 
+        /// <summary>
+        /// Create <see cref="Host"/> default instance.
+        /// </summary>
+        /// <param name="services">The host service provider.</param>
+        /// <param name="options">The host options.</param>
+        /// <exception cref="ArgumentNullException"></exception>
         public Host(
             IServiceProvider services,
             HostOptions options
@@ -47,71 +47,37 @@ namespace Nt.Core.Hosting
         {
             Services = services ?? throw new ArgumentNullException(nameof(services));
             _options = options ?? throw new ArgumentNullException(nameof(options));
-            //_requiredServices = requiredServices ?? throw new ArgumentNullException(nameof(requiredServices));
-            //_optionalServices = optionalServices ?? throw new ArgumentNullException(nameof(optionalServices));
         }
 
         #endregion
 
         #region Public methods
 
-        public object GetService<T>(IHostedService<T> key)
-            where T : Enum
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public void Configure([CallerMemberName] string name = "", params object[] ninjascriptObjects)
         {
-            if (key is RequiredServiceType requiredServiceKey)
-            {
-                if (_requiredServices.TryGetValue(requiredServiceKey, out var service))
-                    return service;
-                throw new Exception("The service doesn't exist and is required.");
-            }
-                
-            if (key is OptionalServiceType optionalServiceKey)
-            {
-                if (_optionalServices.TryGetValue(optionalServiceKey, out var service))
-                    return service;
-                return default;
-            }
+            if (name != "Configure")
+                throw new Exception("The caller method must be 'Configure()");
 
-            return default;
-                
+            IEnumerable<IConfigureService> configureServices = Services.GetAllServices<IConfigureService>();
+            if (configureServices == null)
+                return;
+            foreach(var configureService in configureServices)
+                configureService.Configure(ninjascriptObjects);
         }
 
+        /// <summary>
         /// <inheritdoc/>
-        public object GetService(Type serviceType)
+        /// </summary>
+        public void DataLoaded(params object[] ninjascriptObjects)
         {
-
-            return default;
-        }
-
-        /// <inheritdoc/>
-        public object GetService(object key)
-        {
-            if (key is Enum)
-            {
-                if (key is RequiredServiceType requiredServiceKey)
-                    return GetRequiredService(requiredServiceKey);
-
-                if (key is OptionalServiceType optionalServiceKey)
-                    return GetOptionalService(optionalServiceKey);            
-            }
-
-            return default;
-        }
-
-        /// <inheritdoc/>
-        public object GetRequiredService(RequiredServiceType key)
-        {
-            if (_requiredServices.TryGetValue(key, out var service))
-                return service;
-            throw new Exception("The service doesn't exist and is required.");
-        }
-
-        /// <inheritdoc/>
-        public object GetOptionalService(OptionalServiceType key)
-        {
-            if (_optionalServices.TryGetValue(key, out var service))
-                return service;
-            return default;
+            IEnumerable<IDataLoadedService> configureServices = Services.GetAllServices<IDataLoadedService>();
+            if (configureServices == null)
+                return;
+            foreach(var configureService in configureServices)
+                configureService.DataLoaded(ninjascriptObjects);
         }
 
         #endregion
