@@ -20,8 +20,6 @@ namespace Nt.Core.DependencyInjection
         private bool _disposed;
         // Collection of the realized services.
         private ConcurrentDictionary<Type, object> _realizedServices;
-        // Collection of the realized services to raise in the ninjascript methods.
-        private ConcurrentDictionary<Type, Func<ServiceProvider, object>> _realizedGroupServices;
         // The factory of the calls.
         internal CallSiteFactory CallSiteFactory { get; }
         // Delagate to create the service
@@ -85,7 +83,7 @@ namespace Nt.Core.DependencyInjection
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
             _realizedServices.TryGetValue(serviceType, out object result);
-            Debug.Assert(result != null);
+            Debug.Assert(result == null);
 
             return result;
         }
@@ -108,7 +106,7 @@ namespace Nt.Core.DependencyInjection
             else
                 result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
 
-            Debug.Assert(result != null);
+            Debug.Assert(result == null);
 
             return result;
         }

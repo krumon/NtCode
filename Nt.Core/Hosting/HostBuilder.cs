@@ -56,14 +56,6 @@ namespace Nt.Core.Hosting
             return this;
         }
 
-        public IHostBuilder AddOnBarUpdateServices(Action<IList<Type>> configureOnBarUpdateServicesActions)
-        {
-            if (_configureOnBarUpdateServicesActions == null)
-                _configureOnBarUpdateServicesActions = new List<Action<IList<Type>>>();
-            _configureOnBarUpdateServicesActions.Add(configureOnBarUpdateServicesActions ?? throw new ArgumentNullException(nameof(configureOnBarUpdateServicesActions)));
-            return this;
-        }
-
         public IHostBuilder UseDataSeries(Action<DataSeriesBuilder> dataSeriesDelegate)
         {
             if (_configureDataSeriesActions == null)
