@@ -21,7 +21,6 @@ namespace Nt.Core.Hosting
         private bool _built;
         private List<Action<HostOptions>> _configureHostOptionsActions;
         private List<Action<IServiceCollection>> _configureServicesActions;
-        private List<Action<IList<Type>>> _configureOnBarUpdateServicesActions;
         private HostOptions _hostOptions = HostOptions.Default;
         private IServiceProvider _services;
 

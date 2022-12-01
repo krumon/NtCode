@@ -27,7 +27,7 @@ namespace ConsoleApp
                     });
                     sc.Add<ChartStyleService>((sp) =>
                     {
-                        var data = (ChartDataService)sp.GetService(typeof(ChartDataService));
+                        var data = (ChartData)sp.GetService(typeof(IChartDataService));
                         return new ChartStyleService()
                         {
                         };
@@ -49,8 +49,9 @@ namespace ConsoleApp
                 .Build();
 
             var chartData = host.Services.GetService<IChartDataService>();
-            //var chartStyleService = host.Services.GetService<ChartStyleService>();
-                
+            //object configureServices = host.Services.GetServices<IChartDataService>();
+            object configureServices = host.Services.GetServices<IConfigureService>();
+
         }
     }
 }

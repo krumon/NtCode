@@ -29,5 +29,6 @@ namespace Nt.Core.Services
         public virtual void Configure(params object[] ninjascriptObjects)
         {
         }
+
     }
 }

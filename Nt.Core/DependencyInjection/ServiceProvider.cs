@@ -1,6 +1,8 @@
 ﻿using Nt.Core.DependencyInjection.Internal;
+using Nt.Core.Hosting;
 using Nt.Core.Services;
 using System;
+using System.CodeDom;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -82,8 +84,8 @@ namespace Nt.Core.DependencyInjection
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
-            _realizedServices.TryGetValue(serviceType, out object result);
-            Debug.Assert(result == null);
+            object result = _realizedServices.GetOrAdd(serviceType, _createService);
+            Debug.Assert(result != null);
 
             return result;
         }
@@ -102,11 +104,11 @@ namespace Nt.Core.DependencyInjection
                 serviceType.IsAssignableFrom(typeof(IConfigureService)) 
                 || serviceType.IsAssignableFrom(typeof(IDataLoadedService)))
 
-                _realizedServices.TryGetValue(serviceType, out result);
+                result = CreateEnumerableService(serviceType);
             else
                 result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
 
-            Debug.Assert(result == null);
+            Debug.Assert(result != null);
 
             return result;
         }
@@ -118,6 +120,9 @@ namespace Nt.Core.DependencyInjection
         private void ValidateService(ServiceDescriptor descriptor)
         {
             Type serviceType = descriptor.ServiceType;
+
+            if (serviceType == typeof(IHost))
+                return;
 
             if (serviceType.IsGenericType && !serviceType.IsConstructedGenericType)
                 throw new Exception();
@@ -147,10 +152,10 @@ namespace Nt.Core.DependencyInjection
 
         private object CreateEnumerableService(Type serviceType)
         {
-            Type t = serviceType.GetType();
             IList<object> list = new List<object>();
             foreach (KeyValuePair<Type,object> service in _realizedServices)
-                if (t.IsAssignableFrom(service.Value.GetType()))
+                //if (service.Value.GetType().IsAssignableFrom(serviceType))
+                if (serviceType.IsAssignableFrom(service.Value.GetType()))
                     list.Add(service.Value);
             return list.Count > 0 ? list : null;
         }
