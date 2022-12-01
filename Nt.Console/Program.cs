@@ -1,8 +1,8 @@
-﻿using NinjaTrader.Data;
-using Nt.Core.Data;
+﻿using Nt.Core.Data;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
+using Nt.Scripts.Ninjascripts.Charts;
 using System;
 
 namespace ConsoleApp
@@ -20,7 +20,7 @@ namespace ConsoleApp
                 })
                 .ConfigureServices((sc) =>
                 {
-                    sc.Add<ChartDataService>(new ChartDataService()
+                    sc.Add<IChartDataService, ChartData>((sp) => new ChartData()
                     {
                         InstrumentName = "MES",
                         TradingHoursName = "Central Standard Time"
@@ -48,8 +48,8 @@ namespace ConsoleApp
                 })
                 .Build();
 
-            var chartDataService = host.Services.GetService<ChartDataService>();
-            var chartStyleService = host.Services.GetService<ChartStyleService>();
+            var chartData = host.Services.GetService<IChartDataService>();
+            //var chartStyleService = host.Services.GetService<ChartStyleService>();
                 
         }
     }

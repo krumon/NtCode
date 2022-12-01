@@ -218,6 +218,10 @@
       <Project>{3a644626-5b81-4ee5-9d67-6b77d5ba4940}</Project>
       <Name>Nt.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Nt.Scripts\NtScripts.csproj">
+      <Project>{77C4DCF3-98A3-4C20-95F1-0806C30FE114}</Project>
+      <Name>NtScripts</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
