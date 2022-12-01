@@ -186,17 +186,6 @@ namespace Nt.Core.Hosting
             {
                 configureServicesAction(services);
             }
-            IList<Type> onBarUpdateServices = new List<Type>();
-            // Add the enumerable services by the delegates.
-            foreach (Action<IList<Type>> configureOnBarUpdateServicesAction in _configureOnBarUpdateServicesActions)
-            {
-                configureOnBarUpdateServicesAction(onBarUpdateServices);
-            }
-            if (onBarUpdateServices.Count > 0)
-                foreach (Type t in onBarUpdateServices)
-                    foreach (ServiceDescriptor descriptor in services)
-                        if (descriptor.ImplementationType == t)
-                            return;
             
             //object containerBuilder = _serviceProviderFactory.CreateBuilder(services);
 

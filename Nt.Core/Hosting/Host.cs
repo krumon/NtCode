@@ -1,4 +1,5 @@
-﻿using Nt.Core.Services;
+﻿using Nt.Core.DependencyInjection;
+using Nt.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -61,7 +62,7 @@ namespace Nt.Core.Hosting
             if (name != "Configure")
                 throw new Exception("The caller method must be 'Configure()");
 
-            IEnumerable<IConfigureService> configureServices = Services.GetAllServices<IConfigureService>();
+            IEnumerable<IConfigureService> configureServices = (IEnumerable<IConfigureService>)Services.GetServices<IConfigureService>();
             if (configureServices == null)
                 return;
             foreach(var configureService in configureServices)
@@ -73,7 +74,7 @@ namespace Nt.Core.Hosting
         /// </summary>
         public void DataLoaded(params object[] ninjascriptObjects)
         {
-            IEnumerable<IDataLoadedService> configureServices = Services.GetAllServices<IDataLoadedService>();
+            IEnumerable<IDataLoadedService> configureServices = (IEnumerable<IDataLoadedService>)Services.GetServices<IDataLoadedService>();
             if (configureServices == null)
                 return;
             foreach(var configureService in configureServices)

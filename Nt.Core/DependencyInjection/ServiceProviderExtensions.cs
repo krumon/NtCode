@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Nt.Core.DependencyInjection
 {
@@ -8,7 +7,6 @@ namespace Nt.Core.DependencyInjection
     /// </summary>
     public static class ServiceProviderExtensions
     {
-
         /// <summary>
         /// Get service of type <typeparamref name="T"/> from the <see cref="IServiceProvider"/>.
         /// </summary>
@@ -76,36 +74,14 @@ namespace Nt.Core.DependencyInjection
         /// <typeparam name="T">The type of service object to get.</typeparam>
         /// <param name="provider">The <see cref="IServiceProvider"/> to retrieve the services from.</param>
         /// <returns>An enumeration of services of type <typeparamref name="T"/>.</returns>
-        public static IEnumerable<T> GetServices<T>(this IServiceProvider provider)
+        public static object GetServices<T>(this IServiceProvider provider)
         {
             if (provider == null)
             {
                 throw new ArgumentNullException(nameof(provider));
             }
-
-            return provider.GetRequiredService<IEnumerable<T>>();
-        }
-
-        /// <summary>
-        /// Get an enumeration of services of type <paramref name="serviceType"/> from the <see cref="IServiceProvider"/>.
-        /// </summary>
-        /// <param name="provider">The <see cref="IServiceProvider"/> to retrieve the services from.</param>
-        /// <param name="serviceType">An object that specifies the type of service object to get.</param>
-        /// <returns>An enumeration of services of type <paramref name="serviceType"/>.</returns>
-        public static IEnumerable<object> GetServices(this IServiceProvider provider, Type serviceType)
-        {
-            if (provider == null)
-            {
-                throw new ArgumentNullException(nameof(provider));
-            }
-
-            if (serviceType == null)
-            {
-                throw new ArgumentNullException(nameof(serviceType));
-            }
-
-            Type genericEnumerable = typeof(IEnumerable<>).MakeGenericType(serviceType);
-            return (IEnumerable<object>)provider.GetRequiredService(genericEnumerable);
+            Type serviceType = typeof(T);
+            return provider.GetServices(serviceType);
         }
     }
 }

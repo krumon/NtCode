@@ -19,15 +19,15 @@ namespace Nt.Core.DependencyInjection
         // Check the service provider is disposed.
         private bool _disposed;
         // Collection of the realized services.
-        private ConcurrentDictionary<Type, Func<ServiceProvider, object>> _realizedServices;
+        private ConcurrentDictionary<Type, object> _realizedServices;
         // Collection of the realized services to raise in the ninjascript methods.
         private ConcurrentDictionary<Type, Func<ServiceProvider, object>> _realizedGroupServices;
         // The factory of the calls.
         internal CallSiteFactory CallSiteFactory { get; }
         // Delagate to create the service
-        private Func<Type,Func<ServiceProvider,object>> _createServiceAccessor;
-        // Collection to get OnBarUpdate services.
-        private IEnumerable<IBarUpdateService> _onBarUpdateServices;
+        private Func<Type,object> _createService;
+        // Delagate to create the enumerable service
+        private Func<Type,object> _createEnumerableService;
 
         #endregion
 
@@ -40,11 +40,13 @@ namespace Nt.Core.DependencyInjection
         internal ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors, ServiceProviderOptions options)
         {
             // Initilize the realized services.
-            _realizedServices = new ConcurrentDictionary<Type, Func<ServiceProvider, object>>();
+            _realizedServices = new ConcurrentDictionary<Type, object>();
             // Initialize the call site factory.
             CallSiteFactory = new CallSiteFactory(serviceDescriptors);
             // Sets the delegate method.
-            _createServiceAccessor = CreateServiceAccessor;
+            _createService = CreateService;
+            // Sets the delegate method.
+            _createEnumerableService = CreateEnumerableService;
 
             if (options.ValidateOnBuild)
             {
@@ -82,8 +84,7 @@ namespace Nt.Core.DependencyInjection
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
-            Func<ServiceProvider, object> realizedService = _realizedServices.GetOrAdd(serviceType, _createServiceAccessor);
-            var result = realizedService.Invoke(this);
+            _realizedServices.TryGetValue(serviceType, out object result);
             Debug.Assert(result != null);
 
             return result;
@@ -93,22 +94,23 @@ namespace Nt.Core.DependencyInjection
         /// Gets all service objects of the specified type.
         /// </summary>
         /// <returns>The service collection that was produced.</returns>
-        public IEnumerable<T> GetAllServices<T>()
+        public object GetServices(Type serviceType)
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
-            IList<T> services = new List<T>();
-            foreach (ServiceDescriptor descriptor in CallSiteFactory.Descriptors)
-            {
-                Type serviceType = descriptor.ImplementationType;
-                if (typeof(T).IsAssignableFrom(serviceType))
-                {
-                    T service = (T)GetService(serviceType);
-                    if(service != null)
-                        services.Add(service);
-                }
-            }
-            return services.Count == 0 ? null : services;
+
+            object result;
+            if (
+                serviceType.IsAssignableFrom(typeof(IConfigureService)) 
+                || serviceType.IsAssignableFrom(typeof(IDataLoadedService)))
+
+                _realizedServices.TryGetValue(serviceType, out result);
+            else
+                result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
+
+            Debug.Assert(result != null);
+
+            return result;
         }
 
         #endregion
@@ -120,13 +122,12 @@ namespace Nt.Core.DependencyInjection
             Type serviceType = descriptor.ServiceType;
 
             if (serviceType.IsGenericType && !serviceType.IsConstructedGenericType)
-                return;
+                throw new Exception();
 
             try
             {
-                ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
-                if (callSite == null)
-                    throw new Exception("Invalid call site.");
+                object result = _realizedServices.GetOrAdd(serviceType, _createService);
+                Debug.Assert(result != null);
             }
             catch (Exception e)
             {
@@ -134,16 +135,26 @@ namespace Nt.Core.DependencyInjection
             }
         }
 
-        private Func<ServiceProvider,object> CreateServiceAccessor(Type serviceType)
+        private object CreateService(Type serviceType)
         {
             ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
             if (callSite != null)
             {
                 object value = CallSiteRuntimeResolver.Instance.Resolve(callSite, this);
-                return sp => value;
+                return value;
             }
 
             return null;
+        }
+
+        private object CreateEnumerableService(Type serviceType)
+        {
+            Type t = serviceType.GetType();
+            IList<object> list = new List<object>();
+            foreach (KeyValuePair<Type,object> service in _realizedServices)
+                if (t.IsAssignableFrom(service.Value.GetType()))
+                    list.Add(service.Value);
+            return list.Count > 0 ? list : null;
         }
 
         #endregion

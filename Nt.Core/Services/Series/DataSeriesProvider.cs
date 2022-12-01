@@ -46,7 +46,7 @@ namespace Nt.Core.Services
             throw new NotImplementedException();
         }
 
-        public IEnumerable<T> GetAllServices<T>()
+        public object GetServices(Type serviceType)
         {
             throw new NotImplementedException();
         }
