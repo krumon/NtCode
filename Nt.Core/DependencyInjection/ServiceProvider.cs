@@ -1,4 +1,5 @@
 ﻿using Nt.Core.DependencyInjection.Internal;
+using Nt.Core.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -19,10 +20,14 @@ namespace Nt.Core.DependencyInjection
         private bool _disposed;
         // Collection of the realized services.
         private ConcurrentDictionary<Type, Func<ServiceProvider, object>> _realizedServices;
+        // Collection of the realized services to raise in the ninjascript methods.
+        private ConcurrentDictionary<Type, Func<ServiceProvider, object>> _realizedGroupServices;
         // The factory of the calls.
         internal CallSiteFactory CallSiteFactory { get; }
         // Delagate to create the service
         private Func<Type,Func<ServiceProvider,object>> _createServiceAccessor;
+        // Collection to get OnBarUpdate services.
+        private IEnumerable<IBarUpdateService> _onBarUpdateServices;
 
         #endregion
 
@@ -80,6 +85,7 @@ namespace Nt.Core.DependencyInjection
             Func<ServiceProvider, object> realizedService = _realizedServices.GetOrAdd(serviceType, _createServiceAccessor);
             var result = realizedService.Invoke(this);
             Debug.Assert(result != null);
+
             return result;
         }
 
@@ -91,7 +97,7 @@ namespace Nt.Core.DependencyInjection
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
-            List<T> services = new List<T>();
+            IList<T> services = new List<T>();
             foreach (ServiceDescriptor descriptor in CallSiteFactory.Descriptors)
             {
                 Type serviceType = descriptor.ImplementationType;
@@ -119,8 +125,8 @@ namespace Nt.Core.DependencyInjection
             try
             {
                 ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
-                if (callSite != null)
-                    ValidateCallSite(callSite);
+                if (callSite == null)
+                    throw new Exception("Invalid call site.");
             }
             catch (Exception e)
             {
@@ -138,11 +144,6 @@ namespace Nt.Core.DependencyInjection
             }
 
             return null;
-        }
-
-        private void ValidateCallSite(ServiceCallSite callSite)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion

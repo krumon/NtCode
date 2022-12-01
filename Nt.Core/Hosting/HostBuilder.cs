@@ -1,8 +1,6 @@
-﻿using Nt.Core.Data;
-using Nt.Core.DependencyInjection;
+﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Services;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -23,6 +21,7 @@ namespace Nt.Core.Hosting
         private bool _built;
         private List<Action<HostOptions>> _configureHostOptionsActions;
         private List<Action<IServiceCollection>> _configureServicesActions;
+        private List<Action<IList<Type>>> _configureOnBarUpdateServicesActions;
         private HostOptions _hostOptions = HostOptions.Default;
         private IServiceProvider _services;
 
@@ -54,6 +53,14 @@ namespace Nt.Core.Hosting
             if (_configureServicesActions == null)
                 _configureServicesActions = new List<Action<IServiceCollection>>();
             _configureServicesActions.Add(configureServicesDelegate ?? throw new ArgumentNullException(nameof(configureServicesDelegate)));
+            return this;
+        }
+
+        public IHostBuilder AddOnBarUpdateServices(Action<IList<Type>> configureOnBarUpdateServicesActions)
+        {
+            if (_configureOnBarUpdateServicesActions == null)
+                _configureOnBarUpdateServicesActions = new List<Action<IList<Type>>>();
+            _configureOnBarUpdateServicesActions.Add(configureOnBarUpdateServicesActions ?? throw new ArgumentNullException(nameof(configureOnBarUpdateServicesActions)));
             return this;
         }
 
@@ -179,7 +186,18 @@ namespace Nt.Core.Hosting
             {
                 configureServicesAction(services);
             }
-
+            IList<Type> onBarUpdateServices = new List<Type>();
+            // Add the enumerable services by the delegates.
+            foreach (Action<IList<Type>> configureOnBarUpdateServicesAction in _configureOnBarUpdateServicesActions)
+            {
+                configureOnBarUpdateServicesAction(onBarUpdateServices);
+            }
+            if (onBarUpdateServices.Count > 0)
+                foreach (Type t in onBarUpdateServices)
+                    foreach (ServiceDescriptor descriptor in services)
+                        if (descriptor.ImplementationType == t)
+                            return;
+            
             //object containerBuilder = _serviceProviderFactory.CreateBuilder(services);
 
             //foreach (IConfigureContainerAdapter containerAction in _configureContainerActions)
