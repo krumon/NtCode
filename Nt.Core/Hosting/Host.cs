@@ -54,32 +54,32 @@ namespace Nt.Core.Hosting
 
         #region Public methods
 
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void Configure([CallerMemberName] string name = "", params object[] ninjascriptObjects)
-        {
-            if (name != "Configure")
-                throw new Exception("The caller method must be 'Configure()");
+        ///// <summary>
+        ///// <inheritdoc/>
+        ///// </summary>
+        //public void Configure([CallerMemberName] string name = "", params object[] ninjascriptObjects)
+        //{
+        //    if (name != "Configure")
+        //        throw new Exception("The caller method must be 'Configure()");
 
-            IEnumerable<IConfigureService> configureServices = (IEnumerable<IConfigureService>)Services.GetServices<IConfigureService>();
-            if (configureServices == null)
-                return;
-            foreach(var configureService in configureServices)
-                configureService.Configure(ninjascriptObjects);
-        }
+        //    IEnumerable<IConfigureService> configureServices = (IEnumerable<IConfigureService>)Services.GetServices<IConfigureService>();
+        //    if (configureServices == null)
+        //        return;
+        //    foreach(var configureService in configureServices)
+        //        configureService.Configure(ninjascriptObjects);
+        //}
 
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public void DataLoaded(params object[] ninjascriptObjects)
-        {
-            IEnumerable<IDataLoadedService> configureServices = (IEnumerable<IDataLoadedService>)Services.GetServices<IDataLoadedService>();
-            if (configureServices == null)
-                return;
-            foreach(var configureService in configureServices)
-                configureService.DataLoaded(ninjascriptObjects);
-        }
+        ///// <summary>
+        ///// <inheritdoc/>
+        ///// </summary>
+        //public void DataLoaded(params object[] ninjascriptObjects)
+        //{
+        //    IEnumerable<IDataLoadedService> configureServices = (IEnumerable<IDataLoadedService>)Services.GetServices<IDataLoadedService>();
+        //    if (configureServices == null)
+        //        return;
+        //    foreach(var configureService in configureServices)
+        //        configureService.DataLoaded(ninjascriptObjects);
+        //}
 
         #endregion
 

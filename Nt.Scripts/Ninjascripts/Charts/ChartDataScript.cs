@@ -5,9 +5,9 @@ using System;
 
 namespace Nt.Scripts.Ninjascripts.Charts
 {
-    public class ChartData : ChartDataService
+    public class ChartDataScript : ChartDataService, IChartDataScript
     {
-        public override void Configure(params object[] ninjascriptObjects)
+        public void Configure(params object[] ninjascriptObjects)
         {
             TryGetNinjascriptObject<ChartBars>(out ChartBars chartBars, ninjascriptObjects);
 

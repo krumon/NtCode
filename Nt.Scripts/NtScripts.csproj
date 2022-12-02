@@ -66,10 +66,18 @@
     <Compile Include="DrawingTools\LabelLines\PriceLine\PriceLine.v.0.1.cs" />
     <Compile Include="DrawingTools\LabelLines\TimeLine\TimeLine.v.0.1.cs" />
     <Compile Include="Drawing\LabelLineDrawingMethods.cs" />
+    <Compile Include="Hosting\HostExtensions.cs" />
+    <Compile Include="Hosting\KrumonHost.cs" />
     <Compile Include="Indicators\Base\MyBaseIndicator.cs" />
     <Compile Include="Indicators\Templates\IndicatorTemplate.cs" />
     <Compile Include="Indicators\TradingZone\TradingZone.cs" />
-    <Compile Include="Ninjascripts\Charts\ChartData.cs" />
+    <Compile Include="Ninjascripts\.Interfaces\IOnBarUpdateScript.cs" />
+    <Compile Include="Ninjascripts\.Interfaces\IConfigureScript.cs" />
+    <Compile Include="Ninjascripts\.Interfaces\IDataLoadedScript.cs" />
+    <Compile Include="Ninjascripts\.Interfaces\IDataSeriesScript.cs" />
+    <Compile Include="Ninjascripts\.Interfaces\IMarketDataScript.cs" />
+    <Compile Include="Ninjascripts\Charts\ChartDataScript.cs" />
+    <Compile Include="Ninjascripts\Charts\IChartDataScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

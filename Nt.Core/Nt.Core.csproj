@@ -228,11 +228,6 @@
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
     <Compile Include="Services\Charts\Style\IChartStyleService.cs" />
     <Compile Include="Services\Charts\Data\IChartDataService.cs" />
-    <Compile Include="Services\.Interfaces\IMarketDataService.cs" />
-    <Compile Include="Services\.Interfaces\IBarUpdateService.cs" />
-    <Compile Include="Services\.Interfaces\IDataLoadedService.cs" />
-    <Compile Include="Services\.Interfaces\IConfigureService.cs" />
-    <Compile Include="Services\.Interfaces\IDataSeriesService.cs" />
     <Compile Include="zToDelete\DependencyInjection\.Types\RequiredServiceType.cs" />
     <Compile Include="Services\Charts\Style\ChartStyleService.cs" />
     <Compile Include="Services\Series\DataSeriesProvider.cs" />

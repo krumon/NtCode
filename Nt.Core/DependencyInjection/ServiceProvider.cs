@@ -100,13 +100,13 @@ namespace Nt.Core.DependencyInjection
                 throw new ObjectDisposedException(nameof(ServiceProvider));
 
             object result;
-            if (
-                serviceType.IsAssignableFrom(typeof(IConfigureService)) 
-                || serviceType.IsAssignableFrom(typeof(IDataLoadedService)))
+            //if (
+            //    serviceType.IsAssignableFrom(typeof(IConfigureService)) 
+            //    || serviceType.IsAssignableFrom(typeof(IDataLoadedService)))
 
-                result = CreateEnumerableService(serviceType);
-            else
-                result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
+            //    result = CreateEnumerableService(serviceType);
+            //else
+            result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
 
             Debug.Assert(result != null);
 

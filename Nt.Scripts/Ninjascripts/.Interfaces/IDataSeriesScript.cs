@@ -1,11 +1,11 @@
 ﻿using Nt.Core.Data;
 
-namespace Nt.Core.Services
+namespace Nt.Scripts.Ninjascripts
 {
     /// <summary>
     /// Represents default implementation of any data serie.
     /// </summary>
-    public interface IDataSeriesService
+    public interface IDataSeriesScript
     {
         IInstrument Instrument { get; }
         ITradingHours TradingHours { get; }

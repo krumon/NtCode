@@ -1,6 +1,6 @@
-﻿namespace Nt.Core.Services
+﻿namespace Nt.Scripts.Ninjascripts
 {
-    public interface IMarketDataService
+    public interface IMarketDataScript
     {
         /// <summary>
         /// Updates the service when the market data changes.

@@ -1,6 +1,6 @@
-﻿namespace Nt.Core.Services
+﻿namespace Nt.Scripts.Ninjascripts
 {
-    public interface IDataLoadedService
+    public interface IDataLoadedScript
     {
         /// <summary>
         /// Method to configure the service in the ninjascript when the data is loaded.

@@ -23,12 +23,5 @@ namespace Nt.Core.Services
         /// </summary>
         public string TradingHoursName { get; set; }
 
-        /// <summary>
-        /// <inheritdoc/>
-        /// </summary>
-        public virtual void Configure(params object[] ninjascriptObjects)
-        {
-        }
-
     }
 }
