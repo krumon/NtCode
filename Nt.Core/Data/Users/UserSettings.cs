@@ -48,7 +48,7 @@ namespace Nt.Core.Data
         /// <summary>
         /// Display name for start anchor.
         /// </summary>
-        public const string AnchorStartDisplayName = "Start Y";
+        public const string AnchorStartDisplayName = "Configure Y";
 
         /// <summary>
         /// Display name for end anchor.

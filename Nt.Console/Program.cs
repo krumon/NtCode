@@ -1,9 +1,6 @@
-﻿using Nt.Core.Data;
-using Nt.Core.DependencyInjection;
+﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
-using Nt.Scripts.Hosting;
-using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Ninjascripts.Charts;
 using System;
 
@@ -37,11 +34,12 @@ namespace ConsoleApp
                 })
                 .Build();
 
+            host.Start(null);
+
             var chartData = host.Services.GetService<IChartDataService>();
             //object configureServices = host.Services.GetServices<IChartDataService>();
-            object configureServices = host.Services.GetServices<IConfigureScript>();
-
-            host.ExecuteScripts<IConfigureScript>();
+            //object configureServices = host.Services.GetServices<IDataLoadedService>();
+            host.ExecuteServices<IDataLoadedService>();
 
         }
     }

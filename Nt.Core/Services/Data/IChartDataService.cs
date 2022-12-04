@@ -1,11 +1,12 @@
 ﻿using Nt.Core.Data;
+using Nt.Core.Hosting;
 
 namespace Nt.Core.Services
 {
     /// <summary>
     /// Represents the ninjatrader chart bars general data to use by the ninjascript objects.
     /// </summary>
-    public interface IChartDataService
+    public interface IChartDataService : IHostedService
     {
         
         /// <summary>

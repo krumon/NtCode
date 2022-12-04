@@ -1,19 +1,21 @@
-﻿using System;
-
-namespace Nt.Core.Hosting
+﻿namespace Nt.Core.Hosting
 {
 
     /// <summary>
-    /// Defines any optional configure service.
+    /// Defines methods for objects that are managed by the host.
     /// </summary>
-    public interface IHostedService<T>
-        where T : Enum
+    public interface IHostedService
     {
 
         /// <summary>
-        /// Gets the type of the service.
+        /// Triggered when the application host is ready to start the service.
         /// </summary>
-        T Key { get; }
+        void Configure(object[] ninjascriptObjects);
+
+        /// <summary>
+        /// Triggered when the application host is performing a graceful shutdown.
+        /// </summary>
+        void Dispose();
 
     }
 }

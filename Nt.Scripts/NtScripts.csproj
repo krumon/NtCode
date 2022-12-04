@@ -71,13 +71,8 @@
     <Compile Include="Indicators\Base\MyBaseIndicator.cs" />
     <Compile Include="Indicators\Templates\IndicatorTemplate.cs" />
     <Compile Include="Indicators\TradingZone\TradingZone.cs" />
-    <Compile Include="Ninjascripts\.Interfaces\IOnBarUpdateScript.cs" />
-    <Compile Include="Ninjascripts\.Interfaces\IConfigureScript.cs" />
-    <Compile Include="Ninjascripts\.Interfaces\IDataLoadedScript.cs" />
-    <Compile Include="Ninjascripts\.Interfaces\IDataSeriesScript.cs" />
-    <Compile Include="Ninjascripts\.Interfaces\IMarketDataScript.cs" />
+    <Compile Include="Ninjascripts\DataSeries\IDataSeriesScript.cs" />
     <Compile Include="Ninjascripts\Charts\ChartDataScript.cs" />
-    <Compile Include="Ninjascripts\Charts\IChartDataScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

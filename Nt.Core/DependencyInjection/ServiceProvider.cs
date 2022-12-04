@@ -1,8 +1,6 @@
 ﻿using Nt.Core.DependencyInjection.Internal;
 using Nt.Core.Hosting;
-using Nt.Core.Services;
 using System;
-using System.CodeDom;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -94,20 +92,13 @@ namespace Nt.Core.DependencyInjection
         /// Gets all service objects of the specified type.
         /// </summary>
         /// <returns>The service collection that was produced.</returns>
-        public object GetServices(Type serviceType)
+        public IList<object> GetServices(Type serviceType)
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
 
-            object result;
-            //if (
-            //    serviceType.IsAssignableFrom(typeof(IConfigureService)) 
-            //    || serviceType.IsAssignableFrom(typeof(IDataLoadedService)))
-
-            //    result = CreateEnumerableService(serviceType);
-            //else
-            result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
-
+            //object result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
+            IList<object> result = (IList<object>)CreateEnumerableService(serviceType);
             Debug.Assert(result != null);
 
             return result;
@@ -154,7 +145,6 @@ namespace Nt.Core.DependencyInjection
         {
             IList<object> list = new List<object>();
             foreach (KeyValuePair<Type,object> service in _realizedServices)
-                //if (service.Value.GetType().IsAssignableFrom(serviceType))
                 if (serviceType.IsAssignableFrom(service.Value.GetType()))
                     list.Add(service.Value);
             return list.Count > 0 ? list : null;

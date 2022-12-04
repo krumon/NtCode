@@ -5,7 +5,7 @@ namespace Nt.Core.Services
     /// <summary>
     /// <inheritdoc/>
     /// </summary>
-    public class ChartDataService : IChartDataService
+    public abstract class ChartDataService : IChartDataService
     {
 
         /// <summary>
@@ -22,6 +22,16 @@ namespace Nt.Core.Services
         /// <inheritdoc/>
         /// </summary>
         public string TradingHoursName { get; set; }
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public abstract void Configure(object[] ninjascriptObjects);
+
+        /// <summary>
+        /// <inheritdoc/>
+        /// </summary>
+        public abstract void Dispose();
 
     }
 }

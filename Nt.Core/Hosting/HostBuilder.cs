@@ -55,16 +55,16 @@ namespace Nt.Core.Hosting
             return this;
         }
 
+        public IHostBuilder ConfigureDefaults(string[] args)
+        {
+            return this;
+        }
+
         public IHostBuilder UseDataSeries(Action<DataSeriesBuilder> dataSeriesDelegate)
         {
             if (_configureDataSeriesActions == null)
                 _configureDataSeriesActions = new List<Action<DataSeriesBuilder>>();
             _configureDataSeriesActions.Add(dataSeriesDelegate ?? throw new ArgumentNullException(nameof(dataSeriesDelegate)));
-            return this;
-        }
-
-        public IHostBuilder ConfigureDefaults(string[] args)
-        {
             return this;
         }
 
@@ -178,16 +178,10 @@ namespace Nt.Core.Hosting
                 configureServicesAction(services);
             }
             
-            //object containerBuilder = _serviceProviderFactory.CreateBuilder(services);
+            _services = new ServiceProvider(services, new ServiceProviderOptions
+            {
 
-            //foreach (IConfigureContainerAdapter containerAction in _configureContainerActions)
-            //{
-            //    containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
-            //}
-
-            //_services = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
-
-            _services = new ServiceProvider(services);
+            });
 
             if (_services == null)
             {

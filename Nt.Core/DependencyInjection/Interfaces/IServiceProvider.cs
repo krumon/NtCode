@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Nt.Core.DependencyInjection
 {
@@ -20,7 +21,7 @@ namespace Nt.Core.DependencyInjection
         /// Gets all service objects of the specified type.
         /// </summary>
         /// <returns>The service collection that was produced.</returns>
-        object GetServices(Type serviceType);
+        IList<object> GetServices(Type serviceType);
 
     }
 }

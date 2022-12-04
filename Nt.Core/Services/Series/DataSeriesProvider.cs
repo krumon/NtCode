@@ -7,7 +7,7 @@ using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
 namespace Nt.Core.Services
 {
-    public class DataSeriesProvider : IOptionalService, IServiceProvider
+    public class DataSeriesProvider : IServiceProvider
     {
 
         #region Private members
@@ -46,7 +46,7 @@ namespace Nt.Core.Services
             throw new NotImplementedException();
         }
 
-        public object GetServices(Type serviceType)
+        public IList<object> GetServices(Type serviceType)
         {
             throw new NotImplementedException();
         }
