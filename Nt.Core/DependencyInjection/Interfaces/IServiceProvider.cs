@@ -17,11 +17,18 @@ namespace Nt.Core.DependencyInjection
         /// <returns>The object of the ninjascript service or null if there aren't object.</returns>
         object GetService(Type serviceType);
 
+        ///// <summary>
+        ///// Gets all service objects of the specified type.
+        ///// </summary>
+        ///// <returns>The service collection that was produced.</returns>
+        //IEnumerable<object> GetServices(Type serviceType);
+
         /// <summary>
-        /// Gets all service objects of the specified type.
+        /// Get an enumeration of services of type <typeparamref name="T"/> from the <see cref="IServiceProvider"/>.
         /// </summary>
-        /// <returns>The service collection that was produced.</returns>
-        IList<object> GetServices(Type serviceType);
+        /// <typeparam name="T">The type of service object to get.</typeparam>
+        /// <returns>An enumeration of services of type <typeparamref name="T"/>.</returns>
+        IEnumerable<T> GetServices<T>();
 
     }
 }

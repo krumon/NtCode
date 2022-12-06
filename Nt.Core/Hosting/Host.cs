@@ -1,9 +1,7 @@
-﻿using Nt.Core.DependencyInjection;
-using Nt.Core.Services;
+﻿using Nt.Core.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
@@ -24,7 +22,7 @@ namespace Nt.Core.Hosting
         //private readonly PhysicalFileProvider _defaultProvider;
         //private IEnumerable<IHostedService> _hostedServices;
         //private volatile bool _stopCalled;
-        private readonly ConcurrentDictionary<Type, IEnumerable<object>> _hostServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
+        private readonly ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
         private readonly HostOptions _options;
 
         #endregion
@@ -46,11 +44,21 @@ namespace Nt.Core.Hosting
         /// <exception cref="ArgumentNullException"></exception>
         public Host(
             IServiceProvider services,
-            HostOptions options
+            HostOptions options,
+            IEnumerable<IOnBarUpdateService> onBarUpdateServices,
+            IEnumerable<IMarketDataService> onMarketDataServices
             )
         {
+            // _logger.Starting();
+
             Services = services ?? throw new ArgumentNullException(nameof(services));
             _options = options ?? throw new ArgumentNullException(nameof(options));
+            _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
+            _enumerableServices.TryAdd(typeof(IMarketDataService), onMarketDataServices);
+
+            // Fire IHostApplicationLifetime.Started
+            //_lifetime.NotifyStarted();
+
         }
 
         #endregion
@@ -58,36 +66,61 @@ namespace Nt.Core.Hosting
         #region Public methods
 
         /// <inheritdoc/>
-        public void Start(object[] ninjascriptObjects)
+        public void Configure(object[] ninjascriptObjects)
         {
-            //_logger.Starting();
+            //_logger.Configuring();
 
-            //await _hostLifetime.WaitForStartAsync(combinedCancellationToken).ConfigureAwait(false);
-
-
-            IList<object> _hostedServices = Services.GetServices<IHostedService>();
+            IList<IHostedService> configureServices = (IList<IHostedService>)Services.GetServices<IHostedService>();
                         
-            if (_hostedServices != null && _hostedServices.Count > 0 && !_options.IsInDesignMode)
+            if (configureServices != null && configureServices.Count > 0)
             {
-                foreach (IHostedService hostedService in _hostedServices)
+                foreach (IHostedService configureService in configureServices)
                 {
                     // Fire IHostedService.Start
-                    hostedService.Configure(ninjascriptObjects);
+                    configureService.Configure(ninjascriptObjects);
                 }
             }
 
-            // Fire IHostApplicationLifetime.Started
-            //_ninjascriptLifetime.NotifyStarted();
-
-            //_logger.Started();
+            //_logger.Configured();
 
         }
 
         /// <inheritdoc/>
-        public void Stop()
+        public void DataLoaded(object[] ninjascriptObjects)
+        {
+            //_logger.ConfiguringWhenDataLoaded();
+
+            IList<IHostedService> dataLoadedServices = (IList<IHostedService>)Services.GetServices<IHostedService>();
+
+            if (dataLoadedServices != null && dataLoadedServices.Count > 0)
+            {
+                foreach (IHostedService dataLoadedService in dataLoadedServices)
+                {
+                    // Fire IHostedService.Start
+                    dataLoadedService.DataLoaded(ninjascriptObjects);
+                }
+            }
+
+            //_logger.ConfiguredWhenDataLoaded();
+        }
+
+        /// <inheritdoc/>
+        public void OnBarUpdate()
+        {
+            ExecuteServices<IOnBarUpdateService>();
+        }
+
+        /// <inheritdoc/>
+        public void MarketData()
+        {
+            ExecuteServices<IMarketDataService>();
+        }
+
+        /// <inheritdoc/>
+        public void Dispose()
         {
             //_stopCalled = true;
-            //_logger.Stopping();
+            //_logger.Disposing();
 
             //    // Trigger IHostApplicationLifetime.ApplicationStopping
             //    _applicationLifetime.StopApplication();
@@ -128,13 +161,6 @@ namespace Nt.Core.Hosting
                 throw ex;
             }
 
-            //_logger.Stopped();
-
-        }
-
-        /// <inheritdoc/>
-        public void Dispose()
-        {
             //// The user didn't change the ContentRootFileProvider instance, we can dispose it
             //if (ReferenceEquals(_hostEnvironment.ContentRootFileProvider, _defaultProvider))
             //{
@@ -164,34 +190,32 @@ namespace Nt.Core.Hosting
                         break;
                 }
             }
+
+            //_logger.Disposed();
+
         }
 
-        /// <inheritdoc/>
-        public void ExecuteServices<T>()
+        #endregion
+
+        #region Private methods
+
+        private void ExecuteServices<T>()
         {
-            IEnumerable<T> services;
-
-            if (typeof(T).IsAssignableFrom(typeof(IDataLoadedService)))
-                return;
-            
-            services = (IEnumerable<T>)_hostServices.GetOrAdd(typeof(T), (IEnumerable<object>)Services.GetServices<T>());
-            if (services == null)
+            if (!_enumerableServices.TryGetValue(typeof(T), out IEnumerable<object> services))
                 return;
 
-            switch (typeof(T))
+            switch (services)
             {
-                case IOnBarUpdateService configureService:
-                    ForEach<T>(services, (_) => configureService.OnBarUpdate());
+                case IEnumerable<IOnBarUpdateService> onBarUpdateServices:
+                    ForEach(onBarUpdateServices, (onBarUpdateService) => onBarUpdateService.OnBarUpdate());
                     break;
 
-                case IMarketDataService configureService:
-                    ForEach<T>(services, (_) => configureService.OnMarketData());
+                case IEnumerable<IMarketDataService> onMarketDataServices:
+                    ForEach(onMarketDataServices, (onMarketDataService) => onMarketDataService.OnMarketData());
                     break;
 
             }
         }
-
-        #endregion
 
         private void ForEach<T>(IEnumerable<T> services, Action<T> action)
         {
@@ -199,9 +223,11 @@ namespace Nt.Core.Hosting
                 throw new ArgumentNullException(nameof(services));
 
             foreach (T service in services)
-            {
                 action(service);
-            }
         }
+
+        #endregion
+
+
     }
 }

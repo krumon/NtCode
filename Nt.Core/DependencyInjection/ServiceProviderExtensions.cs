@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Nt.Core.DependencyInjection
 {
@@ -67,22 +66,6 @@ namespace Nt.Core.DependencyInjection
             }
 
             return (T)provider.GetRequiredService(typeof(T));
-        }
-
-        /// <summary>
-        /// Get an enumeration of services of type <typeparamref name="T"/> from the <see cref="IServiceProvider"/>.
-        /// </summary>
-        /// <typeparam name="T">The type of service object to get.</typeparam>
-        /// <param name="provider">The <see cref="IServiceProvider"/> to retrieve the services from.</param>
-        /// <returns>An enumeration of services of type <typeparamref name="T"/>.</returns>
-        public static IList<object> GetServices<T>(this IServiceProvider provider)
-        {
-            if (provider == null)
-            {
-                throw new ArgumentNullException(nameof(provider));
-            }
-            Type serviceType = typeof(T);
-            return provider.GetServices(serviceType);
         }
     }
 }

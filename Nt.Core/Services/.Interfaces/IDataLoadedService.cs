@@ -1,10 +1,16 @@
-﻿namespace Nt.Core.Services
+﻿namespace Nt.Core.Hosting
 {
+
+    /// <summary>
+    /// Defines methods that are necesary to configure the service whe data is loaded.
+    /// </summary>
     public interface IDataLoadedService
     {
         /// <summary>
-        /// Method to configure the service in the ninjascript when the data is loaded.
+        /// Method to configure the service when the data is loaded.
         /// </summary>
+        /// <param name="ninjascriptObjects">The necesary objects to configure the service.</param>
         void DataLoaded(object[] ninjascriptObjects);
+
     }
 }

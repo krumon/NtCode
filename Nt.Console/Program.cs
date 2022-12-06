@@ -1,8 +1,7 @@
 ﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
-using Nt.Scripts.Ninjascripts.Charts;
-using System;
+using Nt.Scripts.Ninjascripts.Design;
 
 namespace ConsoleApp
 {
@@ -19,27 +18,17 @@ namespace ConsoleApp
                 })
                 .ConfigureServices((sc) =>
                 {
-                    sc.Add<IChartDataService, ChartDataScript>((sp) => new ChartDataScript()
-                    {
-                        InstrumentName = "MES",
-                        TradingHoursName = "Central Standard Time"
-                    });
-                    sc.Add<ChartStyleService>((sp) =>
-                    {
-                        var data = (ChartDataScript)sp.GetService(typeof(IChartDataService));
-                        return new ChartStyleService()
-                        {
-                        };
-                    });
+                    sc.Add<IChartDataService, ChartDataDesignScript>((sp) => new ChartDataDesignScript());
                 })
                 .Build();
 
-            host.Start(null);
-
             var chartData = host.Services.GetService<IChartDataService>();
-            //object configureServices = host.Services.GetServices<IChartDataService>();
-            //object configureServices = host.Services.GetServices<IDataLoadedService>();
-            host.ExecuteServices<IDataLoadedService>();
+            
+            host.Configure(null);
+            host.DataLoaded(null);
+            host.OnBarUpdate();
+            host.MarketData();
+            host.Dispose();
 
         }
     }

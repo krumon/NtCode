@@ -1,5 +1,8 @@
 ﻿namespace Nt.Core.Services
 {
+    /// <summary>
+    /// Defines methods that are necesary to execute when the bar updated.
+    /// </summary>
     public interface IOnBarUpdateService
     {
         /// <summary>

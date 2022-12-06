@@ -27,9 +27,12 @@ namespace Nt.Scripts.Ninjascripts.Charts
             };
         }
 
+        public override void DataLoaded(object[] ninjascriptObjects)
+        {
+        }
+
         public override void Dispose()
         {
-            
         }
 
     }

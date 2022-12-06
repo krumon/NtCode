@@ -1,5 +1,4 @@
 ﻿using Nt.Core.Data;
-using Nt.Core.Hosting;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -46,7 +45,7 @@ namespace Nt.Core.Services
             throw new NotImplementedException();
         }
 
-        public IList<object> GetServices(Type serviceType)
+        public IEnumerable<T> GetServices<T>()
         {
             throw new NotImplementedException();
         }

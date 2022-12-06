@@ -44,7 +44,7 @@ namespace Nt.Core.DependencyInjection
             // Sets the delegate method.
             _createService = CreateService;
             // Sets the delegate method.
-            _createEnumerableService = CreateEnumerableService;
+            //_createEnumerableService = CreateEnumerableService;
 
             if (options.ValidateOnBuild)
             {
@@ -88,17 +88,33 @@ namespace Nt.Core.DependencyInjection
             return result;
         }
 
+        ///// <summary>
+        ///// Gets all service objects of the specified type.
+        ///// </summary>
+        ///// <returns>The service collection that was produced.</returns>
+        //public IEnumerable<object> GetServices(Type serviceType)
+        //{
+        //    if (_disposed)
+        //        throw new ObjectDisposedException(nameof(ServiceProvider));
+
+        //    //object result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
+        //    IList<object> result = (IList<object>)CreateEnumerableService<object>(serviceType);
+        //    Debug.Assert(result != null);
+
+        //    return result;
+        //}
+
         /// <summary>
         /// Gets all service objects of the specified type.
         /// </summary>
         /// <returns>The service collection that was produced.</returns>
-        public IList<object> GetServices(Type serviceType)
+        public IEnumerable<T> GetServices<T>()
         {
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
 
             //object result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
-            IList<object> result = (IList<object>)CreateEnumerableService(serviceType);
+            IList<T> result = (IList<T>)CreateEnumerableService<T>(typeof(T));
             Debug.Assert(result != null);
 
             return result;
@@ -141,12 +157,25 @@ namespace Nt.Core.DependencyInjection
             return null;
         }
 
-        private object CreateEnumerableService(Type serviceType)
+        //private IEnumerable<object> CreateEnumerableService(Type serviceType)
+        //{
+
+        //    IList<object> list = new List<object>();
+        //    foreach (KeyValuePair<Type,object> service in _realizedServices)
+        //        if (serviceType.IsAssignableFrom(service.Value.GetType()))
+        //            list.Add(service.Value);
+        //    return list.Count > 0 ? list : null;
+        //}
+
+        private IEnumerable<T> CreateEnumerableService<T>(Type serviceType)
         {
-            IList<object> list = new List<object>();
+            if (!(typeof(T) == serviceType))
+                throw new InvalidOperationException();
+
+            IList<T> list = new List<T>();
             foreach (KeyValuePair<Type,object> service in _realizedServices)
                 if (serviceType.IsAssignableFrom(service.Value.GetType()))
-                    list.Add(service.Value);
+                    list.Add((T)service.Value);
             return list.Count > 0 ? list : null;
         }
 

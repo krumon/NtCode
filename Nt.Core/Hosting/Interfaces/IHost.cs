@@ -1,4 +1,4 @@
-﻿using Nt.Core.DependencyInjection;
+﻿using Nt.Core.Services;
 using System;
 using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
@@ -15,21 +15,26 @@ namespace Nt.Core.Hosting
         IServiceProvider Services { get; }
 
         /// <summary>
-        /// Start the host.
+        /// Configure the hosted services of the Host.
         /// </summary>
-        void Start(object[] ninjascriptObjects);
+        /// <param name="ninjascriptObjects">The ninjascript objects necesary to configure the service.</param>
+        void Configure(object[] ninjascriptObjects);
 
         /// <summary>
-        /// Attempts to gracefully stop the host.
+        /// Configure the hosted services of the Host when the ninjascript data is loaded.
         /// </summary>
-        void Stop();
+        /// <param name="ninjascriptObjects">The ninjascript objects necesary to configure the service.</param>
+        void DataLoaded(object[] ninjascriptObjects);
 
         /// <summary>
-        /// Execute all services of the same type.
+        /// Execute the <see cref="IOnBarUpdateService"/> services of the host.
         /// </summary>
-        /// <typeparam name="T">The type of the service to execute.</typeparam>
-        void ExecuteServices<T>();
+        void OnBarUpdate();
 
+        /// <summary>
+        /// Execute the <see cref="IMarketDataService"/> services of the host.
+        /// </summary>
+        void MarketData();
 
     }
 }

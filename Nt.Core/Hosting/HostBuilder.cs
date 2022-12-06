@@ -162,7 +162,8 @@ namespace Nt.Core.Hosting
                     , _hostOptions
                     //, _hostEnvironment
                     //, _fileProvider,
-                    //, _ninjascriptServices.GetRequiredService<INinjascriptLifetime>(),
+                    , _services.GetServices<IOnBarUpdateService>()
+                    , _services.GetServices<IMarketDataService>()
                     //, _ninjascriptServices.GetRequiredService<ILogger<Internal.Host>>(),
                     //, _ninjascriptServices.GetRequiredService<IHostLifetime>()
                     //, _ninjascriptServices.GetRequiredService<IOptions<HostOptions>>()
