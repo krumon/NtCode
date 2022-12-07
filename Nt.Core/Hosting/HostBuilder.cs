@@ -163,7 +163,7 @@ namespace Nt.Core.Hosting
                     //, _hostEnvironment
                     //, _fileProvider,
                     , _services.GetServices<IOnBarUpdateService>()
-                    , _services.GetServices<IMarketDataService>()
+                    , _services.GetServices<IOnMarketDataService>()
                     //, _ninjascriptServices.GetRequiredService<ILogger<Internal.Host>>(),
                     //, _ninjascriptServices.GetRequiredService<IHostLifetime>()
                     //, _ninjascriptServices.GetRequiredService<IOptions<HostOptions>>()

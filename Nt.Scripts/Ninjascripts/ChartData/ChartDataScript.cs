@@ -4,7 +4,7 @@ using Nt.Core.Hosting;
 using Nt.Core.Services;
 using System;
 
-namespace Nt.Scripts.Ninjascripts.Charts
+namespace Nt.Scripts.Ninjascripts
 {
     public class ChartDataScript : ChartDataService
     {

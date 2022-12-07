@@ -18,16 +18,18 @@ namespace ConsoleApp
                 })
                 .ConfigureServices((sc) =>
                 {
-                    sc.Add<IChartDataService, ChartDataDesignScript>((sp) => new ChartDataDesignScript());
+                sc.Add<IChartDataService, ChartDataDesignScript>();// (sp) => new ChartDataDesignScript());
+                    sc.Add<IChartStyleService, ChartStyleService>((sp) => new ChartStyleService(sp.GetService<IChartDataService>()));
                 })
                 .Build();
 
             var chartData = host.Services.GetService<IChartDataService>();
+            var chartStyle = host.Services.GetService<IChartStyleService>();
             
             host.Configure(null);
             host.DataLoaded(null);
             host.OnBarUpdate();
-            host.MarketData();
+            host.OnMarketData();
             host.Dispose();
 
         }

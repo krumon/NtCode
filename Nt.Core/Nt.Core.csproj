@@ -228,7 +228,7 @@
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
     <Compile Include="Services\.Interfaces\IDataLoadedService.cs" />
     <Compile Include="Services\.Interfaces\IConfigureService.cs" />
-    <Compile Include="Services\.Interfaces\IMarketDataService.cs" />
+    <Compile Include="Services\.Interfaces\IOnMarketDataService.cs" />
     <Compile Include="Services\.Interfaces\IOnBarUpdateService.cs" />
     <Compile Include="Services\ChartStyle\IChartStyleService.cs" />
     <Compile Include="Services\ChartData\IChartDataService.cs" />

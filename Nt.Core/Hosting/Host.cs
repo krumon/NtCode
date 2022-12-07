@@ -46,7 +46,7 @@ namespace Nt.Core.Hosting
             IServiceProvider services,
             HostOptions options,
             IEnumerable<IOnBarUpdateService> onBarUpdateServices,
-            IEnumerable<IMarketDataService> onMarketDataServices
+            IEnumerable<IOnMarketDataService> onMarketDataServices
             )
         {
             // _logger.Starting();
@@ -54,7 +54,7 @@ namespace Nt.Core.Hosting
             Services = services ?? throw new ArgumentNullException(nameof(services));
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
-            _enumerableServices.TryAdd(typeof(IMarketDataService), onMarketDataServices);
+            _enumerableServices.TryAdd(typeof(IOnMarketDataService), onMarketDataServices);
 
             // Fire IHostApplicationLifetime.Started
             //_lifetime.NotifyStarted();
@@ -111,9 +111,9 @@ namespace Nt.Core.Hosting
         }
 
         /// <inheritdoc/>
-        public void MarketData()
+        public void OnMarketData()
         {
-            ExecuteServices<IMarketDataService>();
+            ExecuteServices<IOnMarketDataService>();
         }
 
         /// <inheritdoc/>
@@ -210,7 +210,7 @@ namespace Nt.Core.Hosting
                     ForEach(onBarUpdateServices, (onBarUpdateService) => onBarUpdateService.OnBarUpdate());
                     break;
 
-                case IEnumerable<IMarketDataService> onMarketDataServices:
+                case IEnumerable<IOnMarketDataService> onMarketDataServices:
                     ForEach(onMarketDataServices, (onMarketDataService) => onMarketDataService.OnMarketData());
                     break;
 

@@ -7,7 +7,7 @@ namespace Nt.Scripts.Ninjascripts.Design
     /// <summary>
     /// Design object to use for testing.
     /// </summary>
-    public class ChartDataDesignScript : ChartDataService, IOnBarUpdateService, IMarketDataService
+    public class ChartDataDesignScript : ChartDataService, IOnBarUpdateService, IOnMarketDataService
     {
         public override void Configure(object[] ninjascriptObjects)
         {

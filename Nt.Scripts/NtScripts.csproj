@@ -69,6 +69,7 @@
     <Compile Include="Indicators\Base\MyBaseIndicator.cs" />
     <Compile Include="Indicators\Templates\IndicatorTemplate.cs" />
     <Compile Include="Indicators\TradingZone\TradingZone.cs" />
+    <Compile Include="Ninjascripts\ChartData\IChartDataScript.cs" />
     <Compile Include="Ninjascripts\ChartData\Design\ChartDataDesignScript.cs" />
     <Compile Include="Ninjascripts\DataSeries\IDataSeriesScript.cs" />
     <Compile Include="Ninjascripts\ChartData\ChartDataScript.cs" />

@@ -32,9 +32,9 @@ namespace Nt.Core.Hosting
         void OnBarUpdate();
 
         /// <summary>
-        /// Execute the <see cref="IMarketDataService"/> services of the host.
+        /// Execute the <see cref="IOnMarketDataService"/> services of the host.
         /// </summary>
-        void MarketData();
+        void OnMarketData();
 
     }
 }
