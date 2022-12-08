@@ -3,7 +3,7 @@ using Nt.Core.Hosting;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Nt.Core.DependencyInjection
@@ -83,7 +83,7 @@ namespace Nt.Core.DependencyInjection
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
             object result = _realizedServices.GetOrAdd(serviceType, _createService);
-            Debug.Assert(result != null);
+            //Debug.Assert(result != null);
 
             return result;
         }
@@ -115,7 +115,7 @@ namespace Nt.Core.DependencyInjection
 
             //object result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
             IList<T> result = (IList<T>)CreateEnumerableService<T>(typeof(T));
-            Debug.Assert(result != null);
+            //Debug.Assert(result != null);
 
             return result;
         }
@@ -137,7 +137,7 @@ namespace Nt.Core.DependencyInjection
             try
             {
                 object result = _realizedServices.GetOrAdd(serviceType, _createService);
-                Debug.Assert(result != null);
+                //Debug.Assert(result != null);
             }
             catch (Exception e)
             {

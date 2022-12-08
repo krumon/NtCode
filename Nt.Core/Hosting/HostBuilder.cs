@@ -2,7 +2,6 @@
 using Nt.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
@@ -78,15 +77,15 @@ namespace Nt.Core.Hosting
 
             // REVIEW: If we want to raise more events outside of these calls then we will need to
             // stash this in a field.
-            using (var diagnosticListener = new DiagnosticListener("Nt.InstrumentKey.Hosting"))
-            {
-                const string hostBuildingEventName = "HostBuilding";
-                const string hostBuiltEventName = "HostBuilt";
+            //using (var diagnosticListener = new DiagnosticListener("Nt.InstrumentKey.Hosting"))
+            //{
+                //const string hostBuildingEventName = "HostBuilding";
+                //const string hostBuiltEventName = "HostBuilt";
 
-                if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
-                {
-                    Write(diagnosticListener, hostBuildingEventName, this);
-                }
+                //if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
+                //{
+                //    Write(diagnosticListener, hostBuildingEventName, this);
+                //}
 
                 ConfigHostOptions();
                 CreateHostEnvironment();
@@ -95,12 +94,12 @@ namespace Nt.Core.Hosting
                 CreateServiceProvider();
 
                 var host = _services.GetRequiredService<IHost>();
-                if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
-                {
-                    Write(diagnosticListener, hostBuiltEventName, host);
-                }
+                //if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
+                //{
+                //    Write(diagnosticListener, hostBuiltEventName, host);
+                //}
                 return host;
-            }
+            //}
         }
 
         private void ConfigHostOptions()
@@ -193,10 +192,10 @@ namespace Nt.Core.Hosting
             //// service provider, ensuring it will be properly disposed with the provider
             //_ = _ninjascriptServices.GetService<IConfiguration>();
         }
-        private void Write(DiagnosticSource diagnosticSource,string name,object value)
-        {
-            diagnosticSource.Write(name, value);
-        }
+        //private void Write(DiagnosticListener diagnosticSource,string name,object value)
+        //{
+        //    diagnosticSource.Write(name, value);
+        //}
         private void AddHostOptions()
         {
             //            IConfigurationBuilder configBuilder = new ConfigurationBuilder()

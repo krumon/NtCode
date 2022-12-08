@@ -6,7 +6,7 @@ using System;
 
 namespace Nt.Scripts.Ninjascripts
 {
-    public class ChartDataScript : ChartDataService
+    public class ChartDataScript : ChartDataService, IChartDataScript
     {
 
         public override void Configure(object[] ninjascriptObjects)

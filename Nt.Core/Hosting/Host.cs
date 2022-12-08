@@ -36,6 +36,10 @@ namespace Nt.Core.Hosting
 
         #region Constructors
 
+        public Host()
+        {
+
+        }
         /// <summary>
         /// Create <see cref="Host"/> default instance.
         /// </summary>
@@ -53,8 +57,10 @@ namespace Nt.Core.Hosting
 
             Services = services ?? throw new ArgumentNullException(nameof(services));
             _options = options ?? throw new ArgumentNullException(nameof(options));
-            _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
-            _enumerableServices.TryAdd(typeof(IOnMarketDataService), onMarketDataServices);
+            if (onBarUpdateServices != null)
+                _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
+            if (onMarketDataServices != null)
+                _enumerableServices.TryAdd(typeof(IOnMarketDataService), onMarketDataServices);
 
             // Fire IHostApplicationLifetime.Started
             //_lifetime.NotifyStarted();
@@ -176,20 +182,20 @@ namespace Nt.Core.Hosting
             //}
 
             // Dispose the service provider
-            DisposeAsync(Services).ConfigureAwait(false);
+            //DisposeAsync(Services).ConfigureAwait(false);
 
-            async ValueTask DisposeAsync(object o)
-            {
-                switch (o)
-                {
-                    case IAsyncDisposable asyncDisposable:
-                        await asyncDisposable.DisposeAsync().ConfigureAwait(false);
-                        break;
-                    case IDisposable disposable:
-                        disposable.Dispose();
-                        break;
-                }
-            }
+            //async ValueTask DisposeAsync(object o)
+            //{
+            //    switch (o)
+            //    {
+            //        case IAsyncDisposable asyncDisposable:
+            //            await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+            //            break;
+            //        case IDisposable disposable:
+            //            disposable.Dispose();
+            //            break;
+            //    }
+            //}
 
             //_logger.Disposed();
 

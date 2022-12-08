@@ -1,6 +1,7 @@
 ﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
+using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Ninjascripts.Design;
 
 namespace ConsoleApp
@@ -18,7 +19,7 @@ namespace ConsoleApp
                 })
                 .ConfigureServices((sc) =>
                 {
-                sc.Add<IChartDataService, ChartDataDesignScript>();// (sp) => new ChartDataDesignScript());
+                sc.Add<IChartDataScript, ChartDataScript>();// (sp) => new ChartDataDesignScript());
                     sc.Add<IChartStyleService, ChartStyleService>((sp) => new ChartStyleService(sp.GetService<IChartDataService>()));
                 })
                 .Build();
