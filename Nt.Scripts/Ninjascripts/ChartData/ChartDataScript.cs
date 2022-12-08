@@ -20,7 +20,7 @@ namespace Nt.Scripts.Ninjascripts
                 throw new ArgumentException("For configure the chart data service is necesary a ninjatrader ChartBars object");
 
             TradingHoursName = chartBars.Properties.TradingHoursInstance.Name;
-            InstrumentName = chartBars.Properties.Instrument;
+            InstrumentName = chartBars.Properties.Instrument.Split(' ')[0];
             BarsPeriod = new BarsPeriod
             {
                 PeriodType = (PeriodType)(int)chartBars.Properties.BarsPeriod.BarsPeriodType

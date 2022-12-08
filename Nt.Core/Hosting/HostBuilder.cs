@@ -19,11 +19,6 @@ namespace Nt.Core.Hosting
         private readonly HostOptions _hostOptions = new HostOptions();
         private IServiceProvider _services;
 
-        public IServiceProvider Services => _services;
-        public IOptions<HostOptions> HostOptions => _hostOptions;
-        public string Name => "Krumon Host Builder";
-        public override string ToString() => Name;
-
         /// <summary>
         /// Set up the options for the builder itself. This will be used to initialize the <see cref="Hosting"/>
         /// for use later in the build process. This can be called multiple times and the results will be additive.
@@ -77,21 +72,6 @@ namespace Nt.Core.Hosting
             return host;
         }
 
-        public void Builder()
-        {
-            if (_built)
-            {
-                throw new InvalidOperationException("The host can only be built once.");
-            }
-            _built = true;
-
-            ConfigHostOptions();
-            CreateHostEnvironment();
-            CreateHostBuilderContext();
-            BuildConfiguration();
-            CreateServiceProvider();
-        }
-
         private void ConfigHostOptions()
         {
             foreach (Action<HostOptions> action in _configureHostOptionsActions)
@@ -115,6 +95,7 @@ namespace Nt.Core.Hosting
 
             //            _hostingEnvironment.ContentRootFileProvider = _defaultProvider = new PhysicalFileProvider(_hostingEnvironment.ContentRootPath);
         }
+
         private void CreateHostBuilderContext()
         {
             //_hostBuilderContext = new NinjascriptHostBuilderContext(Properties)
@@ -123,6 +104,7 @@ namespace Nt.Core.Hosting
             //    Configuration = _hostConfiguration
             //};
         }
+
         private void BuildConfiguration()
         {
             //            IConfigurationBuilder configBuilder = new ConfigurationBuilder()
@@ -136,6 +118,7 @@ namespace Nt.Core.Hosting
             //            _appConfiguration = configBuilder.Build();
             //            _hostBuilderContext.Configuration = _appConfiguration;
         }
+
         private void CreateServiceProvider()
         {
             var services = new ServiceCollection();
@@ -145,20 +128,20 @@ namespace Nt.Core.Hosting
             //services.AddSingleton(_ => _ninjascriptConfiguration);
             //services.AddSingleton<INinjascriptLifetime, NinjascriptLifetime>();
             //AddLifetime(services);
-            //services.Add<IHost>(_ =>
-            //{
-            //    return new Host(
-            //        _services
-            //        , _hostOptions
-            //        //, _hostEnvironment
-            //        //, _fileProvider,
-            //        , _services.GetServices<IOnBarUpdateService>()
-            //        , _services.GetServices<IOnMarketDataService>()
-            //        //, _ninjascriptServices.GetRequiredService<ILogger<Internal.Host>>(),
-            //        //, _ninjascriptServices.GetRequiredService<IHostLifetime>()
-            //        //, _ninjascriptServices.GetRequiredService<IOptions<HostOptions>>()
-            //        );
-            //});
+            services.Add<IHost>(_ =>
+            {
+                return new Host(
+                    _services
+                    , _hostOptions
+                    //, _hostEnvironment
+                    //, _fileProvider,
+                    , _services.GetServices<IOnBarUpdateService>()
+                    , _services.GetServices<IOnMarketDataService>()
+                    //, _ninjascriptServices.GetRequiredService<ILogger<Internal.Host>>(),
+                    //, _ninjascriptServices.GetRequiredService<IHostLifetime>()
+                    //, _ninjascriptServices.GetRequiredService<IOptions<HostOptions>>()
+                    );
+            });
 
             //services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
             //services.AddLogging();
@@ -194,6 +177,7 @@ namespace Nt.Core.Hosting
             //            }
             //            _hostConfiguration = configBuilder.Build();
         }
+
         private string ResolveContentRootPath(string contentRootPath, string basePath)
         {
             if (string.IsNullOrEmpty(contentRootPath))

@@ -28,9 +28,9 @@ namespace Nt.Core.Hosting
                     throw new ArgumentException("The ninjascript objects array cannot be empty.");
 
                 foreach (var o in objects)
-                    if (0 is T)
+                    if (o is T t)
                     {
-                        searchObject = (T)o;
+                        searchObject = t;
                         find = true;
                         break;
                     }

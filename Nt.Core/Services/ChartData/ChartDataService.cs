@@ -29,11 +29,11 @@ namespace Nt.Core.Services
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
-            builder.AppendLine($"Instrument: {InstrumentName} ");
-            builder.AppendLine($"| TradingHours: {TradingHoursName} ");
-            builder.AppendLine($"| Price: {BarsPeriod.MarketDataType} ");
-            builder.AppendLine($"| Interval: {BarsPeriod.PeriodType} ");
-            builder.AppendLine($"| Value: {BarsPeriod.PeriodValue} ");
+            builder.Append($"Instrument: {InstrumentName} ");
+            builder.Append($"| TradingHours: {TradingHoursName} ");
+            builder.Append($"| Price: {BarsPeriod.MarketDataType} ");
+            builder.Append($"| Interval: {BarsPeriod.PeriodType} ");
+            builder.Append($"| Value: {BarsPeriod.PeriodValue} ");
             return builder.ToString();
         }
     }

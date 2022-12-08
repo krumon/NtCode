@@ -37,38 +37,13 @@ namespace Nt.Core.Hosting
 
         #region Constructors
 
-        public Host()
-        {
-        }
-
-        public void Build(IHostBuilder builder)
-        {
-            if (builder == null)
-                throw new ArgumentNullException(nameof(builder));
-
-            Services = builder.Services ?? throw new ArgumentNullException(nameof(builder.Services));
-
-            if (builder.HostOptions == null)
-                _options = HostOptions.Default;
-            else
-                _options = builder.HostOptions.Value;
-
-            var onBarUpdateServices = builder.Services.GetServices<IOnBarUpdateService>();
-            if (onBarUpdateServices != null)
-                _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
-
-            var onMarketDataServices = builder.Services.GetServices<IOnMarketDataService>();
-            if (onMarketDataServices != null)
-                _enumerableServices.TryAdd(typeof(IOnMarketDataService), onMarketDataServices);
-        }
-
         /// <summary>
         /// Create <see cref="Host"/> default instance.
         /// </summary>
         /// <param name="services">The host service provider.</param>
         /// <param name="options">The host options.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public Host(
+        internal Host(
             IServiceProvider services,
             HostOptions options,
             IEnumerable<IOnBarUpdateService> onBarUpdateServices,
