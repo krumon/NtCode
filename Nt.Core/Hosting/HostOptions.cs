@@ -1,9 +1,11 @@
-﻿namespace Nt.Core.Hosting
+﻿using Nt.Core.DependencyInjection;
+
+namespace Nt.Core.Hosting
 {
     /// <summary>
     /// Represents the host options.
     /// </summary>
-    public class HostOptions
+    public class HostOptions : IOptions<HostOptions>
     {
         /// <inheritdoc/>
         public static HostOptions Default => new HostOptions
@@ -16,5 +18,10 @@
         /// </summary>
         public bool IsInDesignMode { get; set; }
 
+        /// <inheritdoc/>
+        public HostOptions Value => new HostOptions
+        {
+            IsInDesignMode = false
+        };
     }
 }

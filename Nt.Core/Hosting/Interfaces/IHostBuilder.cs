@@ -1,6 +1,6 @@
 ﻿using Nt.Core.DependencyInjection;
-using Nt.Core.Services;
 using System;
+using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
 namespace Nt.Core.Hosting
 {
@@ -28,12 +28,9 @@ namespace Nt.Core.Hosting
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         IHostBuilder ConfigureServices(Action<IServiceCollection> configureServicesDelegate);
 
-        /// <summary>
-        /// Adds data series services to the container. This can be called multiple times and the results will be additive.
-        /// </summary>
-        /// <param name="dataSeriesDelegate">The delegate for configuring the <see cref="DataSeriesService"/>
-        /// that will be used to construct the <see cref="DataSeriesProvider"/>.</param>
-        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        IHostBuilder UseDataSeries(Action<DataSeriesBuilder> dataSeriesDelegate);
+        IServiceProvider Services { get; }
+        IOptions<HostOptions> HostOptions { get; }
+        void Builder();
+
     }
 }

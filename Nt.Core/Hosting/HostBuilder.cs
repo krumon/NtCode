@@ -12,18 +12,17 @@ namespace Nt.Core.Hosting
     /// </summary>
     public class HostBuilder : IHostBuilder
     {
-        //private bool _requiredServicesIsAdded = true;
-        //private ServiceProviderFactory _serviceProviderFactory = new ServiceProviderFactory();
-        //private ConcurrentDictionary<RequiredServiceType, IRequiredService> _requiredServices = new ConcurrentDictionary<RequiredServiceType, IRequiredService>();
-        //private ConcurrentDictionary<OptionalServiceType, IOptionalService> _optionalServices = new ConcurrentDictionary<OptionalServiceType, IOptionalService>();
-        
+
         private bool _built;
         private List<Action<HostOptions>> _configureHostOptionsActions;
         private List<Action<IServiceCollection>> _configureServicesActions;
-        private HostOptions _hostOptions = HostOptions.Default;
+        private readonly HostOptions _hostOptions = new HostOptions();
         private IServiceProvider _services;
 
-        private List<Action<DataSeriesBuilder>> _configureDataSeriesActions;
+        public IServiceProvider Services => _services;
+        public IOptions<HostOptions> HostOptions => _hostOptions;
+        public string Name => "Krumon Host Builder";
+        public override string ToString() => Name;
 
         /// <summary>
         /// Set up the options for the builder itself. This will be used to initialize the <see cref="Hosting"/>
@@ -59,14 +58,6 @@ namespace Nt.Core.Hosting
             return this;
         }
 
-        public IHostBuilder UseDataSeries(Action<DataSeriesBuilder> dataSeriesDelegate)
-        {
-            if (_configureDataSeriesActions == null)
-                _configureDataSeriesActions = new List<Action<DataSeriesBuilder>>();
-            _configureDataSeriesActions.Add(dataSeriesDelegate ?? throw new ArgumentNullException(nameof(dataSeriesDelegate)));
-            return this;
-        }
-
         public IHost Build()
         {
             if (_built)
@@ -75,31 +66,30 @@ namespace Nt.Core.Hosting
             }
             _built = true;
 
-            // REVIEW: If we want to raise more events outside of these calls then we will need to
-            // stash this in a field.
-            //using (var diagnosticListener = new DiagnosticListener("Nt.InstrumentKey.Hosting"))
-            //{
-                //const string hostBuildingEventName = "HostBuilding";
-                //const string hostBuiltEventName = "HostBuilt";
+            ConfigHostOptions();
+            CreateHostEnvironment();
+            CreateHostBuilderContext();
+            BuildConfiguration();
+            CreateServiceProvider();
 
-                //if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
-                //{
-                //    Write(diagnosticListener, hostBuildingEventName, this);
-                //}
+            var host = _services.GetRequiredService<IHost>();
 
-                ConfigHostOptions();
-                CreateHostEnvironment();
-                CreateHostBuilderContext();
-                BuildConfiguration();
-                CreateServiceProvider();
+            return host;
+        }
 
-                var host = _services.GetRequiredService<IHost>();
-                //if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
-                //{
-                //    Write(diagnosticListener, hostBuiltEventName, host);
-                //}
-                return host;
-            //}
+        public void Builder()
+        {
+            if (_built)
+            {
+                throw new InvalidOperationException("The host can only be built once.");
+            }
+            _built = true;
+
+            ConfigHostOptions();
+            CreateHostEnvironment();
+            CreateHostBuilderContext();
+            BuildConfiguration();
+            CreateServiceProvider();
         }
 
         private void ConfigHostOptions()
@@ -107,6 +97,7 @@ namespace Nt.Core.Hosting
             foreach (Action<HostOptions> action in _configureHostOptionsActions)
                 action(_hostOptions);
         }
+
         private void CreateHostEnvironment()
         {
             //_hostEnvironment = new NinjascriptHostEnvironment();
@@ -154,20 +145,20 @@ namespace Nt.Core.Hosting
             //services.AddSingleton(_ => _ninjascriptConfiguration);
             //services.AddSingleton<INinjascriptLifetime, NinjascriptLifetime>();
             //AddLifetime(services);
-            services.Add<IHost>(_ =>
-            {
-                return new Host(
-                    _services
-                    , _hostOptions
-                    //, _hostEnvironment
-                    //, _fileProvider,
-                    , _services.GetServices<IOnBarUpdateService>()
-                    , _services.GetServices<IOnMarketDataService>()
-                    //, _ninjascriptServices.GetRequiredService<ILogger<Internal.Host>>(),
-                    //, _ninjascriptServices.GetRequiredService<IHostLifetime>()
-                    //, _ninjascriptServices.GetRequiredService<IOptions<HostOptions>>()
-                    );
-            });
+            //services.Add<IHost>(_ =>
+            //{
+            //    return new Host(
+            //        _services
+            //        , _hostOptions
+            //        //, _hostEnvironment
+            //        //, _fileProvider,
+            //        , _services.GetServices<IOnBarUpdateService>()
+            //        , _services.GetServices<IOnMarketDataService>()
+            //        //, _ninjascriptServices.GetRequiredService<ILogger<Internal.Host>>(),
+            //        //, _ninjascriptServices.GetRequiredService<IHostLifetime>()
+            //        //, _ninjascriptServices.GetRequiredService<IOptions<HostOptions>>()
+            //        );
+            //});
 
             //services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
             //services.AddLogging();
@@ -180,7 +171,6 @@ namespace Nt.Core.Hosting
             
             _services = new ServiceProvider(services, new ServiceProviderOptions
             {
-
             });
 
             if (_services == null)
@@ -192,10 +182,7 @@ namespace Nt.Core.Hosting
             //// service provider, ensuring it will be properly disposed with the provider
             //_ = _ninjascriptServices.GetService<IConfiguration>();
         }
-        //private void Write(DiagnosticListener diagnosticSource,string name,object value)
-        //{
-        //    diagnosticSource.Write(name, value);
-        //}
+
         private void AddHostOptions()
         {
             //            IConfigurationBuilder configBuilder = new ConfigurationBuilder()

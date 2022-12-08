@@ -1,4 +1,5 @@
-﻿using Nt.Core.Services;
+﻿using NinjaTrader.NinjaScript;
+using Nt.Core.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -22,15 +23,15 @@ namespace Nt.Core.Hosting
         //private readonly PhysicalFileProvider _defaultProvider;
         //private IEnumerable<IHostedService> _hostedServices;
         //private volatile bool _stopCalled;
-        private readonly ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
-        private readonly HostOptions _options;
+        private ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
+        private HostOptions _options;
 
         #endregion
 
         #region Public properties
 
         /// <inheritdoc/>
-        public IServiceProvider Services { get; }
+        public IServiceProvider Services { get; private set; }
 
         #endregion
 
@@ -38,8 +39,29 @@ namespace Nt.Core.Hosting
 
         public Host()
         {
-
         }
+
+        public void Build(IHostBuilder builder)
+        {
+            if (builder == null)
+                throw new ArgumentNullException(nameof(builder));
+
+            Services = builder.Services ?? throw new ArgumentNullException(nameof(builder.Services));
+
+            if (builder.HostOptions == null)
+                _options = HostOptions.Default;
+            else
+                _options = builder.HostOptions.Value;
+
+            var onBarUpdateServices = builder.Services.GetServices<IOnBarUpdateService>();
+            if (onBarUpdateServices != null)
+                _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
+
+            var onMarketDataServices = builder.Services.GetServices<IOnMarketDataService>();
+            if (onMarketDataServices != null)
+                _enumerableServices.TryAdd(typeof(IOnMarketDataService), onMarketDataServices);
+        }
+
         /// <summary>
         /// Create <see cref="Host"/> default instance.
         /// </summary>

@@ -9,6 +9,8 @@ namespace Nt.Core.Hosting
     /// </summary>
     public interface IHost : IDisposable
     {
+        void Build(IHostBuilder hostBuilder);
+
         /// <summary>
         /// The ninjascript configured services.
         /// </summary>

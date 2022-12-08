@@ -30,11 +30,11 @@ namespace Nt.Core.DependencyInjection
 
         #region Constructor
 
-        internal ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors) : this(serviceDescriptors, ServiceProviderOptions.Default)
+        public ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors) : this(serviceDescriptors, ServiceProviderOptions.Default)
         {
         }
 
-        internal ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors, ServiceProviderOptions options)
+        public ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors, ServiceProviderOptions options)
         {
             // Initilize the realized services.
             _realizedServices = new ConcurrentDictionary<Type, object>();
