@@ -1,4 +1,4 @@
-﻿namespace Nt.Core
+﻿namespace Nt.Core.Events
 {
     /// <summary>
     /// The type of the bar.

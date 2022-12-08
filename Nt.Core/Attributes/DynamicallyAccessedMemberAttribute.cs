@@ -30,7 +30,7 @@ namespace Nt.Core.Attributes
         AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Method |
         AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct,
         Inherited = false)]
-    internal class DynamicallyAccessedMembersAttribute : Attribute
+    public class DynamicallyAccessedMembersAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DynamicallyAccessedMembersAttribute"/> class

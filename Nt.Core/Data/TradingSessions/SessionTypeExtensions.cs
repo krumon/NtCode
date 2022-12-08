@@ -8,7 +8,7 @@ namespace Nt.Core.Data
     /// <summary>
     /// <see cref="SessionType"/> enum helper methods.
     /// </summary>
-    internal static class SessionTypeExtensions
+    public static class SessionTypeExtensions
     {
 
         /// <summary>

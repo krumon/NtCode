@@ -760,7 +760,7 @@ namespace Nt.Core.Data
             return new DateTime(date.Year, date.Month, date.Day, Time.Hours, date.Minute, date.Second, DateTimeKind.Unspecified);
         }
 
-        internal static string GetTimeZoneInfoName(TimeZoneInfo timeZoneInfo)
+        public static string GetTimeZoneInfoName(TimeZoneInfo timeZoneInfo)
         {
             string timeZoneInfoName = timeZoneInfo.StandardName;
 

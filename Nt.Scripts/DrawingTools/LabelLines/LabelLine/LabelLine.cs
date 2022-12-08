@@ -15,7 +15,7 @@ using System.Windows.Input;
 using System.Windows;
 using System.ComponentModel.DataAnnotations;
 using Nt.Core.Drawing;
-using Nt.Core.Ninjascript;
+using Nt.Scripts.DrawingTools;
 
 #endregion
 

@@ -63,6 +63,7 @@
     <Compile Include="ChartStyles\MyChartStyle.cs" />
     <Compile Include="DrawingTools\LabelLines\LabelLine\LabelLine.cs" />
     <Compile Include="DrawingTools\LabelLines\LabelLine\LabelLine.v.0.1.cs" />
+    <Compile Include="DrawingTools\LabelLines\LabelLine\LabelLineHelpers.cs" />
     <Compile Include="DrawingTools\LabelLines\PriceLine\PriceLine.v.0.1.cs" />
     <Compile Include="DrawingTools\LabelLines\TimeLine\TimeLine.v.0.1.cs" />
     <Compile Include="Drawing\LabelLineDrawingMethods.cs" />

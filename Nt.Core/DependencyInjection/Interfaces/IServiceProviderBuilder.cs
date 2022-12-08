@@ -1,5 +1,4 @@
-﻿using Nt.Core.Data;
-using System;
+﻿using System;
 
 namespace Nt.Core.DependencyInjection
 {

@@ -14,7 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Serialization;
 using Nt.Core.Drawing;
-using Nt.Core.Ninjascript;
+using Nt.Scripts.DrawingTools;
 
 #endregion
 

@@ -1,4 +1,5 @@
 ﻿using Nt.Core.Data;
+using Nt.Core.DependencyInjection;
 
 namespace Nt.Core.Services
 {
@@ -29,11 +30,11 @@ namespace Nt.Core.Services
 
         /// <inheritdoc/>
         public IDataSeriesCollection AddDataSerie(PeriodType periodType, int periodValue) =>
-            AddDataSerie(InstrumentCode.Default,periodType,periodValue,TradingHoursCode.Default);
+            AddDataSerie(InstrumentCode.Default, periodType, periodValue, TradingHoursCode.Default);
 
         /// <inheritdoc/>
         public IDataSeriesCollection AddDataSerie(InstrumentCode instrumentKey, PeriodType periodType, int periodValue) =>
-            AddDataSerie(instrumentKey,periodType,periodValue,TradingHoursCode.Default);
+            AddDataSerie(instrumentKey, periodType, periodValue, TradingHoursCode.Default);
 
         #endregion
 
