@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Nt.Core.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Nt.Core.Data.Internal
+namespace ConsoleApp
 {
     /// <summary>
     /// Contents trading session information.
     /// </summary>
-    public class TradingSession : BaseElement, ISessions
+    public class Session : BaseElement, ISessions
     {
 
         #region Consts
@@ -27,7 +28,7 @@ namespace Nt.Core.Data.Internal
         /// <summary>
         /// The children sessions.
         /// </summary>
-        private readonly TradingSessionCollection _sessions = new TradingSessionCollection();
+        private readonly SessionCollection _sessions = new SessionCollection();
 
         private TradingTime _endSessionTime;
 
@@ -65,12 +66,12 @@ namespace Nt.Core.Data.Internal
         public ITradingSessionCollection Sessions => _sessions;
 
         /// <summary>
-        /// Gets the unique code of the <see cref="TradingSession"/>.
+        /// Gets the unique code of the <see cref="Session"/>.
         /// </summary>
         public string Code { get; private set; }
 
         /// <summary>
-        /// Gets the description of the <see cref="TradingSession"/>.
+        /// Gets the description of the <see cref="Session"/>.
         /// </summary>
         public string Description { get; private set; }
 
@@ -104,9 +105,9 @@ namespace Nt.Core.Data.Internal
         #region Constructors
 
         /// <summary>
-        /// Create a default instance of <see cref="TradingSession"/> class.
+        /// Create a default instance of <see cref="Session"/> class.
         /// </summary>
-        public TradingSession()
+        public Session()
         {
         }
 
@@ -115,15 +116,15 @@ namespace Nt.Core.Data.Internal
         #region Instance methods
 
         /// <summary>
-        /// Create a new instance of <see cref="TradingSession"/> class with <see cref="TradingSession"/>.
+        /// Create a new instance of <see cref="Session"/> class with <see cref="Session"/>.
         /// </summary>
-        /// <param name="sessionType">the <see cref="TradingSession"/> to create the <see cref="TradingSession"/> class.</param>
+        /// <param name="sessionType">the <see cref="Session"/> to create the <see cref="Session"/> class.</param>
         /// <param name="instrumentKey">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The minutes of the balance session.</param>
-        /// <returns>A new instance of <see cref="TradingSession"/> class.</returns>
-        public static TradingSession CreateTradingSessionByType(SessionType sessionType, InstrumentCode instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        /// <returns>A new instance of <see cref="Session"/> class.</returns>
+        public static Session CreateTradingSessionByType(SessionType sessionType, InstrumentCode instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
-            return new TradingSession
+            return new Session
             {
                 BeginSessionTime = sessionType.ToBeginSessionTime(instrumentKey, beginTimeDisplacement),
                 EndSessionTime = sessionType.ToEndSessionTime(instrumentKey, endTimeDisplacement),
@@ -132,22 +133,22 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Create a new instance of <see cref="TradingSession"/> collection with <see cref="Trading.SessionType"/> collection.
+        /// Create a new instance of <see cref="Session"/> collection with <see cref="SessionType"/> collection.
         /// </summary>
-        /// <param name="sessionTypes">The <see cref="Trading.SessionType"/> collection to create the <see cref="TradingSession"/> collection.</param>
+        /// <param name="sessionTypes">The <see cref="SessionType"/> collection to create the <see cref="Session"/> collection.</param>
         /// <param name="instrumentKey">The unique code of the instrument.</param>
         /// <param name="beginTimeDisplacement">The displacement minutes to the intial balance of the session.</param>
         /// <param name="endTimeDisplacement">The displacement minutes to the final balance of the session.</param>
-        /// <returns>A new instance of <see cref="TradingSession"/> collection.</returns>
-        public static TradingSession[] CreateTradingSessionByTypes(SessionType[] sessionTypes, InstrumentCode instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
+        /// <returns>A new instance of <see cref="Session"/> collection.</returns>
+        public static Session[] CreateTradingSessionByTypes(SessionType[] sessionTypes, InstrumentCode instrumentKey, int beginTimeDisplacement = 0, int endTimeDisplacement = 0)
         {
             if (sessionTypes == null || sessionTypes.Length < 1)
                 throw new ArgumentNullException(nameof(sessionTypes));
 
-            TradingSession[] tradingSessions = new TradingSession[sessionTypes.Length];
+            Session[] tradingSessions = new Session[sessionTypes.Length];
             for (int i = 0; i < sessionTypes.Length; i++)
             {
-                TradingSession ts = TradingSession.CreateTradingSessionByType(sessionTypes[i], instrumentKey);
+                Session ts = Session.CreateTradingSessionByType(sessionTypes[i], instrumentKey);
                 tradingSessions[i] = ts;
             }
 
@@ -155,15 +156,15 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTimeType"/> types and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="Session"/> objects with specific <see cref="TradingTimeType"/> types and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginSessionTimeType">The initial <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
-        /// <param name="endSessionTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
+        /// <param name="beginSessionTimeType">The initial <see cref="TradingTimeType"/> type of the <see cref="Session"/> object.</param>
+        /// <param name="endSessionTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="Session"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static TradingSession CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginSessionTimeType, TradingTimeType endSessionTimeType, string description = "")
+        /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
+        public static Session CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginSessionTimeType, TradingTimeType endSessionTimeType, string description = "")
         {
-            return new TradingSession
+            return new Session
             {
                 BeginSessionTime = TradingTime.CreateSessionTimeByType(beginSessionTimeType,instrumentKey),
                 EndSessionTime = TradingTime.CreateSessionTimeByType(endSessionTimeType,instrumentKey),
@@ -173,15 +174,15 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTime"/> object, <see cref="TradingTimeType"/> type and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="Session"/> objects with specific <see cref="TradingTime"/> object, <see cref="TradingTimeType"/> type and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTradingTime">The initial <see cref="TradingTime"/> of the <see cref="TradingSession"/> object.</param>
-        /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
+        /// <param name="beginTradingTime">The initial <see cref="TradingTime"/> of the <see cref="Session"/> object.</param>
+        /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="Session"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static TradingSession CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTime beginTradingTime, TradingTimeType endTradingTimeType, string description = "")
+        /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
+        public static Session CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTime beginTradingTime, TradingTimeType endTradingTimeType, string description = "")
         {
-            return new TradingSession
+            return new Session
             {
                 BeginSessionTime = beginTradingTime,
                 EndSessionTime = TradingTime.CreateSessionTimeByType(endTradingTimeType, instrumentKey),
@@ -191,15 +192,15 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTime"/> object, <see cref="TradingTimeType"/> type and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="Session"/> objects with specific <see cref="TradingTime"/> object, <see cref="TradingTimeType"/> type and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTradingTimeType">The initial <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
-        /// <param name="endTradingTime">The final <see cref="TradingTime"/> of the <see cref="TradingSession"/> object.</param>
+        /// <param name="beginTradingTimeType">The initial <see cref="TradingTimeType"/> type of the <see cref="Session"/> object.</param>
+        /// <param name="endTradingTime">The final <see cref="TradingTime"/> of the <see cref="Session"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static TradingSession CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginTradingTimeType, TradingTime endTradingTime, string description = "")
+        /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
+        public static Session CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginTradingTimeType, TradingTime endTradingTime, string description = "")
         {
-            return new TradingSession
+            return new Session
             {
                 BeginSessionTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType, instrumentKey),
                 EndSessionTime = endTradingTime,
@@ -209,15 +210,15 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTime"/> objects and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="Session"/> objects with specific <see cref="TradingTime"/> objects and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTradingTime">The initial <see cref="TradingTime"/> of the <see cref="TradingSession"/> object.</param>
-        /// <param name="endTradingTime">The final <see cref="TradingTime"/> of the <see cref="TradingSession"/> object.</param>
+        /// <param name="beginTradingTime">The initial <see cref="TradingTime"/> of the <see cref="Session"/> object.</param>
+        /// <param name="endTradingTime">The final <see cref="TradingTime"/> of the <see cref="Session"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static TradingSession CreateCustomTradingSession(TradingTime beginTradingTime, TradingTime endTradingTime, string description = "")
+        /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
+        public static Session CreateCustomTradingSession(TradingTime beginTradingTime, TradingTime endTradingTime, string description = "")
         {
-            return new TradingSession
+            return new Session
             {
                 BeginSessionTime = beginTradingTime,
                 EndSessionTime = endTradingTime,
@@ -227,16 +228,16 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTimeType"/>, <see cref="TradingTime"/> properties and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="Session"/> objects with specific <see cref="TradingTimeType"/>, <see cref="TradingTime"/> properties and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
+        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="Session"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="Session"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTradingTimeType">The final <see cref="TradingTimeType"/> type of the <see cref="Session"/> object.</param>
         /// <param name="description">Custom session hours description.</param>
-        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static TradingSession CreateCustomTradingSession(InstrumentCode instrumentKey, TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTimeType endTradingTimeType, string description = "")
+        /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
+        public static Session CreateCustomTradingSession(InstrumentCode instrumentKey, TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TradingTimeType endTradingTimeType, string description = "")
         {
-            return new TradingSession
+            return new Session
             {
                 BeginSessionTime = TradingTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
                 EndSessionTime = TradingTime.CreateSessionTimeByType(endTradingTimeType, instrumentKey),
@@ -246,16 +247,16 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTimeType"/>, <see cref="TradingTime"/> properties and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="Session"/> objects with specific <see cref="TradingTimeType"/>, <see cref="TradingTime"/> properties and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTradingTimeType">The initial <see cref="TradingTimeType"/> type of the <see cref="TradingSession"/> object.</param>
-        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTradingTimeType">The initial <see cref="TradingTimeType"/> type of the <see cref="Session"/> object.</param>
+        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="Session"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="Session"/> <see cref="BeginSessionTime"/>.</param>
         /// <param name="description"></param>
-        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static TradingSession CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginTradingTimeType, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
+        /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
+        public static Session CreateCustomTradingSession(InstrumentCode instrumentKey, TradingTimeType beginTradingTimeType, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
-            return new TradingSession
+            return new Session
             {
                 BeginSessionTime = TradingTime.CreateSessionTimeByType(beginTradingTimeType, instrumentKey),
                 EndSessionTime = TradingTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom Open Time" : description + " - Open"),
@@ -265,17 +266,17 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Create a new custom instance of <see cref="TradingSession"/> objects with specific <see cref="TradingTime"/> properties and <paramref name="description"/>.
+        /// Create a new custom instance of <see cref="Session"/> objects with specific <see cref="TradingTime"/> properties and <paramref name="description"/>.
         /// </summary>
-        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
-        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="TradingSession"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTime">The initial <see cref="TimeSpan"/> of the <see cref="Session"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="beginTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="Session"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTime">The initial <see cref="TimeSpan"/> of the <see cref="Session"/> <see cref="BeginSessionTime"/>.</param>
+        /// <param name="endTimeZoneInfo">The initial <see cref="TimeZoneInfo"/> of the <see cref="Session"/> <see cref="BeginSessionTime"/>.</param>
         /// <param name="description"></param>
-        /// <returns>A new custom instance of <see cref="TradingSession"/> object.</returns>
-        public static TradingSession CreateCustomTradingSession(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
+        /// <returns>A new custom instance of <see cref="Session"/> object.</returns>
+        public static Session CreateCustomTradingSession(TimeSpan beginTime, TimeZoneInfo beginTimeZoneInfo, TimeSpan endTime, TimeZoneInfo endTimeZoneInfo, string description = "")
         {
-            return new TradingSession
+            return new Session
             {
                 BeginSessionTime = TradingTime.CreateCustomSessionTime(beginTime,beginTimeZoneInfo,description == "" ? "Custom TradingSessionInfo - Open Time" : description + " - Open"),
                 EndSessionTime = TradingTime.CreateCustomSessionTime(endTime,endTimeZoneInfo,description == "" ? "Custom TradingSessionInfo - Close Time" : description + " - Close"),
@@ -366,7 +367,7 @@ namespace Nt.Core.Data.Internal
         #region Public Methods
 
         /// <summary>
-        /// Gets the initial <see cref="DateTime"/> of the <see cref="TradingSession"/>.
+        /// Gets the initial <see cref="DateTime"/> of the <see cref="Session"/>.
         /// </summary>
         /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
         public DateTime GetBeginTime(DateTime time)
@@ -375,7 +376,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
+        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="Session"/>.
         /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <returns>The begin <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
@@ -385,7 +386,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
+        /// Gets the begin <see cref="DateTime"/> structure of the <see cref="Session"/>.
         /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
@@ -399,7 +400,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Gets the end <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
+        /// Gets the end <see cref="DateTime"/> structure of the <see cref="Session"/>.
         /// </summary>
         /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
         public DateTime GetEndTime(DateTime time)
@@ -408,7 +409,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Gets the end <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
+        /// Gets the end <see cref="DateTime"/> structure of the <see cref="Session"/>.
         /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <returns>The end <see cref="DateTime"/> structure of the next session since the <paramref name="currentTime"/></returns>
@@ -418,7 +419,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Gets the end <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
+        /// Gets the end <see cref="DateTime"/> structure of the <see cref="Session"/>.
         /// </summary>
         /// <param name="sourceTimeZoneInfo">The <see cref="TimeZoneInfo"/> that represents <paramref name="currentTime"/>"/></param>
         /// <param name="destinationTimeZoneInfo">The <see cref="TimeZoneInfo"/> to convert the date time structure.</param>
@@ -462,7 +463,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Gets the final <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
+        /// Gets the final <see cref="DateTime"/> structure of the <see cref="Session"/>.
         /// </summary>
         /// <param name="currentDate">The current date time.</param>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
@@ -482,7 +483,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Gets the final <see cref="DateTime"/> structure of the <see cref="TradingSession"/>.
+        /// Gets the final <see cref="DateTime"/> structure of the <see cref="Session"/>.
         /// </summary>
         /// <param name="currentDate">The current date time.</param>
         /// <param name="destinationTimeZoneInfo">The target <see cref="TimeZoneInfo"/>.</param>
@@ -520,46 +521,46 @@ namespace Nt.Core.Data.Internal
         #region Equals methods
 
         /// <summary>
-        /// Compare <see cref="TradingSession"/> objects and return true if the elements are equals.
-        /// The <see cref="TradingSession"/> objects are equals if the times and <see cref="TimeZoneInfo"/> are equals.
+        /// Compare <see cref="Session"/> objects and return true if the elements are equals.
+        /// The <see cref="Session"/> objects are equals if the times and <see cref="TimeZoneInfo"/> are equals.
         /// </summary>
         /// <param name="obj">The object to compare.</param>
         /// <returns>True if the objects are equal otherwise false.</returns>
         public override bool Equals(object obj)
         {
-            if (obj is TradingSession ts)
+            if (obj is Session ts)
                 return BeginSessionTime.Equals(ts.BeginSessionTime) && EndSessionTime.Equals(ts.EndSessionTime);
 
             return false;
         }
 
         /// <summary>
-        /// Compare <see cref="TradingSession"/> objects and return true if the elements are equals.
-        /// the <see cref="TradingSession"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// Compare <see cref="Session"/> objects and return true if the elements are equals.
+        /// the <see cref="Session"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
         /// </summary>
-        /// <param name="value">The <see cref="TradingSession"/> to compare with the instance.</param>
-        /// <returns>True if the pair of <see cref="TradingSession"/> are equals.</returns>
-        /// <exception cref="ArgumentException">The <see cref="TradingSession"/>object passed as parameter cannot be null.</exception>
+        /// <param name="value">The <see cref="Session"/> to compare with the instance.</param>
+        /// <returns>True if the pair of <see cref="Session"/> are equals.</returns>
+        /// <exception cref="ArgumentException">The <see cref="Session"/>object passed as parameter cannot be null.</exception>
         public bool Equals(ISessions ts)
         {
 
             if (ts is null)
                 return false;
 
-            if (ts is TradingSession t)
+            if (ts is Session t)
                 return BeginSessionTime.Equals(t.BeginSessionTime) && EndSessionTime.Equals(t.EndSessionTime);
 
             return false;
         }
 
         /// <summary>
-        /// Compare <see cref="TradingSession"/> objects and return true if the elements are equals.
-        /// the <see cref="TradingSession"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
+        /// Compare <see cref="Session"/> objects and return true if the elements are equals.
+        /// the <see cref="Session"/> objects are equals if the <see cref="Time"/> and <see cref="TimeZoneInfo"/> are equals.
         /// </summary>
-        /// <param name="ts1">The first <see cref="TradingSession"/> object to compare with the second.</param>
-        /// <param name="ts2">The second <see cref="TradingSession"/> object to compare with the first.</param>
-        /// <returns>True if <see cref="TradingSession"/> objects are equals.</returns>
-        /// <exception cref="ArgumentException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
+        /// <param name="ts1">The first <see cref="Session"/> object to compare with the second.</param>
+        /// <param name="ts2">The second <see cref="Session"/> object to compare with the first.</param>
+        /// <returns>True if <see cref="Session"/> objects are equals.</returns>
+        /// <exception cref="ArgumentException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
         public static bool Equals(ISessions ts1, ISessions ts2)
         {
 
@@ -569,8 +570,8 @@ namespace Nt.Core.Data.Internal
             if (ts1 is null || ts2 is null)
                 return false;
 
-            if (ts1 is TradingSession t1)
-                if (ts2 is TradingSession t2)
+            if (ts1 is Session t1)
+                if (ts2 is Session t2)
                     return TradingTime.Equals(t1.BeginSessionTime, t2.BeginSessionTime) && TradingTime.Equals(t1.EndSessionTime, t2.EndSessionTime);
 
             return false;
@@ -591,15 +592,15 @@ namespace Nt.Core.Data.Internal
         /// <returns>1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
         /// -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// 0 if the objects are equals.</returns>
-        /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
-        /// <exception cref="ArgumentException">The objects passed as parameter must be <see cref="TradingSession"/> objects.</exception>
+        /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
+        /// <exception cref="ArgumentException">The objects passed as parameter must be <see cref="Session"/> objects.</exception>
         public int Compare(object value1, object value2)
         {
             if (!(value1 is null && value2 is null))
             {
-                if (value1 is TradingSession ts1)
+                if (value1 is Session ts1)
                 {
-                    if (value2 is TradingSession ts2)
+                    if (value2 is Session ts2)
                     {
                         return Compare(ts1, ts2);
                     }
@@ -614,46 +615,46 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Compare <see cref="TradingSession"/> objects and 
+        /// Compare <see cref="Session"/> objects and 
         /// return 1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
         /// return -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// return 0 if the objects are equals.
         /// </summary>
-        /// <param name="value1">The first <see cref="TradingSession"/> object to compare with the second.</param>
-        /// <param name="value2">The second <see cref="TradingSession"/> object to compare with the first.</param>
+        /// <param name="value1">The first <see cref="Session"/> object to compare with the second.</param>
+        /// <param name="value2">The second <see cref="Session"/> object to compare with the first.</param>
         /// <returns>1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
         /// -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// 0 if the objects are equals.</returns>
-        /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
+        /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
         public int Compare(ISessions value1, ISessions value2)
         {
             if (value1 == null || value2 == null)
                 throw new ArgumentNullException("The arguments cannot be null.");
 
-            if (value1 is TradingSession v1)
-                if (value2 is TradingSession v2)
+            if (value1 is Session v1)
+                if (value2 is Session v2)
                     return v1 < v2 ? -1 : v1 > v2 ? 1 : 0;
 
-            throw new ArgumentException("The arguments must be Nt.Core.Trading.TradingSession.");
+            throw new ArgumentException("The arguments must be Nt.Core.Trading.Session.");
         }
 
         /// <summary>
-        /// Compare the <see cref="TradingSession"/> to <paramref name="value"/> object and 
-        /// return 1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
-        /// return -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
+        /// Compare the <see cref="Session"/> to <paramref name="value"/> object and 
+        /// return 1 if <see cref="Session"/> is greater than <paramref name="value"/>,
+        /// return -1 if <see cref="Session"/> is minor than <paramref name="value"/>,
         /// return 0 if the objects are equals.
         /// </summary>
-        /// <param name="value">The object to compare with the <see cref="TradingSession"/>.</param>
-        /// <returns>1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
-        /// -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
+        /// <param name="value">The object to compare with the <see cref="Session"/>.</param>
+        /// <returns>1 if <see cref="Session"/> is greater than <paramref name="value"/>,
+        /// -1 if <see cref="Session"/> is minor than <paramref name="value"/>,
         /// 0 if the objects are equals.
-        /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
-        /// <exception cref="ArgumentException">The objects passed as parameter must be <see cref="TradingSession"/> objects.</exception>
+        /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
+        /// <exception cref="ArgumentException">The objects passed as parameter must be <see cref="Session"/> objects.</exception>
         public int CompareTo(object value)
         {
             if (!(value is null))
             {
-                if (value is TradingSession ts)
+                if (value is Session ts)
                 {
                     return Compare(this, ts);
                 }
@@ -665,16 +666,16 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Compare the <see cref="TradingSession"/> to <see cref="TradingSession"/> object and 
-        /// return 1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
-        /// return -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
+        /// Compare the <see cref="Session"/> to <see cref="Session"/> object and 
+        /// return 1 if <see cref="Session"/> is greater than <paramref name="value"/>,
+        /// return -1 if <see cref="Session"/> is minor than <paramref name="value"/>,
         /// return 0 if the objects are equals.
         /// </summary>
-        /// <param name="value">The object to compare with the <see cref="TradingSession"/>.</param>
-        /// <returns>1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
-        /// -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
+        /// <param name="value">The object to compare with the <see cref="Session"/>.</param>
+        /// <returns>1 if <see cref="Session"/> is greater than <paramref name="value"/>,
+        /// -1 if <see cref="Session"/> is minor than <paramref name="value"/>,
         /// 0 if the objects are equals.
-        /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
+        /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
         public int CompareTo(ISessions value)
         {
             if (value == null)
@@ -702,15 +703,15 @@ namespace Nt.Core.Data.Internal
         /// 1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
         /// -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// 0 if the objects are equals.</returns>
-        /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
-        /// <exception cref="ArgumentException">The objects passed as parameter must be <see cref="TradingSession"/> objects.</exception>
+        /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
+        /// <exception cref="ArgumentException">The objects passed as parameter must be <see cref="Session"/> objects.</exception>
         public SessionCompareResult CompareSession(object value1, object value2)
         {
             if (!(value1 is null && value2 is null))
             {
-                if (value1 is TradingSession ts1)
+                if (value1 is Session ts1)
                 {
-                    if (value2 is TradingSession ts2)
+                    if (value2 is Session ts2)
                     {
                         return CompareSession(ts1, ts2);
                     }
@@ -725,7 +726,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Compare <see cref="TradingSession"/> objects and 
+        /// Compare <see cref="Session"/> objects and 
         /// return 3 if <paramref name="value1"/> is the parent of <paramref name="value2"/>, 
         /// return -3 if <paramref name="value1"/>is the child of the <paramref name="value2"/>,
         /// return 2 if <paramref name="value1"/>is major and inner on the <paramref name="value2"/>,
@@ -734,8 +735,8 @@ namespace Nt.Core.Data.Internal
         /// return -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// return 0 if the objects are equals.
         /// </summary>
-        /// <param name="value1">The first <see cref="TradingSession"/> object to compare with the second.</param>
-        /// <param name="value2">The second <see cref="TradingSession"/> object to compare with the first.</param>
+        /// <param name="value1">The first <see cref="Session"/> object to compare with the second.</param>
+        /// <param name="value2">The second <see cref="Session"/> object to compare with the first.</param>
         /// <returns>3 if <paramref name="value1"/> is the parent of <paramref name="value2"/>, 
         /// -3 if <paramref name="value1"/>is the child of the <paramref name="value2"/>,
         /// 2 if <paramref name="value1"/>is major and inner on the <paramref name="value2"/>,
@@ -743,41 +744,41 @@ namespace Nt.Core.Data.Internal
         /// 1 if <paramref name="value1"/>is greater than <paramref name="value2"/>,
         /// -1 if <paramref name="value1"/>is minor than <paramref name="value2"/>,
         /// 0 if the objects are equals.</returns>
-        /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
+        /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
         public SessionCompareResult CompareSession(ISessions value1, ISessions value2)
         {
             if (value1 == null || value2 == null)
                 throw new ArgumentNullException("The arguments cannot be null.");
 
-            return CompareSessions((TradingSession)value1, (TradingSession)value2);
+            return CompareSessions((Session)value1, (Session)value2);
             
         }
 
         /// <summary>
-        /// Compare the <see cref="TradingSession"/> to <paramref name="value"/> object and 
-        /// return 3 if <see cref="TradingSession"/> is the parent of the <paramref name="value"/>, 
-        /// return -3 if <see cref="TradingSession"/> is the parent,
-        /// return 2 if <see cref="TradingSession"/> is major and inner on the <paramref name="value"/>,
-        /// return -2 if <see cref="TradingSession"/> is minor and inner on the <paramref name="value"/>,
-        /// return 1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
-        /// return -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
+        /// Compare the <see cref="Session"/> to <paramref name="value"/> object and 
+        /// return 3 if <see cref="Session"/> is the parent of the <paramref name="value"/>, 
+        /// return -3 if <see cref="Session"/> is the parent,
+        /// return 2 if <see cref="Session"/> is major and inner on the <paramref name="value"/>,
+        /// return -2 if <see cref="Session"/> is minor and inner on the <paramref name="value"/>,
+        /// return 1 if <see cref="Session"/> is greater than <paramref name="value"/>,
+        /// return -1 if <see cref="Session"/> is minor than <paramref name="value"/>,
         /// return 0 if the objects are equals.
         /// </summary>
-        /// <param name="value">The object to compare with the <see cref="TradingSession"/>.</param>
-        /// <returns>3 if <see cref="TradingSession"/> is the parent of the <paramref name="value"/>, 
-        /// -3 if <see cref="TradingSession"/> is the parent,
-        /// 2 if <see cref="TradingSession"/> is major and inner on the <paramref name="value"/>,
-        /// -2 if <see cref="TradingSession"/> is minor and inner on the <paramref name="value"/>,
-        /// 1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
-        /// -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
+        /// <param name="value">The object to compare with the <see cref="Session"/>.</param>
+        /// <returns>3 if <see cref="Session"/> is the parent of the <paramref name="value"/>, 
+        /// -3 if <see cref="Session"/> is the parent,
+        /// 2 if <see cref="Session"/> is major and inner on the <paramref name="value"/>,
+        /// -2 if <see cref="Session"/> is minor and inner on the <paramref name="value"/>,
+        /// 1 if <see cref="Session"/> is greater than <paramref name="value"/>,
+        /// -1 if <see cref="Session"/> is minor than <paramref name="value"/>,
         /// 0 if the objects are equals.
-        /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
-        /// <exception cref="ArgumentException">The objects passed as parameter must be <see cref="TradingSession"/> objects.</exception>
+        /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
+        /// <exception cref="ArgumentException">The objects passed as parameter must be <see cref="Session"/> objects.</exception>
         public SessionCompareResult CompareSessionTo(object value)
         {
             if (!(value is null))
             {
-                if (value is TradingSession ts)
+                if (value is Session ts)
                 {
                     return CompareSession(this, ts);
                 }
@@ -789,24 +790,24 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Compare the <see cref="TradingSession"/> to <see cref="TradingSession"/> object and 
-        /// return 3 if <see cref="TradingSession"/> is the parent of the <paramref name="value"/>, 
-        /// return -3 if <see cref="TradingSession"/> is the parent,
-        /// return 2 if <see cref="TradingSession"/> is major and inner on the <paramref name="value"/>,
-        /// return -2 if <see cref="TradingSession"/> is minor and inner on the <paramref name="value"/>,
-        /// return 1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
-        /// return -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
+        /// Compare the <see cref="Session"/> to <see cref="Session"/> object and 
+        /// return 3 if <see cref="Session"/> is the parent of the <paramref name="value"/>, 
+        /// return -3 if <see cref="Session"/> is the parent,
+        /// return 2 if <see cref="Session"/> is major and inner on the <paramref name="value"/>,
+        /// return -2 if <see cref="Session"/> is minor and inner on the <paramref name="value"/>,
+        /// return 1 if <see cref="Session"/> is greater than <paramref name="value"/>,
+        /// return -1 if <see cref="Session"/> is minor than <paramref name="value"/>,
         /// return 0 if the objects are equals.
         /// </summary>
-        /// <param name="value">The object to compare with the <see cref="TradingSession"/>.</param>
-        /// <returns>3 if <see cref="TradingSession"/> is the parent of the <paramref name="value"/>, 
-        /// -3 if <see cref="TradingSession"/> is the parent,
-        /// 2 if <see cref="TradingSession"/> is major and inner on the <paramref name="value"/>,
-        /// -2 if <see cref="TradingSession"/> is minor and inner on the <paramref name="value"/>,
-        /// 1 if <see cref="TradingSession"/> is greater than <paramref name="value"/>,
-        /// -1 if <see cref="TradingSession"/> is minor than <paramref name="value"/>,
+        /// <param name="value">The object to compare with the <see cref="Session"/>.</param>
+        /// <returns>3 if <see cref="Session"/> is the parent of the <paramref name="value"/>, 
+        /// -3 if <see cref="Session"/> is the parent,
+        /// 2 if <see cref="Session"/> is major and inner on the <paramref name="value"/>,
+        /// -2 if <see cref="Session"/> is minor and inner on the <paramref name="value"/>,
+        /// 1 if <see cref="Session"/> is greater than <paramref name="value"/>,
+        /// -1 if <see cref="Session"/> is minor than <paramref name="value"/>,
         /// 0 if the objects are equals.
-        /// <exception cref="ArgumentNullException">The <see cref="TradingSession"/>objects passed as parameter cannot be null.</exception>
+        /// <exception cref="ArgumentNullException">The <see cref="Session"/>objects passed as parameter cannot be null.</exception>
         public SessionCompareResult CompareSessionTo(ISessions value)
         {
             if (value == null)
@@ -820,12 +821,12 @@ namespace Nt.Core.Data.Internal
         #region Opertator methods
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSession"/> that is greater than another specified.
+        /// Determines whether two specified instances of <see cref="Session"/> that is greater than another specified.
         /// </summary>
         /// <param name="ts1">The first object to compare.</param>
         /// <param name="ts2">The second object to compare.</param>
         /// <returns>True if <paramref name="ts1"/> is greater than <paramref name="ts2"/>; otherwise, false.</returns>
-        public static bool operator >(TradingSession ts1, TradingSession ts2)
+        public static bool operator >(Session ts1, Session ts2)
         {
             if (ts1 is null)
                 throw new ArgumentNullException($"the argument {nameof(ts1)} cannot be null.");
@@ -844,12 +845,12 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSession"/> that is earlier than another specified.
+        /// Determines whether two specified instances of <see cref="Session"/> that is earlier than another specified.
         /// </summary>
         /// <param name="ts1">The first object to compare.</param>
         /// <param name="ts2">The second object to compare.</param>
         /// <returns>True if <paramref name="ts1"/> is less than <paramref name="ts2"/>; otherwise, false.</returns>
-        public static bool operator <(TradingSession ts1, TradingSession ts2)
+        public static bool operator <(Session ts1, Session ts2)
         {
             if (ts1 is null)
                 throw new ArgumentNullException($"the argument {nameof(ts1)} cannot be null.");
@@ -868,12 +869,12 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSession"/> that is the parent of another specified.
+        /// Determines whether two specified instances of <see cref="Session"/> that is the parent of another specified.
         /// </summary>
         /// <param name="ts1">The first object to compare.</param>
         /// <param name="ts2">The second object to compare.</param>
         /// <returns>True if <paramref name="ts1"/> is parent of <paramref name="ts2"/>; otherwise, false.</returns>
-        public static bool operator >=(TradingSession ts1, TradingSession ts2)
+        public static bool operator >=(Session ts1, Session ts2)
         {
             if (ts1 is null)
                 throw new ArgumentNullException($"the argument {nameof(ts1)} cannot be null.");
@@ -892,12 +893,12 @@ namespace Nt.Core.Data.Internal
             return false;
         }
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSession"/> that is the child of another specified.
+        /// Determines whether two specified instances of <see cref="Session"/> that is the child of another specified.
         /// </summary>
         /// <param name="ts1">The first object to compare.</param>
         /// <param name="ts2">The second object to compare.</param>
         /// <returns>True if <paramref name="ts1"/> is the child of <paramref name="ts2"/>; otherwise, false.</returns>
-        public static bool operator <=(TradingSession ts1, TradingSession ts2)
+        public static bool operator <=(Session ts1, Session ts2)
         {
 
             if (ts1 is null)
@@ -918,12 +919,12 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSession"/> have the same <see cref="Time"/>.
+        /// Determines whether two specified instances of <see cref="Session"/> have the same <see cref="Time"/>.
         /// </summary>
         /// <param name="ts1">The first object to compare.</param>
         /// <param name="ts2">The second object to compare.</param>
         /// <returns>True if <paramref name="ts1"/> and <paramref name="ts2"/> represent the same <see cref="Time"/>; otherwise, false.</returns>
-        public static bool operator ==(TradingSession ts1, TradingSession ts2)
+        public static bool operator ==(Session ts1, Session ts2)
         {
             if (ts1 is null && ts2 is null)
                 return true;
@@ -939,12 +940,12 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Determines whether two specified instances of <see cref="TradingSession"/> haven't the same <see cref="Time"/>.
+        /// Determines whether two specified instances of <see cref="Session"/> haven't the same <see cref="Time"/>.
         /// </summary>
         /// <param name="ts1">The first object to compare.</param>
         /// <param name="ts2">The second object to compare.</param>
         /// <returns>True if <paramref name="ts1"/> and <paramref name="ts2"/> do not represent the same <see cref="Time"/>; otherwise, false.</returns>
-        public static bool operator !=(TradingSession ts1, TradingSession ts2)
+        public static bool operator !=(Session ts1, Session ts2)
         {
             return !(ts1 == ts2);
         }
@@ -956,7 +957,7 @@ namespace Nt.Core.Data.Internal
         /// <param name="sh2">TradingSessionInfo time value to add.</param>
         /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="sh1"/> and <paramref name="sh2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator +(TradingSession sh1, TradingSession sh2)
+        public static TimeSpan operator +(Session sh1, Session sh2)
         {
             if (sh1 is null)
                 throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
@@ -974,7 +975,7 @@ namespace Nt.Core.Data.Internal
         /// <param name="ts">Time span value to add.</param>
         /// <returns><see cref="TimeSpan"/> that is the sum of the values ​​of <paramref name="sh"/> and <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator +(TradingSession sh, TimeSpan ts)
+        public static TimeSpan operator +(Session sh, TimeSpan ts)
         {
             if (sh is null)
                 throw new ArgumentNullException($"the argument {nameof(sh)} cannot be null.");
@@ -989,7 +990,7 @@ namespace Nt.Core.Data.Internal
         /// <param name="sh2">TradingSessionInfo time value to substract.</param>
         /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="sh1"/> minus the value of <paramref name="sh2"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator -(TradingSession sh1, TradingSession sh2)
+        public static TimeSpan operator -(Session sh1, Session sh2)
         {
             if (sh1 is null)
                 throw new ArgumentNullException($"the argument {nameof(sh1)} cannot be null.");
@@ -1007,7 +1008,7 @@ namespace Nt.Core.Data.Internal
         /// <param name="ts">Time span value to add.</param>
         /// <returns>An <see cref="TimeSpan"/> whose value is the value of <paramref name="sh"/> minus the value of <paramref name="ts"/>.</returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public static TimeSpan operator -(TradingSession sh, TimeSpan ts)
+        public static TimeSpan operator -(Session sh, TimeSpan ts)
         {
             if (sh is null)
                 throw new ArgumentNullException($"the argument {nameof(sh)} cannot be null.");
@@ -1020,13 +1021,13 @@ namespace Nt.Core.Data.Internal
         #region ToString methods
 
         /// <summary>
-        /// Converts the <see cref="TradingSession"/> to string.
+        /// Converts the <see cref="Session"/> to string.
         /// </summary>
         /// <returns></returns>
         public override string ToString() => ToString("U");
 
         /// <summary>
-        /// Returns the string that represents the <see cref="TradingSession"/>.
+        /// Returns the string that represents the <see cref="Session"/>.
         /// </summary>
         /// <param name="format">The specific time to convert. The time can be Utc, Local or Unspecific.</param>
         /// <returns></returns>
@@ -1047,7 +1048,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSession"/> to short string.
+        /// Converts the <see cref="Session"/> to short string.
         /// </summary>
         /// <returns></returns>
         public string ToShortString()
@@ -1078,7 +1079,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSession"/> to long string.
+        /// Converts the <see cref="Session"/> to long string.
         /// </summary>
         /// <returns></returns>
         public string ToLongString() => ToLongString("U");
@@ -1106,7 +1107,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSession"/> to string.
+        /// Converts the <see cref="Session"/> to string.
         /// </summary>
         /// <returns></returns>
         public string ToString(bool onlyActualSession)
@@ -1124,7 +1125,7 @@ namespace Nt.Core.Data.Internal
         }
 
         /// <summary>
-        /// Converts the <see cref="TradingSession"/> to string.
+        /// Converts the <see cref="Session"/> to string.
         /// </summary>
         /// <returns></returns>
         public string ToString(DateTime referenceDateTime)
@@ -1146,7 +1147,7 @@ namespace Nt.Core.Data.Internal
             return $"CTM-{BeginSessionTime.Time.TotalHours}{EndSessionTime.Time.TotalHours}-{BeginSessionTime.UtcTime.TotalHours}{EndSessionTime.UtcTime.TotalHours}";
         }
 
-        private static SessionCompareResult CompareSessions(TradingSession ts1, TradingSession ts2)
+        private static SessionCompareResult CompareSessions(Session ts1, Session ts2)
         {
             if (
                 ts1.BeginSessionTime == ts2.BeginSessionTime &&

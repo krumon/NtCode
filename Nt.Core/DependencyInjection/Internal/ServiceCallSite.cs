@@ -20,8 +20,8 @@ namespace Nt.Core.DependencyInjection.Internal
 
         public bool CaptureDisposable =>
             ImplementationType == null ||
-            typeof(IDisposable).IsAssignableFrom(ImplementationType) ||
-            typeof(IAsyncDisposable).IsAssignableFrom(ImplementationType);
+            typeof(IDisposable).IsAssignableFrom(ImplementationType); 
+            //|| typeof(IAsyncDisposable).IsAssignableFrom(ImplementationType);
     }
 
     internal sealed class ConstructorCallSite : ServiceCallSite

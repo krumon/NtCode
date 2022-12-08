@@ -3,7 +3,7 @@
     /// <summary>
     /// Extension methods to create generic sessions.
     /// </summary>
-    internal static class TradingSessionExtensions
+    public static class TradingSessionExtensions
     {
         /// <summary>
         /// Create a <see cref="TradingSession"/> instance with the generic type <see cref="SessionType.Regular"/>.

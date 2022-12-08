@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ConsoleApp;
 using System;
 using System.IO;
 using System.Reflection;
@@ -43,10 +42,10 @@ namespace ConsoleApp
 
             // Inject configuration into services
             var configuration = configurationBuilder.Build();
-            builder.Services.AddSingleton<IConfiguration>(configuration);
-
+            //builder.Services.AddSingleton<IConfiguration>(configuration);
+            
             // Set the construction Configuration
-            builder.UseConfiguration(configuration);
+            //builder.UseConfiguration(configuration);
 
             // Chain the construction
             return builder;
@@ -101,7 +100,7 @@ namespace ConsoleApp
                 options.SetMinimumLevel(LogLevel.Debug);
 
                 // Setup loggers from configuration
-                options.AddConfiguration(builder.Configuration.GetSection("Logging"));
+                //options.AddConfiguration(builder.Configuration.GetSection("Logging"));
 
                 // Add console logger
                 options.AddConsole();

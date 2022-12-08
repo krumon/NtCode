@@ -169,7 +169,7 @@ namespace ConsoleApp
         {
             if (_disposed)
             {
-                ThrowHelper.ThrowObjectDisposedException();
+                throw new Exception(); // ThrowHelper.ThrowObjectDisposedException();
             }
 
             return new ServiceProviderEngineScope(this, isRootScope: false);

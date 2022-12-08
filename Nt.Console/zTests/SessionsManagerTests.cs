@@ -1,8 +1,8 @@
 ﻿using Kr.Core.Tests;
 using NinjaTrader.NinjaScript;
-using ConsoleApp;
-using ConsoleApp;
 using System;
+using Nt.Core.Data;
+using Nt.Core.Events;
 
 namespace ConsoleApp
 {

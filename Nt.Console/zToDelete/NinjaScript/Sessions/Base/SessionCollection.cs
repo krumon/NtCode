@@ -1,10 +1,10 @@
-﻿using System;
+﻿using Nt.Core.Data;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Nt.Core.Data.Internal
+namespace ConsoleApp
 {
-    public class TradingSessionCollection : ITradingSessionCollection
+    public class SessionCollection : ITradingSessionCollection
     {
 
         #region Private members
@@ -101,7 +101,7 @@ namespace Nt.Core.Data.Internal
         {
             if (_sessions != null && _sessions.Count > 0)
             {
-                foreach (TradingSession item in _sessions)
+                foreach (Session item in _sessions)
                 {
                     if (item.Sessions != null && item.Sessions.Count > 0)
                         item.Sessions.Clear();
@@ -115,7 +115,7 @@ namespace Nt.Core.Data.Internal
         {
             if (_sessions != null && _sessions.Count > 0)
             {
-                foreach (TradingSession ts in _sessions)
+                foreach (Session ts in _sessions)
                 {
                     if (ts.Sessions != null && ts.Sessions.Count > 0)
                         ts.Sessions.Contains(item);

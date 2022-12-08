@@ -3,6 +3,7 @@ using Kr.Core.Tests;
 using ConsoleApp;
 using ConsoleApp.Internal;
 using System;
+using Nt.Core.Data;
 
 namespace ConsoleApp
 {

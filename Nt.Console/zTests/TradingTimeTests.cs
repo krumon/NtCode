@@ -1,5 +1,6 @@
 ﻿using Kr.Core.Tests;
 using ConsoleApp;
+using Nt.Core.Data;
 
 namespace ConsoleApp
 {

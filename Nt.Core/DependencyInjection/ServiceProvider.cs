@@ -4,14 +4,13 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 //using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Nt.Core.DependencyInjection
 {
     /// <summary>
     /// Default <see cref="IServiceProvider"/>.
     /// </summary>
-    public sealed class ServiceProvider : IServiceProvider, IDisposable, IAsyncDisposable
+    public sealed class ServiceProvider : IServiceProvider, IDisposable
     {
 
         #region Private members
@@ -25,7 +24,7 @@ namespace Nt.Core.DependencyInjection
         // Delagate to create the service
         private Func<Type,object> _createService;
         // Delagate to create the enumerable service
-        private Func<Type,object> _createEnumerableService;
+        //private Func<Type,object> _createEnumerableService;
 
         #endregion
 
@@ -189,12 +188,12 @@ namespace Nt.Core.DependencyInjection
             DisposeCore();
         }
 
-        /// <inheritdoc/>
-        public ValueTask DisposeAsync()
-        {
-            DisposeCore();
-            return default;
-        }
+        ///// <inheritdoc/>
+        //public ValueTask DisposeAsync()
+        //{
+        //    DisposeCore();
+        //    return default;
+        //}
 
         private void DisposeCore()
         {

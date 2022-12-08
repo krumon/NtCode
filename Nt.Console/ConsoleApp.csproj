@@ -271,11 +271,16 @@
     <Compile Include="zToDelete\NinjaScript\Base\BaseConfiguration.cs" />
     <Compile Include="zToDelete\NinjaScript\Base\BaseElement.cs" />
     <Compile Include="zToDelete\NinjaScript\Base\BaseNinjascript.cs" />
+    <Compile Include="zToDelete\NinjaScript\Sessions\Base\Session.cs" />
+    <Compile Include="zToDelete\NinjaScript\Data\SwingLevel.cs" />
+    <Compile Include="zToDelete\NinjaScript\Data\SwingPoint.cs" />
+    <Compile Include="zToDelete\NinjaScript\Data\TradingBar.cs" />
     <Compile Include="zToDelete\NinjaScript\Caches\BarsCache.cs" />
-    <Compile Include="zToDelete\NinjaScript\Caches\BaseCache.cs" />
+    <Compile Include="zToDelete\NinjaScript\Caches\Base\BaseCache.cs" />
     <Compile Include="zToDelete\NinjaScript\Caches\CacheSearchMode.cs" />
     <Compile Include="zToDelete\NinjaScript\Caches\SwingLevelsCache.cs" />
     <Compile Include="zToDelete\NinjaScript\Caches\SwingPointsCache.cs" />
+    <Compile Include="zToDelete\NinjaScript\Data\TradingTime.cs" />
     <Compile Include="zToDelete\NinjaScript\Indicators\Base\BaseIndicator.cs" />
     <Compile Include="zToDelete\NinjaScript\Indicators\Base\BaseIndicatorBuilder.cs" />
     <Compile Include="zToDelete\NinjaScript\Indicators\Base\BaseIndicatorConfiguration.cs" />
@@ -294,8 +299,11 @@
     <Compile Include="zToDelete\NinjaScript\Sessions\Base\BaseSession.cs" />
     <Compile Include="zToDelete\NinjaScript\Sessions\Base\BaseSessionBuilder.cs" />
     <Compile Include="zToDelete\NinjaScript\Sessions\Base\BaseSessionConfiguration.cs" />
-    <Compile Include="zToDelete\NinjaScript\Sessions\Interface\ISessions.cs" />
-    <Compile Include="zToDelete\NinjaScript\Sessions\Interface\ITradingSessionCollection.cs" />
+    <Compile Include="zToDelete\NinjaScript\.Interfaces\Sessions\Base\ISessions.cs" />
+    <Compile Include="zToDelete\NinjaScript\.Interfaces\Sessions\Base\ITradingSessionCollection.cs" />
+    <Compile Include="zToDelete\NinjaScript\Sessions\Base\SessionCollection.cs" />
+    <Compile Include="zToDelete\NinjaScript\Sessions\Base\SessionTypeExtensions.cs" />
+    <Compile Include="zToDelete\NinjaScript\Sessions\Base\TradingTimeTypeExtensions.cs" />
     <Compile Include="zToDelete\NinjaScript\Sessions\Internal\SessionFactory.cs" />
     <Compile Include="zToDelete\NinjaScript\Sessions\Internal\TradingSession.cs" />
     <Compile Include="zToDelete\NinjaScript\Sessions\Internal\TradingSessionCollection.cs" />
@@ -412,7 +420,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
-    <Folder Include="zToDelete\NinjaScript\Caches\Base\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />

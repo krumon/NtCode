@@ -5,6 +5,7 @@ using ConsoleApp.Internal;
 using Nt.Core.Events;
 using System;
 using System.Collections.Generic;
+using Nt.Core.Data;
 
 namespace ConsoleApp
 {
