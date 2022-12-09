@@ -1,4 +1,5 @@
-﻿using Nt.Core.DependencyInjection;
+﻿using NinjaTrader.Core;
+using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
 using Nt.Scripts.Ninjascripts;
@@ -32,7 +33,7 @@ namespace ConsoleApp
             host.OnBarUpdate();
             host.OnMarketData();
             host.Dispose();
-
+            
         }
     }
 }

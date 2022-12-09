@@ -19,7 +19,7 @@ namespace Nt.Core.Services
         #region Public properties
 
         /// <inheritdoc/>
-        public OptionalServiceType Key { get; private set; }
+        //public OptionalServiceType Key { get; private set; }
 
         #endregion
 
