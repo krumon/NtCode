@@ -11,5 +11,11 @@ namespace Nt.Scripts.Ninjascripts
         /// </summary>
         SessionIterator SessionIterator { get; }
 
+        /// <summary>
+        /// Represents a partial partialHoliday
+        /// </summary>
+        PartialHoliday PartialHoliday { get; }
+
+
     }
 }

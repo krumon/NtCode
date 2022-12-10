@@ -19,12 +19,12 @@ namespace Nt.Core.Services
         /// <summary>
         /// The current session end in Bars TimeZoneInfo.
         /// </summary>
-        private DateTime currentSessionEnd = Globals.MinDate;
+        private DateTime _currentSessionEnd;
 
         /// <summary>
         /// The session end time in Bars TimeZoneInfo.
         /// </summary>
-        private DateTime sessionDateTmp = Globals.MinDate;
+        private DateTime _sessionDateTmp;
 
         /// <summary>
         /// TradingSessionInfo bar indexs collection.
@@ -54,73 +54,15 @@ namespace Nt.Core.Services
 
         #region Public properties
 
-        /// <summary>
-        /// Represents the actual session start time converted to the user's configured Time Zone.
-        /// </summary>
-        public DateTime ActualSessionBegin { get; private set; }
-
-        /// <summary>
-        /// Represents the actual session end time converted to the user's configured Time Zone.
-        /// </summary>
-        public DateTime ActualSessionEnd { get; private set; }
-
-        /// <summary>
-        /// Represents the user's configured <see cref="TimeZoneInfo"/>.
-        /// </summary>
-        public TimeZoneInfo UserTimeZoneInfo { get; private set; }
-
-        /// <summary>
-        /// Represents the bar's configured <see cref="TimeZoneInfo"/>.
-        /// </summary>
-        public TimeZoneInfo BarsTimeZoneInfo { get; private set; }
-
-        /// <summary>
-        /// The sessions counter.
-        /// </summary>
-        public int Count { get; private set; }
-
-        /// <summary>
-        /// Is true when a new session bars enter in a new session.
-        /// </summary>
-        public bool IsNewSession 
-        {
-            get => isNewSession;
-            private set
-            {
-                // Make sure value changed
-                if (ninjascript == null || value == isNewSession)
-                    return;
-
-                // Update value.
-                isNewSession = value;
-
-                if (!value)
-                    return;
-
-                // Update the number of session counter.
-                Count++;
-
-                // Check if it's a partial holiday
-                if (!bars.TradingHours.PartialHolidays.TryGetValue(ActualSessionEnd.Date, out partialHoliday))
-                    partialHoliday = null;
-
-                // Create the event args.
-                SessionChangedEventArgs e = new SessionChangedEventArgs
-                {
-                    Idx = this.ninjascript.CurrentBar,
-                    N = this.Count,
-                    BeginTime = this.ActualSessionBegin,
-                    EndTime = this.ActualSessionEnd,
-                    NewSessionTimeZoneInfo = this.UserTimeZoneInfo,
-                    IsPartialHoliday = partialHoliday!= null,
-                    IsLateBegin = partialHoliday != null && partialHoliday.IsLateBegin,
-                    IsEarlyEnd = partialHoliday != null && partialHoliday.IsEarlyEnd,
-                };
-
-                // Call the listeners
-                OnNtSessionChanged(e);
-            }
-        }
+        public DateTime ActualSessionBegin { get; protected set; }
+        public DateTime ActualSessionEnd { get; protected set; }
+        public TimeZoneInfo UserTimeZoneInfo { get; protected set; }
+        public int Count { get; protected set; }
+        public TimeZoneInfo BarsTimeZoneInfo { get; protected set; }
+        public abstract bool IsNewSession { get; protected set; }
+        public bool IsConfigured { get; protected set; }  
+        public bool IsDataLoaded { get; protected set; }  
+        public abstract bool? IsBarsIntraday { get; }
 
         #endregion
 
@@ -137,49 +79,18 @@ namespace Nt.Core.Services
 
         #endregion
 
-        #region State Changed methods
-
-        protected override void SetDefasult(NinjaScriptBase ninjascript)
-        {
-            TradingHours.Get("").CopyTo(bars.TradingHours);
-            TradingHours.String2TradingHours("").CopyTo(bars.TradingHours);
-        }
-
-        /// <summary>
-        /// Loaded <see cref="SessionsIterator"/> in "OnStateChanged" method.
-        /// </summary>
-        /// <param name="ninjascript">The ninjascript.</param>
-        /// <param name="bars">The bars.</param>
-        /// <param name="o">Any object necesary to load the script.</param>
-        public override void Load(NinjaScriptBase ninjascript, Bars bars)
-        {
-            // Call to parent.
-            base.Load(ninjascript, bars);
-
-            // Create ninjatrader session iterator
-            this.sessionIterator = new SessionIterator(bars);
-
-            // Set the ninjatrader general options configure by the user
-            UserTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
-
-            // Sets the TimeZoneInfo configure by the user in the chart bars.
-            BarsTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
-
-        }
-
-        #endregion
-
-        #region Market Data methods
-
-        #endregion
-
         #region Public methods
 
         /// <inheritdoc/>
         public abstract void Dispose();
 
         /// <inheritdoc/>
-        public abstract void Configure(object[] ninjascriptObjects);
+        public virtual void Configure(object[] ninjascriptObjects)
+        {
+            _currentSessionEnd = _globalDataService.MinDate;
+            _sessionDateTmp = _globalDataService.MinDate;
+            UserTimeZoneInfo = _globalDataService.UserConfigureTimeZoneInfo;
+        }
 
         /// <inheritdoc/>
         public abstract void DataLoaded(object[] ninjascriptObjects);
@@ -205,11 +116,11 @@ namespace Nt.Core.Services
         {
             // Make sure the session is terminated
             if (time <= ActualSessionEnd)
-                return sessionDateTmp;
+                return _sessionDateTmp;
 
             // Make sure the bars type are not intraday
-            if (!bars.BarsType.IsIntraday)
-                return sessionDateTmp;
+            if (IsBarsIntraday == false)
+                return _sessionDateTmp;
 
             // Get the next session values
             sessionIterator.GetNextSession(time, true);
@@ -219,14 +130,14 @@ namespace Nt.Core.Services
             ActualSessionEnd = sessionIterator.ActualSessionEnd;
 
             // Converts the start and end time to bar's configured time zone.
-            sessionDateTmp = TimeZoneInfo.ConvertTime(ActualSessionEnd.AddSeconds(-1), UserTimeZoneInfo, BarsTimeZoneInfo);
+            _sessionDateTmp = TimeZoneInfo.ConvertTime(ActualSessionEnd.AddSeconds(-1), UserTimeZoneInfo, BarsTimeZoneInfo);
 
             // Store the bar index of the session.
             if (newSessionBarIdx.Count == 0 ||
                 newSessionBarIdx.Count > 0 && ninjascript.CurrentBar > newSessionBarIdx[newSessionBarIdx.Count - 1])
                 newSessionBarIdx.Add(ninjascript.CurrentBar);
 
-            return sessionDateTmp;
+            return _sessionDateTmp;
         }
 
         #endregion
@@ -256,10 +167,10 @@ namespace Nt.Core.Services
             DateTime lastBarTimeStamp = GetLastBarSessionDate(ninjascript.Time[0]);
             bool isNewSession = false;
 
-            if (lastBarTimeStamp != currentSessionEnd)
+            if (lastBarTimeStamp != _currentSessionEnd)
                 isNewSession = true;
             
-            currentSessionEnd = lastBarTimeStamp;
+            _currentSessionEnd = lastBarTimeStamp;
             IsNewSession = isNewSession;
         }
 
