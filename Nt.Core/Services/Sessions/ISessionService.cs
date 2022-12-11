@@ -3,7 +3,7 @@ using System;
 
 namespace Nt.Core.Services
 {
-    public interface ISessionIteratorService : IHostedService, IOnBarUpdateService
+    public interface ISessionService : IHostedService, IOnBarUpdateService
     {
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Nt.Core.Services
         /// <summary>
         /// Is true when a new session bars enter in a new session.
         /// </summary>
-        bool IsNewSession { get; }
+        bool NewSessionBegin { get; }
 
         /// <summary>
         /// Is true when a service is correctly configured.
@@ -49,7 +49,32 @@ namespace Nt.Core.Services
         /// <summary>
         /// Is true if the bars configured by the 
         /// </summary>
-        bool? IsBarsIntraday { get; }
+        bool? BarsTypeIsIntraday { get; }
+
+        /// <summary>
+        /// Indicates the current bar.
+        /// </summary>
+        int CurrentBar { get; }
+
+        /// <summary>
+        /// Indicates the current time (Time[0]).
+        /// </summary>
+        DateTime CurrentTime { get; }
+        
+        /// <summary>
+        /// Indicates if the session is in a partial holiday.
+        /// </summary>
+        bool? IsPartialHoliday { get; }
+
+        /// <summary>
+        /// Indicates if the session is in a partial holiday with late begin.
+        /// </summary>
+        bool? IsLateBegin { get; }
+
+        /// <summary>
+        /// Indicates if the session is in a partial holiday with early end.
+        /// </summary>
+        bool? IsEarlyEnd { get; }
 
     }
 }

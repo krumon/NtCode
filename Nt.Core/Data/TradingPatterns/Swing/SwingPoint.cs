@@ -1,5 +1,4 @@
-﻿using NinjaTrader.Core.FloatingPoint;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Nt.Core.Data
@@ -77,24 +76,24 @@ namespace Nt.Core.Data
             double candidateValue = swingBars[Strength].High;
             bool isSwing = true;
 
-            for (int i = 0; i < Strength; i++)
-                if (swingBars[i].High.ApproxCompare(candidateValue) > 0)
-                    isSwing = false;
-            for (int i = Strength + 1; i < swingBars.Count; i++)
-                if (swingBars[i].High.ApproxCompare(candidateValue) > 0)
-                    isSwing = false;
+            //for (int i = 0; i < Strength; i++)
+            //    if (swingBars[i].High.ApproxCompare(candidateValue) > 0)
+            //        isSwing = false;
+            //for (int i = Strength + 1; i < swingBars.Count; i++)
+            //    if (swingBars[i].High.ApproxCompare(candidateValue) > 0)
+            //        isSwing = false;
             if (isSwing)
                 return SwingType.High;
 
             candidateValue = swingBars[Strength].Low;
             isSwing = true;
 
-            for (int i = 0; i < Strength; i++)
-                if (swingBars[i].Low.ApproxCompare(candidateValue) < 0)
-                    isSwing = false;
-            for (int i = Strength + 1; i < swingBars.Count; i++)
-                if (swingBars[i].Low.ApproxCompare(candidateValue) < 0)
-                    isSwing = false;
+            //for (int i = 0; i < Strength; i++)
+            //    if (swingBars[i].Low.ApproxCompare(candidateValue) < 0)
+            //        isSwing = false;
+            //for (int i = Strength + 1; i < swingBars.Count; i++)
+            //    if (swingBars[i].Low.ApproxCompare(candidateValue) < 0)
+            //        isSwing = false;
             if (isSwing)
                 return SwingType.Low;
 

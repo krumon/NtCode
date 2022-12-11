@@ -127,10 +127,10 @@ namespace ConsoleApp
                 SessionChangedEventArgs e = new SessionChangedEventArgs
                 {
                     Idx = this.ninjascript.CurrentBar,
-                    N = this.Count,
+                    Count = this.Count,
                     BeginTime = this.ActualSessionBegin,
                     EndTime = this.ActualSessionEnd,
-                    NewSessionTimeZoneInfo = this.UserTimeZoneInfo,
+                    SessionTimeZoneInfo = this.UserTimeZoneInfo,
                     IsPartialHoliday = partialHoliday!= null,
                     IsLateBegin = partialHoliday != null && partialHoliday.IsLateBegin,
                     IsEarlyEnd = partialHoliday != null && partialHoliday.IsEarlyEnd,

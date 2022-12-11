@@ -54,17 +54,17 @@ namespace ConsoleApp
         /// <summary>
         /// Gets if the session is a partial partialHoliday.
         /// </summary>
-        public bool IsPartialHoliday { get; private set; }
+        public bool? IsPartialHoliday { get; private set; }
 
         /// <summary>
         /// Indicates if the partial partialHoliday is late begin.
         /// </summary>
-        public bool IsLateBegin { get; private set; }
+        public bool? IsLateBegin { get; private set; }
 
         /// <summary>
         /// Indicates if the partial partialHoliday is early end.
         /// </summary>
-        public bool IsEarlyEnd { get; private set; }
+        public bool? IsEarlyEnd { get; private set; }
 
         #endregion
 

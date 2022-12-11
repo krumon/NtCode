@@ -230,10 +230,10 @@
     <Compile Include="Drawing\Data\Margin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\TradingTimes\TradingTime.cs" />
-    <Compile Include="Services\GlobalData\IGlobalDataService.cs" />
-    <Compile Include="Services\GlobalData\GlobalDataService.cs" />
-    <Compile Include="Services\SessionsIterator\ISessionIteratorService.cs" />
-    <Compile Include="Services\SessionsIterator\SessionIteratorService.cs" />
+    <Compile Include="Services\GlobalsData\IGlobalDataService.cs" />
+    <Compile Include="Services\GlobalsData\GlobalDataService.cs" />
+    <Compile Include="Services\Sessions\ISessionService.cs" />
+    <Compile Include="Services\Sessions\SessionService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kr.Core\Kr.Core.csproj">

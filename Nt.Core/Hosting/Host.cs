@@ -1,9 +1,7 @@
-﻿using NinjaTrader.NinjaScript;
-using Nt.Core.Services;
+﻿using Nt.Core.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
 namespace Nt.Core.Hosting

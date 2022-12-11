@@ -76,8 +76,8 @@
     <Compile Include="Ninjascripts\ChartData\ChartDataScript.cs" />
     <Compile Include="Ninjascripts\GlobalData\GlobalDataScript.cs" />
     <Compile Include="Ninjascripts\GlobalData\IGlobalDataScript.cs" />
-    <Compile Include="Ninjascripts\SessionsIterator\ISessionIteratorScript.cs" />
-    <Compile Include="Ninjascripts\SessionsIterator\SessionIteratorScript.cs" />
+    <Compile Include="Ninjascripts\SessionsIterator\ISessionScript.cs" />
+    <Compile Include="Ninjascripts\SessionsIterator\SessionScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

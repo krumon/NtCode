@@ -84,17 +84,17 @@ namespace ConsoleApp
         /// <summary>
         /// Indicates if the trading hours is a partial partialHoliday.
         /// </summary>
-        public bool IsPartialHoliday { get; private set; } // => PartialHoliday != null; // {get; private set;}
+        public bool? IsPartialHoliday { get; private set; } // => PartialHoliday != null; // {get; private set;}
 
         /// <summary>
         /// Indicates if the partial partialHoliday has a late begin time.
         /// </summary>
-        public bool IsLateBegin { get; private set; } //=> IsPartialHoliday && PartialHoliday.IsLateBegin;
+        public bool? IsLateBegin { get; private set; } //=> IsPartialHoliday && PartialHoliday.IsLateBegin;
 
         /// <summary>
         /// Indicates if the partial partialHoliday has a early end.
         /// </summary>
-        public bool IsEarlyEnd { get; private set; } //=> IsPartialHoliday && PartialHoliday.IsEarlyEnd;
+        public bool? IsEarlyEnd { get; private set; } //=> IsPartialHoliday && PartialHoliday.IsEarlyEnd;
 
         /// <summary>
         /// The number of main sessionHoursList stored.
@@ -197,14 +197,14 @@ namespace ConsoleApp
         public void SetValues(SessionChangedEventArgs e)
         {
             Idx = e.Idx;
-            N = e.N;
+            N = e.Count;
             BeginTime = e.BeginTime;
             EndTime = e.EndTime;
             IsPartialHoliday = e.IsPartialHoliday;
             IsEarlyEnd = e.IsEarlyEnd;
             IsLateBegin = e.IsLateBegin;
 
-            holidayText = !IsPartialHoliday ? "Regular Day." : IsLateBegin ? "Partial Holiday - Late Begin." : "Partial Holiday - Early End.";
+            holidayText = (bool)!IsPartialHoliday ? "Regular Day." : (bool)IsLateBegin ? "Partial Holiday - Late Begin." : "Partial Holiday - Early End.";
 
             // TODO: Add Generic SessionHours existing in the configuration object. (American, Assian, Custom,...)
             //       Add Custom SessionHours existing in the configuration object. 

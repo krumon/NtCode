@@ -12,14 +12,14 @@ namespace Nt.Core.Events
         #region Public properties
 
         /// <summary>
-        /// The first bar of the session index
+        /// The index of the first bar of the session.
         /// </summary>
         public int Idx { get; set; }
 
         /// <summary>
         /// The number of the session.
         /// </summary>
-        public int N { get; set; }
+        public int Count { get; set; }
 
         /// <summary>
         /// Represents the actual session begin time.
@@ -50,23 +50,22 @@ namespace Nt.Core.Events
         /// <summary>
         /// Represents the actual session time zone info.
         /// </summary>
-        public TimeZoneInfo NewSessionTimeZoneInfo { get; set; }
+        public TimeZoneInfo SessionTimeZoneInfo { get; set; }
 
         /// <summary>
         /// Indicates if the trading hours is a partial partialHoliday.
         /// </summary>
-        public bool IsPartialHoliday { get; set; }
+        public bool? IsPartialHoliday { get; set; }
 
         /// <summary>
         /// Indicates if the partial partialHoliday has a late begin time.
         /// </summary>
-        public bool IsLateBegin { get; set; }
+        public bool? IsLateBegin { get; set; }
 
         /// <summary>
         /// Indicates if the partial partialHoliday has a early end.
         /// </summary>
-        public bool IsEarlyEnd { get; set; }
-
+        public bool? IsEarlyEnd { get; set; }
 
         #endregion
 
@@ -77,6 +76,30 @@ namespace Nt.Core.Events
         /// </summary>
         public SessionChangedEventArgs()
         {
+
+        }
+
+        /// <summary>
+        /// Create <see cref="SessionChangedEventArgs"/> instance with specific parameters.
+        /// </summary>
+        /// <param name="idx">The bar index.</param>
+        /// <param name="count">The session count.</param>
+        /// <param name="beginTime">The begin time of the session.</param>
+        /// <param name="endTime">The end time of the session.</param>
+        /// <param name="timeZoneInfo">The time zone info of the session.</param>
+        /// <param name="isPartialHoliday">Indicates if the session is in partial holiday.</param>
+        /// <param name="IsLateBegin">Indicates if the partial holidat is a late begin session.</param>
+        /// <param name="IsEarlyEnd">Indicates if the partial holiday is a early end session.</param>
+        public SessionChangedEventArgs(int idx, int count, DateTime beginTime, DateTime endTime, TimeZoneInfo timeZoneInfo, bool? isPartialHoliday, bool? isLateBegin, bool? isEarlyEnd)
+        {
+            Idx = idx;
+            Count = count;
+            BeginTime = beginTime;
+            EndTime = endTime;
+            SessionTimeZoneInfo = timeZoneInfo;
+            IsPartialHoliday = isPartialHoliday;
+            IsLateBegin = isLateBegin;
+            IsEarlyEnd = isEarlyEnd;
         }
 
         #endregion

@@ -138,7 +138,7 @@ namespace ConsoleApp
             actualSession = (SessionHours)SessionHours.CreateDefaultBuilder().Build();
             actualSession.SetValues(e);
             // TODO: Revisar esta asignación.
-            actualSession.N = e.N;
+            actualSession.N = e.Count;
 
             // if List is null...create the new list.
             if (sessionHoursList == null)
