@@ -18,7 +18,7 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Indicates if the session is updated.
         /// </summary>
-        bool? IsSessionUpdated { get; }
+        bool? IsInNewSession { get; }
 
         /// <summary>
         /// Configure the hosted services of the Host.
@@ -45,7 +45,7 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Execute the <see cref="IOnSessionUpdateService"/> services.
         /// </summary>
-        void OnSessionUpdate(Func<object, string> print = null);
+        void OnSessionUpdate(Action<object> print = null);
 
     }
 }

@@ -141,7 +141,7 @@ namespace Nt.Core.Services
             else
                 holidayText = "Regular Session";
 
-            return $"Session {Count}: Begin: {ActualSessionBegin.ToShortDateString()} {ActualSessionEnd.ToShortDateString()} | {holidayText}";
+            return $"Session {Count}: Begin: {ActualSessionBegin.ToShortDateString()} End: {ActualSessionEnd.ToShortDateString()} | {holidayText}";
         }
 
         #endregion

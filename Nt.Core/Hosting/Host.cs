@@ -30,7 +30,7 @@ namespace Nt.Core.Hosting
         #region Public properties
 
         public IServiceProvider Services { get; private set; }
-        public bool? IsSessionUpdated => _sessionService?.IsSessionUpdated;
+        public bool? IsInNewSession => _sessionService?.IsSessionUpdated;
 
         #endregion
 
@@ -121,14 +121,14 @@ namespace Nt.Core.Hosting
             if (_sessionService != null && _sessionService.IsSessionUpdated)
                 OnSessionUpdate();
         }
-        public void OnSessionUpdate(Func<object, string> print = null) 
+        public void OnSessionUpdate(Action<object> print = null) 
         { 
             var onSessionUpdateServices = Services.GetServices<IOnSessionUpdateService>();
             if (onSessionUpdateServices != null)
                 foreach (var service in onSessionUpdateServices)
                     service.OnSessionUpdate();
 
-            print?.Invoke(ToString());
+            print?.Invoke(_sessionService.ToString());
         }
 
         public void Dispose()
