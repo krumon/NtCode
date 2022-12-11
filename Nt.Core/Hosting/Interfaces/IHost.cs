@@ -16,6 +16,11 @@ namespace Nt.Core.Hosting
         IServiceProvider Services { get; }
 
         /// <summary>
+        /// Indicates if the session is updated.
+        /// </summary>
+        bool? IsSessionUpdated { get; }
+
+        /// <summary>
         /// Configure the hosted services of the Host.
         /// </summary>
         /// <param name="ninjascriptObjects">The ninjascript objects necesary to configure the service.</param>

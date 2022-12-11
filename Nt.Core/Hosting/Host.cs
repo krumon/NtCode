@@ -29,8 +29,8 @@ namespace Nt.Core.Hosting
 
         #region Public properties
 
-        /// <inheritdoc/>
         public IServiceProvider Services { get; private set; }
+        public bool? IsSessionUpdated => _sessionService?.IsSessionUpdated;
 
         #endregion
 
