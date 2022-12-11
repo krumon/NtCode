@@ -161,7 +161,7 @@ namespace Nt.Core.Data
         /// <param name="instrumentKey">The unique code of the financial instrument session.</param>
         /// <param name="timeDisplacement">The offset of the <see cref="DateTime"/> in minutes.</param>
         /// <returns>The session time instance.</returns>
-        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, SessionChangedEventArgs e, InstrumentCode instrumentKey, int timeDisplacement = 0)
+        public static TradingTime CreateSessionTimeByType(TradingTimeType tradingTimeType, SessionUpdateArgs e, InstrumentCode instrumentKey, int timeDisplacement = 0)
         {
             return new TradingTime 
             {

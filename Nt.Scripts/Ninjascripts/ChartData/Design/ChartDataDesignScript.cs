@@ -11,7 +11,7 @@ namespace Nt.Scripts.Ninjascripts.Design
     {
         public override void Configure(object[] ninjascriptObjects)
         {
-            Console.WriteLine("CahartDataScript is configuring...");
+            Console.WriteLine($"{nameof(ChartDataDesignScript)} is configuring...");
 
             TradingHoursName = "España";
             InstrumentName = "MES";
@@ -21,28 +21,31 @@ namespace Nt.Scripts.Ninjascripts.Design
                 PeriodValue = 5
             };
 
-            Console.WriteLine("CahartDataScript is configured.");
+            IsConfigured = true;
+
+            Console.WriteLine($"{nameof(ChartDataDesignScript)} is configured.");
 
         }
 
         public override void DataLoaded(object[] ninjascriptObjects)
         {
-            Console.WriteLine("CahartDataScript is configured by data loaded.");
+            IsDataLoaded = true;
+            Console.WriteLine($"{nameof(ChartDataDesignScript)} is configured by data loaded.");
         }
 
         public override void Dispose()
         {
-            Console.WriteLine("CahartDataScript is disposed.");
+            Console.WriteLine($"{nameof(ChartDataDesignScript)} is disposed.");
         }
 
         public void OnBarUpdate()
         {
-            Console.WriteLine("CahartDataScript is updated (when bar update).");
+            Console.WriteLine($"{nameof(ChartDataDesignScript)} is updated (when bar update).");
         }
 
         public void OnMarketData()
         {
-            Console.WriteLine("CahartDataScript is updated (when market data changed).");
+            Console.WriteLine($"{nameof(ChartDataDesignScript)} is updated (when market data changed).");
         }
     }
 }

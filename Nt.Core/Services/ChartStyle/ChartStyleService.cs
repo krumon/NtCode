@@ -19,6 +19,10 @@ namespace Nt.Core.Services
             _chartDataService = chartDataService;   
         }
 
+        public bool IsConfigured => throw new NotImplementedException();
+
+        public bool IsDataLoaded => throw new NotImplementedException();
+
         public void Configure(object[] ninjascriptObjects)
         {
             _instrumentName = _chartDataService.InstrumentName;

@@ -19,23 +19,28 @@ namespace Nt.Core.Hosting
         /// Configure the hosted services of the Host.
         /// </summary>
         /// <param name="ninjascriptObjects">The ninjascript objects necesary to configure the service.</param>
-        void Configure(object[] ninjascriptObjects);
+        void Configure(params object[] ninjascriptObjects);
 
         /// <summary>
         /// Configure the hosted services of the Host when the ninjascript data is loaded.
         /// </summary>
         /// <param name="ninjascriptObjects">The ninjascript objects necesary to configure the service.</param>
-        void DataLoaded(object[] ninjascriptObjects);
+        void DataLoaded(params object[] ninjascriptObjects);
 
         /// <summary>
-        /// Execute the <see cref="IOnBarUpdateService"/> services of the host.
+        /// Execute the <see cref="IOnBarUpdateService"/> services.
         /// </summary>
         void OnBarUpdate();
 
         /// <summary>
-        /// Execute the <see cref="IOnMarketDataService"/> services of the host.
+        /// Execute the <see cref="IOnMarketDataService"/> services.
         /// </summary>
         void OnMarketData();
+
+        /// <summary>
+        /// Execute the <see cref="IOnSessionUpdateService"/> services.
+        /// </summary>
+        void OnSessionUpdate(Func<object, string> print = null);
 
     }
 }

@@ -88,7 +88,7 @@ namespace ConsoleApp
         /// </summary>
         /// <param name="eventType"></param>
         /// <param name="e"></param>
-        void ExecuteHandlerMethod(EventType eventType, SessionChangedEventArgs e = null);
+        void ExecuteHandlerMethod(EventType eventType, SessionUpdateArgs e = null);
 
         #endregion
 

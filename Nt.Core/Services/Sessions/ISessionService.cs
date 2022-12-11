@@ -3,7 +3,7 @@ using System;
 
 namespace Nt.Core.Services
 {
-    public interface ISessionService : IHostedService, IOnBarUpdateService
+    public interface ISessionService : IHostedService, IOnBarUpdateService, IOnMarketDataService, IOnSessionUpdateService
     {
 
         /// <summary>
@@ -34,17 +34,7 @@ namespace Nt.Core.Services
         /// <summary>
         /// Is true when a new session bars enter in a new session.
         /// </summary>
-        bool NewSessionBegin { get; }
-
-        /// <summary>
-        /// Is true when a service is correctly configured.
-        /// </summary>
-        bool IsConfigured { get; }
-
-        /// <summary>
-        /// Is true when a service is correctly configured when the ninjascript data is loaded.
-        /// </summary>
-        bool IsDataLoaded { get; }
+        bool IsSessionUpdated { get; }
 
         /// <summary>
         /// Is true if the bars configured by the 

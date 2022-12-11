@@ -182,7 +182,7 @@ namespace ConsoleApp
         /// Event driven method which is called for every new session. 
         /// </summary>
         /// <param name="e"></param>
-        public override void OnSessionChanged(SessionChangedEventArgs e)
+        public override void OnSessionChanged(SessionUpdateArgs e)
         {
         }
 
@@ -194,7 +194,7 @@ namespace ConsoleApp
         /// If the trading hours is in partial partialHoliday, gets the Partial Holiday object, otherwise, partial partialHoliday is null.
         /// </summary>
         /// <param name="e"></param>
-        public void SetValues(SessionChangedEventArgs e)
+        public void SetValues(SessionUpdateArgs e)
         {
             Idx = e.Idx;
             N = e.Count;

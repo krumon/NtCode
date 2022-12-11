@@ -237,7 +237,7 @@ namespace ConsoleApp
         /// </summary>
         /// <param name="eventType"></param>
         /// <param name="e"></param>
-        public override void ExecuteHandlerMethod(EventType eventType, SessionChangedEventArgs e = null)
+        public override void ExecuteHandlerMethod(EventType eventType, SessionUpdateArgs e = null)
         {
             foreach (INinjascript script in GetSortedList(eventType))
                 script.ExecuteHandlerMethod(eventType, e);

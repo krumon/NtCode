@@ -74,10 +74,12 @@
     <Compile Include="Ninjascripts\ChartData\Design\ChartDataDesignScript.cs" />
     <Compile Include="Ninjascripts\DataSeries\IDataSeriesScript.cs" />
     <Compile Include="Ninjascripts\ChartData\ChartDataScript.cs" />
-    <Compile Include="Ninjascripts\GlobalData\GlobalDataScript.cs" />
-    <Compile Include="Ninjascripts\GlobalData\IGlobalDataScript.cs" />
-    <Compile Include="Ninjascripts\SessionsIterator\ISessionScript.cs" />
-    <Compile Include="Ninjascripts\SessionsIterator\SessionScript.cs" />
+    <Compile Include="Ninjascripts\GlobalsData\Design\GlobalsDataDesignScript.cs" />
+    <Compile Include="Ninjascripts\GlobalsData\GlobalsDataScript.cs" />
+    <Compile Include="Ninjascripts\GlobalsData\IGlobalsDataScript.cs" />
+    <Compile Include="Ninjascripts\Sessions\Design\SessionDesignScript.cs" />
+    <Compile Include="Ninjascripts\Sessions\ISessionScript.cs" />
+    <Compile Include="Ninjascripts\Sessions\SessionScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

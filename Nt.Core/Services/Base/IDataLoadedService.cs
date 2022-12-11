@@ -12,5 +12,9 @@
         /// <param name="ninjascriptObjects">The necesary objects to configure the service.</param>
         void DataLoaded(object[] ninjascriptObjects);
 
+        /// <summary>
+        /// Indicates if the service has been configured successfully when the ninjascript data is loaded. 
+        /// </summary>
+        bool IsDataLoaded { get; }
     }
 }

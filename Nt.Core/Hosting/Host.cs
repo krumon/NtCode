@@ -21,6 +21,7 @@ namespace Nt.Core.Hosting
         //private readonly PhysicalFileProvider _defaultProvider;
         //private IEnumerable<IHostedService> _hostedServices;
         //private volatile bool _stopCalled;
+        private readonly ISessionService _sessionService;
         private ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
         private HostOptions _options;
 
@@ -44,6 +45,7 @@ namespace Nt.Core.Hosting
         internal Host(
             IServiceProvider services,
             HostOptions options,
+            ISessionService sessionService,
             IEnumerable<IOnBarUpdateService> onBarUpdateServices,
             IEnumerable<IOnMarketDataService> onMarketDataServices
             )
@@ -52,6 +54,8 @@ namespace Nt.Core.Hosting
 
             Services = services ?? throw new ArgumentNullException(nameof(services));
             _options = options ?? throw new ArgumentNullException(nameof(options));
+            _sessionService = sessionService;
+
             if (onBarUpdateServices != null)
                 _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
             if (onMarketDataServices != null)
@@ -67,7 +71,7 @@ namespace Nt.Core.Hosting
         #region Public methods
 
         /// <inheritdoc/>
-        public void Configure(object[] ninjascriptObjects)
+        public void Configure(params object[] ninjascriptObjects)
         {
             //_logger.Configuring();
 
@@ -87,7 +91,7 @@ namespace Nt.Core.Hosting
         }
 
         /// <inheritdoc/>
-        public void DataLoaded(object[] ninjascriptObjects)
+        public void DataLoaded(params object[] ninjascriptObjects)
         {
             //_logger.ConfiguringWhenDataLoaded();
 
@@ -105,19 +109,28 @@ namespace Nt.Core.Hosting
             //_logger.ConfiguredWhenDataLoaded();
         }
 
-        /// <inheritdoc/>
         public void OnBarUpdate()
         {
             ExecuteServices<IOnBarUpdateService>();
+            if (_sessionService != null && _sessionService.IsSessionUpdated)
+                OnSessionUpdate();
         }
-
-        /// <inheritdoc/>
         public void OnMarketData()
-        {
+        { 
             ExecuteServices<IOnMarketDataService>();
+            if (_sessionService != null && _sessionService.IsSessionUpdated)
+                OnSessionUpdate();
+        }
+        public void OnSessionUpdate(Func<object, string> print = null) 
+        { 
+            var onSessionUpdateServices = Services.GetServices<IOnSessionUpdateService>();
+            if (onSessionUpdateServices != null)
+                foreach (var service in onSessionUpdateServices)
+                    service.OnSessionUpdate();
+
+            print?.Invoke(ToString());
         }
 
-        /// <inheritdoc/>
         public void Dispose()
         {
             //_stopCalled = true;

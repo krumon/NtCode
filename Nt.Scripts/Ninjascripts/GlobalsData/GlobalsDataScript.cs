@@ -1,11 +1,9 @@
 ﻿using NinjaTrader.Core;
-using NinjaTrader.Data;
-using Nt.Core.Hosting;
 using Nt.Core.Services;
 
 namespace Nt.Scripts.Ninjascripts
 {
-    public class GlobalDataScript : GlobalDataService, IGlobalDataScript
+    public class GlobalsDataScript : GlobalsDataService, IGlobalsDataScript
     {
 
         public override void Configure(object[] ninjascriptObjects)
@@ -13,13 +11,10 @@ namespace Nt.Scripts.Ninjascripts
             MinDate = Globals.MinDate;
             MaxDate = Globals.MaxDate;
             UserConfigureTimeZoneInfo = Globals.GeneralOptions.TimeZoneInfo;
+            IsConfigured = true;
         }
 
-        public override void DataLoaded(object[] ninjascriptObjects)
-        {
-            if (this.TryGet<Bars>(ninjascriptObjects, out Bars bars))
-                BarsConfigureTimeZoneInfo = bars.TradingHours.TimeZoneInfo;
-        }
+        public override void DataLoaded(object[] ninjascriptObjects) => IsDataLoaded = IsConfigured;
 
         public override void Dispose()
         {

@@ -143,7 +143,7 @@ namespace ConsoleApp
         /// Event driven method which is called for every new session. 
         /// </summary>
         /// <param name="e"></param>
-        public override void OnSessionChanged(SessionChangedEventArgs e)
+        public override void OnSessionChanged(SessionUpdateArgs e)
         {
             IsPartialHoliday = e.IsPartialHoliday;
             IsEarlyEnd = e.IsEarlyEnd;

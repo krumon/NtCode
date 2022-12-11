@@ -1,5 +1,4 @@
-﻿using NinjaTrader.Core;
-using Nt.Core.DependencyInjection;
+﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
 using Nt.Scripts.Ninjascripts;
@@ -20,18 +19,21 @@ namespace ConsoleApp
                 })
                 .ConfigureServices((sc) =>
                 {
-                sc.Add<IChartDataScript, ChartDataDesignScript>();// (sp) => new ChartDataDesignScript());
-                    sc.Add<IChartStyleService, ChartStyleService>((sp) => new ChartStyleService(sp.GetService<IChartDataScript>()));
+                    sc.Add<IGlobalsDataService, GlobalsDataDesignScript>();
+                    sc.Add<IChartDataService, ChartDataDesignScript>();
+                    sc.Add<ISessionService, SessionDesignScript>((sp) => new SessionDesignScript((IGlobalsDataScript)sp.GetService<IGlobalsDataService>()));
                 })
                 .Build();
 
-            var chartData = host.Services.GetService<IChartDataScript>();
-            var chartStyle = host.Services.GetService<IChartStyleService>();
+            var globalsData = host.Services.GetService<IGlobalsDataService>();
+            var chartData = host.Services.GetService<IChartDataService>();
+            var session = host.Services.GetService<ISessionService>();
             
             host.Configure(null);
             host.DataLoaded(null);
             host.OnBarUpdate();
             host.OnMarketData();
+            host.OnSessionUpdate();
             host.Dispose();
             
         }

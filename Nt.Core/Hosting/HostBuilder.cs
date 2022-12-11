@@ -122,6 +122,7 @@ namespace Nt.Core.Hosting
         private void CreateServiceProvider()
         {
             var services = new ServiceCollection();
+
             //services.AddSingleton<INinjascriptHostEnvironment>(_hostEnvironment);
             //services.AddSingleton(_hostBuilderContext);
             // register configuration as factory to make it dispose with the service provider
@@ -133,6 +134,7 @@ namespace Nt.Core.Hosting
                 return new Host(
                     _services
                     , _hostOptions
+                    , _services.GetService<ISessionService>()
                     //, _hostEnvironment
                     //, _fileProvider,
                     , _services.GetServices<IOnBarUpdateService>()

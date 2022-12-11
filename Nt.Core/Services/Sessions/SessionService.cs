@@ -1,5 +1,4 @@
-﻿using Nt.Core.Data;
-using Nt.Core.Events;
+﻿using Nt.Core.Events;
 using Nt.Core.Hosting;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,7 @@ namespace Nt.Core.Services
 
         #region Private members
 
-        protected readonly IGlobalDataService _globalDataService;
+        protected readonly IGlobalsDataService _globalDataService;
         protected DateTime _currentSessionEnd;
         protected DateTime _sessionDateTmp;
         private readonly List<int> newSessionBarIdx = new List<int>();
@@ -29,7 +28,7 @@ namespace Nt.Core.Services
         public TimeZoneInfo UserTimeZoneInfo { get; protected set; }
         public int Count => newSessionBarIdx.Count;
         public TimeZoneInfo BarsTimeZoneInfo { get; protected set; }
-        public bool NewSessionBegin { get; protected set; }
+        public bool IsSessionUpdated { get; protected set; }
         public bool IsConfigured { get; protected set; }
         public bool IsDataLoaded { get; protected set; }
         public abstract bool? BarsTypeIsIntraday { get; }
@@ -47,7 +46,7 @@ namespace Nt.Core.Services
         /// Creates <see cref="SessionsIterator"/> default instance.
         /// </summary>
         /// <param name="globalDataService">The global data necesary to create the service.</param>
-        public SessionService(IGlobalDataService  globalDataService)
+        public SessionService(IGlobalsDataService  globalDataService)
         {
             _globalDataService = globalDataService;
         }
@@ -56,13 +55,14 @@ namespace Nt.Core.Services
 
         #region Public methods
 
-        public abstract void Dispose();
+        public virtual void Configure(object[] ninjascriptObjects) => IsConfigured = true;
         public abstract void DataLoaded(object[] ninjascriptObjects);
+        public virtual void OnBarUpdate() => LastBarUpdate();
+        public virtual void OnMarketData() => LastBarUpdate();
+        public virtual void OnSessionUpdate() { }
+        public abstract void Dispose();
         public abstract void GetAndUpdateNextSessionValues(DateTime time, bool includeEndTimeStamp = true);
         public abstract bool? TryGetPartialHoliday();
-        protected virtual void OnSessionChanged() { }
-        public virtual void Configure(object[] ninjascriptObjects) => IsConfigured = true;
-        public virtual void OnBarUpdate() => LastBarUpdate();
         public DateTime GetLastBarSessionDate(DateTime time)
         {
             // Make sure the session is terminated
@@ -94,7 +94,7 @@ namespace Nt.Core.Services
         /// <summary>
         /// Event thats is raised when the sessoin changed.
         /// </summary>
-        public event Action<SessionChangedEventArgs> SessionChanged = (e) => { };
+        public event Action<SessionUpdateArgs> SessionChanged = (e) => { };
 
         #endregion
 
@@ -112,24 +112,24 @@ namespace Nt.Core.Services
                 // Update the current value
                 _currentSessionEnd = lastBarTimeStamp;
                 // The new session begin
-                NewSessionBegin = true;
+                IsSessionUpdated = true;
                 // Check if it's a partial holiday
                 TryGetPartialHoliday();
                 // Create the session changed arguments
-                var args = new SessionChangedEventArgs(CurrentBar, Count, ActualSessionBegin, ActualSessionEnd, UserTimeZoneInfo, IsPartialHoliday, IsLateBegin, IsEarlyEnd);
+                var args = new SessionUpdateArgs(CurrentBar, Count, ActualSessionBegin, ActualSessionEnd, UserTimeZoneInfo, IsPartialHoliday, IsLateBegin, IsEarlyEnd);
                 // Call the parent
-                OnSessionChanged();
+                OnSessionUpdate();
                 // Call to listeners
                 SessionChanged?.Invoke(args);
             }
             else
-                NewSessionBegin = false;
+                IsSessionUpdated = false;
             
         }
 
         public override string ToString()
         {
-            string holidayText = string.Empty;
+            string holidayText;
             if (IsPartialHoliday == true)
             {
                 holidayText = "Partial Holiday. ";

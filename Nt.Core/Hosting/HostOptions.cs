@@ -18,6 +18,11 @@ namespace Nt.Core.Hosting
         /// </summary>
         public bool IsInDesignMode { get; set; }
 
+        /// <summary>
+        /// Indicates if the host use <see cref="Services.ISessionService"/>.
+        /// </summary>
+        public bool UseSessionService { get; set; } = true;
+
         /// <inheritdoc/>
         public HostOptions Value => new HostOptions
         {

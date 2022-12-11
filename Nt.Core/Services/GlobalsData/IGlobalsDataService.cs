@@ -3,7 +3,7 @@ using System;
 
 namespace Nt.Core.Services
 {
-    public interface IGlobalDataService : IHostedService
+    public interface IGlobalsDataService : IHostedService
     {
 
         /// <summary>
@@ -20,11 +20,6 @@ namespace Nt.Core.Services
         /// Gets the <see cref="TimeZoneInfo"/> configure in the platform.
         /// </summary>
         TimeZoneInfo UserConfigureTimeZoneInfo { get; }
-
-        /// <summary>
-        /// Gets the <see cref="TimeZoneInfo"/> configure in the primary bars.
-        /// </summary>
-        TimeZoneInfo BarsConfigureTimeZoneInfo { get; }
 
     }
 }

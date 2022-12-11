@@ -13,7 +13,7 @@ namespace ConsoleApp
         /// <summary>
         /// Event thats is raised when the sessoin changed.
         /// </summary>
-        event Action<SessionChangedEventArgs> SessionChanged;
+        event Action<SessionUpdateArgs> SessionChanged;
 
         /// <summary>
         /// Creates the <see cref="ISessionsIteratorBuilder"/> to construct the <see cref="ISessionsIterator"/> object.

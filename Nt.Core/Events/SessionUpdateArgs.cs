@@ -6,7 +6,7 @@ namespace Nt.Core.Events
     /// <summary>
     /// Represents the trading hours session definition.
     /// </summary>
-    public class SessionChangedEventArgs : EventArgs
+    public class SessionUpdateArgs : EventArgs
     {
 
         #region Public properties
@@ -72,15 +72,15 @@ namespace Nt.Core.Events
         #region Constructors
 
         /// <summary>
-        /// Create <see cref="SessionChangedEventArgs"/> default instance.
+        /// Create <see cref="SessionUpdateArgs"/> default instance.
         /// </summary>
-        public SessionChangedEventArgs()
+        public SessionUpdateArgs()
         {
 
         }
 
         /// <summary>
-        /// Create <see cref="SessionChangedEventArgs"/> instance with specific parameters.
+        /// Create <see cref="SessionUpdateArgs"/> instance with specific parameters.
         /// </summary>
         /// <param name="idx">The bar index.</param>
         /// <param name="count">The session count.</param>
@@ -90,7 +90,7 @@ namespace Nt.Core.Events
         /// <param name="isPartialHoliday">Indicates if the session is in partial holiday.</param>
         /// <param name="IsLateBegin">Indicates if the partial holidat is a late begin session.</param>
         /// <param name="IsEarlyEnd">Indicates if the partial holiday is a early end session.</param>
-        public SessionChangedEventArgs(int idx, int count, DateTime beginTime, DateTime endTime, TimeZoneInfo timeZoneInfo, bool? isPartialHoliday, bool? isLateBegin, bool? isEarlyEnd)
+        public SessionUpdateArgs(int idx, int count, DateTime beginTime, DateTime endTime, TimeZoneInfo timeZoneInfo, bool? isPartialHoliday, bool? isLateBegin, bool? isEarlyEnd)
         {
             Idx = idx;
             Count = count;

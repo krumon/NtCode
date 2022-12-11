@@ -2,7 +2,7 @@
 
 namespace Nt.Scripts.Ninjascripts
 {
-    public interface IGlobalDataScript : IGlobalDataService
+    public interface IGlobalsDataScript : IGlobalsDataService
     {
     }
 }

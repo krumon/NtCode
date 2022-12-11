@@ -25,10 +25,7 @@ namespace Nt.Scripts.Ninjascripts
             {
                 PeriodType = (PeriodType)(int)chartBars.Properties.BarsPeriod.BarsPeriodType
             };
-        }
-
-        public override void DataLoaded(object[] ninjascriptObjects)
-        {
+            IsConfigured = true;
         }
 
         public override void Dispose()

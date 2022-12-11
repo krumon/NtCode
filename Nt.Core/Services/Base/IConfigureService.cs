@@ -12,5 +12,10 @@
         /// <param name="ninjascriptObjects">The necesary objects to configure the service.</param>
         void Configure(object[] ninjascriptObjects);
 
+        /// <summary>
+        /// Indicates if the service has been configured successfully. 
+        /// </summary>
+        bool IsConfigured { get; }
+
     }
 }

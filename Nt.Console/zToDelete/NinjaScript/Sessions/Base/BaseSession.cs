@@ -22,7 +22,7 @@ namespace ConsoleApp
         /// Event driven method which is called for every new session. 
         /// </summary>
         /// <param name="e"></param>
-        public virtual void OnSessionChanged(SessionChangedEventArgs e)
+        public virtual void OnSessionChanged(SessionUpdateArgs e)
         {
         }
 
@@ -57,7 +57,7 @@ namespace ConsoleApp
         /// </summary>
         /// <param name="eventType"></param>
         /// <param name="e"></param>
-        public override void ExecuteHandlerMethod(EventType eventType, SessionChangedEventArgs e = null)
+        public override void ExecuteHandlerMethod(EventType eventType, SessionUpdateArgs e = null)
         {
 
             if (eventType == EventType.SessionChanged)

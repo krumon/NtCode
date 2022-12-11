@@ -59,7 +59,7 @@ namespace ConsoleApp
         /// <summary>
         /// Event thats is raised when the sessoin changed.
         /// </summary>
-        public event Action<SessionChangedEventArgs> SessionChanged = (e) => { };
+        public event Action<SessionUpdateArgs> SessionChanged = (e) => { };
 
         #endregion
 
@@ -124,7 +124,7 @@ namespace ConsoleApp
                 DisplayDayType = partialHoliday != null ? "Partial Holiday" : "--------------";
 
                 // Create the event args.
-                SessionChangedEventArgs e = new SessionChangedEventArgs
+                SessionUpdateArgs e = new SessionUpdateArgs
                 {
                     Idx = this.ninjascript.CurrentBar,
                     Count = this.Count,
@@ -272,7 +272,7 @@ namespace ConsoleApp
         /// Mthod to raise the event and driven methods.
         /// </summary>
         /// <param name="e"></param>
-        private void OnNtSessionChanged(SessionChangedEventArgs e)
+        private void OnNtSessionChanged(SessionUpdateArgs e)
         {
 
             // Raise the handler method

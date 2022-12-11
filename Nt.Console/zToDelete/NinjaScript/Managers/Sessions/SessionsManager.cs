@@ -135,7 +135,7 @@ namespace ConsoleApp
         /// Changed any object or property when the session changed.
         /// </summary>
         /// <param name="e"></param>
-        public void OnSessionChanged(SessionChangedEventArgs e)
+        public void OnSessionChanged(SessionUpdateArgs e)
         {
             ExecuteHandlerMethod(EventType.SessionChanged, e);
 

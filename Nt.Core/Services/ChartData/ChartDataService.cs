@@ -7,25 +7,14 @@ namespace Nt.Core.Services
     public abstract class ChartDataService : IChartDataService
     {
 
-        /// <inheritdoc/>
         public BarsPeriod BarsPeriod { get; set; }
-
-        /// <inheritdoc/>
         public string InstrumentName { get; set; }
-
-        /// <inheritdoc/>
         public string TradingHoursName { get; set; }
-
-        /// <inheritdoc/>
+        public bool IsConfigured { get; protected set; }
+        public bool IsDataLoaded { get; protected set; }
         public abstract void Configure(object[] ninjascriptObjects);
-
-        /// <inheritdoc/>
-        public abstract void DataLoaded(object[] ninjascriptObjects);
-
-        /// <inheritdoc/>
+        public virtual void DataLoaded(object[] ninjascriptObjects) => IsDataLoaded = IsConfigured;
         public abstract void Dispose();
-
-        /// <inheritdoc/>
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();

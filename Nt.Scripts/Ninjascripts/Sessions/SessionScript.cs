@@ -34,7 +34,7 @@ namespace Nt.Scripts.Ninjascripts
 
         #region Constructors
 
-        public SessionScript(IGlobalDataScript globalDataScript) : base(globalDataScript)
+        public SessionScript(IGlobalsDataScript globalDataScript) : base(globalDataScript)
         {
         }
 

@@ -139,6 +139,7 @@
     <Compile Include="DependencyInjection\Base\BaseServiceCollection.cs" />
     <Compile Include="Services\Base\IDataLoadedService.cs" />
     <Compile Include="Services\Base\IConfigureService.cs" />
+    <Compile Include="Services\Base\IOnSessionUpdateService.cs" />
     <Compile Include="Services\Base\IOnMarketDataService.cs" />
     <Compile Include="Services\Base\IOnBarUpdateService.cs" />
     <Compile Include="Services\ChartStyle\IChartStyleService.cs" />
@@ -167,7 +168,7 @@
     <Compile Include="Exceptions\ExceptionArgument.cs" />
     <Compile Include="Exceptions\ThrowHelper.cs" />
     <Compile Include="Events\EventType.cs" />
-    <Compile Include="Events\SessionChangedEventArgs.cs" />
+    <Compile Include="Events\SessionUpdateArgs.cs" />
     <Compile Include="Exceptions\CreateBuilderException.cs" />
     <Compile Include="Exceptions\SetConfigurationException.cs" />
     <Compile Include="Exceptions\SetDefaultException.cs" />
@@ -230,8 +231,8 @@
     <Compile Include="Drawing\Data\Margin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\TradingTimes\TradingTime.cs" />
-    <Compile Include="Services\GlobalsData\IGlobalDataService.cs" />
-    <Compile Include="Services\GlobalsData\GlobalDataService.cs" />
+    <Compile Include="Services\GlobalsData\IGlobalsDataService.cs" />
+    <Compile Include="Services\GlobalsData\GlobalsDataService.cs" />
     <Compile Include="Services\Sessions\ISessionService.cs" />
     <Compile Include="Services\Sessions\SessionService.cs" />
   </ItemGroup>

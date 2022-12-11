@@ -317,7 +317,7 @@ namespace ConsoleApp
         /// </summary>
         /// <param name="eventType"></param>
         /// <param name="e"></param>
-        public virtual void ExecuteHandlerMethod(EventType eventType, SessionChangedEventArgs e = null)
+        public virtual void ExecuteHandlerMethod(EventType eventType, SessionUpdateArgs e = null)
         {
             switch (eventType)
             {
