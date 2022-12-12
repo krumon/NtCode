@@ -3,6 +3,9 @@ using System;
 
 namespace Nt.Core.Services
 {
+    /// <summary>
+    /// Represents the properties and methods to create a default implementation of <see cref="GlobalsDataService"/>.
+    /// </summary>
     public interface IGlobalsDataService : IHostedService
     {
 

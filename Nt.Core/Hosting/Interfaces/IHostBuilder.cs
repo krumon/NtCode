@@ -1,4 +1,5 @@
 ﻿using Nt.Core.DependencyInjection;
+using Nt.Core.Services;
 using System;
 using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
@@ -27,6 +28,13 @@ namespace Nt.Core.Hosting
         /// to construct the <see cref="IServiceProvider"/> for the host.</param>
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         IHostBuilder ConfigureServices(Action<IServiceCollection> configureServicesDelegate);
+
+        /// <summary>
+        /// Adds session services to the container. This can be called multiple times and the results will be additive.
+        /// </summary>
+        /// <param name="configureSessionsDelegate">The delegate for configuring the <see cref="ISessionService"/> that will be used by the host.</param>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+        IHostBuilder ConfigureSessions(Action<ISessionBuilder> configureSessionsDelegate);
 
     }
 }

@@ -16,7 +16,9 @@ namespace Nt.Core.Hosting
         private bool _built;
         private List<Action<HostOptions>> _configureHostOptionsActions;
         private List<Action<IServiceCollection>> _configureServicesActions;
+        private List<Action<ISessionBuilder>> _configureSessionsActions;
         private readonly HostOptions _hostOptions = new HostOptions();
+        private ISessionService _sessionService;
         private IServiceProvider _services;
 
         /// <summary>
@@ -48,6 +50,20 @@ namespace Nt.Core.Hosting
             return this;
         }
 
+        /// <summary>
+        /// Adds services to the container. This can be called multiple times and the results will be additive.
+        /// </summary>
+        /// <param name="configureSessionsDelegate">The delegate for configuring the <see cref="IConfigurationBuilder"/> that will be used
+        /// to construct the <see cref="IServiceProvider"/> for the host.</param>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+        public IHostBuilder ConfigureSessions(Action<ISessionBuilder> configureSessionsDelegate)
+        {
+            if (_configureSessionsActions == null)
+                _configureSessionsActions = new List<Action<ISessionBuilder>>();
+            _configureSessionsActions.Add(configureSessionsDelegate ?? throw new ArgumentNullException(nameof(configureSessionsDelegate)));
+            return this;
+        }
+
         public IHostBuilder ConfigureDefaults(string[] args)
         {
             return this;
@@ -62,6 +78,7 @@ namespace Nt.Core.Hosting
             _built = true;
 
             ConfigHostOptions();
+            BuildSessions();
             CreateHostEnvironment();
             CreateHostBuilderContext();
             BuildConfiguration();
@@ -76,6 +93,16 @@ namespace Nt.Core.Hosting
         {
             foreach (Action<HostOptions> action in _configureHostOptionsActions)
                 action(_hostOptions);
+        }
+
+        private void BuildSessions()
+        {
+            ISessionBuilder sessionBuilder = new SessionBuilder();
+
+            foreach (Action<ISessionBuilder> buildAction in _configureSessionsActions)
+                buildAction(sessionBuilder);
+
+            //_sessionService = sessionBuilder.Build(_sessionService);
         }
 
         private void CreateHostEnvironment()
@@ -134,7 +161,7 @@ namespace Nt.Core.Hosting
                 return new Host(
                     _services
                     , _hostOptions
-                    , _services.GetService<ISessionService>()
+                    , _sessionService
                     //, _hostEnvironment
                     //, _fileProvider,
                     , _services.GetServices<IOnBarUpdateService>()

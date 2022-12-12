@@ -4,7 +4,7 @@ using Nt.Core.Hosting;
 namespace Nt.Core.Services
 {
     /// <summary>
-    /// Represents the ninjatrader chart bars general data to use by the ninjascript objects.
+    /// Represents the properties and methods to create a default implementation of <see cref="ChartDataService"/>.
     /// </summary>
     public interface IChartDataService : IHostedService
     {

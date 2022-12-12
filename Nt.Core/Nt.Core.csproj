@@ -233,7 +233,11 @@
     <Compile Include="Data\TradingTimes\TradingTime.cs" />
     <Compile Include="Services\GlobalsData\IGlobalsDataService.cs" />
     <Compile Include="Services\GlobalsData\GlobalsDataService.cs" />
+    <Compile Include="Services\SessionFilters\ISessionFiltersService.cs" />
+    <Compile Include="Services\Sessions\SessionBuilder.cs" />
+    <Compile Include="Services\Sessions\ISessionBuilder.cs" />
     <Compile Include="Services\Sessions\ISessionService.cs" />
+    <Compile Include="Services\SessionFilters\SessionFiltersService.cs" />
     <Compile Include="Services\Sessions\SessionService.cs" />
   </ItemGroup>
   <ItemGroup>

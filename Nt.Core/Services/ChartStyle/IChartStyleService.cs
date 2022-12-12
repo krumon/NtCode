@@ -3,7 +3,7 @@
 namespace Nt.Core.Services
 {
     /// <summary>
-    /// Represents the ninjatrader chart bars style to use bay the ninjascript objects.
+    /// Represents the properties and methods to create a default implementation of <see cref="ChartStyleService"/>.
     /// </summary>
     public interface IChartStyleService : IHostedService, IOnBarUpdateService, IOnMarketDataService
     {
