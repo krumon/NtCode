@@ -14,7 +14,7 @@ namespace Nt.Scripts.Ninjascripts
             if (ninjascriptObjects == null)
                 throw new ArgumentNullException(nameof(ninjascriptObjects));
 
-            this.TryGet(ninjascriptObjects, out ChartBars chartBars);
+            this.TryGetObject(ninjascriptObjects, out ChartBars chartBars);
 
             if (chartBars == null)
                 throw new ArgumentException("For configure the chart data service is necesary a ninjatrader ChartBars object");

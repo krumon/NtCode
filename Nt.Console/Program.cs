@@ -19,17 +19,29 @@ namespace ConsoleApp
                 {
                     options.IsInDesignMode = true;
                 })
-                .ConfigureServices((sc) =>
+                .ConfigureServices((serviceCollection) => 
                 {
-                    sc.Add<IGlobalsDataService, GlobalsDataDesignScript>();
-                    sc.Add<IChartDataService, ChartDataDesignScript>();
-                    sc.Add<ISessionService, SessionDesignScript>((sp) => new SessionDesignScript((IGlobalsDataScript)sp.GetService<IGlobalsDataService>()));
+                    serviceCollection
+                    .Add<IGlobalsDataService, GlobalsDataDesignScript>()
+                    .Add<IChartDataService, ChartDataDesignScript>()
+                    .Add<ISessionService, SessionDesignScript>((sp) => new SessionDesignScript((IGlobalsDataScript)sp.GetService<IGlobalsDataService>()))
+                    //.AddSessionService<SessionDesignScript>((builder) =>
+                    //{
+                    //    builder
+                    //    .AddFilters()
+                    //    .AddStats()
+                    //    .AddGenericSessions()
+                    //    .AddCustomSessions();
+                    //})
+
+                    ;
                 })
                 .Build();
 
             var globalsData = host.Services.GetService<IGlobalsDataService>();
             var chartData = host.Services.GetService<IChartDataService>();
             var session = host.Services.GetService<ISessionService>();
+            //var session2 = host.Services.GetService<ISessionScript>();
             
             host.Configure(null);
             host.DataLoaded(null);

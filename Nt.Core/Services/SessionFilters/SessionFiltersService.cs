@@ -3,7 +3,7 @@
     /// <summary>
     /// Service to control the access to any session.
     /// </summary>
-    public class SessionFiltersService
+    public class SessionFiltersService : ISessionFiltersService
     {
         private readonly ISessionService _session;
 

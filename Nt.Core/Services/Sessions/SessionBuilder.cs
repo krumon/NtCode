@@ -5,6 +5,7 @@
     /// </summary>
     public class SessionBuilder : ISessionBuilder
     {
+
         public ISessionBuilder AddFilters()
         {
             return this;
@@ -25,8 +26,14 @@
             return this;
         }
 
-        public TImplementation Build<TImplementation>(TImplementation service) 
-            where TImplementation : ISessionService, new() => new TImplementation();
+        public T Build<T>() 
+            where T : ISessionService, new() //=> new TImplementation();
+        {
+            var service = new T();
+            // Add to ISessionService the Filters, generic sessions, custom sessions,...
+            // service.Filters = _builderFilters
+            return service;
+        } 
 
     }
 }

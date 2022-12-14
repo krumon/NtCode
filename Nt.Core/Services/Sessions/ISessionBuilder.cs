@@ -10,7 +10,7 @@
         ISessionBuilder AddGenericSessions();
         ISessionBuilder AddCustomSessions();
         ISessionBuilder AddStats();
-        TImplementation Build<TImplementation>(TImplementation service) where TImplementation: ISessionService, new();
+        TImplementation Build<TImplementation>() where TImplementation: ISessionService, new();
 
     }
 }

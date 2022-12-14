@@ -14,7 +14,7 @@ namespace Nt.Core.Hosting
         /// <param name="objects">The object collection where find a specific type of object.</param>
         /// <param name="findObject">The find object. If the type of the object doesn't exist returns null.</param>
         /// <returns>True if the type of the object is find, otherwise false.</returns>
-        public static bool TryGet<T>(this IHostedService hostedService, object[] objects, out T findObject)
+        public static bool TryGetObject<T>(this IHostedService hostedService, object[] objects, out T findObject)
             where T : class
         {
             T searchObject = null;

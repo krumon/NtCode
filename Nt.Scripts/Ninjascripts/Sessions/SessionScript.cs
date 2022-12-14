@@ -51,8 +51,8 @@ namespace Nt.Scripts.Ninjascripts
             _sessionDateTmp = _globalDataService.MinDate;
             UserTimeZoneInfo = _globalDataService.UserConfigureTimeZoneInfo;
 
-            this.TryGet<NinjaScriptBase>(ninjascriptObjects, out _ninjascript);
-            this.TryGet<Bars>(ninjascriptObjects, out _bars);
+            this.TryGetObject<NinjaScriptBase>(ninjascriptObjects, out _ninjascript);
+            this.TryGetObject<Bars>(ninjascriptObjects, out _bars);
 
             if (_ninjascript == null)
                 // Change for logger and go out
