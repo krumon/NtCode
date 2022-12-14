@@ -22,9 +22,11 @@ namespace ConsoleApp
                 .ConfigureServices((serviceCollection) => 
                 {
                     serviceCollection
-                    .Add<IGlobalsDataService, GlobalsDataDesignScript>()
+                    .Add<IGlobalsDataScript>(new GlobalsDataDesignScript())
+                    //.Add<IGlobalsDataScript, GlobalsDataDesignScript>()
                     .Add<IChartDataService, ChartDataDesignScript>()
-                    .Add<ISessionService, SessionDesignScript>((sp) => new SessionDesignScript((IGlobalsDataScript)sp.GetService<IGlobalsDataService>()))
+                    //.Add<ISessionScript, SessionDesignScript>((sp) => new SessionDesignScript((IGlobalsDataScript)sp.GetService<IGlobalsDataService>()))
+                    .Add<ISessionService, SessionDesignScript>()
                     //.AddSessionService<SessionDesignScript>((builder) =>
                     //{
                     //    builder
@@ -38,11 +40,11 @@ namespace ConsoleApp
                 })
                 .Build();
 
-            var globalsData = host.Services.GetService<IGlobalsDataService>();
+            var globalsData = host.Services.GetService<IGlobalsDataScript>();
             var chartData = host.Services.GetService<IChartDataService>();
             var session = host.Services.GetService<ISessionService>();
             //var session2 = host.Services.GetService<ISessionScript>();
-            
+
             host.Configure(null);
             host.DataLoaded(null);
             host.OnBarUpdate();

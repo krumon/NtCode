@@ -21,7 +21,7 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Indicates if the host use <see cref="Services.ISessionService"/>.
         /// </summary>
-        public bool UseSessionService { get; set; } = true;
+        public bool UseSessionsScript{ get; set; } = true;
 
         /// <inheritdoc/>
         public HostOptions Value => new HostOptions

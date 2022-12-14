@@ -17,7 +17,7 @@ namespace Nt.Core.Hosting
         private List<Action<HostOptions>> _configureHostOptionsActions;
         private List<Action<IServiceCollection>> _configureServicesActions;
         private readonly HostOptions _hostOptions = new HostOptions();
-        private ISessionService _sessionService;
+        private readonly ISessionService _sessionService;
         private IServiceProvider _services;
 
         /// <summary>
@@ -49,7 +49,12 @@ namespace Nt.Core.Hosting
             return this;
         }
 
-        public IHostBuilder ConfigureDefaults(string[] args)
+        /// <summary>
+        /// Configure the default services. It's call by <see cref="Hosting.CreateDefaultBuilder(string[])"/>.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        internal IHostBuilder ConfigureDefaults(string[] args)
         {
             return this;
         }
