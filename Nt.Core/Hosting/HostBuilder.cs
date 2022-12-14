@@ -15,9 +15,10 @@ namespace Nt.Core.Hosting
 
         private bool _built;
         private List<Action<HostOptions>> _configureHostOptionsActions;
+        private List<Action<ISessionsBuilder>> _configureSessionsBuilderActions;
         private List<Action<IServiceCollection>> _configureServicesActions;
         private readonly HostOptions _hostOptions = new HostOptions();
-        private readonly ISessionService _sessionService;
+        private readonly ISessionsService _sessionService;
         private IServiceProvider _services;
 
         /// <summary>
@@ -46,6 +47,14 @@ namespace Nt.Core.Hosting
             if (_configureServicesActions == null)
                 _configureServicesActions = new List<Action<IServiceCollection>>();
             _configureServicesActions.Add(configureServicesDelegate ?? throw new ArgumentNullException(nameof(configureServicesDelegate)));
+            return this;
+        }
+
+        public IHostBuilder ConfigureSessions(Action<ISessionsBuilder> configSessionsDelegate)
+        {
+            if (_configureSessionsBuilderActions == null)
+                _configureSessionsBuilderActions = new List<Action<ISessionsBuilder>>();
+            _configureSessionsBuilderActions.Add(configSessionsDelegate ?? throw new ArgumentNullException(nameof(configSessionsDelegate)));
             return this;
         }
 
@@ -101,7 +110,6 @@ namespace Nt.Core.Hosting
 
             //            _hostingEnvironment.ContentRootFileProvider = _defaultProvider = new PhysicalFileProvider(_hostingEnvironment.ContentRootPath);
         }
-
         private void CreateHostBuilderContext()
         {
             //_hostBuilderContext = new NinjascriptHostBuilderContext(Properties)
@@ -110,7 +118,6 @@ namespace Nt.Core.Hosting
             //    Configuration = _hostConfiguration
             //};
         }
-
         private void BuildConfiguration()
         {
             //            IConfigurationBuilder configBuilder = new ConfigurationBuilder()
@@ -159,11 +166,21 @@ namespace Nt.Core.Hosting
             {
                 configureServicesAction(services);
             }
-            
+
+            if (_hostOptions.IncludeSessions)
+            {
+                // Add the sessions services
+                ISessionsBuilder sessionsBuilder = new SessionsBuilder(services);
+                foreach (Action<ISessionsBuilder> sessionsBuilderAction in _configureSessionsBuilderActions)
+                    sessionsBuilderAction(sessionsBuilder);
+            }
+
+            // Create the service provider
             _services = new ServiceProvider(services, new ServiceProviderOptions
             {
             });
 
+            // Make sure the provider is created
             if (_services == null)
             {
                 throw new InvalidOperationException("NullIServiceProvider");

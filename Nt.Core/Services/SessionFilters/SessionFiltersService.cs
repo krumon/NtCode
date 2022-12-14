@@ -5,9 +5,9 @@
     /// </summary>
     public class SessionFiltersService : ISessionFiltersService
     {
-        private readonly ISessionService _session;
+        private readonly ISessionsService _session;
 
-        public SessionFiltersService(ISessionService session)
+        public SessionFiltersService(ISessionsService session)
         {
             _session = session;
         }

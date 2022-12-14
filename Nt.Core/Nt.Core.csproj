@@ -137,11 +137,14 @@
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
     <Compile Include="DependencyInjection\Base\BaseServiceCollection.cs" />
+    <Compile Include="Options\.Interfaces\IOptions.cs" />
+    <Compile Include="Options\BaseOptions.cs" />
     <Compile Include="Services\.Base\IDataLoadedService.cs" />
     <Compile Include="Services\.Base\IConfigureService.cs" />
     <Compile Include="Services\.Base\IOnSessionUpdateService.cs" />
     <Compile Include="Services\.Base\IOnMarketDataService.cs" />
     <Compile Include="Services\.Base\IOnBarUpdateService.cs" />
+    <Compile Include="Services\.Extensions\HostBuilderExtensions.cs" />
     <Compile Include="Services\.Extensions\ServiceCollectionExtensions.cs" />
     <Compile Include="Services\ChartStyle\IChartStyleService.cs" />
     <Compile Include="Services\ChartData\IChartDataService.cs" />
@@ -235,11 +238,13 @@
     <Compile Include="Services\GlobalsData\IGlobalsDataService.cs" />
     <Compile Include="Services\GlobalsData\GlobalsDataService.cs" />
     <Compile Include="Services\SessionFilters\ISessionFiltersService.cs" />
-    <Compile Include="Services\Sessions\SessionBuilder.cs" />
-    <Compile Include="Services\Sessions\ISessionBuilder.cs" />
-    <Compile Include="Services\Sessions\ISessionService.cs" />
+    <Compile Include="Services\SessionFilters\SessionsFiltersOptions.cs" />
+    <Compile Include="Services\Sessions\SessionsBuilder.cs" />
+    <Compile Include="Services\Sessions\ISessionsBuilder.cs" />
+    <Compile Include="Services\Sessions\ISessionsService.cs" />
     <Compile Include="Services\SessionFilters\SessionFiltersService.cs" />
-    <Compile Include="Services\Sessions\SessionService.cs" />
+    <Compile Include="Services\Sessions\SessionsOptions.cs" />
+    <Compile Include="Services\Sessions\SessionsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kr.Core\Kr.Core.csproj">

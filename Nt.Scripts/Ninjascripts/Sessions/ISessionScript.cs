@@ -3,7 +3,7 @@ using Nt.Core.Services;
 
 namespace Nt.Scripts.Ninjascripts
 {
-    public interface ISessionScript : ISessionService
+    public interface ISessionScript : ISessionsService
     {
 
         /// <summary>

@@ -7,7 +7,7 @@ using System;
 
 namespace Nt.Scripts.Ninjascripts
 {
-    public class SessionScript : SessionService, ISessionScript
+    public class SessionScript : SessionsService, ISessionScript
     {
 
         #region Private members

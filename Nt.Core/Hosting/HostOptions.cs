@@ -1,4 +1,5 @@
 ﻿using Nt.Core.DependencyInjection;
+using Nt.Core.Options;
 
 namespace Nt.Core.Hosting
 {
@@ -19,14 +20,13 @@ namespace Nt.Core.Hosting
         public bool IsInDesignMode { get; set; }
 
         /// <summary>
-        /// Indicates if the host use <see cref="Services.ISessionService"/>.
+        /// Indicates if the host use <see cref="Services.ISessionsService"/>.
         /// </summary>
-        public bool UseSessionsScript{ get; set; } = true;
+        public bool IncludeSessions{ get; set; } = true;
 
-        /// <inheritdoc/>
-        public HostOptions Value => new HostOptions
+        public void Configure(HostOptions options)
         {
-            IsInDesignMode = false
-        };
+            throw new System.NotImplementedException();
+        }
     }
 }

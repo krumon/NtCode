@@ -13,7 +13,7 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-
+            //Microsoft.Extensions.Options.OptionsBuilder
             IHost host = Hosting.CreateDefaultBuilder()
                 .ConfigureHostOptions((options) =>
                 {
@@ -26,7 +26,7 @@ namespace ConsoleApp
                     //.Add<IGlobalsDataScript, GlobalsDataDesignScript>()
                     .Add<IChartDataService, ChartDataDesignScript>()
                     //.Add<ISessionScript, SessionDesignScript>((sp) => new SessionDesignScript((IGlobalsDataScript)sp.GetService<IGlobalsDataService>()))
-                    .Add<ISessionService, SessionDesignScript>()
+                    .Add<ISessionScript, SessionDesignScript>()
                     //.AddSessionService<SessionDesignScript>((builder) =>
                     //{
                     //    builder
@@ -38,11 +38,24 @@ namespace ConsoleApp
 
                     ;
                 })
+                .ConfigureSessions((builder) =>
+                {
+                    builder.ConfigureFilters((options) =>
+                    {
+                        options.IncludePartialHolidays = false;
+                        options.IncludeHolidays = false;
+                        options.ExcludeHistoricalData = true;
+                    });
+                    builder.ConfigureSessions((options) =>
+                    {
+
+                    });
+                })
                 .Build();
 
             var globalsData = host.Services.GetService<IGlobalsDataScript>();
             var chartData = host.Services.GetService<IChartDataService>();
-            var session = host.Services.GetService<ISessionService>();
+            var session = host.Services.GetService<ISessionScript>();
             //var session2 = host.Services.GetService<ISessionScript>();
 
             host.Configure(null);

@@ -9,7 +9,7 @@ namespace Nt.Core.Services
     /// <summary>
     /// Controller the user configure session inside the ninjascrips.
     /// </summary>
-    public abstract class SessionService : IHostedService, ISessionService, IOnBarUpdateService
+    public abstract class SessionsService : IHostedService, ISessionsService, IOnBarUpdateService
     {
 
         #region Private members
@@ -46,7 +46,7 @@ namespace Nt.Core.Services
         /// Creates <see cref="SessionsIterator"/> default instance.
         /// </summary>
         /// <param name="globalDataService">The global data necesary to create the service.</param>
-        public SessionService(IGlobalsDataService  globalDataService)
+        public SessionsService(IGlobalsDataService  globalDataService)
         {
             _globalDataService = globalDataService;
         }

@@ -21,7 +21,7 @@ namespace Nt.Core.Hosting
         //private readonly PhysicalFileProvider _defaultProvider;
         //private IEnumerable<IHostedService> _hostedServices;
         //private volatile bool _stopCalled;
-        private readonly ISessionService _sessionService;
+        private readonly ISessionsService _sessionService;
         private ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
         private HostOptions _options;
 
@@ -45,7 +45,7 @@ namespace Nt.Core.Hosting
         internal Host(
             IServiceProvider services,
             HostOptions options,
-            ISessionService sessionService,
+            ISessionsService sessionService,
             IEnumerable<IOnBarUpdateService> onBarUpdateServices,
             IEnumerable<IOnMarketDataService> onMarketDataServices
             )

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nt.Core.Options;
+using System;
 
 namespace Nt.Core.DependencyInjection
 {
@@ -26,7 +27,7 @@ namespace Nt.Core.DependencyInjection
         where TBuilder : class, IServiceProviderBuilder<TProvider, TBuilder,TCollection,TDescriptor,TOptions>
         where TCollection : BaseServiceCollection<TDescriptor>
         where TDescriptor : IServiceDescriptor
-        where TOptions : IOptions<TOptions>
+        where TOptions : class, IOptions<TOptions>
     {
         /// <summary>
         /// Run the given actions to initialize the service provider. This can only be called once.
