@@ -18,7 +18,6 @@ namespace Nt.Core.Hosting
         private List<Action<ISessionsBuilder>> _configureSessionsBuilderActions;
         private List<Action<IServiceCollection>> _configureServicesActions;
         private readonly HostOptions _hostOptions = new HostOptions();
-        private readonly ISessionsService _sessionService;
         private IServiceProvider _services;
 
         /// <summary>
@@ -147,9 +146,9 @@ namespace Nt.Core.Hosting
                 return new Host(
                     _services
                     , _hostOptions
-                    , _sessionService
                     //, _hostEnvironment
                     //, _fileProvider,
+                    , _services.GetService<ISessionsIteratorService>()
                     , _services.GetServices<IOnBarUpdateService>()
                     , _services.GetServices<IOnMarketDataService>()
                     //, _ninjascriptServices.GetRequiredService<ILogger<Internal.Host>>(),
@@ -173,6 +172,7 @@ namespace Nt.Core.Hosting
                 ISessionsBuilder sessionsBuilder = new SessionsBuilder(services);
                 foreach (Action<ISessionsBuilder> sessionsBuilderAction in _configureSessionsBuilderActions)
                     sessionsBuilderAction(sessionsBuilder);
+                services.Add<ISessionsService, SessionsService>();
             }
 
             // Create the service provider

@@ -1,13 +1,12 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
-using Nt.Core.Events;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
 using System;
 
 namespace Nt.Scripts.Ninjascripts
 {
-    public class SessionScript : SessionsService, ISessionScript
+    public class SessionsIteratorScript : SessionsIteratorService
     {
 
         #region Private members
@@ -34,7 +33,7 @@ namespace Nt.Scripts.Ninjascripts
 
         #region Constructors
 
-        public SessionScript(IGlobalsDataScript globalDataScript) : base(globalDataScript)
+        public SessionsIteratorScript(IGlobalsDataService globalsData) : base(globalsData)
         {
         }
 
@@ -72,7 +71,7 @@ namespace Nt.Scripts.Ninjascripts
             }
             catch
             {
-                throw new Exception("The SessionScript cannot be configured when data is loaded.");
+                throw new Exception("The SessionsIteratorScript cannot be configured when data is loaded.");
             }
         }
 

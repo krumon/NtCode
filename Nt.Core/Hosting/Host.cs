@@ -21,7 +21,7 @@ namespace Nt.Core.Hosting
         //private readonly PhysicalFileProvider _defaultProvider;
         //private IEnumerable<IHostedService> _hostedServices;
         //private volatile bool _stopCalled;
-        private readonly ISessionsService _sessionService;
+        private readonly ISessionsIteratorService _sessionsIterator;
         private ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
         private HostOptions _options;
 
@@ -30,7 +30,7 @@ namespace Nt.Core.Hosting
         #region Public properties
 
         public IServiceProvider Services { get; private set; }
-        public bool? IsInNewSession => _sessionService?.IsSessionUpdated;
+        public bool? IsInNewSession => _sessionsIterator?.IsSessionUpdated;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace Nt.Core.Hosting
         internal Host(
             IServiceProvider services,
             HostOptions options,
-            ISessionsService sessionService,
+            ISessionsIteratorService sessionsIteratorService,
             IEnumerable<IOnBarUpdateService> onBarUpdateServices,
             IEnumerable<IOnMarketDataService> onMarketDataServices
             )
@@ -54,7 +54,8 @@ namespace Nt.Core.Hosting
 
             Services = services ?? throw new ArgumentNullException(nameof(services));
             _options = options ?? throw new ArgumentNullException(nameof(options));
-            _sessionService = sessionService;
+            _sessionsIterator = sessionsIteratorService;
+            //_sessionsIteratorService?.SessionChanged += OnSessionUpdate;
 
             if (onBarUpdateServices != null)
                 _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
@@ -112,13 +113,13 @@ namespace Nt.Core.Hosting
         public void OnBarUpdate()
         {
             ExecuteServices<IOnBarUpdateService>();
-            if (_sessionService != null && _sessionService.IsSessionUpdated)
+            if (IsInNewSession == true)
                 OnSessionUpdate();
         }
         public void OnMarketData()
         { 
             ExecuteServices<IOnMarketDataService>();
-            if (_sessionService != null && _sessionService.IsSessionUpdated)
+            if (IsInNewSession == true)
                 OnSessionUpdate();
         }
         public void OnSessionUpdate(Action<object> print = null) 
@@ -128,7 +129,7 @@ namespace Nt.Core.Hosting
                 foreach (var service in onSessionUpdateServices)
                     service.OnSessionUpdate();
 
-            print?.Invoke(_sessionService.ToString());
+            print?.Invoke(_sessionsIterator.ToString());
         }
 
         public void Dispose()

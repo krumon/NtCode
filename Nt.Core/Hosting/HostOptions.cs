@@ -20,7 +20,7 @@ namespace Nt.Core.Hosting
         public bool IsInDesignMode { get; set; }
 
         /// <summary>
-        /// Indicates if the host use <see cref="Services.ISessionsService"/>.
+        /// Indicates if the host use <see cref="Services.ISessionsIteratorService"/>.
         /// </summary>
         public bool IncludeSessions{ get; set; } = true;
 

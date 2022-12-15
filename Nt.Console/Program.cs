@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
-using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Ninjascripts.Design;
 
 namespace ConsoleApp
@@ -22,11 +20,11 @@ namespace ConsoleApp
                 .ConfigureServices((serviceCollection) => 
                 {
                     serviceCollection
-                    .Add<IGlobalsDataScript>(new GlobalsDataDesignScript())
+                    .Add<IGlobalsDataService>(new GlobalsDataDesignScript())
                     //.Add<IGlobalsDataScript, GlobalsDataDesignScript>()
                     .Add<IChartDataService, ChartDataDesignScript>()
                     //.Add<ISessionScript, SessionDesignScript>((sp) => new SessionDesignScript((IGlobalsDataScript)sp.GetService<IGlobalsDataService>()))
-                    .Add<ISessionScript, SessionDesignScript>()
+                    .Add<ISessionsIteratorService, SessionsIteratorDesignScript>()
                     //.AddSessionService<SessionDesignScript>((builder) =>
                     //{
                     //    builder
@@ -46,16 +44,12 @@ namespace ConsoleApp
                         options.IncludeHolidays = false;
                         options.ExcludeHistoricalData = true;
                     });
-                    builder.ConfigureSessions((options) =>
-                    {
-
-                    });
                 })
                 .Build();
 
-            var globalsData = host.Services.GetService<IGlobalsDataScript>();
+            var globalsData = host.Services.GetService<IGlobalsDataService>();
             var chartData = host.Services.GetService<IChartDataService>();
-            var session = host.Services.GetService<ISessionScript>();
+            var session = host.Services.GetService<ISessionsIteratorService>();
             //var session2 = host.Services.GetService<ISessionScript>();
 
             host.Configure(null);

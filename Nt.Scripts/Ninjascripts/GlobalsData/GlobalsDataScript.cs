@@ -3,7 +3,7 @@ using Nt.Core.Services;
 
 namespace Nt.Scripts.Ninjascripts
 {
-    public class GlobalsDataScript : GlobalsDataService, IGlobalsDataScript
+    public class GlobalsDataScript : GlobalsDataService
     {
 
         public override void Configure(object[] ninjascriptObjects)

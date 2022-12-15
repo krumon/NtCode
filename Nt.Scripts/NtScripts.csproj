@@ -77,9 +77,9 @@
     <Compile Include="Ninjascripts\GlobalsData\Design\GlobalsDataDesignScript.cs" />
     <Compile Include="Ninjascripts\GlobalsData\GlobalsDataScript.cs" />
     <Compile Include="Ninjascripts\GlobalsData\IGlobalsDataScript.cs" />
-    <Compile Include="Ninjascripts\Sessions\Design\SessionDesignScript.cs" />
+    <Compile Include="Ninjascripts\Sessions\Design\SessionsIteratorDesignScript.cs" />
     <Compile Include="Ninjascripts\Sessions\ISessionScript.cs" />
-    <Compile Include="Ninjascripts\Sessions\SessionScript.cs" />
+    <Compile Include="Ninjascripts\Sessions\SessionsIteratorScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

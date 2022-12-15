@@ -10,7 +10,6 @@ namespace Nt.Core.Services
     public class SessionsBuilder : ISessionsBuilder
     {
 
-        private SessionsOptions _options;
         private readonly IServiceCollection _services;
 
         public SessionsBuilder(IServiceCollection services)
@@ -18,17 +17,12 @@ namespace Nt.Core.Services
             _services = services;
         }
 
-        //public ISessionsBuilder ConfigureFilters(Action<SessionsFiltersOptions>)
-        //{
-        //    return this;
-        //}
-
-        public SessionsBuilder ConfigureSessions(Action<SessionsOptions> configureOptions)
+        public SessionsBuilder ConfigureSessionsIterator(Action<SessionsIteratorOptions> configureOptions)
         {
             if (configureOptions == null)
                 throw new ArgumentNullException(nameof(configureOptions));
-
-            _services.Add<IOptions<SessionsOptions>>(new SessionsOptions(configureOptions));
+            _services.Add<IOptions<SessionsIteratorOptions>>(new ConfigureSessionsIteratorOptions(configureOptions));
+            _services.Add<ISessionsIteratorService, SessionsIteratorService>();
             return this;
         }
 
@@ -36,34 +30,34 @@ namespace Nt.Core.Services
         {
             if (configureOptions == null)
                 throw new ArgumentNullException(nameof(configureOptions));
-
-            _services.Add<IOptions<SessionsFiltersOptions>>(new SessionsFiltersOptions(configureOptions));
+            _services.Add<IOptions<SessionsFiltersOptions>>(new ConfigureSessionsFiltersOptions(configureOptions));
+            _services.Add<ISessionsFiltersService, SessionsFiltersService>();
             return this;
         }
 
-        public ISessionsBuilder AddGenericSessions()
-        {
-            return this;
-        }
+        //public ISessionsBuilder AddGenericSessions()
+        //{
+        //    return this;
+        //}
 
-        public ISessionsBuilder AddCustomSessions()
-        {
-            return this;
-        }
+        //public ISessionsBuilder AddCustomSessions()
+        //{
+        //    return this;
+        //}
 
-        public ISessionsBuilder AddStats()
-        {
-            return this;
-        }
+        //public ISessionsBuilder AddStats()
+        //{
+        //    return this;
+        //}
 
-        public T Build<T>() 
-            where T : ISessionsService, new() //=> new TImplementation();
-        {
-            var service = new T();
-            // Add to ISessionService the Filters, generic sessions, custom sessions,...
-            // service.Filters = _builderFilters
-            return service;
-        } 
+        //public T Build<T>() 
+        //    where T : ISessionsIteratorService, new() //=> new TImplementation();
+        //{
+        //    var service = new T();
+        //    // Add to ISessionService the Filters, generic sessions, custom sessions,...
+        //    // service.Filters = _builderFilters
+        //    return service;
+        //} 
 
     }
 }
