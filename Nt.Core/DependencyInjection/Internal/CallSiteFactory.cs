@@ -9,12 +9,11 @@ namespace Nt.Core.DependencyInjection.Internal
     internal sealed class CallSiteFactory
     {
         private const int DefaultSlot = 0;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
         private readonly ServiceDescriptor[] _descriptors;
         private readonly ConcurrentDictionary<ServiceCacheKey, ServiceCallSite> _callSiteCache = new ConcurrentDictionary<ServiceCacheKey, ServiceCallSite>();
         private readonly Dictionary<Type, ServiceDescriptorCacheItem> _descriptorLookup = new Dictionary<Type, ServiceDescriptorCacheItem>();
         private readonly ConcurrentDictionary<Type, object> _callSiteLocks = new ConcurrentDictionary<Type, object>();
-        private ServiceProvider _provider;
 
         public CallSiteFactory(ICollection<ServiceDescriptor> descriptors)
         {

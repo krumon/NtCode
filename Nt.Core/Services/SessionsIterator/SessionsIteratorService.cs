@@ -18,13 +18,12 @@ namespace Nt.Core.Services
         protected DateTime _currentSessionEnd;
         protected DateTime _sessionDateTmp;
         private readonly List<int> newSessionBarIdx = new List<int>();
-        //private readonly ISessionsFiltersService _sessionFiltersService;
 
         #endregion
 
         #region Public properties
 
-        public DateTime ActualSessionBegin { get; protected set; }
+        public DateTime ActualSessionBegin { get; set; }
         public DateTime ActualSessionEnd { get; protected set; }
         public TimeZoneInfo UserTimeZoneInfo { get; protected set; }
         public int Count => newSessionBarIdx.Count;
@@ -46,12 +45,10 @@ namespace Nt.Core.Services
         /// <summary>
         /// Creates <see cref="SessionsIteratorService"/> default instance.
         /// </summary>
-        /// <param name="globalDataService">The global data necesary to create the service.</param>
-        /// <param name="sessionsFiltersService">The filters of the sessions.</param>
-        public SessionsIteratorService(IGlobalsDataService  globalDataService)
+        /// <param name="globalsDataService">The global data necesary to create the service.</param>
+        public SessionsIteratorService(IGlobalsDataService  globalsDataService)
         {
-            _globalDataService = globalDataService ?? throw new System.ArgumentNullException(nameof(globalDataService));
-            //_sessionFiltersService = sessionsFiltersService ?? throw new System.ArgumentNullException(nameof(sessionsFiltersService));
+            _globalDataService = globalsDataService ?? throw new System.ArgumentNullException(nameof(globalsDataService));
         }
 
         #endregion

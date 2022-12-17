@@ -12,7 +12,7 @@ namespace Nt.Core.Services
         /// <summary>
         /// Represents the actual session start time converted to the user's configured Time Zone.
         /// </summary>
-        DateTime ActualSessionBegin { get; }
+        DateTime ActualSessionBegin { get; set; }
 
         /// <summary>
         /// Represents the actual session end time converted to the user's configured Time Zone.

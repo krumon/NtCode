@@ -14,7 +14,6 @@ namespace Nt.Scripts.Ninjascripts.Design
 
         public override void Configure(object[] ninjascriptObjects)
         {
-            Console.WriteLine($"{nameof(SessionsIteratorDesignScript)} is configuring...");
 
             // Initialize data
             
@@ -25,7 +24,7 @@ namespace Nt.Scripts.Ninjascripts.Design
         public override void DataLoaded(object[] ninjascriptObjects)
         {
             BarsTimeZoneInfo = TimeZoneInfo.Utc;
-            Console.WriteLine($"{nameof(SessionsIteratorDesignScript)} is configured by data loaded.");
+            Console.WriteLine($"{nameof(SessionsIteratorDesignScript)} is configured when data is loaded.");
         }
 
         public override void Dispose()

@@ -11,18 +11,20 @@ namespace Nt.Core.Services
     {
 
         private readonly IServiceCollection _services;
+        private Action<SessionsIteratorOptions> _sessionsIteratorOptionsActions;
+        private Action<SessionsFiltersOptions> _sessionsFiltersOptionsActions;
 
         public SessionsBuilder(IServiceCollection services)
         {
-            _services = services;
+            _services = services ?? throw new ArgumentNullException(nameof(services));
         }
 
         public SessionsBuilder ConfigureSessionsIterator(Action<SessionsIteratorOptions> configureOptions)
         {
             if (configureOptions == null)
                 throw new ArgumentNullException(nameof(configureOptions));
-            _services.Add<IOptions<SessionsIteratorOptions>>(new ConfigureSessionsIteratorOptions(configureOptions));
-            _services.Add<ISessionsIteratorService, SessionsIteratorService>();
+            _sessionsIteratorOptionsActions = configureOptions;
+            
             return this;
         }
 
@@ -30,34 +32,17 @@ namespace Nt.Core.Services
         {
             if (configureOptions == null)
                 throw new ArgumentNullException(nameof(configureOptions));
-            _services.Add<IOptions<SessionsFiltersOptions>>(new ConfigureSessionsFiltersOptions(configureOptions));
-            _services.Add<ISessionsFiltersService, SessionsFiltersService>();
+            
             return this;
         }
 
-        //public ISessionsBuilder AddGenericSessions()
-        //{
-        //    return this;
-        //}
-
-        //public ISessionsBuilder AddCustomSessions()
-        //{
-        //    return this;
-        //}
-
-        //public ISessionsBuilder AddStats()
-        //{
-        //    return this;
-        //}
-
-        //public T Build<T>() 
-        //    where T : ISessionsIteratorService, new() //=> new TImplementation();
-        //{
-        //    var service = new T();
-        //    // Add to ISessionService the Filters, generic sessions, custom sessions,...
-        //    // service.Filters = _builderFilters
-        //    return service;
-        //} 
+        public void Build()
+        {
+            if (_sessionsIteratorOptionsActions == null) _sessionsIteratorOptionsActions = (options) => new SessionsIteratorOptions();
+            _services.Add<IOptions<SessionsIteratorOptions>>(new ConfigureSessionsIteratorOptions(_sessionsIteratorOptionsActions));
+            if (_sessionsFiltersOptionsActions == null) _sessionsFiltersOptionsActions = (options) => new SessionsFiltersOptions();
+            _services.Add<IOptions<SessionsFiltersOptions>>(new ConfigureSessionsFiltersOptions(_sessionsFiltersOptionsActions));
+        }
 
     }
 }

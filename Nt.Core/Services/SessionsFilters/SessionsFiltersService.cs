@@ -9,16 +9,14 @@ namespace Nt.Core.Services
     public class SessionsFiltersService : ISessionsFiltersService
     {
         private readonly ISessionsIteratorService _session;
-        private readonly SessionsFiltersOptions _options = new SessionsFiltersOptions();
+        private readonly SessionsFiltersOptions _options = new SessionsFiltersOptions(); // Default options
 
         public SessionsFiltersService(ISessionsIteratorService session, IOptions<SessionsFiltersOptions> options)
         {
-            if (session == null)
-                throw new ArgumentNullException(nameof(session));
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
 
-            _session = session;
+            _session = session ?? throw new ArgumentNullException(nameof(session));
             options?.Configure(_options);
         }
 

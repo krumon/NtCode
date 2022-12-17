@@ -21,16 +21,16 @@ namespace Nt.Core.Hosting
         //private readonly PhysicalFileProvider _defaultProvider;
         //private IEnumerable<IHostedService> _hostedServices;
         //private volatile bool _stopCalled;
-        private readonly ISessionsIteratorService _sessionsIterator;
-        private ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
-        private HostOptions _options;
+        private readonly ISessionsService _sessionsService;
+        private readonly ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
+        private readonly HostOptions _options;
 
         #endregion
 
         #region Public properties
 
         public IServiceProvider Services { get; private set; }
-        public bool? IsInNewSession => _sessionsIterator?.IsSessionUpdated;
+        public bool? IsInNewSession => _sessionsService?.Iterator?.IsSessionUpdated;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace Nt.Core.Hosting
         internal Host(
             IServiceProvider services,
             HostOptions options,
-            ISessionsIteratorService sessionsIteratorService,
+            ISessionsService sessionsService,
             IEnumerable<IOnBarUpdateService> onBarUpdateServices,
             IEnumerable<IOnMarketDataService> onMarketDataServices
             )
@@ -54,8 +54,8 @@ namespace Nt.Core.Hosting
 
             Services = services ?? throw new ArgumentNullException(nameof(services));
             _options = options ?? throw new ArgumentNullException(nameof(options));
-            _sessionsIterator = sessionsIteratorService;
-            //_sessionsIteratorService?.SessionChanged += OnSessionUpdate;
+            _sessionsService = sessionsService;
+            //_sessionsService?.Iterator?.SessionChanged += OnSessionUpdate;
 
             if (onBarUpdateServices != null)
                 _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
@@ -71,7 +71,6 @@ namespace Nt.Core.Hosting
 
         #region Public methods
 
-        /// <inheritdoc/>
         public void Configure(params object[] ninjascriptObjects)
         {
             //_logger.Configuring();
@@ -91,7 +90,6 @@ namespace Nt.Core.Hosting
 
         }
 
-        /// <inheritdoc/>
         public void DataLoaded(params object[] ninjascriptObjects)
         {
             //_logger.ConfiguringWhenDataLoaded();
@@ -129,7 +127,7 @@ namespace Nt.Core.Hosting
                 foreach (var service in onSessionUpdateServices)
                     service.OnSessionUpdate();
 
-            print?.Invoke(_sessionsIterator.ToString());
+            print?.Invoke(_sessionsService.Iterator.ToString());
         }
 
         public void Dispose()

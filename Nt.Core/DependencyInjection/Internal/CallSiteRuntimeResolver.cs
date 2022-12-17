@@ -52,7 +52,8 @@ namespace Nt.Core.DependencyInjection.Internal
                 parameterValues = new object[constructorCallSite.ParameterCallSites.Length];
                 for (int index = 0; index < parameterValues.Length; index++)
                 {
-                    parameterValues[index] = VisitCallSite(constructorCallSite.ParameterCallSites[index], context);
+                    object parameter = context.GetService(constructorCallSite.ParameterCallSites[index].ServiceType);
+                    parameterValues[index] = parameter ?? VisitCallSite(constructorCallSite.ParameterCallSites[index], context);
                 }
             }
 

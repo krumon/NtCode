@@ -29,6 +29,5 @@ namespace Nt.Core.Hosting
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         IHostBuilder ConfigureServices(Action<IServiceCollection> configureServicesDelegate);
 
-        IHostBuilder ConfigureSessions(Action<ISessionsBuilder> configSessionsDelegate);
     }
 }

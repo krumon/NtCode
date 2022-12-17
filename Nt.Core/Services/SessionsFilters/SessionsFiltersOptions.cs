@@ -1,6 +1,6 @@
 ﻿namespace Nt.Core.Services
 {
-    public class SessionsFiltersOptions //: BaseOptions<SessionsFiltersOptions>, IOptions<SessionsFiltersOptions>
+    public class SessionsFiltersOptions
     {
 
         public bool IncludePartialHolidays { get; set; } = true;

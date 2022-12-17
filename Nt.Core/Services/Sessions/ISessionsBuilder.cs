@@ -9,11 +9,7 @@ namespace Nt.Core.Services
     {
         SessionsBuilder ConfigureSessionsIterator(Action<SessionsIteratorOptions> configureOptions);
         SessionsBuilder ConfigureFilters(Action<SessionsFiltersOptions> configureOptions);
-
-        //ISessionsBuilder AddGenericSessions();
-        //ISessionsBuilder AddCustomSessions();
-        //ISessionsBuilder AddStats();
-        //TImplementation Build<TImplementation>() where TImplementation: ISessionsService, new();
+        void Build();
 
     }
 }

@@ -18,13 +18,11 @@ namespace Nt.Core.DependencyInjection
         // Check the service provider is disposed.
         private bool _disposed;
         // Collection of the realized services.
-        private ConcurrentDictionary<Type, object> _realizedServices;
+        private readonly ConcurrentDictionary<Type, object> _realizedServices;
         // The factory of the calls.
         internal CallSiteFactory CallSiteFactory { get; }
         // Delagate to create the service
         private Func<Type,object> _createService;
-        // Delagate to create the enumerable service
-        //private Func<Type,object> _createEnumerableService;
 
         #endregion
 
@@ -42,8 +40,6 @@ namespace Nt.Core.DependencyInjection
             CallSiteFactory = new CallSiteFactory(serviceDescriptors);
             // Sets the delegate method.
             _createService = CreateService;
-            // Sets the delegate method.
-            //_createEnumerableService = CreateEnumerableService;
 
             if (options.ValidateOnBuild)
             {
@@ -87,22 +83,6 @@ namespace Nt.Core.DependencyInjection
             return result;
         }
 
-        ///// <summary>
-        ///// Gets all service objects of the specified type.
-        ///// </summary>
-        ///// <returns>The service collection that was produced.</returns>
-        //public IEnumerable<object> GetServices(Type serviceType)
-        //{
-        //    if (_disposed)
-        //        throw new ObjectDisposedException(nameof(ServiceProvider));
-
-        //    //object result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
-        //    IList<object> result = (IList<object>)CreateEnumerableService<object>(serviceType);
-        //    Debug.Assert(result != null);
-
-        //    return result;
-        //}
-
         /// <summary>
         /// Gets all service objects of the specified type.
         /// </summary>
@@ -112,9 +92,7 @@ namespace Nt.Core.DependencyInjection
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
 
-            //object result = _realizedServices.GetOrAdd(serviceType, _createEnumerableService);
             IList<T> result = (IList<T>)CreateEnumerableService<T>(typeof(T));
-            //Debug.Assert(result != null);
 
             return result;
         }
@@ -135,8 +113,7 @@ namespace Nt.Core.DependencyInjection
 
             try
             {
-                object result = _realizedServices.GetOrAdd(serviceType, _createService);
-                //Debug.Assert(result != null);
+                //object result = _realizedServices.GetOrAdd(serviceType, _createService);
             }
             catch (Exception e)
             {
@@ -156,16 +133,6 @@ namespace Nt.Core.DependencyInjection
             return null;
         }
 
-        //private IEnumerable<object> CreateEnumerableService(Type serviceType)
-        //{
-
-        //    IList<object> list = new List<object>();
-        //    foreach (KeyValuePair<Type,object> service in _realizedServices)
-        //        if (serviceType.IsAssignableFrom(service.Value.GetType()))
-        //            list.Add(service.Value);
-        //    return list.Count > 0 ? list : null;
-        //}
-
         private IEnumerable<T> CreateEnumerableService<T>(Type serviceType)
         {
             if (!(typeof(T) == serviceType))
@@ -182,18 +149,10 @@ namespace Nt.Core.DependencyInjection
 
         #region Dispose methods
 
-        /// <inheritdoc/>
         public void Dispose()
         {
             DisposeCore();
         }
-
-        ///// <inheritdoc/>
-        //public ValueTask DisposeAsync()
-        //{
-        //    DisposeCore();
-        //    return default;
-        //}
 
         private void DisposeCore()
         {

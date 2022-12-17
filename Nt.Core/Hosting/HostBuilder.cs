@@ -15,7 +15,6 @@ namespace Nt.Core.Hosting
 
         private bool _built;
         private List<Action<HostOptions>> _configureHostOptionsActions;
-        private List<Action<ISessionsBuilder>> _configureSessionsBuilderActions;
         private List<Action<IServiceCollection>> _configureServicesActions;
         private readonly HostOptions _hostOptions = new HostOptions();
         private IServiceProvider _services;
@@ -46,14 +45,6 @@ namespace Nt.Core.Hosting
             if (_configureServicesActions == null)
                 _configureServicesActions = new List<Action<IServiceCollection>>();
             _configureServicesActions.Add(configureServicesDelegate ?? throw new ArgumentNullException(nameof(configureServicesDelegate)));
-            return this;
-        }
-
-        public IHostBuilder ConfigureSessions(Action<ISessionsBuilder> configSessionsDelegate)
-        {
-            if (_configureSessionsBuilderActions == null)
-                _configureSessionsBuilderActions = new List<Action<ISessionsBuilder>>();
-            _configureSessionsBuilderActions.Add(configSessionsDelegate ?? throw new ArgumentNullException(nameof(configSessionsDelegate)));
             return this;
         }
 
@@ -148,7 +139,7 @@ namespace Nt.Core.Hosting
                     , _hostOptions
                     //, _hostEnvironment
                     //, _fileProvider,
-                    , _services.GetService<ISessionsIteratorService>()
+                    , _services.GetService<ISessionsService>()
                     , _services.GetServices<IOnBarUpdateService>()
                     , _services.GetServices<IOnMarketDataService>()
                     //, _ninjascriptServices.GetRequiredService<ILogger<Internal.Host>>(),
@@ -164,15 +155,6 @@ namespace Nt.Core.Hosting
             foreach (Action<IServiceCollection> configureServicesAction in _configureServicesActions)
             {
                 configureServicesAction(services);
-            }
-
-            if (_hostOptions.IncludeSessions)
-            {
-                // Add the sessions services
-                ISessionsBuilder sessionsBuilder = new SessionsBuilder(services);
-                foreach (Action<ISessionsBuilder> sessionsBuilderAction in _configureSessionsBuilderActions)
-                    sessionsBuilderAction(sessionsBuilder);
-                services.Add<ISessionsService, SessionsService>();
             }
 
             // Create the service provider
