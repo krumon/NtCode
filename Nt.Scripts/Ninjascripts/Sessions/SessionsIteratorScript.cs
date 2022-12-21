@@ -23,8 +23,8 @@ namespace Nt.Scripts.Ninjascripts
         public SessionIterator SessionIterator => _sessionIterator;
         public PartialHoliday PartialHoliday => _partialHoliday;
         public override bool? BarsTypeIsIntraday => _bars?.BarsType.IsIntraday;
-        public override int CurrentBar => _ninjascript.CurrentBar;
-        public override DateTime CurrentTime => _ninjascript.Time[0];
+        //public override int CurrentBar { get; protected set; }
+        //public override DateTime CurrentTime { get; protected set; }
         public override bool? IsPartialHoliday => _partialHoliday != null;
         public override bool? IsLateBegin => _partialHoliday?.IsLateBegin;
         public override bool? IsEarlyEnd => _partialHoliday?.IsEarlyEnd;
@@ -43,21 +43,24 @@ namespace Nt.Scripts.Ninjascripts
 
         public override void DataLoaded(object[] ninjascriptObjects)
         {
+            // Make sure the script is configured
             if (!IsConfigured)
                 return;
-
+            // Initialize variables
             _currentSessionEnd = _globalsDataService.MinDate;
             _sessionDateTmp = _globalsDataService.MinDate;
             UserTimeZoneInfo = _globalsDataService.UserConfigureTimeZoneInfo;
-
+            ActualSessionBegin = _globalsDataService.MinDate;
+            ActualSessionEnd = _globalsDataService.MaxDate;
+            // Gets the necesary ninjascript object for the script.
             this.TryGetObject<NinjaScriptBase>(ninjascriptObjects, out _ninjascript);
             this.TryGetObject<Bars>(ninjascriptObjects, out _bars);
-
+            //Make sure the ninjascripts objects can be loaded.
             if (_ninjascript == null)
-                // Change for logger and go out
+                // Logger critical error loading the NinjascrptBase object in method SessionsIteratorScript.DataLoaded
                 throw new ArgumentNullException(nameof(_ninjascript));
             if (_bars == null)
-                // Change for logger and go out
+                // Logger critical error loading the Bars object in method SessionsIteratorScript.DataLoaded
                 throw new ArgumentNullException(nameof(_bars));
 
             if (_ninjascript == null || _bars == null)
@@ -79,6 +82,13 @@ namespace Nt.Scripts.Ninjascripts
         {
         }
 
+        public override void OnBarUpdate()
+        {
+            CurrentBar = _ninjascript.CurrentBar;
+            CurrentTime = _ninjascript.Time[0];
+
+            base.OnBarUpdate();
+        }
         public override void GetAndUpdateNextSessionValues(DateTime time, bool includeEndTimeStamp = true)
         {
             // Get the next session value.
@@ -92,8 +102,6 @@ namespace Nt.Scripts.Ninjascripts
             => _bars.TradingHours.PartialHolidays.TryGetValue(ActualSessionEnd.Date, out _partialHoliday);
 
         #endregion
-
-
 
     }
 }

@@ -32,8 +32,10 @@ namespace Nt.Core.Services
         public bool IsConfigured { get; protected set; }
         public bool IsDataLoaded { get; protected set; }
         public abstract bool? BarsTypeIsIntraday { get; }
-        public abstract int CurrentBar { get; }
-        public abstract DateTime CurrentTime { get; }
+        //public abstract int CurrentBar { get; protected set; }
+        //public abstract DateTime CurrentTime { get; protected set; }
+        public int CurrentBar { get; protected set; }
+        public DateTime CurrentTime { get; protected set; }
         public abstract bool? IsPartialHoliday { get; }
         public abstract bool? IsLateBegin { get; }
         public abstract bool? IsEarlyEnd {get; }
@@ -48,31 +50,29 @@ namespace Nt.Core.Services
         /// <param name="globalsDataService">The global data necesary to create the service.</param>
         public SessionsIteratorService(IGlobalsDataService  globalsDataService)
         {
-            _globalsDataService = globalsDataService ?? throw new System.ArgumentNullException(nameof(globalsDataService));
+            _globalsDataService = globalsDataService ?? throw new ArgumentNullException(nameof(globalsDataService));
         }
 
         #endregion
 
         #region Public methods
 
-        public virtual void Configure(object[] ninjascriptObjects) => IsConfigured = true;
+        public virtual void Configure(object[] ninjascriptObjects) => IsConfigured = true; 
         public abstract void DataLoaded(object[] ninjascriptObjects);
         public virtual void OnBarUpdate() => LastBarUpdate();
-        public virtual void OnMarketData() { } // => LastBarUpdate();
-        public virtual void OnSessionUpdate() 
-        {
-            //throw new Exception();
-        }
+        public virtual void OnMarketData() => LastBarUpdate();
+        public virtual void OnSessionUpdate()  { }
         public abstract void Dispose();
         public abstract void GetAndUpdateNextSessionValues(DateTime time, bool includeEndTimeStamp = true);
         public abstract bool? TryGetPartialHoliday();
         public DateTime GetLastBarSessionDate(DateTime time)
         {
+            var currentTime = CurrentTime;
             // Make sure the session is terminated
             if (time <= ActualSessionEnd)
                 return _sessionDateTmp;
 
-            // Make sure the bars type are not intraday
+            // Make sure the bars type are intraday
             if (BarsTypeIsIntraday == false)
                 return _sessionDateTmp;
 

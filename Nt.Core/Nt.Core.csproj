@@ -240,6 +240,12 @@
     <Compile Include="Data\TradingTimes\TradingTime.cs" />
     <Compile Include="Services\GlobalsData\IGlobalsDataService.cs" />
     <Compile Include="Services\GlobalsData\GlobalsDataService.cs" />
+    <Compile Include="Services\Logger\ILogger.cs" />
+    <Compile Include="Services\Logger\ILoggingBuilder.cs" />
+    <Compile Include="Services\Logger\Internal\LoggerExtensions.cs" />
+    <Compile Include="Services\Logger\Internal\LoggerSourceFormatter.cs" />
+    <Compile Include="Services\Logger\Internal\LoggingBuilder.cs" />
+    <Compile Include="Services\Logger\LogLevel.cs" />
     <Compile Include="Services\SessionsFilters\ISessionsFiltersService.cs" />
     <Compile Include="Services\SessionsFilters\SessionsFiltersOptions.cs" />
     <Compile Include="Services\SessionsIterator\SessionsIteratorOptions.cs" />
