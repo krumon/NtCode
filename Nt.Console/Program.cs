@@ -14,7 +14,7 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            //LoggerFactory
+            //Microsoft.Extensions.DependencyInjection.ServiceDescriptor
             //Microsoft.Extensions.Options.OptionsBuilder
             IHost host = Hosting.CreateDefaultBuilder()
                 .ConfigureHostOptions((options) =>

@@ -18,7 +18,7 @@ namespace Nt.Core.Logging
         public static ILoggingBuilder SetMinimumLevel(this ILoggingBuilder builder, LogLevel level)
         {
             builder.Services.Add(ServiceDescriptor.Singleton<IConfigureOptions<LoggerFilterOptions>>(
-                _ => new DefaultLoggerLevelConfigureOptions(level)));
+                new DefaultLoggerLevelConfigureOptions(level)));
             return builder;
         }
 

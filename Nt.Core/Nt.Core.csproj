@@ -112,6 +112,8 @@
     <Compile Include="Data\Series\DataSerie.cs" />
     <Compile Include="Data\Sessions\ISession.cs" />
     <Compile Include="Data\TradingHours\ITradingHours.cs" />
+    <Compile Include="DependencyInjection\ServiceCollectionDescriptorExtensions.cs" />
+    <Compile Include="DependencyInjection\ServiceCollectionProviderExtensions.cs" />
     <Compile Include="Hosting\Host.cs" />
     <Compile Include="Hosting\HostedServiceExtensions.cs" />
     <Compile Include="Hosting\HostOptions.cs" />

@@ -33,13 +33,11 @@ namespace Nt.Core.Logging
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddOptions();
-
             services.TryAdd(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
             services.TryAdd(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(Logger<>)));
 
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<LoggerFilterOptions>>(
-                _ => new DefaultLoggerLevelConfigureOptions(LogLevel.Information)));
+                new DefaultLoggerLevelConfigureOptions(LogLevel.Information)));
 
             configure(new LoggingBuilder(services));
             return services;

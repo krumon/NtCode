@@ -65,7 +65,7 @@ namespace Nt.Core.Logging.Internal
                 ThrowLoggingError(exceptions);
             }
 
-            return i < loggers.Length ? true : false;
+            return i < loggers.Length;
 
         }
 

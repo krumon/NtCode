@@ -237,6 +237,25 @@ namespace Nt.Core.DependencyInjection
             return Describe(service, implementationFactory);
         }
 
+        /// <summary>
+        /// Creates an instance of <see cref="ServiceDescriptor"/> with the specified
+        /// <typeparamref name="TService"/>, <paramref name="implementationInstance"/>,
+        /// and the <see cref="ServiceLifetime.Singleton"/> lifetime.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="implementationInstance">The instance of the implementation.</param>
+        /// <returns>A new instance of <see cref="ServiceDescriptor"/>.</returns>
+        public static ServiceDescriptor Singleton<TService>(TService implementationInstance)
+            where TService : class
+        {
+            if (implementationInstance == null)
+            {
+                throw new ArgumentNullException(nameof(implementationInstance));
+            }
+
+            return Singleton(typeof(TService), implementationInstance);
+        }
+
         private static ServiceDescriptor Describe<TService, TImplementation>()
             where TService : class
             where TImplementation : class, TService
