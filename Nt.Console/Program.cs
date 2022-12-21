@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Services;
@@ -13,6 +14,7 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
+            //LoggerFactory
             //Microsoft.Extensions.Options.OptionsBuilder
             IHost host = Hosting.CreateDefaultBuilder()
                 .ConfigureHostOptions((options) =>

@@ -6,7 +6,7 @@ namespace Nt.Core.Hosting
     /// <summary>
     /// Represents the host options.
     /// </summary>
-    public class HostOptions : IOptions<HostOptions>
+    public class HostOptions
     {
         /// <inheritdoc/>
         public static HostOptions Default => new HostOptions
@@ -24,9 +24,5 @@ namespace Nt.Core.Hosting
         /// </summary>
         public bool IncludeSessions{ get; set; } = true;
 
-        public void Configure(HostOptions options)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

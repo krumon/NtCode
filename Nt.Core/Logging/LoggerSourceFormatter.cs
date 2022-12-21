@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace ConsoleApp
+namespace Nt.Core.Logging
 {
     /// <summary>
     /// Formats a message when the callers source information is provided first in the arguments

@@ -39,9 +39,9 @@ namespace Nt.Core.Services
         public void Build()
         {
             if (_sessionsIteratorOptionsActions == null) _sessionsIteratorOptionsActions = (options) => new SessionsIteratorOptions();
-            _services.Add<IOptions<SessionsIteratorOptions>>(new ConfigureSessionsIteratorOptions(_sessionsIteratorOptionsActions));
+            _services.Add<IConfigureOptions<SessionsIteratorOptions>>(new ConfigureSessionsIteratorOptions(_sessionsIteratorOptionsActions));
             if (_sessionsFiltersOptionsActions == null) _sessionsFiltersOptionsActions = (options) => new SessionsFiltersOptions();
-            _services.Add<IOptions<SessionsFiltersOptions>>(new ConfigureSessionsFiltersOptions(_sessionsFiltersOptionsActions));
+            _services.Add<IConfigureOptions<SessionsFiltersOptions>>(new ConfigureSessionsFiltersOptions(_sessionsFiltersOptionsActions));
         }
 
     }

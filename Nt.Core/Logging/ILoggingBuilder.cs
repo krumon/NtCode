@@ -1,6 +1,6 @@
 ﻿using Nt.Core.DependencyInjection;
 
-namespace Nt.Core.Services
+namespace Nt.Core.Logging
 {
     public interface ILoggingBuilder
     {

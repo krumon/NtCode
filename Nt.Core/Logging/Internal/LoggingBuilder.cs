@@ -1,6 +1,6 @@
 ﻿using Nt.Core.DependencyInjection;
 
-namespace Nt.Core.Services.Internal
+namespace Nt.Core.Logging.Internal
 {
     internal sealed class LoggingBuilder : ILoggingBuilder
     {

@@ -1,4 +1,4 @@
-﻿namespace Nt.Core.Services
+﻿namespace Nt.Core.Logging
 {
     public enum LogLevel
     {

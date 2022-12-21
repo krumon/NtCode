@@ -137,21 +137,31 @@
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
     <Compile Include="DependencyInjection\Base\BaseServiceCollection.cs" />
-    <Compile Include="Options\.Interfaces\IOptions.cs" />
-    <Compile Include="Options\BaseOptions.cs" />
-    <Compile Include="Options\ConfigureSessionsFiltersOptions.cs" />
-    <Compile Include="Options\ConfigureSessionsIteratorOptions.cs" />
-    <Compile Include="Options\ConfigureSessionsOptions.cs" />
-    <Compile Include="Services\.Base\IDataLoadedService.cs" />
-    <Compile Include="Services\.Base\IConfigureService.cs" />
-    <Compile Include="Services\.Base\IOnSessionUpdateService.cs" />
-    <Compile Include="Services\.Base\IOnMarketDataService.cs" />
-    <Compile Include="Services\.Base\IOnBarUpdateService.cs" />
-    <Compile Include="Services\.Extensions\HostBuilderExtensions.cs" />
-    <Compile Include="Services\.Extensions\ServiceCollectionExtensions.cs" />
+    <Compile Include="Logging\DefaultLoggerLevelConfigureOptions.cs" />
+    <Compile Include="Logging\ILoggerFactory.cs" />
+    <Compile Include="Logging\Internal\Logger.cs" />
+    <Compile Include="Logging\Internal\LoggerStructs.cs" />
+    <Compile Include="Logging\Internal\TypeNameHelper.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LoggerFactory.cs" />
+    <Compile Include="Logging\LoggerFilterOptions.cs" />
+    <Compile Include="Logging\LoggerFilterRule.cs" />
+    <Compile Include="Logging\LoggingBuilderExtensions.cs" />
+    <Compile Include="Logging\LoggingServiceCollectionExtensions.cs" />
+    <Compile Include="Options\IConfigureOptions.cs" />
+    <Compile Include="Options\ConfigureOptions.cs" />
+    <Compile Include="Services\SessionsFilters\ConfigureSessionsFiltersOptions.cs" />
+    <Compile Include="Services\SessionsIterator\ConfigureSessionsIteratorOptions.cs" />
+    <Compile Include="Services\Sessions\ConfigureSessionsOptions.cs" />
+    <Compile Include="Services\.Interfaces\IDataLoadedService.cs" />
+    <Compile Include="Services\.Interfaces\IConfigureService.cs" />
+    <Compile Include="Services\.Interfaces\IOnSessionUpdateService.cs" />
+    <Compile Include="Services\.Interfaces\IOnMarketDataService.cs" />
+    <Compile Include="Services\.Interfaces\IOnBarUpdateService.cs" />
     <Compile Include="Services\ChartStyle\IChartStyleService.cs" />
     <Compile Include="Services\ChartData\IChartDataService.cs" />
     <Compile Include="Services\ChartStyle\ChartStyleService.cs" />
+    <Compile Include="Services\DataSeries\DataSeriesOptions.cs" />
     <Compile Include="Services\DataSeries\DataSeriesProvider.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceDescriptor.cs" />
     <Compile Include="Hosting\Interfaces\IHostBuilder.cs" />
@@ -160,10 +170,10 @@
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderFactory.cs" />
     <Compile Include="Services\DataSeries\DataSeriesService.cs" />
     <Compile Include="Services\DataSeries\DataSeriesBuilder.cs" />
-    <Compile Include="Services\DataSeries\DataSeriesOptions.cs" />
+    <Compile Include="Services\DataSeries\ConfigureDataSeriesOptions.cs" />
     <Compile Include="Data\Bars\BarsPeriod.cs" />
     <Compile Include="Services\DataSeries\DataSeriesCollection.cs" />
-    <Compile Include="Services\DataSeries\Interfaces\IDataSeriesProvider.cs" />
+    <Compile Include="Services\DataSeries\Interfaces\IDataSeriesBuilder.cs" />
     <Compile Include="Services\ChartData\ChartDataService.cs" />
     <Compile Include="Services\DataSeries\Interfaces\IDataSeriesCollection.cs" />
     <Compile Include="Services\DataSeries\Interfaces\IDataSeriesDescriptor.cs" />
@@ -240,12 +250,14 @@
     <Compile Include="Data\TradingTimes\TradingTime.cs" />
     <Compile Include="Services\GlobalsData\IGlobalsDataService.cs" />
     <Compile Include="Services\GlobalsData\GlobalsDataService.cs" />
-    <Compile Include="Services\Logger\ILogger.cs" />
-    <Compile Include="Services\Logger\ILoggingBuilder.cs" />
-    <Compile Include="Services\Logger\Internal\LoggerExtensions.cs" />
-    <Compile Include="Services\Logger\Internal\LoggerSourceFormatter.cs" />
-    <Compile Include="Services\Logger\Internal\LoggingBuilder.cs" />
-    <Compile Include="Services\Logger\LogLevel.cs" />
+    <Compile Include="Logging\EventId.cs" />
+    <Compile Include="Logging\ILogger.cs" />
+    <Compile Include="Logging\ILoggerProvider.cs" />
+    <Compile Include="Logging\ILoggingBuilder.cs" />
+    <Compile Include="Logging\Internal\LoggingBuilder.cs" />
+    <Compile Include="Logging\LoggerExtensions.cs" />
+    <Compile Include="Logging\LoggerSourceFormatter.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Services\SessionsFilters\ISessionsFiltersService.cs" />
     <Compile Include="Services\SessionsFilters\SessionsFiltersOptions.cs" />
     <Compile Include="Services\SessionsIterator\SessionsIteratorOptions.cs" />
@@ -271,7 +283,9 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\LoggerToFile\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ExceptionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>

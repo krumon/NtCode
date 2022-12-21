@@ -44,7 +44,7 @@ namespace Nt.Core.Services
             CreateDataSeriesOptions();
             CreateDataSeriesDescriptors();
 
-            _dataSeriesProvider = new DataSeriesProvider(_descriptors, _dataSeriesOptionsActions == null ? _options.Value : _options);
+            _dataSeriesProvider = new DataSeriesProvider(_descriptors, _dataSeriesOptionsActions == null ? _options : _options);
 
             // Sets the flag to indicate the instrument provider is created.
             _isBuild = true;

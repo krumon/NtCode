@@ -1,10 +1,9 @@
 ﻿using Kr.Core.Extensions;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace ConsoleApp
+namespace Nt.Core.Logging
 {
     /// <summary>
     /// Extensions for <see cref="ILogger"/> loggers

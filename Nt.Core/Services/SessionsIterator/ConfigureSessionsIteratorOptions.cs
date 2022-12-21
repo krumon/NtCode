@@ -1,12 +1,13 @@
-﻿using Nt.Core.Services;
+﻿using Nt.Core.Options;
+using Nt.Core.Services;
 using System;
 
-namespace Nt.Core.Options
+namespace Nt.Core.Services
 {
     /// <summary>
     /// Configure the <see cref="SessionsIteratorOptions"/> with delegate passed by parameter.
     /// </summary>
-    public class ConfigureSessionsIteratorOptions : BaseOptions<SessionsIteratorOptions>
+    public class ConfigureSessionsIteratorOptions : ConfigureOptions<SessionsIteratorOptions>
     {
         /// <summary>
         /// Contructor.

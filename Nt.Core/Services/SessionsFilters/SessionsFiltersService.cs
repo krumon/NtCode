@@ -12,7 +12,7 @@ namespace Nt.Core.Services
         private readonly SessionsFiltersOptions _options = new SessionsFiltersOptions(); // Default options
         public bool IsEnabled { get;  private set; }
 
-        public SessionsFiltersService(ISessionsIteratorService session, IOptions<SessionsFiltersOptions> options)
+        public SessionsFiltersService(ISessionsIteratorService session, IConfigureOptions<SessionsFiltersOptions> options)
         {
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
