@@ -14,7 +14,7 @@ namespace Nt.Core.Services
 
         #region Private members
 
-        protected readonly IGlobalsDataService _globalDataService;
+        protected readonly IGlobalsDataService _globalsDataService;
         protected DateTime _currentSessionEnd;
         protected DateTime _sessionDateTmp;
         private readonly List<int> newSessionBarIdx = new List<int>();
@@ -48,7 +48,7 @@ namespace Nt.Core.Services
         /// <param name="globalsDataService">The global data necesary to create the service.</param>
         public SessionsIteratorService(IGlobalsDataService  globalsDataService)
         {
-            _globalDataService = globalsDataService ?? throw new System.ArgumentNullException(nameof(globalsDataService));
+            _globalsDataService = globalsDataService ?? throw new System.ArgumentNullException(nameof(globalsDataService));
         }
 
         #endregion
@@ -58,8 +58,11 @@ namespace Nt.Core.Services
         public virtual void Configure(object[] ninjascriptObjects) => IsConfigured = true;
         public abstract void DataLoaded(object[] ninjascriptObjects);
         public virtual void OnBarUpdate() => LastBarUpdate();
-        public virtual void OnMarketData() => LastBarUpdate();
-        public virtual void OnSessionUpdate() { }
+        public virtual void OnMarketData() { } // => LastBarUpdate();
+        public virtual void OnSessionUpdate() 
+        {
+            //throw new Exception();
+        }
         public abstract void Dispose();
         public abstract void GetAndUpdateNextSessionValues(DateTime time, bool includeEndTimeStamp = true);
         public abstract bool? TryGetPartialHoliday();

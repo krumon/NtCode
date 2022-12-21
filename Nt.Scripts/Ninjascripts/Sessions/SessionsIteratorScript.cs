@@ -46,9 +46,9 @@ namespace Nt.Scripts.Ninjascripts
             if (!IsConfigured)
                 return;
 
-            _currentSessionEnd = _globalDataService.MinDate;
-            _sessionDateTmp = _globalDataService.MinDate;
-            UserTimeZoneInfo = _globalDataService.UserConfigureTimeZoneInfo;
+            _currentSessionEnd = _globalsDataService.MinDate;
+            _sessionDateTmp = _globalsDataService.MinDate;
+            UserTimeZoneInfo = _globalsDataService.UserConfigureTimeZoneInfo;
 
             this.TryGetObject<NinjaScriptBase>(ninjascriptObjects, out _ninjascript);
             this.TryGetObject<Bars>(ninjascriptObjects, out _bars);

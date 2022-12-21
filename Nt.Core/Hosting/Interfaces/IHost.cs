@@ -15,10 +15,15 @@ namespace Nt.Core.Hosting
         /// </summary>
         IServiceProvider Services { get; }
 
+        ///// <summary>
+        ///// Indicates if the session is updated.
+        ///// </summary>
+        //bool? IsInNewSession { get; }
+
         /// <summary>
-        /// Indicates if the session is updated.
+        /// Gets the sessions configured by the user.
         /// </summary>
-        bool? IsInNewSession { get; }
+        ISessionsService Sessions { get; }
 
         /// <summary>
         /// Configure the hosted services of the Host.
@@ -41,6 +46,8 @@ namespace Nt.Core.Hosting
         /// Execute the <see cref="IOnMarketDataService"/> services.
         /// </summary>
         void OnMarketData();
+
+        void OnBarUpdate(Action<object> print = null);
 
         /// <summary>
         /// Execute the <see cref="IOnSessionUpdateService"/> services.

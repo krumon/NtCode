@@ -1,4 +1,5 @@
 ﻿using Nt.Core.Events;
+using System;
 
 namespace Nt.Core.Services
 {
@@ -11,5 +12,6 @@ namespace Nt.Core.Services
         /// Methods used to update the service when the bar is closed or in each tick of the bar.        
         /// </summary>
         void OnSessionUpdate();
+        
     }
 }

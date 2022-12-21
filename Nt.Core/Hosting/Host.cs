@@ -1,4 +1,5 @@
-﻿using Nt.Core.Services;
+﻿using Nt.Core.DependencyInjection;
+using Nt.Core.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -21,7 +22,7 @@ namespace Nt.Core.Hosting
         //private readonly PhysicalFileProvider _defaultProvider;
         //private IEnumerable<IHostedService> _hostedServices;
         //private volatile bool _stopCalled;
-        private readonly ISessionsService _sessionsService;
+        private readonly ISessionsService _sessions;
         private readonly ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
         private readonly HostOptions _options;
 
@@ -30,7 +31,8 @@ namespace Nt.Core.Hosting
         #region Public properties
 
         public IServiceProvider Services { get; private set; }
-        public bool? IsInNewSession => _sessionsService?.Iterator?.IsSessionUpdated;
+        public ISessionsService Sessions { get { return _sessions; } }
+        //public bool? IsInNewSession => _sessions?.Iterator?.IsSessionUpdated;
 
         #endregion
 
@@ -45,7 +47,7 @@ namespace Nt.Core.Hosting
         internal Host(
             IServiceProvider services,
             HostOptions options,
-            ISessionsService sessionsService,
+            ISessionsService sessions,
             IEnumerable<IOnBarUpdateService> onBarUpdateServices,
             IEnumerable<IOnMarketDataService> onMarketDataServices
             )
@@ -54,13 +56,17 @@ namespace Nt.Core.Hosting
 
             Services = services ?? throw new ArgumentNullException(nameof(services));
             _options = options ?? throw new ArgumentNullException(nameof(options));
-            _sessionsService = sessionsService;
-            //_sessionsService?.Iterator?.SessionChanged += OnSessionUpdate;
+            _sessions = services.GetService<ISessionsService>();
 
-            if (onBarUpdateServices != null)
-                _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
-            if (onMarketDataServices != null)
-                _enumerableServices.TryAdd(typeof(IOnMarketDataService), onMarketDataServices);
+            //_sessionsService?.Iterator?.SessionChanged += OnSessionUpdate;
+            _enumerableServices.TryAdd(typeof(IOnBarUpdateService), new List<IOnBarUpdateService> { _sessions });
+            _enumerableServices.TryAdd(typeof(IOnMarketDataService), new List<IOnMarketDataService> { _sessions });
+            _enumerableServices.TryAdd(typeof(IOnSessionUpdateService), new List<IOnSessionUpdateService> { _sessions });
+
+            //if (onBarUpdateServices != null)
+            //    _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
+            //if (onMarketDataServices != null)
+            //    _enumerableServices.TryAdd(typeof(IOnMarketDataService), onMarketDataServices);
 
             // Fire IHostApplicationLifetime.Started
             //_lifetime.NotifyStarted();
@@ -75,11 +81,11 @@ namespace Nt.Core.Hosting
         {
             //_logger.Configuring();
 
-            IList<IHostedService> configureServices = (IList<IHostedService>)Services.GetServices<IHostedService>();
+            IList<IConfigureService> configureServices = (IList<IConfigureService>)Services.GetServices<IConfigureService>();
                         
             if (configureServices != null && configureServices.Count > 0)
             {
-                foreach (IHostedService configureService in configureServices)
+                foreach (IConfigureService configureService in configureServices)
                 {
                     // Fire IHostedService.Start
                     configureService.Configure(ninjascriptObjects);
@@ -94,11 +100,11 @@ namespace Nt.Core.Hosting
         {
             //_logger.ConfiguringWhenDataLoaded();
 
-            IList<IHostedService> dataLoadedServices = (IList<IHostedService>)Services.GetServices<IHostedService>();
+            IList<IDataLoadedService> dataLoadedServices = (IList<IDataLoadedService>)Services.GetServices<IDataLoadedService>();
 
             if (dataLoadedServices != null && dataLoadedServices.Count > 0)
             {
-                foreach (IHostedService dataLoadedService in dataLoadedServices)
+                foreach (IDataLoadedService dataLoadedService in dataLoadedServices)
                 {
                     // Fire IHostedService.Start
                     dataLoadedService.DataLoaded(ninjascriptObjects);
@@ -110,24 +116,36 @@ namespace Nt.Core.Hosting
 
         public void OnBarUpdate()
         {
-            ExecuteServices<IOnBarUpdateService>();
-            if (IsInNewSession == true)
+            //ExecuteServices<IOnBarUpdateService>();
+            //_sessions.OnBarUpdate();
+            Sessions.OnBarUpdate();
+            if (Sessions.IsInNewSession == true)
                 OnSessionUpdate();
+        }
+        public void OnBarUpdate(Action<object> print = null)
+        {
+            //ExecuteServices<IOnBarUpdateService>();
+            //_sessions.OnBarUpdate();
+            Sessions.OnBarUpdate();
+            if (Sessions.IsInNewSession == true)
+                OnSessionUpdate(print);
         }
         public void OnMarketData()
         { 
-            ExecuteServices<IOnMarketDataService>();
-            if (IsInNewSession == true)
+            //ExecuteServices<IOnMarketDataService>();
+            Sessions.OnMarketData();
+            if (Sessions.IsInNewSession == true)
                 OnSessionUpdate();
         }
         public void OnSessionUpdate(Action<object> print = null) 
-        { 
-            var onSessionUpdateServices = Services.GetServices<IOnSessionUpdateService>();
-            if (onSessionUpdateServices != null)
-                foreach (var service in onSessionUpdateServices)
-                    service.OnSessionUpdate();
+        {
+            ExecuteServices<IOnSessionUpdateService>(s => s.OnSessionUpdate());
+            //var onSessionUpdateServices = Services.GetServices<IOnSessionUpdateService>();
+            //if (onSessionUpdateServices != null)
+            //    foreach (var service in onSessionUpdateServices)
+            //        service.OnSessionUpdate();
 
-            print?.Invoke(_sessionsService.Iterator.ToString());
+            print?.Invoke(_sessions.Iterator.ToString());
         }
 
         public void Dispose()
@@ -212,22 +230,24 @@ namespace Nt.Core.Hosting
 
         #region Private methods
 
-        private void ExecuteServices<T>()
+        private void ExecuteServices<T>(Action<T> action)
         {
             if (!_enumerableServices.TryGetValue(typeof(T), out IEnumerable<object> services))
                 return;
+            if (services is IEnumerable<T> s)
+                ForEach(s, action);
 
-            switch (services)
-            {
-                case IEnumerable<IOnBarUpdateService> onBarUpdateServices:
-                    ForEach(onBarUpdateServices, (onBarUpdateService) => onBarUpdateService.OnBarUpdate());
-                    break;
+            //switch (services)
+            //{
+            //    case IEnumerable<IOnBarUpdateService> onBarUpdateServices:
+            //        ForEach(onBarUpdateServices, (onBarUpdateService) => onBarUpdateService.OnBarUpdate());
+            //        break;
 
-                case IEnumerable<IOnMarketDataService> onMarketDataServices:
-                    ForEach(onMarketDataServices, (onMarketDataService) => onMarketDataService.OnMarketData());
-                    break;
+            //    case IEnumerable<IOnMarketDataService> onMarketDataServices:
+            //        ForEach(onMarketDataServices, (onMarketDataService) => onMarketDataService.OnMarketData());
+            //        break;
 
-            }
+            //}
         }
 
         private void ForEach<T>(IEnumerable<T> services, Action<T> action)

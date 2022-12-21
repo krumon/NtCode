@@ -1,5 +1,4 @@
 ﻿using Nt.Core.Hosting;
-using Nt.Core.Options;
 using System;
 
 namespace Nt.Core.Services
@@ -11,7 +10,7 @@ namespace Nt.Core.Services
     {
         private readonly ISessionsIteratorService _iterator;
         private readonly ISessionsFiltersService _filters;
-
+        public bool IsInNewSession => _iterator.IsSessionUpdated;
         public SessionsService(ISessionsIteratorService iterator, ISessionsFiltersService filters)
         {
             _iterator = iterator ?? throw new ArgumentNullException(nameof(iterator));
@@ -19,40 +18,32 @@ namespace Nt.Core.Services
         }
 
         public ISessionsIteratorService Iterator => _iterator;
-
         public ISessionsFiltersService Filters => _filters;
-
-        public bool IsConfigured => Iterator.IsConfigured;
-
-        public bool IsDataLoaded => Iterator.IsDataLoaded;
-
-        public void Configure(object[] ninjascriptObjects)
+        public bool IsConfigured => true;
+        public bool IsDataLoaded => true;
+        public virtual void Configure(object[] ninjascriptObjects) { }
+        public virtual void DataLoaded(object[] ninjascriptObjects) { }
+        public virtual void Dispose() { }
+        public virtual void OnBarUpdate()
         {
-            //Iterator.Configure(ninjascriptObjects);
+            Iterator.OnBarUpdate();
+            if (Filters.IsEnabled)
+            {
+
+            }
         }
-
-        public void DataLoaded(object[] ninjascriptObjects)
+        public virtual void OnMarketData()
         {
-            //Iterator.DataLoaded(ninjascriptObjects);
+            Iterator?.OnMarketData();
+            if (Filters.IsEnabled)
+            {
+
+            }
         }
-
-        public void Dispose()
+        public virtual void OnSessionUpdate()
         {
-        }
-
-        public void OnBarUpdate()
-        {
-            //Iterator.OnBarUpdate();
-        }
-
-        public void OnMarketData()
-        {
-            //Iterator.OnMarketData();
-        }
-
-        public void OnSessionUpdate()
-        {
-            //Iterator?.OnSessionUpdate();
+            Iterator.OnSessionUpdate();
+            Filters.OnSessionUpdate();
         }
     }
 }
