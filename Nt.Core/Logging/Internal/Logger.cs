@@ -8,7 +8,7 @@ namespace Nt.Core.Logging.Internal
     {
         public LoggerInformation[] Loggers { get; set; }
         public MessageLogger[] MessageLoggers { get; set; }
-        public ScopeLogger[] ScopeLoggers { get; set; }
+        //public ScopeLogger[] ScopeLoggers { get; set; }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {

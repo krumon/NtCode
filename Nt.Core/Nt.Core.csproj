@@ -142,7 +142,9 @@
     <Compile Include="Logging\DefaultLoggerLevelConfigureOptions.cs" />
     <Compile Include="Logging\ILoggerFactory.cs" />
     <Compile Include="Logging\Internal\Logger.cs" />
+    <Compile Include="Logging\Internal\LoggerRuleSelector.cs" />
     <Compile Include="Logging\Internal\LoggerStructs.cs" />
+    <Compile Include="Logging\Internal\ProviderAliasUtilities.cs" />
     <Compile Include="Logging\Internal\TypeNameHelper.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
@@ -150,6 +152,7 @@
     <Compile Include="Logging\LoggerFilterRule.cs" />
     <Compile Include="Logging\LoggingBuilderExtensions.cs" />
     <Compile Include="Logging\LoggingServiceCollectionExtensions.cs" />
+    <Compile Include="Logging\ProviderAliasAttribute.cs" />
     <Compile Include="Options\IConfigureOptions.cs" />
     <Compile Include="Options\ConfigureOptions.cs" />
     <Compile Include="Services\SessionsFilters\ConfigureSessionsFiltersOptions.cs" />

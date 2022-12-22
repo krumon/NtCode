@@ -14,7 +14,7 @@ namespace Nt.Core.Logging
         private readonly List<ProviderRegistration> _providerRegistrations = new List<ProviderRegistration>();
         private readonly object _sync = new object();
         private volatile bool _disposed;
-        private IDisposable _changeTokenRegistration;
+        private readonly IDisposable _changeTokenRegistration;
         private LoggerFilterOptions _filterOptions;
         //private LoggerFactoryScopeProvider _scopeProvider;
         //private LoggerFactoryOptions _factoryOptions;
@@ -22,8 +22,22 @@ namespace Nt.Core.Logging
         /// <summary>
         /// Creates a new <see cref="LoggerFactory"/> instance.
         /// </summary>
-        public LoggerFactory() //: this(Array.Empty<ILoggerProvider>())
+        public LoggerFactory() : this(Array.Empty<ILoggerProvider>())
         {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="LoggerFactory"/> instance.
+        /// </summary>
+        /// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
+        /// <param name="filterOption">The filter option to use.</param>
+        /// <param name="options">The <see cref="LoggerFactoryOptions"/>.</param>
+        public LoggerFactory(IEnumerable<ILoggerProvider> providers)
+        {
+            foreach (ILoggerProvider provider in providers)
+            {
+                AddProviderRegistration(provider, dispose: false);
+            }
         }
 
         ///// <summary>
@@ -52,34 +66,34 @@ namespace Nt.Core.Logging
         //{
         //}
 
-        //    /// <summary>
-        //    /// Creates a new <see cref="LoggerFactory"/> instance.
-        //    /// </summary>
-        //    /// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
-        //    /// <param name="filterOption">The filter option to use.</param>
-        //    /// <param name="options">The <see cref="LoggerFactoryOptions"/>.</param>
-        //    public LoggerFactory(IEnumerable<ILoggerProvider> providers, IOptionsMonitor<LoggerFilterOptions> filterOption, IOptions<LoggerFactoryOptions> options = null)
+        ///// <summary>
+        ///// Creates a new <see cref="LoggerFactory"/> instance.
+        ///// </summary>
+        ///// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
+        ///// <param name="filterOption">The filter option to use.</param>
+        ///// <param name="options">The <see cref="LoggerFactoryOptions"/>.</param>
+        //public LoggerFactory(IEnumerable<ILoggerProvider> providers, IOptionsMonitor<LoggerFilterOptions> filterOption, IOptions<LoggerFactoryOptions> options = null)
+        //{
+        //    _factoryOptions = options == null || options.Value == null ? new LoggerFactoryOptions() : options.Value;
+
+        //    const ActivityTrackingOptions ActivityTrackingOptionsMask = ~(ActivityTrackingOptions.SpanId | ActivityTrackingOptions.TraceId | ActivityTrackingOptions.ParentId |
+        //                                                                  ActivityTrackingOptions.TraceFlags | ActivityTrackingOptions.TraceState | ActivityTrackingOptions.Tags
+        //                                                                  | ActivityTrackingOptions.Baggage);
+
+
+        //    if ((_factoryOptions.ActivityTrackingOptions & ActivityTrackingOptionsMask) != 0)
         //    {
-        //        _factoryOptions = options == null || options.Value == null ? new LoggerFactoryOptions() : options.Value;
-
-        //        const ActivityTrackingOptions ActivityTrackingOptionsMask = ~(ActivityTrackingOptions.SpanId | ActivityTrackingOptions.TraceId | ActivityTrackingOptions.ParentId |
-        //                                                                      ActivityTrackingOptions.TraceFlags | ActivityTrackingOptions.TraceState | ActivityTrackingOptions.Tags
-        //                                                                      | ActivityTrackingOptions.Baggage);
-
-
-        //        if ((_factoryOptions.ActivityTrackingOptions & ActivityTrackingOptionsMask) != 0)
-        //        {
-        //            throw new ArgumentException(SR.Format(SR.InvalidActivityTrackingOptions, _factoryOptions.ActivityTrackingOptions), nameof(options));
-        //        }
-
-        //        foreach (ILoggerProvider provider in providers)
-        //        {
-        //            AddProviderRegistration(provider, dispose: false);
-        //        }
-
-        //        _changeTokenRegistration = filterOption.OnChange(RefreshFilters);
-        //        RefreshFilters(filterOption.CurrentValue);
+        //        throw new ArgumentException(SR.Format(SR.InvalidActivityTrackingOptions, _factoryOptions.ActivityTrackingOptions), nameof(options));
         //    }
+
+        //    foreach (ILoggerProvider provider in providers)
+        //    {
+        //        AddProviderRegistration(provider, dispose: false);
+        //    }
+
+        //    _changeTokenRegistration = filterOption.OnChange(RefreshFilters);
+        //    RefreshFilters(filterOption.CurrentValue);
+        //}
 
         /// <summary>
         /// Creates new instance of <see cref="ILoggerFactory"/> configured using provided <paramref name="configure"/> delegate.
@@ -88,10 +102,16 @@ namespace Nt.Core.Logging
         /// <returns>The <see cref="ILoggerFactory"/> that was created.</returns>
         public static ILoggerFactory Create(Action<ILoggingBuilder> configure)
         {
+            // Create the service collection
             var serviceCollection = new ServiceCollection();
+            // Add required services (ILoggerFactory, ILogger<> and IConfigureOptions<ConfigureFiltersOptions>)
+            // and create the ILoggingBuilder with the configured services to add the services to the collection.
             serviceCollection.AddLogging(configure);
+            // Create a service provider with the required and configure services.
             ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
+            // Gets the ILoggerFactory.
             ILoggerFactory loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            // Returns the disposing logger factory.
             return new DisposingLoggerFactory(loggerFactory, serviceProvider);
         }
 
@@ -103,7 +123,7 @@ namespace Nt.Core.Logging
                 foreach (KeyValuePair<string, Logger> registeredLogger in _loggers)
                 {
                     Logger logger = registeredLogger.Value;
-                    (logger.MessageLoggers, logger.ScopeLoggers) = ApplyFilters(logger.Loggers);
+                    logger.MessageLoggers = ApplyFilters(logger.Loggers);
                 }
             }
         }
@@ -129,7 +149,7 @@ namespace Nt.Core.Logging
                         Loggers = CreateLoggers(categoryName),
                     };
 
-                    (logger.MessageLoggers, logger.ScopeLoggers) = ApplyFilters(logger.Loggers);
+                    logger.MessageLoggers = ApplyFilters(logger.Loggers);
 
                     _loggers[categoryName] = logger;
                 }
@@ -168,7 +188,7 @@ namespace Nt.Core.Logging
                     loggerInformation[newLoggerIndex] = new LoggerInformation(provider, existingLogger.Key);
 
                     logger.Loggers = loggerInformation;
-                    (logger.MessageLoggers, logger.ScopeLoggers) = ApplyFilters(logger.Loggers);
+                    logger.MessageLoggers = ApplyFilters(logger.Loggers);
                 }
             }
         }
@@ -202,38 +222,38 @@ namespace Nt.Core.Logging
             return loggers;
         }
 
-        private (MessageLogger[] MessageLoggers, ScopeLogger[] ScopeLoggers) ApplyFilters(LoggerInformation[] loggers)
+        private MessageLogger[] ApplyFilters(LoggerInformation[] loggers)
         {
             var messageLoggers = new List<MessageLogger>();
-            List<ScopeLogger> scopeLoggers = _filterOptions.CaptureScopes ? new List<ScopeLogger>() : null;
+            //List<ScopeLogger> scopeLoggers = _filterOptions.CaptureScopes ? new List<ScopeLogger>() : null;
 
-            //foreach (LoggerInformation loggerInformation in loggers)
-            //{
-            //    LoggerRuleSelector.Select(_filterOptions,
-            //        loggerInformation.ProviderType,
-            //        loggerInformation.Category,
-            //        out LogLevel? minLevel,
-            //        out Func<string, string, LogLevel, bool> filter);
+            foreach (LoggerInformation loggerInformation in loggers)
+            {
+                LoggerRuleSelector.Select(_filterOptions,
+                    loggerInformation.ProviderType,
+                    loggerInformation.Category,
+                    out LogLevel? minLevel,
+                    out Func<string, string, LogLevel, bool> filter);
 
-            //    if (minLevel != null && minLevel > LogLevel.Critical)
-            //    {
-            //        continue;
-            //    }
+                if (minLevel != null && minLevel > LogLevel.Critical)
+                {
+                    continue;
+                }
 
-            //    messageLoggers.Add(new MessageLogger(loggerInformation.Logger, loggerInformation.Category, loggerInformation.ProviderType.FullName, minLevel, filter));
+                messageLoggers.Add(new MessageLogger(loggerInformation.Logger, loggerInformation.Category, loggerInformation.ProviderType.FullName, minLevel, filter));
 
-            //    if (!loggerInformation.ExternalScope)
-            //    {
-            //        scopeLoggers?.Add(new ScopeLogger(logger: loggerInformation.Logger, externalScopeProvider: null));
-            //    }
-            //}
+                //if (!loggerInformation.ExternalScope)
+                //{
+                //    scopeLoggers?.Add(new ScopeLogger(logger: loggerInformation.Logger, externalScopeProvider: null));
+                //}
+            }
 
             //if (_scopeProvider != null)
             //{
             //    scopeLoggers?.Add(new ScopeLogger(logger: null, externalScopeProvider: _scopeProvider));
             //}
 
-            return (messageLoggers.ToArray(), scopeLoggers?.ToArray());
+            return messageLoggers.ToArray();
         }
 
         /// <summary>
