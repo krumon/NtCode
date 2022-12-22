@@ -92,7 +92,7 @@ namespace Nt.Core.DependencyInjection
             if (_disposed)
                 throw new ObjectDisposedException(nameof(ServiceProvider));
 
-            IList<T> result = (IList<T>)CreateEnumerableService<T>(typeof(T));
+            IList<T> result = (IList<T>)CreateServices<T>(typeof(T));
 
             return result;
         }
@@ -105,15 +105,16 @@ namespace Nt.Core.DependencyInjection
         {
             Type serviceType = descriptor.ServiceType;
 
-            if (serviceType == typeof(IHost))
+            if (descriptor.ServiceType.IsGenericType && !descriptor.ServiceType.IsConstructedGenericType)
                 return;
-
-            if (serviceType.IsGenericType && !serviceType.IsConstructedGenericType)
-                throw new Exception();
 
             try
             {
-                //object result = _realizedServices.GetOrAdd(serviceType, _createService);
+                ServiceCallSite callSite = CallSiteFactory.GetCallSite(descriptor, new CallSiteChain());
+                if (callSite != null)
+                {
+                    OnCreate(callSite);
+                }
             }
             catch (Exception e)
             {
@@ -133,16 +134,22 @@ namespace Nt.Core.DependencyInjection
             return null;
         }
 
-        private IEnumerable<T> CreateEnumerableService<T>(Type serviceType)
+        private IEnumerable<T> CreateServices<T>(Type serviceType)
         {
             if (!(typeof(T) == serviceType))
                 throw new InvalidOperationException();
 
+            Type[] serviceTypeGenericArguments = serviceType.GetGenericArguments();
+
             IList<T> list = new List<T>();
             foreach (KeyValuePair<Type,object> service in _realizedServices)
-                if (serviceType.IsAssignableFrom(service.Value.GetType()))
+                if (serviceType.IsAssignableFrom(service.Value?.GetType()))
                     list.Add((T)service.Value);
             return list.Count > 0 ? list : null;
+        }
+
+        private void OnCreate(ServiceCallSite callSite)
+        {
         }
 
         #endregion

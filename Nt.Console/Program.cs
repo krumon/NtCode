@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
+using Nt.Core.Logging;
 using Nt.Core.Services;
 using Nt.Scripts;
 using Nt.Scripts.Ninjascripts.Design;
@@ -16,7 +18,11 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
+            //System.IServiceProvider sc;
+            //sc.GetServices
             
+
+            //Microsoft.Extensions.DependencyInjection.ServiceProvider
             //Microsoft.Extensions.DependencyInjection.ServiceDescriptor
             //Microsoft.Extensions.Options.OptionsBuilder
             IHost host = Hosting.CreateDefaultBuilder()
@@ -27,6 +33,7 @@ namespace ConsoleApp
                 .ConfigureServices((serviceCollection) => 
                 {
                     serviceCollection
+                    .AddLogging()
                     .Add<IGlobalsDataService>(new GlobalsDataDesignScript())
                     .Add<IChartDataService, ChartDataDesignScript>()
                     .AddSessions<ISessionsService>((builder) =>
@@ -41,7 +48,7 @@ namespace ConsoleApp
                     ;
                 })
                 .Build();
-
+            Nt.Core.Logging.ILogger<Program> logger = host.Services.GetService<Nt.Core.Logging.ILogger<Program>>();
             var globalsData = host.Services.GetService<IGlobalsDataService>();
             var sessionsIterator = host.Services.GetService<ISessionsIteratorService>();
             var sessionsFilters = host.Services.GetService<ISessionsFiltersService>();

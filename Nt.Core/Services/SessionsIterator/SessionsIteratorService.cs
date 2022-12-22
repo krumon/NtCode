@@ -90,6 +90,24 @@ namespace Nt.Core.Services
             return _sessionDateTmp;
         }
 
+        public string ToLongString()
+        {
+            string holidayText;
+            if (IsPartialHoliday == true)
+            {
+                holidayText = "Partial Holiday. ";
+                if (IsLateBegin == true)
+                    holidayText += "Late Begin.";
+                if (IsEarlyEnd == true)
+                    holidayText += "Early End";
+            }
+            else
+                holidayText = "Regular Session";
+
+            return $"Session {Count}: Begin: {ActualSessionBegin.ToShortDateString()} End: {ActualSessionEnd.ToShortDateString()} | {holidayText}";
+        }
+
+
         #endregion
 
         #region Public events
@@ -128,23 +146,6 @@ namespace Nt.Core.Services
             else
                 IsSessionUpdated = false;
             
-        }
-
-        public override string ToString()
-        {
-            string holidayText;
-            if (IsPartialHoliday == true)
-            {
-                holidayText = "Partial Holiday. ";
-                if (IsLateBegin == true)
-                    holidayText += "Late Begin.";
-                if (IsEarlyEnd == true)
-                    holidayText += "Early End";
-            }
-            else
-                holidayText = "Regular Session";
-
-            return $"Session {Count}: Begin: {ActualSessionBegin.ToShortDateString()} End: {ActualSessionEnd.ToShortDateString()} | {holidayText}";
         }
 
         #endregion

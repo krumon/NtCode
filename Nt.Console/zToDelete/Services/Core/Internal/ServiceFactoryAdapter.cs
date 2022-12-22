@@ -1,5 +1,4 @@
-﻿using Nt.Core.Hosting;
-using System;
+﻿using System;
 
 namespace ConsoleApp.Internal
 {
