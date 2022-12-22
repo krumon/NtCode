@@ -153,8 +153,30 @@
     <Compile Include="Logging\LoggingBuilderExtensions.cs" />
     <Compile Include="Logging\LoggingServiceCollectionExtensions.cs" />
     <Compile Include="Logging\ProviderAliasAttribute.cs" />
+    <Compile Include="Options\ChangeToken.cs" />
+    <Compile Include="Options\ConfigureNamedOptions.cs" />
+    <Compile Include="Options\IChangeToken.cs" />
+    <Compile Include="Options\IConfigureNamedOptions.cs" />
     <Compile Include="Options\IConfigureOptions.cs" />
     <Compile Include="Options\ConfigureOptions.cs" />
+    <Compile Include="Options\IOptions.cs" />
+    <Compile Include="Options\IOptionsChangeTokenSource.cs" />
+    <Compile Include="Options\IOptionsMonitor.cs" />
+    <Compile Include="Options\IOptionsMonitorCache.cs" />
+    <Compile Include="Options\IOptionsSnapshot.cs" />
+    <Compile Include="Options\IValidateOptions.cs" />
+    <Compile Include="Options\IPostConfigureOptions.cs" />
+    <Compile Include="Options\IOptionsFactory.cs" />
+    <Compile Include="Options\Options.cs" />
+    <Compile Include="Options\OptionsBuilder.cs" />
+    <Compile Include="Options\OptionsCache.cs" />
+    <Compile Include="Options\OptionsFactory.cs" />
+    <Compile Include="Options\OptionsManager.cs" />
+    <Compile Include="Options\OptionsMonitor.cs" />
+    <Compile Include="Options\OptionsWrapper.cs" />
+    <Compile Include="Options\PostConfigureOptions.cs" />
+    <Compile Include="Options\ValidateOptions.cs" />
+    <Compile Include="Options\ValidateOptionsResult.cs" />
     <Compile Include="Services\SessionsFilters\ConfigureSessionsFiltersOptions.cs" />
     <Compile Include="Services\SessionsIterator\ConfigureSessionsIteratorOptions.cs" />
     <Compile Include="Services\Sessions\ConfigureSessionsOptions.cs" />
@@ -289,6 +311,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Options\Internal\" />
     <Folder Include="Services\LoggerToFile\" />
   </ItemGroup>
   <ItemGroup>
