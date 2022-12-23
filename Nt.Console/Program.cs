@@ -49,6 +49,7 @@ namespace ConsoleApp
                 })
                 .Build();
             Nt.Core.Logging.ILogger<Program> logger = host.Services.GetService<Nt.Core.Logging.ILogger<Program>>();
+            logger.LogInformationSource("The Host is built");
             var globalsData = host.Services.GetService<IGlobalsDataService>();
             var sessionsIterator = host.Services.GetService<ISessionsIteratorService>();
             var sessionsFilters = host.Services.GetService<ISessionsFiltersService>();

@@ -181,11 +181,11 @@ namespace Nt.Core.DependencyInjection.Internal
             {
                 callSiteChain.CheckCircularDependency(serviceType);
 
-                //ServiceCallSite callSite = TryCreateExact(serviceType, callSiteChain) ??
-                //                           TryCreateOpenGeneric(serviceType, callSiteChain) ??
-                //                           TryCreateEnumerable(serviceType, callSiteChain);
+                ServiceCallSite callSite = TryCreateExact(serviceType, callSiteChain) ??
+                                           TryCreateOpenGeneric(serviceType, callSiteChain) ??
+                                           TryCreateEnumerable(serviceType, callSiteChain);
 
-                ServiceCallSite callSite = TryCreateExact(serviceType, callSiteChain);
+                //ServiceCallSite callSite = TryCreateExact(serviceType, callSiteChain);
 
                 return callSite;
             }

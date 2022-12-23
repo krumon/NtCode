@@ -96,6 +96,7 @@
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
+    <Reference Include="System.Workflow.Runtime" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -142,6 +143,19 @@
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
     <Compile Include="DependencyInjection\Base\BaseServiceCollection.cs" />
+    <Compile Include="Logging\Console\AnsiParser.cs" />
+    <Compile Include="Logging\Console\ConsoleFormatter.cs" />
+    <Compile Include="Logging\Console\BaseConsoleFormatter.cs" />
+    <Compile Include="Logging\Console\ConsoleFormatterOptions.cs" />
+    <Compile Include="Logging\Console\BaseConsoleFormatterOptions.cs" />
+    <Compile Include="Logging\Console\Internal\ConsoleLogger.cs" />
+    <Compile Include="Logging\Console\ConsoleLoggerOptions.cs" />
+    <Compile Include="Logging\Console\ConsoleLoggerProvider.cs" />
+    <Compile Include="Logging\Console\Internal\ConsoleLoggerProcessor.cs" />
+    <Compile Include="Logging\Console\Internal\FormatterOptionsMonitor.cs" />
+    <Compile Include="Logging\Console\LogEntry.cs" />
+    <Compile Include="Logging\Console\LoggerColorBehavior.cs" />
+    <Compile Include="Logging\Console\TextWriterExtensions.cs" />
     <Compile Include="Logging\DefaultLoggerLevelConfigureOptions.cs" />
     <Compile Include="Logging\ILoggerFactory.cs" />
     <Compile Include="Logging\Internal\Logger.cs" />
