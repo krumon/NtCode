@@ -13,7 +13,7 @@ namespace Nt.Core.DependencyInjection
     public sealed class ServiceProvider : IServiceProvider, IDisposable
     {
 
-        #region Private members
+        #region Members
 
         // Check the service provider is disposed.
         private bool _disposed;
@@ -23,6 +23,9 @@ namespace Nt.Core.DependencyInjection
         internal CallSiteFactory CallSiteFactory { get; }
         // Delagate to create the service
         private Func<Type,object> _createService;
+
+        internal static bool VerifyOpenGenericServiceTrimmability { get; } =
+            AppContext.TryGetSwitch("Nt.Core.DependencyInjection.VerifyOpenGenericServiceTrimmability", out bool verifyOpenGenerics) ? verifyOpenGenerics : false;
 
         #endregion
 

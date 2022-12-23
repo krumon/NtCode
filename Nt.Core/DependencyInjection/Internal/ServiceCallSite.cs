@@ -13,9 +13,15 @@ namespace Nt.Core.DependencyInjection.Internal
         {
         }
 
+        protected ServiceCallSite(ResultCache cache)
+        {
+            Cache = cache;
+        }
+
         public abstract Type ServiceType { get; }
         public abstract Type ImplementationType { get; }
         public abstract CallSiteKind Kind { get;}
+        public ResultCache Cache { get; }
         public object Value { get; set; }
 
         public bool CaptureDisposable =>
@@ -62,9 +68,10 @@ namespace Nt.Core.DependencyInjection.Internal
         internal ServiceCallSite[] ServiceCallSites { get; }
 
         public IEnumerableCallSite(
+            ResultCache cache,
             Type itemType, 
             ServiceCallSite[] serviceCallSites) 
-            : base()
+            : base(cache)
         {
             ItemType = itemType;
             ServiceCallSites = serviceCallSites;
@@ -124,4 +131,5 @@ namespace Nt.Core.DependencyInjection.Internal
         public override Type ImplementationType => null;
         public override CallSiteKind Kind { get; } = CallSiteKind.Factory;
     }
+
 }

@@ -20,8 +20,8 @@ namespace ConsoleApp
         {
             //System.IServiceProvider sc;
             //sc.GetServices
-            
-
+            Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
+            Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             //Microsoft.Extensions.DependencyInjection.ServiceProvider
             //Microsoft.Extensions.DependencyInjection.ServiceDescriptor
             //Microsoft.Extensions.Options.OptionsBuilder

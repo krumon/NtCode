@@ -13,18 +13,18 @@ namespace Nt.Core.DependencyInjection
         #region Public properties
 
         /// <summary>
-        /// Gets the ninjascript service type.
+        /// Gets the service type.
         /// </summary>
         public Type ServiceType { get; }
 
         /// <summary>
-        /// Gets the ninjascript service implementation type. 
+        /// Gets the service implementation type. 
         /// Can be null.
         /// </summary>
         public Type ImplementationType { get; }
 
         /// <summary>
-        /// Gets the ninjascript service implementation instance. 
+        /// Gets the service implementation instance. 
         /// Can be null.
         /// </summary>
         public object ImplementationInstance { get; }
@@ -33,6 +33,11 @@ namespace Nt.Core.DependencyInjection
         /// Gets the delegate to construct an object instance.
         /// </summary>
         public Func<IServiceProvider, object> ImplementationFactory { get; }
+
+        /// <summary>
+        /// Gets the lifetime of the service.
+        /// </summary>
+        public ServiceLifetime Lifetime { get; }
 
         #endregion
 
