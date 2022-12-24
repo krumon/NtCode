@@ -1,13 +1,8 @@
 ﻿using Nt.Core.Logging.Console.Internal;
 using Nt.Core.Options;
 using System;
-using System.Activities.Statements;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nt.Core.Logging.Console
 {

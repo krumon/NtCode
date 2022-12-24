@@ -1,5 +1,6 @@
 ﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Logging.Internal;
+using Nt.Core.Options;
 using System;
 using System.Collections.Generic;
 
@@ -16,8 +17,8 @@ namespace Nt.Core.Logging
         private volatile bool _disposed;
         private readonly IDisposable _changeTokenRegistration;
         private LoggerFilterOptions _filterOptions;
+        private readonly LoggerFactoryOptions _factoryOptions; // use for create LoggerFactoryScopeProvider
         //private LoggerFactoryScopeProvider _scopeProvider;
-        //private LoggerFactoryOptions _factoryOptions;
 
         /// <summary>
         /// Creates a new <see cref="LoggerFactory"/> instance.
@@ -30,70 +31,56 @@ namespace Nt.Core.Logging
         /// Creates a new <see cref="LoggerFactory"/> instance.
         /// </summary>
         /// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
+        public LoggerFactory(IEnumerable<ILoggerProvider> providers) : this(providers, new StaticFilterOptionsMonitor(new LoggerFilterOptions()))
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="LoggerFactory"/> instance.
+        /// </summary>
+        /// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
+        /// <param name="filterOptions">The filter options to use.</param>
+        public LoggerFactory(IEnumerable<ILoggerProvider> providers, LoggerFilterOptions filterOptions) : this(providers, new StaticFilterOptionsMonitor(filterOptions))
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="LoggerFactory"/> instance.
+        /// </summary>
+        /// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
+        /// <param name="filterOption">The filter option to use.</param>
+        public LoggerFactory(IEnumerable<ILoggerProvider> providers, IOptionsMonitor<LoggerFilterOptions> filterOption) : this(providers, filterOption, null)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="LoggerFactory"/> instance.
+        /// </summary>
+        /// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
         /// <param name="filterOption">The filter option to use.</param>
         /// <param name="options">The <see cref="LoggerFactoryOptions"/>.</param>
-        public LoggerFactory(IEnumerable<ILoggerProvider> providers)
+        public LoggerFactory(IEnumerable<ILoggerProvider> providers, IOptionsMonitor<LoggerFilterOptions> filterOption, IOptions<LoggerFactoryOptions> options = null)
         {
+            _factoryOptions = options == null || options.Value == null ? new LoggerFactoryOptions() : options.Value;
+
+            const ActivityTrackingOptions ActivityTrackingOptionsMask = ~(ActivityTrackingOptions.SpanId | ActivityTrackingOptions.TraceId | ActivityTrackingOptions.ParentId |
+                                                                          ActivityTrackingOptions.TraceFlags | ActivityTrackingOptions.TraceState | ActivityTrackingOptions.Tags
+                                                                          | ActivityTrackingOptions.Baggage);
+
+
+            if ((_factoryOptions.ActivityTrackingOptions & ActivityTrackingOptionsMask) != 0)
+            {
+                throw new ArgumentException("Invalid Activity Tracking Options");
+            }
+
             foreach (ILoggerProvider provider in providers)
             {
                 AddProviderRegistration(provider, dispose: false);
             }
+
+            _changeTokenRegistration = filterOption.OnChange(RefreshFilters);
+            RefreshFilters(filterOption.CurrentValue);
         }
-
-        ///// <summary>
-        ///// Creates a new <see cref="LoggerFactory"/> instance.
-        ///// </summary>
-        ///// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
-        //public LoggerFactory(IEnumerable<ILoggerProvider> providers) : this(providers, new StaticFilterOptionsMonitor(new LoggerFilterOptions()))
-        //{
-        //}
-
-        ///// <summary>
-        ///// Creates a new <see cref="LoggerFactory"/> instance.
-        ///// </summary>
-        ///// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
-        ///// <param name="filterOptions">The filter options to use.</param>
-        //public LoggerFactory(IEnumerable<ILoggerProvider> providers, LoggerFilterOptions filterOptions) : this(providers, new StaticFilterOptionsMonitor(filterOptions))
-        //{
-        //}
-
-        ///// <summary>
-        ///// Creates a new <see cref="LoggerFactory"/> instance.
-        ///// </summary>
-        ///// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
-        ///// <param name="filterOption">The filter option to use.</param>
-        //public LoggerFactory(IEnumerable<ILoggerProvider> providers, IOptionsMonitor<LoggerFilterOptions> filterOption) : this(providers, filterOption, null)
-        //{
-        //}
-
-        ///// <summary>
-        ///// Creates a new <see cref="LoggerFactory"/> instance.
-        ///// </summary>
-        ///// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
-        ///// <param name="filterOption">The filter option to use.</param>
-        ///// <param name="options">The <see cref="LoggerFactoryOptions"/>.</param>
-        //public LoggerFactory(IEnumerable<ILoggerProvider> providers, IOptionsMonitor<LoggerFilterOptions> filterOption, IOptions<LoggerFactoryOptions> options = null)
-        //{
-        //    _factoryOptions = options == null || options.Value == null ? new LoggerFactoryOptions() : options.Value;
-
-        //    const ActivityTrackingOptions ActivityTrackingOptionsMask = ~(ActivityTrackingOptions.SpanId | ActivityTrackingOptions.TraceId | ActivityTrackingOptions.ParentId |
-        //                                                                  ActivityTrackingOptions.TraceFlags | ActivityTrackingOptions.TraceState | ActivityTrackingOptions.Tags
-        //                                                                  | ActivityTrackingOptions.Baggage);
-
-
-        //    if ((_factoryOptions.ActivityTrackingOptions & ActivityTrackingOptionsMask) != 0)
-        //    {
-        //        throw new ArgumentException(SR.Format(SR.InvalidActivityTrackingOptions, _factoryOptions.ActivityTrackingOptions), nameof(options));
-        //    }
-
-        //    foreach (ILoggerProvider provider in providers)
-        //    {
-        //        AddProviderRegistration(provider, dispose: false);
-        //    }
-
-        //    _changeTokenRegistration = filterOption.OnChange(RefreshFilters);
-        //    RefreshFilters(filterOption.CurrentValue);
-        //}
 
         /// <summary>
         /// Creates new instance of <see cref="ILoggerFactory"/> configured using provided <paramref name="configure"/> delegate.

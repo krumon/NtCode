@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using Nt.Core.DependencyInjection;
@@ -20,6 +21,7 @@ namespace ConsoleApp
         {
             //System.IServiceProvider sc;
             //sc.GetServices
+            Microsoft.Extensions.Logging.ConsoleLoggerExtensions
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             //Microsoft.Extensions.DependencyInjection.ServiceProvider

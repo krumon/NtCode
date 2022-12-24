@@ -143,11 +143,13 @@
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
     <Compile Include="DependencyInjection\Base\BaseServiceCollection.cs" />
+    <Compile Include="Logging\ActivityTrackingOptions.cs" />
     <Compile Include="Logging\Console\AnsiParser.cs" />
     <Compile Include="Logging\Console\ConsoleFormatter.cs" />
     <Compile Include="Logging\Console\BaseConsoleFormatter.cs" />
     <Compile Include="Logging\Console\ConsoleFormatterOptions.cs" />
     <Compile Include="Logging\Console\BaseConsoleFormatterOptions.cs" />
+    <Compile Include="Logging\Console\ConsoleLoggerExtensions.cs" />
     <Compile Include="Logging\Console\Internal\ConsoleLogger.cs" />
     <Compile Include="Logging\Console\ConsoleLoggerOptions.cs" />
     <Compile Include="Logging\Console\ConsoleLoggerProvider.cs" />
@@ -162,9 +164,11 @@
     <Compile Include="Logging\Internal\LoggerRuleSelector.cs" />
     <Compile Include="Logging\Internal\LoggerStructs.cs" />
     <Compile Include="Logging\Internal\ProviderAliasUtilities.cs" />
+    <Compile Include="Logging\Internal\StaticFilterOptionsMonitor.cs" />
     <Compile Include="Logging\Internal\TypeNameHelper.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
+    <Compile Include="Logging\LoggerFactoryOptions.cs" />
     <Compile Include="Logging\LoggerFilterOptions.cs" />
     <Compile Include="Logging\LoggerFilterRule.cs" />
     <Compile Include="Logging\LoggingBuilderExtensions.cs" />
@@ -190,6 +194,7 @@
     <Compile Include="Options\OptionsFactory.cs" />
     <Compile Include="Options\OptionsManager.cs" />
     <Compile Include="Options\OptionsMonitor.cs" />
+    <Compile Include="Options\OptionsMonitorExtensions.cs" />
     <Compile Include="Options\OptionsWrapper.cs" />
     <Compile Include="Options\PostConfigureOptions.cs" />
     <Compile Include="Options\ValidateOptions.cs" />
@@ -328,7 +333,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Options\Internal\" />
     <Folder Include="Services\LoggerToFile\" />
   </ItemGroup>
   <ItemGroup>
