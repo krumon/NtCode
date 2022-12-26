@@ -160,9 +160,11 @@
     <Compile Include="Logging\Console\TextWriterExtensions.cs" />
     <Compile Include="Logging\DefaultLoggerLevelConfigureOptions.cs" />
     <Compile Include="Logging\ILoggerFactory.cs" />
+    <Compile Include="Logging\Internal\FormattedLogValues.cs" />
     <Compile Include="Logging\Internal\Logger.cs" />
     <Compile Include="Logging\Internal\LoggerRuleSelector.cs" />
     <Compile Include="Logging\Internal\LoggerStructs.cs" />
+    <Compile Include="Logging\Internal\LogValuesFormatter.cs" />
     <Compile Include="Logging\Internal\ProviderAliasUtilities.cs" />
     <Compile Include="Logging\Internal\StaticFilterOptionsMonitor.cs" />
     <Compile Include="Logging\Internal\TypeNameHelper.cs" />
