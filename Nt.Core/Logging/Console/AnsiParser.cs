@@ -132,22 +132,22 @@ namespace Nt.Core.Logging.Console
         {
             switch(color)
             {
-                case ConsoleColor.Black: return "\x1B[30m";
-                case ConsoleColor.DarkRed: return "\x1B[31m";
-                case ConsoleColor.DarkGreen: return "\x1B[32m";
-                case ConsoleColor.DarkYellow: return "\x1B[33m";
-                case ConsoleColor.DarkBlue: return "\x1B[34m";
-                case ConsoleColor.DarkMagenta: return "\x1B[35m";
-                case ConsoleColor.DarkCyan: return "\x1B[36m";
-                case ConsoleColor.Gray: return "\x1B[37m";
-                case ConsoleColor.Red: return "\x1B[1m\x1B[31m";
-                case ConsoleColor.Green: return "\x1B[1m\x1B[32m";
-                case ConsoleColor.Yellow: return "\x1B[1m\x1B[33m";
-                case ConsoleColor.Blue: return "\x1B[1m\x1B[34m";
-                case ConsoleColor.Magenta: return "\x1B[1m\x1B[35m";
-                case ConsoleColor.Cyan: return "\x1B[1m\x1B[36m";
-                case ConsoleColor.White: return "\x1B[1m\x1B[37m";
-                default: return DefaultForegroundColor; // default foreground color
+                case ConsoleColor.Black:         return "\x1B[30m";
+                case ConsoleColor.DarkRed:       return "\x1B[31m";
+                case ConsoleColor.DarkGreen:     return "\x1B[32m";
+                case ConsoleColor.DarkYellow:    return "\x1B[33m";
+                case ConsoleColor.DarkBlue:      return "\x1B[34m";
+                case ConsoleColor.DarkMagenta:   return "\x1B[35m";
+                case ConsoleColor.DarkCyan:      return "\x1B[36m";
+                case ConsoleColor.Gray:          return "\x1B[37m";
+                case ConsoleColor.Red:           return "\x1B[1m\x1B[31m";
+                case ConsoleColor.Green:         return "\x1B[1m\x1B[32m";
+                case ConsoleColor.Yellow:        return "\x1B[1m\x1B[33m";
+                case ConsoleColor.Blue:          return "\x1B[1m\x1B[34m";
+                case ConsoleColor.Magenta:       return "\x1B[1m\x1B[35m";
+                case ConsoleColor.Cyan:          return "\x1B[1m\x1B[36m";
+                case ConsoleColor.White:         return "\x1B[1m\x1B[37m";
+                default:                         return DefaultForegroundColor; // default foreground color
             };
         }
 

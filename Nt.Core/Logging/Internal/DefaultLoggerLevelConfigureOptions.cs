@@ -1,6 +1,6 @@
 ﻿using Nt.Core.Options;
 
-namespace Nt.Core.Logging
+namespace Nt.Core.Logging.Internal
 {
     internal sealed class DefaultLoggerLevelConfigureOptions : ConfigureOptions<LoggerFilterOptions>
     {

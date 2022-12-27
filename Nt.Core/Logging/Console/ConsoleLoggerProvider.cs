@@ -3,6 +3,7 @@ using Nt.Core.Options;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace Nt.Core.Logging.Console
 {
@@ -13,26 +14,27 @@ namespace Nt.Core.Logging.Console
     public class ConsoleLoggerProvider : ILoggerProvider
     {
         private const string ConsoleFormatterName = "Krumon";
-        private readonly IOptionsMonitor<ConsoleLoggerOptions> _options;
+        private readonly IOptionsMonitor<ConsoleLoggerOptions> _optionsMonitor;
+        private readonly ConsoleLoggerOptions _options;
         private readonly ConcurrentDictionary<string, ConsoleLogger> _loggers;
         private ConcurrentDictionary<string, ConsoleFormatter> _formatters;
-        //private readonly ConsoleLoggerProcessor _messageQueue;
-
+        private readonly ConsoleLoggerProcessor _messageQueue;
         private IDisposable _optionsReloadToken;
+
         //private IExternalScopeProvider _scopeProvider = NullExternalScopeProvider.Instance;
 
-        /// <summary>
-        /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
-        /// </summary>
-        /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        public ConsoleLoggerProvider()
-            : this(null, Array.Empty<ConsoleFormatter>()) { }
+        ///// <summary>
+        ///// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
+        ///// </summary>
+        ///// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
+        //public ConsoleLoggerProvider()
+        //    : this(null, Array.Empty<ConsoleFormatter>()) { }
 
         /// <summary>
         /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        public ConsoleLoggerProvider(IOptionsMonitor<ConsoleLoggerOptions> options)
+        public ConsoleLoggerProvider(IConfigureOptions<ConsoleLoggerOptions> options)
             : this(options, Array.Empty<ConsoleFormatter>()) { }
 
         /// <summary>
@@ -40,47 +42,83 @@ namespace Nt.Core.Logging.Console
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
         /// <param name="formatters">Log formatters added for <see cref="ConsoleLogger"/> insteaces.</param>
-        public ConsoleLoggerProvider(IOptionsMonitor<ConsoleLoggerOptions> options, IEnumerable<ConsoleFormatter> formatters)
+        public ConsoleLoggerProvider(IConfigureOptions<ConsoleLoggerOptions> options, IEnumerable<BaseConsoleFormatter> formatters)
         {
-            _options = options; //== null ? new ConsoleLoggerOptions() : options;
+            if (_options == null) _options = new ConsoleLoggerOptions();
+            options.Configure(_options);
             _loggers = new ConcurrentDictionary<string, ConsoleLogger>();
             SetFormatters(formatters);
 
-            ReloadLoggerOptions(options.CurrentValue);
-            _optionsReloadToken = _options.OnChange(ReloadLoggerOptions);
+            ReloadLoggerOptions(_options);
 
-            //_messageQueue = new ConsoleLoggerProcessor();
+            _messageQueue = new ConsoleLoggerProcessor();
 
-            //if (DoesConsoleSupportAnsi())
-            //{
-            //    _messageQueue.Console = new AnsiLogConsole();
-            //    _messageQueue.ErrorConsole = new AnsiLogConsole(stdErr: true);
-            //}
-            //else
-            //{
-            //    _messageQueue.Console = new AnsiParsingLogConsole();
-            //    _messageQueue.ErrorConsole = new AnsiParsingLogConsole(stdErr: true);
-            //}
+            if (DoesConsoleSupportAnsi())
+            {
+                _messageQueue.Console = new AnsiLogConsole();
+                _messageQueue.ErrorConsole = new AnsiLogConsole(stdErr: true);
+            }
+            else
+            {
+                _messageQueue.Console = new AnsiParsingLogConsole();
+                _messageQueue.ErrorConsole = new AnsiParsingLogConsole(stdErr: true);
+            }
         }
 
-        //private static bool DoesConsoleSupportAnsi()
+        ///// <summary>
+        ///// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
+        ///// </summary>
+        ///// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
+        //public ConsoleLoggerProvider(IOptionsMonitor<ConsoleLoggerOptions> options)
+        //    : this(options, Array.Empty<ConsoleFormatter>()) { }
+
+        ///// <summary>
+        ///// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
+        ///// </summary>
+        ///// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
+        ///// <param name="formatters">Log formatters added for <see cref="ConsoleLogger"/> insteaces.</param>
+        //public ConsoleLoggerProvider(IOptionsMonitor<ConsoleLoggerOptions> options, IEnumerable<ConsoleFormatter> formatters)
         //{
-        //    if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-        //    {
-        //        return true;
-        //    }
+        //    _optionsMonitor = options;
+        //    _loggers = new ConcurrentDictionary<string, ConsoleLogger>();
+        //    SetFormatters(formatters);
 
-        //    // for Windows, check the console mode
-        //    var stdOutHandle = Interop.Kernel32.GetStdHandle(Interop.Kernel32.STD_OUTPUT_HANDLE);
-        //    if (!Interop.Kernel32.GetConsoleMode(stdOutHandle, out int consoleMode))
-        //    {
-        //        return false;
-        //    }
+        //    ReloadLoggerOptions(options.CurrentValue);
+        //    _optionsReloadToken = _optionsMonitor.OnChange(ReloadLoggerOptions);
 
-        //    return (consoleMode & Interop.Kernel32.ENABLE_VIRTUAL_TERMINAL_PROCESSING) == Interop.Kernel32.ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        //    //_messageQueue = new ConsoleLoggerProcessor();
+
+        //    //if (DoesConsoleSupportAnsi())
+        //    //{
+        //    //    _messageQueue.Console = new AnsiLogConsole();
+        //    //    _messageQueue.ErrorConsole = new AnsiLogConsole(stdErr: true);
+        //    //}
+        //    //else
+        //    //{
+        //    //    _messageQueue.Console = new AnsiParsingLogConsole();
+        //    //    _messageQueue.ErrorConsole = new AnsiParsingLogConsole(stdErr: true);
+        //    //}
         //}
 
-        private void SetFormatters(IEnumerable<ConsoleFormatter> formatters = null)
+        private static bool DoesConsoleSupportAnsi()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return true;
+            }
+
+            // for Windows, check the console mode
+            //var stdOutHandle = Interop.Kernel32.GetStdHandle(Interop.Kernel32.STD_OUTPUT_HANDLE);
+            //if (!Interop.Kernel32.GetConsoleMode(stdOutHandle, out int consoleMode))
+            //{
+            //    return false;
+            //}
+
+            //return (consoleMode & Interop.Kernel32.ENABLE_VIRTUAL_TERMINAL_PROCESSING) == Interop.Kernel32.ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+            return true;
+        }
+
+        private void SetFormatters(IEnumerable<BaseConsoleFormatter> formatters = null)
         {
             var cd = new ConcurrentDictionary<string, ConsoleFormatter>(StringComparer.OrdinalIgnoreCase);
 
@@ -135,7 +173,8 @@ namespace Nt.Core.Logging.Console
         /// <inheritdoc />
         public ILogger CreateLogger(string name)
         {
-            if (_options.CurrentValue.FormatterName == null || !_formatters.TryGetValue(_options.CurrentValue.FormatterName, out ConsoleFormatter logFormatter))
+            //if (_options.CurrentValue.FormatterName == null || !_formatters.TryGetValue(_options.CurrentValue.FormatterName, out ConsoleFormatter logFormatter))
+            if (_options.FormatterName == null || !_formatters.TryGetValue(_options.FormatterName, out ConsoleFormatter logFormatter))
             {
 #pragma warning disable CS0618
                 //logFormatter = _options.CurrentValue.Format switch
@@ -146,17 +185,19 @@ namespace Nt.Core.Logging.Console
                 logFormatter = _formatters[ConsoleFormatterName];
 #pragma warning restore CS0618
 
-                if (_options.CurrentValue.FormatterName == null)
+                //if (_options.CurrentValue.FormatterName == null)
+                if (_options.FormatterName == null)
                 {
-                    UpdateFormatterOptions(logFormatter, _options.CurrentValue);
+                    UpdateFormatterOptions(logFormatter, _options);
                 }
             }
 
             return _loggers.TryGetValue(name, out ConsoleLogger logger) ?
                 logger :
-                _loggers.GetOrAdd(name, new ConsoleLogger(name)
+                _loggers.GetOrAdd(name, new ConsoleLogger(name, _messageQueue)
                 {
-                    Options = _options.CurrentValue,
+                    Options = _options,
+                    //Options = _options.CurrentValue,
                     //ScopeProvider = _scopeProvider,
                     Formatter = logFormatter,
                 });

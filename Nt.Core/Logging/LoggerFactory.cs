@@ -83,6 +83,34 @@ namespace Nt.Core.Logging
         }
 
         /// <summary>
+        /// Creates a new <see cref="LoggerFactory"/> instance.
+        /// </summary>
+        /// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
+        /// <param name="filterOption">The filter option to use.</param>
+        /// <param name="options">The <see cref="LoggerFactoryOptions"/>.</param>
+        public LoggerFactory(IEnumerable<ILoggerProvider> providers, IConfigureOptions<LoggerFilterOptions> filterOption, IOptions<LoggerFactoryOptions> options = null)
+        {
+            _factoryOptions = options == null || options.Value == null ? new LoggerFactoryOptions() : options.Value;
+
+            const ActivityTrackingOptions ActivityTrackingOptionsMask = ~(ActivityTrackingOptions.SpanId | ActivityTrackingOptions.TraceId | ActivityTrackingOptions.ParentId |
+                                                                          ActivityTrackingOptions.TraceFlags | ActivityTrackingOptions.TraceState | ActivityTrackingOptions.Tags
+                                                                          | ActivityTrackingOptions.Baggage);
+
+
+            if ((_factoryOptions.ActivityTrackingOptions & ActivityTrackingOptionsMask) != 0)
+            {
+                throw new ArgumentException("Invalid Activity Tracking Options");
+            }
+
+            foreach (ILoggerProvider provider in providers)
+            {
+                AddProviderRegistration(provider, dispose: false);
+            }
+
+            RefreshFilters(filterOption);
+        }
+
+        /// <summary>
         /// Creates new instance of <see cref="ILoggerFactory"/> configured using provided <paramref name="configure"/> delegate.
         /// </summary>
         /// <param name="configure">A delegate to configure the <see cref="ILoggingBuilder"/>.</param>
@@ -107,6 +135,20 @@ namespace Nt.Core.Logging
             lock (_sync)
             {
                 _filterOptions = filterOptions;
+                foreach (KeyValuePair<string, Logger> registeredLogger in _loggers)
+                {
+                    Logger logger = registeredLogger.Value;
+                    logger.MessageLoggers = ApplyFilters(logger.Loggers);
+                }
+            }
+        }
+
+        private void RefreshFilters(IConfigureOptions<LoggerFilterOptions> filterOptions)
+        {
+            if (_filterOptions == null) _filterOptions = new LoggerFilterOptions();
+            lock (_sync)
+            {
+                filterOptions.Configure(_filterOptions);
                 foreach (KeyValuePair<string, Logger> registeredLogger in _loggers)
                 {
                     Logger logger = registeredLogger.Value;

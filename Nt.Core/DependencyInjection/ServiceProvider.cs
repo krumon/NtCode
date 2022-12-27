@@ -108,7 +108,7 @@ namespace Nt.Core.DependencyInjection
         {
             Type serviceType = descriptor.ServiceType;
 
-            if (descriptor.ServiceType.IsGenericType && !descriptor.ServiceType.IsConstructedGenericType)
+            if (serviceType.IsGenericType && !serviceType.IsConstructedGenericType)
                 return;
 
             try

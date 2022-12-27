@@ -1,5 +1,7 @@
 ﻿using Nt.Core.Attributes;
 using Nt.Core.DependencyInjection;
+using Nt.Core.Logging.Console.Internal;
+using Nt.Core.Logging.Internal;
 using Nt.Core.Options;
 using Nt.Core.Reflection;
 using System;
@@ -22,9 +24,8 @@ namespace Nt.Core.Logging.Console
             //builder.AddConfiguration();
 
             builder.AddConsoleFormatter<ConsoleFormatter, ConsoleFormatterOptions>();
-
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ConsoleLoggerProvider>());
-            //builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IOptionsMonitor<>, >)
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<ConsoleLoggerOptions>>(new DefaultConsoleLoggerConfigureOptions()));
             //LoggerProviderOptions.RegisterProviderOptions<ConsoleLoggerOptions, ConsoleLoggerProvider>(builder.Services);
 
             return builder;
@@ -42,8 +43,9 @@ namespace Nt.Core.Logging.Console
                 throw new ArgumentNullException(nameof(configure));
             }
 
-            builder.AddConsole();
-            //builder.Services.Configure(configure);
+            builder.AddConsoleFormatter<ConsoleFormatter, ConsoleFormatterOptions>();
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ConsoleLoggerProvider>());
+            builder.Services.Configure(configure);
 
             return builder;
         }
@@ -62,7 +64,7 @@ namespace Nt.Core.Logging.Console
         /// <param name="configure">A delegate to configure the <see cref="ConsoleLogger"/> options for the built-in default log formatter.</param>
         public static ILoggingBuilder AddConsole(this ILoggingBuilder builder, Action<ConsoleFormatterOptions> configure, string name = "Krumon")
         {
-            return builder.AddConsoleWithFormatter<ConsoleFormatterOptions>(name, configure);
+            return builder.AddConsoleWithFormatter(name, configure);
         }
 
         internal static ILoggingBuilder AddConsoleWithFormatter<TOptions>(this ILoggingBuilder builder, string name, Action<TOptions> configure)
@@ -73,7 +75,7 @@ namespace Nt.Core.Logging.Console
                 throw new ArgumentNullException(nameof(configure));
             }
             builder.AddFormatterWithName(name);
-            //builder.Services.Configure(configure);
+            builder.Services.Configure(configure);
 
             return builder;
         }
@@ -87,13 +89,13 @@ namespace Nt.Core.Logging.Console
         /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
         //[RequiresUnreferencedCode(TrimmingRequiresUnreferencedCodeMessage)]
         public static ILoggingBuilder AddConsoleFormatter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFormatter, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TOptions>(this ILoggingBuilder builder)
-            where TOptions : BaseConsoleFormatterOptions
+            where TOptions : ConsoleFormatterOptions
             where TFormatter : BaseConsoleFormatter
         {
             //builder.AddConfiguration();
 
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<BaseConsoleFormatter, TFormatter>());
-            //builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<TOptions>, ConsoleLoggerFormatterConfigureOptions<TFormatter, TOptions>>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<TOptions>>(new DefaultConsoleFormatterConfigureOptions()));
             //builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IOptionsChangeTokenSource<TOptions>, ConsoleLoggerFormatterOptionsChangeTokenSource<TFormatter, TOptions>>());
 
             return builder;
@@ -115,7 +117,7 @@ namespace Nt.Core.Logging.Console
             }
 
             builder.AddConsoleFormatter<TFormatter, TOptions>();
-            //builder.Services.Configure(configure);
+            builder.Services.Configure(configure);
             return builder;
         }
     }

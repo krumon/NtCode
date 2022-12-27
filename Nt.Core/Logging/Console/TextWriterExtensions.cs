@@ -7,6 +7,7 @@ namespace Nt.Core.Logging.Console
     {
         public static void WriteColoredMessage(this TextWriter textWriter, string message, ConsoleColor? background, ConsoleColor? foreground)
         {
+            //return;
             // Order: backgroundcolor, foregroundcolor, Message, reset foregroundcolor, reset backgroundcolor
             if (background.HasValue)
             {

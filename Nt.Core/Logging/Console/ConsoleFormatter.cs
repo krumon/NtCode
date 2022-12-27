@@ -19,6 +19,15 @@ namespace Nt.Core.Logging.Console
             _optionsReloadToken = options.OnChange(ReloadLoggerOptions);
         }
 
+        public ConsoleFormatter(IConfigureOptions<ConsoleFormatterOptions> options)
+            : base(ConsoleFormatterName)
+        {
+            ConsoleFormatterOptions op = new ConsoleFormatterOptions();
+            options.Configure(op);
+            ReloadLoggerOptions(op);
+            //_optionsReloadToken = options.OnChange(ReloadLoggerOptions);
+        }
+
         private void ReloadLoggerOptions(ConsoleFormatterOptions options, string text = null)
         {
             FormatterOptions = options;

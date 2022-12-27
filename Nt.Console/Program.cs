@@ -23,9 +23,10 @@ namespace ConsoleApp
         {
             //System.IServiceProvider sc;
             //sc.GetServices
-            //Microsoft.Extensions.Logging.ConsoleLoggerExtensions
+            //Microsoft.Extensions.Logging.Console.ConsoleLoggerProvider
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
+            
             //Microsoft.Extensions.DependencyInjection.ServiceProvider
             //Microsoft.Extensions.DependencyInjection.ServiceDescriptor
             //Microsoft.Extensions.Options.OptionsBuilder
@@ -79,6 +80,7 @@ namespace ConsoleApp
 
             Nt.Core.Logging.ILogger<Program> logger = host.Services.GetService<Nt.Core.Logging.ILogger<Program>>();
             logger.LogInformationSource("The Host is built");
+            logger.Log(LogLevel.Warning,"Logging Service",Array.Empty<string>());
             //var globalsData = host.Services.GetService<IGlobalsDataService>();
             //var sessionsIterator = host.Services.GetService<ISessionsIteratorService>();
             //var sessionsFilters = host.Services.GetService<ISessionsFiltersService>();

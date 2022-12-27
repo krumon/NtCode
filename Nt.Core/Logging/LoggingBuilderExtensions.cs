@@ -1,4 +1,5 @@
 ﻿using Nt.Core.DependencyInjection;
+using Nt.Core.Logging.Internal;
 using Nt.Core.Options;
 using System;
 
@@ -53,7 +54,7 @@ namespace Nt.Core.Logging
         /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
         public static ILoggingBuilder Configure(this ILoggingBuilder builder, Action<LoggerFactoryOptions> action)
         {
-            //builder.Services.Configure(action);
+            builder.Services.Configure(action);
             return builder;
         }
     }

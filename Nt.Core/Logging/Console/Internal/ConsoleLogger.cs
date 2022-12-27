@@ -8,17 +8,6 @@ namespace Nt.Core.Logging.Console.Internal
         private readonly string _name;
         private readonly ConsoleLoggerProcessor _queueProcessor;
 
-        internal ConsoleLogger(string name) : this(name, null)
-        {
-            //if (name == null)
-            //{
-            //    throw new ArgumentNullException(nameof(name));
-            //}
-
-            //_name = name;
-            //_queueProcessor = loggerProcessor;
-        }
-
         internal ConsoleLogger(string name, ConsoleLoggerProcessor loggerProcessor)
         {
             if (name == null)
@@ -65,7 +54,7 @@ namespace Nt.Core.Logging.Console.Internal
             {
                 sb.Capacity = 1024;
             }
-            //_queueProcessor.EnqueueMessage(new LogMessageEntry(computedAnsiString, logAsError: logLevel >= Options.LogToStandardErrorThreshold));
+            _queueProcessor.EnqueueMessage(new LogMessageEntry(computedAnsiString, logAsError: logLevel >= Options.LogToStandardErrorThreshold));
         }
 
         public bool IsEnabled(LogLevel logLevel)
