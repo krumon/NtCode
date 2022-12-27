@@ -118,23 +118,23 @@ namespace Nt.Core.Hosting
         {
             //ExecuteServices<IOnBarUpdateService>();
             //_sessions.OnBarUpdate();
-            Sessions.OnBarUpdate();
-            if (Sessions.IsInNewSession == true)
+            Sessions?.OnBarUpdate();
+            if (Sessions?.IsInNewSession == true)
                 OnSessionUpdate();
         }
         public void OnBarUpdate(Action<object> print = null)
         {
             //ExecuteServices<IOnBarUpdateService>();
             //_sessions.OnBarUpdate();
-            Sessions.OnBarUpdate();
-            if (Sessions.IsInNewSession == true)
+            Sessions?.OnBarUpdate();
+            if (Sessions?.IsInNewSession == true)
                 OnSessionUpdate(print);
         }
         public void OnMarketData()
         { 
             //ExecuteServices<IOnMarketDataService>();
-            Sessions.OnMarketData();
-            if (Sessions.IsInNewSession == true)
+            Sessions?.OnMarketData();
+            if (Sessions?.IsInNewSession == true)
                 OnSessionUpdate();
         }
         public void OnSessionUpdate(Action<object> print = null) 
@@ -256,7 +256,8 @@ namespace Nt.Core.Hosting
                 throw new ArgumentNullException(nameof(services));
 
             foreach (T service in services)
-                action(service);
+                if (service != null)
+                    action(service);
         }
 
         #endregion

@@ -7,10 +7,12 @@ using Microsoft.Extensions.Primitives;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
+using Nt.Core.Logging.Console;
 using Nt.Core.Services;
 using Nt.Scripts;
 using Nt.Scripts.Ninjascripts.Design;
 using System;
+using LogLevel = Nt.Core.Logging.LogLevel;
 
 namespace ConsoleApp
 {
@@ -21,44 +23,69 @@ namespace ConsoleApp
         {
             //System.IServiceProvider sc;
             //sc.GetServices
-            Microsoft.Extensions.Logging.LoggerExtensions
+            //Microsoft.Extensions.Logging.ConsoleLoggerExtensions
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             //Microsoft.Extensions.DependencyInjection.ServiceProvider
             //Microsoft.Extensions.DependencyInjection.ServiceDescriptor
             //Microsoft.Extensions.Options.OptionsBuilder
+            //IHost host = Hosting.CreateDefaultBuilder()
+            //    .ConfigureHostOptions((options) =>
+            //    {
+            //        options.IsInDesignMode = true;
+            //    })
+            //    .ConfigureServices((serviceCollection) => 
+            //    {
+            //        serviceCollection
+            //        .AddLogging(configure => 
+            //        {
+            //            configure.SetMinimumLevel(LogLevel.Information);
+            //            configure.AddConsole();
+            //        })
+            //        .Add<IGlobalsDataService>(new GlobalsDataDesignScript())
+            //        .Add<IChartDataService, ChartDataDesignScript>()
+            //        .AddSessions<ISessionsService>((builder) =>
+            //        {
+            //            builder.ConfigureFilters((options) =>
+            //            {
+            //                options.IncludePartialHolidays = false;
+            //                options.IncludeHolidays = false;
+            //                options.ExcludeHistoricalData = true;
+            //            });
+            //        })
+            //        ;
+            //    })
+            //    .Build();
+            
             IHost host = Hosting.CreateDefaultBuilder()
                 .ConfigureHostOptions((options) =>
                 {
                     options.IsInDesignMode = true;
                 })
-                .ConfigureServices((serviceCollection) => 
+                .ConfigureServices((sc) => 
                 {
-                    serviceCollection
-                    .AddLogging()
-                    .Add<IGlobalsDataService>(new GlobalsDataDesignScript())
-                    .Add<IChartDataService, ChartDataDesignScript>()
-                    .AddSessions<ISessionsService>((builder) =>
+                    sc.AddLogging((o) =>
                     {
-                        builder.ConfigureFilters((options) =>
-                        {
-                            options.IncludePartialHolidays = false;
-                            options.IncludeHolidays = false;
-                            options.ExcludeHistoricalData = true;
-                        });
-                    })
-                    ;
+                        o.AddConsole();
+                    });
+                
+                    //sc.AddLogging(configure => 
+                    //{
+                    //    configure.SetMinimumLevel(LogLevel.Information);
+                    //    configure.AddConsole();
+                    //})
                 })
                 .Build();
+
             Nt.Core.Logging.ILogger<Program> logger = host.Services.GetService<Nt.Core.Logging.ILogger<Program>>();
             logger.LogInformationSource("The Host is built");
-            var globalsData = host.Services.GetService<IGlobalsDataService>();
-            var sessionsIterator = host.Services.GetService<ISessionsIteratorService>();
-            var sessionsFilters = host.Services.GetService<ISessionsFiltersService>();
-            var session = host.Services.GetService<ISessionsService>();
+            //var globalsData = host.Services.GetService<IGlobalsDataService>();
+            //var sessionsIterator = host.Services.GetService<ISessionsIteratorService>();
+            //var sessionsFilters = host.Services.GetService<ISessionsFiltersService>();
+            //var session = host.Services.GetService<ISessionsService>();
             //var session2 = host.Services.GetService<ISessionScript>();
 
-            sessionsIterator.ActualSessionBegin = DateTime.Now;
+            //sessionsIterator.ActualSessionBegin = DateTime.Now;
 
             host.Configure(null);
             host.DataLoaded(null);

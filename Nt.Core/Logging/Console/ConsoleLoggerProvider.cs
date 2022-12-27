@@ -25,6 +25,13 @@ namespace Nt.Core.Logging.Console
         /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
+        public ConsoleLoggerProvider()
+            : this(null, Array.Empty<ConsoleFormatter>()) { }
+
+        /// <summary>
+        /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
+        /// </summary>
+        /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
         public ConsoleLoggerProvider(IOptionsMonitor<ConsoleLoggerOptions> options)
             : this(options, Array.Empty<ConsoleFormatter>()) { }
 
@@ -35,7 +42,7 @@ namespace Nt.Core.Logging.Console
         /// <param name="formatters">Log formatters added for <see cref="ConsoleLogger"/> insteaces.</param>
         public ConsoleLoggerProvider(IOptionsMonitor<ConsoleLoggerOptions> options, IEnumerable<ConsoleFormatter> formatters)
         {
-            _options = options;
+            _options = options; //== null ? new ConsoleLoggerOptions() : options;
             _loggers = new ConcurrentDictionary<string, ConsoleLogger>();
             SetFormatters(formatters);
 

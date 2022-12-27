@@ -173,6 +173,7 @@
     <Compile Include="Logging\LoggerFactoryOptions.cs" />
     <Compile Include="Logging\LoggerFilterOptions.cs" />
     <Compile Include="Logging\LoggerFilterRule.cs" />
+    <Compile Include="Logging\LoggerProviderOptions.cs" />
     <Compile Include="Logging\LoggingBuilderExtensions.cs" />
     <Compile Include="Logging\LoggingServiceCollectionExtensions.cs" />
     <Compile Include="Logging\ProviderAliasAttribute.cs" />

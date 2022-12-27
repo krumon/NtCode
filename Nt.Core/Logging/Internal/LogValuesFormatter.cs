@@ -2,9 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Nt.Core.Logging.Internal
 {
@@ -24,18 +22,12 @@ namespace Nt.Core.Logging.Internal
 
         public LogValuesFormatter(string format)
         {
-            if (format == null)
-            {
-                throw new ArgumentNullException(nameof(format));
-            }
+            OriginalFormat = format ?? throw new ArgumentNullException(nameof(format));
 
-            OriginalFormat = format;
-
-            char[] c = new char[256];
-            var vsb = new StringBuilder(c);
+            //var vsb = new ValueStringBuilder(stackalloc char[256]);
+            StringBuilder vsb = new StringBuilder(256);
             int scanIndex = 0;
             int endIndex = format.Length;
-
             while (scanIndex < endIndex)
             {
                 int openBraceIndex = FindBraceIndex(format, '{', scanIndex, endIndex);
@@ -50,7 +42,8 @@ namespace Nt.Core.Logging.Internal
 
                 if (closeBraceIndex == endIndex)
                 {
-                    vsb.Append(format.AsSpan(scanIndex, endIndex - scanIndex));
+                    vsb.Append(format.AsSpan(scanIndex, endIndex - scanIndex).ToArray());
+                    //vsb.Append(format.AsSpan(scanIndex, endIndex - scanIndex));
                     scanIndex = endIndex;
                 }
                 else
@@ -58,10 +51,10 @@ namespace Nt.Core.Logging.Internal
                     // Format item syntax : { index[,alignment][ :formatString] }.
                     int formatDelimiterIndex = FindIndexOfAny(format, FormatDelimiters, openBraceIndex, closeBraceIndex);
 
-                    vsb.Append(format.AsSpan(scanIndex, openBraceIndex - scanIndex + 1));
+                    vsb.Append(format.AsSpan(scanIndex, openBraceIndex - scanIndex + 1).ToArray());
                     vsb.Append(_valueNames.Count.ToString());
                     _valueNames.Add(format.Substring(openBraceIndex + 1, formatDelimiterIndex - openBraceIndex - 1));
-                    vsb.Append(format.AsSpan(formatDelimiterIndex, closeBraceIndex - formatDelimiterIndex + 1));
+                    vsb.Append(format.AsSpan(formatDelimiterIndex, closeBraceIndex - formatDelimiterIndex + 1).ToArray());
 
                     scanIndex = closeBraceIndex + 1;
                 }
@@ -120,7 +113,6 @@ namespace Nt.Core.Logging.Internal
 
             return braceIndex;
         }
-
         private static int FindIndexOfAny(string format, char[] chars, int startIndex, int endIndex)
         {
             int findIndex = format.IndexOfAny(chars, startIndex, endIndex - startIndex);
@@ -231,19 +223,20 @@ namespace Nt.Core.Logging.Internal
             // if the value implements IEnumerable, build a comma separated string.
             if (value is IEnumerable enumerable)
             {
-                var vsb = new ValueStringBuilder(stackalloc char[256]);
+                //var vsb = new ValueStringBuilder(stackalloc char[256]);
+                var sb = new StringBuilder(256);
                 bool first = true;
                 foreach (object e in enumerable)
                 {
                     if (!first)
                     {
-                        vsb.Append(", ");
+                        sb.Append(", ");
                     }
 
-                    vsb.Append(e != null ? e.ToString() : NullValue);
+                    sb.Append(e != null ? e.ToString() : NullValue);
                     first = false;
                 }
-                return vsb.ToString();
+                return sb.ToString();
             }
 
             return value;
