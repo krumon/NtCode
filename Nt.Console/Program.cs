@@ -23,7 +23,7 @@ namespace ConsoleApp
         {
             //System.IServiceProvider sc;
             //sc.GetServices
-            //Microsoft.Extensions.Logging.Console.ConsoleLoggerProvider
+            //Microsoft.Extensions.Logging.ConsoleLoggerExtensions
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             

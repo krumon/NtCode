@@ -40,6 +40,7 @@ namespace Nt.Core.Logging.Console.Internal
             //t_stringWriter ??= new StringWriter();
             if (t_stringWriter == null)
                 t_stringWriter = new StringWriter();
+            //var encoding = t_stringWriter.Encoding;
             LogEntry<TState> logEntry = new LogEntry<TState>(logLevel, _name, eventId, state, exception, formatter);
             Formatter.Write(in logEntry, t_stringWriter);
 
