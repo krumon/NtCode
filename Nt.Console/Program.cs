@@ -79,6 +79,7 @@ namespace ConsoleApp
                 .Build();
 
             Nt.Core.Logging.ILogger<Program> logger = host.Services.GetService<Nt.Core.Logging.ILogger<Program>>();
+            Console.WriteLine("\u001b[31mHello World!\u001b[0m");
             logger.LogInformationSource("The Host is built");
             logger.Log(LogLevel.Warning,"Logging Service",Array.Empty<string>());
             //var globalsData = host.Services.GetService<IGlobalsDataService>();

@@ -1,6 +1,7 @@
 ﻿using Nt.Core.Logging.Console.Internal;
 using Nt.Core.Options;
 using System;
+using System.Activities.Statements;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -13,6 +14,19 @@ namespace Nt.Core.Logging.Console
     [ProviderAlias("Console")]
     public class ConsoleLoggerProvider : ILoggerProvider
     {
+        // Does the console support ansi in windows
+        private const int STD_OUTPUT_HANDLE = -11;
+        private const uint ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
+        private const uint DISABLE_NEWLINE_AUTO_RETURN = 0x0008;
+        [DllImport("kernel32.dll")]
+        private static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
+        [DllImport("kernel32.dll")]
+        private static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr GetStdHandle(int nStdHandle);
+        [DllImport("kernel32.dll")]
+        public static extern uint GetLastError();
+
         private const string ConsoleFormatterName = "Krumon";
         private readonly IOptionsMonitor<ConsoleLoggerOptions> _optionsMonitor;
         private readonly ConsoleLoggerOptions _options;
@@ -100,6 +114,7 @@ namespace Nt.Core.Logging.Console
         //    //}
         //}
 
+
         private static bool DoesConsoleSupportAnsi()
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -107,17 +122,27 @@ namespace Nt.Core.Logging.Console
                 return true;
             }
 
-            // for Windows, check the console mode
+            //// for Windows, check the console mode
             //var stdOutHandle = Interop.Kernel32.GetStdHandle(Interop.Kernel32.STD_OUTPUT_HANDLE);
             //if (!Interop.Kernel32.GetConsoleMode(stdOutHandle, out int consoleMode))
             //{
             //    return false;
             //}
-
             //return (consoleMode & Interop.Kernel32.ENABLE_VIRTUAL_TERMINAL_PROCESSING) == Interop.Kernel32.ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-            return true;
-        }
 
+            var stdOutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+            if (!GetConsoleMode(stdOutHandle, out uint consoleMode))
+            {
+                return false;
+            }
+            consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
+            if (!SetConsoleMode(stdOutHandle, consoleMode))
+            {
+                return false;
+            }
+            return true;
+            //return (consoleMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+        }
         private void SetFormatters(IEnumerable<BaseConsoleFormatter> formatters = null)
         {
             var cd = new ConcurrentDictionary<string, ConsoleFormatter>(StringComparer.OrdinalIgnoreCase);
@@ -134,7 +159,7 @@ namespace Nt.Core.Logging.Console
 
             if (!added)
             {
-                cd.TryAdd(ConsoleFormatterName, new ConsoleFormatter(new FormatterOptionsMonitor<ConsoleFormatterOptions>(new ConsoleFormatterOptions())));
+                cd.TryAdd(ConsoleFormatterName, new ConsoleFormatter(new ConsoleFormatterOptionsMonitor<ConsoleFormatterOptions>(new ConsoleFormatterOptions())));
                 //cd.TryAdd(ConsoleFormatterNames.Systemd, new SystemdConsoleFormatter(new FormatterOptionsMonitor<ConsoleFormatterOptions>(new ConsoleFormatterOptions())));
                 //cd.TryAdd(ConsoleFormatterNames.Json, new JsonConsoleFormatter(new FormatterOptionsMonitor<JsonConsoleFormatterOptions>(new JsonConsoleFormatterOptions())));
             }

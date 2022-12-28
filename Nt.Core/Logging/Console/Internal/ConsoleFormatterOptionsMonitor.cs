@@ -3,12 +3,12 @@ using System;
 
 namespace Nt.Core.Logging.Console.Internal
 {
-    internal sealed class FormatterOptionsMonitor<TOptions> :
+    internal sealed class ConsoleFormatterOptionsMonitor<TOptions> :
         IOptionsMonitor<TOptions>
         where TOptions : ConsoleFormatterOptions
     {
         private TOptions _options;
-        public FormatterOptionsMonitor(TOptions options)
+        public ConsoleFormatterOptionsMonitor(TOptions options)
         {
             _options = options;
         }

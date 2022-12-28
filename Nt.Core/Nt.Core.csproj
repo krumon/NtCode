@@ -160,7 +160,7 @@
     <Compile Include="Logging\Console\Internal\ConsoleLoggerProcessor.cs" />
     <Compile Include="Logging\Console\Internal\DefaultConsoleFormatterConfigureOptions.cs" />
     <Compile Include="Logging\Console\Internal\DefaultConsoleLoggerConfigureOptions.cs" />
-    <Compile Include="Logging\Console\Internal\FormatterOptionsMonitor.cs" />
+    <Compile Include="Logging\Console\Internal\ConsoleFormatterOptionsMonitor.cs" />
     <Compile Include="Logging\Console\Internal\IConsole.cs" />
     <Compile Include="Logging\Console\Internal\LogMessageEntry.cs" />
     <Compile Include="Logging\Console\LogEntry.cs" />
