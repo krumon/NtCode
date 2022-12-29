@@ -1,6 +1,6 @@
-﻿namespace Nt.Core.Exceptions
+﻿namespace Kr.Core.Exceptions
 {
-    internal enum ExceptionResource
+    public enum ExceptionResource
     {
         Argument_ImplementIComparable,
         ArgumentOutOfRange_NeedNonNegNum,

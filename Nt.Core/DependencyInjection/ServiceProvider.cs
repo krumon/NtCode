@@ -1,4 +1,6 @@
-﻿using Nt.Core.DependencyInjection.Internal;
+﻿using Kr.Core.Exceptions;
+using Nt.Core.DependencyInjection.Internal;
+using Nt.Core.Exceptions;
 using Nt.Core.Hosting;
 using System;
 using System.Collections.Concurrent;
@@ -23,6 +25,9 @@ namespace Nt.Core.DependencyInjection
         internal CallSiteFactory CallSiteFactory { get; }
         // Delagate to create the service
         private Func<Type,object> _createService;
+        // Delegate to create the service accesor by the service provider engine scope.
+        private readonly Func<Type, Func<ServiceProviderEngineScope, object>> _createServiceAccessor;
+
 
         internal static bool VerifyOpenGenericServiceTrimmability { get; } =
             AppContext.TryGetSwitch("Nt.Core.DependencyInjection.VerifyOpenGenericServiceTrimmability", out bool verifyOpenGenerics) ? verifyOpenGenerics : false;
@@ -86,6 +91,22 @@ namespace Nt.Core.DependencyInjection
             return result;
         }
 
+        internal object GetService(Type serviceType, ServiceProviderEngineScope serviceProviderEngineScope)
+        {
+            if (_disposed)
+            {
+                ThrowHelper.ThrowObjectDisposedException();
+            }
+
+            Func<ServiceProviderEngineScope, object> realizedService = _realizedServices.GetOrAdd(serviceType, _createServiceAccessor);
+            //OnResolve(serviceType, serviceProviderEngineScope);
+            //DependencyInjectionEventSource.Log.ServiceResolved(this, serviceType);
+            var result = realizedService.Invoke(serviceProviderEngineScope);
+            System.Diagnostics.Debug.Assert(result is null || CallSiteFactory.IsService(serviceType));
+            return result;
+        }
+
+
         /// <summary>
         /// Gets all service objects of the specified type.
         /// </summary>
@@ -98,6 +119,16 @@ namespace Nt.Core.DependencyInjection
             IList<T> result = (IList<T>)CreateServices<T>(typeof(T));
 
             return result;
+        }
+
+        internal IServiceScope CreateScope()
+        {
+            if (_disposed)
+            {
+                ThrowHelper.ThrowObjectDisposedException();
+            }
+
+            return new ServiceProviderEngineScope(this, isRootScope: false);
         }
 
         #endregion

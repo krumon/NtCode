@@ -1,6 +1,6 @@
-﻿namespace Nt.Core.Exceptions
+﻿namespace Kr.Core.Exceptions
 {
-    internal enum ExceptionArgument
+    public enum ExceptionArgument
     {
         obj,
         dictionary,

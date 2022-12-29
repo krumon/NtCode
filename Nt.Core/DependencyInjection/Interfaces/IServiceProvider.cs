@@ -28,7 +28,7 @@ namespace Nt.Core.DependencyInjection
         /// </summary>
         /// <typeparam name="T">The type of service object to get.</typeparam>
         /// <returns>An enumeration of services of type <typeparamref name="T"/>.</returns>
-        IEnumerable<T> GetServices<T>();
+        //IEnumerable<T> GetServices<T>();
 
     }
 }

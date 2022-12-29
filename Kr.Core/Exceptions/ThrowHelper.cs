@@ -2,67 +2,67 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Nt.Core.Exceptions
+namespace Kr.Core.Exceptions
 {
-    internal static class ThrowHelper
+    public static class ThrowHelper
     {
 
-        internal static void ThrowWrongKeyTypeArgumentException(object key, Type targetType)
+        public static void ThrowWrongKeyTypeArgumentException(object key, Type targetType)
         {
             throw new ArgumentException(); // SR.GetString("Arg_WrongType", key, targetType), "key");
         }
 
-        internal static void ThrowWrongValueTypeArgumentException(object value, Type targetType)
+        public static void ThrowWrongValueTypeArgumentException(object value, Type targetType)
         {
             throw new ArgumentException(); // SR.GetString("Arg_WrongType", value, targetType), "value");
         }
 
-        internal static void ThrowKeyNotFoundException()
+        public static void ThrowKeyNotFoundException()
         {
             throw new KeyNotFoundException();
         }
 
-        internal static void ThrowArgumentException(ExceptionResource resource)
+        public static void ThrowArgumentException(ExceptionResource resource)
         {
             throw new ArgumentException(); //SR.GetString(GetResourceName(resource)));
         }
 
-        internal static void ThrowArgumentNullException(ExceptionArgument argument)
+        public static void ThrowArgumentNullException(ExceptionArgument argument)
         {
             throw new ArgumentNullException(GetArgumentName(argument));
         }
 
-        internal static void ThrowArgumentOutOfRangeException(ExceptionArgument argument)
+        public static void ThrowArgumentOutOfRangeException(ExceptionArgument argument)
         {
             throw new ArgumentOutOfRangeException(GetArgumentName(argument));
         }
 
-        internal static void ThrowObjectDisposedException()
+        public static void ThrowObjectDisposedException()
         {
             throw new ObjectDisposedException(string.Empty);
         }
 
-        internal static void ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
+        public static void ThrowArgumentOutOfRangeException(ExceptionArgument argument, ExceptionResource resource)
         {
             throw new ArgumentOutOfRangeException(); // GetArgumentName(argument), SR.GetString(GetResourceName(resource)));
         }
 
-        internal static void ThrowInvalidOperationException(ExceptionResource resource)
+        public static void ThrowInvalidOperationException(ExceptionResource resource)
         {
             throw new InvalidOperationException(); // SR.GetString(GetResourceName(resource)));
         }
 
-        internal static void ThrowSerializationException(ExceptionResource resource)
+        public static void ThrowSerializationException(ExceptionResource resource)
         {
             throw new SerializationException(); // SR.GetString(GetResourceName(resource)));
         }
 
-        internal static void ThrowNotSupportedException(ExceptionResource resource)
+        public static void ThrowNotSupportedException(ExceptionResource resource)
         {
             throw new NotSupportedException(); // SR.GetString(GetResourceName(resource)));
         }
 
-        internal static void IfNullAndNullsAreIllegalThenThrow<T>(object value, ExceptionArgument argName)
+        public static void IfNullAndNullsAreIllegalThenThrow<T>(object value, ExceptionArgument argName)
         {
             if (value == null && default(T) != null)
             {
@@ -70,7 +70,7 @@ namespace Nt.Core.Exceptions
             }
         }
 
-        internal static string GetArgumentName(ExceptionArgument argument)
+        public static string GetArgumentName(ExceptionArgument argument)
         {
             switch (argument)
             {
@@ -96,7 +96,7 @@ namespace Nt.Core.Exceptions
             }
         }
 
-        internal static string GetResourceName(ExceptionResource resource)
+        public static string GetResourceName(ExceptionResource resource)
         {
             switch (resource)
             {

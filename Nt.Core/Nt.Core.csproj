@@ -113,11 +113,14 @@
     <Compile Include="Data\Series\DataSerie.cs" />
     <Compile Include="Data\Sessions\ISession.cs" />
     <Compile Include="Data\TradingHours\ITradingHours.cs" />
+    <Compile Include="DependencyInjection\Interfaces\IAsyncDisposable.cs" />
+    <Compile Include="DependencyInjection\Interfaces\IServiceScopeFactory.cs" />
     <Compile Include="DependencyInjection\Internal\CallSiteResultCacheLocation.cs" />
     <Compile Include="DependencyInjection\Internal\ResultCache.cs" />
     <Compile Include="DependencyInjection\ServiceCollectionDescriptorExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceCollectionProviderExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceLifetime.cs" />
+    <Compile Include="DependencyInjection\Internal\ServiceProviderEngineScope.cs" />
     <Compile Include="Hosting\Host.cs" />
     <Compile Include="Hosting\HostedServiceExtensions.cs" />
     <Compile Include="Hosting\HostOptions.cs" />
@@ -139,7 +142,6 @@
     <Compile Include="DependencyInjection\ServiceCollection.cs" />
     <Compile Include="DependencyInjection\ServiceCollectionExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceDescriptor.cs" />
-    <Compile Include="DependencyInjection\Interfaces\IOptions.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
     <Compile Include="DependencyInjection\Base\BaseServiceCollection.cs" />
@@ -242,9 +244,6 @@
     <Compile Include="Data\TradingSessions\SessionCollection.cs" />
     <Compile Include="Data\TradingSessions\SessionExtensions.cs" />
     <Compile Include="Services\DataSeries\DataSeriesDescriptor.cs" />
-    <Compile Include="Exceptions\ExceptionResource.cs" />
-    <Compile Include="Exceptions\ExceptionArgument.cs" />
-    <Compile Include="Exceptions\ThrowHelper.cs" />
     <Compile Include="Events\EventType.cs" />
     <Compile Include="Events\SessionUpdateArgs.cs" />
     <Compile Include="Exceptions\CreateBuilderException.cs" />
