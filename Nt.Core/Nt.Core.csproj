@@ -116,7 +116,14 @@
     <Compile Include="DependencyInjection\Interfaces\IAsyncDisposable.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScopeFactory.cs" />
     <Compile Include="DependencyInjection\Internal\CallSiteResultCacheLocation.cs" />
+    <Compile Include="DependencyInjection\Internal\CallSiteValidator.cs" />
+    <Compile Include="DependencyInjection\Internal\CallSiteVisitor.cs" />
+    <Compile Include="DependencyInjection\Internal\CompiledServiceProviderEngine.cs" />
+    <Compile Include="DependencyInjection\Internal\DynamicServiceProviderEngine.cs" />
     <Compile Include="DependencyInjection\Internal\ResultCache.cs" />
+    <Compile Include="DependencyInjection\Interfaces\IServiceProviderIsService.cs" />
+    <Compile Include="DependencyInjection\Internal\ServiceProviderEngine.cs" />
+    <Compile Include="DependencyInjection\Internal\StackGuard.cs" />
     <Compile Include="DependencyInjection\ServiceCollectionDescriptorExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceCollectionProviderExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceLifetime.cs" />

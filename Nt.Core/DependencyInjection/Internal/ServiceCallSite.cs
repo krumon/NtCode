@@ -9,10 +9,6 @@ namespace Nt.Core.DependencyInjection.Internal
     /// </summary>
     internal abstract class ServiceCallSite
     {
-        protected ServiceCallSite()
-        {
-        }
-
         protected ServiceCallSite(ResultCache cache)
         {
             Cache = cache;
@@ -26,7 +22,8 @@ namespace Nt.Core.DependencyInjection.Internal
 
         public bool CaptureDisposable =>
             ImplementationType == null ||
-            typeof(IDisposable).IsAssignableFrom(ImplementationType); 
+            typeof(IDisposable).IsAssignableFrom(ImplementationType) ||
+            typeof(IAsyncDisposable).IsAssignableFrom(ImplementationType);
     }
 
     internal sealed class ConstructorCallSite : ServiceCallSite
@@ -35,17 +32,19 @@ namespace Nt.Core.DependencyInjection.Internal
         internal ServiceCallSite[] ParameterCallSites { get; }
 
         public ConstructorCallSite(
+            ResultCache cache,
             Type serviceType, 
             ConstructorInfo constructorInfo) 
-            : this(serviceType, constructorInfo, Array.Empty<ServiceCallSite>())
+            : this(cache, serviceType, constructorInfo, Array.Empty<ServiceCallSite>())
         {
         }
 
         public ConstructorCallSite(
+            ResultCache cache,
             Type serviceType,
             ConstructorInfo constructorInfo,
             ServiceCallSite[] parameters) 
-            : base()
+            : base(cache)
         {
             if (!serviceType.IsAssignableFrom(constructorInfo.DeclaringType))
             {
@@ -89,7 +88,7 @@ namespace Nt.Core.DependencyInjection.Internal
         public ConstantCallSite(
             Type serviceType, 
             object defaultValue) 
-            : base()
+            : base(ResultCache.None)
         {
             _serviceType = serviceType ?? throw new ArgumentNullException(nameof(serviceType));
             if (defaultValue != null && !serviceType.IsInstanceOfType(defaultValue))
@@ -106,7 +105,7 @@ namespace Nt.Core.DependencyInjection.Internal
     }
     internal sealed class ServiceProviderCallSite : ServiceCallSite
     {
-        public ServiceProviderCallSite() : base()
+        public ServiceProviderCallSite() : base(ResultCache.None)
         {
         }
 
@@ -119,9 +118,10 @@ namespace Nt.Core.DependencyInjection.Internal
         public Func<IServiceProvider, object> Factory { get; }
 
         public FactoryCallSite(
+            ResultCache cache,
             Type serviceType, 
             Func<IServiceProvider, object> factory) 
-            : base()
+            : base(cache)
         {
             Factory = factory;
             ServiceType = serviceType;

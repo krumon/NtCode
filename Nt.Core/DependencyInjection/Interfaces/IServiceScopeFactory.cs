@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Nt.Core.DependencyInjection.Interfaces
+namespace Nt.Core.DependencyInjection
 {
     /// <summary>
     /// A factory for creating instances of Microsoft.Extensions.DependencyInjection.IServiceScope,

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Nt.Core.DependencyInjection.Interfaces
+namespace Nt.Core.DependencyInjection
 {
     /// <summary>
     /// Provides a mechanism for releasing unmanaged resources asynchronously.

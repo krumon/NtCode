@@ -1,5 +1,4 @@
 ﻿using Kr.Core.Exceptions;
-using Nt.Core.DependencyInjection.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -62,7 +61,7 @@ namespace Nt.Core.DependencyInjection.Internal
                 }
                 else
                 {
-                    if (_disposables == null) new List<object>();
+                    if (_disposables == null) _disposables = new List<object>();
                     //_disposables ??= new List<object>();
 
                     _disposables.Add(service);

@@ -1,11 +1,9 @@
 ﻿using Kr.Core.Exceptions;
 using Nt.Core.DependencyInjection.Internal;
-using Nt.Core.Exceptions;
-using Nt.Core.Hosting;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-//using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Nt.Core.DependencyInjection
 {
@@ -17,20 +15,27 @@ namespace Nt.Core.DependencyInjection
 
         #region Members
 
+        // Object to validate the services.
+        private readonly CallSiteValidator _callSiteValidator;
         // Check the service provider is disposed.
         private bool _disposed;
+        // Internal for testing... not use in this moment.
+        //internal ServiceProviderEngine _engine;
         // Collection of the realized services.
         private readonly ConcurrentDictionary<Type, object> _realizedServices;
+        // Collection of realized scope services.
+        private ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>> _realizedScopeServices;
         // The factory of the calls.
         internal CallSiteFactory CallSiteFactory { get; }
+        // The scope engine to create services.
+        internal ServiceProviderEngineScope Root { get; }
         // Delagate to create the service
-        private Func<Type,object> _createService;
+        private readonly Func<Type,object> _createService;
         // Delegate to create the service accesor by the service provider engine scope.
         private readonly Func<Type, Func<ServiceProviderEngineScope, object>> _createServiceAccessor;
-
-
+        // Verify if the app sets the library name 'VerifyOpenGenericServiceTrimmability'.
         internal static bool VerifyOpenGenericServiceTrimmability { get; } =
-            AppContext.TryGetSwitch("Nt.Core.DependencyInjection.VerifyOpenGenericServiceTrimmability", out bool verifyOpenGenerics) ? verifyOpenGenerics : false;
+            AppContext.TryGetSwitch("Microsoft.Extensions.DependencyInjection.VerifyOpenGenericServiceTrimmability", out bool verifyOpenGenerics) && verifyOpenGenerics;
 
         #endregion
 
@@ -42,12 +47,29 @@ namespace Nt.Core.DependencyInjection
 
         public ServiceProvider(ICollection<ServiceDescriptor> serviceDescriptors, ServiceProviderOptions options)
         {
-            // Initilize the realized services.
+            // note that Root needs to be set before calling GetEngine(), because the engine may need to access Root
+            Root = new ServiceProviderEngineScope(this, isRootScope: true);
+            //_engine = GetEngine();
+            // Sets the delegate to create the service accesor.
+            _createServiceAccessor = CreateServiceAccessor;
+            // Sets the delegate method to create the services.
+            _createService = CreateService;
+            // Initialize the realized scope services collection.
+            _realizedScopeServices = new ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>>();
+            // Initilize the realized services collection.
             _realizedServices = new ConcurrentDictionary<Type, object>();
             // Initialize the call site factory.
             CallSiteFactory = new CallSiteFactory(serviceDescriptors);
-            // Sets the delegate method.
-            _createService = CreateService;
+            // The list of built in services that aren't part of the list of service descriptors
+            // keep this in sync with CallSiteFactory.IsService
+            CallSiteFactory.Add(typeof(IServiceProvider), new ServiceProviderCallSite());
+            CallSiteFactory.Add(typeof(IServiceScopeFactory), new ConstantCallSite(typeof(IServiceScopeFactory), Root));
+            CallSiteFactory.Add(typeof(IServiceProviderIsService), new ConstantCallSite(typeof(IServiceProviderIsService), CallSiteFactory));
+
+            if (options.ValidateScopes)
+            {
+                _callSiteValidator = new CallSiteValidator();
+            }
 
             if (options.ValidateOnBuild)
             {
@@ -70,6 +92,7 @@ namespace Nt.Core.DependencyInjection
                     throw new AggregateException("Some services are not able to be constructed", exceptions.ToArray());
                 }
             }
+
         }
 
         #endregion
@@ -98,7 +121,7 @@ namespace Nt.Core.DependencyInjection
                 ThrowHelper.ThrowObjectDisposedException();
             }
 
-            Func<ServiceProviderEngineScope, object> realizedService = _realizedServices.GetOrAdd(serviceType, _createServiceAccessor);
+            Func<ServiceProviderEngineScope, object> realizedService = _realizedScopeServices.GetOrAdd(serviceType, _createServiceAccessor);
             //OnResolve(serviceType, serviceProviderEngineScope);
             //DependencyInjectionEventSource.Log.ServiceResolved(this, serviceType);
             var result = realizedService.Invoke(serviceProviderEngineScope);
@@ -121,6 +144,11 @@ namespace Nt.Core.DependencyInjection
             return result;
         }
 
+        internal void ReplaceServiceAccessor(ServiceCallSite callSite, Func<ServiceProviderEngineScope, object> accessor)
+        {
+            _realizedServices[callSite.ServiceType] = accessor;
+        }
+
         internal IServiceScope CreateScope()
         {
             if (_disposed)
@@ -137,10 +165,10 @@ namespace Nt.Core.DependencyInjection
 
         private void ValidateService(ServiceDescriptor descriptor)
         {
-            Type serviceType = descriptor.ServiceType;
-
-            if (serviceType.IsGenericType && !serviceType.IsConstructedGenericType)
+            if (descriptor.ServiceType.IsGenericType && !descriptor.ServiceType.IsConstructedGenericType)
+            {
                 return;
+            }
 
             try
             {
@@ -155,19 +183,37 @@ namespace Nt.Core.DependencyInjection
                 throw new InvalidOperationException($"Error while validating the service descriptor '{descriptor}': {e.Message}", e);
             }
         }
-
         private object CreateService(Type serviceType)
         {
             ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
             if (callSite != null)
             {
-                object value = CallSiteRuntimeResolver.Instance.Resolve(callSite, this);
+                object value = CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
                 return value;
             }
 
             return null;
         }
+        private Func<ServiceProviderEngineScope, object> CreateServiceAccessor(Type serviceType)
+        {
+            ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
+            if (callSite != null)
+            {
+                //DependencyInjectionEventSource.Log.CallSiteBuilt(this, serviceType, callSite);
+                OnCreate(callSite);
 
+                // Optimize singleton case
+                if (callSite.Cache.Location == CallSiteResultCacheLocation.Root)
+                {
+                    object value = CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
+                    return scope => value;
+                }
+                object value2 = CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
+                return scope => value2;
+                //return _engine.RealizeService(callSite);
+            }
+            return _ => null;
+        }
         private IEnumerable<T> CreateServices<T>(Type serviceType)
         {
             if (!(typeof(T) == serviceType))
@@ -181,10 +227,33 @@ namespace Nt.Core.DependencyInjection
                     list.Add((T)service.Value);
             return list.Count > 0 ? list : null;
         }
-
         private void OnCreate(ServiceCallSite callSite)
         {
+            _callSiteValidator?.ValidateCallSite(callSite);
         }
+        private void OnResolve(Type serviceType, IServiceScope scope)
+        {
+            _callSiteValidator?.ValidateResolution(serviceType, scope, Root);
+        }
+//        private ServiceProviderEngine GetEngine()
+//        {
+//            ServiceProviderEngine engine;
+
+//#if NETFRAMEWORK || NETSTANDARD2_0
+//                    engine = new DynamicServiceProviderEngine(this);
+//#else
+//            if (RuntimeFeature.IsDynamicCodeCompiled)
+//            {
+//                engine = new DynamicServiceProviderEngine(this);
+//            }
+//            else
+//            {
+//                // Don't try to compile Expressions/IL if they are going to get interpreted
+//                engine = RuntimeServiceProviderEngine.Instance;
+//            }
+//#endif
+//            return engine;
+//        }
 
         #endregion
 
@@ -194,7 +263,11 @@ namespace Nt.Core.DependencyInjection
         {
             DisposeCore();
         }
-
+        public ValueTask DisposeAsync()
+        {
+            DisposeCore();
+            return Root.DisposeAsync();
+        }
         private void DisposeCore()
         {
             _disposed = true;

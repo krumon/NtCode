@@ -140,7 +140,7 @@ namespace Nt.Core.Logging.Console
             {
                 return false;
             }
-            return false;
+            return true;
             //return (consoleMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == ENABLE_VIRTUAL_TERMINAL_PROCESSING;
         }
         private void SetFormatters(IEnumerable<BaseConsoleFormatter> formatters = null)
