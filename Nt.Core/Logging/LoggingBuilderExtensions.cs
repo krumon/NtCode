@@ -31,7 +31,7 @@ namespace Nt.Core.Logging
         /// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
         public static ILoggingBuilder AddProvider(this ILoggingBuilder builder, ILoggerProvider provider)
         {
-            builder.Services.Add(provider);
+            builder.Services.AddSingleton(provider);
             return builder;
         }
 
@@ -57,5 +57,23 @@ namespace Nt.Core.Logging
             builder.Services.Configure(action);
             return builder;
         }
+
+        ///// <summary>
+        ///// Configures <see cref="LoggerFilterOptions" /> from an instance of <see cref="IConfiguration" />.
+        ///// </summary>
+        ///// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        ///// <param name="configuration">The <see cref="IConfiguration" /> to add.</param>
+        ///// <returns>The builder.</returns>
+        //public static ILoggingBuilder AddConfiguration(this ILoggingBuilder builder, IConfiguration configuration)
+        //{
+        //    builder.AddConfiguration();
+
+        //    builder.Services.AddSingleton<IConfigureOptions<LoggerFilterOptions>>(new LoggerFilterConfigureOptions(configuration));
+        //    builder.Services.AddSingleton<IOptionsChangeTokenSource<LoggerFilterOptions>>(new ConfigurationChangeTokenSource<LoggerFilterOptions>(configuration));
+
+        //    builder.Services.AddSingleton(new LoggingConfiguration(configuration));
+
+        //    return builder;
+        //}
     }
 }

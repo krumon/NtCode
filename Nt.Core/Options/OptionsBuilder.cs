@@ -50,7 +50,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            Services.Add<IConfigureOptions<TOptions>>(new ConfigureNamedOptions<TOptions>(Name, configureOptions));
+            Services.AddSingleton<IConfigureOptions<TOptions>>(new ConfigureNamedOptions<TOptions>(Name, configureOptions));
             return this;
         }
 
@@ -69,8 +69,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            //Services.AddTransient<IConfigureOptions<TOptions>>(sp =>
-            Services.Add<IConfigureOptions<TOptions>>(sp =>
+            Services.AddTransient<IConfigureOptions<TOptions>>(sp =>
                 new ConfigureNamedOptions<TOptions, TDep>(Name, sp.GetRequiredService<TDep>(), configureOptions));
             return this;
         }
@@ -92,8 +91,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            //Services.AddTransient<IConfigureOptions<TOptions>>(sp =>
-            Services.Add<IConfigureOptions<TOptions>>(sp =>
+            Services.AddTransient<IConfigureOptions<TOptions>>(sp =>
                 new ConfigureNamedOptions<TOptions, TDep1, TDep2>(Name, sp.GetRequiredService<TDep1>(), sp.GetRequiredService<TDep2>(), configureOptions));
             return this;
         }
@@ -117,8 +115,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            //Services.AddTransient<IConfigureOptions<TOptions>>(
-            Services.Add<IConfigureOptions<TOptions>>(
+            Services.AddTransient<IConfigureOptions<TOptions>>(
                 sp => new ConfigureNamedOptions<TOptions, TDep1, TDep2, TDep3>(
                     Name,
                     sp.GetRequiredService<TDep1>(),
@@ -149,8 +146,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            //Services.AddTransient<IConfigureOptions<TOptions>>(
-            Services.Add<IConfigureOptions<TOptions>>(
+            Services.AddTransient<IConfigureOptions<TOptions>>(
                 sp => new ConfigureNamedOptions<TOptions, TDep1, TDep2, TDep3, TDep4>(
                     Name,
                     sp.GetRequiredService<TDep1>(),
@@ -184,8 +180,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            //Services.AddTransient<IConfigureOptions<TOptions>>(
-            Services.Add<IConfigureOptions<TOptions>>(
+            Services.AddTransient<IConfigureOptions<TOptions>>(
                 sp => new ConfigureNamedOptions<TOptions, TDep1, TDep2, TDep3, TDep4, TDep5>(
                     Name,
                     sp.GetRequiredService<TDep1>(),
@@ -209,7 +204,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            Services.Add<IPostConfigureOptions<TOptions>>(new PostConfigureOptions<TOptions>(Name, configureOptions));
+            Services.AddSingleton<IPostConfigureOptions<TOptions>>(new PostConfigureOptions<TOptions>(Name, configureOptions));
             return this;
         }
 
@@ -228,8 +223,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            //Services.AddTransient<IPostConfigureOptions<TOptions>>(sp =>
-            Services.Add<IPostConfigureOptions<TOptions>>(sp =>
+            Services.AddTransient<IPostConfigureOptions<TOptions>>(sp =>
                 new PostConfigureOptions<TOptions, TDep>(Name, sp.GetRequiredService<TDep>(), configureOptions));
             return this;
         }
@@ -251,8 +245,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            //Services.AddTransient<IPostConfigureOptions<TOptions>>(sp =>
-            Services.Add<IPostConfigureOptions<TOptions>>(sp =>
+            Services.AddTransient<IPostConfigureOptions<TOptions>>(sp =>
                 new PostConfigureOptions<TOptions, TDep1, TDep2>(Name, sp.GetRequiredService<TDep1>(), sp.GetRequiredService<TDep2>(), configureOptions));
             return this;
         }
@@ -276,8 +269,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            //Services.AddTransient<IPostConfigureOptions<TOptions>>(
-            Services.Add<IPostConfigureOptions<TOptions>>(
+            Services.AddTransient<IPostConfigureOptions<TOptions>>(
                 sp => new PostConfigureOptions<TOptions, TDep1, TDep2, TDep3>(
                     Name,
                     sp.GetRequiredService<TDep1>(),
@@ -308,8 +300,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            //Services.AddTransient<IPostConfigureOptions<TOptions>>(
-            Services.Add<IPostConfigureOptions<TOptions>>(
+            Services.AddTransient<IPostConfigureOptions<TOptions>>(
                 sp => new PostConfigureOptions<TOptions, TDep1, TDep2, TDep3, TDep4>(
                     Name,
                     sp.GetRequiredService<TDep1>(),
@@ -343,8 +334,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(configureOptions));
             }
 
-            //Services.AddTransient<IPostConfigureOptions<TOptions>>(
-            Services.Add<IPostConfigureOptions<TOptions>>(
+            Services.AddTransient<IPostConfigureOptions<TOptions>>(
                 sp => new PostConfigureOptions<TOptions, TDep1, TDep2, TDep3, TDep4, TDep5>(
                     Name,
                     sp.GetRequiredService<TDep1>(),
@@ -377,7 +367,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(validation));
             }
 
-            Services.Add<IValidateOptions<TOptions>>(new ValidateOptions<TOptions>(Name, validation, failureMessage));
+            Services.AddSingleton<IValidateOptions<TOptions>>(new ValidateOptions<TOptions>(Name, validation, failureMessage));
             return this;
         }
 
@@ -404,8 +394,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(validation));
             }
 
-            //Services.AddTransient<IValidateOptions<TOptions>>(sp =>
-            Services.Add<IValidateOptions<TOptions>>(sp =>
+            Services.AddTransient<IValidateOptions<TOptions>>(sp =>
                 new ValidateOptions<TOptions, TDep>(Name, sp.GetRequiredService<TDep>(), validation, failureMessage));
             return this;
         }
@@ -435,8 +424,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(validation));
             }
 
-            //Services.AddTransient<IValidateOptions<TOptions>>(sp =>
-            Services.Add<IValidateOptions<TOptions>>(sp =>
+            Services.AddTransient<IValidateOptions<TOptions>>(sp =>
                 new ValidateOptions<TOptions, TDep1, TDep2>(Name,
                     sp.GetRequiredService<TDep1>(),
                     sp.GetRequiredService<TDep2>(),
@@ -472,8 +460,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(validation));
             }
 
-            //Services.AddTransient<IValidateOptions<TOptions>>(sp =>
-            Services.Add<IValidateOptions<TOptions>>(sp =>
+            Services.AddTransient<IValidateOptions<TOptions>>(sp =>
                 new ValidateOptions<TOptions, TDep1, TDep2, TDep3>(Name,
                     sp.GetRequiredService<TDep1>(),
                     sp.GetRequiredService<TDep2>(),
@@ -512,8 +499,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(validation));
             }
 
-            //Services.AddTransient<IValidateOptions<TOptions>>(sp =>
-            Services.Add<IValidateOptions<TOptions>>(sp =>
+            Services.AddTransient<IValidateOptions<TOptions>>(sp =>
                 new ValidateOptions<TOptions, TDep1, TDep2, TDep3, TDep4>(Name,
                     sp.GetRequiredService<TDep1>(),
                     sp.GetRequiredService<TDep2>(),
@@ -555,8 +541,7 @@ namespace Nt.Core.Options
                 throw new ArgumentNullException(nameof(validation));
             }
 
-            //Services.AddTransient<IValidateOptions<TOptions>>(sp =>
-            Services.Add<IValidateOptions<TOptions>>(sp =>
+            Services.AddTransient<IValidateOptions<TOptions>>(sp =>
                 new ValidateOptions<TOptions, TDep1, TDep2, TDep3, TDep4, TDep5>(Name,
                     sp.GetRequiredService<TDep1>(),
                     sp.GetRequiredService<TDep2>(),

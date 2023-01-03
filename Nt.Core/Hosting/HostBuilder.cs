@@ -132,7 +132,7 @@ namespace Nt.Core.Hosting
             //services.AddSingleton(_ => _ninjascriptConfiguration);
             //services.AddSingleton<INinjascriptLifetime, NinjascriptLifetime>();
             //AddLifetime(services);
-            services.Add<IHost>(_ =>
+            services.AddSingleton<IHost>(_ =>
             {
                 return new Host(
                     _services

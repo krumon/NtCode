@@ -5,7 +5,6 @@ namespace Nt.Core.DependencyInjection
 {
     public static class ServiceCollectionDescriptorExtensions
     {
-
         /// <summary>
         /// Adds the specified <paramref name="descriptor"/> to the <paramref name="collection"/>.
         /// </summary>
@@ -118,14 +117,296 @@ namespace Nt.Core.DependencyInjection
         }
 
         /// <summary>
-        /// Adds the specified <paramref name="service"/> as a service
+        /// Adds the specified <paramref name="service"/> as a <see cref="ServiceLifetime.Transient"/> service
         /// to the <paramref name="collection"/> if the service type hasn't already been registered.
         /// </summary>
         /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
         /// <param name="service">The type of the service to register.</param>
-        public static void TryAdd(
+        public static void TryAddTransient(
             this IServiceCollection collection,
-            Type service)
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type service)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            var descriptor = ServiceDescriptor.Transient(service, service);
+            TryAdd(collection, descriptor);
+        }
+
+        /// <summary>
+        /// Adds the specified <paramref name="service"/> as a <see cref="ServiceLifetime.Transient"/> service
+        /// with the <paramref name="implementationType"/> implementation
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
+        /// <param name="service">The type of the service to register.</param>
+        /// <param name="implementationType">The implementation type of the service.</param>
+        public static void TryAddTransient(
+            this IServiceCollection collection,
+            Type service,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementationType)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            if (implementationType == null)
+            {
+                throw new ArgumentNullException(nameof(implementationType));
+            }
+
+            var descriptor = ServiceDescriptor.Transient(service, implementationType);
+            TryAdd(collection, descriptor);
+        }
+
+        /// <summary>
+        /// Adds the specified <paramref name="service"/> as a <see cref="ServiceLifetime.Transient"/> service
+        /// using the factory specified in <paramref name="implementationFactory"/>
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
+        /// <param name="service">The type of the service to register.</param>
+        /// <param name="implementationFactory">The factory that creates the service.</param>
+        public static void TryAddTransient(
+            this IServiceCollection collection,
+            Type service,
+            Func<IServiceProvider, object> implementationFactory)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            var descriptor = ServiceDescriptor.Transient(service, implementationFactory);
+            TryAdd(collection, descriptor);
+        }
+
+        /// <summary>
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="ServiceLifetime.Transient"/> service
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service to add.</typeparam>
+        /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
+        public static void TryAddTransient<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TService>(this IServiceCollection collection)
+            where TService : class
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            TryAddTransient(collection, typeof(TService), typeof(TService));
+        }
+
+        /// <summary>
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="ServiceLifetime.Transient"/> service
+        /// implementation type specified in <typeparamref name="TImplementation"/>
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service to add.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
+        /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
+        public static void TryAddTransient<TService, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TImplementation>(this IServiceCollection collection)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            TryAddTransient(collection, typeof(TService), typeof(TImplementation));
+        }
+
+        /// <summary>
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="ServiceLifetime.Transient"/> service
+        /// using the factory specified in <paramref name="implementationFactory"/>
+        /// to the <paramref name="services"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service to add.</typeparam>
+        /// <param name="services">The <see cref="IServiceCollection"/>.</param>
+        /// <param name="implementationFactory">The factory that creates the service.</param>
+        public static void TryAddTransient<TService>(
+            this IServiceCollection services,
+            Func<IServiceProvider, TService> implementationFactory)
+            where TService : class
+        {
+            services.TryAdd(ServiceDescriptor.Transient(implementationFactory));
+        }
+
+        /// <summary>
+        /// Adds the specified <paramref name="service"/> as a <see cref="ServiceLifetime.Scoped"/> service
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
+        /// <param name="service">The type of the service to register.</param>
+        public static void TryAddScoped(
+            this IServiceCollection collection,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type service)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            var descriptor = ServiceDescriptor.Scoped(service, service);
+            TryAdd(collection, descriptor);
+        }
+
+        /// <summary>
+        /// Adds the specified <paramref name="service"/> as a <see cref="ServiceLifetime.Scoped"/> service
+        /// with the <paramref name="implementationType"/> implementation
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
+        /// <param name="service">The type of the service to register.</param>
+        /// <param name="implementationType">The implementation type of the service.</param>
+        public static void TryAddScoped(
+            this IServiceCollection collection,
+            Type service,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementationType)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            if (implementationType == null)
+            {
+                throw new ArgumentNullException(nameof(implementationType));
+            }
+
+            var descriptor = ServiceDescriptor.Scoped(service, implementationType);
+            TryAdd(collection, descriptor);
+        }
+
+        /// <summary>
+        /// Adds the specified <paramref name="service"/> as a <see cref="ServiceLifetime.Scoped"/> service
+        /// using the factory specified in <paramref name="implementationFactory"/>
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
+        /// <param name="service">The type of the service to register.</param>
+        /// <param name="implementationFactory">The factory that creates the service.</param>
+        public static void TryAddScoped(
+            this IServiceCollection collection,
+            Type service,
+            Func<IServiceProvider, object> implementationFactory)
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            if (service == null)
+            {
+                throw new ArgumentNullException(nameof(service));
+            }
+
+            if (implementationFactory == null)
+            {
+                throw new ArgumentNullException(nameof(implementationFactory));
+            }
+
+            var descriptor = ServiceDescriptor.Scoped(service, implementationFactory);
+            TryAdd(collection, descriptor);
+        }
+
+        /// <summary>
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="ServiceLifetime.Scoped"/> service
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service to add.</typeparam>
+        /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
+        public static void TryAddScoped<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TService>(this IServiceCollection collection)
+            where TService : class
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            TryAddScoped(collection, typeof(TService), typeof(TService));
+        }
+
+        /// <summary>
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="ServiceLifetime.Scoped"/> service
+        /// implementation type specified in <typeparamref name="TImplementation"/>
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service to add.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
+        /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
+        public static void TryAddScoped<TService, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TImplementation>(this IServiceCollection collection)
+            where TService : class
+            where TImplementation : class, TService
+        {
+            if (collection == null)
+            {
+                throw new ArgumentNullException(nameof(collection));
+            }
+
+            TryAddScoped(collection, typeof(TService), typeof(TImplementation));
+        }
+
+        /// <summary>
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="ServiceLifetime.Scoped"/> service
+        /// using the factory specified in <paramref name="implementationFactory"/>
+        /// to the <paramref name="services"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service to add.</typeparam>
+        /// <param name="services">The <see cref="IServiceCollection"/>.</param>
+        /// <param name="implementationFactory">The factory that creates the service.</param>
+        public static void TryAddScoped<TService>(
+            this IServiceCollection services,
+            Func<IServiceProvider, TService> implementationFactory)
+            where TService : class
+        {
+            services.TryAdd(ServiceDescriptor.Scoped(implementationFactory));
+        }
+
+        /// <summary>
+        /// Adds the specified <paramref name="service"/> as a <see cref="ServiceLifetime.Singleton"/> service
+        /// to the <paramref name="collection"/> if the service type hasn't already been registered.
+        /// </summary>
+        /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
+        /// <param name="service">The type of the service to register.</param>
+        public static void TryAddSingleton(
+            this IServiceCollection collection,
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type service)
         {
             if (collection == null)
             {
@@ -142,17 +423,17 @@ namespace Nt.Core.DependencyInjection
         }
 
         /// <summary>
-        /// Adds the specified <paramref name="service"/> as a service
+        /// Adds the specified <paramref name="service"/> as a <see cref="ServiceLifetime.Singleton"/> service
         /// with the <paramref name="implementationType"/> implementation
         /// to the <paramref name="collection"/> if the service type hasn't already been registered.
         /// </summary>
         /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
         /// <param name="service">The type of the service to register.</param>
         /// <param name="implementationType">The implementation type of the service.</param>
-        public static void TryAdd(
+        public static void TryAddSingleton(
             this IServiceCollection collection,
             Type service,
-            Type implementationType)
+            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] Type implementationType)
         {
             if (collection == null)
             {
@@ -174,14 +455,14 @@ namespace Nt.Core.DependencyInjection
         }
 
         /// <summary>
-        /// Adds the specified <paramref name="service"/> as a service
+        /// Adds the specified <paramref name="service"/> as a <see cref="ServiceLifetime.Singleton"/> service
         /// using the factory specified in <paramref name="implementationFactory"/>
         /// to the <paramref name="collection"/> if the service type hasn't already been registered.
         /// </summary>
         /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
         /// <param name="service">The type of the service to register.</param>
         /// <param name="implementationFactory">The factory that creates the service.</param>
-        public static void TryAdd(
+        public static void TryAddSingleton(
             this IServiceCollection collection,
             Type service,
             Func<IServiceProvider, object> implementationFactory)
@@ -206,12 +487,12 @@ namespace Nt.Core.DependencyInjection
         }
 
         /// <summary>
-        /// Adds the specified <typeparamref name="TService"/> as a service
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="ServiceLifetime.Singleton"/> service
         /// to the <paramref name="collection"/> if the service type hasn't already been registered.
         /// </summary>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
-        public static void TryAdd<TService>(this IServiceCollection collection)
+        public static void TryAddSingleton<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TService>(this IServiceCollection collection)
             where TService : class
         {
             if (collection == null)
@@ -219,18 +500,18 @@ namespace Nt.Core.DependencyInjection
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            TryAdd(collection, typeof(TService), typeof(TService));
+            TryAddSingleton(collection, typeof(TService), typeof(TService));
         }
 
         /// <summary>
-        /// Adds the specified <typeparamref name="TService"/> as a service
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="ServiceLifetime.Singleton"/> service
         /// implementation type specified in <typeparamref name="TImplementation"/>
         /// to the <paramref name="collection"/> if the service type hasn't already been registered.
         /// </summary>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation to use.</typeparam>
         /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
-        public static void TryAdd<TService, TImplementation>(this IServiceCollection collection)
+        public static void TryAddSingleton<TService, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TImplementation>(this IServiceCollection collection)
             where TService : class
             where TImplementation : class, TService
         {
@@ -239,18 +520,18 @@ namespace Nt.Core.DependencyInjection
                 throw new ArgumentNullException(nameof(collection));
             }
 
-            TryAdd(collection, typeof(TService), typeof(TImplementation));
+            TryAddSingleton(collection, typeof(TService), typeof(TImplementation));
         }
 
         /// <summary>
-        /// Adds the specified <typeparamref name="TService"/> as a service
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="ServiceLifetime.Singleton"/> service
         /// with an instance specified in <paramref name="instance"/>
         /// to the <paramref name="collection"/> if the service type hasn't already been registered.
         /// </summary>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <param name="collection">The <see cref="IServiceCollection"/>.</param>
         /// <param name="instance">The instance of the service to add.</param>
-        public static void TryAdd<TService>(this IServiceCollection collection, TService instance)
+        public static void TryAddSingleton<TService>(this IServiceCollection collection, TService instance)
             where TService : class
         {
             if (collection == null)
@@ -268,14 +549,14 @@ namespace Nt.Core.DependencyInjection
         }
 
         /// <summary>
-        /// Adds the specified <typeparamref name="TService"/> as a service
+        /// Adds the specified <typeparamref name="TService"/> as a <see cref="ServiceLifetime.Singleton"/> service
         /// using the factory specified in <paramref name="implementationFactory"/>
         /// to the <paramref name="services"/> if the service type hasn't already been registered.
         /// </summary>
         /// <typeparam name="TService">The type of the service to add.</typeparam>
         /// <param name="services">The <see cref="IServiceCollection"/>.</param>
         /// <param name="implementationFactory">The factory that creates the service.</param>
-        public static void TryAdd<TService>(
+        public static void TryAddSingleton<TService>(
             this IServiceCollection services,
             Func<IServiceProvider, TService> implementationFactory)
             where TService : class
@@ -294,7 +575,8 @@ namespace Nt.Core.DependencyInjection
         /// Use <see cref="TryAddEnumerable(IServiceCollection, ServiceDescriptor)"/> when registering a service implementation of a
         /// service type that
         /// supports multiple registrations of the same service type. Using
-        /// <see cref="Add(IServiceCollection, ServiceDescriptor)"/> is not idempotent and can add duplicate
+        /// <see cref="Add(IServiceCollection, ServiceDescriptor)"/> is not idempotent and can add
+        /// duplicate
         /// <see cref="ServiceDescriptor"/> instances if called twice. Using
         /// <see cref="TryAddEnumerable(IServiceCollection, ServiceDescriptor)"/> will prevent registration
         /// of multiple implementation types.
@@ -318,7 +600,7 @@ namespace Nt.Core.DependencyInjection
             if (implementationType == typeof(object) ||
                 implementationType == descriptor.ServiceType)
             {
-                throw new ArgumentException("Try Add Indistinguishable Type To Enumerable",nameof(descriptor));
+                throw new ArgumentException($"TryAddIndistinguishableTypeToEnumerable, {nameof(implementationType)}, {nameof(descriptor.ServiceType)}, {nameof(descriptor)}.");
             }
 
             int count = services.Count;

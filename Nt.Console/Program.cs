@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
+﻿//using Microsoft.Extensions.Configuration;
+//using Microsoft.Extensions.DependencyInjection;
+//using Microsoft.Extensions.Logging;
+//using Microsoft.Extensions.Logging.Configuration;
+//using Microsoft.Extensions.Options;
+//using Microsoft.Extensions.Primitives;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
@@ -26,9 +26,15 @@ namespace ConsoleApp
             //Microsoft.Extensions.Logging.ConsoleLoggerExtensions
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
+            Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
+            //Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions            
             
+            //sc.AddSingleton<IOnBarUpdateService>();
+            //Microsoft.Extensions.Options.OptionsBuilder options;
+
+            //builder.SetMinimumLevel
+
             //Microsoft.Extensions.DependencyInjection.ServiceProvider
-            //Microsoft.Extensions.DependencyInjection.ServiceDescriptor
             //Microsoft.Extensions.Options.OptionsBuilder
             //IHost host = Hosting.CreateDefaultBuilder()
             //    .ConfigureHostOptions((options) =>
@@ -57,7 +63,7 @@ namespace ConsoleApp
             //        ;
             //    })
             //    .Build();
-            
+
             IHost host = Hosting.CreateDefaultBuilder()
                 .ConfigureHostOptions((options) =>
                 {
@@ -69,7 +75,9 @@ namespace ConsoleApp
                     {
                         o.AddConsole();
                     });
-                
+                    sc.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureService, GlobalsDataDesignScript>());
+                    sc.AddSingleton<IConfigureService, ChartDataDesignScript>();
+
                     //sc.AddLogging(configure => 
                     //{
                     //    configure.SetMinimumLevel(LogLevel.Information);

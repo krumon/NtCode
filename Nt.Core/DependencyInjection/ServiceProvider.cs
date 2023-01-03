@@ -52,12 +52,12 @@ namespace Nt.Core.DependencyInjection
             //_engine = GetEngine();
             // Sets the delegate to create the service accesor.
             _createServiceAccessor = CreateServiceAccessor;
-            // Sets the delegate method to create the services.
-            _createService = CreateService;
+            //// Sets the delegate method to create the services.
+            //_createService = CreateService;
             // Initialize the realized scope services collection.
             _realizedScopeServices = new ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>>();
-            // Initilize the realized services collection.
-            _realizedServices = new ConcurrentDictionary<Type, object>();
+            //// Initilize the realized services collection.
+            //_realizedServices = new ConcurrentDictionary<Type, object>();
             // Initialize the call site factory.
             CallSiteFactory = new CallSiteFactory(serviceDescriptors);
             // The list of built in services that aren't part of the list of service descriptors
@@ -104,31 +104,20 @@ namespace Nt.Core.DependencyInjection
         /// </summary>
         /// <param name="serviceType">The type of the service to get.</param>
         /// <returns>The service that was produced.</returns>
-        public object GetService(Type serviceType)
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(nameof(ServiceProvider));
-            object result = _realizedServices.GetOrAdd(serviceType, _createService);
-            //Debug.Assert(result != null);
-
-            return result;
-        }
+        public object GetService(Type serviceType) => GetService(serviceType, Root);
 
         internal object GetService(Type serviceType, ServiceProviderEngineScope serviceProviderEngineScope)
         {
             if (_disposed)
-            {
                 ThrowHelper.ThrowObjectDisposedException();
-            }
 
             Func<ServiceProviderEngineScope, object> realizedService = _realizedScopeServices.GetOrAdd(serviceType, _createServiceAccessor);
-            //OnResolve(serviceType, serviceProviderEngineScope);
+            OnResolve(serviceType, serviceProviderEngineScope);
             //DependencyInjectionEventSource.Log.ServiceResolved(this, serviceType);
             var result = realizedService.Invoke(serviceProviderEngineScope);
             System.Diagnostics.Debug.Assert(result is null || CallSiteFactory.IsService(serviceType));
             return result;
         }
-
 
         /// <summary>
         /// Gets all service objects of the specified type.
@@ -182,17 +171,6 @@ namespace Nt.Core.DependencyInjection
             {
                 throw new InvalidOperationException($"Error while validating the service descriptor '{descriptor}': {e.Message}", e);
             }
-        }
-        private object CreateService(Type serviceType)
-        {
-            ServiceCallSite callSite = CallSiteFactory.GetCallSite(serviceType, new CallSiteChain());
-            if (callSite != null)
-            {
-                object value = CallSiteRuntimeResolver.Instance.Resolve(callSite, Root);
-                return value;
-            }
-
-            return null;
         }
         private Func<ServiceProviderEngineScope, object> CreateServiceAccessor(Type serviceType)
         {

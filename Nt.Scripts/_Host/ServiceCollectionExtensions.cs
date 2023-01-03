@@ -14,9 +14,9 @@ namespace Nt.Scripts
             ISessionsBuilder builder = new SessionsBuilder(services);
             action?.Invoke(builder);
             builder.Build();
-            services.Add<ISessionsIteratorService, SessionsIteratorDesignScript>();
-            services.Add<ISessionsFiltersService, SessionsFiltersScript>();
-            services.Add<ISessionsService, SessionsScript>();
+            services.AddSingleton<ISessionsIteratorService, SessionsIteratorDesignScript>();
+            services.AddSingleton<ISessionsFiltersService, SessionsFiltersScript>();
+            services.AddSingleton<ISessionsService, SessionsScript>();
             return services;
         }
     }

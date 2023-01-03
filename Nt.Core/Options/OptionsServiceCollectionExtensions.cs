@@ -22,9 +22,9 @@ namespace Nt.Core.Options
             }
 
             //services.TryAdd(ServiceDescriptor.Singleton(typeof(IOptions<>), typeof(UnnamedOptionsManager<>)));
-            //services.TryAdd(ServiceDescriptor.Scoped(typeof(IOptionsSnapshot<>), typeof(OptionsManager<>)));
+            services.TryAdd(ServiceDescriptor.Scoped(typeof(IOptionsSnapshot<>), typeof(OptionsManager<>)));
             services.TryAdd(ServiceDescriptor.Singleton(typeof(IOptionsMonitor<>), typeof(OptionsMonitor<>)));
-            //services.TryAdd(ServiceDescriptor.Transient(typeof(IOptionsFactory<>), typeof(OptionsFactory<>)));
+            services.TryAdd(ServiceDescriptor.Transient(typeof(IOptionsFactory<>), typeof(OptionsFactory<>)));
             services.TryAdd(ServiceDescriptor.Singleton(typeof(IOptionsMonitorCache<>), typeof(OptionsCache<>)));
             return services;
         }
@@ -63,8 +63,7 @@ namespace Nt.Core.Options
             }
 
             services.AddOptions();
-            services.Add<IConfigureOptions<TOptions>>(new ConfigureNamedOptions<TOptions>(name, configureOptions));
-            //services.AddSingleton<IConfigureOptions<TOptions>>(new ConfigureNamedOptions<TOptions>(name, configureOptions));
+            services.AddSingleton<IConfigureOptions<TOptions>>(new ConfigureNamedOptions<TOptions>(name, configureOptions));
             return services;
         }
 
@@ -112,8 +111,7 @@ namespace Nt.Core.Options
             }
 
             services.AddOptions();
-            services.Add<IPostConfigureOptions<TOptions>>(new PostConfigureOptions<TOptions>(name, configureOptions));
-            //services.AddSingleton<IPostConfigureOptions<TOptions>>(new PostConfigureOptions<TOptions>(name, configureOptions));
+            services.AddSingleton<IPostConfigureOptions<TOptions>>(new PostConfigureOptions<TOptions>(name, configureOptions));
             return services;
         }
 
@@ -181,8 +179,7 @@ namespace Nt.Core.Options
             bool added = false;
             foreach (Type serviceType in FindConfigurationServices(configureType))
             {
-                services.Add(serviceType, configureType);
-                //services.AddTransient(serviceType, configureType);
+                services.AddTransient(serviceType, configureType);
                 added = true;
             }
 
@@ -210,8 +207,7 @@ namespace Nt.Core.Options
             bool added = false;
             foreach (Type serviceType in FindConfigurationServices(configureType))
             {
-                services.Add(serviceType, configureInstance);
-                //services.AddSingleton(serviceType, configureInstance);
+                services.AddSingleton(serviceType, configureInstance);
                 added = true;
             }
 

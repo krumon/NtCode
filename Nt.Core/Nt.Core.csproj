@@ -147,7 +147,7 @@
     <Compile Include="DependencyInjection\ServiceProviderOptions.cs" />
     <Compile Include="DependencyInjection\ServiceProvider.cs" />
     <Compile Include="DependencyInjection\ServiceCollection.cs" />
-    <Compile Include="DependencyInjection\ServiceCollectionExtensions.cs" />
+    <Compile Include="DependencyInjection\ServiceCollectionServiceExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceDescriptor.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
