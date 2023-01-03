@@ -75,8 +75,10 @@ namespace ConsoleApp
                     {
                         o.AddConsole();
                     });
-                    sc.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureService, GlobalsDataDesignScript>());
+                    sc.AddTransient<IConfigureService,GlobalsDataDesignScript>();
                     sc.AddSingleton<IConfigureService, ChartDataDesignScript>();
+                    sc.AddScoped<IConfigureService, ChartDataDesignScript>();
+                    sc.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureService, GlobalsDataDesignScript>());
 
                     //sc.AddLogging(configure => 
                     //{

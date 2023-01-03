@@ -194,9 +194,9 @@
     <Compile Include="Logging\LoggingBuilderExtensions.cs" />
     <Compile Include="Logging\LoggingServiceCollectionExtensions.cs" />
     <Compile Include="Logging\ProviderAliasAttribute.cs" />
-    <Compile Include="Options\ChangeToken.cs" />
+    <Compile Include="Primitives\ChangeToken.cs" />
     <Compile Include="Options\ConfigureNamedOptions.cs" />
-    <Compile Include="Options\IChangeToken.cs" />
+    <Compile Include="Primitives\IChangeToken.cs" />
     <Compile Include="Options\IConfigureNamedOptions.cs" />
     <Compile Include="Options\IConfigureOptions.cs" />
     <Compile Include="Options\ConfigureOptions.cs" />
@@ -264,9 +264,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
-    <Compile Include="Core\IElement.cs" />
+    <Compile Include="Primitives\IElement.cs" />
     <Compile Include="Files\NtFileType.cs" />
-    <Compile Include="Core\BaseElement.cs" />
+    <Compile Include="Primitives\BaseElement.cs" />
     <Compile Include="Data\Bars\TradingBar.cs" />
     <Compile Include="Data\Brokers\BrokerExtensions.cs" />
     <Compile Include="Data\Brokers\Broker.cs" />

@@ -21,16 +21,12 @@ namespace Nt.Core.DependencyInjection
         private bool _disposed;
         // Internal for testing... not use in this moment.
         //internal ServiceProviderEngine _engine;
-        // Collection of the realized services.
-        private readonly ConcurrentDictionary<Type, object> _realizedServices;
         // Collection of realized scope services.
         private ConcurrentDictionary<Type, Func<ServiceProviderEngineScope, object>> _realizedScopeServices;
         // The factory of the calls.
         internal CallSiteFactory CallSiteFactory { get; }
         // The scope engine to create services.
         internal ServiceProviderEngineScope Root { get; }
-        // Delagate to create the service
-        private readonly Func<Type,object> _createService;
         // Delegate to create the service accesor by the service provider engine scope.
         private readonly Func<Type, Func<ServiceProviderEngineScope, object>> _createServiceAccessor;
         // Verify if the app sets the library name 'VerifyOpenGenericServiceTrimmability'.
@@ -119,23 +115,23 @@ namespace Nt.Core.DependencyInjection
             return result;
         }
 
-        /// <summary>
-        /// Gets all service objects of the specified type.
-        /// </summary>
-        /// <returns>The service collection that was produced.</returns>
-        public IEnumerable<T> GetServices<T>()
-        {
-            if (_disposed)
-                throw new ObjectDisposedException(nameof(ServiceProvider));
+        ///// <summary>
+        ///// Gets all service objects of the specified type.
+        ///// </summary>
+        ///// <returns>The service collection that was produced.</returns>
+        //public IEnumerable<T> GetServices<T>()
+        //{
+        //    if (_disposed)
+        //        throw new ObjectDisposedException(nameof(ServiceProvider));
 
-            IList<T> result = (IList<T>)CreateServices<T>(typeof(T));
+        //    IList<T> result = (IList<T>)CreateServices<T>(typeof(T));
 
-            return result;
-        }
+        //    return result;
+        //}
 
         internal void ReplaceServiceAccessor(ServiceCallSite callSite, Func<ServiceProviderEngineScope, object> accessor)
         {
-            _realizedServices[callSite.ServiceType] = accessor;
+            _realizedScopeServices[callSite.ServiceType] = accessor;
         }
 
         internal IServiceScope CreateScope()
@@ -192,19 +188,19 @@ namespace Nt.Core.DependencyInjection
             }
             return _ => null;
         }
-        private IEnumerable<T> CreateServices<T>(Type serviceType)
-        {
-            if (!(typeof(T) == serviceType))
-                throw new InvalidOperationException();
+        //private IEnumerable<T> CreateServices<T>(Type serviceType)
+        //{
+        //    if (!(typeof(T) == serviceType))
+        //        throw new InvalidOperationException();
 
-            Type[] serviceTypeGenericArguments = serviceType.GetGenericArguments();
+        //    Type[] serviceTypeGenericArguments = serviceType.GetGenericArguments();
 
-            IList<T> list = new List<T>();
-            foreach (KeyValuePair<Type,object> service in _realizedServices)
-                if (serviceType.IsAssignableFrom(service.Value?.GetType()))
-                    list.Add((T)service.Value);
-            return list.Count > 0 ? list : null;
-        }
+        //    IList<T> list = new List<T>();
+        //    foreach (KeyValuePair<Type,object> service in _realizedScopeServices)
+        //        if (serviceType.IsAssignableFrom(service.Value?.GetType()))
+        //            list.Add((T)service.Value);
+        //    return list.Count > 0 ? list : null;
+        //}
         private void OnCreate(ServiceCallSite callSite)
         {
             _callSiteValidator?.ValidateCallSite(callSite);

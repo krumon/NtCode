@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Threading;
 
-namespace Nt.Core.Options
+namespace Nt.Core.Primitives
 {
     /// <summary>
     /// Propagates notifications that a change has occurred.
@@ -105,7 +106,7 @@ namespace Nt.Core.Options
                 // We don't want to transition from _disposedSentinel => anything since it's terminal
                 // but we want to allow going from previously assigned disposable, to another
                 // disposable.
-                IDisposable current = null; // = Volatile.Read(ref _disposable);
+                IDisposable current = Volatile.Read(ref _disposable);
 
                 // If Dispose was called, then immediately dispose the disposable
                 if (current == _disposedSentinel)
@@ -115,7 +116,7 @@ namespace Nt.Core.Options
                 }
 
                 // Otherwise, try to update the disposable
-                IDisposable previous = null; // = Interlocked.CompareExchange(ref _disposable, disposable, current);
+                IDisposable previous = Interlocked.CompareExchange(ref _disposable, disposable, current);
 
                 if (previous == _disposedSentinel)
                 {
@@ -137,7 +138,7 @@ namespace Nt.Core.Options
             {
                 // If the previous value is disposable then dispose it, otherwise,
                 // now we've set the disposed sentinel
-                //Interlocked.Exchange(ref _disposable, _disposedSentinel).Dispose();
+                Interlocked.Exchange(ref _disposable, _disposedSentinel).Dispose();
             }
 
             private sealed class NoopDisposable : IDisposable

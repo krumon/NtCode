@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nt.Core.Options
+namespace Nt.Core.Primitives
 {
     /// <summary>
     /// Propagates notifications that a change has occurred.

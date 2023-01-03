@@ -1,4 +1,6 @@
-﻿namespace Nt.Core.Options
+﻿using Nt.Core.Primitives;
+
+namespace Nt.Core.Options
 {
     /// <summary>
     /// Used to fetch Microsoft.Extensions.Primitives.IChangeToken used for tracking
