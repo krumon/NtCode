@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Nt.Core.DependencyInjection.Internal
+namespace Nt.Core.DependencyInjection.ServiceLookup
 {
     internal sealed class StackGuard
     {

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Threading;
 
-namespace Nt.Core.DependencyInjection.Internal
+namespace Nt.Core.DependencyInjection.ServiceLookup
 {
     internal sealed class CallSiteRuntimeResolver : CallSiteVisitor<RuntimeResolverContext, object>
     {

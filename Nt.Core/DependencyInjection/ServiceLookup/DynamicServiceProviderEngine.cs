@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace Nt.Core.DependencyInjection.Internal
+namespace Nt.Core.DependencyInjection.ServiceLookup
 {
     internal sealed class DynamicServiceProviderEngine : CompiledServiceProviderEngine
     {

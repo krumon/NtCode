@@ -1,4 +1,4 @@
-﻿namespace Nt.Core.DependencyInjection.Internal
+﻿namespace Nt.Core.DependencyInjection.ServiceLookup
 {
     internal enum CallSiteKind
     {

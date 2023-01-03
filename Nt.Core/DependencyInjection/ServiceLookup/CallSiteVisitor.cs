@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nt.Core.DependencyInjection.Internal
+namespace Nt.Core.DependencyInjection.ServiceLookup
 {
     internal abstract class CallSiteVisitor<TArgument, TResult>
     {

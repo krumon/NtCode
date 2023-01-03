@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Nt.Core.DependencyInjection.Internal
+namespace Nt.Core.DependencyInjection.ServiceLookup
 {
     /// <summary>
     /// Summary description for ServiceCallSite
