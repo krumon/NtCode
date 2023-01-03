@@ -106,7 +106,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\DynamicallyAccessedMemberAttribute.cs" />
+    <Compile Include="DependencyInjection\DynamicallyAccessedMemberAttribute.cs" />
     <Compile Include="Data\Instruments\IInstrument.cs" />
     <Compile Include="Data\Instruments\Instrument.cs" />
     <Compile Include="Data\PartialHolidays\IPartialHoliday.cs" />
@@ -115,19 +115,19 @@
     <Compile Include="Data\TradingHours\ITradingHours.cs" />
     <Compile Include="DependencyInjection\Interfaces\IAsyncDisposable.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScopeFactory.cs" />
-    <Compile Include="DependencyInjection\Internal\CallSiteResultCacheLocation.cs" />
-    <Compile Include="DependencyInjection\Internal\CallSiteValidator.cs" />
-    <Compile Include="DependencyInjection\Internal\CallSiteVisitor.cs" />
-    <Compile Include="DependencyInjection\Internal\CompiledServiceProviderEngine.cs" />
-    <Compile Include="DependencyInjection\Internal\DynamicServiceProviderEngine.cs" />
-    <Compile Include="DependencyInjection\Internal\ResultCache.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\CallSiteResultCacheLocation.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\CallSiteValidator.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\CallSiteVisitor.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\CompiledServiceProviderEngine.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\DynamicServiceProviderEngine.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\ResultCache.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderIsService.cs" />
-    <Compile Include="DependencyInjection\Internal\ServiceProviderEngine.cs" />
-    <Compile Include="DependencyInjection\Internal\StackGuard.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\ServiceProviderEngine.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\StackGuard.cs" />
     <Compile Include="DependencyInjection\ServiceCollectionDescriptorExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceCollectionProviderExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceLifetime.cs" />
-    <Compile Include="DependencyInjection\Internal\ServiceProviderEngineScope.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\ServiceProviderEngineScope.cs" />
     <Compile Include="Hosting\Host.cs" />
     <Compile Include="Hosting\HostedServiceExtensions.cs" />
     <Compile Include="Hosting\HostOptions.cs" />
@@ -135,14 +135,14 @@
     <Compile Include="Hosting\Hosting.cs" />
     <Compile Include="Hosting\Interfaces\IHostedService.cs" />
     <Compile Include="Hosting\Interfaces\IHost.cs" />
-    <Compile Include="DependencyInjection\Internal\CallSiteChain.cs" />
-    <Compile Include="DependencyInjection\Internal\CallSiteFactory.cs" />
-    <Compile Include="DependencyInjection\Internal\CallSiteKind.cs" />
-    <Compile Include="DependencyInjection\Internal\CallSiteRuntimeResolver.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\CallSiteChain.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\CallSiteFactory.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\CallSiteKind.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\CallSiteRuntimeResolver.cs" />
     <Compile Include="DependencyInjection\ServiceProviderFactory.cs" />
-    <Compile Include="DependencyInjection\Internal\ParameterDefaultValue.cs" />
-    <Compile Include="DependencyInjection\Internal\ServiceCacheKey.cs" />
-    <Compile Include="DependencyInjection\Internal\ServiceCallSite.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\ParameterDefaultValue.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\ServiceCacheKey.cs" />
+    <Compile Include="DependencyInjection\ServiceLookup\ServiceCallSite.cs" />
     <Compile Include="DependencyInjection\ServiceProviderExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceProviderOptions.cs" />
     <Compile Include="DependencyInjection\ServiceProvider.cs" />
@@ -151,7 +151,7 @@
     <Compile Include="DependencyInjection\ServiceDescriptor.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
-    <Compile Include="DependencyInjection\Base\BaseServiceCollection.cs" />
+    <Compile Include="DependencyInjection\zEliminar\Base\BaseServiceCollection.cs" />
     <Compile Include="Logging\ActivityTrackingOptions.cs" />
     <Compile Include="Logging\Console\AnsiParser.cs" />
     <Compile Include="Logging\Console\ConsoleFormatter.cs" />
@@ -258,7 +258,7 @@
     <Compile Include="Exceptions\SetDefaultException.cs" />
     <Compile Include="Exceptions\OnBarUpdateException.cs" />
     <Compile Include="Exceptions\LoadException.cs" />
-    <Compile Include="Reflection\DynamicallyAccessedMemberTypes.cs" />
+    <Compile Include="DependencyInjection\DynamicallyAccessedMemberTypes.cs" />
     <Compile Include="Resources\ExceptionMessages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

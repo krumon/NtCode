@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nt.Core.Reflection
+namespace Nt.Core.DependencyInjection
 {
     [Flags]
     public enum DynamicallyAccessedMemberTypes

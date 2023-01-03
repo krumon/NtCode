@@ -1,7 +1,5 @@
-﻿using Nt.Core.Attributes;
-using Nt.Core.DependencyInjection;
+﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Options;
-using Nt.Core.Reflection;
 
 namespace Nt.Core.Logging
 {

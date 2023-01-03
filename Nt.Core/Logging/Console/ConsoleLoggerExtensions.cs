@@ -1,9 +1,6 @@
-﻿using Nt.Core.Attributes;
-using Nt.Core.DependencyInjection;
+﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Logging.Console.Internal;
-using Nt.Core.Logging.Internal;
 using Nt.Core.Options;
-using Nt.Core.Reflection;
 using System;
 
 namespace Nt.Core.Logging.Console

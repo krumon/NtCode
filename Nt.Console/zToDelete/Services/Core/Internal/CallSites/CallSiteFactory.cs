@@ -1,5 +1,4 @@
-﻿using Nt.Core.Attributes;
-using Nt.Core.Reflection;
+﻿using Nt.Core.DependencyInjection;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
