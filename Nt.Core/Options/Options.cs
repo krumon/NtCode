@@ -1,10 +1,15 @@
-﻿namespace Nt.Core.Options
+﻿using Nt.Core.DependencyInjection;
+
+namespace Nt.Core.Options
 {
     /// <summary>
     /// Helper class.
     /// </summary>
     public static class Options
     {
+        // By default, we're going to keep public, parameterless constructor on any Options class.
+        internal const DynamicallyAccessedMemberTypes DynamicallyAccessedMembers = DynamicallyAccessedMemberTypes.PublicParameterlessConstructor;
+
         /// <summary>
         /// The default name used for options instances: "".
         /// </summary>
@@ -16,7 +21,7 @@
         /// <typeparam name="TOptions">Options type.</typeparam>
         /// <param name="options">Options object.</param>
         /// <returns>Wrapped options object.</returns>
-        public static IOptions<TOptions> Create<TOptions>(TOptions options)
+        public static IOptions<TOptions> Create<[DynamicallyAccessedMembers(DynamicallyAccessedMembers)] TOptions>(TOptions options)
             where TOptions : class
         {
             return new OptionsWrapper<TOptions>(options);

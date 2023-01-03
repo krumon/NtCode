@@ -28,12 +28,7 @@ namespace Nt.Core.Options
         /// <param name="name">The default name of the <typeparamref name="TOptions"/> instance, if null <see cref="Options.DefaultName"/> is used.</param>
         public OptionsBuilder(IServiceCollection services, string name)
         {
-            if (services == null)
-            {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            Services = services;
+            Services = services ?? throw new ArgumentNullException(nameof(services));
             Name = name ?? Options.DefaultName;
         }
 

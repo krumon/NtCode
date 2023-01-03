@@ -28,14 +28,14 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             //Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions            
-            
+
             //sc.AddSingleton<IOnBarUpdateService>();
             //Microsoft.Extensions.Options.OptionsBuilder options;
 
             //builder.SetMinimumLevel
 
             //Microsoft.Extensions.DependencyInjection.ServiceProvider
-            //Microsoft.Extensions.Options.OptionsBuilder
+            //Microsoft.Extensions.Options.Options
             //IHost host = Hosting.CreateDefaultBuilder()
             //    .ConfigureHostOptions((options) =>
             //    {
