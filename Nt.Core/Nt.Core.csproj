@@ -109,6 +109,8 @@
     <Compile Include="Attributes\RequiresUnreferencedCodeAttribute.cs" />
     <Compile Include="Attributes\UnconditionalSuppressMessageAttribute.cs" />
     <Compile Include="Configuration\BinderOptions.cs" />
+    <Compile Include="Configuration\ChainedConfigurationProvider.cs" />
+    <Compile Include="Configuration\ChainedConfigurationSource.cs" />
     <Compile Include="Configuration\ConfigurationBinder.cs" />
     <Compile Include="Configuration\ConfigurationBuilder.cs" />
     <Compile Include="Configuration\ConfigurationExtensions.cs" />
@@ -121,15 +123,22 @@
     <Compile Include="Configuration\ConfigurationRoot.cs" />
     <Compile Include="Configuration\ConfigurationRootExtensions.cs" />
     <Compile Include="Configuration\ConfigurationSection.cs" />
-    <Compile Include="Configuration\Interfaces\IConfiguration.cs" />
-    <Compile Include="Configuration\Interfaces\IConfigurationBuilder.cs" />
-    <Compile Include="Configuration\Interfaces\IConfigurationProvider.cs" />
-    <Compile Include="Configuration\Interfaces\IConfigurationRoot.cs" />
-    <Compile Include="Configuration\Interfaces\IConfigurationSection.cs" />
-    <Compile Include="Configuration\Interfaces\IConfigurationSource.cs" />
+    <Compile Include="Configuration\.Interfaces\IConfiguration.cs" />
+    <Compile Include="Configuration\.Interfaces\IConfigurationBuilder.cs" />
+    <Compile Include="Configuration\.Interfaces\IConfigurationProvider.cs" />
+    <Compile Include="Configuration\.Interfaces\IConfigurationRoot.cs" />
+    <Compile Include="Configuration\.Interfaces\IConfigurationSection.cs" />
+    <Compile Include="Configuration\.Interfaces\IConfigurationSource.cs" />
+    <Compile Include="Configuration\FileConfigurationExtensions.cs" />
+    <Compile Include="Configuration\FileConfigurationProvider.cs" />
+    <Compile Include="Configuration\FileConfigurationSource.cs" />
+    <Compile Include="Configuration\FileLoadExceptionContext.cs" />
+    <Compile Include="Configuration\InternalConfigurationRootExtensions.cs" />
     <Compile Include="Configuration\MemoryConfigurationBuilderExtensions.cs" />
     <Compile Include="Configuration\Memory\MemoryConfigurationProvider.cs" />
     <Compile Include="Configuration\Memory\MemoryConfigurationSource.cs" />
+    <Compile Include="Configuration\StreamConfigurationProvider.cs" />
+    <Compile Include="Configuration\StreamConfigurationSource.cs" />
     <Compile Include="DependencyInjection\DynamicallyAccessedMemberAttribute.cs" />
     <Compile Include="Data\Instruments\IInstrument.cs" />
     <Compile Include="Data\Instruments\Instrument.cs" />
@@ -157,6 +166,36 @@
     <Compile Include="DependencyInjection\ServiceLifetime.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\ServiceProviderEngineScope.cs" />
     <Compile Include="DependencyInjection\ValidatorOptions.cs" />
+    <Compile Include="FileProviders\EmptyDisposable.cs" />
+    <Compile Include="FileProviders\Interfaces\IFileInfo.cs" />
+    <Compile Include="FileProviders\Interfaces\IDirectoryContents.cs" />
+    <Compile Include="FileProviders\Interfaces\IFileProvider.cs" />
+    <Compile Include="FileProviders\Interfaces\IPollingChangeToken.cs" />
+    <Compile Include="FileProviders\NotFoundDirectoryContents.cs" />
+    <Compile Include="FileProviders\NotFoundFileInfo.cs" />
+    <Compile Include="FileProviders\NullChangeToken.cs" />
+    <Compile Include="FileProviders\NullFileProvider.cs" />
+    <Compile Include="FileProviders\PhysicalFileProvider.cs" />
+    <Compile Include="FileProviders\Physical\ExclusionFilters.cs" />
+    <Compile Include="FileProviders\Physical\FileSystemInfoHelper.cs" />
+    <Compile Include="FileProviders\Physical\PhysicalDirectoryInfo.cs" />
+    <Compile Include="FileProviders\Physical\PhysicalFileInfo.cs" />
+    <Compile Include="FileProviders\Physical\PhysicalFilesWatcher.cs" />
+    <Compile Include="FileProviders\Physical\PollingFileChangeToken.cs" />
+    <Compile Include="FileProviders\Physical\PollingWildCardChangeToken.cs" />
+    <Compile Include="FileSystemGlobbing\Abstractions\DirectoryInfoBase.cs" />
+    <Compile Include="FileSystemGlobbing\Abstractions\FileSystemInfoBase.cs" />
+    <Compile Include="FileSystemGlobbing\FilePatternMatch.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\IPathSegment.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\IPattern.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\IPatternContext.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\MatcherContext.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PathSegments\LiteralPathSegment.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\Patterns\PatternBuilder.cs" />
+    <Compile Include="FileSystemGlobbing\Matcher.cs" />
+    <Compile Include="FileSystemGlobbing\PatternMatchingResult.cs" />
+    <Compile Include="Helpers\HashHelpers.cs" />
+    <Compile Include="Helpers\StringComparisonHelper.cs" />
     <Compile Include="Hosting\Host.cs" />
     <Compile Include="Hosting\HostedServiceExtensions.cs" />
     <Compile Include="Hosting\HostOptions.cs" />
@@ -226,6 +265,7 @@
     <Compile Include="Options\ConfigurationChangeTokenSource.cs" />
     <Compile Include="Options\Internal\UnnamedOptionsManager.cs" />
     <Compile Include="Options\NamedConfigureFromConfigurationOptions.cs" />
+    <Compile Include="Primitives\CancellationChangeToken.cs" />
     <Compile Include="Primitives\ChangeToken.cs" />
     <Compile Include="Options\ConfigureNamedOptions.cs" />
     <Compile Include="Primitives\IChangeToken.cs" />
@@ -296,7 +336,7 @@
       <DependentUpon>ExceptionMessages.resx</DependentUpon>
     </Compile>
     <Compile Include="Primitives\IElement.cs" />
-    <Compile Include="Files\NtFileType.cs" />
+    <Compile Include="FileProviders\zEliminar\NtFileType.cs" />
     <Compile Include="Primitives\BaseElement.cs" />
     <Compile Include="Data\Bars\TradingBar.cs" />
     <Compile Include="Data\Brokers\BrokerExtensions.cs" />
@@ -342,7 +382,7 @@
     <Compile Include="Data\TradingTimes\TradingTimeType.cs" />
     <Compile Include="Data\TradingSessions\Internal\TradingSession.cs" />
     <Compile Include="Data\TradingSessions\SessionType.cs" />
-    <Compile Include="Files\XmlFileItem.cs" />
+    <Compile Include="FileProviders\zEliminar\XmlFileItem.cs" />
     <Compile Include="Drawing\Data\Margin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\TradingTimes\TradingTime.cs" />
@@ -382,6 +422,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Configuration\CommandLine\" />
+    <Folder Include="Configuration\EnvironmentVariables\" />
+    <Folder Include="Configuration\Json\" />
+    <Folder Include="Configuration\UserSecrets\" />
     <Folder Include="Services\LoggerToFile\" />
   </ItemGroup>
   <ItemGroup>

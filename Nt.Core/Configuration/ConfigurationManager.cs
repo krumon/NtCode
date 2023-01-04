@@ -63,7 +63,7 @@ namespace Nt.Core.Configuration
             lock (_providerLock)
             {
                 // ToList() to eagerly evaluate inside lock.
-                return this.GetChildren().ToList(); // this.GetChildrenImplementation(null).ToList();
+                return this.GetChildrenImplementation(null).ToList();
             }
         }
 

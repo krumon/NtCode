@@ -20,18 +20,8 @@ namespace Nt.Core.Configuration
         /// <param name="path">The path to this section.</param>
         public ConfigurationSection(IConfigurationRoot root, string path)
         {
-            if (root == null)
-            {
-                throw new ArgumentNullException(nameof(root));
-            }
-
-            if (path == null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
-
-            _root = root;
-            _path = path;
+            _root = root ?? throw new ArgumentNullException(nameof(root));
+            _path = path ?? throw new ArgumentNullException(nameof(path));
         }
 
         /// <summary>
@@ -103,7 +93,7 @@ namespace Nt.Core.Configuration
         /// Gets the immediate descendant configuration sub-sections.
         /// </summary>
         /// <returns>The configuration sub-sections.</returns>
-        public IEnumerable<IConfigurationSection> GetChildren() => _root.GetChildren(); // _root.GetChildrenImplementation(Path);
+        public IEnumerable<IConfigurationSection> GetChildren() => _root.GetChildrenImplementation(Path);
 
         /// <summary>
         /// Returns a <see cref="IChangeToken"/> that can be used to observe when this configuration is reloaded.

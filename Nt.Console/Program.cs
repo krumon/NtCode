@@ -28,8 +28,7 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
-            //Microsoft.Extensions.Configuration.ConfigurationRootExtensions
-
+            Microsoft.Extensions.FileSystemGlobbing.Internal.MatcherContext
 
 
             //sc.AddSingleton<IOnBarUpdateService>();
