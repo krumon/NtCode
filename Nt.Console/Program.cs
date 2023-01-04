@@ -27,7 +27,7 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
-            //Microsoft.Extensions.DependencyInjection.Extensions.ServiceCollectionDescriptorExtensions            
+            //Microsoft.Extensions.Configuration.ConfigurationKeyNameAttribute
 
             //sc.AddSingleton<IOnBarUpdateService>();
             //Microsoft.Extensions.Options.OptionsBuilder options;
@@ -35,7 +35,7 @@ namespace ConsoleApp
             //builder.SetMinimumLevel
 
             //Microsoft.Extensions.DependencyInjection.ServiceProvider
-            //Microsoft.Extensions.Options.Options
+            //Microsoft.Extensions.Options.NamedConfigureFromConfigurationOptions
             //IHost host = Hosting.CreateDefaultBuilder()
             //    .ConfigureHostOptions((options) =>
             //    {

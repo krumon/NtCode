@@ -1,7 +1,7 @@
 ﻿using Nt.Core.DependencyInjection;
 using System.Threading;
 
-namespace Nt.Core.Options.Internals
+namespace Nt.Core.Options.Internal
 {
     internal sealed class UnnamedOptionsManager<[DynamicallyAccessedMembers(Options.DynamicallyAccessedMembers)] TOptions> :
         IOptions<TOptions>

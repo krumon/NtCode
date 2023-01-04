@@ -15,7 +15,7 @@ namespace Nt.Core.Options
         string Name { get; }
 
         /// <summary>
-        /// Returns a Microsoft.Extensions.Primitives.IChangeToken which can be used to register
+        /// Returns a <see cref="IChangeToken"/> which can be used to register
         /// a change notification callback.
         /// </summary>
         /// <returns>Change token.</returns>

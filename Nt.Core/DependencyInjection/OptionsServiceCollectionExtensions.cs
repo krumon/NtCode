@@ -1,9 +1,10 @@
-﻿using Nt.Core.DependencyInjection;
-using Nt.Core.Options.Internals;
+﻿using Nt.Core.Attributes;
+using Nt.Core.Options;
+using Nt.Core.Options.Internal;
 using System;
 using System.Collections.Generic;
 
-namespace Nt.Core.Options
+namespace Nt.Core.DependencyInjection
 {
     /// <summary>
     /// Extension methods for adding options services to the DI container.
@@ -39,7 +40,7 @@ namespace Nt.Core.Options
         /// <param name="configureOptions">The action used to configure the options.</param>
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
         public static IServiceCollection Configure<TOptions>(this IServiceCollection services, Action<TOptions> configureOptions) where TOptions : class
-            => services.Configure(Options.DefaultName, configureOptions);
+            => services.Configure(Options.Options.DefaultName, configureOptions);
 
         /// <summary>
         /// Registers an action used to configure a particular type of options.
@@ -87,7 +88,7 @@ namespace Nt.Core.Options
         /// <param name="configureOptions">The action used to configure the options.</param>
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
         public static IServiceCollection PostConfigure<TOptions>(this IServiceCollection services, Action<TOptions> configureOptions) where TOptions : class
-            => services.PostConfigure(Options.DefaultName, configureOptions);
+            => services.PostConfigure(Options.Options.DefaultName, configureOptions);
 
         /// <summary>
         /// Registers an action used to configure a particular type of options.
@@ -155,13 +156,34 @@ namespace Nt.Core.Options
                     }
                 }
             }
+
+            //// Extracted the suppression to a local function as trimmer currently doesn't handle suppressions
+            //// on iterator methods correctly.
+            //[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2070:UnrecognizedReflectionPattern",
+            //    Justification = "This method only looks for interfaces referenced in its code. " +
+            //        "The trimmer will keep the interface and thus all of its implementations in that case. " +
+            //        "The call to GetInterfaces may return less results in trimmed apps, but it will " +
+            //        "include the interfaces this method looks for if they should be there.")]
+            //static Type[] GetInterfacesOnType(Type t)
+            //    => t.GetInterfaces();
         }
+
+        // Extracted the suppression to a local function as trimmer currently doesn't handle suppressions
+        // on iterator methods correctly.
+        [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2070:UnrecognizedReflectionPattern",
+            Justification = "This method only looks for interfaces referenced in its code. " +
+                "The trimmer will keep the interface and thus all of its implementations in that case. " +
+                "The call to GetInterfaces may return less results in trimmed apps, but it will " +
+                "include the interfaces this method looks for if they should be there.")]
+        private static Type[] GetInterfacesOnType(Type t)
+            => t.GetInterfaces();
+
 
         private static void ThrowNoConfigServices(Type type) =>
             throw new InvalidOperationException(
                 type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Action<>) ?
-                    "NoConfigurationServicesAndAction" :
-                    "NoConfigurationServices");
+                    "Error_NoConfigurationServicesAndAction" :
+                    "Error_NoConfigurationServices");
 
         /// <summary>
         /// Registers a type that will have all of its <see cref="IConfigureOptions{TOptions}"/>,
@@ -227,7 +249,7 @@ namespace Nt.Core.Options
         /// <param name="services">The <see cref="IServiceCollection"/> to add the services to.</param>
         /// <returns>The <see cref="OptionsBuilder{TOptions}"/> so that configure calls can be chained in it.</returns>
         public static OptionsBuilder<TOptions> AddOptions<TOptions>(this IServiceCollection services) where TOptions : class
-            => services.AddOptions<TOptions>(Options.DefaultName);
+            => services.AddOptions<TOptions>(Options.Options.DefaultName);
 
         /// <summary>
         /// Gets an options builder that forwards Configure calls for the same named <typeparamref name="TOptions"/> to the underlying service collection.
@@ -247,16 +269,5 @@ namespace Nt.Core.Options
             services.AddOptions();
             return new OptionsBuilder<TOptions>(services, name);
         }
-
-        // Extracted the suppression to a local function as trimmer currently doesn't handle suppressions
-        // on iterator methods correctly.
-        //[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2070:UnrecognizedReflectionPattern",
-        //    Justification = "This method only looks for interfaces referenced in its code. " +
-        //        "The trimmer will keep the interface and thus all of its implementations in that case. " +
-        //        "The call to GetInterfaces may return less results in trimmed apps, but it will " +
-        //        "include the interfaces this method looks for if they should be there.")]
-        private static Type[] GetInterfacesOnType(Type t)
-            => t.GetInterfaces();
-
     }
 }

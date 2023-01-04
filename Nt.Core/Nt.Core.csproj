@@ -106,6 +106,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\RequiresUnreferencedCodeAttribute.cs" />
+    <Compile Include="Attributes\UnconditionalSuppressMessageAttribute.cs" />
+    <Compile Include="Configuration\BinderOptions.cs" />
+    <Compile Include="Configuration\ConfigurationBinder.cs" />
+    <Compile Include="Configuration\ConfigurationKeyNameAttribute.cs" />
+    <Compile Include="Configuration\Interfaces\IConfiguration.cs" />
+    <Compile Include="Configuration\Interfaces\IConfigurationSection.cs" />
     <Compile Include="DependencyInjection\DynamicallyAccessedMemberAttribute.cs" />
     <Compile Include="Data\Instruments\IInstrument.cs" />
     <Compile Include="Data\Instruments\Instrument.cs" />
@@ -115,6 +122,10 @@
     <Compile Include="Data\TradingHours\ITradingHours.cs" />
     <Compile Include="DependencyInjection\Interfaces\IAsyncDisposable.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScopeFactory.cs" />
+    <Compile Include="DependencyInjection\OptionsBuilderConfigurationExtensions.cs" />
+    <Compile Include="DependencyInjection\OptionsBuilderExtensions.cs" />
+    <Compile Include="DependencyInjection\OptionsConfigurationServiceCollectionExtensions.cs" />
+    <Compile Include="DependencyInjection\OptionsServiceCollectionExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\CallSiteResultCacheLocation.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\CallSiteValidator.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\CallSiteVisitor.cs" />
@@ -128,6 +139,7 @@
     <Compile Include="DependencyInjection\ServiceCollectionProviderExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceLifetime.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\ServiceProviderEngineScope.cs" />
+    <Compile Include="DependencyInjection\ValidatorOptions.cs" />
     <Compile Include="Hosting\Host.cs" />
     <Compile Include="Hosting\HostedServiceExtensions.cs" />
     <Compile Include="Hosting\HostOptions.cs" />
@@ -194,7 +206,9 @@
     <Compile Include="Logging\LoggingBuilderExtensions.cs" />
     <Compile Include="Logging\LoggingServiceCollectionExtensions.cs" />
     <Compile Include="Logging\ProviderAliasAttribute.cs" />
-    <Compile Include="Options\Internals\UnnamedOptionsManager.cs" />
+    <Compile Include="Options\ConfigurationChangeTokenSource.cs" />
+    <Compile Include="Options\Internal\UnnamedOptionsManager.cs" />
+    <Compile Include="Options\NamedConfigureFromConfigurationOptions.cs" />
     <Compile Include="Primitives\ChangeToken.cs" />
     <Compile Include="Options\ConfigureNamedOptions.cs" />
     <Compile Include="Primitives\IChangeToken.cs" />
@@ -216,7 +230,6 @@
     <Compile Include="Options\OptionsManager.cs" />
     <Compile Include="Options\OptionsMonitor.cs" />
     <Compile Include="Options\OptionsMonitorExtensions.cs" />
-    <Compile Include="Options\OptionsServiceCollectionExtensions.cs" />
     <Compile Include="Options\OptionsWrapper.cs" />
     <Compile Include="Options\PostConfigureOptions.cs" />
     <Compile Include="Options\ValidateOptions.cs" />
