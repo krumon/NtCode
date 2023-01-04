@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Nt.Core.FileSystemGlobbing.Internal.PathSegments;
+using Nt.Core.FileSystemGlobbing.Internal.PatternContexts;
+using System;
 using System.Collections.Generic;
 
 namespace Nt.Core.FileSystemGlobbing.Internal.Patterns

@@ -1,10 +1,12 @@
-﻿using Nt.Core.Primitives;
+﻿using Nt.Core.Attributes;
+using Nt.Core.FileProviders.Physical.Internal;
+using Nt.Core.FileSystemGlobbing;
+using Nt.Core.Internal;
+using Nt.Core.Primitives;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Security;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -77,7 +79,7 @@ namespace Nt.Core.FileProviders.Physical
         {
             if (fileSystemWatcher == null && !pollForChanges)
             {
-                throw new ArgumentNullException(nameof(fileSystemWatcher), SR.Error_FileSystemWatcherRequiredWithoutPolling);
+                throw new ArgumentNullException(nameof(fileSystemWatcher), "Error_FileSystemWatcherRequiredWithoutPolling");
             }
 
             _root = root;

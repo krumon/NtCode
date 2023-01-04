@@ -1,7 +1,11 @@
-﻿using Nt.Core.Primitives;
+﻿using Nt.Core.FileProviders.Internal;
+using Nt.Core.FileProviders.Physical;
+using Nt.Core.FileProviders.Physical.Internal;
+using Nt.Core.Primitives;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace Nt.Core.FileProviders
 {
@@ -94,7 +98,7 @@ namespace Nt.Core.FileProviders
             {
                 if (_fileWatcher != null)
                 {
-                    throw new InvalidOperationException(SR.Format(SR.CannotModifyWhenFileWatcherInitialized, nameof(UsePollingFileWatcher)));
+                    throw new InvalidOperationException($"CannotModifyWhenFileWatcherInitialized, {nameof(UsePollingFileWatcher)}.");
                 }
                 _usePollingFileWatcher = value;
             }

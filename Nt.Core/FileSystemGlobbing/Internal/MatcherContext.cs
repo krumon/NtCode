@@ -1,5 +1,6 @@
 ﻿using Nt.Core.FileSystemGlobbing.Abstractions;
 using Nt.Core.FileSystemGlobbing.Internal.PathSegments;
+using Nt.Core.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

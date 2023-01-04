@@ -1,9 +1,9 @@
-﻿using Nt.Core.DependencyInjection;
+﻿using Nt.Core.Logging;
 using Nt.Core.Logging.Internal;
 using Nt.Core.Options;
 using System;
 
-namespace Nt.Core.Logging
+namespace Nt.Core.DependencyInjection
 {
     /// <summary>
     /// Extension methods for setting up logging services in an <see cref="IServiceCollection" />.

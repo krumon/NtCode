@@ -1,19 +1,46 @@
-﻿using Nt.Core.DependencyInjection;
-using Nt.Core.Options;
+﻿using Nt.Core.Configuration;
+using System;
+using System.Globalization;
 
 namespace Nt.Core.Hosting
 {
+
     /// <summary>
-    /// Represents the host options.
+    /// Options for <see cref="IHost"/>
     /// </summary>
     public class HostOptions
     {
+        /// <summary>
+        /// The default timeout for <see cref="IHost.StopAsync(System.Threading.CancellationToken)"/>.
+        /// </summary>
+        public TimeSpan ShutdownTimeout { get; set; } = TimeSpan.FromSeconds(5);
+
+        ///// <summary>
+        ///// The behavior the <see cref="IHost"/> will follow when any of
+        ///// its <see cref="BackgroundService"/> instances throw an unhandled exception.
+        ///// </summary>
+        ///// <remarks>
+        ///// Defaults to <see cref="BackgroundServiceExceptionBehavior.StopHost"/>.
+        ///// </remarks>
+        //public BackgroundServiceExceptionBehavior BackgroundServiceExceptionBehavior { get; set; } =
+        //    BackgroundServiceExceptionBehavior.StopHost;
+
+        internal void Initialize(IConfiguration configuration)
+        {
+            var timeoutSeconds = configuration["shutdownTimeoutSeconds"];
+            if (!string.IsNullOrEmpty(timeoutSeconds)
+                && int.TryParse(timeoutSeconds, NumberStyles.None, CultureInfo.InvariantCulture, out var seconds))
+            {
+                ShutdownTimeout = TimeSpan.FromSeconds(seconds);
+            }
+        }
+
         /// <inheritdoc/>
         public static HostOptions Default => new HostOptions
         {
             IsInDesignMode = false
         };
-        
+
         /// <summary>
         /// Indicates if the host is in design mode.
         /// </summary>
@@ -22,7 +49,7 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Indicates if the host use <see cref="Services.ISessionsIteratorService"/>.
         /// </summary>
-        public bool IncludeSessions{ get; set; } = true;
+        public bool IncludeSessions { get; set; } = true;
 
     }
 }

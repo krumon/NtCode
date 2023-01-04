@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -106,6 +107,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\OSPlatformAttribute.cs" />
     <Compile Include="Attributes\RequiresUnreferencedCodeAttribute.cs" />
     <Compile Include="Attributes\UnconditionalSuppressMessageAttribute.cs" />
     <Compile Include="Configuration\BinderOptions.cs" />
@@ -148,10 +150,13 @@
     <Compile Include="Data\TradingHours\ITradingHours.cs" />
     <Compile Include="DependencyInjection\Interfaces\IAsyncDisposable.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScopeFactory.cs" />
+    <Compile Include="DependencyInjection\Interfaces\ISupportRequiredService.cs" />
     <Compile Include="DependencyInjection\OptionsBuilderConfigurationExtensions.cs" />
     <Compile Include="DependencyInjection\OptionsBuilderExtensions.cs" />
     <Compile Include="DependencyInjection\OptionsConfigurationServiceCollectionExtensions.cs" />
     <Compile Include="DependencyInjection\OptionsServiceCollectionExtensions.cs" />
+    <Compile Include="DependencyInjection\ServiceCollectionContainerBuilderExtensions.cs" />
+    <Compile Include="DependencyInjection\ServiceCollectionHostedServiceExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\CallSiteResultCacheLocation.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\CallSiteValidator.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\CallSiteVisitor.cs" />
@@ -171,36 +176,64 @@
     <Compile Include="FileProviders\Interfaces\IDirectoryContents.cs" />
     <Compile Include="FileProviders\Interfaces\IFileProvider.cs" />
     <Compile Include="FileProviders\Interfaces\IPollingChangeToken.cs" />
+    <Compile Include="FileProviders\Internal\PhysicalDirectoryContents.cs" />
     <Compile Include="FileProviders\NotFoundDirectoryContents.cs" />
     <Compile Include="FileProviders\NotFoundFileInfo.cs" />
     <Compile Include="FileProviders\NullChangeToken.cs" />
     <Compile Include="FileProviders\NullFileProvider.cs" />
     <Compile Include="FileProviders\PhysicalFileProvider.cs" />
+    <Compile Include="FileProviders\Physical\Clock.cs" />
     <Compile Include="FileProviders\Physical\ExclusionFilters.cs" />
     <Compile Include="FileProviders\Physical\FileSystemInfoHelper.cs" />
+    <Compile Include="FileProviders\Physical\IClock.cs" />
+    <Compile Include="FileProviders\Physical\Internal\PathUtils.cs" />
     <Compile Include="FileProviders\Physical\PhysicalDirectoryInfo.cs" />
     <Compile Include="FileProviders\Physical\PhysicalFileInfo.cs" />
     <Compile Include="FileProviders\Physical\PhysicalFilesWatcher.cs" />
     <Compile Include="FileProviders\Physical\PollingFileChangeToken.cs" />
     <Compile Include="FileProviders\Physical\PollingWildCardChangeToken.cs" />
     <Compile Include="FileSystemGlobbing\Abstractions\DirectoryInfoBase.cs" />
+    <Compile Include="FileSystemGlobbing\Abstractions\DirectoryInfoWrapper.cs" />
+    <Compile Include="FileSystemGlobbing\Abstractions\FileInfoBase.cs" />
+    <Compile Include="FileSystemGlobbing\Abstractions\FileInfoWrapper.cs" />
     <Compile Include="FileSystemGlobbing\Abstractions\FileSystemInfoBase.cs" />
     <Compile Include="FileSystemGlobbing\FilePatternMatch.cs" />
+    <Compile Include="FileSystemGlobbing\InMemoryDirectoryInfo.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\ILinearPattern.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\InMemoryFileInfo.cs" />
     <Compile Include="FileSystemGlobbing\Internal\IPathSegment.cs" />
     <Compile Include="FileSystemGlobbing\Internal\IPattern.cs" />
     <Compile Include="FileSystemGlobbing\Internal\IPatternContext.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\IRaggedPattern.cs" />
     <Compile Include="FileSystemGlobbing\Internal\MatcherContext.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PathSegments\CurrentPathSegment.cs" />
     <Compile Include="FileSystemGlobbing\Internal\PathSegments\LiteralPathSegment.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PathSegments\ParentPathSegment.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PathSegments\RecursiveWildcardSegment.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PathSegments\WildcardPathSegment.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PatternContexts\PatternContext.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PatternContexts\PatternContextLinear.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PatternContexts\PatternContextLinearExclude.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PatternContexts\PatternContextLinearInclude.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PatternContexts\PatternContextRagged.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PatternContexts\PatternContextRaggedExclude.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PatternContexts\PatternContextRaggedIncluded.cs" />
     <Compile Include="FileSystemGlobbing\Internal\Patterns\PatternBuilder.cs" />
+    <Compile Include="FileSystemGlobbing\Internal\PatternTestResult.cs" />
     <Compile Include="FileSystemGlobbing\Matcher.cs" />
+    <Compile Include="FileSystemGlobbing\MatcherExtensions.cs" />
     <Compile Include="FileSystemGlobbing\PatternMatchingResult.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />
     <Compile Include="Helpers\StringComparisonHelper.cs" />
+    <Compile Include="Hosting\Environments.cs" />
     <Compile Include="Hosting\Host.cs" />
+    <Compile Include="Hosting\HostBuilderContext.cs" />
+    <Compile Include="Hosting\HostDefaults.cs" />
     <Compile Include="Hosting\HostedServiceExtensions.cs" />
     <Compile Include="Hosting\HostOptions.cs" />
     <Compile Include="Hosting\HostBuilder.cs" />
     <Compile Include="Hosting\Hosting.cs" />
+    <Compile Include="Hosting\Interfaces\IHostApplicationLifetime.cs" />
     <Compile Include="Hosting\Interfaces\IHostedService.cs" />
     <Compile Include="Hosting\Interfaces\IHost.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\CallSiteChain.cs" />
@@ -211,7 +244,7 @@
     <Compile Include="DependencyInjection\ServiceLookup\ParameterDefaultValue.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\ServiceCacheKey.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\ServiceCallSite.cs" />
-    <Compile Include="DependencyInjection\ServiceProviderExtensions.cs" />
+    <Compile Include="DependencyInjection\ServiceProviderServiceExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceProviderOptions.cs" />
     <Compile Include="DependencyInjection\ServiceProvider.cs" />
     <Compile Include="DependencyInjection\ServiceCollection.cs" />
@@ -220,6 +253,14 @@
     <Compile Include="DependencyInjection\Interfaces\IServiceProviderBuilder.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceScope.cs" />
     <Compile Include="DependencyInjection\zEliminar\Base\BaseServiceCollection.cs" />
+    <Compile Include="Hosting\Interfaces\IHostEnvironment.cs" />
+    <Compile Include="Hosting\Interfaces\IHostLifetime.cs" />
+    <Compile Include="Hosting\Internal\ApplicationLifetime.cs" />
+    <Compile Include="Hosting\Internal\ConsoleLifetime.cs" />
+    <Compile Include="Hosting\Internal\HostingEnvironment.cs" />
+    <Compile Include="Internal\NonCapturingTimer.cs" />
+    <Compile Include="Logging\.Interfaces\IExternalScopeProvider.cs" />
+    <Compile Include="Logging\.Interfaces\ISupportExternalScope.cs" />
     <Compile Include="Logging\ActivityTrackingOptions.cs" />
     <Compile Include="Logging\Console\AnsiParser.cs" />
     <Compile Include="Logging\Console\ConsoleFormatter.cs" />
@@ -243,6 +284,15 @@
     <Compile Include="Logging\Console\LogEntry.cs" />
     <Compile Include="Logging\Console\LoggerColorBehavior.cs" />
     <Compile Include="Logging\Console\TextWriterExtensions.cs" />
+    <Compile Include="Logging\EventLog\EventLogLogger.cs" />
+    <Compile Include="Logging\EventLog\EventLogLoggerProvider.cs" />
+    <Compile Include="Logging\EventLog\EventLogSettings.cs" />
+    <Compile Include="Logging\EventLog\IEventLog.cs" />
+    <Compile Include="Logging\EventLog\WindowsEvwntLog.cs" />
+    <Compile Include="Logging\EventSource\EventSourceLogger.cs" />
+    <Compile Include="Logging\EventSource\EventSourceLoggerProvider.cs" />
+    <Compile Include="Logging\EventSource\ExceptionInfo.cs" />
+    <Compile Include="Logging\EventSource\LoggingEventSource.cs" />
     <Compile Include="Logging\Internal\DefaultLoggerLevelConfigureOptions.cs" />
     <Compile Include="Logging\ILoggerFactory.cs" />
     <Compile Include="Logging\Internal\FormattedLogValues.cs" />
@@ -250,6 +300,7 @@
     <Compile Include="Logging\Internal\LoggerRuleSelector.cs" />
     <Compile Include="Logging\Internal\LoggerStructs.cs" />
     <Compile Include="Logging\Internal\LogValuesFormatter.cs" />
+    <Compile Include="Logging\Internal\NullScope.cs" />
     <Compile Include="Logging\Internal\ProviderAliasUtilities.cs" />
     <Compile Include="Logging\Internal\StaticFilterOptionsMonitor.cs" />
     <Compile Include="Logging\Internal\TypeNameHelper.cs" />
@@ -260,7 +311,7 @@
     <Compile Include="Logging\LoggerFilterRule.cs" />
     <Compile Include="Logging\LoggerProviderOptions.cs" />
     <Compile Include="Logging\LoggingBuilderExtensions.cs" />
-    <Compile Include="Logging\LoggingServiceCollectionExtensions.cs" />
+    <Compile Include="DependencyInjection\LoggingServiceCollectionExtensions.cs" />
     <Compile Include="Logging\ProviderAliasAttribute.cs" />
     <Compile Include="Options\ConfigurationChangeTokenSource.cs" />
     <Compile Include="Options\Internal\UnnamedOptionsManager.cs" />
@@ -268,6 +319,7 @@
     <Compile Include="Primitives\CancellationChangeToken.cs" />
     <Compile Include="Primitives\ChangeToken.cs" />
     <Compile Include="Options\ConfigureNamedOptions.cs" />
+    <Compile Include="Primitives\CompositeChangeToken.cs" />
     <Compile Include="Primitives\IChangeToken.cs" />
     <Compile Include="Options\Interfaces\IConfigureNamedOptions.cs" />
     <Compile Include="Options\Interfaces\IConfigureOptions.cs" />
@@ -291,6 +343,8 @@
     <Compile Include="Options\PostConfigureOptions.cs" />
     <Compile Include="Options\ValidateOptions.cs" />
     <Compile Include="Options\ValidateOptionsResult.cs" />
+    <Compile Include="Primitives\StringSegment.cs" />
+    <Compile Include="Primitives\StringTokenizer.cs" />
     <Compile Include="Services\SessionsFilters\ConfigureSessionsFiltersOptions.cs" />
     <Compile Include="Services\SessionsIterator\ConfigureSessionsIteratorOptions.cs" />
     <Compile Include="Services\Sessions\ConfigureSessionsOptions.cs" />
