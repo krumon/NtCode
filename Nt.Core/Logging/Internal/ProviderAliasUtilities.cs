@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Nt.Core.Logging.Internal
@@ -21,7 +20,7 @@ namespace Nt.Core.Logging.Internal
                 {
                     CustomAttributeTypedArgument arg = attributeData.ConstructorArguments[0];
 
-                    Debug.Assert(arg.ArgumentType == typeof(string));
+                    System.Diagnostics.Debug.Assert(arg.ArgumentType == typeof(string));
 
                     return arg.Value?.ToString();
                 }

@@ -2,7 +2,6 @@
 using Nt.Core.Primitives;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -500,10 +499,10 @@ namespace Nt.Core.Logging.EventSource
             {
                 string str = value as string;
 #if DEBUG
-                fixed (char* rePinnedString = str)
-                {
-                    Debug.Assert(pinnedString == rePinnedString);
-                }
+                //fixed (char* rePinnedString = str)
+                //{
+                //    using Debug.Assert(pinnedString == rePinnedString) ;
+                //}
 #endif
 
                 eventData.DataPointer = (IntPtr)pinnedString;

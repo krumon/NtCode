@@ -41,7 +41,7 @@ namespace Nt.Core.Logging.Console
         /// <summary>
         /// Includes scopes when <see langword="true" />.
         /// </summary>
-        [System.ObsoleteAttribute("ConsoleLoggerOptions.IncludeScopes has been deprecated. Use ConsoleFormatterOptions.IncludeScopes instead.")]
+        [System.ObsoleteAttribute("ConsoleLoggerOptions.IncludeScopes has been deprecated. Use SimpleConsoleFormatterOptions.IncludeScopes instead.")]
         public bool IncludeScopes { get; set; }
 
         /// <summary>
@@ -52,13 +52,13 @@ namespace Nt.Core.Logging.Console
         /// <summary>
         /// Gets or sets format string used to format timestamp in logging messages. Defaults to <c>null</c>.
         /// </summary>
-        [System.ObsoleteAttribute("ConsoleLoggerOptions.TimestampFormat has been deprecated. Use ConsoleFormatterOptions.TimestampFormat instead.")]
+        [System.ObsoleteAttribute("ConsoleLoggerOptions.TimestampFormat has been deprecated. Use SimpleConsoleFormatterOptions.TimestampFormat instead.")]
         public string TimestampFormat { get; set; }
 
         /// <summary>
         /// Gets or sets indication whether or not UTC timezone should be used to for timestamps in logging messages. Defaults to <c>false</c>.
         /// </summary>
-        [System.ObsoleteAttribute("ConsoleLoggerOptions.UseUtcTimestamp has been deprecated. Use ConsoleFormatterOptions.UseUtcTimestamp instead.")]
+        [System.ObsoleteAttribute("ConsoleLoggerOptions.UseUtcTimestamp has been deprecated. Use SimpleConsoleFormatterOptions.UseUtcTimestamp instead.")]
         public bool UseUtcTimestamp { get; set; }
     }
 }

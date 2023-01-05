@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Nt.Core.Logging.Abstractions;
+using Nt.Core.Logging.Internal;
+using System;
 using System.IO;
 
 namespace Nt.Core.Logging.Console.Internal
@@ -17,8 +19,8 @@ namespace Nt.Core.Logging.Console.Internal
             _queueProcessor = loggerProcessor;
         }
 
-        internal ConsoleFormatter Formatter { get; set; }
-        //internal IExternalScopeProvider ScopeProvider { get; set; }
+        internal SimpleConsoleFormatter Formatter { get; set; }
+        internal IExternalScopeProvider ScopeProvider { get; set; }
 
         internal ConsoleLoggerOptions Options { get; set; }
 
@@ -36,8 +38,7 @@ namespace Nt.Core.Logging.Console.Internal
                 throw new ArgumentNullException(nameof(formatter));
             }
             //t_stringWriter ??= new StringWriter();
-            if (t_stringWriter == null)
-                t_stringWriter = new StringWriter();
+            if (t_stringWriter == null) t_stringWriter = new StringWriter();
             LogEntry<TState> logEntry = new LogEntry<TState>(logLevel, _name, eventId, state, exception, formatter);
             Formatter.Write(in logEntry, t_stringWriter);
 
@@ -60,6 +61,6 @@ namespace Nt.Core.Logging.Console.Internal
             return logLevel != LogLevel.None;
         }
 
-        //public IDisposable BeginScope<TState>(TState state) => ScopeProvider?.Push(state) ?? NullScope.Instance;
+        public IDisposable BeginScope<TState>(TState state) => ScopeProvider?.Push(state) ?? NullScope.Instance;
     }
 }

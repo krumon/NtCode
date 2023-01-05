@@ -5,19 +5,24 @@ namespace Nt.Core.Logging
     /// <summary>
     /// Options for the built-in console log formatter.
     /// </summary>
-    public class ConsoleFormatterOptions : BaseConsoleFormatterOptions
+    public abstract class ConsoleFormatterOptions
     {
         public ConsoleFormatterOptions() { }
 
         /// <summary>
-        /// Determines when to use color when logging messages.
+        /// Includes scopes when <see langword="true" />.
         /// </summary>
-        public LoggerColorBehavior ColorBehavior { get; set; }
+        public bool IncludeScopes { get; set; }
 
         /// <summary>
-        /// When <see langword="true" />, the entire message gets logged in a single line.
+        /// Gets or sets format string used to format timestamp in logging messages. Defaults to <c>null</c>.
         /// </summary>
-        public bool SingleLine { get; set; }
+        public string TimestampFormat { get; set; }
+
+        /// <summary>
+        /// Gets or sets indication whether or not UTC timezone should be used to for timestamps in logging messages. Defaults to <c>false</c>.
+        /// </summary>
+        public bool UseUtcTimestamp { get; set; }
 
     }
 }

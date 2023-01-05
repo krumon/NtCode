@@ -4,6 +4,7 @@
 //using Microsoft.Extensions.Logging.Configuration;
 //using Microsoft.Extensions.Options;
 //using Microsoft.Extensions.Primitives;
+using Microsoft.Extensions.Logging;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
@@ -28,7 +29,9 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
-            //Microsoft.Extensions.Logging.
+            //Microsoft.Extensions.Logging.LoggingBuilderExtensions
+            //Microsoft.Extensions.Logging.ILoggingBuilder builder;
+            //builder.SetMinimumLevel
 
             //sc.AddSingleton<IOnBarUpdateService>();
             //Microsoft.Extensions.Options.OptionsBuilder options;

@@ -41,24 +41,24 @@ namespace Nt.Core.Logging.Internal
 
     internal readonly struct ScopeLogger
     {
-        //public ScopeLogger(ILogger logger, IExternalScopeProvider externalScopeProvider)
-        //{
-        //    Logger = logger;
-        //    ExternalScopeProvider = externalScopeProvider;
-        //}
+        public ScopeLogger(ILogger logger, IExternalScopeProvider externalScopeProvider)
+        {
+            Logger = logger;
+            ExternalScopeProvider = externalScopeProvider;
+        }
 
-        //public ILogger Logger { get; }
+        public ILogger Logger { get; }
 
-        //public IExternalScopeProvider ExternalScopeProvider { get; }
+        public IExternalScopeProvider ExternalScopeProvider { get; }
 
-        //public IDisposable CreateScope<TState>(TState state)
-        //{
-        //    if (ExternalScopeProvider != null)
-        //    {
-        //        return ExternalScopeProvider.Push(state);
-        //    }
-        //    return Logger.BeginScope<TState>(state);
-        //}
+        public IDisposable CreateScope<TState>(TState state)
+        {
+            if (ExternalScopeProvider != null)
+            {
+                return ExternalScopeProvider.Push(state);
+            }
+            return Logger.BeginScope<TState>(state);
+        }
     }
 
     internal readonly struct LoggerInformation

@@ -8,7 +8,7 @@ namespace Nt.Core.Logging.Internal
     {
         public LoggerInformation[] Loggers { get; set; }
         public MessageLogger[] MessageLoggers { get; set; }
-        //public ScopeLogger[] ScopeLoggers { get; set; }
+        public ScopeLogger[] ScopeLoggers { get; set; }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
@@ -69,48 +69,48 @@ namespace Nt.Core.Logging.Internal
 
         }
 
-        //public IDisposable BeginScope<TState>(TState state)
-        //{
-        //    ScopeLogger[] loggers = ScopeLoggers;
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            ScopeLogger[] loggers = ScopeLoggers;
 
-        //    if (loggers == null)
-        //    {
-        //        return; // NullScope.Instance;
-        //    }
+            if (loggers == null)
+            {
+                return NullScope.Instance;
+            }
 
-        //    if (loggers.Length == 1)
-        //    {
-        //        return loggers[0].CreateScope(state);
-        //    }
+            if (loggers.Length == 1)
+            {
+                return loggers[0].CreateScope(state);
+            }
 
-        //    var scope = new Scope(loggers.Length);
-        //    List<Exception> exceptions = null;
-        //    for (int i = 0; i < loggers.Length; i++)
-        //    {
-        //        ref readonly ScopeLogger scopeLogger = ref loggers[i];
+            var scope = new Scope(loggers.Length);
+            List<Exception> exceptions = null;
+            for (int i = 0; i < loggers.Length; i++)
+            {
+                ref readonly ScopeLogger scopeLogger = ref loggers[i];
 
-        //        try
-        //        {
-        //            scope.SetDisposable(i, scopeLogger.CreateScope(state));
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            if (exceptions == null)
-        //            {
-        //                exceptions = new List<Exception>();
-        //            }
+                try
+                {
+                    scope.SetDisposable(i, scopeLogger.CreateScope(state));
+                }
+                catch (Exception ex)
+                {
+                    if (exceptions == null)
+                    {
+                        exceptions = new List<Exception>();
+                    }
 
-        //            exceptions.Add(ex);
-        //        }
-        //    }
+                    exceptions.Add(ex);
+                }
+            }
 
-        //    if (exceptions != null && exceptions.Count > 0)
-        //    {
-        //        ThrowLoggingError(exceptions);
-        //    }
+            if (exceptions != null && exceptions.Count > 0)
+            {
+                ThrowLoggingError(exceptions);
+            }
 
-        //    return scope;
-        //}
+            return scope;
+        }
 
         private static void ThrowLoggingError(List<Exception> exceptions)
         {

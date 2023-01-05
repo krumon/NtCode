@@ -5,7 +5,7 @@ namespace Nt.Core.Logging.Console.Internal
 {
     internal sealed class ConsoleFormatterOptionsMonitor<TOptions> :
         IOptionsMonitor<TOptions>
-        where TOptions : ConsoleFormatterOptions
+        where TOptions : SimpleConsoleFormatterOptions
     {
         private TOptions _options;
         public ConsoleFormatterOptionsMonitor(TOptions options)

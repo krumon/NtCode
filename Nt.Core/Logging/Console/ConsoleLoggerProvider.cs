@@ -26,11 +26,11 @@ namespace Nt.Core.Logging.Console
         [DllImport("kernel32.dll")]
         public static extern uint GetLastError();
 
-        private const string ConsoleFormatterName = "Krumon";
+        //private const string ConsoleFormatterName = "Krumon";
         private readonly IOptionsMonitor<ConsoleLoggerOptions> _optionsMonitor;
         private readonly ConsoleLoggerOptions _options;
         private readonly ConcurrentDictionary<string, ConsoleLogger> _loggers;
-        private ConcurrentDictionary<string, ConsoleFormatter> _formatters;
+        private ConcurrentDictionary<string, SimpleConsoleFormatter> _formatters;
         private readonly ConsoleLoggerProcessor _messageQueue;
         private IDisposable _optionsReloadToken;
 
@@ -48,14 +48,14 @@ namespace Nt.Core.Logging.Console
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
         public ConsoleLoggerProvider(IConfigureOptions<ConsoleLoggerOptions> options)
-            : this(options, Array.Empty<ConsoleFormatter>()) { }
+            : this(options, Array.Empty<SimpleConsoleFormatter>()) { }
 
         /// <summary>
         /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
         /// <param name="formatters">Log formatters added for <see cref="ConsoleLogger"/> insteaces.</param>
-        public ConsoleLoggerProvider(IConfigureOptions<ConsoleLoggerOptions> options, IEnumerable<BaseConsoleFormatter> formatters)
+        public ConsoleLoggerProvider(IConfigureOptions<ConsoleLoggerOptions> options, IEnumerable<ConsoleFormatter> formatters)
         {
             if (_options == null) _options = new ConsoleLoggerOptions();
             options.Configure(_options);
@@ -142,14 +142,14 @@ namespace Nt.Core.Logging.Console
             return true;
             //return (consoleMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == ENABLE_VIRTUAL_TERMINAL_PROCESSING;
         }
-        private void SetFormatters(IEnumerable<BaseConsoleFormatter> formatters = null)
+        private void SetFormatters(IEnumerable<ConsoleFormatter> formatters = null)
         {
-            var cd = new ConcurrentDictionary<string, ConsoleFormatter>(StringComparer.OrdinalIgnoreCase);
+            var cd = new ConcurrentDictionary<string, SimpleConsoleFormatter>(StringComparer.OrdinalIgnoreCase);
 
             bool added = false;
             if (formatters != null)
             {
-                foreach (ConsoleFormatter formatter in formatters)
+                foreach (SimpleConsoleFormatter formatter in formatters)
                 {
                     cd.TryAdd(formatter.Name, formatter);
                     added = true;
@@ -158,7 +158,7 @@ namespace Nt.Core.Logging.Console
 
             if (!added)
             {
-                cd.TryAdd(ConsoleFormatterName, new ConsoleFormatter(new ConsoleFormatterOptionsMonitor<ConsoleFormatterOptions>(new ConsoleFormatterOptions())));
+                cd.TryAdd(ConsoleFormatterNames.Simple, new SimpleConsoleFormatter(new ConsoleFormatterOptionsMonitor<SimpleConsoleFormatterOptions>(new SimpleConsoleFormatterOptions())));
                 //cd.TryAdd(ConsoleFormatterNames.Systemd, new SystemdConsoleFormatter(new FormatterOptionsMonitor<ConsoleFormatterOptions>(new ConsoleFormatterOptions())));
                 //cd.TryAdd(ConsoleFormatterNames.Json, new JsonConsoleFormatter(new FormatterOptionsMonitor<JsonConsoleFormatterOptions>(new JsonConsoleFormatterOptions())));
             }
@@ -169,7 +169,7 @@ namespace Nt.Core.Logging.Console
         // warning:  ReloadLoggerOptions can be called before the ctor completed,... before registering all of the state used in this method need to be initialized
         private void ReloadLoggerOptions(ConsoleLoggerOptions options, string text = null)
         {
-            if (options.FormatterName == null || !_formatters.TryGetValue(options.FormatterName, out ConsoleFormatter logFormatter))
+            if (options.FormatterName == null || !_formatters.TryGetValue(options.FormatterName, out SimpleConsoleFormatter logFormatter))
             {
 #pragma warning disable CS0618
 
@@ -179,7 +179,7 @@ namespace Nt.Core.Logging.Console
                 //    _ => _formatters[ConsoleFormatterNames.Simple],
                 //};
 
-                logFormatter = _formatters[ConsoleFormatterName];
+                logFormatter = _formatters[ConsoleFormatterNames.Simple];
                 if (options.FormatterName == null)
                 {
                     UpdateFormatterOptions(logFormatter, options);
@@ -198,7 +198,7 @@ namespace Nt.Core.Logging.Console
         public ILogger CreateLogger(string name)
         {
             //if (_options.CurrentValue.FormatterName == null || !_formatters.TryGetValue(_options.CurrentValue.FormatterName, out ConsoleFormatter logFormatter))
-            if (_options.FormatterName == null || !_formatters.TryGetValue(_options.FormatterName, out ConsoleFormatter logFormatter))
+            if (_options.FormatterName == null || !_formatters.TryGetValue(_options.FormatterName, out SimpleConsoleFormatter logFormatter))
             {
 #pragma warning disable CS0618
                 //logFormatter = _options.CurrentValue.Format switch
@@ -206,7 +206,7 @@ namespace Nt.Core.Logging.Console
                 //    ConsoleLoggerFormat.Systemd => _formatters[ConsoleFormatterNames.Systemd],
                 //    _ => _formatters[ConsoleFormatterNames.Simple],
                 //};
-                logFormatter = _formatters[ConsoleFormatterName];
+                logFormatter = _formatters[ConsoleFormatterNames.Simple];
 #pragma warning restore CS0618
 
                 //if (_options.CurrentValue.FormatterName == null)
@@ -228,12 +228,12 @@ namespace Nt.Core.Logging.Console
         }
 
 #pragma warning disable CS0618
-        private void UpdateFormatterOptions(ConsoleFormatter formatter, ConsoleLoggerOptions deprecatedFromOptions)
+        private void UpdateFormatterOptions(SimpleConsoleFormatter formatter, ConsoleLoggerOptions deprecatedFromOptions)
         {
             // kept for deprecated apis:
-            if (formatter is ConsoleFormatter defaultFormatter)
+            if (formatter is SimpleConsoleFormatter defaultFormatter)
             {
-                defaultFormatter.FormatterOptions = new ConsoleFormatterOptions()
+                defaultFormatter.FormatterOptions = new SimpleConsoleFormatterOptions()
                 {
                     ColorBehavior = deprecatedFromOptions.DisableColors ? LoggerColorBehavior.Disabled : LoggerColorBehavior.Enabled,
                     IncludeScopes = deprecatedFromOptions.IncludeScopes,

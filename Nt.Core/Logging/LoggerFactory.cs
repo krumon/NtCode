@@ -18,7 +18,7 @@ namespace Nt.Core.Logging
         private readonly IDisposable _changeTokenRegistration;
         private LoggerFilterOptions _filterOptions;
         private readonly LoggerFactoryOptions _factoryOptions; // use for create LoggerFactoryScopeProvider
-        //private LoggerFactoryScopeProvider _scopeProvider;
+        private LoggerFactoryScopeProvider _scopeProvider;
 
         /// <summary>
         /// Creates a new <see cref="LoggerFactory"/> instance.
@@ -88,6 +88,9 @@ namespace Nt.Core.Logging
         /// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
         /// <param name="filterOption">The filter option to use.</param>
         /// <param name="options">The <see cref="LoggerFactoryOptions"/>.</param>
+        /// <remarks>
+        /// This method has been created by krumon!!!!!
+        /// </remarks>
         public LoggerFactory(IEnumerable<ILoggerProvider> providers, IConfigureOptions<LoggerFilterOptions> filterOption, IOptions<LoggerFactoryOptions> options = null)
         {
             _factoryOptions = options == null || options.Value == null ? new LoggerFactoryOptions() : options.Value;
@@ -230,15 +233,15 @@ namespace Nt.Core.Logging
                 ShouldDispose = dispose
             });
 
-            //if (provider is ISupportExternalScope supportsExternalScope)
-            //{
-            //    if (_scopeProvider == null)
-            //    {
-            //        _scopeProvider = new LoggerFactoryScopeProvider(_factoryOptions.ActivityTrackingOptions);
-            //    }
+            if (provider is ISupportExternalScope supportsExternalScope)
+            {
+                if (_scopeProvider == null)
+                {
+                    _scopeProvider = new LoggerFactoryScopeProvider(_factoryOptions.ActivityTrackingOptions);
+                }
 
-            //    supportsExternalScope.SetScopeProvider(_scopeProvider);
-            //}
+                supportsExternalScope.SetScopeProvider(_scopeProvider);
+            }
         }
 
         private LoggerInformation[] CreateLoggers(string categoryName)
@@ -254,7 +257,7 @@ namespace Nt.Core.Logging
         private MessageLogger[] ApplyFilters(LoggerInformation[] loggers)
         {
             var messageLoggers = new List<MessageLogger>();
-            //List<ScopeLogger> scopeLoggers = _filterOptions.CaptureScopes ? new List<ScopeLogger>() : null;
+            List<ScopeLogger> scopeLoggers = _filterOptions.CaptureScopes ? new List<ScopeLogger>() : null;
 
             foreach (LoggerInformation loggerInformation in loggers)
             {
@@ -271,16 +274,16 @@ namespace Nt.Core.Logging
 
                 messageLoggers.Add(new MessageLogger(loggerInformation.Logger, loggerInformation.Category, loggerInformation.ProviderType.FullName, minLevel, filter));
 
-                //if (!loggerInformation.ExternalScope)
-                //{
-                //    scopeLoggers?.Add(new ScopeLogger(logger: loggerInformation.Logger, externalScopeProvider: null));
-                //}
+                if (!loggerInformation.ExternalScope)
+                {
+                    scopeLoggers?.Add(new ScopeLogger(logger: loggerInformation.Logger, externalScopeProvider: null));
+                }
             }
 
-            //if (_scopeProvider != null)
-            //{
-            //    scopeLoggers?.Add(new ScopeLogger(logger: null, externalScopeProvider: _scopeProvider));
-            //}
+            if (_scopeProvider != null)
+            {
+                scopeLoggers?.Add(new ScopeLogger(logger: null, externalScopeProvider: _scopeProvider));
+            }
 
             return messageLoggers.ToArray();
         }

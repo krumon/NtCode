@@ -6,9 +6,9 @@ namespace Nt.Core.Logging
     /// <summary>
     /// Options for the built-in console log formatter.
     /// </summary>
-    public class ConsoleFormatterConfigureOptions : ConfigureOptions<ConsoleFormatterOptions>
+    public class ConsoleFormatterConfigureOptions : ConfigureOptions<SimpleConsoleFormatterOptions>
     {
-        public ConsoleFormatterConfigureOptions(Action<ConsoleFormatterOptions> action) : base(action)
+        public ConsoleFormatterConfigureOptions(Action<SimpleConsoleFormatterOptions> action) : base(action)
         {
         }
     }

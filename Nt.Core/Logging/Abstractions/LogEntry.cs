@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nt.Core.Logging.Console
+namespace Nt.Core.Logging.Abstractions
 {
     /// <summary>
     /// Holds the information for a single log entry.

@@ -44,6 +44,7 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.6.0.0\lib\net461\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.4.3.0\lib\net462\System.IO.dll</HintPath>
       <Private>True</Private>
@@ -97,6 +98,7 @@
       <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Workflow.Runtime" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -111,6 +113,7 @@
     <Compile Include="Attributes\RequiresUnreferencedCodeAttribute.cs" />
     <Compile Include="Attributes\UnconditionalSuppressMessageAttribute.cs" />
     <Compile Include="Configuration\BinderOptions.cs" />
+    <Compile Include="Configuration\ChainedBuilderExtensions.cs" />
     <Compile Include="Configuration\ChainedConfigurationProvider.cs" />
     <Compile Include="Configuration\ChainedConfigurationSource.cs" />
     <Compile Include="Configuration\ConfigurationBinder.cs" />
@@ -259,17 +262,33 @@
     <Compile Include="Hosting\Internal\ConsoleLifetime.cs" />
     <Compile Include="Hosting\Internal\HostingEnvironment.cs" />
     <Compile Include="Internal\NonCapturingTimer.cs" />
+    <Compile Include="Internal\TypeNameHelper.cs" />
     <Compile Include="Logging\.Interfaces\IExternalScopeProvider.cs" />
     <Compile Include="Logging\.Interfaces\ISupportExternalScope.cs" />
+    <Compile Include="Logging\Abstractions\LogEntry.cs" />
+    <Compile Include="Logging\Abstractions\NullLogger.cs" />
+    <Compile Include="Logging\Abstractions\NullLogger%27T%27.cs" />
+    <Compile Include="Logging\Abstractions\NullLoggerFactory.cs" />
+    <Compile Include="Logging\Abstractions\NullLoggerProvider.cs" />
     <Compile Include="Logging\ActivityTrackingOptions.cs" />
+    <Compile Include="Logging\Configuration\ILoggerProviderConfiguration.cs" />
+    <Compile Include="Logging\Configuration\ILoggerProviderConfigurationFactory.cs" />
+    <Compile Include="Logging\Configuration\LoggerProviderConfiguration.cs" />
+    <Compile Include="Logging\Configuration\LoggerProviderConfigurationFactory.cs" />
+    <Compile Include="Logging\Configuration\LoggerProviderConfigureOptions.cs" />
+    <Compile Include="Logging\Configuration\LoggerProviderOptions.cs" />
+    <Compile Include="Logging\Configuration\LoggerProviderOptionsChangeTokenSource.cs" />
+    <Compile Include="Logging\Configuration\LoggingBuilderConfigurationExtensions.cs" />
+    <Compile Include="Logging\Configuration\LoggingConfiguration.cs" />
+    <Compile Include="Logging\ConsoleLoggerExtensions.cs" />
     <Compile Include="Logging\Console\AnsiParser.cs" />
+    <Compile Include="Logging\Console\ConsoleFormatterNames.cs" />
+    <Compile Include="Logging\Console\SimpleConsoleFormatter.cs" />
     <Compile Include="Logging\Console\ConsoleFormatter.cs" />
-    <Compile Include="Logging\Console\BaseConsoleFormatter.cs" />
     <Compile Include="Logging\Console\ConsoleFormatterConfigureOptions.cs" />
+    <Compile Include="Logging\Console\SimpleConsoleFormatterOptions.cs" />
     <Compile Include="Logging\Console\ConsoleFormatterOptions.cs" />
-    <Compile Include="Logging\Console\BaseConsoleFormatterOptions.cs" />
     <Compile Include="Logging\Console\ConsoleLoggerConfigureOptions.cs" />
-    <Compile Include="Logging\Console\ConsoleLoggerExtensions.cs" />
     <Compile Include="Logging\Console\Internal\AnsiLogConsole.cs" />
     <Compile Include="Logging\Console\Internal\AnsiParsingLogConsole.cs" />
     <Compile Include="Logging\Console\Internal\ConsoleLogger.cs" />
@@ -281,22 +300,31 @@
     <Compile Include="Logging\Console\Internal\ConsoleFormatterOptionsMonitor.cs" />
     <Compile Include="Logging\Console\Internal\IConsole.cs" />
     <Compile Include="Logging\Console\Internal\LogMessageEntry.cs" />
-    <Compile Include="Logging\Console\LogEntry.cs" />
     <Compile Include="Logging\Console\LoggerColorBehavior.cs" />
     <Compile Include="Logging\Console\TextWriterExtensions.cs" />
+    <Compile Include="Logging\DebugLoggerFactoryExtensions.cs" />
+    <Compile Include="Logging\Debug\DebugLogger.cs" />
+    <Compile Include="Logging\Debug\DebugLoggerProvider.cs" />
+    <Compile Include="Logging\EventLoggerFactoryExtensions.cs" />
     <Compile Include="Logging\EventLog\EventLogLogger.cs" />
     <Compile Include="Logging\EventLog\EventLogLoggerProvider.cs" />
     <Compile Include="Logging\EventLog\EventLogSettings.cs" />
     <Compile Include="Logging\EventLog\IEventLog.cs" />
-    <Compile Include="Logging\EventLog\WindowsEvwntLog.cs" />
+    <Compile Include="Logging\EventLog\WindowsEventLog.cs" />
+    <Compile Include="Logging\EventSourceLoggerFactoryExtensions.cs" />
     <Compile Include="Logging\EventSource\EventSourceLogger.cs" />
     <Compile Include="Logging\EventSource\EventSourceLoggerProvider.cs" />
     <Compile Include="Logging\EventSource\ExceptionInfo.cs" />
     <Compile Include="Logging\EventSource\LoggingEventSource.cs" />
+    <Compile Include="Logging\FilterLoggingBuilderExtensions.cs" />
     <Compile Include="Logging\Internal\DefaultLoggerLevelConfigureOptions.cs" />
-    <Compile Include="Logging\ILoggerFactory.cs" />
+    <Compile Include="Logging\.Interfaces\ILoggerFactory.cs" />
+    <Compile Include="Logging\Internal\EventLogFiltersConfigureOptions.cs" />
+    <Compile Include="Logging\Internal\EventLogFiltersConfigureOptionsChangeSource.cs" />
     <Compile Include="Logging\Internal\FormattedLogValues.cs" />
     <Compile Include="Logging\Internal\Logger.cs" />
+    <Compile Include="Logging\Internal\LoggerFactoryScopeProvider.cs" />
+    <Compile Include="Logging\LoggerFilterConfigureOptions.cs" />
     <Compile Include="Logging\Internal\LoggerRuleSelector.cs" />
     <Compile Include="Logging\Internal\LoggerStructs.cs" />
     <Compile Include="Logging\Internal\LogValuesFormatter.cs" />
@@ -304,16 +332,21 @@
     <Compile Include="Logging\Internal\ProviderAliasUtilities.cs" />
     <Compile Include="Logging\Internal\StaticFilterOptionsMonitor.cs" />
     <Compile Include="Logging\Internal\TypeNameHelper.cs" />
+    <Compile Include="Logging\LogDefineOptions.cs" />
     <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LoggerExternalScopeProvider.cs" />
     <Compile Include="Logging\LoggerFactory.cs" />
+    <Compile Include="Logging\LoggerFactoryExtensions.cs" />
     <Compile Include="Logging\LoggerFactoryOptions.cs" />
     <Compile Include="Logging\LoggerFilterOptions.cs" />
     <Compile Include="Logging\LoggerFilterRule.cs" />
-    <Compile Include="Logging\LoggerProviderOptions.cs" />
+    <Compile Include="Logging\LoggerMessage.cs" />
+    <Compile Include="Logging\LoggerMessageAttribute.cs" />
     <Compile Include="Logging\LoggingBuilderExtensions.cs" />
     <Compile Include="DependencyInjection\LoggingServiceCollectionExtensions.cs" />
     <Compile Include="Logging\ProviderAliasAttribute.cs" />
     <Compile Include="Options\ConfigurationChangeTokenSource.cs" />
+    <Compile Include="Options\ConfigureFromConfigurationOptions.cs" />
     <Compile Include="Options\Internal\UnnamedOptionsManager.cs" />
     <Compile Include="Options\NamedConfigureFromConfigurationOptions.cs" />
     <Compile Include="Primitives\CancellationChangeToken.cs" />
@@ -443,9 +476,9 @@
     <Compile Include="Services\GlobalsData\IGlobalsDataService.cs" />
     <Compile Include="Services\GlobalsData\GlobalsDataService.cs" />
     <Compile Include="Logging\EventId.cs" />
-    <Compile Include="Logging\ILogger.cs" />
-    <Compile Include="Logging\ILoggerProvider.cs" />
-    <Compile Include="Logging\ILoggingBuilder.cs" />
+    <Compile Include="Logging\.Interfaces\ILogger.cs" />
+    <Compile Include="Logging\.Interfaces\ILoggerProvider.cs" />
+    <Compile Include="Logging\.Interfaces\ILoggingBuilder.cs" />
     <Compile Include="Logging\Internal\LoggingBuilder.cs" />
     <Compile Include="Logging\LoggerExtensions.cs" />
     <Compile Include="Logging\LoggerSourceFormatter.cs" />

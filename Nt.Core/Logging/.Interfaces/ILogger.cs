@@ -33,7 +33,7 @@ namespace Nt.Core.Logging
         /// <typeparam name="TState">The type of the state to begin scope for.</typeparam>
         /// <param name="state">The identifier for the scope.</param>
         /// <returns>An System.IDisposable that ends the logical operation scope on dispose.</returns>
-        //IDisposable BeginScope<TState>(TState state);
+        IDisposable BeginScope<TState>(TState state);
 
     }
 
