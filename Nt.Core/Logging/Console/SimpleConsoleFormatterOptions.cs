@@ -3,7 +3,7 @@
 namespace Nt.Core.Logging
 {
     /// <summary>
-    /// Options for the built-in console log formatter.
+    /// Options for the built-in default console log formatter.
     /// </summary>
     public class SimpleConsoleFormatterOptions : ConsoleFormatterOptions
     {
@@ -18,6 +18,5 @@ namespace Nt.Core.Logging
         /// When <see langword="true" />, the entire message gets logged in a single line.
         /// </summary>
         public bool SingleLine { get; set; }
-
     }
 }

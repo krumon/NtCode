@@ -1,4 +1,5 @@
-﻿using Nt.Core.DependencyInjection;
+﻿using Nt.Core.Configuration;
+using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
 using Nt.Core.Services;
@@ -19,7 +20,7 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             //Microsoft.Extensions.Hosting.HostBuilder
-            //Microsoft.Extensions.Logging.ConsoleLoggerExtensions
+            //Microsoft.Extensions.Logging.Console.ConsoleLoggerProvider
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
 
@@ -29,18 +30,22 @@ namespace ConsoleApp
             _logger = _host?.Services.GetService<ILogger<Program>>();
             _logger?.LogInformationSource("The Host is built");
             _logger?.Log(LogLevel.Trace, "Logging Service", Array.Empty<string>());
-
+            IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
 
         }
 
         private static void UseNinjascriptHost()
         {
             _host = Hosting.CreateDefaultBuilder()
+            .ConfigureAppConfiguration((context,builder) =>
+            {
+                builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            })
             .ConfigureServices((context, services) =>
             {
-                services.AddLogging((o) =>
+                services.AddLogging((builder) =>
                 {
-                    o.AddConsole();
+                    builder.AddConsole();
                 });
                 services.AddTransient<IConfigureService, GlobalsDataDesignScript>();
                 services.AddSingleton<IConfigureService, ChartDataDesignScript>();

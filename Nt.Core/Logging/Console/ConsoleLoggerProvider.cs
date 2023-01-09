@@ -1,4 +1,5 @@
 ﻿using Nt.Core.Logging.Console.Internal;
+using Nt.Core.Logging.Internal;
 using Nt.Core.Options;
 using System;
 using System.Collections.Concurrent;
@@ -26,43 +27,33 @@ namespace Nt.Core.Logging.Console
         [DllImport("kernel32.dll")]
         public static extern uint GetLastError();
 
-        //private const string ConsoleFormatterName = "Krumon";
-        private readonly IOptionsMonitor<ConsoleLoggerOptions> _optionsMonitor;
-        private readonly ConsoleLoggerOptions _options;
+        private readonly IOptionsMonitor<ConsoleLoggerOptions> _options;
         private readonly ConcurrentDictionary<string, ConsoleLogger> _loggers;
-        private ConcurrentDictionary<string, SimpleConsoleFormatter> _formatters;
+        private ConcurrentDictionary<string, ConsoleFormatter> _formatters;
         private readonly ConsoleLoggerProcessor _messageQueue;
         private IDisposable _optionsReloadToken;
-
-        //private IExternalScopeProvider _scopeProvider = NullExternalScopeProvider.Instance;
-
-        ///// <summary>
-        ///// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
-        ///// </summary>
-        ///// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        //public ConsoleLoggerProvider()
-        //    : this(null, Array.Empty<ConsoleFormatter>()) { }
+        private IExternalScopeProvider _scopeProvider = NullExternalScopeProvider.Instance;
 
         /// <summary>
         /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        public ConsoleLoggerProvider(IConfigureOptions<ConsoleLoggerOptions> options)
-            : this(options, Array.Empty<SimpleConsoleFormatter>()) { }
+        public ConsoleLoggerProvider(IOptionsMonitor<ConsoleLoggerOptions> options)
+            : this(options, Array.Empty<ConsoleFormatter>()) { }
 
         /// <summary>
         /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
         /// <param name="formatters">Log formatters added for <see cref="ConsoleLogger"/> insteaces.</param>
-        public ConsoleLoggerProvider(IConfigureOptions<ConsoleLoggerOptions> options, IEnumerable<ConsoleFormatter> formatters)
+        public ConsoleLoggerProvider(IOptionsMonitor<ConsoleLoggerOptions> options, IEnumerable<ConsoleFormatter> formatters)
         {
-            if (_options == null) _options = new ConsoleLoggerOptions();
-            options.Configure(_options);
+            _options = options;
             _loggers = new ConcurrentDictionary<string, ConsoleLogger>();
             SetFormatters(formatters);
 
-            ReloadLoggerOptions(_options);
+            ReloadLoggerOptions(options.CurrentValue);
+            _optionsReloadToken = _options.OnChange(ReloadLoggerOptions);
 
             _messageQueue = new ConsoleLoggerProcessor();
 
@@ -78,41 +69,6 @@ namespace Nt.Core.Logging.Console
             }
         }
 
-        ///// <summary>
-        ///// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
-        ///// </summary>
-        ///// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        //public ConsoleLoggerProvider(IOptionsMonitor<ConsoleLoggerOptions> options)
-        //    : this(options, Array.Empty<ConsoleFormatter>()) { }
-
-        ///// <summary>
-        ///// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
-        ///// </summary>
-        ///// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        ///// <param name="formatters">Log formatters added for <see cref="ConsoleLogger"/> insteaces.</param>
-        //public ConsoleLoggerProvider(IOptionsMonitor<ConsoleLoggerOptions> options, IEnumerable<ConsoleFormatter> formatters)
-        //{
-        //    _optionsMonitor = options;
-        //    _loggers = new ConcurrentDictionary<string, ConsoleLogger>();
-        //    SetFormatters(formatters);
-
-        //    ReloadLoggerOptions(options.CurrentValue);
-        //    _optionsReloadToken = _optionsMonitor.OnChange(ReloadLoggerOptions);
-
-        //    //_messageQueue = new ConsoleLoggerProcessor();
-
-        //    //if (DoesConsoleSupportAnsi())
-        //    //{
-        //    //    _messageQueue.Console = new AnsiLogConsole();
-        //    //    _messageQueue.ErrorConsole = new AnsiLogConsole(stdErr: true);
-        //    //}
-        //    //else
-        //    //{
-        //    //    _messageQueue.Console = new AnsiParsingLogConsole();
-        //    //    _messageQueue.ErrorConsole = new AnsiParsingLogConsole(stdErr: true);
-        //    //}
-        //}
-
 
         private static bool DoesConsoleSupportAnsi()
         {
@@ -121,14 +77,7 @@ namespace Nt.Core.Logging.Console
                 return true;
             }
 
-            //// for Windows, check the console mode
-            //var stdOutHandle = Interop.Kernel32.GetStdHandle(Interop.Kernel32.STD_OUTPUT_HANDLE);
-            //if (!Interop.Kernel32.GetConsoleMode(stdOutHandle, out int consoleMode))
-            //{
-            //    return false;
-            //}
-            //return (consoleMode & Interop.Kernel32.ENABLE_VIRTUAL_TERMINAL_PROCESSING) == Interop.Kernel32.ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-
+            // for Windows, check the console mode
             var stdOutHandle = GetStdHandle(STD_OUTPUT_HANDLE);
             if (!GetConsoleMode(stdOutHandle, out uint consoleMode))
             {
@@ -139,17 +88,16 @@ namespace Nt.Core.Logging.Console
             {
                 return false;
             }
-            return true;
-            //return (consoleMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+            return (consoleMode & ENABLE_VIRTUAL_TERMINAL_PROCESSING) == ENABLE_VIRTUAL_TERMINAL_PROCESSING;
         }
         private void SetFormatters(IEnumerable<ConsoleFormatter> formatters = null)
         {
-            var cd = new ConcurrentDictionary<string, SimpleConsoleFormatter>(StringComparer.OrdinalIgnoreCase);
+            var cd = new ConcurrentDictionary<string, ConsoleFormatter>(StringComparer.OrdinalIgnoreCase);
 
             bool added = false;
             if (formatters != null)
             {
-                foreach (SimpleConsoleFormatter formatter in formatters)
+                foreach (ConsoleFormatter formatter in formatters)
                 {
                     cd.TryAdd(formatter.Name, formatter);
                     added = true;
@@ -158,7 +106,7 @@ namespace Nt.Core.Logging.Console
 
             if (!added)
             {
-                cd.TryAdd(ConsoleFormatterNames.Simple, new SimpleConsoleFormatter(new ConsoleFormatterOptionsMonitor<SimpleConsoleFormatterOptions>(new SimpleConsoleFormatterOptions())));
+                cd.TryAdd(ConsoleFormatterNames.Simple, new SimpleConsoleFormatter(new FormatterOptionsMonitor<SimpleConsoleFormatterOptions>(new SimpleConsoleFormatterOptions())));
                 //cd.TryAdd(ConsoleFormatterNames.Systemd, new SystemdConsoleFormatter(new FormatterOptionsMonitor<ConsoleFormatterOptions>(new ConsoleFormatterOptions())));
                 //cd.TryAdd(ConsoleFormatterNames.Json, new JsonConsoleFormatter(new FormatterOptionsMonitor<JsonConsoleFormatterOptions>(new JsonConsoleFormatterOptions())));
             }
@@ -169,17 +117,18 @@ namespace Nt.Core.Logging.Console
         // warning:  ReloadLoggerOptions can be called before the ctor completed,... before registering all of the state used in this method need to be initialized
         private void ReloadLoggerOptions(ConsoleLoggerOptions options, string text = null)
         {
-            if (options.FormatterName == null || !_formatters.TryGetValue(options.FormatterName, out SimpleConsoleFormatter logFormatter))
+            if (options.FormatterName == null || !_formatters.TryGetValue(options.FormatterName, out ConsoleFormatter logFormatter))
             {
 #pragma warning disable CS0618
-
-                //logFormatter = options.Format switch
-                //{
-                //    ConsoleLoggerFormat.Systemd => _formatters[ConsoleFormatterNames.Systemd],
-                //    _ => _formatters[ConsoleFormatterNames.Simple],
-                //};
-
-                logFormatter = _formatters[ConsoleFormatterNames.Simple];
+                switch (options.Format)
+                {
+                    case ConsoleLoggerFormat.Systemd:
+                        logFormatter = _formatters[ConsoleFormatterNames.Systemd];
+                        break;
+                    default:
+                        logFormatter = _formatters[ConsoleFormatterNames.Simple];
+                        break;
+                }
                 if (options.FormatterName == null)
                 {
                     UpdateFormatterOptions(logFormatter, options);
@@ -197,22 +146,23 @@ namespace Nt.Core.Logging.Console
         /// <inheritdoc />
         public ILogger CreateLogger(string name)
         {
-            //if (_options.CurrentValue.FormatterName == null || !_formatters.TryGetValue(_options.CurrentValue.FormatterName, out ConsoleFormatter logFormatter))
-            if (_options.FormatterName == null || !_formatters.TryGetValue(_options.FormatterName, out SimpleConsoleFormatter logFormatter))
+            if (_options.CurrentValue.FormatterName == null || !_formatters.TryGetValue(_options.CurrentValue.FormatterName, out ConsoleFormatter logFormatter))
             {
 #pragma warning disable CS0618
-                //logFormatter = _options.CurrentValue.Format switch
-                //{
-                //    ConsoleLoggerFormat.Systemd => _formatters[ConsoleFormatterNames.Systemd],
-                //    _ => _formatters[ConsoleFormatterNames.Simple],
-                //};
-                logFormatter = _formatters[ConsoleFormatterNames.Simple];
+                switch (_options.CurrentValue.Format)
+                {
+                    case ConsoleLoggerFormat.Systemd:
+                        logFormatter = _formatters[ConsoleFormatterNames.Systemd];
+                        break;
+                    default:
+                        logFormatter = _formatters[ConsoleFormatterNames.Simple];
+                        break;
+                }
 #pragma warning restore CS0618
 
-                //if (_options.CurrentValue.FormatterName == null)
-                if (_options.FormatterName == null)
+                if (_options.CurrentValue.FormatterName == null)
                 {
-                    UpdateFormatterOptions(logFormatter, _options);
+                    UpdateFormatterOptions(logFormatter, _options.CurrentValue);
                 }
             }
 
@@ -220,15 +170,14 @@ namespace Nt.Core.Logging.Console
                 logger :
                 _loggers.GetOrAdd(name, new ConsoleLogger(name, _messageQueue)
                 {
-                    Options = _options,
-                    //Options = _options.CurrentValue,
-                    //ScopeProvider = _scopeProvider,
+                    Options = _options.CurrentValue,
+                    ScopeProvider = _scopeProvider,
                     Formatter = logFormatter,
                 });
         }
 
 #pragma warning disable CS0618
-        private void UpdateFormatterOptions(SimpleConsoleFormatter formatter, ConsoleLoggerOptions deprecatedFromOptions)
+        private void UpdateFormatterOptions(ConsoleFormatter formatter, ConsoleLoggerOptions deprecatedFromOptions)
         {
             // kept for deprecated apis:
             if (formatter is SimpleConsoleFormatter defaultFormatter)
@@ -257,17 +206,17 @@ namespace Nt.Core.Logging.Console
         public void Dispose()
         {
             _optionsReloadToken?.Dispose();
-            //_messageQueue.Dispose();
+            _messageQueue.Dispose();
         }
 
-        //public void SetScopeProvider(IExternalScopeProvider scopeProvider)
-        //{
-        //    _scopeProvider = scopeProvider;
+        public void SetScopeProvider(IExternalScopeProvider scopeProvider)
+        {
+            _scopeProvider = scopeProvider;
 
-        //    foreach (System.Collections.Generic.KeyValuePair<string, ConsoleLogger> logger in _loggers)
-        //    {
-        //        logger.Value.ScopeProvider = _scopeProvider;
-        //    }
-        //}
+            foreach (System.Collections.Generic.KeyValuePair<string, ConsoleLogger> logger in _loggers)
+            {
+                logger.Value.ScopeProvider = _scopeProvider;
+            }
+        }
     }
 }

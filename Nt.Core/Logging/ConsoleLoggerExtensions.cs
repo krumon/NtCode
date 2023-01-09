@@ -2,6 +2,7 @@
 using Nt.Core.DependencyInjection;
 using Nt.Core.Logging.Configuration;
 using Nt.Core.Logging.Console;
+using Nt.Core.Logging.Console.Internal;
 using Nt.Core.Options;
 using System;
 

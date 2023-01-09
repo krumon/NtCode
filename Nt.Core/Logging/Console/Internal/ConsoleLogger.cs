@@ -1,10 +1,12 @@
-﻿using Nt.Core.Logging.Abstractions;
+﻿using Nt.Core.Attributes;
+using Nt.Core.Logging.Abstractions;
 using Nt.Core.Logging.Internal;
 using System;
 using System.IO;
 
 namespace Nt.Core.Logging.Console.Internal
 {
+    [UnsupportedOSPlatform("browser")]
     internal sealed class ConsoleLogger : ILogger
     {
         private readonly string _name;
@@ -13,13 +15,15 @@ namespace Nt.Core.Logging.Console.Internal
         internal ConsoleLogger(string name, ConsoleLoggerProcessor loggerProcessor)
         {
             if (name == null)
+            {
                 throw new ArgumentNullException(nameof(name));
+            }
 
             _name = name;
             _queueProcessor = loggerProcessor;
         }
 
-        internal SimpleConsoleFormatter Formatter { get; set; }
+        internal ConsoleFormatter Formatter { get; set; }
         internal IExternalScopeProvider ScopeProvider { get; set; }
 
         internal ConsoleLoggerOptions Options { get; set; }
@@ -37,10 +41,9 @@ namespace Nt.Core.Logging.Console.Internal
             {
                 throw new ArgumentNullException(nameof(formatter));
             }
-            //t_stringWriter ??= new StringWriter();
-            if (t_stringWriter == null) t_stringWriter = new StringWriter();
+            if (t_stringWriter == null) t_stringWriter= new StringWriter();
             LogEntry<TState> logEntry = new LogEntry<TState>(logLevel, _name, eventId, state, exception, formatter);
-            Formatter.Write(in logEntry, t_stringWriter);
+            Formatter.Write(in logEntry, ScopeProvider, t_stringWriter);
 
             var sb = t_stringWriter.GetStringBuilder();
             if (sb.Length == 0)

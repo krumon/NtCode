@@ -305,7 +305,9 @@
     <Compile Include="Logging\ConsoleLoggerExtensions.cs" />
     <Compile Include="Logging\Console\AnsiParser.cs" />
     <Compile Include="Logging\Console\ConsoleFormatterNames.cs" />
-    <Compile Include="Logging\Console\SimpleConsoleFormatter.cs" />
+    <Compile Include="Logging\Console\ConsoleLoggerFormat.cs" />
+    <Compile Include="Logging\Console\Internal\FormatterOptionsMonitor.cs" />
+    <Compile Include="Logging\Console\Internal\SimpleConsoleFormatter.cs" />
     <Compile Include="Logging\Console\ConsoleFormatter.cs" />
     <Compile Include="Logging\Console\ConsoleFormatterConfigureOptions.cs" />
     <Compile Include="Logging\Console\SimpleConsoleFormatterOptions.cs" />
@@ -366,6 +368,7 @@
     <Compile Include="Logging\LoggerMessageAttribute.cs" />
     <Compile Include="Logging\LoggingBuilderExtensions.cs" />
     <Compile Include="DependencyInjection\LoggingServiceCollectionExtensions.cs" />
+    <Compile Include="Logging\Internal\NullExternalScopeProvider.cs" />
     <Compile Include="Logging\ProviderAliasAttribute.cs" />
     <Compile Include="Options\ConfigurationChangeTokenSource.cs" />
     <Compile Include="Options\ConfigureFromConfigurationOptions.cs" />
