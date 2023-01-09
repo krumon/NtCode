@@ -2,8 +2,8 @@
 using Nt.Core.Options;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 
@@ -34,8 +34,8 @@ namespace Nt.Core.Logging.Console.Internal
             const int DefaultBufferSize = 1024;
             using (var output = new PooledByteBufferWriter(DefaultBufferSize))
             {
-                using (var writer = new Utf8JsonWriter(output, FormatterOptions.JsonWriterOptions))
-                {
+                //using (var writer = new Utf8JsonWriter(output, FormatterOptions.JsonWriterOptions))
+                var writer = new Utf8JsonWriter(output, FormatterOptions.JsonWriterOptions);
                     writer.WriteStartObject();
                     var timestampFormat = FormatterOptions.TimestampFormat;
                     if (timestampFormat != null)
@@ -74,7 +74,8 @@ namespace Nt.Core.Logging.Console.Internal
                     WriteScopeInformation(writer, scopeProvider);
                     writer.WriteEndObject();
                     writer.Flush();
-                }
+                    // Make dispose because using has been deleted.
+                    writer.Dispose();
 #if NETCOREAPP
                 textWriter.Write(Encoding.UTF8.GetString(output.WrittenMemory.Span));
 #else

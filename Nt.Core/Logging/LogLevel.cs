@@ -2,8 +2,6 @@
 {
     public enum LogLevel
     {
-
-
         /// <summary>
         /// Logs that contain the most detailed messages. These messages may contain sensitive
         /// application data. These messages are disabled by default and should never be

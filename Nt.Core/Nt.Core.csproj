@@ -109,6 +109,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\DoesNotReturnAttribute.cs" />
     <Compile Include="Attributes\OSPlatformAttribute.cs" />
     <Compile Include="Attributes\RequiresUnreferencedCodeAttribute.cs" />
     <Compile Include="Attributes\UnconditionalSuppressMessageAttribute.cs" />
@@ -307,9 +308,11 @@
     <Compile Include="Logging\Console\ConsoleFormatterNames.cs" />
     <Compile Include="Logging\Console\ConsoleLoggerFormat.cs" />
     <Compile Include="Logging\Console\Internal\FormatterOptionsMonitor.cs" />
+    <Compile Include="Logging\Console\Internal\PooledByteBufferWriter.cs" />
     <Compile Include="Logging\Console\Internal\SimpleConsoleFormatter.cs" />
     <Compile Include="Logging\Console\ConsoleFormatter.cs" />
     <Compile Include="Logging\Console\ConsoleFormatterConfigureOptions.cs" />
+    <Compile Include="Logging\Console\Internal\SystemdConsoleFormatter.cs" />
     <Compile Include="Logging\Console\JsonConsoleFormatterOptions.cs" />
     <Compile Include="Logging\Console\SimpleConsoleFormatterOptions.cs" />
     <Compile Include="Logging\Console\ConsoleFormatterOptions.cs" />

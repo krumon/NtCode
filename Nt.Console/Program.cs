@@ -21,10 +21,9 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             //Microsoft.Extensions.Hosting.HostBuilder
-            Microsoft.Extensions.Logging.ConsoleLoggerExtensions
+            //Microsoft.Extensions.Logging.ConsoleLoggerExtensions
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
-
 
 
             UseNinjascriptHost();

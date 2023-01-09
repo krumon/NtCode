@@ -24,8 +24,8 @@ namespace Nt.Core.Logging
         {
             builder.AddConfiguration();
 
-            //builder.AddConsoleFormatter<JsonConsoleFormatter, JsonConsoleFormatterOptions>();
-            //builder.AddConsoleFormatter<SystemdConsoleFormatter, SimpleConsoleFormatterOptions>();
+            builder.AddConsoleFormatter<JsonConsoleFormatter, JsonConsoleFormatterOptions>();
+            builder.AddConsoleFormatter<SystemdConsoleFormatter, SimpleConsoleFormatterOptions>();
             builder.AddConsoleFormatter<SimpleConsoleFormatter, SimpleConsoleFormatterOptions>();
 
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ConsoleLoggerProvider>());
@@ -69,42 +69,42 @@ namespace Nt.Core.Logging
             return builder.AddConsoleWithFormatter<SimpleConsoleFormatterOptions>(ConsoleFormatterNames.Simple, configure);
         }
 
-        ///// <summary>
-        ///// Add a console log formatter named 'json' to the factory with default properties.
-        ///// </summary>
-        ///// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
-        //public static ILoggingBuilder AddJsonConsole(this ILoggingBuilder builder) =>
-        //    builder.AddFormatterWithName(ConsoleFormatterNames.Json);
+        /// <summary>
+        /// Add a console log formatter named 'json' to the factory with default properties.
+        /// </summary>
+        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        public static ILoggingBuilder AddJsonConsole(this ILoggingBuilder builder) =>
+            builder.AddFormatterWithName(ConsoleFormatterNames.Json);
 
-        ///// <summary>
-        ///// Add and configure a console log formatter named 'json' to the factory.
-        ///// </summary>
-        ///// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
-        ///// <param name="configure">A delegate to configure the <see cref="ConsoleLogger"/> options for the built-in json log formatter.</param>
-        //public static ILoggingBuilder AddJsonConsole(this ILoggingBuilder builder, Action<JsonConsoleFormatterOptions> configure)
-        //{
-        //    return builder.AddConsoleWithFormatter<JsonConsoleFormatterOptions>(ConsoleFormatterNames.Json, configure);
-        //}
+        /// <summary>
+        /// Add and configure a console log formatter named 'json' to the factory.
+        /// </summary>
+        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        /// <param name="configure">A delegate to configure the <see cref="ConsoleLogger"/> options for the built-in json log formatter.</param>
+        public static ILoggingBuilder AddJsonConsole(this ILoggingBuilder builder, Action<JsonConsoleFormatterOptions> configure)
+        {
+            return builder.AddConsoleWithFormatter<JsonConsoleFormatterOptions>(ConsoleFormatterNames.Json, configure);
+        }
 
-        ///// <summary>
-        ///// Add and configure a console log formatter named 'systemd' to the factory.
-        ///// </summary>
-        ///// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
-        ///// <param name="configure">A delegate to configure the <see cref="ConsoleLogger"/> options for the built-in systemd log formatter.</param>
-        //public static ILoggingBuilder AddSystemdConsole(this ILoggingBuilder builder, Action<SimpleConsoleFormatterOptions> configure)
-        //{
-        //    return builder.AddConsoleWithFormatter<SimpleConsoleFormatterOptions>(ConsoleFormatterNames.Systemd, configure);
-        //}
+        /// <summary>
+        /// Add and configure a console log formatter named 'systemd' to the factory.
+        /// </summary>
+        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        /// <param name="configure">A delegate to configure the <see cref="ConsoleLogger"/> options for the built-in systemd log formatter.</param>
+        public static ILoggingBuilder AddSystemdConsole(this ILoggingBuilder builder, Action<SimpleConsoleFormatterOptions> configure)
+        {
+            return builder.AddConsoleWithFormatter<SimpleConsoleFormatterOptions>(ConsoleFormatterNames.Systemd, configure);
+        }
 
-        ///// <summary>
-        ///// Add a console log formatter named 'systemd' to the factory with default properties.
-        ///// </summary>
-        ///// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
-        //public static ILoggingBuilder AddSystemdConsole(this ILoggingBuilder builder) =>
-        //    builder.AddFormatterWithName(ConsoleFormatterNames.Systemd);
+        /// <summary>
+        /// Add a console log formatter named 'systemd' to the factory with default properties.
+        /// </summary>
+        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        public static ILoggingBuilder AddSystemdConsole(this ILoggingBuilder builder) =>
+            builder.AddFormatterWithName(ConsoleFormatterNames.Systemd);
 
         internal static ILoggingBuilder AddConsoleWithFormatter<TOptions>(this ILoggingBuilder builder, string name, Action<TOptions> configure)
-            where TOptions : SimpleConsoleFormatterOptions
+            where TOptions : ConsoleFormatterOptions
         {
             if (configure == null)
             {
