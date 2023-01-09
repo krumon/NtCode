@@ -190,16 +190,16 @@ namespace Nt.Core.Logging.Console
                     UseUtcTimestamp = deprecatedFromOptions.UseUtcTimestamp,
                 };
             }
-            //else
-            //if (formatter is SystemdConsoleFormatter systemdFormatter)
-            //{
-            //    systemdFormatter.FormatterOptions = new ConsoleFormatterOptions()
-            //    {
-            //        IncludeScopes = deprecatedFromOptions.IncludeScopes,
-            //        TimestampFormat = deprecatedFromOptions.TimestampFormat,
-            //        UseUtcTimestamp = deprecatedFromOptions.UseUtcTimestamp,
-            //    };
-            //}
+            else
+            if (formatter is SystemdConsoleFormatter systemdFormatter)
+            {
+                systemdFormatter.FormatterOptions = new ConsoleFormatterOptions()
+                {
+                    IncludeScopes = deprecatedFromOptions.IncludeScopes,
+                    TimestampFormat = deprecatedFromOptions.TimestampFormat,
+                    UseUtcTimestamp = deprecatedFromOptions.UseUtcTimestamp,
+                };
+            }
         }
 #pragma warning restore CS0618
 
