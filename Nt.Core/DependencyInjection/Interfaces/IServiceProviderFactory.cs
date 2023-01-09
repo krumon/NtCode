@@ -19,7 +19,7 @@ namespace Nt.Core.DependencyInjection
         /// </summary>
         /// <param name="containerBuilder">The container builder.</param>
         /// <returns>An <see cref="IServiceProvider"/>.</returns>
-        IServiceProvider CreateProvider(TContainerBuilder containerBuilder);
+        IServiceProvider CreateServiceProvider(TContainerBuilder containerBuilder);
 
     }
 }

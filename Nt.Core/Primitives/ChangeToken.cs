@@ -17,13 +17,10 @@ namespace Nt.Core.Primitives
         public static IDisposable OnChange(Func<IChangeToken> changeTokenProducer, Action changeTokenConsumer)
         {
             if (changeTokenProducer == null)
-            {
                 throw new ArgumentNullException(nameof(changeTokenProducer));
-            }
+
             if (changeTokenConsumer == null)
-            {
                 throw new ArgumentNullException(nameof(changeTokenConsumer));
-            }
 
             return new ChangeTokenRegistration<Action>(changeTokenProducer, callback => callback(), changeTokenConsumer);
         }
@@ -38,13 +35,10 @@ namespace Nt.Core.Primitives
         public static IDisposable OnChange<TState>(Func<IChangeToken> changeTokenProducer, Action<TState> changeTokenConsumer, TState state)
         {
             if (changeTokenProducer == null)
-            {
                 throw new ArgumentNullException(nameof(changeTokenProducer));
-            }
+
             if (changeTokenConsumer == null)
-            {
                 throw new ArgumentNullException(nameof(changeTokenConsumer));
-            }
 
             return new ChangeTokenRegistration<TState>(changeTokenProducer, changeTokenConsumer, state);
         }

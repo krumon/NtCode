@@ -119,10 +119,5 @@ namespace Nt.Core.Configuration
         /// </summary>
         /// <returns> The configuration name. </returns>
         public override string ToString() => $"{GetType().Name}";
-
-        IChangeToken IConfigurationProvider.GetReloadToken()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

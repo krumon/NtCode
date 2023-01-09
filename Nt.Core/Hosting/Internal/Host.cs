@@ -1,30 +1,34 @@
 ﻿using Nt.Core.DependencyInjection;
+using Nt.Core.FileProviders;
+using Nt.Core.Logging;
+using Nt.Core.Options;
 using Nt.Core.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
-namespace Nt.Core.Hosting
+namespace Nt.Core.Hosting.Internal
 {
     /// <summary>
     /// Represents the ninjascript host.
     /// </summary>
-    public class Host : IHost
+    internal class Host : IHost
     {
 
         #region Private members
 
-        //private readonly ILogger<Host> _logger;
-        //private readonly IHostLifetime _hostLifetime;
-        //private readonly NinjascriptLifetime _ninjascriptLifetime;
-        //private readonly INinjascriptHostEnvironment _hostEnvironment;
-        //private readonly PhysicalFileProvider _defaultProvider;
+        private readonly ILogger<Host> _logger;
+        private readonly IHostLifetime _hostLifetime;
+        private readonly ApplicationLifetime _applicationLifetime;
+        private readonly HostOptions _options;
+        private readonly IHostEnvironment _hostEnvironment;
+        private readonly PhysicalFileProvider _defaultProvider;
         //private IEnumerable<IHostedService> _hostedServices;
         //private volatile bool _stopCalled;
-        private readonly ISessionsService _sessions;
+        
         private readonly ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
-        private readonly HostOptions _options;
+        private readonly ISessionsService _sessions;
 
         #endregion
 
@@ -46,18 +50,31 @@ namespace Nt.Core.Hosting
         /// <exception cref="ArgumentNullException"></exception>
         internal Host(
             IServiceProvider services,
-            HostOptions options,
+            IHostEnvironment hostEnvironment,
+            PhysicalFileProvider defaultProvider,
+            IHostApplicationLifetime applicationLifetime,
+            ILogger<Host> logger,
+            IHostLifetime hostLifetime,
+            IOptions<HostOptions> options,
             ISessionsService sessions,
             IEnumerable<IOnBarUpdateService> onBarUpdateServices,
             IEnumerable<IOnMarketDataService> onMarketDataServices
             )
         {
-            // _logger.Starting();
-
             Services = services ?? throw new ArgumentNullException(nameof(services));
-            _options = options ?? throw new ArgumentNullException(nameof(options));
-            _sessions = services.GetService<ISessionsService>();
+            _applicationLifetime = (applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime))) as ApplicationLifetime;
+            _hostEnvironment = hostEnvironment;
+            _defaultProvider = defaultProvider;
 
+            if (_applicationLifetime is null)
+                throw new ArgumentException("Replacing IHostApplicationLifetime is not supported.", nameof(applicationLifetime));
+
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _hostLifetime = hostLifetime ?? throw new ArgumentNullException(nameof(hostLifetime));
+            _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+
+
+            _sessions = services.GetService<ISessionsService>();
             //_sessionsService?.Iterator?.SessionChanged += OnSessionUpdate;
             _enumerableServices.TryAdd(typeof(IOnBarUpdateService), new List<IOnBarUpdateService> { _sessions });
             _enumerableServices.TryAdd(typeof(IOnMarketDataService), new List<IOnMarketDataService> { _sessions });

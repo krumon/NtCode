@@ -15,15 +15,15 @@ namespace Nt.Core.Hosting
         /// </summary>
         public TimeSpan ShutdownTimeout { get; set; } = TimeSpan.FromSeconds(5);
 
-        ///// <summary>
-        ///// The behavior the <see cref="IHost"/> will follow when any of
-        ///// its <see cref="BackgroundService"/> instances throw an unhandled exception.
-        ///// </summary>
-        ///// <remarks>
-        ///// Defaults to <see cref="BackgroundServiceExceptionBehavior.StopHost"/>.
-        ///// </remarks>
-        //public BackgroundServiceExceptionBehavior BackgroundServiceExceptionBehavior { get; set; } =
-        //    BackgroundServiceExceptionBehavior.StopHost;
+        /// <summary>
+        /// The behavior the <see cref="IHost"/> will follow when any of
+        /// its <see cref="BackgroundService"/> instances throw an unhandled exception.
+        /// </summary>
+        /// <remarks>
+        /// Defaults to <see cref="BackgroundServiceExceptionBehavior.StopHost"/>.
+        /// </remarks>
+        public BackgroundServiceExceptionBehavior BackgroundServiceExceptionBehavior { get; set; } =
+            BackgroundServiceExceptionBehavior.StopHost;
 
         internal void Initialize(IConfiguration configuration)
         {
@@ -34,22 +34,5 @@ namespace Nt.Core.Hosting
                 ShutdownTimeout = TimeSpan.FromSeconds(seconds);
             }
         }
-
-        /// <inheritdoc/>
-        public static HostOptions Default => new HostOptions
-        {
-            IsInDesignMode = false
-        };
-
-        /// <summary>
-        /// Indicates if the host is in design mode.
-        /// </summary>
-        public bool IsInDesignMode { get; set; }
-
-        /// <summary>
-        /// Indicates if the host use <see cref="Services.ISessionsIteratorService"/>.
-        /// </summary>
-        public bool IncludeSessions { get; set; } = true;
-
     }
 }

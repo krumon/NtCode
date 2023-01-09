@@ -55,14 +55,10 @@ namespace Nt.Core.DependencyInjection
             where TOptions : class
         {
             if (services == null)
-            {
                 throw new ArgumentNullException(nameof(services));
-            }
 
             if (configureOptions == null)
-            {
                 throw new ArgumentNullException(nameof(configureOptions));
-            }
 
             services.AddOptions();
             services.AddSingleton<IConfigureOptions<TOptions>>(new ConfigureNamedOptions<TOptions>(name, configureOptions));

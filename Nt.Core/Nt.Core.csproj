@@ -116,6 +116,9 @@
     <Compile Include="Configuration\ChainedBuilderExtensions.cs" />
     <Compile Include="Configuration\ChainedConfigurationProvider.cs" />
     <Compile Include="Configuration\ChainedConfigurationSource.cs" />
+    <Compile Include="Configuration\CommandLineConfigurationExtensions.cs" />
+    <Compile Include="Configuration\CommandLine\CommandLineConfigurationProvider.cs" />
+    <Compile Include="Configuration\CommandLine\CommandLineConfigurationSource.cs" />
     <Compile Include="Configuration\ConfigurationBinder.cs" />
     <Compile Include="Configuration\ConfigurationBuilder.cs" />
     <Compile Include="Configuration\ConfigurationExtensions.cs" />
@@ -134,16 +137,29 @@
     <Compile Include="Configuration\.Interfaces\IConfigurationRoot.cs" />
     <Compile Include="Configuration\.Interfaces\IConfigurationSection.cs" />
     <Compile Include="Configuration\.Interfaces\IConfigurationSource.cs" />
+    <Compile Include="Configuration\EnvironmentVariablesExtensions.cs" />
+    <Compile Include="Configuration\EnvironmentVariables\EnvironmentVariablesConfigurationProvider.cs" />
+    <Compile Include="Configuration\EnvironmentVariables\EnvironmentVariablesConfigurationSource.cs" />
     <Compile Include="Configuration\FileConfigurationExtensions.cs" />
     <Compile Include="Configuration\FileConfigurationProvider.cs" />
     <Compile Include="Configuration\FileConfigurationSource.cs" />
     <Compile Include="Configuration\FileLoadExceptionContext.cs" />
     <Compile Include="Configuration\InternalConfigurationRootExtensions.cs" />
+    <Compile Include="Configuration\JsonConfigurationExtensions.cs" />
+    <Compile Include="Configuration\Json\JsonConfigurationFileParser.cs" />
+    <Compile Include="Configuration\Json\JsonConfigurationProvider.cs" />
+    <Compile Include="Configuration\Json\JsonConfigurationSource.cs" />
+    <Compile Include="Configuration\Json\JsonStreamConfigurationProvider.cs" />
+    <Compile Include="Configuration\Json\JsonStreamConfigurationSource.cs" />
     <Compile Include="Configuration\MemoryConfigurationBuilderExtensions.cs" />
     <Compile Include="Configuration\Memory\MemoryConfigurationProvider.cs" />
     <Compile Include="Configuration\Memory\MemoryConfigurationSource.cs" />
     <Compile Include="Configuration\StreamConfigurationProvider.cs" />
     <Compile Include="Configuration\StreamConfigurationSource.cs" />
+    <Compile Include="Configuration\UserSecretsConfigurationExtensions.cs" />
+    <Compile Include="Configuration\UserSecrets\PathHelper.cs" />
+    <Compile Include="Configuration\UserSecrets\UserSecretsIdAttribute.cs" />
+    <Compile Include="DependencyInjection\DefaultServiceProviderFactory.cs" />
     <Compile Include="DependencyInjection\DynamicallyAccessedMemberAttribute.cs" />
     <Compile Include="Data\Instruments\IInstrument.cs" />
     <Compile Include="Data\Instruments\Instrument.cs" />
@@ -228,8 +244,10 @@
     <Compile Include="FileSystemGlobbing\PatternMatchingResult.cs" />
     <Compile Include="Helpers\HashHelpers.cs" />
     <Compile Include="Helpers\StringComparisonHelper.cs" />
+    <Compile Include="Hosting\BackgroundServiceExceptionBehavior.cs" />
     <Compile Include="Hosting\Environments.cs" />
-    <Compile Include="Hosting\Host.cs" />
+    <Compile Include="Hosting\Internal\ConfigureContainerAdapter.cs" />
+    <Compile Include="Hosting\Internal\Host.cs" />
     <Compile Include="Hosting\HostBuilderContext.cs" />
     <Compile Include="Hosting\HostDefaults.cs" />
     <Compile Include="Hosting\HostedServiceExtensions.cs" />
@@ -261,6 +279,9 @@
     <Compile Include="Hosting\Internal\ApplicationLifetime.cs" />
     <Compile Include="Hosting\Internal\ConsoleLifetime.cs" />
     <Compile Include="Hosting\Internal\HostingEnvironment.cs" />
+    <Compile Include="Hosting\Internal\IConfigureContainerAdapter.cs" />
+    <Compile Include="Hosting\Internal\IServiceFactoryAdapter.cs" />
+    <Compile Include="Hosting\Internal\ServiceFactoryAdapter.cs" />
     <Compile Include="Internal\NonCapturingTimer.cs" />
     <Compile Include="Internal\TypeNameHelper.cs" />
     <Compile Include="Logging\.Interfaces\IExternalScopeProvider.cs" />
@@ -509,10 +530,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Configuration\CommandLine\" />
-    <Folder Include="Configuration\EnvironmentVariables\" />
-    <Folder Include="Configuration\Json\" />
-    <Folder Include="Configuration\UserSecrets\" />
     <Folder Include="Services\LoggerToFile\" />
   </ItemGroup>
   <ItemGroup>

@@ -26,13 +26,9 @@ namespace Nt.Core.Configuration
         public static IConfigurationBuilder AddConfiguration(this IConfigurationBuilder configurationBuilder, IConfiguration config, bool shouldDisposeConfiguration)
         {
             if (configurationBuilder == null)
-            {
                 throw new ArgumentNullException(nameof(configurationBuilder));
-            }
             if (config == null)
-            {
                 throw new ArgumentNullException(nameof(config));
-            }
 
             configurationBuilder.Add(new ChainedConfigurationSource
             {

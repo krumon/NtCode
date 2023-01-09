@@ -43,16 +43,12 @@ namespace Nt.Core.Configuration
         public static T Get<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] T>(this IConfiguration configuration, Action<BinderOptions> configureOptions)
         {
             if (configuration == null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
+                 throw new ArgumentNullException(nameof(configuration));
 
             object result = configuration.Get(typeof(T), configureOptions);
-            if (result == null)
-            {
-                return default(T);
-            }
-            return (T)result;
+
+            return (T)(result ?? default);
+
         }
 
         /// <summary>
@@ -84,9 +80,7 @@ namespace Nt.Core.Configuration
             Action<BinderOptions> configureOptions)
         {
             if (configuration == null)
-            {
                 throw new ArgumentNullException(nameof(configuration));
-            }
 
             var options = new BinderOptions();
             configureOptions?.Invoke(options);
@@ -122,9 +116,7 @@ namespace Nt.Core.Configuration
         public static void Bind(this IConfiguration configuration, object instance, Action<BinderOptions> configureOptions)
         {
             if (configuration == null)
-            {
                 throw new ArgumentNullException(nameof(configuration));
-            }
 
             if (instance != null)
             {
@@ -190,7 +182,8 @@ namespace Nt.Core.Configuration
         public static object GetValue(
             this IConfiguration configuration,
             [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-            Type type, string key,
+            Type type, 
+            string key,
             object defaultValue)
         {
             IConfigurationSection section = configuration.GetSection(key);
@@ -232,7 +225,6 @@ namespace Nt.Core.Configuration
                 }
             }
         }
-
         [RequiresUnreferencedCode(PropertyTrimmingWarningMessage)]
         private static void BindProperty(PropertyInfo property, object instance, IConfiguration config, BinderOptions options)
         {
@@ -261,7 +253,6 @@ namespace Nt.Core.Configuration
                 property.SetValue(instance, propertyValue);
             }
         }
-
         [RequiresUnreferencedCode("Cannot statically analyze what the element type is of the object collection in type so its members may be trimmed.")]
         private static object BindToCollection(Type type, IConfiguration config, BinderOptions options)
         {
@@ -270,13 +261,9 @@ namespace Nt.Core.Configuration
             BindCollection(instance, genericType, config, options);
             return instance;
         }
-
         // Try to create an array/dictionary instance to back various collection interfaces
         [RequiresUnreferencedCode("In case type is a Dictionary, cannot statically analyze what the element type is of the value objects in the dictionary so its members may be trimmed.")]
-        private static object AttemptBindToCollectionInterfaces(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-            Type type,
-            IConfiguration config, BinderOptions options)
+        private static object AttemptBindToCollectionInterfaces([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type, IConfiguration config, BinderOptions options)
         {
             if (!type.IsInterface)
             {
@@ -330,12 +317,8 @@ namespace Nt.Core.Configuration
 
             return null;
         }
-
         [RequiresUnreferencedCode(TrimmingWarningMessage)]
-        private static object BindInstance(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-            Type type,
-            object instance, IConfiguration config, BinderOptions options)
+        private static object BindInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type, object instance, IConfiguration config, BinderOptions options)
         {
             // if binding IConfigurationSection, break early
             if (type == typeof(IConfigurationSection))
@@ -401,7 +384,6 @@ namespace Nt.Core.Configuration
 
             return instance;
         }
-
         private static object CreateInstance([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors | DynamicallyAccessedMemberTypes.NonPublicConstructors)] Type type)
         {
             if (type.IsInterface || type.IsAbstract)
@@ -437,13 +419,8 @@ namespace Nt.Core.Configuration
                 throw new InvalidOperationException($"Error_FailedToActivate, type), {ex}.");
             }
         }
-
         [RequiresUnreferencedCode("Cannot statically analyze what the element type is of the value objects in the dictionary so its members may be trimmed.")]
-        private static void BindDictionary(
-            object dictionary,
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
-            Type dictionaryType,
-            IConfiguration config, BinderOptions options)
+        private static void BindDictionary(object dictionary, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)] Type dictionaryType, IConfiguration config, BinderOptions options)
         {
             // IDictionary<K,V> is guaranteed to have exactly two parameters
             Type keyType = dictionaryType.GenericTypeArguments[0];
@@ -479,13 +456,8 @@ namespace Nt.Core.Configuration
                 }
             }
         }
-
         [RequiresUnreferencedCode("Cannot statically analyze what the element type is of the object collection so its members may be trimmed.")]
-        private static void BindCollection(
-            object collection,
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)]
-            Type collectionType,
-            IConfiguration config, BinderOptions options)
+        private static void BindCollection(object collection, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicMethods | DynamicallyAccessedMemberTypes.NonPublicMethods)] Type collectionType, IConfiguration config, BinderOptions options)
         {
             // ICollection<T> is guaranteed to have exactly one parameter
             Type itemType = collectionType.GenericTypeArguments[0];
@@ -510,7 +482,6 @@ namespace Nt.Core.Configuration
                 }
             }
         }
-
         [RequiresUnreferencedCode("Cannot statically analyze what the element type is of the Array so its members may be trimmed.")]
         private static Array BindArray(Array source, IConfiguration config, BinderOptions options)
         {
@@ -546,12 +517,8 @@ namespace Nt.Core.Configuration
 
             return newArray;
         }
-
         [RequiresUnreferencedCode(TrimmingWarningMessage)]
-        private static bool TryConvertValue(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-            Type type,
-            string value, string path, out object result, out Exception error)
+        private static bool TryConvertValue([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type, string value, string path, out object result, out Exception error)
         {
             error = null;
             result = null;
@@ -599,27 +566,16 @@ namespace Nt.Core.Configuration
 
             return false;
         }
-
         [RequiresUnreferencedCode(TrimmingWarningMessage)]
-        private static object ConvertValue(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-            Type type,
-            string value, string path)
+        private static object ConvertValue( [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type, string value, string path)
         {
-            object result;
-            Exception error;
-            TryConvertValue(type, value, path, out result, out error);
+            TryConvertValue(type, value, path, out object result, out Exception error);
             if (error != null)
-            {
                 throw error;
-            }
+
             return result;
         }
-
-        private static Type FindOpenGenericInterface(
-            Type expected,
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
-            Type actual)
+        private static Type FindOpenGenericInterface( Type expected, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)] Type actual)
         {
             if (actual.IsGenericType &&
                 actual.GetGenericTypeDefinition() == expected)
@@ -638,10 +594,7 @@ namespace Nt.Core.Configuration
             }
             return null;
         }
-
-        private static List<PropertyInfo> GetAllProperties(
-            [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-            Type type)
+        private static List<PropertyInfo> GetAllProperties([DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] Type type)
         {
             var allProperties = new List<PropertyInfo>();
 
@@ -654,7 +607,6 @@ namespace Nt.Core.Configuration
 
             return allProperties;
         }
-
         [RequiresUnreferencedCode(PropertyTrimmingWarningMessage)]
         private static object GetPropertyValue(PropertyInfo property, object instance, IConfiguration config, BinderOptions options)
         {
@@ -665,7 +617,6 @@ namespace Nt.Core.Configuration
                 config.GetSection(propertyName),
                 options);
         }
-
         private static string GetPropertyName(MemberInfo property)
         {
             if (property == null)
