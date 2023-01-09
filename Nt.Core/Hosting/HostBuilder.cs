@@ -248,7 +248,7 @@ namespace Nt.Core.Hosting
             // register configuration as factory to make it dispose with the service provider
             services.AddSingleton(_ => _appConfiguration);
             services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
-            //AddLifetime(services);
+            services.AddSingleton<IHostLifetime, ConsoleLifetime>();
 
             services.AddSingleton<IHost>(_ =>
             {

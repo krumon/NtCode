@@ -1,4 +1,6 @@
 ﻿
+using System.IO;
+
 namespace Nt.Core.Configuration
 {
     /// <summary>
@@ -9,7 +11,7 @@ namespace Nt.Core.Configuration
         /// <summary>
         /// The stream containing the configuration data.
         /// </summary>
-        public System.IO.Stream Stream { get; set; }
+        public Stream Stream { get; set; }
         
         /// <summary>
         /// Builds the <see cref="StreamConfigurationProvider"/> for this source.

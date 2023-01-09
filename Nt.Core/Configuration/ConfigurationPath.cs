@@ -21,9 +21,8 @@ namespace Nt.Core.Configuration
         public static string Combine(params string[] pathSegments)
         {
             if (pathSegments == null)
-            {
                 throw new ArgumentNullException(nameof(pathSegments));
-            }
+
             return string.Join(KeyDelimiter, pathSegments);
         }
 

@@ -94,14 +94,11 @@ namespace Nt.Core.Configuration
         public static Action<FileLoadExceptionContext> GetFileLoadExceptionHandler(this IConfigurationBuilder builder)
         {
             if (builder == null)
-            {
                 throw new ArgumentNullException(nameof(builder));
-            }
 
             if (builder.Properties.TryGetValue(FileLoadExceptionHandlerKey, out object handler))
-            {
                 return handler as Action<FileLoadExceptionContext>;
-            }
+            
             return null;
         }
     }

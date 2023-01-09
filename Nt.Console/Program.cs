@@ -21,6 +21,7 @@ namespace ConsoleApp
             //Microsoft.Extensions.Hosting.HostBuilder
             //Microsoft.Extensions.Logging.ConsoleLoggerExtensions
             //Microsoft.Extensions.Configuration.ConfigurationProvider
+            //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
 
 
 

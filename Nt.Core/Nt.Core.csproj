@@ -247,6 +247,7 @@
     <Compile Include="Hosting\BackgroundServiceExceptionBehavior.cs" />
     <Compile Include="Hosting\Environments.cs" />
     <Compile Include="Hosting\Internal\ConfigureContainerAdapter.cs" />
+    <Compile Include="Hosting\Internal\ConsoleLifetimeOptions.cs" />
     <Compile Include="Hosting\Internal\Host.cs" />
     <Compile Include="Hosting\HostBuilderContext.cs" />
     <Compile Include="Hosting\HostDefaults.cs" />

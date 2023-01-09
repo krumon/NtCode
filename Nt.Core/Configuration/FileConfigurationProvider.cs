@@ -90,7 +90,7 @@ namespace Nt.Core.Configuration
             OnReload();
         }
 
-        private static System.IO.Stream OpenRead(IFileInfo fileInfo)
+        private static Stream OpenRead(IFileInfo fileInfo)
         {
             if (fileInfo.PhysicalPath != null)
             {
@@ -128,7 +128,7 @@ namespace Nt.Core.Configuration
         /// Loads this provider's data from a stream.
         /// </summary>
         /// <param name="stream">The stream to read.</param>
-        public abstract void Load(System.IO.Stream stream);
+        public abstract void Load(Stream stream);
 
         private void HandleException(ExceptionDispatchInfo info)
         {

@@ -19,13 +19,9 @@ namespace Nt.Core.Configuration
         public ChainedConfigurationProvider(ChainedConfigurationSource source)
         {
             if (source == null)
-            {
                 throw new ArgumentNullException(nameof(source));
-            }
             if (source.Configuration == null)
-            {
                 throw new ArgumentException($"InvalidNullArgument, {source.Configuration}, {nameof(source)}");
-            }
 
             _config = source.Configuration;
             _shouldDisposeConfig = source.ShouldDisposeConfiguration;
