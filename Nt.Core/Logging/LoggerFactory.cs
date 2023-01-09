@@ -82,36 +82,36 @@ namespace Nt.Core.Logging
             RefreshFilters(filterOption.CurrentValue);
         }
 
-        /// <summary>
-        /// Creates a new <see cref="LoggerFactory"/> instance.
-        /// </summary>
-        /// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
-        /// <param name="filterOption">The filter option to use.</param>
-        /// <param name="options">The <see cref="LoggerFactoryOptions"/>.</param>
-        /// <remarks>
-        /// This method has been created by krumon!!!!!
-        /// </remarks>
-        public LoggerFactory(IEnumerable<ILoggerProvider> providers, IConfigureOptions<LoggerFilterOptions> filterOption, IOptions<LoggerFactoryOptions> options = null)
-        {
-            _factoryOptions = options == null || options.Value == null ? new LoggerFactoryOptions() : options.Value;
+        ///// <summary>
+        ///// Creates a new <see cref="LoggerFactory"/> instance.
+        ///// </summary>
+        ///// <param name="providers">The providers to use in producing <see cref="ILogger"/> instances.</param>
+        ///// <param name="filterOption">The filter option to use.</param>
+        ///// <param name="options">The <see cref="LoggerFactoryOptions"/>.</param>
+        ///// <remarks>
+        ///// This method has been created by krumon!!!!!
+        ///// </remarks>
+        //public LoggerFactory(IEnumerable<ILoggerProvider> providers, IConfigureOptions<LoggerFilterOptions> filterOption, IOptions<LoggerFactoryOptions> options = null)
+        //{
+        //    _factoryOptions = options == null || options.Value == null ? new LoggerFactoryOptions() : options.Value;
 
-            const ActivityTrackingOptions ActivityTrackingOptionsMask = ~(ActivityTrackingOptions.SpanId | ActivityTrackingOptions.TraceId | ActivityTrackingOptions.ParentId |
-                                                                          ActivityTrackingOptions.TraceFlags | ActivityTrackingOptions.TraceState | ActivityTrackingOptions.Tags
-                                                                          | ActivityTrackingOptions.Baggage);
+        //    const ActivityTrackingOptions ActivityTrackingOptionsMask = ~(ActivityTrackingOptions.SpanId | ActivityTrackingOptions.TraceId | ActivityTrackingOptions.ParentId |
+        //                                                                  ActivityTrackingOptions.TraceFlags | ActivityTrackingOptions.TraceState | ActivityTrackingOptions.Tags
+        //                                                                  | ActivityTrackingOptions.Baggage);
 
 
-            if ((_factoryOptions.ActivityTrackingOptions & ActivityTrackingOptionsMask) != 0)
-            {
-                throw new ArgumentException("Invalid Activity Tracking Options");
-            }
+        //    if ((_factoryOptions.ActivityTrackingOptions & ActivityTrackingOptionsMask) != 0)
+        //    {
+        //        throw new ArgumentException("Invalid Activity Tracking Options");
+        //    }
 
-            foreach (ILoggerProvider provider in providers)
-            {
-                AddProviderRegistration(provider, dispose: false);
-            }
+        //    foreach (ILoggerProvider provider in providers)
+        //    {
+        //        AddProviderRegistration(provider, dispose: false);
+        //    }
 
-            RefreshFilters(filterOption);
-        }
+        //    RefreshFilters(filterOption);
+        //}
 
         /// <summary>
         /// Creates new instance of <see cref="ILoggerFactory"/> configured using provided <paramref name="configure"/> delegate.

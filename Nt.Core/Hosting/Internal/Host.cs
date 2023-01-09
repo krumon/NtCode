@@ -54,7 +54,7 @@ namespace Nt.Core.Hosting.Internal
             PhysicalFileProvider defaultProvider,
             IHostApplicationLifetime applicationLifetime,
             ILogger<Host> logger,
-            IHostLifetime hostLifetime,
+            //IHostLifetime hostLifetime,
             IOptions<HostOptions> options,
             ISessionsService sessions,
             IEnumerable<IOnBarUpdateService> onBarUpdateServices,
@@ -70,7 +70,7 @@ namespace Nt.Core.Hosting.Internal
                 throw new ArgumentException("Replacing IHostApplicationLifetime is not supported.", nameof(applicationLifetime));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _hostLifetime = hostLifetime ?? throw new ArgumentNullException(nameof(hostLifetime));
+            //_hostLifetime = hostLifetime ?? throw new ArgumentNullException(nameof(hostLifetime));
             _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
 
 

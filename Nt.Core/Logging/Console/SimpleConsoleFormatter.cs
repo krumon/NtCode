@@ -7,7 +7,6 @@ namespace Nt.Core.Logging.Console
 {
     public sealed class SimpleConsoleFormatter : ConsoleFormatter, IDisposable
     {
-        //private const string ConsoleFormatterName = "Krumon";
         private const string LoglevelPadding = ": ";
         private static readonly string _messagePadding = new string(' ', GetLogLevelString(LogLevel.Information).Length + LoglevelPadding.Length);
         private static readonly string _newLineWithMessagePadding = Environment.NewLine + _messagePadding;
@@ -20,14 +19,14 @@ namespace Nt.Core.Logging.Console
             _optionsReloadToken = options.OnChange(ReloadLoggerOptions);
         }
 
-        public SimpleConsoleFormatter(IConfigureOptions<SimpleConsoleFormatterOptions> options)
-            : base(ConsoleFormatterNames.Simple)
-        {
-            SimpleConsoleFormatterOptions op = new SimpleConsoleFormatterOptions();
-            options.Configure(op);
-            ReloadLoggerOptions(op);
-            //_optionsReloadToken = options.OnChange(ReloadLoggerOptions);
-        }
+        //public SimpleConsoleFormatter(IConfigureOptions<SimpleConsoleFormatterOptions> options)
+        //    : base(ConsoleFormatterNames.Simple)
+        //{
+        //    SimpleConsoleFormatterOptions op = new SimpleConsoleFormatterOptions();
+        //    options.Configure(op);
+        //    ReloadLoggerOptions(op);
+        //    _optionsReloadToken = options.OnChange(ReloadLoggerOptions);
+        //}
 
         private void ReloadLoggerOptions(SimpleConsoleFormatterOptions options, string text = null)
         {
@@ -183,30 +182,30 @@ namespace Nt.Core.Logging.Console
             }
         }
 
-        private void WriteScopeInformation(TextWriter textWriter, bool singleLine)
+        private void WriteScopeInformation(TextWriter textWriter, IExternalScopeProvider scopeProvider, bool singleLine)
         {
             if (FormatterOptions.IncludeScopes)
             {
                 bool paddingNeeded = !singleLine;
-                //scopeProvider.ForEachScope((scope, state) =>
-                //{
-                //    if (paddingNeeded)
-                //    {
-                //        paddingNeeded = false;
-                //        state.Write(_messagePadding);
-                //        state.Write("=> ");
-                //    }
-                //    else
-                //    {
-                //        state.Write(" => ");
-                //    }
-                //    state.Write(scope);
-                //}, textWriter);
+                scopeProvider.ForEachScope((scope, state) =>
+                {
+                    if (paddingNeeded)
+                    {
+                        paddingNeeded = false;
+                        state.Write(_messagePadding);
+                        state.Write("=> ");
+                    }
+                    else
+                    {
+                        state.Write(" => ");
+                    }
+                    state.Write(scope);
+                }, textWriter);
 
-                //if (!paddingNeeded && !singleLine)
-                //{
-                //    textWriter.Write(Environment.NewLine);
-                //}
+                if (!paddingNeeded && !singleLine)
+                {
+                    textWriter.Write(Environment.NewLine);
+                }
             }
         }
 

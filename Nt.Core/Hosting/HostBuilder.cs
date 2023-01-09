@@ -258,7 +258,7 @@ namespace Nt.Core.Hosting
                     , _defaultProvider
                     , _services.GetRequiredService<IHostApplicationLifetime>()
                     , _services.GetRequiredService<ILogger<Host>>()
-                    , _services.GetRequiredService<IHostLifetime>()
+                    //, _services.GetRequiredService<IHostLifetime>()
                     , _services.GetRequiredService<IOptions<HostOptions>>()
 
                     , _services.GetService_Obsolete<ISessionsService>()
