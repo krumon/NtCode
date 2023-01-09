@@ -408,18 +408,18 @@ namespace Nt.Core.Logging
         /// {
         /// }
         /// </example>
-        //public static IDisposable BeginScope(
-        //    this ILogger logger,
-        //    string messageFormat,
-        //    params object?[] args)
-        //{
-        //    if (logger == null)
-        //    {
-        //        throw new ArgumentNullException(nameof(logger));
-        //    }
+        public static IDisposable BeginScope(
+            this ILogger logger,
+            string messageFormat,
+            params object[] args)
+        {
+            if (logger == null)
+            {
+                throw new ArgumentNullException(nameof(logger));
+            }
 
-        //    return logger.BeginScope(new FormattedLogValues(messageFormat, args));
-        //}
+            return logger.BeginScope(new FormattedLogValues(messageFormat, args));
+        }
 
         //------------------------------------------HELPERS------------------------------------------//
 

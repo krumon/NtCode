@@ -13,6 +13,7 @@ namespace ConsoleApp
     {
         private static IHost _host;
         private static ILogger _logger;
+        private static string format = "Krumon";
 
         public static void Main(string[] args)
         {
@@ -29,9 +30,10 @@ namespace ConsoleApp
             UseNinjascriptHost();
             _logger = _host?.Services.GetService<ILogger<Program>>();
             _logger?.LogInformationSource("The Host is built");
-            _logger?.Log(LogLevel.Trace, "Logging Service", Array.Empty<string>());
+            _logger?.Log(LogLevel.Information, "Logging Service");
+            _logger?.LogCritical("Logging a message by {format}.",format);
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
-
+            var section = config.GetSection("Logging").GetSection("File").GetSection("LogLevel").GetSection("Default");
         }
 
         private static void UseNinjascriptHost()
