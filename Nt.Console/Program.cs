@@ -27,11 +27,12 @@ namespace ConsoleApp
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
 
 
-            UseNinjascriptHost();
+            //UseNinjascriptHost();
+            UseColorConsoleLogger();
             _logger = _host?.Services.GetService<ILogger<Program>>();
             _logger?.LogInformationSource("The Host is built");
-            _logger?.Log(LogLevel.Information, "Logging Service");
-            _logger?.LogCritical("Logging a message by {format}.",format);
+            _logger?.LogWarning("Logging Service");
+            _logger?.LogError("Logging a message by {format}.",format);
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
             var section = config.GetSection("Logging").GetSection("Console");
         }
@@ -94,6 +95,26 @@ namespace ConsoleApp
                 })
                 .Build();
         }
-
+        private static void UseColorConsoleLogger()
+        {
+            _host = Hosting.CreateDefaultBuilder()
+                .ConfigureServices((context, services) =>
+                {
+                    services.AddLogging(builder =>
+                    {
+                        builder.ClearProviders();
+                        builder.AddColorConsoleLogger(configuration =>
+                        {
+                            // Replace warning value from appsettings.json of "Cyan"
+                            configuration.LogLevelToColorMap[LogLevel.Warning] = ConsoleColor.DarkCyan;
+                            // Replace warning value from appsettings.json of "Red"
+                            configuration.LogLevelToColorMap[LogLevel.Error] = ConsoleColor.DarkRed;
+                        });
+                        builder.AddConfiguration(context.Configuration.GetSection("Logging"));
+                    })
+                    ;
+                })
+                .Build();
+        }
     }
 }

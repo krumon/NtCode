@@ -313,6 +313,10 @@
     <Compile Include="Logging\Console\ConsoleFormatter.cs" />
     <Compile Include="Logging\Console\Internal\SystemdConsoleFormatter.cs" />
     <Compile Include="Logging\Console\JsonConsoleFormatterOptions.cs" />
+    <Compile Include="Logging\Console\ColorConsoleLoggerConfiguration.cs" />
+    <Compile Include="Logging\ColorConsoleLoggerExtensions.cs" />
+    <Compile Include="Logging\Console\ColorConsoleLoggerProvider.cs" />
+    <Compile Include="Logging\Console\Internal\ColorConsoleLogger.cs" />
     <Compile Include="Logging\Console\SimpleConsoleFormatterOptions.cs" />
     <Compile Include="Logging\Console\ConsoleFormatterOptions.cs" />
     <Compile Include="Logging\Console\Internal\AnsiLogConsole.cs" />
