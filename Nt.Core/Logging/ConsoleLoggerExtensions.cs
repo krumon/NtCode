@@ -42,9 +42,7 @@ namespace Nt.Core.Logging
         public static ILoggingBuilder AddConsole(this ILoggingBuilder builder, Action<ConsoleLoggerOptions> configure)
         {
             if (configure == null)
-            {
                 throw new ArgumentNullException(nameof(configure));
-            }
 
             builder.AddConsole();
             builder.Services.Configure(configure);
@@ -107,9 +105,8 @@ namespace Nt.Core.Logging
             where TOptions : ConsoleFormatterOptions
         {
             if (configure == null)
-            {
                 throw new ArgumentNullException(nameof(configure));
-            }
+
             builder.AddFormatterWithName(name);
             builder.Services.Configure(configure);
 

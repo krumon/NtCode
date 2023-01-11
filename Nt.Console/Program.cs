@@ -22,7 +22,7 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             //Microsoft.Extensions.Hosting.HostBuilder
-            //Microsoft.Extensions.Logging.ConsoleLoggerExtensions
+            //Microsoft.Extensions.Logging.LoggerSourceFormatter
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
 
@@ -33,7 +33,7 @@ namespace ConsoleApp
             _logger?.Log(LogLevel.Information, "Logging Service");
             _logger?.LogCritical("Logging a message by {format}.",format);
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
-            var section = config.GetSection("Logging").GetSection("File").GetSection("LogLevel").GetSection("Default");
+            var section = config.GetSection("Logging").GetSection("Console");
         }
 
         private static void UseNinjascriptHost()
@@ -50,7 +50,8 @@ namespace ConsoleApp
                     builder.SetMinimumLevel(LogLevel.Debug);
                     builder.AddConsole();
                     builder.AddDebug();
-                    LoggerProviderOptions.RegisterProviderOptions<>(builder.Services);
+                    builder.AddConfiguration(configuration: context.Configuration);
+                    //LoggerProviderOptions.RegisterProviderOptions<>(builder.Services);
                 });
                 services.AddTransient<IConfigureService, GlobalsDataDesignScript>();
                 services.AddSingleton<IConfigureService, ChartDataDesignScript>();

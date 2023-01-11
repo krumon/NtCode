@@ -4,7 +4,7 @@ using Nt.Core.Options;
 using System;
 using System.Linq;
 
-namespace Nt.Core.Logging
+namespace Nt.Core.Logging.Internal
 {
     internal sealed class LoggerFilterConfigureOptions : IConfigureOptions<LoggerFilterOptions>
     {

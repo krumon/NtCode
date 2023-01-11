@@ -68,7 +68,7 @@ namespace Nt.Core.Logging.Internal
             ProviderType = provider.GetType();
             Logger = provider.CreateLogger(category);
             Category = category;
-            //ExternalScope = provider is ISupportExternalScope;
+            ExternalScope = provider is ISupportExternalScope;
         }
 
         public ILogger Logger { get; }

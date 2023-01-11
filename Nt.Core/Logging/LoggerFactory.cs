@@ -67,16 +67,11 @@ namespace Nt.Core.Logging
                                                                           ActivityTrackingOptions.TraceFlags | ActivityTrackingOptions.TraceState | ActivityTrackingOptions.Tags
                                                                           | ActivityTrackingOptions.Baggage);
 
-
             if ((_factoryOptions.ActivityTrackingOptions & ActivityTrackingOptionsMask) != 0)
-            {
                 throw new ArgumentException("Invalid Activity Tracking Options");
-            }
 
             foreach (ILoggerProvider provider in providers)
-            {
                 AddProviderRegistration(provider, dispose: false);
-            }
 
             _changeTokenRegistration = filterOption.OnChange(RefreshFilters);
             RefreshFilters(filterOption.CurrentValue);

@@ -14,12 +14,7 @@ namespace Nt.Core.Logging.Console.Internal
 
         internal ConsoleLogger(string name, ConsoleLoggerProcessor loggerProcessor)
         {
-            if (name == null)
-            {
-                throw new ArgumentNullException(nameof(name));
-            }
-
-            _name = name;
+            _name = name ?? throw new ArgumentNullException(nameof(name));
             _queueProcessor = loggerProcessor;
         }
 
