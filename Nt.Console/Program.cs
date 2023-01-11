@@ -2,6 +2,7 @@
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
+using Nt.Core.Logging.Configuration;
 using Nt.Core.Services;
 using Nt.Scripts;
 using Nt.Scripts.Ninjascripts.Design;
@@ -46,7 +47,10 @@ namespace ConsoleApp
             {
                 services.AddLogging((builder) =>
                 {
+                    builder.SetMinimumLevel(LogLevel.Debug);
                     builder.AddConsole();
+                    builder.AddDebug();
+                    LoggerProviderOptions.RegisterProviderOptions<>(builder.Services);
                 });
                 services.AddTransient<IConfigureService, GlobalsDataDesignScript>();
                 services.AddSingleton<IConfigureService, ChartDataDesignScript>();
@@ -68,10 +72,11 @@ namespace ConsoleApp
             _host = Hosting.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddLogging(configure =>
+                    services.AddLogging(builder =>
                     {
-                        configure.SetMinimumLevel(LogLevel.Information);
-                        configure.AddConsole();
+                        builder.SetMinimumLevel(LogLevel.Information);
+                        builder.AddConsole();
+                        builder.AddDebug();
                     })
                     .AddSingleton<IGlobalsDataService>(new GlobalsDataDesignScript())
                     .AddScoped<IChartDataService, ChartDataDesignScript>()

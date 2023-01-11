@@ -3,8 +3,7 @@ using System.Threading;
 
 namespace Nt.Core.Options.Internal
 {
-    internal sealed class UnnamedOptionsManager<[DynamicallyAccessedMembers(Options.DynamicallyAccessedMembers)] TOptions> :
-        IOptions<TOptions>
+    internal sealed class UnnamedOptionsManager<[DynamicallyAccessedMembers(Options.DynamicallyAccessedMembers)] TOptions> : IOptions<TOptions>
         where TOptions : class
     {
         private readonly IOptionsFactory<TOptions> _factory;

@@ -81,21 +81,6 @@ namespace Nt.Core.Hosting
             return this;
         }
 
-        ///// <summary>
-        ///// Set up the options for the builder itself. This will be used to initialize the <see cref="Hosting"/>
-        ///// for use later in the build process. This can be called multiple times and the results will be additive.
-        ///// </summary>
-        ///// <param name="optionsDelegate">The delegate for configuring the <see cref="IHostBuilder"/> that will be used
-        ///// to construct the <see cref="IServiceProvider"/> for the host.</param>
-        ///// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        //public IHostBuilder ConfigureHostOptions(Action<HostOptions> optionsDelegate)
-        //{
-        //    if (_configureHostOptionsActions == null)
-        //        _configureHostOptionsActions= new List<Action<HostOptions>>();
-        //    _configureHostOptionsActions.Add(optionsDelegate ?? throw new ArgumentNullException(nameof(optionsDelegate)));
-        //    return this;
-        //}
-
         /// <summary>
         /// Overrides the factory used to create the service provider.
         /// </summary>
@@ -295,10 +280,10 @@ namespace Nt.Core.Hosting
             _ = _services.GetService<IConfiguration>();
 
 
-            // Create the service provider
-            _services = new ServiceProvider(services, new ServiceProviderOptions
-            {
-            });
+            //// Create the service provider
+            //_services = new ServiceProvider(services, new ServiceProviderOptions
+            //{
+            //});
         }
 
         private string ResolveContentRootPath(string contentRootPath, string basePath)
