@@ -22,7 +22,7 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             //Microsoft.Extensions.Hosting.HostBuilder
-            //Microsoft.Extensions.Logging.Configuration.LoggingBuilderConfigurationExtensions
+            //Microsoft.Extensions.Logging.MessageLogger
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
 
@@ -51,13 +51,12 @@ namespace ConsoleApp
                     builder.SetMinimumLevel(LogLevel.Debug);
                     builder.AddConsole();
                     builder.AddDebug();
-                    builder.AddConfiguration(configuration: context.Configuration);
-                    //LoggerProviderOptions.RegisterProviderOptions<>(builder.Services);
+                    builder.AddConfiguration(context.Configuration.GetSection("Logging"));
                 });
-                services.AddTransient<IConfigureService, GlobalsDataDesignScript>();
-                services.AddSingleton<IConfigureService, ChartDataDesignScript>();
-                services.AddScoped<IConfigureService, ChartDataDesignScript>();
-                services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureService, GlobalsDataDesignScript>());
+                //services.AddTransient<IConfigureService, GlobalsDataDesignScript>();
+                //services.AddSingleton<IConfigureService, ChartDataDesignScript>();
+                //services.AddScoped<IConfigureService, ChartDataDesignScript>();
+                //services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureService, GlobalsDataDesignScript>());
             })
             .Build();
 

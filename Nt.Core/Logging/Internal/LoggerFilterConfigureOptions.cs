@@ -25,12 +25,9 @@ namespace Nt.Core.Logging.Internal
         private void LoadDefaultConfigValues(LoggerFilterOptions options)
         {
             if (_configuration == null)
-            {
                 return;
-            }
 
             options.CaptureScopes = GetCaptureScopesValue(options);
-
             foreach (IConfigurationSection configurationSection in _configuration.GetChildren())
             {
                 if (configurationSection.Key.Equals(LogLevelKey, StringComparison.OrdinalIgnoreCase))

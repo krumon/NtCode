@@ -357,7 +357,9 @@
     <Compile Include="Logging\Internal\LoggerFactoryScopeProvider.cs" />
     <Compile Include="Logging\Internal\LoggerFilterConfigureOptions.cs" />
     <Compile Include="Logging\Internal\LoggerRuleSelector.cs" />
-    <Compile Include="Logging\Internal\LoggerStructs.cs" />
+    <Compile Include="Logging\Internal\LoggerInformation.cs" />
+    <Compile Include="Logging\Internal\ScopeLogger.cs" />
+    <Compile Include="Logging\Internal\MessageLogger.cs" />
     <Compile Include="Logging\Internal\LogValuesFormatter.cs" />
     <Compile Include="Logging\Internal\NullScope.cs" />
     <Compile Include="Logging\Internal\ProviderAliasUtilities.cs" />

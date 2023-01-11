@@ -14,18 +14,14 @@ namespace Nt.Core.Logging.Internal
         {
             MessageLogger[] loggers = MessageLoggers;
             if (loggers == null)
-            {
                 return;
-            }
 
             List<Exception> exceptions = null;
             for (int i = 0; i < loggers.Length; i++)
             {
                 ref readonly MessageLogger loggerInfo = ref loggers[i];
                 if (!loggerInfo.IsEnabled(logLevel))
-                {
                     continue;
-                }
 
                 LoggerLog(logLevel, eventId, loggerInfo.Logger, exception, formatter, ref exceptions, state);
             }

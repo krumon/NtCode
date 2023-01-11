@@ -17,9 +17,8 @@ namespace Nt.Core.Logging
         public static ILogger<T> CreateLogger<T>(this ILoggerFactory factory)
         {
             if (factory == null)
-            {
                 throw new ArgumentNullException(nameof(factory));
-            }
+
             return new Logger<T>(factory);
         }
         /// <summary>
@@ -31,14 +30,10 @@ namespace Nt.Core.Logging
         public static ILogger CreateLogger(this ILoggerFactory factory, Type type)
         {
             if (factory == null)
-            {
                 throw new ArgumentNullException(nameof(factory));
-            }
 
             if (type == null)
-            {
                 throw new ArgumentNullException(nameof(type));
-            }
 
             return factory.CreateLogger(TypeNameHelper.GetTypeDisplayName(type, includeGenericParameters: false, nestedTypeDelimiter: '.'));
         }
