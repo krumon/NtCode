@@ -17,9 +17,7 @@ namespace Nt.Core.Logging.Configuration
         public IConfiguration GetConfiguration(Type providerType)
         {
             if (providerType == null)
-            {
                 throw new ArgumentNullException(nameof(providerType));
-            }
 
             string fullName = providerType.FullName;
             string alias = ProviderAliasUtilities.GetAlias(providerType);
@@ -35,6 +33,10 @@ namespace Nt.Core.Logging.Configuration
                     configurationBuilder.AddConfiguration(sectionFromAlias);
                 }
             }
+            //var r = configurationBuilder.Build();
+            //var list = new List<string>();
+            //foreach(var rt in r.Providers)
+            //    rt.GetChildKeys()
             return configurationBuilder.Build();
         }
     }

@@ -22,7 +22,7 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             //Microsoft.Extensions.Hosting.HostBuilder
-            //Microsoft.Extensions.Logging.LoggerSourceFormatter
+            //Microsoft.Extensions.Logging.Configuration.LoggingBuilderConfigurationExtensions
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
 
@@ -34,7 +34,7 @@ namespace ConsoleApp
             _logger?.LogWarning("Logging Service");
             _logger?.LogError("Logging a message by {format}.",format);
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
-            var section = config.GetSection("Logging").GetSection("Console");
+            //var section = config.GetSection("Logging");
         }
 
         private static void UseNinjascriptHost()
@@ -72,6 +72,10 @@ namespace ConsoleApp
         private static void UseNinjascriptHost2()
         {
             _host = Hosting.CreateDefaultBuilder()
+                .ConfigureAppConfiguration((context, builder) =>
+                {
+                    builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                })
                 .ConfigureServices((context, services) =>
                 {
                     services.AddLogging(builder =>
@@ -98,11 +102,15 @@ namespace ConsoleApp
         private static void UseColorConsoleLogger()
         {
             _host = Hosting.CreateDefaultBuilder()
+                .ConfigureAppConfiguration((context, builder) =>
+                {
+                    builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                })
                 .ConfigureServices((context, services) =>
                 {
                     services.AddLogging(builder =>
                     {
-                        builder.ClearProviders();
+                        //builder.ClearProviders();
                         builder.AddColorConsoleLogger(configuration =>
                         {
                             // Replace warning value from appsettings.json of "Cyan"

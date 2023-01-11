@@ -27,9 +27,7 @@ namespace Nt.Core.Configuration
         public IConfigurationBuilder Add(IConfigurationSource source)
         {
             if (source == null)
-            {
                 throw new ArgumentNullException(nameof(source));
-            }
 
             Sources.Add(source);
             return this;
