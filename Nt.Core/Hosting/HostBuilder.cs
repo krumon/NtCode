@@ -27,8 +27,6 @@ namespace Nt.Core.Hosting
         private List<Action<HostBuilderContext, IServiceCollection>> _configureServicesActions = new List<Action<HostBuilderContext, IServiceCollection>>();
         private List<IConfigureContainerAdapter> _configureContainerActions = new List<IConfigureContainerAdapter>();
         private IServiceFactoryAdapter _serviceProviderFactory = new ServiceFactoryAdapter<IServiceCollection>(new DefaultServiceProviderFactory());
-        //private List<Action<HostOptions>> _configureHostOptionsActions;
-        //private readonly HostOptions _hostOptions = new HostOptions();
         private IServiceProvider _services;
         private IConfiguration _hostConfiguration;
         private IConfiguration _appConfiguration;
@@ -82,6 +80,21 @@ namespace Nt.Core.Hosting
         }
 
         /// <summary>
+        /// Enables configuring the instantiated dependency container. This can be called multiple times and
+        /// the results will be additive.
+        /// </summary>
+        /// <typeparam name="TContainerBuilder">The type of the builder to create.</typeparam>
+        /// <param name="configureDelegate">The delegate for configuring the <see cref="IConfigurationBuilder"/> that will be used
+        /// to construct the <see cref="IConfiguration"/> for the host.</param>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+        public IHostBuilder ConfigureContainer<TContainerBuilder>(Action<HostBuilderContext, TContainerBuilder> configureDelegate)
+        {
+            _configureContainerActions.Add(new ConfigureContainerAdapter<TContainerBuilder>(configureDelegate
+                ?? throw new ArgumentNullException(nameof(configureDelegate))));
+            return this;
+        }
+
+        /// <summary>
         /// Overrides the factory used to create the service provider.
         /// </summary>
         /// <typeparam name="TContainerBuilder">The type of the builder to create.</typeparam>
@@ -102,21 +115,6 @@ namespace Nt.Core.Hosting
         public IHostBuilder UseServiceProviderFactory<TContainerBuilder>(Func<HostBuilderContext, IServiceProviderFactory<TContainerBuilder>> factory)
         {
             _serviceProviderFactory = new ServiceFactoryAdapter<TContainerBuilder>(() => _hostBuilderContext, factory ?? throw new ArgumentNullException(nameof(factory)));
-            return this;
-        }
-
-        /// <summary>
-        /// Enables configuring the instantiated dependency container. This can be called multiple times and
-        /// the results will be additive.
-        /// </summary>
-        /// <typeparam name="TContainerBuilder">The type of the builder to create.</typeparam>
-        /// <param name="configureDelegate">The delegate for configuring the <see cref="IConfigurationBuilder"/> that will be used
-        /// to construct the <see cref="IConfiguration"/> for the host.</param>
-        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        public IHostBuilder ConfigureContainer<TContainerBuilder>(Action<HostBuilderContext, TContainerBuilder> configureDelegate)
-        {
-            _configureContainerActions.Add(new ConfigureContainerAdapter<TContainerBuilder>(configureDelegate
-                ?? throw new ArgumentNullException(nameof(configureDelegate))));
             return this;
         }
 
@@ -178,7 +176,6 @@ namespace Nt.Core.Hosting
         {
             IConfigurationBuilder configBuilder = new ConfigurationBuilder()
                 .AddInMemoryCollection(); // Make sure there's some default storage since there are no default providers
-
             foreach (Action<IConfigurationBuilder> buildAction in _configureHostConfigActions)
             {
                 buildAction(configBuilder);
@@ -215,7 +212,8 @@ namespace Nt.Core.Hosting
         {
             IConfigurationBuilder configBuilder = new ConfigurationBuilder()
                 .SetBasePath(_hostingEnvironment.ContentRootPath)
-                .AddConfiguration(_hostConfiguration, shouldDisposeConfiguration: true);
+                .AddConfiguration(_hostConfiguration, shouldDisposeConfiguration: true)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
             foreach (Action<HostBuilderContext, IConfigurationBuilder> buildAction in _configureAppConfigActions)
             {
@@ -253,7 +251,7 @@ namespace Nt.Core.Hosting
             });
 
             services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
-            services.AddLogging();
+            services.AddLogging(_appConfiguration);
 
             // Add the configure services by the delegates.
             foreach (Action<HostBuilderContext, IServiceCollection> configureServicesAction in _configureServicesActions)
@@ -271,19 +269,12 @@ namespace Nt.Core.Hosting
             _services = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
 
             if (_services == null)
-            {
                 throw new InvalidOperationException("Null IServiceProvider");
-            }
 
             // resolve configuration explicitly once to mark it as resolved within the
             // service provider, ensuring it will be properly disposed with the provider
             _ = _services.GetService<IConfiguration>();
 
-
-            //// Create the service provider
-            //_services = new ServiceProvider(services, new ServiceProviderOptions
-            //{
-            //});
         }
 
         private string ResolveContentRootPath(string contentRootPath, string basePath)

@@ -1,5 +1,6 @@
 ﻿using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
+using Nt.Core.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -36,25 +37,10 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Adds services to the container. This can be called multiple times and the results will be additive.
         /// </summary>
-        /// <param name="configureDelegate">The delegate for configuring the <see cref="IConfigurationBuilder"/> that will be used
-        /// to construct the <see cref="IConfiguration"/> for the host.</param>
+        /// <param name="configureServicesDelegate">The delegate for configuring the <see cref="IServiceCollection"/> that will be used
+        /// to construct the <see cref="IServiceProvider"/> for the host.</param>
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         IHostBuilder ConfigureServices(Action<HostBuilderContext, IServiceCollection> configureDelegate);
-
-        ///// <summary>
-        ///// Adds host options to the container. This can be called multiple times and the results will be additive.
-        ///// </summary>
-        ///// <param name="optionsDelegate">The delegate for configuring the <see cref="IHostService"/>.
-        ///// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        //IHostBuilder ConfigureHostOptions(Action<HostOptions> optionsDelegate);
-
-        ///// <summary>
-        ///// Adds services to the container. This can be called multiple times and the results will be additive.
-        ///// </summary>
-        ///// <param name="configureServicesDelegate">The delegate for configuring the <see cref="IServiceCollection"/> that will be used
-        ///// to construct the <see cref="IServiceProvider"/> for the host.</param>
-        ///// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        //IHostBuilder ConfigureServices(Action<IServiceCollection> configureServicesDelegate);
 
         /// <summary>
         /// Overrides the factory used to create the service provider.

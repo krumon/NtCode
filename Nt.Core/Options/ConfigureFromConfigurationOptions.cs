@@ -24,9 +24,7 @@ namespace Nt.Core.Options
             : base(options => BindFromOptions(options, config))
         {
             if (config == null)
-            {
                 throw new ArgumentNullException(nameof(config));
-            }
         }
 
         [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:RequiresUnreferencedCode",

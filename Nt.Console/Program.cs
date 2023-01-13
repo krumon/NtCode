@@ -34,7 +34,7 @@ namespace ConsoleApp
             _logger?.LogWarning("Logging Service");
             _logger?.LogError("Logging a message by {format}.",format);
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
-            //var section = config.GetSection("Logging");
+            var section = config.GetSection("Logging");
         }
 
         private static void UseNinjascriptHost()
@@ -101,23 +101,12 @@ namespace ConsoleApp
         private static void UseColorConsoleLogger()
         {
             _host = Hosting.CreateDefaultBuilder()
-                .ConfigureAppConfiguration((context, builder) =>
-                {
-                    builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                })
                 .ConfigureServices((context, services) =>
                 {
                     services.AddLogging(builder =>
                     {
-                        //builder.ClearProviders();
-                        builder.AddColorConsoleLogger(configuration =>
-                        {
-                            // Replace warning value from appsettings.json of "Cyan"
-                            configuration.LogLevelToColorMap[LogLevel.Warning] = ConsoleColor.DarkCyan;
-                            // Replace warning value from appsettings.json of "Red"
-                            configuration.LogLevelToColorMap[LogLevel.Error] = ConsoleColor.DarkRed;
-                        });
-                        builder.AddConfiguration(context.Configuration.GetSection("Logging"));
+                        builder.ClearProviders();
+                        builder.AddColorConsoleLogger();
                     })
                     ;
                 })

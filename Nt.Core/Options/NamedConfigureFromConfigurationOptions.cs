@@ -2,10 +2,6 @@
 using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nt.Core.Options
 {
@@ -21,7 +17,7 @@ namespace Nt.Core.Options
         /// </summary>
         /// <param name="name">The name of the options instance.</param>
         /// <param name="config">The <see cref="IConfiguration"/> instance.</param>
-        //[RequiresUnreferencedCode(OptionsBuilderConfigurationExtensions.TrimmingRequiredUnreferencedCodeMessage)]
+        [RequiresUnreferencedCode(OptionsBuilderConfigurationExtensions.TrimmingRequiredUnreferencedCodeMessage)]
         public NamedConfigureFromConfigurationOptions(string name, IConfiguration config)
             : this(name, config, _ => { })
         { }
@@ -37,13 +33,11 @@ namespace Nt.Core.Options
             : base(name, options => BindFromOptions(options, config, configureBinder))
         {
             if (config == null)
-            {
                 throw new ArgumentNullException(nameof(config));
-            }
         }
 
-        //[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:RequiresUnreferencedCode",
-        //    Justification = "The only call to this method is the constructor which is already annotated as RequiresUnreferencedCode.")]
+        [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:RequiresUnreferencedCode",
+            Justification = "The only call to this method is the constructor which is already annotated as RequiresUnreferencedCode.")]
         private static void BindFromOptions(TOptions options, IConfiguration config, Action<BinderOptions> configureBinder) => config.Bind(options, configureBinder);
     }
 }
