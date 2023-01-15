@@ -13,44 +13,33 @@ namespace Nt.Core.Hosting
     {
         #region Original interface
 
-        //
-        // Resumen:
-        //     The programs configured services.
+        /// <summary>
+        /// The programs configured services.
+        /// </summary>
         IServiceProvider Services { get; }
 
-        //
-        // Resumen:
-        //     Start the program.
-        //
-        // Parámetros:
-        //   cancellationToken:
-        //     Used to abort program start.
-        //
-        // Devuelve:
-        //     A System.Threading.Tasks.Task that will be completed when the Microsoft.Extensions.Hosting.IHost
-        //     starts.
-        //Task StartAsync(CancellationToken cancellationToken = default(CancellationToken));
+        /// <summary>
+        /// Start the program.
+        /// </summary>
+        /// <param name="cancellationToken">Used to abort program start.</param>
+        /// <returns>A System.Threading.Tasks.Task that will be completed when the <see cref="IHost"/> starts.</returns>
+        Task StartAsync(CancellationToken cancellationToken = default);
 
-        //
-        // Resumen:
-        //     Attempts to gracefully stop the program.
-        //
-        // Parámetros:
-        //   cancellationToken:
-        //     Used to indicate when stop should no longer be graceful.
-        //
-        // Devuelve:
-        //     A System.Threading.Tasks.Task that will be completed when the Microsoft.Extensions.Hosting.IHost
-        //     stops.
-        //Task StopAsync(CancellationToken cancellationToken = default(CancellationToken));
-        ///// <summary>
-        ///// Indicates if the session is updated.
-        ///// </summary>
-        //bool? IsInNewSession { get; }
+        /// <summary>
+        /// Attempts to gracefully stop the program.
+        /// </summary>
+        /// <param name="cancellationToken">Used to indicate when stop should no longer be graceful.</param>
+        /// <returns>A System.Threading.Tasks.Task that will be completed when the <see cref="IHost"/> stops.</returns>
+        Task StopAsync(CancellationToken cancellationToken = default);
 
         #endregion
 
         #region Added properties and methods
+
+        ///// <summary>
+        ///// Indicates if the session is updated.
+        ///// </summary>
+        //bool? IsInNewSession { get; }
 
         /// <summary>
         /// Gets the sessions configured by the user.

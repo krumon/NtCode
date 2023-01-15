@@ -16,7 +16,7 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// The <see cref="IHostEnvironment" /> initialized by the <see cref="IHost" />.
         /// </summary>
-        public IHostEnvironment HostingEnvironment { get; set; }
+        public IHostEnvironment Environment { get; set; }
 
         /// <summary>
         /// The <see cref="IConfiguration" /> containing the merged configuration of the application and the <see cref="IHost" />.

@@ -6,11 +6,15 @@ using System;
 namespace Nt.Core.Logging
 {
     /// <summary>
-    /// Builder extensions methods for <see cref="ColorConsoleLogger"/>.
+    /// Builder extensions methods for <see cref="Console.Internal.ColorConsoleLogger"/>.
     /// </summary>
     public static class ColorConsoleLoggerExtensions
     {
-
+        /// <summary>
+        /// Adds a console logger named 'ColorConsole' to the factory.
+        /// </summary>
+        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        /// <returns>The same instance of the <see cref="ILoggingBuilder"/> for chaining.</returns>
         public static ILoggingBuilder AddColorConsoleLogger(this ILoggingBuilder builder)
         {
             builder.AddConfiguration();
@@ -19,14 +23,20 @@ namespace Nt.Core.Logging
                 ServiceDescriptor.Singleton<ILoggerProvider, ColorConsoleLoggerProvider>());
 
             LoggerProviderOptions.RegisterProviderOptions
-                <ColorConsoleLoggerConfiguration, ColorConsoleLoggerProvider>(builder.Services);
+                <ColorConsoleLoggerOptions, ColorConsoleLoggerProvider>(builder.Services);
 
             return builder;
         }
 
+        /// <summary>
+        /// Adds a console logger named 'ColorConsole' to the factory.
+        /// </summary>
+        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        /// <param name="configure">A delegate to configure the <see cref="Console.Internal.ColorConsoleLogger"/>.</param>
+        /// <returns>The same instance of the <see cref="ILoggingBuilder"/> for chaining.</returns>
         public static ILoggingBuilder AddColorConsoleLogger(
             this ILoggingBuilder builder,
-            Action<ColorConsoleLoggerConfiguration> configure)
+            Action<ColorConsoleLoggerOptions> configure)
         {
             builder.AddColorConsoleLogger();
             builder.Services.Configure(configure);

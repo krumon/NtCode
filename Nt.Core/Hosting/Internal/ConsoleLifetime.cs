@@ -30,7 +30,7 @@ namespace Nt.Core.Hosting.Internal
             Environment = environment ?? throw new ArgumentNullException(nameof(environment));
             ApplicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
             HostOptions = hostOptions?.Value ?? throw new ArgumentNullException(nameof(hostOptions));
-            Logger = loggerFactory.CreateLogger("Microsoft.Hosting.Lifetime");
+            Logger = loggerFactory.CreateLogger("Microsoft.Host.Lifetime");
         }
 
         private ConsoleLifetimeOptions Options { get; }
@@ -75,7 +75,7 @@ namespace Nt.Core.Hosting.Internal
         private void OnApplicationStarted()
         {
             Logger.LogInformation("Application started. Press Ctrl+C to shut down.");
-            Logger.LogInformation("Hosting environment: {envName}", Environment.EnvironmentName);
+            Logger.LogInformation("Host environment: {envName}", Environment.EnvironmentName);
             Logger.LogInformation("Content root path: {contentRoot}", Environment.ContentRootPath);
         }
 

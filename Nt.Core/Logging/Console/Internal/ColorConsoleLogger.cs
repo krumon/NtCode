@@ -16,7 +16,7 @@ namespace Nt.Core.Logging.Console.Internal
         /// <summary>
         /// Represents the action to configure the logger.
         /// </summary>
-        private readonly Func<ColorConsoleLoggerConfiguration> _getCurrentConfig;
+        private readonly Func<ColorConsoleLoggerOptions> _getCurrentConfig;
 
         #endregion
 
@@ -29,7 +29,7 @@ namespace Nt.Core.Logging.Console.Internal
         /// <param name="getCurrentConfig"></param>
         public ColorConsoleLogger(
             string name,
-            Func<ColorConsoleLoggerConfiguration> getCurrentConfig) =>
+            Func<ColorConsoleLoggerOptions> getCurrentConfig) =>
             (_name, _getCurrentConfig) = (name, getCurrentConfig);
 
         #endregion
@@ -53,7 +53,7 @@ namespace Nt.Core.Logging.Console.Internal
                 return;
             }
 
-            ColorConsoleLoggerConfiguration config = _getCurrentConfig();
+            ColorConsoleLoggerOptions config = _getCurrentConfig();
             if (config.EventId == 0 || config.EventId == eventId.Id)
             {
                 ConsoleColor originalColor = System.Console.ForegroundColor;

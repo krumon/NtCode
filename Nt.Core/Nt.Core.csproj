@@ -247,6 +247,9 @@
     <Compile Include="Helpers\StringComparisonHelper.cs" />
     <Compile Include="Hosting\BackgroundServiceExceptionBehavior.cs" />
     <Compile Include="Hosting\Environments.cs" />
+    <Compile Include="Hosting\HostEnvironmentEnvExtensions.cs" />
+    <Compile Include="Hosting\HostingAbstractionsHostExtensions.cs" />
+    <Compile Include="Hosting\HostingHostBuilderExtensions.cs" />
     <Compile Include="Hosting\Internal\ConfigureContainerAdapter.cs" />
     <Compile Include="Hosting\Internal\ConsoleLifetimeOptions.cs" />
     <Compile Include="Hosting\Internal\Host.cs" />
@@ -255,7 +258,7 @@
     <Compile Include="Hosting\HostedServiceExtensions.cs" />
     <Compile Include="Hosting\HostOptions.cs" />
     <Compile Include="Hosting\HostBuilder.cs" />
-    <Compile Include="Hosting\Hosting.cs" />
+    <Compile Include="Hosting\Host.cs" />
     <Compile Include="Hosting\Interfaces\IHostApplicationLifetime.cs" />
     <Compile Include="Hosting\Interfaces\IHostedService.cs" />
     <Compile Include="Hosting\Interfaces\IHost.cs" />
@@ -346,6 +349,10 @@
     <Compile Include="Logging\EventSource\EventSourceLoggerProvider.cs" />
     <Compile Include="Logging\EventSource\ExceptionInfo.cs" />
     <Compile Include="Logging\EventSource\LoggingEventSource.cs" />
+    <Compile Include="Logging\File\FileLogger.cs" />
+    <Compile Include="Logging\File\FileLoggerOptions.cs" />
+    <Compile Include="Logging\FileLoggerExtensions.cs" />
+    <Compile Include="Logging\File\FileLoggerProvider.cs" />
     <Compile Include="Logging\FilterLoggingBuilderExtensions.cs" />
     <Compile Include="Logging\Internal\DefaultLoggerLevelConfigureOptions.cs" />
     <Compile Include="Logging\.Interfaces\ILoggerFactory.cs" />

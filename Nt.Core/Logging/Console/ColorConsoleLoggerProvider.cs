@@ -14,7 +14,7 @@ namespace Nt.Core.Logging.Console
         #region Private members
 
         private readonly IDisposable _onChangeToken;
-        private ColorConsoleLoggerConfiguration _currentConfig;
+        private ColorConsoleLoggerOptions _currentConfig;
         private readonly ConcurrentDictionary<string, ColorConsoleLogger> _loggers =
             new ConcurrentDictionary<string, ColorConsoleLogger>(StringComparer.OrdinalIgnoreCase);
 
@@ -23,7 +23,7 @@ namespace Nt.Core.Logging.Console
         #region Constructors
 
         public ColorConsoleLoggerProvider(
-            IOptionsMonitor<ColorConsoleLoggerConfiguration> config)
+            IOptionsMonitor<ColorConsoleLoggerOptions> config)
         {
             _currentConfig = config.CurrentValue;
             _onChangeToken = config.OnChange(updatedConfig => _currentConfig = updatedConfig);
@@ -46,7 +46,7 @@ namespace Nt.Core.Logging.Console
 
         #region Private methods
 
-        private ColorConsoleLoggerConfiguration GetCurrentConfig() => _currentConfig;
+        private ColorConsoleLoggerOptions GetCurrentConfig() => _currentConfig;
 
         #endregion
 

@@ -3,7 +3,7 @@
     /// <summary>
     /// Default services host.
     /// </summary>
-    public static class Hosting 
+    public static class Host 
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="HostBuilder"/> class with pre-configured defaults.

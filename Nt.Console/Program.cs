@@ -21,7 +21,7 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
-            //Microsoft.Extensions.Hosting.HostBuilder
+            //Microsoft.Extensions.Hosting.Host
             //Microsoft.Extensions.Logging.MessageLogger
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
@@ -34,12 +34,11 @@ namespace ConsoleApp
             _logger?.LogWarning("Logging Service");
             _logger?.LogError("Logging a message by {format}.",format);
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
-            var section = config.GetSection("Logging");
         }
 
         private static void UseNinjascriptHost()
         {
-            _host = Hosting.CreateDefaultBuilder()
+            _host = Host.CreateDefaultBuilder()
             .ConfigureAppConfiguration((context,builder) =>
             {
                 builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
@@ -70,20 +69,20 @@ namespace ConsoleApp
         }
         private static void UseNinjascriptHost2()
         {
-            _host = Hosting.CreateDefaultBuilder()
-                .ConfigureAppConfiguration((context, builder) =>
-                {
-                    builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                })
+            _host = Host.CreateDefaultBuilder()
+                //.ConfigureAppConfiguration((context, builder) =>
+                //{
+                //    builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                //})
                 .ConfigureServices((context, services) =>
                 {
-                    services.AddLogging(builder =>
-                    {
-                        builder.SetMinimumLevel(LogLevel.Information);
-                        builder.AddConsole();
-                        builder.AddDebug();
-                    })
-                    .AddSingleton<IGlobalsDataService>(new GlobalsDataDesignScript())
+                    //services.AddLogging(builder =>
+                    //{
+                    //    builder.SetMinimumLevel(LogLevel.Information);
+                    //    builder.AddConsole();
+                    //    builder.AddDebug();
+                    //});
+                    services.AddSingleton<IGlobalsDataService>(new GlobalsDataDesignScript())
                     .AddScoped<IChartDataService, ChartDataDesignScript>()
                     .AddSessions<ISessionsService>((builder) =>
                     {
@@ -100,7 +99,7 @@ namespace ConsoleApp
         }
         private static void UseColorConsoleLogger()
         {
-            _host = Hosting.CreateDefaultBuilder()
+            _host = Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
                     services.AddLogging(builder =>

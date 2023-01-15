@@ -19,9 +19,7 @@ namespace Nt.Core.DependencyInjection
         public static IServiceCollection AddOptions(this IServiceCollection services)
         {
             if (services == null)
-            {
                 throw new ArgumentNullException(nameof(services));
-            }
 
             services.TryAdd(ServiceDescriptor.Singleton(typeof(IOptions<>), typeof(UnnamedOptionsManager<>)));
             services.TryAdd(ServiceDescriptor.Scoped(typeof(IOptionsSnapshot<>), typeof(OptionsManager<>)));

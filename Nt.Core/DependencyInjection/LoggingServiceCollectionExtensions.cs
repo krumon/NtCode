@@ -39,7 +39,20 @@ namespace Nt.Core.DependencyInjection
         /// <param name="configure">The <see cref="ILoggingBuilder"/> configuration delegate.</param>
         /// <returns>The <see cref="IServiceCollection"/> so that additional calls can be chained.</returns>
         public static IServiceCollection AddLogging(this IServiceCollection services, Action<ILoggingBuilder> configure)
-            => AddLogging(services, configure, null);
+        {
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
+
+            services.TryAdd(ServiceDescriptor.Singleton<ILoggerFactory, LoggerFactory>());
+            services.TryAdd(ServiceDescriptor.Singleton(typeof(ILogger<>), typeof(Logger<>)));
+
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<LoggerFilterOptions>>(
+                new DefaultLoggerLevelConfigureOptions(LogLevel.Information)));
+
+            configure(new LoggingBuilder(services));
+
+            return services;
+        }
 
         /// <summary>
         /// Adds logging services to the specified <see cref="IServiceCollection" />.
@@ -60,6 +73,9 @@ namespace Nt.Core.DependencyInjection
                 new DefaultLoggerLevelConfigureOptions(LogLevel.Information)));
 
             var loggingBuilder = new LoggingBuilder(services);
+            
+            //************************************************************************
+            // Add default loggers
             loggingBuilder
                 .AddConsole()
                 .AddDebug();
@@ -68,8 +84,12 @@ namespace Nt.Core.DependencyInjection
             {
                 IConfigurationSection section = configuration.GetSection("Logging");
                 if (section.Exists() && !sectionIsAdded)
+                {
                     loggingBuilder.AddConfiguration(section);
+                    sectionIsAdded = true;
+                }
             }
+            //************************************************************************
 
             configure(loggingBuilder);
             //configure(new LoggingBuilder(services));
