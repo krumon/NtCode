@@ -349,6 +349,8 @@
     <Compile Include="Logging\EventSource\EventSourceLoggerProvider.cs" />
     <Compile Include="Logging\EventSource\ExceptionInfo.cs" />
     <Compile Include="Logging\EventSource\LoggingEventSource.cs" />
+    <Compile Include="Logging\File\FileFormatter.cs" />
+    <Compile Include="Logging\File\FileFormatterOptions.cs" />
     <Compile Include="Logging\File\FileLogger.cs" />
     <Compile Include="Logging\File\FileLoggerOptions.cs" />
     <Compile Include="Logging\FileLoggerExtensions.cs" />
