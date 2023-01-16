@@ -27,11 +27,7 @@ namespace Nt.Core.Options
         /// <param name="config">The configuration instance.</param>
         public ConfigurationChangeTokenSource(string name, IConfiguration config)
         {
-            if (config == null)
-            {
-                throw new ArgumentNullException(nameof(config));
-            }
-            _config = config;
+            _config = config ?? throw new ArgumentNullException(nameof(config));
             Name = name ?? Options.DefaultName;
         }
 

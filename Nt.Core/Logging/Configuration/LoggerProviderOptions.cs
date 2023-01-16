@@ -1,6 +1,7 @@
 ﻿using Nt.Core.Attributes;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Options;
+
 namespace Nt.Core.Logging.Configuration
 {
     /// <summary>
@@ -17,7 +18,8 @@ namespace Nt.Core.Logging.Configuration
         /// <typeparam name="TOptions">The options class </typeparam>
         /// <typeparam name="TProvider">The provider class</typeparam>
         [RequiresUnreferencedCode(TrimmingRequiresUnreferencedCodeMessage)]
-        public static void RegisterProviderOptions<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TOptions, TProvider>(IServiceCollection services) where TOptions : class
+        public static void RegisterProviderOptions<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TOptions, TProvider>(IServiceCollection services) 
+            where TOptions : class
         {
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<TOptions>, LoggerProviderConfigureOptions<TOptions, TProvider>>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IOptionsChangeTokenSource<TOptions>, LoggerProviderOptionsChangeTokenSource<TOptions, TProvider>>());

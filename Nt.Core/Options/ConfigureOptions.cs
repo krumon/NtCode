@@ -6,7 +6,8 @@ namespace Nt.Core.Options
     /// Implementation of <see cref="IConfigureOptions{TOptions}"/>.
     /// </summary>
     /// <typeparam name="TOptions">Options type being configured.</typeparam>
-    public class ConfigureOptions<TOptions> : IConfigureOptions<TOptions> where TOptions : class
+    public class ConfigureOptions<TOptions> : IConfigureOptions<TOptions> 
+        where TOptions : class
     {
         /// <summary>
         /// Constructor.
