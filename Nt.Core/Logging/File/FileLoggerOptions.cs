@@ -13,6 +13,11 @@
         //public LogLevel LogLevel { get; set; } = LogLevel.Trace;
 
         /// <summary>
+        /// Name of the log message formatter to use. Default .... />.
+        /// </summary>
+        public string FormatterName { get; set; }
+
+        /// <summary>
         /// The directory to store the file.
         /// </summary>
         public string Directory { get; set; }
@@ -35,7 +40,7 @@
         /// <summary>
         /// Indicates if the log level should be output as part of the log message
         /// </summary>
-        public bool OutputLogLevel { get; set; }
+        public bool ShowLogLevel { get; set; }
 
         #endregion
     }

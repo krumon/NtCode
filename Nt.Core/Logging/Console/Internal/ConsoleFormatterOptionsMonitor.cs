@@ -3,8 +3,7 @@ using System;
 
 namespace Nt.Core.Logging.Console.Internal
 {
-    internal sealed class ConsoleFormatterOptionsMonitor<TOptions> :
-        IOptionsMonitor<TOptions>
+    internal sealed class ConsoleFormatterOptionsMonitor<TOptions> : IOptionsMonitor<TOptions>
         where TOptions : SimpleConsoleFormatterOptions
     {
         private TOptions _options;

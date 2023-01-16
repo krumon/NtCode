@@ -33,10 +33,6 @@ namespace Nt.Core.Logging.Configuration
                     configurationBuilder.AddConfiguration(sectionFromAlias);
                 }
             }
-            //var r = configurationBuilder.Build();
-            //var list = new List<string>();
-            //foreach(var rt in r.Providers)
-            //    rt.GetChildKeys()
             return configurationBuilder.Build();
         }
     }

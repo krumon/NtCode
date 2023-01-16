@@ -213,7 +213,7 @@ namespace Nt.Core.Logging.Console
         {
             _scopeProvider = scopeProvider;
 
-            foreach (System.Collections.Generic.KeyValuePair<string, ConsoleLogger> logger in _loggers)
+            foreach (KeyValuePair<string, ConsoleLogger> logger in _loggers)
             {
                 logger.Value.ScopeProvider = _scopeProvider;
             }

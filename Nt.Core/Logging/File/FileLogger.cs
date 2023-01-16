@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Nt.Core.Logging.Abstractions;
+using Nt.Core.Logging.Internal;
+using System;
 using System.Collections.Concurrent;
 using System.IO;
 
@@ -20,6 +22,12 @@ namespace Nt.Core.Logging.File
         /// Represents the action to configure the logger.
         /// </summary>
         private readonly Func<FileLoggerOptions> _getCurrentConfig;
+
+        internal FileFormatter Formatter { get; set; }
+        internal IExternalScopeProvider ScopeProvider { get; set; }
+        internal FileLoggerOptions Options { get; set; }
+        [ThreadStatic]
+        private static StringWriter t_stringWriter;
 
         #endregion
 
@@ -93,62 +101,34 @@ namespace Nt.Core.Logging.File
 
         #endregion
 
-        /// <summary>
-        /// File loggers are not scoped so this is always null
-        /// </summary>
-        /// <typeparam name="TState"></typeparam>
-        /// <param name="state"></param>
-        /// <returns></returns>
-        public IDisposable BeginScope<TState>(TState state) => default;
-
-        /// <summary>
-        /// Enabled if the log level is the same or greater than the configuration
-        /// </summary>
-        /// <param name="logLevel">The log level to check against</param>
-        /// <returns></returns>
-        public bool IsEnabled(LogLevel logLevel)
-        {
-            // Enabled if the log level is greater or equal to what we want to log
-            return logLevel != LogLevel.None;
-        }
-
-        /// <summary>
-        /// Logs the message to file
-        /// </summary>
-        /// <typeparam name="TState">The type of the details of the message</typeparam>
-        /// <param name="logLevel">The log level</param>
-        /// <param name="eventId">The Id</param>
-        /// <param name="state">The details of the message</param>
-        /// <param name="exception">Any exception to log</param>
-        /// <param name="formatter">The formatter for converting the state and exception to a message string</param>
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            // If we should not log...
             if (!IsEnabled(logLevel))
-                // Return
+            {
                 return;
+            }
+            if (formatter == null)
+            {
+                throw new ArgumentNullException(nameof(formatter));
+            }
+            if (t_stringWriter == null) t_stringWriter = new StringWriter();
+            LogEntry<TState> logEntry = new LogEntry<TState>(logLevel, _name, eventId, state, exception, formatter);
+            Formatter.Write(in logEntry, ScopeProvider, t_stringWriter);
 
-            // Sets the options
-            FileLoggerOptions options = _getCurrentConfig();
-
-            // Get current time
-            var currentTime = DateTimeOffset.Now.ToString("yyyy-MM-dd hh:mm:ss");
-
-            // Prepend log level
-            var logLevelString = options.OutputLogLevel ? $"{logLevel.ToString().ToUpper()}: " : "";
-
-            // Prepend the time to the log if desired
-            var timeLogString = options.LogTime ? $"[{currentTime}] " : "";
-
-            // Get the formatted message string
-            var message = formatter(state, exception);
-
-            // Write the message
-            var output = $"{logLevelString}{timeLogString}{message}{Environment.NewLine}";
-
+            var sb = t_stringWriter.GetStringBuilder();
+            if (sb.Length == 0)
+            {
+                return;
+            }
+            string computedAnsiString = sb.ToString();
+            sb.Clear();
+            if (sb.Capacity > 1024)
+            {
+                sb.Capacity = 1024;
+            }
             // Normalize path
             // TODO: Make use of configuration base path
-            var normalizedPath = options.FilePath.ToUpper();
+            var normalizedPath = Options.FilePath.ToUpper();
 
             var fileLock = default(object);
 
@@ -163,11 +143,11 @@ namespace Nt.Core.Logging.File
             lock (fileLock)
             {
                 // Ensure folder
-                if (!Directory.Exists(options.Directory))
-                    Directory.CreateDirectory(options.Directory);
+                if (!Directory.Exists(Options.Directory))
+                    Directory.CreateDirectory(Options.Directory);
 
                 // Open the file
-                using (var fileStream = new StreamWriter(System.IO.File.Open(options.FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
+                using (var fileStream = new StreamWriter(System.IO.File.Open(Options.FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
                 {
                     // Go to end
                     fileStream.BaseStream.Seek(0, SeekOrigin.End);
@@ -175,9 +155,29 @@ namespace Nt.Core.Logging.File
                     // NOTE: Ignore logToTop in configuration as not efficient for files on OS
 
                     // Write the message to the file
-                    fileStream.Write(output);
+                    fileStream.Write(computedAnsiString);
                 }
             }
         }
+
+        /// <summary>
+        /// Enabled if the log level is the same or greater than the configuration
+        /// </summary>
+        /// <param name="logLevel">The log level to check against</param>
+        /// <returns></returns>
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            // Enabled if the log level is greater or equal to what we want to log
+            return logLevel != LogLevel.None;
+        }
+
+        /// <summary>
+        /// File loggers are not scoped so this is always null
+        /// </summary>
+        /// <typeparam name="TState"></typeparam>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public IDisposable BeginScope<TState>(TState state) => ScopeProvider?.Push(state) ?? NullScope.Instance;
+
     }
 }

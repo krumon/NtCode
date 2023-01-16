@@ -20,7 +20,6 @@ namespace Nt.Core.Logging.Console.Internal
 
         internal ConsoleFormatter Formatter { get; set; }
         internal IExternalScopeProvider ScopeProvider { get; set; }
-
         internal ConsoleLoggerOptions Options { get; set; }
 
         [ThreadStatic]
