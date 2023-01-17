@@ -336,8 +336,8 @@
     <Compile Include="Logging\Console\LoggerColorBehavior.cs" />
     <Compile Include="Logging\Console\TextWriterExtensions.cs" />
     <Compile Include="Logging\DebugLoggerFactoryExtensions.cs" />
-    <Compile Include="Logging\Debug\DebugLogger.cs" />
-    <Compile Include="Logging\Debug\DebugLoggerProvider.cs" />
+    <Compile Include="Logging\Debugger\DebugLogger.cs" />
+    <Compile Include="Logging\Debugger\DebugLoggerProvider.cs" />
     <Compile Include="Logging\EventLoggerFactoryExtensions.cs" />
     <Compile Include="Logging\EventLog\EventLogLogger.cs" />
     <Compile Include="Logging\EventLog\EventLogLoggerProvider.cs" />
@@ -352,6 +352,7 @@
     <Compile Include="Logging\File\FileFormatter.cs" />
     <Compile Include="Logging\File\FileFormatterOptions.cs" />
     <Compile Include="Logging\File\FileLogger.cs" />
+    <Compile Include="Logging\File\FileLoggerNames.cs" />
     <Compile Include="Logging\File\FileLoggerOptions.cs" />
     <Compile Include="Logging\FileLoggerExtensions.cs" />
     <Compile Include="Logging\File\FileLoggerProvider.cs" />
