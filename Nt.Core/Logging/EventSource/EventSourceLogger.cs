@@ -93,7 +93,7 @@ namespace Nt.Core.Logging.EventSource
                     KeyValuePair<string, string>[] exceptionInfoData = new[]
                     {
                         new KeyValuePair<string, string>("TypeName", exceptionInfo.TypeName),
-                        new KeyValuePair<string, string>("Message", exceptionInfo.Message),
+                        new KeyValuePair<string, string>("System", exceptionInfo.Message),
                         new KeyValuePair<string, string>("HResult", exceptionInfo.HResult.ToString()),
                         new KeyValuePair<string, string>("VerboseMessage", exceptionInfo.VerboseMessage),
                     };

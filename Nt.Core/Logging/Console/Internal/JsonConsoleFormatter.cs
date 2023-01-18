@@ -46,7 +46,7 @@ namespace Nt.Core.Logging.Console.Internal
                     writer.WriteNumber(nameof(logEntry.EventId), eventId);
                     writer.WriteString(nameof(logEntry.LogLevel), GetLogLevelString(logLevel));
                     writer.WriteString(nameof(logEntry.Category), category);
-                    writer.WriteString("Message", message);
+                    writer.WriteString("System", message);
 
                     if (exception != null)
                     {
@@ -61,7 +61,7 @@ namespace Nt.Core.Logging.Console.Internal
                     if (logEntry.State != null)
                     {
                         writer.WriteStartObject(nameof(logEntry.State));
-                        writer.WriteString("Message", logEntry.State.ToString());
+                        writer.WriteString("System", logEntry.State.ToString());
                         if (logEntry.State is IReadOnlyCollection<KeyValuePair<string, object>> stateProperties)
                         {
                             foreach (KeyValuePair<string, object> item in stateProperties)
@@ -116,7 +116,7 @@ namespace Nt.Core.Logging.Console.Internal
                     if (scope is IEnumerable<KeyValuePair<string, object>> scopeItems)
                     {
                         state.WriteStartObject();
-                        state.WriteString("Message", scope.ToString());
+                        state.WriteString("System", scope.ToString());
                         foreach (KeyValuePair<string, object> item in scopeItems)
                         {
                             WriteItem(state, item);

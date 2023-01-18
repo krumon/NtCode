@@ -4,9 +4,9 @@ namespace Nt.Core.Logging.Internal
 {
     internal sealed class FileLogFiltersConfigureOptions : IConfigureOptions<LoggerFilterOptions>
     {
-        private readonly LogType _logType;
+        private readonly LogMessageType _logType;
 
-        public FileLogFiltersConfigureOptions(LogType logType)
+        public FileLogFiltersConfigureOptions(LogMessageType logType)
         {
             _logType = logType;
         }

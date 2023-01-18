@@ -15,7 +15,7 @@ namespace Nt.Core.Logging.File
         #region Private members
 
         private readonly IOptionsMonitor<FileLoggerOptions> _options;
-        private readonly ConcurrentDictionary<string, FileLogger> _loggers;
+        private readonly ConcurrentDictionary<EventId, FileLogger> _loggers;
         private ConcurrentDictionary<string, FileFormatter> _formatters;
         private IDisposable _optionsReloadToken;
         private IExternalScopeProvider _scopeProvider = NullExternalScopeProvider.Instance;
@@ -42,7 +42,7 @@ namespace Nt.Core.Logging.File
         public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, IEnumerable<FileFormatter> formatters)
         {
             _options = options;
-            _loggers = new ConcurrentDictionary<string, FileLogger>();
+            _loggers = new ConcurrentDictionary<EventId, FileLogger>();
             SetFormatters(formatters);
 
             ReloadLoggerOptions(options.CurrentValue);
@@ -56,31 +56,32 @@ namespace Nt.Core.Logging.File
 
         public ILogger CreateLogger(string categoryName) 
         {
-            if (_options.CurrentValue.FormatterName == null || !_formatters.TryGetValue(_options.CurrentValue.FormatterName, out FileFormatter logFormatter))
-            {
-#pragma warning disable CS0618
-                //switch (_options.CurrentValue.FormatterName)
-                //{
-                //    case ConsoleLoggerFormat.Systemd:
-                //        logFormatter = _formatters[ConsoleFormatterNames.Systemd];
-                //        break;
-                //    default:
-                //        logFormatter = _formatters[ConsoleFormatterNames.Simple];
-                //        break;
-                //}
-#pragma warning restore CS0618
+            var loggersOptions = _options.CurrentValue.FileLog;
+            
+            if(loggersOptions == null)
+                throw new NullReferenceException(nameof(loggersOptions));
 
-                if (_options.CurrentValue.FormatterName == null)
+            if(loggersOptions.Count<1)
+                throw new ArgumentException(nameof(loggersOptions));
+
+            foreach(KeyValuePair<LogMessageType,FileLoggerSettings> options in loggersOptions)
+            {
+                if (options.Value.FormatterName == null || _formatters.TryGetValue(options.Value.FormatterName, out FileFormatter logFormatter))
                 {
-                    UpdateFormatterOptions(logFormatter, _options.CurrentValue);
+                    switch (options.Value.FormatterName)
+                    {
+                        default:
+                            logFormatter = _formatters[FileFormatterNames.Default];
+                            break;
+                    }
                 }
             }
 
-            return _loggers.TryGetValue(name, out ConsoleLogger logger) ?
+            return _loggers.TryGetValue(categoryName, out FileLogger logger) ?
                 logger :
-                _loggers.GetOrAdd(name, new ConsoleLogger(name, _messageQueue)
+                _loggers.GetOrAdd(categoryName, new FileLogger(categoryName)
                 {
-                    Options = _options.CurrentValue,
+                    Options = GetCurrentConfig(),
                     ScopeProvider = _scopeProvider,
                     Formatter = logFormatter,
                 });
@@ -116,7 +117,7 @@ namespace Nt.Core.Logging.File
 
             if (!added)
             {
-                //cd.TryAdd(ConsoleFormatterNames.Simple, new SimpleConsoleFormatter(new FormatterOptionsMonitor<SimpleConsoleFormatterOptions>(new SimpleConsoleFormatterOptions())));
+                cd.TryAdd(FileFormatterNames.Default, new FileFormatter(FileFormatterNames.Default, new FileFormatterOptionsMonitor<FileFormatterOptions>(new FileFormatterOptions())));
                 //cd.TryAdd(ConsoleFormatterNames.Systemd, new SystemdConsoleFormatter(new FormatterOptionsMonitor<ConsoleFormatterOptions>(new ConsoleFormatterOptions())));
                 //cd.TryAdd(ConsoleFormatterNames.Json, new JsonConsoleFormatter(new FormatterOptionsMonitor<JsonConsoleFormatterOptions>(new JsonConsoleFormatterOptions())));
             }
@@ -127,54 +128,33 @@ namespace Nt.Core.Logging.File
         // warning:  ReloadLoggerOptions can be called before the ctor completed,... before registering all of the state used in this method need to be initialized
         private void ReloadLoggerOptions(FileLoggerOptions options, string text = null)
         {
-            if (options.FormatterName == null || !_formatters.TryGetValue(options.FormatterName, out FileFormatter logFormatter))
+            var loggersOptions = options.FileLog;
+
+            if (loggersOptions == null)
+                throw new NullReferenceException(nameof(loggersOptions));
+
+            if (loggersOptions.Count < 1)
+                throw new ArgumentException(nameof(loggersOptions));
+
+            foreach (KeyValuePair<LogMessageType, FileLoggerSettings> op in loggersOptions)
             {
-                switch (options.FormatterName)
+                if (op.Value.FormatterName == null || _formatters.TryGetValue(op.Value.FormatterName, out FileFormatter formatter))
                 {
-                    case "": // ConsoleLoggerFormat.Systemd:
-                        logFormatter = _formatters[""];
-                        break;
-                    default:
-                        logFormatter = _formatters[""];
-                        break;
-                }
-                if (options.FormatterName == null)
-                {
-                    UpdateFormatterOptions(logFormatter, options);
+                    switch (op.Value.FormatterName)
+                    {
+                        default:
+                            formatter = _formatters[FileFormatterNames.Default];
+                            break;
+                    }
                 }
             }
 
-            foreach (KeyValuePair<string, FileLogger> logger in _loggers)
+            foreach (KeyValuePair<EventId, FileLogger> logger in _loggers)
             {
                 logger.Value.Options = options;
                 logger.Value.Formatter = logFormatter;
             }
         }
-
-        private void UpdateFormatterOptions(FileFormatter formatter, FileLoggerOptions deprecatedFromOptions)
-        {
-            // kept for deprecated apis:
-            if (formatter is FileFormatter defaultFormatter)
-            {
-                defaultFormatter.FormatterOptions = new FileFormatterOptions()
-                {
-                    //IncludeScopes = deprecatedFromOptions.IncludeScopes,
-                    //TimestampFormat = deprecatedFromOptions.TimestampFormat,
-                    //UseUtcTimestamp = deprecatedFromOptions.UseUtcTimestamp,
-                };
-            }
-            //else
-            //if (formatter is SystemdConsoleFormatter systemdFormatter)
-            //{
-            //    systemdFormatter.FormatterOptions = new ConsoleFormatterOptions()
-            //    {
-            //        IncludeScopes = deprecatedFromOptions.IncludeScopes,
-            //        TimestampFormat = deprecatedFromOptions.TimestampFormat,
-            //        UseUtcTimestamp = deprecatedFromOptions.UseUtcTimestamp,
-            //    };
-            //}
-        }
-
 
         #endregion
 

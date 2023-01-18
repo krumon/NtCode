@@ -60,7 +60,7 @@ namespace Nt.Core.Logging.File
                 textWriter.Write(timestamp);
                 textWriter.Write(']');
             }
-            if (logLevelString != null)
+            if (logLevelString != null && FormatterOptions.ShowLogLevel)
             {
                 textWriter.Write(logLevelString);
             }
