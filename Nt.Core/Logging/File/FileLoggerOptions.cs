@@ -9,7 +9,7 @@ namespace Nt.Core.Logging.File
     {
         #region Public Properties
 
-        public ConcurrentDictionary<LogMessageType, FileLoggerSettings> FileLog { get; set; }
+        public ConcurrentDictionary<LogMessageType, FileLoggerSettings> FileLogs { get; set; }
             = new ConcurrentDictionary<LogMessageType, FileLoggerSettings>()
             {
                 [LogMessageType.System] = new FileLoggerSettings()

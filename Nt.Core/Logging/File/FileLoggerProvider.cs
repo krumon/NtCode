@@ -14,10 +14,12 @@ namespace Nt.Core.Logging.File
     {
         #region Private members
 
-        private readonly IOptionsMonitor<FileLoggerOptions> _options;
-        private readonly ConcurrentDictionary<EventId, FileLogger> _loggers;
-        private ConcurrentDictionary<string, FileFormatter> _formatters;
         private IDisposable _optionsReloadToken;
+        private IDisposable _formatterReloadToken;
+        private readonly FileLoggerOptions _currentOptions;
+        private FileFormatter _currentFormatter;
+        private readonly ConcurrentDictionary<EventId, FileLogger> _loggers;
+        //private ConcurrentDictionary<string, FileFormatter> _formatters;
         private IExternalScopeProvider _scopeProvider = NullExternalScopeProvider.Instance;
 
         private readonly IDisposable _onChangeToken;
@@ -32,21 +34,22 @@ namespace Nt.Core.Logging.File
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
         public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options)
-            : this(options, Array.Empty<FileFormatter>()) { }
+            : this(options, null) { }
 
         /// <summary>
         /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
         /// </summary>
-        /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        /// <param name="formatters">Log formatters added for <see cref="ConsoleLogger"/> insteaces.</param>
-        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, IEnumerable<FileFormatter> formatters)
+        /// <param name="options">The options to create <see cref="FileLogger"/> instances with.</param>
+        /// <param name="formatter">Log formatter added for <see cref="FileLogger"/> instances.</param>
+        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, IOptionsMonitor<FileFormatter> formatter)
         {
-            _options = options;
+            _currentOptions = options.CurrentValue;
+            _currentFormatter = formatter.CurrentValue;
             _loggers = new ConcurrentDictionary<EventId, FileLogger>();
-            SetFormatters(formatters);
+            SetFormatters(formatter);
 
             ReloadLoggerOptions(options.CurrentValue);
-            _optionsReloadToken = _options.OnChange(ReloadLoggerOptions);
+            _optionsReloadToken = _currentOptions.OnChange(ReloadLoggerOptions);
 
         }
 
@@ -56,7 +59,7 @@ namespace Nt.Core.Logging.File
 
         public ILogger CreateLogger(string categoryName) 
         {
-            var loggersOptions = _options.CurrentValue.FileLog;
+            var loggersOptions = _currentOptions.CurrentValue.FileLogs;
             
             if(loggersOptions == null)
                 throw new NullReferenceException(nameof(loggersOptions));
@@ -64,11 +67,11 @@ namespace Nt.Core.Logging.File
             if(loggersOptions.Count<1)
                 throw new ArgumentException(nameof(loggersOptions));
 
-            foreach(KeyValuePair<LogMessageType,FileLoggerSettings> options in loggersOptions)
+            foreach(KeyValuePair<LogMessageType,FileLoggerSettings> settings in loggersOptions)
             {
-                if (options.Value.FormatterName == null || _formatters.TryGetValue(options.Value.FormatterName, out FileFormatter logFormatter))
+                if (settings.Value.FormatterName == null || _formatters.TryGetValue(settings.Value.FormatterName, out FileFormatter logFormatter))
                 {
-                    switch (options.Value.FormatterName)
+                    switch (settings.Value.FormatterName)
                     {
                         default:
                             logFormatter = _formatters[FileFormatterNames.Default];
@@ -101,34 +104,16 @@ namespace Nt.Core.Logging.File
 
         private FileLoggerOptions GetCurrentConfig() => _currentConfig;
 
-        private void SetFormatters(IEnumerable<FileFormatter> formatters = null)
+        private void SetFormatters(IOptionsMonitor<FileFormatter> formatter = null)
         {
-            var cd = new ConcurrentDictionary<string, FileFormatter>(StringComparer.OrdinalIgnoreCase);
-
-            bool added = false;
-            if (formatters != null)
-            {
-                foreach (FileFormatter formatter in formatters)
-                {
-                    cd.TryAdd(formatter.Name, formatter);
-                    added = true;
-                }
-            }
-
-            if (!added)
-            {
-                cd.TryAdd(FileFormatterNames.Default, new FileFormatter(FileFormatterNames.Default, new FileFormatterOptionsMonitor<FileFormatterOptions>(new FileFormatterOptions())));
-                //cd.TryAdd(ConsoleFormatterNames.Systemd, new SystemdConsoleFormatter(new FormatterOptionsMonitor<ConsoleFormatterOptions>(new ConsoleFormatterOptions())));
-                //cd.TryAdd(ConsoleFormatterNames.Json, new JsonConsoleFormatter(new FormatterOptionsMonitor<JsonConsoleFormatterOptions>(new JsonConsoleFormatterOptions())));
-            }
-
-            _formatters = cd;
+            if (formatter == null)
+                _currentFormatter = new FileFormatter();
         }
 
         // warning:  ReloadLoggerOptions can be called before the ctor completed,... before registering all of the state used in this method need to be initialized
         private void ReloadLoggerOptions(FileLoggerOptions options, string text = null)
         {
-            var loggersOptions = options.FileLog;
+            var loggersOptions = options.FileLogs;
 
             if (loggersOptions == null)
                 throw new NullReferenceException(nameof(loggersOptions));
@@ -136,11 +121,12 @@ namespace Nt.Core.Logging.File
             if (loggersOptions.Count < 1)
                 throw new ArgumentException(nameof(loggersOptions));
 
-            foreach (KeyValuePair<LogMessageType, FileLoggerSettings> op in loggersOptions)
+            FileFormatter formatter = null;
+            foreach (KeyValuePair<LogMessageType, FileLoggerSettings> settings in loggersOptions)
             {
-                if (op.Value.FormatterName == null || _formatters.TryGetValue(op.Value.FormatterName, out FileFormatter formatter))
+                if (settings.Value.FormatterName == null || !_formatters.TryGetValue(settings.Value.FormatterName, out formatter))
                 {
-                    switch (op.Value.FormatterName)
+                    switch (settings.Value.FormatterName)
                     {
                         default:
                             formatter = _formatters[FileFormatterNames.Default];
@@ -152,7 +138,7 @@ namespace Nt.Core.Logging.File
             foreach (KeyValuePair<EventId, FileLogger> logger in _loggers)
             {
                 logger.Value.Options = options;
-                logger.Value.Formatter = logFormatter;
+                logger.Value.Formatter = formatter;
             }
         }
 
