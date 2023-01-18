@@ -353,6 +353,8 @@
     <Compile Include="Logging\File\FileFormatter.cs" />
     <Compile Include="Logging\File\FileFormatterOptions.cs" />
     <Compile Include="Logging\File\FileLogger.cs" />
+    <Compile Include="Logging\Internal\SourceLogValues.cs" />
+    <Compile Include="Logging\Internal\LogValuesSourceFormatter.cs" />
     <Compile Include="Logging\LogTypeExtensions.cs" />
     <Compile Include="Logging\LogType.cs" />
     <Compile Include="Logging\File\FileLoggerOptions.cs" />

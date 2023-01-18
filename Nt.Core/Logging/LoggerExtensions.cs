@@ -12,6 +12,7 @@ namespace Nt.Core.Logging
     public static class LoggerExtensions
     {
         private static readonly Func<FormattedLogValues, Exception, string> _messageFormatter = MessageFormatter;
+        private static readonly Func<SourceLogValues, Exception, string> _messageSourceFormatter = MessageSourceFormatter;
 
         //------------------------------------------DEBUG------------------------------------------//
 
@@ -394,6 +395,23 @@ namespace Nt.Core.Logging
             logger.Log(logLevel, eventId, new FormattedLogValues(message, args), exception, _messageFormatter);
         }
 
+        /// <summary>
+        /// Formats and writes a log message at the specified log level.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="logLevel">Entry will be written on this level.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">String of the log message.</param>
+        /// <param name="args">An object array that contains zero or more objects to source format.</param>
+        public static void LogSource(this ILogger logger, LogLevel logLevel, EventId eventId, Exception exception, string message, params object[] args)
+        {
+            if (logger == null)
+                throw new ArgumentNullException(nameof(logger));
+
+            logger.Log(logLevel, eventId, new SourceLogValues(message, args), exception, _messageSourceFormatter);
+        }
+
         //------------------------------------------Scope------------------------------------------//
 
         /// <summary>
@@ -428,6 +446,13 @@ namespace Nt.Core.Logging
             return state.ToString();
         }
 
+        private static string MessageSourceFormatter(SourceLogValues state, Exception error)
+        {
+            return state.ToString();
+        }
+
+        //-----------------------------------------SOURCE----------------------------------------------//
+
         /// <summary>
         /// Logs a critical message, including the source of the log
         /// </summary>
@@ -439,13 +464,14 @@ namespace Nt.Core.Logging
         /// <param name="args">The additional arguments</param>
         public static void LogCriticalSource(
             this ILogger logger,
+            EventId eventId,
+            Exception exception,
             string message,
-            EventId eventId = new EventId(),
-            Exception exception = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int lineNumber = 0,
-            params object[] args) => logger?.Log(LogLevel.Critical, eventId, args.Prepend(origin, filePath, lineNumber, message), exception, LoggerSourceFormatter.Format);
+            params object[] args)
+            => logger.Log(LogLevel.Critical, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
 
         /// <summary>
         /// Logs a verbose trace message, including the source of the log
@@ -458,13 +484,14 @@ namespace Nt.Core.Logging
         /// <param name="args">The additional arguments</param>
         public static void LogTraceSource(
             this ILogger logger,
+            EventId eventId,
+            Exception exception,
             string message,
-            EventId eventId = new EventId(),
-            Exception exception = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int lineNumber = 0,
-            params object[] args) => logger?.Log(LogLevel.Trace, eventId, args.Prepend(origin, filePath, lineNumber, message), exception, LoggerSourceFormatter.Format);
+            params object[] args)
+            => logger.Log(LogLevel.Trace, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
 
         /// <summary>
         /// Logs a debug message, including the source of the log
@@ -477,13 +504,14 @@ namespace Nt.Core.Logging
         /// <param name="args">The additional arguments</param>
         public static void LogDebugSource(
             this ILogger logger,
+            EventId eventId,
+            Exception exception,
             string message,
-            EventId eventId = new EventId(),
-            Exception exception = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int lineNumber = 0,
-            params object[] args) => logger?.Log(LogLevel.Debug, eventId, args.Prepend(origin, filePath, lineNumber, message), exception, LoggerSourceFormatter.Format);
+            params object[] args)
+            => logger.Log(LogLevel.Debug, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
 
         /// <summary>
         /// Logs an error message, including the source of the log
@@ -496,13 +524,14 @@ namespace Nt.Core.Logging
         /// <param name="args">The additional arguments</param>
         public static void LogErrorSource(
             this ILogger logger,
+            EventId eventId,
+            Exception exception,
             string message,
-            EventId eventId = new EventId(),
-            Exception exception = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int lineNumber = 0,
-            params object[] args) => logger?.Log(LogLevel.Error, eventId, args.Prepend(origin, filePath, lineNumber, message), exception, LoggerSourceFormatter.Format);
+            params object[] args)
+            => logger.Log(LogLevel.Error, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
 
         /// <summary>
         /// Logs an informative message, including the source of the log
@@ -515,13 +544,14 @@ namespace Nt.Core.Logging
         /// <param name="args">The additional arguments</param>
         public static void LogInformationSource(
             this ILogger logger,
+            EventId eventId,
+            Exception exception,
             string message,
-            EventId eventId = new EventId(),
-            Exception exception = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int lineNumber = 0,
-            params object[] args) => logger?.Log(LogLevel.Information, eventId, args.Prepend(origin, filePath, lineNumber, message), exception, LoggerSourceFormatter.Format);
+            params object[] args)
+            => logger.Log(LogLevel.Information, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
 
         /// <summary>
         /// Logs a warning message, including the source of the log
@@ -540,6 +570,27 @@ namespace Nt.Core.Logging
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int lineNumber = 0,
-            params object[] args) => logger?.Log(LogLevel.Warning, eventId, args.Prepend(origin, filePath, lineNumber, message), exception, LoggerSourceFormatter.Format);
+            params object[] args) 
+            => logger?.Log(LogLevel.Warning, eventId, args.Prepend(origin, filePath, lineNumber, message), exception, LoggerSourceFormatter.Format);
+
+        /// <summary>
+        /// Formats and writes a warning log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <example>logger.LogWarning(0, exception, "Error while processing request from {Address}", address)</example>
+        public static void LogWarningSorce(
+            this ILogger logger, 
+            EventId eventId, 
+            Exception exception, 
+            string message, 
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0,
+            params object[] args) 
+            => logger.Log(LogLevel.Warning, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
     }
 }
