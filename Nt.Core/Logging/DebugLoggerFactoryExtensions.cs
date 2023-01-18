@@ -6,7 +6,7 @@ namespace Nt.Core.Logging
     /// <summary>
     /// Extension methods for the <see cref="ILoggerFactory"/> class.
     /// </summary>
-    public static class DebugLoggerExtensions
+    public static class DebugLoggerFactoryExtensions
     {
         /// <summary>
         /// Adds a debug logger named 'Debug' to the factory.

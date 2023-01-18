@@ -8,7 +8,7 @@ namespace Nt.Core.Logging
     /// <summary>
     /// Builder extensions methods for <see cref="Console.Internal.ColorConsoleLogger"/>.
     /// </summary>
-    public static class ColorConsoleLoggerExtensions
+    public static class ColorConsoleLoggerFactoryExtensions
     {
         /// <summary>
         /// Adds a console logger named 'ColorConsole' to the factory.

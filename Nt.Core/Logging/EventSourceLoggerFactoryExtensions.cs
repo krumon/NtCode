@@ -9,7 +9,7 @@ namespace Nt.Core.Logging
     /// <summary>
     /// Extension methods for the <see cref="ILoggerFactory"/> class.
     /// </summary>
-    public static class EventSourceLoggerExtensions
+    public static class EventSourceLoggerFactoryExtensions
     {
         /// <summary>
         /// Adds an event logger named 'EventSource' to the factory.

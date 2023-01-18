@@ -10,7 +10,7 @@ namespace Nt.Core.Logging
     /// <summary>
     /// Extension methods for the <see cref="FileLogger"/>.
     /// </summary>
-    public static class FileLoggerExtensions
+    public static class FileLoggerFactoryExtensions
     {
         /// <summary>
         /// Adds a new file logger to the specific path

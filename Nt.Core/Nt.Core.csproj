@@ -306,7 +306,8 @@
     <Compile Include="Logging\Configuration\LoggerProviderOptionsChangeTokenSource.cs" />
     <Compile Include="Logging\Configuration\LoggingBuilderConfigurationExtensions.cs" />
     <Compile Include="Logging\Configuration\LoggingConfiguration.cs" />
-    <Compile Include="Logging\ConsoleLoggerExtensions.cs" />
+    <Compile Include="Logging\ConsoleLoggerFormatterExtensions.cs" />
+    <Compile Include="Logging\ConsoleLoggerFactoryExtensions.cs" />
     <Compile Include="Logging\Console\AnsiParser.cs" />
     <Compile Include="Logging\Console\ConsoleFormatterNames.cs" />
     <Compile Include="Logging\Console\ConsoleLoggerFormat.cs" />
@@ -317,7 +318,7 @@
     <Compile Include="Logging\Console\Internal\SystemdConsoleFormatter.cs" />
     <Compile Include="Logging\Console\JsonConsoleFormatterOptions.cs" />
     <Compile Include="Logging\Console\ColorConsoleLoggerConfiguration.cs" />
-    <Compile Include="Logging\ColorConsoleLoggerExtensions.cs" />
+    <Compile Include="Logging\ColorConsoleLoggerFactoryExtensions.cs" />
     <Compile Include="Logging\Console\ColorConsoleLoggerProvider.cs" />
     <Compile Include="Logging\Console\Internal\ColorConsoleLogger.cs" />
     <Compile Include="Logging\Console\SimpleConsoleFormatterOptions.cs" />
@@ -335,16 +336,16 @@
     <Compile Include="Logging\Console\Internal\LogMessageEntry.cs" />
     <Compile Include="Logging\Console\LoggerColorBehavior.cs" />
     <Compile Include="Logging\Console\TextWriterExtensions.cs" />
-    <Compile Include="Logging\DebugLoggerExtensions.cs" />
+    <Compile Include="Logging\DebugLoggerFactoryExtensions.cs" />
     <Compile Include="Logging\Debugger\DebugLogger.cs" />
     <Compile Include="Logging\Debugger\DebugLoggerProvider.cs" />
-    <Compile Include="Logging\EventLoggerExtensions.cs" />
+    <Compile Include="Logging\EventLoggerFactoryExtensions.cs" />
     <Compile Include="Logging\EventLog\EventLogLogger.cs" />
     <Compile Include="Logging\EventLog\EventLogLoggerProvider.cs" />
     <Compile Include="Logging\EventLog\EventLogSettings.cs" />
     <Compile Include="Logging\EventLog\IEventLog.cs" />
     <Compile Include="Logging\EventLog\WindowsEventLog.cs" />
-    <Compile Include="Logging\EventSourceLoggerExtensions.cs" />
+    <Compile Include="Logging\EventSourceLoggerFactoryExtensions.cs" />
     <Compile Include="Logging\EventSource\EventSourceLogger.cs" />
     <Compile Include="Logging\EventSource\EventSourceLoggerProvider.cs" />
     <Compile Include="Logging\EventSource\ExceptionInfo.cs" />
@@ -355,7 +356,7 @@
     <Compile Include="Logging\LogTypeExtensions.cs" />
     <Compile Include="Logging\LogType.cs" />
     <Compile Include="Logging\File\FileLoggerOptions.cs" />
-    <Compile Include="Logging\FileLoggerExtensions.cs" />
+    <Compile Include="Logging\FileLoggerFactoryExtensions.cs" />
     <Compile Include="Logging\File\FileLoggerProvider.cs" />
     <Compile Include="Logging\FilterLoggingBuilderExtensions.cs" />
     <Compile Include="Logging\Internal\DefaultLoggerLevelConfigureOptions.cs" />
