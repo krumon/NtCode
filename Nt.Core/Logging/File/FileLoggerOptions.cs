@@ -8,14 +8,9 @@
         #region Public Properties
 
         ///// <summary>
-        ///// The level of log that should be processed
+        ///// Name of the log message formatter to use. Default .... />.
         ///// </summary>
-        //public LogLevel LogLevel { get; set; } = LogLevel.Trace;
-
-        /// <summary>
-        /// Name of the log message formatter to use. Default .... />.
-        /// </summary>
-        public string FormatterName { get; set; }
+        //public string FormatterName { get; set; }
 
         /// <summary>
         /// The directory to store the file.

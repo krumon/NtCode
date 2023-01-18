@@ -9,7 +9,7 @@ namespace Nt.Core.Logging
     /// <summary>
     /// Extension methods for the <see cref="ILoggerFactory"/> class.
     /// </summary>
-    public static class EventSourceLoggerFactoryExtensions
+    public static class EventSourceLoggerExtensions
     {
         /// <summary>
         /// Adds an event logger named 'EventSource' to the factory.
@@ -19,9 +19,7 @@ namespace Nt.Core.Logging
         public static ILoggingBuilder AddEventSourceLogger(this ILoggingBuilder builder)
         {
             if (builder == null)
-            {
                 throw new ArgumentNullException(nameof(builder));
-            }
 
             builder.Services.TryAddSingleton(LoggingEventSource.Instance);
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, EventSourceLoggerProvider>());

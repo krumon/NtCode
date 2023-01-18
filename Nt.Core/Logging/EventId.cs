@@ -6,6 +6,16 @@
     public readonly struct EventId
     {
         /// <summary>
+        /// Gets the numeric identifier for this event.
+        /// </summary>
+        public int Id { get; }
+
+        /// <summary>
+        /// Gets the name of this event.
+        /// </summary>
+        public string Name { get; }
+
+        /// <summary>
         /// Implicitly creates an EventId from the given <see cref="int"/>.
         /// </summary>
         /// <param name="i">The <see cref="int"/> to convert to an EventId.</param>
@@ -46,16 +56,6 @@
             Id = id;
             Name = name;
         }
-
-        /// <summary>
-        /// Gets the numeric identifier for this event.
-        /// </summary>
-        public int Id { get; }
-
-        /// <summary>
-        /// Gets the name of this event.
-        /// </summary>
-        public string Name { get; }
 
         /// <inheritdoc />
         public override string ToString()

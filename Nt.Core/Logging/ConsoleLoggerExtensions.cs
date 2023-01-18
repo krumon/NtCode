@@ -112,7 +112,6 @@ namespace Nt.Core.Logging
 
             return builder;
         }
-
         private static ILoggingBuilder AddFormatterWithName(this ILoggingBuilder builder, string name) =>
             builder.AddConsole((ConsoleLoggerOptions options) => options.FormatterName = name);
 
@@ -145,9 +144,7 @@ namespace Nt.Core.Logging
             where TFormatter : ConsoleFormatter
         {
             if (configure == null)
-            {
                 throw new ArgumentNullException(nameof(configure));
-            }
 
             builder.AddConsoleFormatter<TFormatter, TOptions>();
             builder.Services.Configure(configure);

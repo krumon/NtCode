@@ -46,7 +46,6 @@ namespace Nt.Core.Logging.Internal
                     }
                 }
             }
-
         }
 
         [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:RequiresUnreferencedCode",

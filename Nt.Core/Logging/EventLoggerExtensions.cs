@@ -7,7 +7,7 @@ namespace Nt.Core.Logging
     /// <summary>
     /// Extension methods for the <see cref="ILoggerFactory"/> class.
     /// </summary>
-    public static class EventLoggerFactoryExtensions
+    public static class EventLoggerExtensions
     {
         /// <summary>
         /// Adds an event logger named 'EventLog' to the factory.
@@ -17,9 +17,7 @@ namespace Nt.Core.Logging
         public static ILoggingBuilder AddEventLog(this ILoggingBuilder builder)
         {
             if (builder == null)
-            {
                 throw new ArgumentNullException(nameof(builder));
-            }
 
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, EventLogLoggerProvider>());
 
@@ -35,14 +33,10 @@ namespace Nt.Core.Logging
         public static ILoggingBuilder AddEventLog(this ILoggingBuilder builder, EventLogSettings settings)
         {
             if (builder == null)
-            {
                 throw new ArgumentNullException(nameof(builder));
-            }
-
+           
             if (settings == null)
-            {
                 throw new ArgumentNullException(nameof(settings));
-            }
 
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider>(new EventLogLoggerProvider(settings)));
 
@@ -58,9 +52,7 @@ namespace Nt.Core.Logging
         public static ILoggingBuilder AddEventLog(this ILoggingBuilder builder, Action<EventLogSettings> configure)
         {
             if (configure == null)
-            {
                 throw new ArgumentNullException(nameof(configure));
-            }
 
             builder.AddEventLog();
             builder.Services.Configure(configure);

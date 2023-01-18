@@ -161,14 +161,10 @@ namespace Nt.Core.Logging
         public void AddProvider(ILoggerProvider provider)
         {
             if (CheckDisposed())
-            {
                 throw new ObjectDisposedException(nameof(LoggerFactory));
-            }
 
             if (provider == null)
-            {
                 throw new ArgumentNullException(nameof(provider));
-            }
 
             lock (_sync)
             {

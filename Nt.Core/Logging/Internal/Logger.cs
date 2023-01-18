@@ -31,7 +31,6 @@ namespace Nt.Core.Logging.Internal
                 ThrowLoggingError(exceptions);
             }
         }
-
         public bool IsEnabled(LogLevel logLevel)
         {
             MessageLogger[] loggers = MessageLoggers;
@@ -64,7 +63,6 @@ namespace Nt.Core.Logging.Internal
             return i < loggers.Length;
 
         }
-
         public IDisposable BeginScope<TState>(TState state)
         {
             ScopeLogger[] loggers = ScopeLoggers;
@@ -112,6 +110,43 @@ namespace Nt.Core.Logging.Internal
         {
             throw new AggregateException(
                 message: "An error occurred while writing to logger(s).", innerExceptions: exceptions);
+        }
+        private static void LoggerLog<TState>(LogLevel logLevel, EventId eventId, ILogger logger, Exception exception, Func<TState, Exception, string> formatter, ref List<Exception> exceptions, in TState state)
+        {
+            try
+            {
+                logger.Log(logLevel, eventId, state, exception, formatter);
+            }
+            catch (Exception ex)
+            {
+                if (exceptions == null)
+                {
+                    exceptions = new List<Exception>();
+                }
+
+                exceptions.Add(ex);
+            }
+        }
+        private static bool LoggerIsEnabled(LogLevel logLevel, ILogger logger, ref List<Exception> exceptions)
+        {
+            try
+            {
+                if (logger.IsEnabled(logLevel))
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                if (exceptions == null)
+                {
+                    exceptions = new List<Exception>();
+                }
+
+                exceptions.Add(ex);
+            }
+
+            return false;
         }
 
         private sealed class Scope : IDisposable
@@ -170,44 +205,5 @@ namespace Nt.Core.Logging.Internal
             }
         }
 
-        private static void LoggerLog<TState>(LogLevel logLevel, EventId eventId, ILogger logger, Exception exception, Func<TState, Exception, string> formatter, ref List<Exception> exceptions, in TState state)
-        {
-            try
-            {
-                logger.Log(logLevel, eventId, state, exception, formatter);
-            }
-            catch (Exception ex)
-            {
-                if (exceptions == null)
-                {
-                    exceptions = new List<Exception>();
-                }
-
-                exceptions.Add(ex);
-            }
-        }
-
-        private static bool LoggerIsEnabled(LogLevel logLevel, ILogger logger, ref List<Exception> exceptions)
-        {
-            try
-            {
-                if (logger.IsEnabled(logLevel))
-                {
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                if (exceptions == null)
-                {
-                    exceptions = new List<Exception>();
-                }
-
-                exceptions.Add(ex);
-            }
-
-            return false;
-        }
     }
-
 }

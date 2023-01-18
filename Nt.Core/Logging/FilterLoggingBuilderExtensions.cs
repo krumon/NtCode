@@ -192,7 +192,8 @@ namespace Nt.Core.Logging
             return builder;
         }
 
-        private static LoggerFilterOptions AddRule(LoggerFilterOptions options,
+        private static LoggerFilterOptions AddRule(
+            LoggerFilterOptions options,
             string type = null,
             string category = null,
             LogLevel? level = null,

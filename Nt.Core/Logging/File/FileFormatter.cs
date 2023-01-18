@@ -23,7 +23,7 @@ namespace Nt.Core.Logging.File
         }
 
         /// <summary>
-        /// Gets the name associated with the console log formatter.
+        /// Gets the name associated with the file log formatter.
         /// </summary>
         public string Name { get; }
 

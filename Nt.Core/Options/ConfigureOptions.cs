@@ -30,9 +30,7 @@ namespace Nt.Core.Options
         public virtual void Configure(TOptions options)
         {
             if (options == null)
-            {
                 throw new ArgumentNullException(nameof(options));
-            }
 
             Action?.Invoke(options);
         }
