@@ -48,18 +48,6 @@ namespace Nt.Core.Logging.File
             ReloadLoggerOptions(options.CurrentValue);
             _optionsReloadToken = _options.OnChange(ReloadLoggerOptions);
 
-            //_messageQueue = new ConsoleLoggerProcessor();
-
-            //if (DoesConsoleSupportAnsi())
-            //{
-            //    _messageQueue.Console = new AnsiLogConsole();
-            //    _messageQueue.ErrorConsole = new AnsiLogConsole(stdErr: true);
-            //}
-            //else
-            //{
-            //    _messageQueue.Console = new AnsiParsingLogConsole();
-            //    _messageQueue.ErrorConsole = new AnsiParsingLogConsole(stdErr: true);
-            //}
         }
 
         #endregion

@@ -13,6 +13,11 @@
         //public string FormatterName { get; set; }
 
         /// <summary>
+        /// The minimum
+        /// </summary>
+        public string LogLevel { get; set; }
+
+        /// <summary>
         /// The directory to store the file.
         /// </summary>
         public string Directory { get; set; }
