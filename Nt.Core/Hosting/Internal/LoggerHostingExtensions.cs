@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Nt.Core.Hosting.Internal
 {
-    internal static class HostingLoggerExtensions
+    internal static class LoggerHostingExtensions
     {
         public static void ApplicationError(this ILogger logger, EventId eventId, string message, Exception exception)
         {

@@ -284,7 +284,7 @@
     <Compile Include="Hosting\Internal\ApplicationLifetime.cs" />
     <Compile Include="Hosting\Internal\ConsoleLifetime.cs" />
     <Compile Include="Hosting\Internal\HostingEnvironment.cs" />
-    <Compile Include="Hosting\Internal\HostingLoggerExtensions.cs" />
+    <Compile Include="Hosting\Internal\LoggerHostingExtensions.cs" />
     <Compile Include="Hosting\Internal\IConfigureContainerAdapter.cs" />
     <Compile Include="Hosting\Internal\IServiceFactoryAdapter.cs" />
     <Compile Include="Hosting\Internal\LoggerEventIds.cs" />
@@ -352,12 +352,17 @@
     <Compile Include="Logging\EventSource\EventSourceLoggerProvider.cs" />
     <Compile Include="Logging\EventSource\ExceptionInfo.cs" />
     <Compile Include="Logging\EventSource\LoggingEventSource.cs" />
+    <Compile Include="Logging\File\DefaultFileFormatterConfigureOptions.cs" />
+    <Compile Include="Logging\File\DefaultConsoleLoggerConfigureOptions.cs" />
     <Compile Include="Logging\File\FileFormatterNames.cs" />
     <Compile Include="Logging\File\FileFormatter.cs" />
     <Compile Include="Logging\File\FileFormatterOptions.cs" />
     <Compile Include="Logging\File\FileLogger.cs" />
+    <Compile Include="Logging\File\FileLoggerFormatterConfigureOptions.cs" />
+    <Compile Include="Logging\File\FileLoggerFormatterOptionsChangeTokenSource.cs" />
     <Compile Include="Logging\File\FileLoggerSettings.cs" />
     <Compile Include="Logging\File\FormatterOptionsMonitor.cs" />
+    <Compile Include="Logging\FileLoggerFormatterExtensions.cs" />
     <Compile Include="Logging\Internal\SourceLogValues.cs" />
     <Compile Include="Logging\Internal\LogValuesSourceFormatter.cs" />
     <Compile Include="Logging\LogMessageTypeExtensions.cs" />

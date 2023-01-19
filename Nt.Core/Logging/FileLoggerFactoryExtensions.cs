@@ -1,9 +1,7 @@
 ﻿using Nt.Core.DependencyInjection;
-using Nt.Core.Hosting;
 using Nt.Core.Logging.Configuration;
 using Nt.Core.Logging.File;
 using System;
-using System.IO;
 
 namespace Nt.Core.Logging
 {
@@ -16,23 +14,16 @@ namespace Nt.Core.Logging
         /// Adds a new file logger to the specific path
         /// </summary>
         /// <param name="builder">The log builder to add to</param>
-        /// <returns>The same instance of the <see cref="ILoggingBuilder"/> for chaining.</returns>
-        public static ILoggingBuilder AddFileLogger(this ILoggingBuilder builder) => AddFileLogger(builder, Directory.GetCurrentDirectory());
-
-        /// <summary>
-        /// Adds a new file logger to the specific path
-        /// </summary>
-        /// <param name="builder">The log builder to add to</param>
         /// <param name="path">The path where to write to</param>
-        /// <param name="options">The file logger options.</param>
         /// <returns>The same instance of the <see cref="ILoggingBuilder"/> for chaining.</returns>
-        public static ILoggingBuilder AddFileLogger(this ILoggingBuilder builder, string path)
+        public static ILoggingBuilder AddFile(this ILoggingBuilder builder)
         {
             builder.AddConfiguration();
 
+            builder.AddFileFormatter<FileFormatter, FileFormatterOptions>();
+
             builder.Services.TryAddEnumerable(
                 ServiceDescriptor.Singleton<ILoggerProvider, FileLoggerProvider>());
-
             LoggerProviderOptions.RegisterProviderOptions
                 <FileLoggerOptions, FileLoggerProvider>(builder.Services);
 
@@ -43,35 +34,29 @@ namespace Nt.Core.Logging
         /// Adds a new file logger to the specific path
         /// </summary>
         /// <param name="builder">The log builder to add to</param>
-        /// <param name="path">The path where to write to</param>
         /// <param name="options">The file logger options.</param>
         /// <returns>The same instance of the <see cref="ILoggingBuilder"/> for chaining.</returns>
-        public static ILoggingBuilder AddFileLogger(this ILoggingBuilder builder, string path, Action<FileLoggerOptions> configure)
+        public static ILoggingBuilder AddFile(this ILoggingBuilder builder, Action<FileLoggerOptions> options)
         {
-            builder.AddFileLogger();
+            builder.AddFile();
+            builder.Services.Configure(options);
+
+            return builder;
+        }
+
+        internal static ILoggingBuilder AddFileWithFormatter<TOptions>(this ILoggingBuilder builder, string name, Action<TOptions> configure)
+            where TOptions : FileFormatterOptions
+        {
+            if (configure == null)
+                throw new ArgumentNullException(nameof(configure));
+
+            builder.AddFormatterWithName(name);
             builder.Services.Configure(configure);
 
             return builder;
         }
+        private static ILoggingBuilder AddFormatterWithName(this ILoggingBuilder builder, string name) =>
+            builder.AddFile((FileLoggerOptions options) => options.FileLogs[0].FormatterName = name);
 
-        /// <summary>
-        /// Injects a file logger into the ninjascript service.
-        /// </summary>
-        /// <param name="builder">The builder</param>
-        /// <param name="logPath">The path of the file to log to</param>
-        /// <param name="logTop">Whether to display latest logs at the top of the file</param>
-        /// <returns>The same instance of the <see cref="ILoggingBuilder"/> for chaining.</returns>
-        public static IHostBuilder AddFileLogger(this IHostBuilder builder, string logPath = "log.txt", bool logTop = true)
-        {
-            //// Make use of AddLogging extension
-            //builder.Services.AddLogging(options =>
-            //{
-            //    // Add file logger
-            //    options.AddFile(logPath, new FileLoggerOptions { LogAtTop = logTop });
-            //});
-
-            // Chain the construction
-            return builder;
-        }
     }
 }
