@@ -22,7 +22,7 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             //Microsoft.Extensions.Hosting.Host
-            //Microsoft.Extensions.Logging.ConsoleLoggerExtensions
+            //Microsoft.Extensions.Hosting.Internal.Host
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
             //Microsoft.Extensions.Primitives.ChangeToken
@@ -31,7 +31,7 @@ namespace ConsoleApp
             //UseNinjascriptHost();
             UseColorConsoleLogger();
             _logger = _host?.Services.GetService<ILogger<Program>>();
-            _logger?.LogInformationSource(0, null, "The Host is built");
+            _logger?.LogInformationSource(new Exception("Exception test"), "Creating hosting services.");
             _logger?.LogWarning("Logging Service");
             _logger?.LogError("Logging a message by {format}.",format);
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
@@ -106,7 +106,7 @@ namespace ConsoleApp
                     services.AddLogging(builder =>
                     {
                         builder.ClearProviders();
-                        builder.AddColorConsoleLogger();
+                        builder.AddConsole();
                     })
                     ;
                 })

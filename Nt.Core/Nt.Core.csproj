@@ -284,8 +284,10 @@
     <Compile Include="Hosting\Internal\ApplicationLifetime.cs" />
     <Compile Include="Hosting\Internal\ConsoleLifetime.cs" />
     <Compile Include="Hosting\Internal\HostingEnvironment.cs" />
+    <Compile Include="Hosting\Internal\HostingLoggerExtensions.cs" />
     <Compile Include="Hosting\Internal\IConfigureContainerAdapter.cs" />
     <Compile Include="Hosting\Internal\IServiceFactoryAdapter.cs" />
+    <Compile Include="Hosting\Internal\LoggerEventIds.cs" />
     <Compile Include="Hosting\Internal\ServiceFactoryAdapter.cs" />
     <Compile Include="Internal\NonCapturingTimer.cs" />
     <Compile Include="Internal\TypeNameHelper.cs" />

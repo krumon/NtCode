@@ -57,9 +57,6 @@ namespace Nt.Core.Hosting.Internal
                 catch (Exception ex)
                 {
                     _logger.LogError(ex, "An error occurred stopping the application");
-                    //_logger.ApplicationError(LoggerEventIds.ApplicationStoppingException,
-                    //                         "An error occurred stopping the application",
-                    //                         ex);
                 }
             }
         }
@@ -76,9 +73,6 @@ namespace Nt.Core.Hosting.Internal
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred starting the application");
-                //_logger.ApplicationError(LoggerEventIds.ApplicationStartupException,
-                //                         "An error occurred starting the application",
-                //                         ex);
             }
         }
 
@@ -94,9 +88,6 @@ namespace Nt.Core.Hosting.Internal
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred stopping the application");
-                //_logger.ApplicationError(LoggerEventIds.ApplicationStoppedException,
-                //                         "An error occurred stopping the application",
-                //                         ex);
             }
         }
 
