@@ -107,6 +107,7 @@ namespace ConsoleApp
                     {
                         builder.ClearProviders();
                         builder.AddConsole();
+                        builder.AddFile();
                     })
                     ;
                 })

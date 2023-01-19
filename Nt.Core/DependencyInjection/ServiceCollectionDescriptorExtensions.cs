@@ -586,14 +586,10 @@ namespace Nt.Core.DependencyInjection
             ServiceDescriptor descriptor)
         {
             if (services == null)
-            {
                 throw new ArgumentNullException(nameof(services));
-            }
 
             if (descriptor == null)
-            {
                 throw new ArgumentNullException(nameof(descriptor));
-            }
 
             Type implementationType = descriptor.GetImplementationType();
 

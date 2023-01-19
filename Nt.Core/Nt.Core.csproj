@@ -361,7 +361,7 @@
     <Compile Include="Logging\File\FileLoggerFormatterConfigureOptions.cs" />
     <Compile Include="Logging\File\FileLoggerFormatterOptionsChangeTokenSource.cs" />
     <Compile Include="Logging\File\FileLoggerSettings.cs" />
-    <Compile Include="Logging\File\FormatterOptionsMonitor.cs" />
+    <Compile Include="Logging\File\FileFormatterOptionsMonitor.cs" />
     <Compile Include="Logging\FileLoggerFormatterExtensions.cs" />
     <Compile Include="Logging\Internal\SourceLogValues.cs" />
     <Compile Include="Logging\Internal\LogValuesSourceFormatter.cs" />

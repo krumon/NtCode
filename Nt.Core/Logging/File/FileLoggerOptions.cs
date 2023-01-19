@@ -12,7 +12,8 @@ namespace Nt.Core.Logging.File
         public ConcurrentDictionary<LogMessageType, FileLoggerSettings> FileLogs { get; set; }
             = new ConcurrentDictionary<LogMessageType, FileLoggerSettings>()
             {
-                [LogMessageType.System] = new FileLoggerSettings()
+                //[LogMessageType.System] = new FileLoggerSettings()
+                [0] = new FileLoggerSettings()
             };
 
         #endregion
