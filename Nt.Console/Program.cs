@@ -25,12 +25,13 @@ namespace ConsoleApp
             //Microsoft.Extensions.Logging.ConsoleLoggerExtensions
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
+            //Microsoft.Extensions.Primitives.ChangeToken
 
 
             //UseNinjascriptHost();
             UseColorConsoleLogger();
             _logger = _host?.Services.GetService<ILogger<Program>>();
-            _logger?.LogInformationSource("The Host is built");
+            _logger?.LogInformationSource(0, null, "The Host is built");
             _logger?.LogWarning("Logging Service");
             _logger?.LogError("Logging a message by {format}.",format);
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);

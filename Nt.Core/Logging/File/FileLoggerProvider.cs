@@ -14,16 +14,13 @@ namespace Nt.Core.Logging.File
     {
         #region Private members
 
-        private IDisposable _optionsReloadToken;
-        private IDisposable _formatterReloadToken;
-        private readonly FileLoggerOptions _currentOptions;
-        private FileFormatter _currentFormatter;
-        private readonly ConcurrentDictionary<EventId, FileLogger> _loggers;
-        //private ConcurrentDictionary<string, FileFormatter> _formatters;
+        private readonly ConcurrentDictionary<string, FileLogger> _loggers;
         private IExternalScopeProvider _scopeProvider = NullExternalScopeProvider.Instance;
 
-        private readonly IDisposable _onChangeToken;
-        private FileLoggerOptions _currentConfig;
+        private IDisposable _optionsReloadToken;
+        private IDisposable _formatterReloadToken;
+        private FileLoggerOptions _currentOptions;
+        private FileFormatter _currentFormatter;
 
         #endregion
 
@@ -41,105 +38,73 @@ namespace Nt.Core.Logging.File
         /// </summary>
         /// <param name="options">The options to create <see cref="FileLogger"/> instances with.</param>
         /// <param name="formatter">Log formatter added for <see cref="FileLogger"/> instances.</param>
-        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, IOptionsMonitor<FileFormatter> formatter)
+        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, IOptionsMonitor<FileFormatter> formatter = null)
         {
+            _loggers = new ConcurrentDictionary<string, FileLogger>();
             _currentOptions = options.CurrentValue;
-            _currentFormatter = formatter.CurrentValue;
-            _loggers = new ConcurrentDictionary<EventId, FileLogger>();
+            _currentFormatter = formatter == null ? new FileFormatter() : formatter.CurrentValue;
+
             SetFormatters(formatter);
-
-            ReloadLoggerOptions(options.CurrentValue);
-            _optionsReloadToken = _currentOptions.OnChange(ReloadLoggerOptions);
-
+            ReloadFileLoggerOptions(options.CurrentValue);
+            _optionsReloadToken = options.OnChange(ReloadFileLoggerOptions);
+            if (formatter != null)
+            {
+                ReloadFileLoggersFormatter(formatter.CurrentValue);
+                _formatterReloadToken = formatter.OnChange(ReloadFileLoggersFormatter);
+            }
         }
 
         #endregion
 
         #region ILoggerProvider Implementation
 
-        public ILogger CreateLogger(string categoryName) 
-        {
-            var loggersOptions = _currentOptions.CurrentValue.FileLogs;
-            
-            if(loggersOptions == null)
-                throw new NullReferenceException(nameof(loggersOptions));
-
-            if(loggersOptions.Count<1)
-                throw new ArgumentException(nameof(loggersOptions));
-
-            foreach(KeyValuePair<LogMessageType,FileLoggerSettings> settings in loggersOptions)
+        public ILogger CreateLogger(string categoryName) =>
+            _loggers.GetOrAdd(categoryName, name => new FileLogger(name)
             {
-                if (settings.Value.FormatterName == null || _formatters.TryGetValue(settings.Value.FormatterName, out FileFormatter logFormatter))
-                {
-                    switch (settings.Value.FormatterName)
-                    {
-                        default:
-                            logFormatter = _formatters[FileFormatterNames.Default];
-                            break;
-                    }
-                }
-            }
-
-            return _loggers.TryGetValue(categoryName, out FileLogger logger) ?
-                logger :
-                _loggers.GetOrAdd(categoryName, new FileLogger(categoryName)
-                {
-                    Options = GetCurrentConfig(),
-                    ScopeProvider = _scopeProvider,
-                    Formatter = logFormatter,
-                });
-
-            _loggers.GetOrAdd(categoryName, name => new FileLogger(name, GetCurrentConfig));
-        } 
+                Options = GetCurrentOptions(),
+                Formatter = GetCurrentFormatter(),
+                ScopeProvider = _scopeProvider
+            });
 
         public void Dispose()
         {
             _loggers.Clear();
-            _onChangeToken.Dispose();
+            _optionsReloadToken?.Dispose();
+            _formatterReloadToken?.Dispose();
         }
 
         #endregion
 
         #region Private methods
 
-        private FileLoggerOptions GetCurrentConfig() => _currentConfig;
+        private FileLoggerOptions GetCurrentOptions() => _currentOptions;
+        private FileFormatter GetCurrentFormatter() => _currentFormatter;
 
         private void SetFormatters(IOptionsMonitor<FileFormatter> formatter = null)
         {
-            if (formatter == null)
-                _currentFormatter = new FileFormatter();
+            _currentFormatter = formatter.CurrentValue ?? new FileFormatter();
+
+            foreach (KeyValuePair<string, FileLogger> logger in _loggers)
+            {
+                logger.Value.Formatter = _currentFormatter;
+            }
         }
 
         // warning:  ReloadLoggerOptions can be called before the ctor completed,... before registering all of the state used in this method need to be initialized
-        private void ReloadLoggerOptions(FileLoggerOptions options, string text = null)
+        private void ReloadFileLoggerOptions(FileLoggerOptions currentOptions)
         {
-            var loggersOptions = options.FileLogs;
+            _currentOptions = currentOptions ?? new FileLoggerOptions();
 
-            if (loggersOptions == null)
-                throw new NullReferenceException(nameof(loggersOptions));
+            foreach (KeyValuePair<string, FileLogger> logger in _loggers)
+                logger.Value.Options = GetCurrentOptions();
+        }
 
-            if (loggersOptions.Count < 1)
-                throw new ArgumentException(nameof(loggersOptions));
+        private void ReloadFileLoggersFormatter(FileFormatter formatter)
+        {
+            _currentFormatter = formatter ?? new FileFormatter();
 
-            FileFormatter formatter = null;
-            foreach (KeyValuePair<LogMessageType, FileLoggerSettings> settings in loggersOptions)
-            {
-                if (settings.Value.FormatterName == null || !_formatters.TryGetValue(settings.Value.FormatterName, out formatter))
-                {
-                    switch (settings.Value.FormatterName)
-                    {
-                        default:
-                            formatter = _formatters[FileFormatterNames.Default];
-                            break;
-                    }
-                }
-            }
-
-            foreach (KeyValuePair<EventId, FileLogger> logger in _loggers)
-            {
-                logger.Value.Options = options;
-                logger.Value.Formatter = formatter;
-            }
+            foreach (KeyValuePair<string, FileLogger> logger in _loggers)
+                logger.Value.Formatter = GetCurrentFormatter();
         }
 
         #endregion

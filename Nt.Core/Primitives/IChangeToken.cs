@@ -14,14 +14,13 @@ namespace Nt.Core.Primitives
 
         /// <summary>
         /// Indicates if this token will pro-actively raise callbacks. If false, the token
-        /// consumer must poll Microsoft.Extensions.Primitives.IChangeToken.HasChanged to
-        /// detect changes.
+        /// consumer must poll <see cref="IChangeToken.HasChanged"/> to detect changes.
         /// </summary>
         bool ActiveChangeCallbacks { get; }
 
         /// <summary>
-        /// Registers for a callback that will be invoked when the entry has changed. Microsoft.Extensions.Primitives.IChangeToken.HasChanged
-        /// MUST be set before the callback is invoked.
+        /// Registers for a callback that will be invoked when the entry has changed. 
+        /// <see cref="IChangeToken.HasChanged"/> MUST be set before the callback is invoked.
         /// </summary>
         /// <param name="callback">The <see cref="Action"/> to invoke.</param>
         /// <param name="state">State to be passed into the callback.</param>

@@ -18,14 +18,15 @@ namespace Nt.Core.Logging.File
         /// </summary>
         private readonly string _name;
 
-        /// <summary>
-        /// Represents the action to configure the logger.
-        /// </summary>
-        private readonly Func<FileLoggerOptions> _getCurrentConfig;
+        ///// <summary>
+        ///// Represents the action to configure the logger.
+        ///// </summary>
+        //private readonly Func<FileLoggerOptions> _getCurrentOptions;
+        //private readonly Func<FileFormatter> _getCurrentFormatter;
 
+        internal FileLoggerOptions Options { get; set; }
         internal FileFormatter Formatter { get; set; }
         internal IExternalScopeProvider ScopeProvider { get; set; }
-        internal FileLoggerOptions Options { get; set; }
         [ThreadStatic]
         private static StringWriter t_stringWriter;
 
@@ -76,10 +77,7 @@ namespace Nt.Core.Logging.File
         /// </summary>
         /// <param name="name">The category name of the logger.</param>
         /// <param name="getCurrentConfig">The current configuration.</param>
-        public FileLogger(
-            string name,
-            Func<FileLoggerOptions> getCurrentConfig) =>
-            (_name, _getCurrentConfig) = (name, getCurrentConfig);
+        public FileLogger( string name) => _name = name;
 
         ///// <summary>
         ///// Default constructor
@@ -104,13 +102,11 @@ namespace Nt.Core.Logging.File
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
             if (!IsEnabled(logLevel))
-            {
                 return;
-            }
+
             if (formatter == null)
-            {
                 throw new ArgumentNullException(nameof(formatter));
-            }
+
             if (t_stringWriter == null) t_stringWriter = new StringWriter();
             LogEntry<TState> logEntry = new LogEntry<TState>(logLevel, _name, eventId, state, exception, formatter);
             Formatter.Write(in logEntry, ScopeProvider, t_stringWriter);
@@ -128,7 +124,7 @@ namespace Nt.Core.Logging.File
             }
             // Normalize path
             // TODO: Make use of configuration base path
-            var normalizedPath = Options.FilePath.ToUpper();
+            var normalizedPath = Options.FileLogs[0].FileName.ToUpper();
 
             var fileLock = default(object);
 
@@ -143,11 +139,11 @@ namespace Nt.Core.Logging.File
             lock (fileLock)
             {
                 // Ensure folder
-                if (!Directory.Exists(Options.Directory))
-                    Directory.CreateDirectory(Options.Directory);
+                if (!Directory.Exists(Options.FileLogs[0].Directory))
+                    Directory.CreateDirectory(Options.FileLogs[0].Directory);
 
                 // Open the file
-                using (var fileStream = new StreamWriter(System.IO.File.Open(Options.FilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
+                using (var fileStream = new StreamWriter(System.IO.File.Open(Options.FileLogs[0].FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
                 {
                     // Go to end
                     fileStream.BaseStream.Seek(0, SeekOrigin.End);

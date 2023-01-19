@@ -1,7 +1,6 @@
 ﻿using Nt.Core.Logging.Abstractions;
 using Nt.Core.Options;
 using System;
-using System.Globalization;
 using System.IO;
 
 namespace Nt.Core.Logging.File
@@ -12,14 +11,22 @@ namespace Nt.Core.Logging.File
         private static readonly string _messagePadding = new string(' ', GetLogLevelString(LogLevel.Information).Length + LoglevelPadding.Length);
         private static readonly string _newLineWithMessagePadding = Environment.NewLine + _messagePadding;
         private IDisposable _optionsReloadToken;
-        internal FileFormatterOptions FormatterOptions { get; set; }
+        internal FileFormatterOptions FormatterOptions { get; private set; }
 
+        public FileFormatter() : this(string.Empty, null) { }
+        public FileFormatter(string name) : this(name, null) { }
         public FileFormatter(string name, IOptionsMonitor<FileFormatterOptions> options)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
-            ReloadLoggerOptions(options.CurrentValue);
-            _optionsReloadToken = options.OnChange(ReloadLoggerOptions);
 
+            if(options== null) 
+                FormatterOptions = new FileFormatterOptions();
+            else
+            {
+                FormatterOptions = options.CurrentValue;
+                ReloadFileLoggerOptions(options.CurrentValue);
+                _optionsReloadToken = options.OnChange(ReloadFileLoggerOptions);
+            }
         }
 
         /// <summary>
@@ -194,10 +201,7 @@ namespace Nt.Core.Logging.File
             writer.Write(newMessage);
         }
 
-
-        private static string ToInvariantString(object obj) => Convert.ToString(obj, CultureInfo.InvariantCulture);
-
-        private void ReloadLoggerOptions(FileFormatterOptions options)
+        private void ReloadFileLoggerOptions(FileFormatterOptions options)
         {
             FormatterOptions = options;
         }

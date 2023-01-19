@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Text;
 
 namespace Nt.Core.Logging.Internal
 {
@@ -26,7 +22,6 @@ namespace Nt.Core.Logging.Internal
             string origin = NullValue;
             string filePath = NullValue;
             int lineNumber = 0;
-            string message = NullValue;
             if (values != null && values.Length > 0)
             {
                 for (int i = 0; i < values.Length; i++)
@@ -42,19 +37,16 @@ namespace Nt.Core.Logging.Internal
                         case 2:
                             lineNumber = (int)sourceValues[i];
                             break;
-                        case 3:
-                            message = (string)sourceValues[i];
-                            break;
                         default:
                             break;
                     }
                 }
             }
 
-            TextWriter message = new StringWriter();
-            if (string.IsNullOrEmpty(message))
+            //TextWriter message = new StringWriter();
+            //if (string.IsNullOrEmpty(_message))
             // Format the message string
-            return $"{message} [{Path.GetFileName(filePath)} > {origin}() > Line {lineNumber}]";
+            return $"{_message} [{Path.GetFileName(filePath)} > {origin}() > Line {lineNumber}]";
         }
     }
 }
