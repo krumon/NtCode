@@ -21,12 +21,12 @@
         /// <summary>
         /// When <see langword="true" />, the entire message gets logged in a single line.
         /// </summary>
-        public bool SingleLine { get; set; } = true;
+        public bool SingleLine { get; set; }
 
         /// <summary>
         /// Indicates if the log level should be output as part of the log message
         /// </summary>
-        public bool ShowLogLevel { get; set; } = true;
+        public bool ShowLogLevel { get; set; }
 
     }
 }

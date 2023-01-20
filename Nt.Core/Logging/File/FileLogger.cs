@@ -18,12 +18,6 @@ namespace Nt.Core.Logging.File
         /// </summary>
         private readonly string _name;
 
-        ///// <summary>
-        ///// Represents the action to configure the logger.
-        ///// </summary>
-        //private readonly Func<FileLoggerOptions> _getCurrentOptions;
-        //private readonly Func<FileFormatter> _getCurrentFormatter;
-
         internal FileLoggerOptions Options { get; set; }
         internal FileFormatter Formatter { get; set; }
         internal IExternalScopeProvider ScopeProvider { get; set; }
@@ -46,30 +40,6 @@ namespace Nt.Core.Logging.File
 
         #endregion
 
-        #region Protected Members
-
-        ///// <summary>
-        ///// The category for this logger
-        ///// </summary>
-        //protected readonly string _categoryName;
-
-        ///// <summary>
-        ///// The file path to write to
-        ///// </summary>
-        //protected readonly string _filePath;
-
-        ///// <summary>
-        ///// The directory the file is in
-        ///// </summary>
-        //protected readonly string _directory;
-
-        ///// <summary>
-        ///// The configuration to use
-        ///// </summary>
-        //protected FileLoggerOptions _options;
-
-        #endregion
-
         #region Constructor
 
         /// <summary>
@@ -78,24 +48,6 @@ namespace Nt.Core.Logging.File
         /// <param name="name">The category name of the logger.</param>
         /// <param name="getCurrentConfig">The current configuration.</param>
         public FileLogger( string name) => _name = name;
-
-        ///// <summary>
-        ///// Default constructor
-        ///// </summary>
-        ///// <param name="categoryName">The category for this logger</param>
-        ///// <param name="filePath">The file path to write to</param>
-        ///// <param name="configuration">The configuration to use</param>
-        //public FileLogger(string categoryName, string filePath, FileLoggerOptions configuration)
-        //{
-        //    // Get absolute path
-        //    filePath = Path.GetFullPath(filePath);
-
-        //    // Set members
-        //    _categoryName = categoryName;
-        //    _filePath = filePath;
-        //    _directory = Path.GetDirectoryName(filePath);
-        //    _options = configuration;
-        //}
 
         #endregion
 
@@ -143,7 +95,7 @@ namespace Nt.Core.Logging.File
                     Directory.CreateDirectory(Options.FileLogs[0].Directory);
 
                 // Open the file
-                using (var fileStream = new StreamWriter(System.IO.File.Open(Options.FileLogs[0].FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
+                using (var fileStream = new StreamWriter(System.IO.File.Open(Path.Combine(Options.FileLogs[0].Directory, Options.FileLogs[0].FileName), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
                 {
                     // Go to end
                     fileStream.BaseStream.Seek(0, SeekOrigin.End);

@@ -1,0 +1,14 @@
+[01:32:59]: ConsoleApp.Program[0]
+             Creating hosting services. [Program.cs > Main() > Line 34]
+             System.Exception: Exception test
+[01:32:59]: ConsoleApp.Program[0]
+             Logging Service
+[01:32:59]: ConsoleApp.Program[0]
+             Logging a message by Krumon.
+[01:35:55]: ConsoleApp.Program[0]
+             Creating hosting services. [Program.cs > Main() > Line 34]
+             System.Exception: Exception test
+[01:35:55]: ConsoleApp.Program[0]
+             Logging Service
+[01:35:55]: ConsoleApp.Program[0]
+             Logging a message by Krumon.
