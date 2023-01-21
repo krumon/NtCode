@@ -10,7 +10,7 @@ namespace Nt.Core.Logging.File
         private const string LoglevelPadding = ": ";
         private static readonly string _messagePadding = new string(' ', GetLogLevelString(LogLevel.Information).Length + LoglevelPadding.Length);
         private static readonly string _newLineWithMessagePadding = Environment.NewLine + _messagePadding;
-        private IDisposable _optionsReloadToken;
+        private readonly IDisposable _optionsReloadToken;
         internal FileFormatterOptions FormatterOptions { get; private set; }
 
         public FileFormatter() : this(string.Empty, null) { }

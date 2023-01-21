@@ -15,10 +15,10 @@ namespace Nt.Core.Logging.File
         #region Private members
 
         private readonly ConcurrentDictionary<string, FileLogger> _loggers;
-        private IExternalScopeProvider _scopeProvider = NullExternalScopeProvider.Instance;
+        private readonly IExternalScopeProvider _scopeProvider = NullExternalScopeProvider.Instance;
 
-        private IDisposable _optionsReloadToken;
-        private IDisposable _formatterReloadToken;
+        private readonly IDisposable _optionsReloadToken;
+        private readonly IDisposable _formatterReloadToken;
         private FileLoggerOptions _currentOptions;
         private FileFormatter _currentFormatter;
 
@@ -68,9 +68,9 @@ namespace Nt.Core.Logging.File
 
         public void Dispose()
         {
-            _loggers.Clear();
             _optionsReloadToken?.Dispose();
             _formatterReloadToken?.Dispose();
+            _loggers.Clear();
         }
 
         #endregion

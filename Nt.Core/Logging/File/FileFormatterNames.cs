@@ -6,9 +6,19 @@
     public static class FileFormatterNames
     {
         /// <summary>
-        /// Reserved name for simple file formatter
+        /// Reserved name for system file formatter
         /// </summary>
-        public const string Default = "Default";
+        public const string System = "System";
+
+        /// <summary>
+        /// Reserved name for boot file formatter
+        /// </summary>
+        public const string Boot = "Boot";
+
+        /// <summary>
+        /// Reserved name for secure file formatter
+        /// </summary>
+        public const string Secure = "Secure";
 
     }
 }
