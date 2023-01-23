@@ -26,3 +26,10 @@
              Logging Service
 [13:20:27]: ConsoleApp.Program[0]
              Logging a message by Krumon.
+[19:54:27]: ConsoleApp.Program[0]
+             Creating hosting services. [Program.cs > Main() > Line 34]
+             System.Exception: Exception test
+[19:54:27]: ConsoleApp.Program[0]
+             Logging Service
+[19:54:27]: ConsoleApp.Program[0]
+             Logging a message by Krumon.
