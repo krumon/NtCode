@@ -75,7 +75,7 @@ namespace Nt.Core.Options
                 }
                 if (failures.Count > 0)
                 {
-                    throw new Exception($"OptionsValidationException: {nameof(name)}, {typeof(TOptions)}, {nameof(failures)}");
+                    throw new Exception($"Options Validation Exception: {nameof(name)}, {typeof(TOptions)}, {nameof(failures)}");
                 }
             }
 
