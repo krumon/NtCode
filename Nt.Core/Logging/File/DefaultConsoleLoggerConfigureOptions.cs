@@ -7,11 +7,10 @@ namespace Nt.Core.Logging.File
     {
         public DefaultFileLoggerConfigureOptions() : base(options =>
         {
-            options.FileLogs[0].LogLevel = LogLevel.Debug;
-            options.FileLogs[0].LogTime = true;
-            options.FileLogs[0].LogAtTop = true;
-            options.FileLogs[0].Directory = Directory.GetCurrentDirectory();
-            options.FileLogs[0].FileName = "syslog";
+            options.LogLevel = LogLevel.Debug;
+            options.LogAtTop = true;
+            options.Directory = Directory.GetCurrentDirectory();
+            options.Name = "syslog";
 
             //options.FileLogs[1].LogLevel = LogLevel.Debug;
             //options.FileLogs[1].LogTime = true;

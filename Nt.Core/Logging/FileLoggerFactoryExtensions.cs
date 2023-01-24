@@ -56,7 +56,7 @@ namespace Nt.Core.Logging
             return builder;
         }
         private static ILoggingBuilder AddFormatterWithName(this ILoggingBuilder builder, string name) =>
-            builder.AddFile((FileLoggerOptions options) => options.FileLogs[0].FormatterName = name);
+            builder.AddFile((FileLoggerOptions options) => options.FormatterName = name);
 
     }
 }

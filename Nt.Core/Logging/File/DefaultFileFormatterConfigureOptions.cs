@@ -7,9 +7,8 @@ namespace Nt.Core.Logging.File
         public DefaultFileFormatterConfigureOptions() : base(options => 
         {
             options.SingleLine = true;
-            options.ShowLogLevel = true;
-            options.TimestampFormat = "YYYY:MM:DD hh:mm:ss";
-            options.UseUtcTimestamp = false;
+            options.LogLevel = true;
+            options.TimestampOptions = new TimestampOptions();
 
         }) { }
     }

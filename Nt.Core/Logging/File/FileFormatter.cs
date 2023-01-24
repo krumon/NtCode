@@ -55,7 +55,7 @@ namespace Nt.Core.Logging.File
             string logLevelString = GetLogLevelString(logLevel);
 
             string timestamp = null;
-            string timestampFormat = FormatterOptions.TimestampFormat;
+            string timestampFormat = FormatterOptions.TimestampOptions.Timestampformat;
             if (timestampFormat != null)
             {
                 DateTimeOffset dateTimeOffset = GetCurrentDateTime();
@@ -67,7 +67,7 @@ namespace Nt.Core.Logging.File
                 textWriter.Write(timestamp);
                 textWriter.Write(']');
             }
-            if (logLevelString != null && FormatterOptions.ShowLogLevel)
+            if (logLevelString != null && FormatterOptions.LogLevel)
             {
                 textWriter.Write(logLevelString);
             }
@@ -97,7 +97,7 @@ namespace Nt.Core.Logging.File
 
         private DateTimeOffset GetCurrentDateTime()
         {
-            return FormatterOptions.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
+            return FormatterOptions.TimestampOptions.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
         }
 
         private void CreateDefaultLogMessage<TState>(TextWriter textWriter, in LogEntry<TState> logEntry, string message, IExternalScopeProvider scopeProvider)

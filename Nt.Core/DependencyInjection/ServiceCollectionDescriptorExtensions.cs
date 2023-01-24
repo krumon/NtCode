@@ -596,7 +596,7 @@ namespace Nt.Core.DependencyInjection
             if (implementationType == typeof(object) ||
                 implementationType == descriptor.ServiceType)
             {
-                throw new ArgumentException($"TryAddIndistinguishableTypeToEnumerable, {nameof(implementationType)}, {nameof(descriptor.ServiceType)}, {nameof(descriptor)}.");
+                throw new ArgumentException($"Try add indistinguishable type to enumerable, {nameof(implementationType)}, {nameof(descriptor.ServiceType)}, {nameof(descriptor)}.");
             }
 
             int count = services.Count;

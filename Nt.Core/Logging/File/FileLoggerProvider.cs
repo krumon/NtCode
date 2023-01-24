@@ -38,7 +38,7 @@ namespace Nt.Core.Logging.File
         /// </summary>
         /// <param name="options">The options to create <see cref="FileLogger"/> instances with.</param>
         /// <param name="formatter">Log formatter added for <see cref="FileLogger"/> instances.</param>
-        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, IOptionsMonitor<FileFormatter> formatter = null)
+        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, IOptionsMonitor<FileFormatter> formatter)
         {
             _loggers = new ConcurrentDictionary<string, FileLogger>();
             _currentOptions = options.CurrentValue;

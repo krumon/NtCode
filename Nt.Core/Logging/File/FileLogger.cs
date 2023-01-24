@@ -79,8 +79,8 @@ namespace Nt.Core.Logging.File
             }
             // Normalize path
             // TODO: Make use of configuration base path
-            var normalizedPath = Options.FileLogs[0].FileName.ToUpper();
-            var normalizedDirectory = Options.FileLogs[0].Directory;
+            var normalizedPath = Options.Name.ToUpper();
+            var normalizedDirectory = Options.Directory;
 
             if (!Directory.Exists(normalizedDirectory))
             {
