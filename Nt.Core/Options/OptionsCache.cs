@@ -7,8 +7,7 @@ namespace Nt.Core.Options
     /// Used to cache <typeparamref name="TOptions"/> instances.
     /// </summary>
     /// <typeparam name="TOptions">The type of options being requested.</typeparam>
-    public class OptionsCache<TOptions> :
-        IOptionsMonitorCache<TOptions>
+    public class OptionsCache<TOptions> : IOptionsMonitorCache<TOptions>
         where TOptions : class
     {
         private readonly ConcurrentDictionary<string, Lazy<TOptions>> _cache = new ConcurrentDictionary<string, Lazy<TOptions>>(concurrencyLevel: 1, capacity: 31, StringComparer.Ordinal); // 31 == default capacity

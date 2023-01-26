@@ -2,6 +2,7 @@
 using Nt.Core.Configuration;
 using Nt.Core.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Nt.Core.Logging.Internal
@@ -54,7 +55,7 @@ namespace Nt.Core.Logging.Internal
 
         private void LoadRules(LoggerFilterOptions options, IConfigurationSection configurationSection, string logger)
         {
-            foreach (System.Collections.Generic.KeyValuePair<string, string> section in configurationSection.AsEnumerable(true))
+            foreach (KeyValuePair<string, string> section in configurationSection.AsEnumerable(true))
             {
                 if (TryGetSwitch(section.Value, out LogLevel level))
                 {
@@ -82,7 +83,7 @@ namespace Nt.Core.Logging.Internal
             }
             else
             {
-                throw new InvalidOperationException($"ValueNotSupported, {value}.");
+                throw new InvalidOperationException($"Value Not Supported, {value}.");
             }
         }
     }

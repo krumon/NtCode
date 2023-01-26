@@ -4,9 +4,7 @@
     /// Implementation of <see cref="IOptions{TOptions}"/> and <see cref="IOptionsSnapshot{TOptions}"/>.
     /// </summary>
     /// <typeparam name="TOptions">Options type.</typeparam>
-    public class OptionsManager<TOptions> :
-        IOptions<TOptions>,
-        IOptionsSnapshot<TOptions>
+    public class OptionsManager<TOptions> : IOptions<TOptions>, IOptionsSnapshot<TOptions>
         where TOptions : class
     {
         private readonly IOptionsFactory<TOptions> _factory;

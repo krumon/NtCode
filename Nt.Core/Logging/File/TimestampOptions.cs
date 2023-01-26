@@ -33,7 +33,7 @@ namespace Nt.Core.Logging.File
         {
             StringWriter format = new StringWriter();
 
-            string dateFormat = "yyyy-MM-DD";
+            string dateFormat = "yyyy-mm-dd";
             string timeFormat = "HH:mm:ss";
             string millisecondsFormat = "ffff";
 

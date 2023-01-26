@@ -1,42 +1,8 @@
-[22:18:10]: ConsoleApp.Program[0]
+
+[2023-40-26 01:40:16]: ConsoleApp.Program[0]
              Creating hosting services. [Program.cs > Main() > Line 34]
              System.Exception: Exception test
-[22:18:10]: ConsoleApp.Program[0]
+[2023-40-26 01:40:16]: ConsoleApp.Program[0]
              Logging Service
-[22:18:10]: ConsoleApp.Program[0]
-             Logging a message by Krumon.
-[22:20:20]: ConsoleApp.Program[0]
-             Creating hosting services. [Program.cs > Main() > Line 34]
-             System.Exception: Exception test
-[22:20:20]: ConsoleApp.Program[0]
-             Logging Service
-[22:20:20]: ConsoleApp.Program[0]
-             Logging a message by Krumon.
-[23:16:04]: ConsoleApp.Program[0]
-             Creating hosting services. [Program.cs > Main() > Line 34]
-             System.Exception: Exception test
-[23:16:04]: ConsoleApp.Program[0]
-             Logging Service
-[23:16:04]: ConsoleApp.Program[0]
-             Logging a message by Krumon.
-[23:27:53]: ConsoleApp.Program[0]
-             Creating hosting services. [Program.cs > Main() > Line 34]
-             System.Exception: Exception test
-[23:27:53]: ConsoleApp.Program[0]
-             Logging Service
-[23:27:53]: ConsoleApp.Program[0]
-             Logging a message by Krumon.
-[23:29:10]: ConsoleApp.Program[0]
-             Creating hosting services. [Program.cs > Main() > Line 34]
-             System.Exception: Exception test
-[23:29:10]: ConsoleApp.Program[0]
-             Logging Service
-[23:29:10]: ConsoleApp.Program[0]
-             Logging a message by Krumon.
-[23:32:08]: ConsoleApp.Program[0]
-             Creating hosting services. [Program.cs > Main() > Line 34]
-             System.Exception: Exception test
-[23:32:08]: ConsoleApp.Program[0]
-             Logging Service
-[23:32:08]: ConsoleApp.Program[0]
+[2023-40-26 01:40:16]: ConsoleApp.Program[0]
              Logging a message by Krumon.

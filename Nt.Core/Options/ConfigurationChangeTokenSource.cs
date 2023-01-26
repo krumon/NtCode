@@ -11,7 +11,7 @@ namespace Nt.Core.Options
     /// <typeparam name="TOptions"></typeparam>
     public class ConfigurationChangeTokenSource<TOptions> : IOptionsChangeTokenSource<TOptions>
     {
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
 
         /// <summary>
         /// Constructor taking the <see cref="IConfiguration"/> instance to watch.

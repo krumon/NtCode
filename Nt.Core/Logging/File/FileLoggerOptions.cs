@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Nt.Core.Logging.File
 {
@@ -10,7 +9,7 @@ namespace Nt.Core.Logging.File
     {
         #region Public Properties
 
-        public LogLevel LogLevel { get; set; }
+        //public LogLevel LogLevel { get; set; }
         public string FormatterName { get; set; }
 
         /// <summary>

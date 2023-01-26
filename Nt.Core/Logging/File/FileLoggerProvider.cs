@@ -18,9 +18,8 @@ namespace Nt.Core.Logging.File
         private readonly IExternalScopeProvider _scopeProvider = NullExternalScopeProvider.Instance;
 
         private readonly IDisposable _optionsReloadToken;
-        private readonly IDisposable _formatterReloadToken;
         private FileLoggerOptions _currentOptions;
-        private FileFormatter _currentFormatter;
+        private FileFormatter _formatter;
 
         #endregion
 
@@ -30,28 +29,21 @@ namespace Nt.Core.Logging.File
         /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options)
-            : this(options, null) { }
+        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options) : this(options, null) { }
 
         /// <summary>
         /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="FileLogger"/> instances with.</param>
         /// <param name="formatter">Log formatter added for <see cref="FileLogger"/> instances.</param>
-        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, IOptionsMonitor<FileFormatter> formatter)
+        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, FileFormatter formatter)
         {
-            _loggers = new ConcurrentDictionary<string, FileLogger>();
             _currentOptions = options.CurrentValue;
-            _currentFormatter = formatter == null ? new FileFormatter() : formatter.CurrentValue;
+            _loggers = new ConcurrentDictionary<string, FileLogger>();
 
             SetFormatters(formatter);
             ReloadFileLoggerOptions(options.CurrentValue);
             _optionsReloadToken = options.OnChange(ReloadFileLoggerOptions);
-            if (formatter != null)
-            {
-                ReloadFileLoggersFormatter(formatter.CurrentValue);
-                _formatterReloadToken = formatter.OnChange(ReloadFileLoggersFormatter);
-            }
         }
 
         #endregion
@@ -69,7 +61,6 @@ namespace Nt.Core.Logging.File
         public void Dispose()
         {
             _optionsReloadToken?.Dispose();
-            _formatterReloadToken?.Dispose();
             _loggers.Clear();
         }
 
@@ -78,17 +69,8 @@ namespace Nt.Core.Logging.File
         #region Private methods
 
         private FileLoggerOptions GetCurrentOptions() => _currentOptions;
-        private FileFormatter GetCurrentFormatter() => _currentFormatter;
-
-        private void SetFormatters(IOptionsMonitor<FileFormatter> formatter = null)
-        {
-            _currentFormatter = formatter.CurrentValue ?? new FileFormatter();
-
-            foreach (KeyValuePair<string, FileLogger> logger in _loggers)
-            {
-                logger.Value.Formatter = _currentFormatter;
-            }
-        }
+        private FileFormatter GetCurrentFormatter() => _formatter;
+        private void SetFormatters(FileFormatter formatter = null) => ReloadFileLoggersFormatter(formatter);
 
         // warning:  ReloadLoggerOptions can be called before the ctor completed,... before registering all of the state used in this method need to be initialized
         private void ReloadFileLoggerOptions(FileLoggerOptions currentOptions)
@@ -101,7 +83,7 @@ namespace Nt.Core.Logging.File
 
         private void ReloadFileLoggersFormatter(FileFormatter formatter)
         {
-            _currentFormatter = formatter ?? new FileFormatter();
+            _formatter = formatter ?? new FileFormatter();
 
             foreach (KeyValuePair<string, FileLogger> logger in _loggers)
                 logger.Value.Formatter = GetCurrentFormatter();

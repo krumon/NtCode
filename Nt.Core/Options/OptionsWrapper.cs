@@ -4,8 +4,7 @@
     /// <see cref="IOptions{TOptions}"/> wrapper that returns the options instance.
     /// </summary>
     /// <typeparam name="TOptions">Options type.</typeparam>
-    public class OptionsWrapper<TOptions> :
-        IOptions<TOptions>
+    public class OptionsWrapper<TOptions> : IOptions<TOptions>
         where TOptions : class
     {
         /// <summary>

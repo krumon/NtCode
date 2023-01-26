@@ -21,7 +21,7 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
-            //Microsoft.Extensions.Hosting.Host
+            //Microsoft.Extensions.Logging.Console.
             //Microsoft.Extensions.Hosting.Internal.Host
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
@@ -35,6 +35,7 @@ namespace ConsoleApp
             _logger?.LogWarning("Logging Service");
             _logger?.LogError("Logging a message by {format}.",format);
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
+            IConfiguration configure = _host?.Services.GetService<IConfiguration>();
         }
 
         private static void UseNinjascriptHost()

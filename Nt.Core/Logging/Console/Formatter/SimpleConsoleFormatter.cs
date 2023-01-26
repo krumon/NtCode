@@ -3,48 +3,35 @@ using Nt.Core.Options;
 using System;
 using System.IO;
 
-namespace Nt.Core.Logging.File
+namespace Nt.Core.Logging.Console
 {
-    public class FileFormatter: IDisposable
+    internal sealed class SimpleConsoleFormatter : ConsoleFormatter, IDisposable
     {
         private const string LoglevelPadding = ": ";
         private static readonly string _messagePadding = new string(' ', GetLogLevelString(LogLevel.Information).Length + LoglevelPadding.Length);
         private static readonly string _newLineWithMessagePadding = Environment.NewLine + _messagePadding;
         private readonly IDisposable _optionsReloadToken;
-        internal FileFormatterOptions FormatterOptions { get; set; }
 
-        public FileFormatter() : this(string.Empty, null) { }
-        public FileFormatter(string name) : this(name, null) { }
-        public FileFormatter(string name, IOptionsMonitor<FileFormatterOptions> options)
+        public SimpleConsoleFormatter(IOptionsMonitor<SimpleConsoleFormatterOptions> options)
+            : base(ConsoleFormatterNames.Simple)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-
-            if (options== null) 
-                FormatterOptions = new FileFormatterOptions();
-            else
-            {
-                FormatterOptions = options.CurrentValue;
-                ReloadFileLoggerOptions(options.CurrentValue);
-                _optionsReloadToken = options.OnChange(ReloadFileLoggerOptions);
-            }
+            ReloadLoggerOptions(options.CurrentValue);
+            _optionsReloadToken = options.OnChange(ReloadLoggerOptions);
         }
 
-        /// <summary>
-        /// Gets the name associated with the console log formatter.
-        /// </summary>
-        public string Name { get; }
+        private void ReloadLoggerOptions(SimpleConsoleFormatterOptions options)
+        {
+            FormatterOptions = options;
+        }
 
-        /// <summary>
-        /// Writes the log message to the specified TextWriter.
-        /// </summary>
-        /// <remarks>
-        /// if the formatter wants to write colors to the console, it can do so by embedding ANSI color codes into the string
-        /// </remarks>
-        /// <param name="logEntry">The log entry.</param>
-        /// <param name="scopeProvider">The provider of scope data.</param>
-        /// <param name="textWriter">The string writer embedding ansi code for colors.</param>
-        /// <typeparam name="TState">The type of the object to be written.</typeparam>
-        public void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
+        public void Dispose()
+        {
+            _optionsReloadToken?.Dispose();
+        }
+
+        internal SimpleConsoleFormatterOptions FormatterOptions { get; set; }
+
+        public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
         {
             string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
             if (logEntry.Exception == null && message == null)
@@ -52,10 +39,11 @@ namespace Nt.Core.Logging.File
                 return;
             }
             LogLevel logLevel = logEntry.LogLevel;
+            ConsoleColors logLevelColors = GetLogLevelConsoleColors(logLevel);
             string logLevelString = GetLogLevelString(logLevel);
 
             string timestamp = null;
-            string timestampFormat = FormatterOptions.TimestampOptions.Timestampformat;
+            string timestampFormat = FormatterOptions.TimestampFormat;
             if (timestampFormat != null)
             {
                 DateTimeOffset dateTimeOffset = GetCurrentDateTime();
@@ -63,41 +51,13 @@ namespace Nt.Core.Logging.File
             }
             if (timestamp != null)
             {
-                textWriter.Write('[');
                 textWriter.Write(timestamp);
-                textWriter.Write(']');
             }
-            if (logLevelString != null && FormatterOptions.LogLevel)
+            if (logLevelString != null)
             {
-                textWriter.Write(logLevelString);
+                textWriter.WriteColoredMessage(logLevelString, logLevelColors.Background, logLevelColors.Foreground);
             }
             CreateDefaultLogMessage(textWriter, logEntry, message, scopeProvider);
-        }
-
-        private static string GetLogLevelString(LogLevel logLevel)
-        {
-            switch (logLevel)
-            {
-                case LogLevel.Trace:
-                    return "Trace";
-                case LogLevel.Debug:
-                    return "Debug";
-                case LogLevel.Information:
-                    return "Information";
-                case LogLevel.Warning:
-                    return "Warning";
-                case LogLevel.Error:
-                    return "Error";
-                case LogLevel.Critical:
-                    return "Critical";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(logLevel));
-            }
-        }
-
-        private DateTimeOffset GetCurrentDateTime()
-        {
-            return FormatterOptions.TimestampOptions.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
         }
 
         private void CreateDefaultLogMessage<TState>(TextWriter textWriter, in LogEntry<TState> logEntry, string message, IExternalScopeProvider scopeProvider)
@@ -110,24 +70,22 @@ namespace Nt.Core.Logging.File
             // info: ConsoleApp.Program[10]
             //       Request received
 
-            // Example (single line):
-            // [2022-09-20 15:35:15]info: Request received
-
             // category and event id
             textWriter.Write(LoglevelPadding);
+            textWriter.Write(logEntry.Category);
+            textWriter.Write('[');
 
-            if (!singleLine)
-            {
-                textWriter.Write(logEntry.Category);
-                textWriter.Write('[');
 #if NETCOREAPP
             Span<char> span = stackalloc char[10];
             if (eventId.TryFormat(span, out int charsWritten))
                 textWriter.Write(span.Slice(0, charsWritten));
             else
 #endif
-                textWriter.Write(eventId.ToString());
-                textWriter.Write(']');
+            textWriter.Write(eventId.ToString());
+
+            textWriter.Write(']');
+            if (!singleLine)
+            {
                 textWriter.Write(Environment.NewLine);
             }
 
@@ -167,6 +125,52 @@ namespace Nt.Core.Logging.File
             }
 
         }
+        private static void WriteReplacing(TextWriter writer, string oldValue, string newValue, string message)
+        {
+            string newMessage = message.Replace(oldValue, newValue);
+            writer.Write(newMessage);
+        }
+
+        private DateTimeOffset GetCurrentDateTime()
+        {
+            return FormatterOptions.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
+        }
+
+        private static string GetLogLevelString(LogLevel logLevel)
+        {
+            switch (logLevel)
+            {
+                case LogLevel.Trace: return "trce";
+                case LogLevel.Debug: return "dbug";
+                case LogLevel.Information: return "info";
+                case LogLevel.Warning: return "warn";
+                case LogLevel.Error: return "fail";
+                case LogLevel.Critical: return "crit";
+                default: throw new ArgumentOutOfRangeException(nameof(logLevel));
+            }
+        }
+
+        private ConsoleColors GetLogLevelConsoleColors(LogLevel logLevel)
+        {
+            bool disableColors = (FormatterOptions.ColorBehavior == LoggerColorBehavior.Disabled) ||
+                (FormatterOptions.ColorBehavior == LoggerColorBehavior.Default && System.Console.IsOutputRedirected);
+            if (disableColors)
+            {
+                return new ConsoleColors(null, null);
+            }
+            // We must explicitly set the background color if we are setting the foreground color,
+            // since just setting one can look bad on the users console.
+            switch (logLevel)
+            {
+                case LogLevel.Trace: return new ConsoleColors(ConsoleColor.Gray, ConsoleColor.Black);
+                case LogLevel.Debug: return new ConsoleColors(ConsoleColor.Gray, ConsoleColor.Black);
+                case LogLevel.Information: return new ConsoleColors(ConsoleColor.DarkGreen, ConsoleColor.Black);
+                case LogLevel.Warning: return new ConsoleColors(ConsoleColor.Yellow, ConsoleColor.Black);
+                case LogLevel.Error: return new ConsoleColors(ConsoleColor.Black, ConsoleColor.DarkRed);
+                case LogLevel.Critical: return new ConsoleColors(ConsoleColor.White, ConsoleColor.DarkRed);
+                default: return new ConsoleColors(null, null);
+            }
+        }
 
         private void WriteScopeInformation(TextWriter textWriter, IExternalScopeProvider scopeProvider, bool singleLine)
         {
@@ -195,21 +199,17 @@ namespace Nt.Core.Logging.File
             }
         }
 
-        private static void WriteReplacing(TextWriter writer, string oldValue, string newValue, string message)
+        private readonly struct ConsoleColors
         {
-            string newMessage = message.Replace(oldValue, newValue);
-            writer.Write(newMessage);
-        }
+            public ConsoleColors(ConsoleColor? foreground, ConsoleColor? background)
+            {
+                Foreground = foreground;
+                Background = background;
+            }
 
-        private void ReloadFileLoggerOptions(FileFormatterOptions options)
-        {
-            FormatterOptions = options;
-        }
+            public ConsoleColor? Foreground { get; }
 
-        public void Dispose()
-        {
-            _optionsReloadToken?.Dispose();
+            public ConsoleColor? Background { get; }
         }
-
     }
 }
