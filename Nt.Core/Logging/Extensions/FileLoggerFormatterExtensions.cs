@@ -18,12 +18,12 @@ namespace Nt.Core.Logging
         /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
         [RequiresUnreferencedCode(TrimmingRequiresUnreferencedCodeMessage)]
         public static ILoggingBuilder AddFileFormatter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFormatter, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TOptions>(this ILoggingBuilder builder)
-            where TOptions : FileFormatterOptions
-            where TFormatter : FileFormatter
+            where TFormatter : BaseFileFormatter
+            where TOptions : BaseFileFormatterOptions
         {
             builder.AddConfiguration();
 
-            builder.Services.TryAdd(ServiceDescriptor.Singleton<FileFormatter, TFormatter>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<BaseFileFormatter, TFormatter>());
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<TOptions>, FileLoggerFormatterConfigureOptions<TFormatter, TOptions>>());
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IOptionsChangeTokenSource<TOptions>, FileLoggerFormatterOptionsChangeTokenSource<TFormatter, TOptions>>());
 

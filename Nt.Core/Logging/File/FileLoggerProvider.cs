@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using Nt.Core.Logging.Console;
 using Nt.Core.Logging.Internal;
 using Nt.Core.Options;
 
@@ -19,7 +20,8 @@ namespace Nt.Core.Logging.File
 
         private readonly IDisposable _optionsReloadToken;
         private FileLoggerOptions _currentOptions;
-        private FileFormatter _formatter;
+        //private FileFormatter _formatter;
+        private ConcurrentDictionary<string, BaseFileFormatter> _formatters;
 
         #endregion
 
@@ -29,19 +31,19 @@ namespace Nt.Core.Logging.File
         /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options) : this(options, null) { }
+        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options) : this(options, Array.Empty<BaseFileFormatter>()) { }
 
         /// <summary>
         /// Creates an instance of <see cref="ConsoleLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="FileLogger"/> instances with.</param>
-        /// <param name="formatter">Log formatter added for <see cref="FileLogger"/> instances.</param>
-        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, FileFormatter formatter)
+        /// <param name="formatters">Log formatter added for <see cref="FileLogger"/> instances.</param>
+        public FileLoggerProvider(IOptionsMonitor<FileLoggerOptions> options, IEnumerable<BaseFileFormatter> formatters)
         {
             _currentOptions = options.CurrentValue;
             _loggers = new ConcurrentDictionary<string, FileLogger>();
 
-            SetFormatters(formatter);
+            SetFormatters(formatters);
             ReloadFileLoggerOptions(options.CurrentValue);
             _optionsReloadToken = options.OnChange(ReloadFileLoggerOptions);
         }
@@ -69,8 +71,30 @@ namespace Nt.Core.Logging.File
         #region Private methods
 
         private FileLoggerOptions GetCurrentOptions() => _currentOptions;
-        private FileFormatter GetCurrentFormatter() => _formatter;
-        private void SetFormatters(FileFormatter formatter = null) => ReloadFileLoggersFormatter(formatter);
+        // TODO: Devuelvo un valor por defecto. El usuario debería poder elegir el tipo de formato
+        private BaseFileFormatter GetCurrentFormatter() => _formatters[FileFormatterNames.Normal];
+        private void SetFormatters(IEnumerable<BaseFileFormatter> formatters)
+        {
+            var cd = new ConcurrentDictionary<string, BaseFileFormatter>(StringComparer.OrdinalIgnoreCase);
+
+            bool added = false;
+            if (formatters != null)
+            {
+                foreach (BaseFileFormatter formatter in formatters)
+                {
+                    cd.TryAdd(formatter.Name, formatter);
+                    added = true;
+                }
+            }
+
+            if (!added)
+            {
+                cd.TryAdd(FileFormatterNames.Normal, new FileFormatter(new FileFormatterOptionsMonitor<FileFormatterOptions>(new FileFormatterOptions())));
+            }
+
+            _formatters = cd;
+        }
+
 
         // warning:  ReloadLoggerOptions can be called before the ctor completed,... before registering all of the state used in this method need to be initialized
         private void ReloadFileLoggerOptions(FileLoggerOptions currentOptions)
@@ -78,15 +102,10 @@ namespace Nt.Core.Logging.File
             _currentOptions = currentOptions ?? new FileLoggerOptions();
 
             foreach (KeyValuePair<string, FileLogger> logger in _loggers)
+            {
                 logger.Value.Options = GetCurrentOptions();
-        }
-
-        private void ReloadFileLoggersFormatter(FileFormatter formatter)
-        {
-            _formatter = formatter ?? new FileFormatter();
-
-            foreach (KeyValuePair<string, FileLogger> logger in _loggers)
                 logger.Value.Formatter = GetCurrentFormatter();
+            }
         }
 
         #endregion

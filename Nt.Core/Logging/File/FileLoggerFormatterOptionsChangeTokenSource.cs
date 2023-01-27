@@ -6,8 +6,8 @@ namespace Nt.Core.Logging.File
 {
     [UnsupportedOSPlatform("browser")]
     internal sealed class FileLoggerFormatterOptionsChangeTokenSource<TFormatter, TOptions> : ConfigurationChangeTokenSource<TOptions>
-        where TOptions : FileFormatterOptions
-        where TFormatter : FileFormatter
+        where TFormatter : BaseFileFormatter
+        where TOptions : BaseFileFormatterOptions
     {
         public FileLoggerFormatterOptionsChangeTokenSource(ILoggerProviderConfiguration<FileLoggerProvider> providerConfiguration)
             : base(providerConfiguration.Configuration.GetSection("FormatterOptions"))

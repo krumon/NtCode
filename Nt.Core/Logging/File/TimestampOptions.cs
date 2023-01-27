@@ -5,11 +5,30 @@ namespace Nt.Core.Logging.File
 {
     public class TimestampOptions
     {
+        /// <summary>
+        /// Whether to log the date as part of the message.
+        /// </summary>
         public bool LogDate { get; set; }
-        public bool LogTime { get; set; }  
-        public bool LogMilliseconds { get; set; } 
-        public bool UseUtcTimestamp { get; set; }   
-        public string Timestampformat { get; set; }
+
+        /// <summary>
+        /// Whether to log the time as part of the message.
+        /// </summary>
+        public bool LogTime { get; set; }
+
+        /// <summary>
+        /// Whether to log the milliseconds as part of the message.
+        /// </summary>
+        public bool LogMilliseconds { get; set; }
+
+        /// <summary>
+        /// Gets or sets indication whether or not UTC timezone should be used to for timestamps in logging messages. Defaults to <c>false</c>.
+        /// </summary>
+        public bool UseUtcTimestamp { get; set; }
+
+        /// <summary>
+        /// Gets or sets format string used to format timestamp in logging messages. Defaults to <c>null</c>.
+        /// </summary>
+        public string TimestampFormat { get; set; }
 
         public TimestampOptions() : this(false)
         {
@@ -26,7 +45,7 @@ namespace Nt.Core.Logging.File
             LogDate = logDate;
             LogTime = logTime;
             LogMilliseconds = logMilliseconds;
-            Timestampformat = GetTimestampFormat(logDate,logTime,logMilliseconds);
+            TimestampFormat = GetTimestampFormat(logDate,logTime,logMilliseconds);
         }
 
         private string GetTimestampFormat(bool includeDate, bool includeTime, bool includeMilliseconds)

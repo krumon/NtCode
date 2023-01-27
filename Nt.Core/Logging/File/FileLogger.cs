@@ -22,7 +22,7 @@ namespace Nt.Core.Logging.File
         private readonly string _name;
 
         internal FileLoggerOptions Options { get; set; }
-        internal FileFormatter Formatter { get; set; }
+        internal BaseFileFormatter Formatter { get; set; }
         internal IExternalScopeProvider ScopeProvider { get; set; }
         [ThreadStatic]
         private static StringWriter t_stringWriter;

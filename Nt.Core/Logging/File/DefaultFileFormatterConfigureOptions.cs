@@ -6,7 +6,7 @@ namespace Nt.Core.Logging.File
     {
         public DefaultFileFormatterConfigureOptions() : base(options => 
         {
-            options.SingleLine = true;
+            options.Singleline = true;
             options.LogLevel = true;
             options.TimestampOptions = new TimestampOptions();
 

@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Nt.Core.Logging.File
 {
-    public class FileFormatter: IDisposable
+    public class FileFormatter: BaseFileFormatter, IDisposable
     {
         private const string LoglevelPadding = ": ";
         private static readonly string _messagePadding = new string(' ', GetLogLevelString(LogLevel.Information).Length + LoglevelPadding.Length);
@@ -13,12 +13,8 @@ namespace Nt.Core.Logging.File
         private readonly IDisposable _optionsReloadToken;
         internal FileFormatterOptions FormatterOptions { get; set; }
 
-        public FileFormatter() : this(string.Empty, null) { }
-        public FileFormatter(string name) : this(name, null) { }
-        public FileFormatter(string name, IOptionsMonitor<FileFormatterOptions> options)
+        public FileFormatter(IOptionsMonitor<FileFormatterOptions> options) : base(FileFormatterNames.Normal)
         {
-            Name = name ?? throw new ArgumentNullException(nameof(name));
-
             if (options== null) 
                 FormatterOptions = new FileFormatterOptions();
             else
@@ -30,11 +26,6 @@ namespace Nt.Core.Logging.File
         }
 
         /// <summary>
-        /// Gets the name associated with the console log formatter.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
         /// Writes the log message to the specified TextWriter.
         /// </summary>
         /// <remarks>
@@ -44,7 +35,7 @@ namespace Nt.Core.Logging.File
         /// <param name="scopeProvider">The provider of scope data.</param>
         /// <param name="textWriter">The string writer embedding ansi code for colors.</param>
         /// <typeparam name="TState">The type of the object to be written.</typeparam>
-        public void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
+        public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
         {
             string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
             if (logEntry.Exception == null && message == null)
@@ -55,7 +46,7 @@ namespace Nt.Core.Logging.File
             string logLevelString = GetLogLevelString(logLevel);
 
             string timestamp = null;
-            string timestampFormat = FormatterOptions.TimestampOptions.Timestampformat;
+            string timestampFormat = FormatterOptions.TimestampOptions.TimestampFormat;
             if (timestampFormat != null)
             {
                 DateTimeOffset dateTimeOffset = GetCurrentDateTime();
@@ -102,7 +93,7 @@ namespace Nt.Core.Logging.File
 
         private void CreateDefaultLogMessage<TState>(TextWriter textWriter, in LogEntry<TState> logEntry, string message, IExternalScopeProvider scopeProvider)
         {
-            bool singleLine = FormatterOptions.SingleLine;
+            bool singleLine = FormatterOptions.Singleline;
             int eventId = logEntry.EventId.Id;
             Exception exception = logEntry.Exception;
 

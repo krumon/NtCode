@@ -8,17 +8,17 @@
         /// <summary>
         /// Reserved name for system file formatter
         /// </summary>
-        public const string System = "System";
+        public const string Normal = "Normal";
 
         /// <summary>
         /// Reserved name for boot file formatter
         /// </summary>
-        public const string Boot = "Boot";
+        public const string Short = "Short";
 
         /// <summary>
         /// Reserved name for secure file formatter
         /// </summary>
-        public const string Secure = "Secure";
+        public const string Large = "Large";
 
     }
 }
