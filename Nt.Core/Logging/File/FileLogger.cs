@@ -79,26 +79,27 @@ namespace Nt.Core.Logging.File
             }
             // Normalize path
             // TODO: Make use of configuration base path
-            var normalizedPath = Options.Name.ToUpper();
-            var normalizedDirectory = Options.Directory;
+            //var normalizedPath = Options.Name.ToUpper();
+            //var normalizedDirectory = Options.Directory;
+            var normalizedPath = Path.Combine(homeDirectory, "syslog.txt");
 
-            if (!Directory.Exists(normalizedDirectory))
-            {
-                try
-                {
-                    Directory.CreateDirectory(normalizedDirectory);
-                }
-                catch(DirectoryNotFoundException ex1)
-                {
-                    if (Directory.Exists(homeDirectory))
-                        normalizedDirectory = homeDirectory;
-                }
-                catch(UnauthorizedAccessException ex2)
-                {
-                    if (Directory.Exists(workDirectory))
-                        normalizedDirectory = workDirectory;
-                }
-            }
+            //if (!Directory.Exists(normalizedDirectory))
+            //{
+            //    try
+            //    {
+            //        Directory.CreateDirectory(normalizedDirectory);
+            //    }
+            //    catch(DirectoryNotFoundException ex1)
+            //    {
+            //        if (Directory.Exists(homeDirectory))
+            //            normalizedDirectory = homeDirectory;
+            //    }
+            //    catch(UnauthorizedAccessException ex2)
+            //    {
+            //        if (Directory.Exists(workDirectory))
+            //            normalizedDirectory = workDirectory;
+            //    }
+            //}
 
             var fileLock = default(object);
 
@@ -117,7 +118,8 @@ namespace Nt.Core.Logging.File
                 //    Directory.CreateDirectory(Options.FileLogs[0].Directory);
 
                 // Open the file
-                using (var fileStream = new StreamWriter(System.IO.File.Open(Path.Combine(normalizedDirectory, normalizedPath), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
+                //using (var fileStream = new StreamWriter(System.IO.File.Open(Path.Combine(normalizedDirectory, normalizedPath), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
+                using (var fileStream = new StreamWriter(System.IO.File.Open(normalizedPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
                 {
                     // Go to end
                     fileStream.BaseStream.Seek(0, SeekOrigin.End);

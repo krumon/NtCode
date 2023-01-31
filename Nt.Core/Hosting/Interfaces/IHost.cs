@@ -36,6 +36,8 @@ namespace Nt.Core.Hosting
 
         #region Added properties and methods
 
+        void LogInformation(string message);
+
         ///// <summary>
         ///// Indicates if the session is updated.
         ///// </summary>
