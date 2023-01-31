@@ -281,6 +281,8 @@ namespace Nt.Core.Hosting.Internal
             print?.Invoke(_sessions.Iterator.ToString());
         }
 
+        public void LogInformation (string message) => _logger.LogInformation(message);
+
         #endregion
 
         #region Private methods

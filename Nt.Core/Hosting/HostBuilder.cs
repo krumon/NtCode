@@ -8,7 +8,7 @@ using Nt.Core.Options;
 using Nt.Core.Services;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+//using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
@@ -130,13 +130,13 @@ namespace Nt.Core.Hosting
 
             // REVIEW: If we want to raise more events outside of these calls then we will need to
             // stash this in a field.
-            using (var diagnosticListener = new DiagnosticListener("Microsoft.Extensions.Host"))
-            {
-                const string hostBuildingEventName = "HostBuilding";
-                const string hostBuiltEventName = "HostBuilt";
+            //using (var diagnosticListener = new DiagnosticListener("Nt.Core.Hosting"))
+            //{
+            //    const string hostBuildingEventName = "HostBuilding";
+            //    const string hostBuiltEventName = "HostBuilt";
 
-                if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
-                    Write(diagnosticListener, hostBuildingEventName, this);
+            //    if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
+            //        Write(diagnosticListener, hostBuildingEventName, this);
 
                 BuildHostConfiguration();
                 CreateHostingEnvironment();
@@ -145,22 +145,22 @@ namespace Nt.Core.Hosting
                 CreateServiceProvider();
 
                 var host = _services.GetRequiredService<IHost>();
-                if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
-                    Write(diagnosticListener, hostBuiltEventName, host);
+                //if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
+                //    Write(diagnosticListener, hostBuiltEventName, host);
 
                 return host;
-            }
+            //}
         }
 
-        [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:UnrecognizedReflectionPattern",
-        Justification = "The values being passed into Write are being consumed by the application already.")]
-        private static void Write<T>(
-            DiagnosticSource diagnosticSource,
-            string name,
-            T value)
-        {
-            diagnosticSource.Write(name, value);
-        }
+        //[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:UnrecognizedReflectionPattern",
+        //Justification = "The values being passed into Write are being consumed by the application already.")]
+        //private static void Write<T>(
+        //    DiagnosticSource diagnosticSource,
+        //    string name,
+        //    T value)
+        //{
+        //    diagnosticSource.Write(name, value);
+        //}
 
         private void BuildHostConfiguration()
         {

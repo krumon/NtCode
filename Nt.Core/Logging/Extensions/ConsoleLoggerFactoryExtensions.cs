@@ -21,7 +21,7 @@ namespace Nt.Core.Logging
         {
             builder.AddConfiguration();
 
-            builder.AddConsoleFormatter<JsonConsoleFormatter, JsonConsoleFormatterOptions>();
+            //builder.AddConsoleFormatter<JsonConsoleFormatter, JsonConsoleFormatterOptions>();
             builder.AddConsoleFormatter<SystemdConsoleFormatter, SimpleConsoleFormatterOptions>();
             builder.AddConsoleFormatter<SimpleConsoleFormatter, SimpleConsoleFormatterOptions>();
 
@@ -71,15 +71,15 @@ namespace Nt.Core.Logging
         public static ILoggingBuilder AddJsonConsole(this ILoggingBuilder builder) =>
             builder.AddFormatterWithName(ConsoleFormatterNames.Json);
 
-        /// <summary>
-        /// Add and configure a console log formatter named 'json' to the factory.
-        /// </summary>
-        /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
-        /// <param name="configure">A delegate to configure the <see cref="ConsoleLogger"/> options for the built-in json log formatter.</param>
-        public static ILoggingBuilder AddJsonConsole(this ILoggingBuilder builder, Action<JsonConsoleFormatterOptions> configure)
-        {
-            return builder.AddConsoleWithFormatter<JsonConsoleFormatterOptions>(ConsoleFormatterNames.Json, configure);
-        }
+        ///// <summary>
+        ///// Add and configure a console log formatter named 'json' to the factory.
+        ///// </summary>
+        ///// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
+        ///// <param name="configure">A delegate to configure the <see cref="ConsoleLogger"/> options for the built-in json log formatter.</param>
+        //public static ILoggingBuilder AddJsonConsole(this ILoggingBuilder builder, Action<JsonConsoleFormatterOptions> configure)
+        //{
+        //    return builder.AddConsoleWithFormatter<JsonConsoleFormatterOptions>(ConsoleFormatterNames.Json, configure);
+        //}
 
         /// <summary>
         /// Add and configure a console log formatter named 'systemd' to the factory.
