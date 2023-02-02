@@ -289,7 +289,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 			if (State == State.SetDefaults)
 			{
 				//LabelType = LabelType.Price;
-				Name = "Name"; //Custom.Resource.NinjaScriptDrawingToolLine;
+				Name = "FileName"; //Custom.Resource.NinjaScriptDrawingToolLine;
 				DrawingState = DrawingState.Building;
 				DisplayOnChartsMenus = false;
 
@@ -297,7 +297,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 				{
 					IsEditing = true,
 					DrawingTool = this,
-					DisplayName = "Display Name", //NtCore.Resources.Texts.LabelLineDisplayName,
+					DisplayName = "Display FileName", //NtCore.Resources.Texts.LabelLineDisplayName,
 					IsBrowsable = true,
 					IsXPropertiesVisible = false
 				};
@@ -696,7 +696,7 @@ namespace NinjaTrader.NinjaScript.DrawingTools
 		{
 			yield return new AlertConditionItem
 			{
-				Name = "Name", // Custom.Resource.NinjaScriptDrawingToolLine,
+				Name = "FileName", // Custom.Resource.NinjaScriptDrawingToolLine,
 				ShouldOnlyDisplayName = true
 			};
 		}

@@ -1,4 +1,5 @@
-﻿using Nt.Core.Logging.Abstractions;
+﻿using Nt.Core.FileProviders.Physical.Internal;
+using Nt.Core.Logging.Abstractions;
 using Nt.Core.Logging.Internal;
 using System;
 using System.Collections.Concurrent;
@@ -11,15 +12,14 @@ namespace Nt.Core.Logging.File
     /// </summary>
     internal class FileLogger : ILogger
     {
-        private const string homeDirectory = "C:\\Users\\Usuario\\Documents\\GitHub\\NtCode";
-        private const string workDirectory = "C:\\Users\\enrique.rueda\\Documents\\kike\\GitHub\\NtCode";
+        //private const string homeDirectory = "C:\\Users\\Usuario\\Documents\\GitHub\\NtCode";
+        //private const string workDirectory = "C:\\Users\\enrique.rueda\\Documents\\kike\\GitHub\\NtCode";
         
         #region Private members
 
-        /// <summary>
-        /// Represents the name of the logger.
-        /// </summary>
         private readonly string _name;
+        private string _normalizePath = string.Empty;
+        private object _lock = default;
 
         internal FileLoggerOptions Options { get; set; }
         internal BaseFileFormatter Formatter { get; set; }
@@ -50,7 +50,7 @@ namespace Nt.Core.Logging.File
         /// </summary>
         /// <param name="name">The category name of the logger.</param>
         /// <param name="getCurrentConfig">The current configuration.</param>
-        public FileLogger( string name) => _name = name;
+        public FileLogger(string name) => _name = name;
 
         #endregion
 
@@ -77,55 +77,23 @@ namespace Nt.Core.Logging.File
             {
                 sb.Capacity = 1024;
             }
-            // Normalize path
-            // TODO: Make use of configuration base path
-            var normalizedPath = Options.Name.ToUpper();
-            var normalizedDirectory = Options.Directory;
 
-            if (!Directory.Exists(normalizedDirectory))
-            {
-                try
-                {
-                    Directory.CreateDirectory(normalizedDirectory);
-                }
-                catch(DirectoryNotFoundException ex1)
-                {
-                    if (Directory.Exists(homeDirectory))
-                        normalizedDirectory = homeDirectory;
-                }
-                catch(UnauthorizedAccessException ex2)
-                {
-                    if (Directory.Exists(workDirectory))
-                        normalizedDirectory = workDirectory;
-                }
-            }
-
-            var fileLock = default(object);
+            _normalizePath = GetNormalizePath(Options.Directory, Options.FileName);
 
             // Double safety even though the FileLocks should be thread safe
             lock (FileLockLock)
             {
                 // Get the file lock based on the absolute path
-                fileLock = FileLocks.GetOrAdd(normalizedPath, path => new object());
+                _lock = FileLocks.GetOrAdd(_normalizePath, path => new object());
             }
 
             // Lock the file
-            lock (fileLock)
+            lock (_lock)
             {
-                //// Ensure folder
-                //if (!Directory.Exists(Options.FileLogs[0].Directory))
-                //    Directory.CreateDirectory(Options.FileLogs[0].Directory);
-
                 // Open the file
-                using (var fileStream = new StreamWriter(System.IO.File.Open(Path.Combine(normalizedDirectory, normalizedPath), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
+                using (var writer = new StreamWriter(System.IO.File.Open(_normalizePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
                 {
-                    // Go to end
-                    fileStream.BaseStream.Seek(0, SeekOrigin.End);
-
-                    // NOTE: Ignore logToTop in configuration as not efficient for files on OS
-
-                    // Write the message to the file
-                    fileStream.Write(computedAnsiString);
+                    WriteToFile(writer, computedAnsiString);
                 }
             }
         }
@@ -149,5 +117,63 @@ namespace Nt.Core.Logging.File
         /// <returns></returns>
         public IDisposable BeginScope<TState>(TState state) => ScopeProvider?.Push(state) ?? NullScope.Instance;
 
+        private string NormalizeDirectoryPath(string directoryPath)
+        {
+            string invalidChars = System.Text.RegularExpressions.Regex.Escape(
+                 new string(Path.GetInvalidPathChars())
+            );
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+
+            string dir = System.Text.RegularExpressions.Regex.Replace(directoryPath, invalidRegStr, "_");
+
+            EnsureExistDirectory(dir);
+
+            return dir;
+        }
+        private void EnsureExistDirectory(string normalizeDirectoryPath)
+        {
+            if (Directory.Exists(normalizeDirectoryPath))
+                return;
+            try
+            {
+                Directory.CreateDirectory(normalizeDirectoryPath);
+            }
+            //catch (DirectoryNotFoundException ex1)
+            //{
+            //    if (Directory.Exists(homeDirectory))
+            //        normalizeDirectoryPath = homeDirectory;
+            //}
+            //catch (UnauthorizedAccessException ex2)
+            //{
+            //    if (Directory.Exists(workDirectory))
+            //        normalizeDirectoryPath = workDirectory;
+            //}
+            catch
+            {
+                if (Options.EnsureExistDirectory)
+                    Directory.CreateDirectory(Environment.CurrentDirectory);
+            }
+        }
+        private string NormalizeFileName(string fileName)
+        {
+            string invalidChars = System.Text.RegularExpressions.Regex.Escape(
+                 new string(System.IO.Path.GetInvalidFileNameChars())
+            );
+            string invalidRegStr = string.Format(@"([{0}]*\.+$)|([{0}]+)", invalidChars);
+
+            return System.Text.RegularExpressions.Regex.Replace(fileName, invalidRegStr, "_");
+        }
+        private string GetNormalizePath(string directory, string fileName) 
+            => Path.Combine(NormalizeDirectoryPath(directory), NormalizeFileName(fileName));
+        private void WriteToFile(StreamWriter writer, string message)
+        {
+            // Go to end
+            writer.BaseStream.Seek(0, SeekOrigin.End);
+
+            // NOTE: Ignore logToTop in configuration as not efficient for files on OS
+
+            // Write the message to the file
+            writer.Write(message);
+        }
     }
 }
