@@ -34,6 +34,15 @@ namespace ConsoleApp
             _logger?.LogInformationSource(new Exception("Exception test"), "Creating hosting services.");
             _logger?.LogWarning("Logging Service");
             _logger?.LogError("Logging a message by {format}.",format);
+            using (_logger.BeginScope("[scope is enabled]"))
+            {
+                _logger.LogInformation("Hello World!");
+                _logger.LogInformation("Logs contain timestamp and log level.");
+                _logger.LogInformation("Systemd console logs never provide color options.");
+                _logger.LogInformation("Systemd console logs always appear in a single line.");
+            }
+
+
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
             IConfiguration configure = _host?.Services.GetService<IConfiguration>();
         }
