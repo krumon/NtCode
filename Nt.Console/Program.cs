@@ -41,7 +41,7 @@ namespace ConsoleApp
             _logger?.LogError("Logging a message by {format}.",format);
             Thread.Sleep(3000);
             timeMeasure.Start();
-            for (int i = 0; i < 2000; i++)
+            for (int i = 0; i < 100; i++)
             {
                 _logger.LogInformation("Hello World!");
             }
