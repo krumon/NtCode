@@ -10,7 +10,7 @@ namespace Nt.Core.Logging.File
         where TFormatter : BaseFileFormatter
         where TOptions : BaseFileFormatterOptions
     {
-        //[RequiresUnreferencedCode(ConsoleLoggerFormatterExtensions.TrimmingRequiresUnreferencedCodeMessage)]
+        [RequiresUnreferencedCode(ConsoleLoggerFormatterExtensions.TrimmingRequiresUnreferencedCodeMessage)]
         public FileLoggerFormatterConfigureOptions(ILoggerProviderConfiguration<FileLoggerProvider> providerConfiguration) :
             base(providerConfiguration.Configuration.GetSection("FormatterOptions"))
         {

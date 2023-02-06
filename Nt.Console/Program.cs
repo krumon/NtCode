@@ -39,26 +39,7 @@ namespace ConsoleApp
             _logger?.LogInformationSource(new Exception("Exception test"), "Creating hosting services.");
             _logger?.LogWarning("Logging Service");
             _logger?.LogError("Logging a message by {format}.",format);
-            Thread.Sleep(3000);
-            timeMeasure.Start();
-            for (int i = 0; i < 100; i++)
-            {
-                _logger.LogInformation("Hello World!");
-            }
-            timeMeasure.Stop();
-            var elapsed1 = timeMeasure.Elapsed.TotalSeconds;
-
-            timeMeasure.Restart();
-            //using (_logger.BeginScope("[scope is enabled]"))
-            //{
-            //    for (int i = 0; i < 2000; i++)
-            //    {
-            //        _logger.LogInformation("Hello World!");
-            //    }
-            //}
-            timeMeasure.Stop();
-            var elapsed2 = timeMeasure.Elapsed.TotalSeconds;
-            var diference = elapsed1 - elapsed2;
+            _logger.LogInformation("Hello World!");
 
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
             IConfiguration configure = _host?.Services.GetService<IConfiguration>();
