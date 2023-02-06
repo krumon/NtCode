@@ -4,6 +4,7 @@ using Nt.Core.Logging.Internal;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Reflection;
 
 namespace Nt.Core.Logging.File
 {
@@ -126,17 +127,19 @@ namespace Nt.Core.Logging.File
 
             string dir = System.Text.RegularExpressions.Regex.Replace(directoryPath, invalidRegStr, "_");
 
-            EnsureExistDirectory(dir);
-
-            return dir;
+            return TryCreateDirectory(dir);
         }
-        private void EnsureExistDirectory(string normalizeDirectoryPath)
+        private string TryCreateDirectory(string normalizeDirectoryPath)
         {
+            var newDirectory = string.Empty;
+
             if (Directory.Exists(normalizeDirectoryPath))
-                return;
+                newDirectory = normalizeDirectoryPath;
+
             try
             {
                 Directory.CreateDirectory(normalizeDirectoryPath);
+                newDirectory = normalizeDirectoryPath;
             }
             //catch (DirectoryNotFoundException ex1)
             //{
@@ -151,8 +154,19 @@ namespace Nt.Core.Logging.File
             catch
             {
                 if (Options.EnsureExistDirectory)
-                    Directory.CreateDirectory(Environment.CurrentDirectory);
+                {
+                    newDirectory = AppContext.BaseDirectory;
+                    for (int i = 0; i < 3; i++)
+                    {
+                        int idx = newDirectory.LastIndexOf('\\');
+                        if (idx == -1)
+                            break;
+                        newDirectory = newDirectory.Substring(0, idx);
+                    }
+                    newDirectory += Path.DirectorySeparatorChar;
+                }
             }
+            return newDirectory;  
         }
         private string NormalizeFileName(string fileName)
         {
