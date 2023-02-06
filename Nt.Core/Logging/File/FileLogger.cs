@@ -1,10 +1,8 @@
-﻿using Nt.Core.FileProviders.Physical.Internal;
-using Nt.Core.Logging.Abstractions;
+﻿using Nt.Core.Logging.Abstractions;
 using Nt.Core.Logging.Internal;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
-using System.Reflection;
 
 namespace Nt.Core.Logging.File
 {
@@ -13,9 +11,6 @@ namespace Nt.Core.Logging.File
     /// </summary>
     internal class FileLogger : ILogger
     {
-        //private const string homeDirectory = "C:\\Users\\Usuario\\Documents\\GitHub\\NtCode";
-        //private const string workDirectory = "C:\\Users\\enrique.rueda\\Documents\\kike\\GitHub\\NtCode";
-        
         #region Private members
 
         private readonly string _name;
@@ -141,16 +136,6 @@ namespace Nt.Core.Logging.File
                 Directory.CreateDirectory(normalizeDirectoryPath);
                 newDirectory = normalizeDirectoryPath;
             }
-            //catch (DirectoryNotFoundException ex1)
-            //{
-            //    if (Directory.Exists(homeDirectory))
-            //        normalizeDirectoryPath = homeDirectory;
-            //}
-            //catch (UnauthorizedAccessException ex2)
-            //{
-            //    if (Directory.Exists(workDirectory))
-            //        normalizeDirectoryPath = workDirectory;
-            //}
             catch
             {
                 if (Options.EnsureExistDirectory)
