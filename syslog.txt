@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 [2023-54-01 00:54:51]: Nt.Core.Hosting.Internal.Host[0]
              OnBarUpdate
 [2023-54-01 00:54:51]: Nt.Core.Hosting.Internal.Host[0]
@@ -40682,3 +40683,5 @@
              OnBarUpdate
 [2023-56-01 00:56:22]: Nt.Core.Hosting.Internal.Host[0]
              OnBarUpdate
+=======
+>>>>>>> a2ce90d45a02da212e4b22cd352723750dfa4035

@@ -10,7 +10,7 @@ namespace Nt.Core.Logging.File
             //options.LogLevel = LogLevel.Debug;
             options.LogAtTop = false;
             options.Directory = Directory.GetCurrentDirectory();
-            options.Name = "log.txt";
+            options.FileName = "log.txt";
 
             //options.FileLogs[1].LogLevel = LogLevel.Debug;
             //options.FileLogs[1].LogTime = true;

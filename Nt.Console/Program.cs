@@ -7,6 +7,8 @@ using Nt.Core.Services;
 using Nt.Scripts;
 using Nt.Scripts.Ninjascripts.Design;
 using System;
+using System.Diagnostics;
+using System.Threading;
 
 namespace ConsoleApp
 {
@@ -18,6 +20,9 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
+            Stopwatch timeMeasure = new Stopwatch();
+            Console.WriteLine($"Tiempo: {timeMeasure.Elapsed.TotalMilliseconds} ms");
+
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
@@ -34,6 +39,27 @@ namespace ConsoleApp
             _logger?.LogInformationSource(new Exception("Exception test"), "Creating hosting services.");
             _logger?.LogWarning("Logging Service");
             _logger?.LogError("Logging a message by {format}.",format);
+            Thread.Sleep(3000);
+            timeMeasure.Start();
+            for (int i = 0; i < 100; i++)
+            {
+                _logger.LogInformation("Hello World!");
+            }
+            timeMeasure.Stop();
+            var elapsed1 = timeMeasure.Elapsed.TotalSeconds;
+
+            timeMeasure.Restart();
+            //using (_logger.BeginScope("[scope is enabled]"))
+            //{
+            //    for (int i = 0; i < 2000; i++)
+            //    {
+            //        _logger.LogInformation("Hello World!");
+            //    }
+            //}
+            timeMeasure.Stop();
+            var elapsed2 = timeMeasure.Elapsed.TotalSeconds;
+            var diference = elapsed1 - elapsed2;
+
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
             IConfiguration configure = _host?.Services.GetService<IConfiguration>();
         }
@@ -107,7 +133,7 @@ namespace ConsoleApp
                     services.AddLogging(builder =>
                     {
                         builder.ClearProviders();
-                        builder.AddConsole();
+                        //builder.AddConsole();
                         builder.AddFile();
                     })
                     ;

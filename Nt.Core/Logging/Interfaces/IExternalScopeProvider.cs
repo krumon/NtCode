@@ -2,9 +2,9 @@
 
 namespace Nt.Core.Logging
 {
-    //
-    // Resumen:
-    //     Represents a storage of common scope data.
+    /// <summary>
+    /// Represents a storage of common scope data.
+    /// </summary>
     public interface IExternalScopeProvider
     {
         /// <summary>

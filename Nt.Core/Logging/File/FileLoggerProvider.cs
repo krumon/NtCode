@@ -20,7 +20,6 @@ namespace Nt.Core.Logging.File
 
         private readonly IDisposable _optionsReloadToken;
         private FileLoggerOptions _currentOptions;
-        //private FileFormatter _formatter;
         private ConcurrentDictionary<string, BaseFileFormatter> _formatters;
 
         #endregion

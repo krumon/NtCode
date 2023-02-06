@@ -98,7 +98,7 @@ namespace Nt.Core.FileProviders
             {
                 if (_fileWatcher != null)
                 {
-                    throw new InvalidOperationException($"CannotModifyWhenFileWatcherInitialized, {nameof(UsePollingFileWatcher)}.");
+                    throw new InvalidOperationException($"Cannot Modify When File Watcher Initialized, {nameof(UsePollingFileWatcher)}.");
                 }
                 _usePollingFileWatcher = value;
             }
