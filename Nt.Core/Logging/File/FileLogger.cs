@@ -73,12 +73,6 @@ namespace Nt.Core.Logging.File
             {
                 sb.Capacity = 1024;
             }
-<<<<<<< HEAD
-            // Normalize path
-            // TODO: Make use of configuration base path
-            //var normalizedPath = Options.Name.ToUpper();
-            //var normalizedDirectory = Options.Directory;
-            var normalizedPath = Path.Combine(homeDirectory, "syslog.txt");
 
             //if (!Directory.Exists(normalizedDirectory))
             //{
@@ -98,11 +92,7 @@ namespace Nt.Core.Logging.File
             //    }
             //}
 
-            var fileLock = default(object);
-=======
-
             _normalizePath = GetNormalizePath(Options.Directory, Options.FileName);
->>>>>>> a2ce90d45a02da212e4b22cd352723750dfa4035
 
             // Double safety even though the FileLocks should be thread safe
             lock (FileLockLock)
@@ -115,12 +105,7 @@ namespace Nt.Core.Logging.File
             lock (_lock)
             {
                 // Open the file
-<<<<<<< HEAD
-                //using (var fileStream = new StreamWriter(System.IO.File.Open(Path.Combine(normalizedDirectory, normalizedPath), FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
-                using (var fileStream = new StreamWriter(System.IO.File.Open(normalizedPath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
-=======
                 using (var writer = new StreamWriter(System.IO.File.Open(_normalizePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
->>>>>>> a2ce90d45a02da212e4b22cd352723750dfa4035
                 {
                     WriteToFile(writer, computedAnsiString);
                 }
