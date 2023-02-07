@@ -8,7 +8,14 @@ namespace Nt.Core.Logging.File
         {
             options.Singleline = true;
             options.LogLevel = true;
-            options.TimestampOptions = new TimestampOptions();
+            options.TimestampOptions = new TimestampOptions()
+            {
+                LogDate = true,
+                LogTime = true,
+                LogMilliseconds = false,
+                UseUtcTimestamp = false,
+                TimestampFormat="yyyy/MM/dd HH:mm:ss"
+            };
 
         }) { }
     }

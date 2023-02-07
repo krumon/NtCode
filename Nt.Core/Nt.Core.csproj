@@ -307,6 +307,7 @@
     <Compile Include="Logging\Configuration\ILoggerProviderConfigurationFactory.cs" />
     <Compile Include="Logging\Configuration\LoggerProviderConfiguration.cs" />
     <Compile Include="Logging\Configuration\LoggerProviderConfigurationFactory.cs" />
+    <Compile Include="Logging\SourceLogValues.cs" />
     <Compile Include="Logging\Options\LoggerProviderConfigureOptions.cs" />
     <Compile Include="Logging\Options\LoggerProviderOptions.cs" />
     <Compile Include="Logging\Options\LoggerProviderOptionsChangeTokenSource.cs" />
@@ -356,7 +357,7 @@
     <Compile Include="Logging\EventSource\ExceptionInfo.cs" />
     <Compile Include="Logging\EventSource\LoggingEventSource.cs" />
     <Compile Include="Logging\File\DefaultFileFormatterConfigureOptions.cs" />
-    <Compile Include="Logging\File\DefaultConsoleLoggerConfigureOptions.cs" />
+    <Compile Include="Logging\File\DefaultFileLoggerConfigureOptions.cs" />
     <Compile Include="Logging\File\FileFormatterNames.cs" />
     <Compile Include="Logging\File\FileFormatter.cs" />
     <Compile Include="Logging\File\FileFormatterOptions.cs" />

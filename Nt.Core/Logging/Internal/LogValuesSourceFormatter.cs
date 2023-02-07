@@ -9,44 +9,32 @@ namespace Nt.Core.Logging.Internal
     internal sealed class LogValuesSourceFormatter
     {
         private const string NullValue = "(null)";
-        private readonly string _message;
+        private readonly string _memberName;
+        private readonly string _filePath;
+        private readonly int _lineNumber;
 
-        public LogValuesSourceFormatter(string message)
+        public LogValuesSourceFormatter(string memberName, string filePath, int lineNumber)
         {
-            _message = message;
+            _memberName = memberName;
+            _filePath = filePath;
+            _lineNumber = lineNumber;
         }
 
-        public string Format(object[] values)
+        public string Format()
         {
-            object[] sourceValues = values;
+            //object[] sourceValues = values;
             string origin = NullValue;
             string filePath = NullValue;
-            int lineNumber = 0;
-            if (values != null && values.Length > 0)
-            {
-                for (int i = 0; i < values.Length; i++)
-                {
-                    switch (i)
-                    {
-                        case 0:
-                            origin = (string)sourceValues[i];
-                            break;
-                        case 1:
-                            filePath = (string)sourceValues[i];
-                            break;
-                        case 2:
-                            lineNumber = (int)sourceValues[i];
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
+            int lineNumber = -1;
+            if (!string.IsNullOrEmpty(_memberName))
+                origin = _memberName;
+            if (!string.IsNullOrEmpty(_filePath))
+                filePath = _filePath;
+            if (lineNumber >= 0)
+                lineNumber = _lineNumber;
 
-            //TextWriter message = new StringWriter();
-            //if (string.IsNullOrEmpty(_message))
             // Format the message string
-            return $"{_message} [{Path.GetFileName(filePath)} > {origin}() > Line {lineNumber}]";
+            return $"[{Path.GetFileName(filePath)} > {origin}() > Line {lineNumber}]";
         }
     }
 }

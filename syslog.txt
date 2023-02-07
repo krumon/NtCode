@@ -1,0 +1,3 @@
+[2023/02/06 10:50:18]Information:  [Program.cs > Main() > Line 39] Creating hosting services.  System.Exception: Exception test
+[2023/02/06 10:51:04]Information:  [Program.cs > Main() > Line 39]Creating hosting services.  System.Exception: Exception test
+[2023/02/06 10:56:34]Information:  [Program.cs > Main() > Line 39]Creating hosting services.  System.Exception: Exception test

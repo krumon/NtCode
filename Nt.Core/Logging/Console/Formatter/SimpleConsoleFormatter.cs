@@ -34,6 +34,7 @@ namespace Nt.Core.Logging.Console
         public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
         {
             string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
+            //string source = logEntry.SourceFormatter(logEntry.MemberName, logEntry.FilePath, logEntry.LineNumber);
             if (logEntry.Exception == null && message == null)
             {
                 return;

@@ -12,7 +12,7 @@ namespace Nt.Core.Logging
     public static class LoggerExtensions
     {
         private static readonly Func<FormattedLogValues, Exception, string> _messageFormatter = MessageFormatter;
-        private static readonly Func<SourceLogValues, Exception, string> _messageSourceFormatter = MessageSourceFormatter;
+        private static readonly Func<SourceLogValues,Exception, string> _messageSourceFormatter = MessageSourceFormatter;
 
         //------------------------------------------DEBUG------------------------------------------//
 
@@ -416,7 +416,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Trace, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Trace, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -436,7 +436,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Trace, eventId, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Trace, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -456,7 +456,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Trace, exception, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Trace, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -474,7 +474,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Trace, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Trace, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         //------------------------------------------DEBUG SOURCE------------------------------------------//
@@ -498,7 +498,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Debug, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Debug, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -518,7 +518,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Debug, eventId, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Debug, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -538,7 +538,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Debug, exception, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Debug, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -556,7 +556,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Debug, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Debug, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         //------------------------------------------INFORMATION SOURCE------------------------------------------//
@@ -580,7 +580,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Information, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Information, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -600,7 +600,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Information, eventId, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Information, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -620,7 +620,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Information, exception, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Information, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -638,7 +638,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Information, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Information, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         //------------------------------------------WARNING SOURCE------------------------------------------//
@@ -662,7 +662,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Warning, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Warning, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -682,7 +682,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Warning, eventId, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Warning, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -702,7 +702,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Warning, exception, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Warning, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -720,7 +720,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Warning, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Warning, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
 
@@ -745,7 +745,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Error, eventId, exception, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Error, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -765,7 +765,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Error, eventId, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Error, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -785,7 +785,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Error, exception, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Error, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
 
         /// <summary>
@@ -803,7 +803,7 @@ namespace Nt.Core.Logging
             [CallerLineNumber] int lineNumber = 0,
             params object[] args)
         {
-            logger.LogSource(LogLevel.Error, message, args.Prepend(origin, filePath, lineNumber));
+            logger.LogSource(LogLevel.Error,new SourceLogValues(origin,filePath,lineNumber), message, args);
         }
 
         //------------------------------------------LOG SOURCE------------------------------------------//
@@ -815,9 +815,9 @@ namespace Nt.Core.Logging
         /// <param name="logLevel">Entry will be written on this level.</param>
         /// <param name="message">Format string of the log message.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        public static void LogSource(this ILogger logger, LogLevel logLevel, string message, params object[] args)
+        public static void LogSource(this ILogger logger, LogLevel logLevel, SourceLogValues source, string message, params object[] args)
         {
-            logger.LogSource(logLevel, 0, null, message, args);
+            logger.LogSource(logLevel, 0, null, source, message, args);
         }
 
         /// <summary>
@@ -828,9 +828,9 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="message">Format string of the log message.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        public static void LogSource(this ILogger logger, LogLevel logLevel, EventId eventId, string message, params object[] args)
+        public static void LogSource(this ILogger logger, LogLevel logLevel, EventId eventId, SourceLogValues source, string message, params object[] args)
         {
-            logger.LogSource(logLevel, eventId, null, message, args);
+            logger.LogSource(logLevel, eventId, null, source, message, args);
         }
 
         /// <summary>
@@ -841,9 +841,9 @@ namespace Nt.Core.Logging
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message.</param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
-        public static void LogSource(this ILogger logger, LogLevel logLevel, Exception exception, string message, params object[] args)
+        public static void LogSource(this ILogger logger, LogLevel logLevel, Exception exception,SourceLogValues source, string message, params object[] args)
         {
-            logger.LogSource(logLevel, 0, exception, message, args);
+            logger.LogSource(logLevel, 0, exception, source, message, args);
         }
 
         /// <summary>
@@ -855,12 +855,12 @@ namespace Nt.Core.Logging
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">String of the log message.</param>
         /// <param name="args">An object array that contains zero or more objects to source format.</param>
-        public static void LogSource(this ILogger logger, LogLevel logLevel, EventId eventId, Exception exception, string message, params object[] args)
+        public static void LogSource(this ILogger logger, LogLevel logLevel, EventId eventId, Exception exception, SourceLogValues source, string message, params object[] args)
         {
             if (logger == null)
                 throw new ArgumentNullException(nameof(logger));
 
-            logger.Log(logLevel, eventId, new SourceLogValues(message, args), exception, _messageSourceFormatter);
+            logger.Log(logLevel, eventId, source, exception, _messageSourceFormatter);
         }
 
         //------------------------------------------Scope------------------------------------------//
@@ -897,7 +897,7 @@ namespace Nt.Core.Logging
             return state.ToString();
         }
 
-        private static string MessageSourceFormatter(SourceLogValues state, Exception error)
+        private static string MessageSourceFormatter(SourceLogValues state, Exception exception)
         {
             return state.ToString();
         }

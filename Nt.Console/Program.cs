@@ -20,8 +20,8 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            Stopwatch timeMeasure = new Stopwatch();
-            Console.WriteLine($"Tiempo: {timeMeasure.Elapsed.TotalMilliseconds} ms");
+            //Stopwatch timeMeasure = new Stopwatch();
+            //Console.WriteLine($"Tiempo: {timeMeasure.Elapsed.TotalMilliseconds} ms");
 
             Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
@@ -37,9 +37,9 @@ namespace ConsoleApp
             UseColorConsoleLogger();
             _logger = _host?.Services.GetService<ILogger<Program>>();
             _logger?.LogInformationSource(new Exception("Exception test"), "Creating hosting services.");
-            _logger?.LogWarning("Logging Service");
-            _logger?.LogError("Logging a message by {format}.",format);
-            _logger.LogInformation("Hello World!");
+            //_logger?.LogWarning("Logging Service");
+            //_logger?.LogError("Logging a message by {format}.",format);
+            //_logger.LogInformation("Hello World!");
 
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
             IConfiguration configure = _host?.Services.GetService<IConfiguration>();

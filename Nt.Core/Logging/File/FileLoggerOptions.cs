@@ -9,19 +9,25 @@ namespace Nt.Core.Logging.File
     {
         #region Public Properties
 
-        //public LogLevel LogLevel { get; set; }
+        /// <summary>
+        /// Gets or sets a specific log level to the file logger.
+        /// </summary>
+        public LogLevel LogLevel { get; set; }
 
+        /// <summary>
+        /// Gets or sets the formatter name.
+        /// </summary>
         public string FormatterName { get; set; }
 
         /// <summary>
         /// The directory to store the file.
         /// </summary>
-        public string Directory { get; set; } = System.IO.Directory.GetCurrentDirectory();
+        public string Directory { get; set; }
 
         /// <summary>
         /// The name and extension of the file.
         /// </summary>
-        public string FileName { get; set; } = "log.txt";
+        public string FileName { get; set; }
 
         /// <summary>
         /// Whether to display latest logs at the top of the file
@@ -33,11 +39,11 @@ namespace Nt.Core.Logging.File
         /// </summary>
         public bool EnsureExistDirectory { get; set; }
 
-        public Dictionary<string, FileLoggerSettings> Files { get; set; }
-            = new Dictionary<string, FileLoggerSettings>()
-            {
-                ["SecureLog"] = new FileLoggerSettings("SecureLog",LogLevel.Information,true)
-            };
+        //public Dictionary<string, FileLoggerSettings> Files { get; set; }
+        //    = new Dictionary<string, FileLoggerSettings>()
+        //    {
+        //        ["SecureLog"] = new FileLoggerSettings("SecureLog",LogLevel.Information,true)
+        //    };
 
         #endregion
     }

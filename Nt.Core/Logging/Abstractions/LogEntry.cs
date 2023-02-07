@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 
 namespace Nt.Core.Logging.Abstractions
 {
@@ -24,6 +26,33 @@ namespace Nt.Core.Logging.Abstractions
             State = state;
             Exception = exception;
             Formatter = formatter;
+            MemberName = string.Empty;
+            FilePath = string.Empty;
+            LineNumber = 0;
+            SourceFormatter = null;
+        }
+
+        /// <summary>
+        /// Initializes an instance of the LogEntry struct.
+        /// </summary>
+        /// <param name="logLevel">The log level.</param>
+        /// <param name="category">The category name for the log.</param>
+        /// <param name="eventId">The log event Id.</param>
+        /// <param name="state">The state for which log is being written.</param>
+        /// <param name="exception">The log exception.</param>
+        /// <param name="formatter">The formatter.</param>
+        public LogEntry(LogLevel logLevel, string category, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter, Func<SourceLogValues,string> sourceFormatter = null, [CallerMemberName]string memberName = "", [CallerFilePath]string filePath = "",[CallerLineNumber]int lineNumber = 0 )
+        {
+            LogLevel = logLevel;
+            Category = category;
+            EventId = eventId;
+            State = state;
+            Exception = exception;
+            Formatter = formatter;
+            MemberName = memberName;
+            FilePath = filePath;
+            LineNumber = lineNumber;
+            SourceFormatter = sourceFormatter;
         }
 
         /// <summary>
@@ -55,5 +84,18 @@ namespace Nt.Core.Logging.Abstractions
         /// Gets the formatter
         /// </summary>
         public Func<TState, Exception, string> Formatter { get; }
+
+        public string MemberName { get;}
+
+        public string FilePath { get; }
+
+        public int LineNumber { get; }
+
+        /// <summary>
+        /// Gets the source formatter
+        /// </summary>
+        public Func<SourceLogValues, string> SourceFormatter { get; }
+
+
     }
 }
