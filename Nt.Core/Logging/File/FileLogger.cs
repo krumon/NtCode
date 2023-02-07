@@ -159,7 +159,7 @@ namespace Nt.Core.Logging.File
                 if (Options.EnsureExistDirectory)
                 {
                     newDirectory = AppContext.BaseDirectory;
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 4; i++)
                     {
                         int idx = newDirectory.LastIndexOf('\\');
                         if (idx == -1)

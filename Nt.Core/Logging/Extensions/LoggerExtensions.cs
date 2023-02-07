@@ -860,7 +860,7 @@ namespace Nt.Core.Logging
             if (logger == null)
                 throw new ArgumentNullException(nameof(logger));
 
-            logger.Log(logLevel, eventId, source, exception, _messageSourceFormatter);
+            logger.Log(logLevel, eventId, new FormattedLogValues(source,message, args), exception, _messageFormatter);
         }
 
         //------------------------------------------Scope------------------------------------------//

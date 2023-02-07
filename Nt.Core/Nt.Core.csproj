@@ -368,7 +368,6 @@
     <Compile Include="Logging\File\FileFormatterOptionsMonitor.cs" />
     <Compile Include="Logging\Extensions\FileLoggerFormatterExtensions.cs" />
     <Compile Include="Logging\File\TimestampOptions.cs" />
-    <Compile Include="Logging\Internal\SourceLogValues.cs" />
     <Compile Include="Logging\Internal\LogValuesSourceFormatter.cs" />
     <Compile Include="Logging\File\FileLoggerOptions.cs" />
     <Compile Include="Logging\Extensions\FileLoggerFactoryExtensions.cs" />

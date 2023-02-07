@@ -8,10 +8,17 @@ namespace Nt.Core.Logging
         private const string NullFormat = "[null]";
         private readonly LogValuesSourceFormatter _formatter;
 
+        public string MemberName { get; private set; }
+        public string FilePath { get; private set; }
+        public int LineNumber { get; private set; }
+        
         internal LogValuesSourceFormatter Formatter => _formatter;
 
         public SourceLogValues(string memberName, string filePath, int lineNumber)
         {
+            MemberName = memberName;
+            FilePath = filePath;
+            LineNumber = lineNumber;
             _formatter = new LogValuesSourceFormatter(memberName, filePath, lineNumber);
         }
 

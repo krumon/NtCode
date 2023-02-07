@@ -14,16 +14,24 @@ namespace Nt.Core.Logging.Internal
     {
         internal const int MaxCachedFormatters = 1024;
         private const string NullFormat = "[null]";
+        private const char SourceSeparator = '|';
         private static int _count;
         private static ConcurrentDictionary<string, LogValuesFormatter> _formatters = new ConcurrentDictionary<string, LogValuesFormatter>();
         private readonly LogValuesFormatter _formatter;
+        private readonly SourceLogValues _sourceLogValues;
+        private readonly LogValuesSourceFormatter _sourceFormatter;
         private readonly object[] _values;
         private readonly string _originalMessage;
+        private readonly string _sourceMessage;
 
         // for testing purposes
         internal LogValuesFormatter Formatter => _formatter;
 
-        public FormattedLogValues(string format, params object[] values)
+        public FormattedLogValues(string format, params object[] values) : this(null,format,values)
+        {
+        }
+
+        public FormattedLogValues(SourceLogValues sourceLogValues, string format, params object[] values)
         {
             if (values != null && values.Length != 0 && format != null)
             {
@@ -50,6 +58,12 @@ namespace Nt.Core.Logging.Internal
 
             _originalMessage = format ?? NullFormat;
             _values = values;
+            _sourceLogValues = sourceLogValues;
+            _sourceFormatter = _sourceLogValues?.Formatter;
+            if (_sourceFormatter != null)
+                _sourceMessage = _sourceFormatter.Format();
+            else
+                _sourceMessage = string.Empty;
         }
 
         public KeyValuePair<string, object> this[int index]
@@ -97,8 +111,10 @@ namespace Nt.Core.Logging.Internal
             {
                 return _originalMessage;
             }
-
-            return _formatter.Format(_values);
+            if (string.IsNullOrEmpty(_sourceMessage))
+                return _formatter.Format(_values);
+            else
+                return _formatter.Format(_values) + SourceSeparator + _sourceMessage;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
