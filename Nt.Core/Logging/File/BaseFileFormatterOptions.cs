@@ -18,5 +18,9 @@
         /// </summary>
         public bool LogLevel { get; set; }
 
+        /// <summary>
+        /// Indicates if the datetime should be output as part of the log message.
+        /// </summary>
+        public bool LogDateTime { get;set; }
     }
 }

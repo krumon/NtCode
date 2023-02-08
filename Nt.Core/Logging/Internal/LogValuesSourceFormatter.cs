@@ -26,21 +26,7 @@ namespace Nt.Core.Logging.Internal
                 return NullValue;
             else
                 // Format the message string
-                return $"[{Path.GetFileName(_filePath)} > {_memberName}() > Line {_lineNumber}]";
-            
-            ////object[] sourceValues = values;
-            //string origin = NullValue;
-            //string filePath = NullValue;
-            //int lineNumber = -1;
-            //if (!string.IsNullOrEmpty(_memberName))
-            //    origin = _memberName;
-            //if (!string.IsNullOrEmpty(_filePath))
-            //    filePath = _filePath;
-            //if (_lineNumber > 0)
-            //    lineNumber = _lineNumber;
-
-            //// Format the message string
-            //return $"[{Path.GetFileName(filePath)} > {origin}() > Line {lineNumber}]";
+                return $"{Path.GetFileName(_filePath)} > {_memberName}() > Line {_lineNumber}";
         }
     }
 }

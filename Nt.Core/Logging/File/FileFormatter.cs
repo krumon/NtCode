@@ -8,8 +8,8 @@ namespace Nt.Core.Logging.File
     public class FileFormatter: BaseFileFormatter, IDisposable
     {
         private const string LoglevelPadding = ": ";
-        private static readonly string _messagePadding = new string(' ', GetLogLevelString(LogLevel.Information).Length + LoglevelPadding.Length);
-        private static readonly string _newLineWithMessagePadding = Environment.NewLine + _messagePadding;
+        private static string _messagePadding = new string(' ', GetLogLevelString(LogLevel.Information).Length + LoglevelPadding.Length);
+        private static string _newLineWithMessagePadding = Environment.NewLine + _messagePadding;
         private readonly IDisposable _optionsReloadToken;
         internal FileFormatterOptions FormatterOptions { get; set; }
 
@@ -37,61 +37,65 @@ namespace Nt.Core.Logging.File
         /// <typeparam name="TState">The type of the object to be written.</typeparam>
         public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
         {
-            string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
+            // Create the message and make sure the message is created.
+            string[] messages = logEntry.Formatter(logEntry.State, logEntry.Exception).Split('|');
+            string source = messages.Length > 1 ? messages[0] : string.Empty;
+            string message = messages.Length > 1 ? messages[1] : messages[0];
+
             if (logEntry.Exception == null && message == null)
             {
                 return;
             }
-            LogLevel logLevel = logEntry.LogLevel;
-            string logLevelString = GetLogLevelString(logLevel);
 
+            // Write the datetime
             string timestamp = null;
-            string timestampFormat = FormatterOptions.TimestampOptions.TimestampFormat;
-            if (timestampFormat != null)
+            if (FormatterOptions.LogDateTime)
             {
-                DateTimeOffset dateTimeOffset = GetCurrentDateTime();
-                timestamp = dateTimeOffset.ToString(timestampFormat);
+                string timestampFormat = FormatterOptions.TimestampOptions.TimestampFormat;
+                if (!string.IsNullOrEmpty(timestampFormat))
+                {
+                    DateTimeOffset dateTimeOffset = GetCurrentDateTime();
+                    timestamp = dateTimeOffset.ToString(timestampFormat);
+                }
             }
-            if (timestamp != null)
+            if (!string.IsNullOrEmpty(timestamp))
             {
                 textWriter.Write('[');
                 textWriter.Write(timestamp);
                 textWriter.Write(']');
+                string timePadding = new string(' ', timestamp.Length + 2);
+                _messagePadding += timePadding;
+                _newLineWithMessagePadding += timePadding;
             }
+
+            // Write the log level
+            LogLevel logLevel = logEntry.LogLevel;
+            string logLevelString = GetLogLevelString(logLevel);
             if (logLevelString != null && FormatterOptions.LogLevel)
             {
                 textWriter.Write(logLevelString);
             }
-            CreateDefaultLogMessage(textWriter, logEntry, message, scopeProvider);
+            CreateDefaultLogMessage(textWriter, logEntry, message, source, scopeProvider);
         }
 
         private static string GetLogLevelString(LogLevel logLevel)
         {
             switch (logLevel)
             {
-                case LogLevel.Trace:
-                    return "Trace";
-                case LogLevel.Debug:
-                    return "Debug";
-                case LogLevel.Information:
-                    return "Information";
-                case LogLevel.Warning:
-                    return "Warning";
-                case LogLevel.Error:
-                    return "Error";
-                case LogLevel.Critical:
-                    return "Critical";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(logLevel));
+                case LogLevel.Trace: return "trce";
+                case LogLevel.Debug: return "dbug";
+                case LogLevel.Information: return "info";
+                case LogLevel.Warning: return "warn";
+                case LogLevel.Error: return "fail";
+                case LogLevel.Critical: return "crit";
+                default: throw new ArgumentOutOfRangeException(nameof(logLevel));
             }
         }
-
         private DateTimeOffset GetCurrentDateTime()
         {
             return FormatterOptions.TimestampOptions.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now;
         }
-
-        private void CreateDefaultLogMessage<TState>(TextWriter textWriter, in LogEntry<TState> logEntry, string message, IExternalScopeProvider scopeProvider)
+        private void CreateDefaultLogMessage<TState>(TextWriter textWriter, in LogEntry<TState> logEntry, string message, string source, IExternalScopeProvider scopeProvider)
         {
             bool singleLine = FormatterOptions.Singleline;
             int eventId = logEntry.EventId.Id;
@@ -109,17 +113,26 @@ namespace Nt.Core.Logging.File
 
             if (!singleLine)
             {
-                textWriter.Write(logEntry.Category);
+                if (string.IsNullOrEmpty(source))
+                    textWriter.Write(logEntry.Category);
+                else
+                    textWriter.Write(source);
+
                 textWriter.Write('[');
-#if NETCOREAPP
-            Span<char> span = stackalloc char[10];
-            if (eventId.TryFormat(span, out int charsWritten))
-                textWriter.Write(span.Slice(0, charsWritten));
-            else
-#endif
                 textWriter.Write(eventId.ToString());
                 textWriter.Write(']');
                 textWriter.Write(Environment.NewLine);
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(source))
+                    textWriter.Write(logEntry.Category);
+                else
+                    textWriter.Write(source);
+
+                textWriter.Write('[');
+                textWriter.Write(eventId.ToString());
+                textWriter.Write(']');
             }
 
             // scope information
@@ -139,7 +152,6 @@ namespace Nt.Core.Logging.File
                 textWriter.Write(Environment.NewLine);
             }
         }
-
         private void WriteMessage(TextWriter textWriter, string message, bool singleLine)
         {
             if (!string.IsNullOrEmpty(message))
@@ -156,9 +168,7 @@ namespace Nt.Core.Logging.File
                     textWriter.Write(Environment.NewLine);
                 }
             }
-
         }
-
         private void WriteScopeInformation(TextWriter textWriter, IExternalScopeProvider scopeProvider, bool singleLine)
         {
             if (FormatterOptions.IncludeScopes && scopeProvider != null)
@@ -185,18 +195,15 @@ namespace Nt.Core.Logging.File
                 }
             }
         }
-
         private static void WriteReplacing(TextWriter writer, string oldValue, string newValue, string message)
         {
             string newMessage = message.Replace(oldValue, newValue);
             writer.Write(newMessage);
         }
-
         private void ReloadFileLoggerOptions(FileFormatterOptions options)
         {
             FormatterOptions = options;
         }
-
         public void Dispose()
         {
             _optionsReloadToken?.Dispose();
