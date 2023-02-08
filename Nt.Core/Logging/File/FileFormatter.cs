@@ -20,8 +20,8 @@ namespace Nt.Core.Logging.File
             else
             {
                 FormatterOptions = options.CurrentValue;
-                ReloadFileLoggerOptions(options.CurrentValue);
-                _optionsReloadToken = options.OnChange(ReloadFileLoggerOptions);
+                ReloadFileFormatterOptions(options.CurrentValue);
+                _optionsReloadToken = options.OnChange(ReloadFileFormatterOptions);
             }
         }
 
@@ -63,9 +63,9 @@ namespace Nt.Core.Logging.File
                 textWriter.Write('[');
                 textWriter.Write(timestamp);
                 textWriter.Write(']');
-                string timePadding = new string(' ', timestamp.Length + 2);
-                _messagePadding += timePadding;
-                _newLineWithMessagePadding += timePadding;
+                //string timePadding = new string(' ', timestamp.Length + 2);
+                //_messagePadding += timePadding;
+                //_newLineWithMessagePadding = Environment.NewLine + _messagePadding;
             }
 
             // Write the log level
@@ -200,9 +200,26 @@ namespace Nt.Core.Logging.File
             string newMessage = message.Replace(oldValue, newValue);
             writer.Write(newMessage);
         }
-        private void ReloadFileLoggerOptions(FileFormatterOptions options)
+        private void ReloadFileFormatterOptions(FileFormatterOptions options)
         {
             FormatterOptions = options;
+            string timestamp = string.Empty;
+            if (FormatterOptions.LogDateTime)
+            {
+                string timestampFormat = FormatterOptions.TimestampOptions.TimestampFormat;
+                if (!string.IsNullOrEmpty(timestampFormat))
+                {
+                    DateTimeOffset dateTimeOffset = GetCurrentDateTime();
+                    timestamp = dateTimeOffset.ToString(timestampFormat);
+                }
+            }
+            if (!string.IsNullOrEmpty(timestamp))
+            {
+                string timePadding = new string(' ', timestamp.Length + 2);
+                _messagePadding = new string(' ', timePadding.Length + GetLogLevelString(LogLevel.Information).Length + LoglevelPadding.Length);
+                _newLineWithMessagePadding = Environment.NewLine + _messagePadding;
+            }
+
         }
         public void Dispose()
         {
