@@ -109,7 +109,7 @@ namespace Nt.Core.Logging.Internal
         {
             if (_formatter == null)
             {
-                return _originalMessage;
+                return _sourceMessage + SourceSeparator + _originalMessage;
             }
             if (string.IsNullOrEmpty(_sourceMessage))
                 return _formatter.Format(_values);

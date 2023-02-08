@@ -74,25 +74,7 @@ namespace Nt.Core.Logging.File
                 sb.Capacity = 1024;
             }
 
-            //if (!Directory.Exists(normalizedDirectory))
-            //{
-            //    try
-            //    {
-            //        Directory.CreateDirectory(normalizedDirectory);
-            //    }
-            //    catch(DirectoryNotFoundException ex1)
-            //    {
-            //        if (Directory.Exists(homeDirectory))
-            //            normalizedDirectory = homeDirectory;
-            //    }
-            //    catch(UnauthorizedAccessException ex2)
-            //    {
-            //        if (Directory.Exists(workDirectory))
-            //            normalizedDirectory = workDirectory;
-            //    }
-            //}
-
-            _normalizePath = GetNormalizePath(Options.Directory, Options.FileName);
+            _normalizePath = GetPath(Options.Directory, Options.FileName);
 
             // Double safety even though the FileLocks should be thread safe
             lock (FileLockLock)
@@ -140,36 +122,7 @@ namespace Nt.Core.Logging.File
 
             string dir = System.Text.RegularExpressions.Regex.Replace(directoryPath, invalidRegStr, "_");
 
-            return TryCreateDirectory(dir);
-        }
-        private string TryCreateDirectory(string normalizeDirectoryPath)
-        {
-            var newDirectory = string.Empty;
-
-            if (Directory.Exists(normalizeDirectoryPath))
-                newDirectory = normalizeDirectoryPath;
-
-            try
-            {
-                Directory.CreateDirectory(normalizeDirectoryPath);
-                newDirectory = normalizeDirectoryPath;
-            }
-            catch
-            {
-                if (Options.EnsureExistDirectory)
-                {
-                    newDirectory = AppContext.BaseDirectory;
-                    for (int i = 0; i < 4; i++)
-                    {
-                        int idx = newDirectory.LastIndexOf('\\');
-                        if (idx == -1)
-                            break;
-                        newDirectory = newDirectory.Substring(0, idx);
-                    }
-                    newDirectory += Path.DirectorySeparatorChar;
-                }
-            }
-            return newDirectory;  
+            return dir; //TryCreateDirectory(dir);
         }
         private string NormalizeFileName(string fileName)
         {
@@ -180,8 +133,47 @@ namespace Nt.Core.Logging.File
 
             return System.Text.RegularExpressions.Regex.Replace(fileName, invalidRegStr, "_");
         }
-        private string GetNormalizePath(string directory, string fileName) 
-            => Path.Combine(NormalizeDirectoryPath(directory), NormalizeFileName(fileName));
+        private string GetPath(string directory, string fileName)
+        {
+            var normalizeDirectoryPath = NormalizeDirectoryPath(directory);
+            if (!TryCreateDirectory(normalizeDirectoryPath))
+            {
+                if (!Options.EnsureExistDirectory)
+                    return string.Empty;
+
+                //TODO: Crear un directorio standard para que en cualquier equipo se cree un directorio.
+                normalizeDirectoryPath = AppContext.BaseDirectory;
+                int ancestorFolder = 3;
+                for (int i = 0; i <= ancestorFolder; i++)
+                {
+                    int idx = normalizeDirectoryPath.LastIndexOf('\\');
+                    if (idx == -1)
+                        break;
+                    if (i == ancestorFolder)
+                        idx += 1;
+                    normalizeDirectoryPath = normalizeDirectoryPath.Substring(0, idx);
+                }
+            }
+            var normalizeFileName = NormalizeFileName(fileName);
+
+            return Path.Combine(normalizeDirectoryPath, normalizeFileName);
+        }
+        private bool TryCreateDirectory(string normalizeDirectoryPath)
+        {
+            if (Directory.Exists(normalizeDirectoryPath))
+                return true;
+
+            try
+            {
+                Directory.CreateDirectory(normalizeDirectoryPath);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         private void WriteToFile(StreamWriter writer, string message)
         {
             // Go to end
