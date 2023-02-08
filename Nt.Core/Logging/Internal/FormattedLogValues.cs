@@ -109,12 +109,15 @@ namespace Nt.Core.Logging.Internal
         {
             if (_formatter == null)
             {
+                if (string.IsNullOrEmpty(_sourceMessage))
+                    return _originalMessage;
+
                 return _sourceMessage + SourceSeparator + _originalMessage;
             }
             if (string.IsNullOrEmpty(_sourceMessage))
                 return _formatter.Format(_values);
             else
-                return _formatter.Format(_values) + SourceSeparator + _sourceMessage;
+                return _sourceMessage + SourceSeparator + _formatter.Format(_values);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

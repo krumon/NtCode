@@ -8,6 +8,7 @@ using Nt.Scripts;
 using Nt.Scripts.Ninjascripts.Design;
 using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Threading;
 
 namespace ConsoleApp
@@ -36,7 +37,13 @@ namespace ConsoleApp
             //UseNinjascriptHost();
             UseColorConsoleLogger();
             _logger = _host?.Services.GetService<ILogger<Program>>();
-            _logger?.LogInformationSource(new Exception("Exception test"), "Creating hosting services.");
+            //_logger?.LogInformation(new Exception("Exception test"), "Simple message.");
+            _logger?.LogTraceSource("Logging message test from {0}.", typeof(Program));
+            _logger?.LogDebugSource("Logging message test from {0}.", typeof(Program));
+            _logger?.LogInformationSource("Logging message test from {0}.", typeof(Program));
+            _logger?.LogWarningSource("Logging message test from {0}.", typeof(Program));
+            _logger?.LogErrorSource("Logging message test from {0}.", typeof(Program));
+            _logger?.LogCriticalSource("Logging message test from {0}.", typeof(Program));
             //_logger?.LogWarning("Logging Service");
             //_logger?.LogError("Logging a message by {format}.",format);
             //_logger.LogInformation("Hello World!");
@@ -114,7 +121,7 @@ namespace ConsoleApp
                     services.AddLogging(builder =>
                     {
                         builder.ClearProviders();
-                        //builder.AddConsole();
+                        builder.AddConsole();
                         builder.AddFile();
                     })
                     ;

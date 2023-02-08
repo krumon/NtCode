@@ -12,7 +12,6 @@ namespace Nt.Core.Logging
     public static class LoggerExtensions
     {
         private static readonly Func<FormattedLogValues, Exception, string> _messageFormatter = MessageFormatter;
-        private static readonly Func<SourceLogValues,Exception, string> _messageSourceFormatter = MessageSourceFormatter;
 
         //------------------------------------------DEBUG------------------------------------------//
 
@@ -404,17 +403,141 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
-        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
         public static void LogTraceSource(
             this ILogger logger,
             EventId eventId,
             Exception exception,
             string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Trace, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] {arg1,arg2,arg3,arg4});
+        }
+
+        /// <summary>
+        /// Formats and writes a trace log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
+        public static void LogTraceSource(
+            this ILogger logger,
+            EventId eventId,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Trace, eventId, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a trace log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
+        public static void LogTraceSource(
+            this ILogger logger,
+            Exception exception,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Trace, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a trace log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
+        public static void LogTraceSource(
+            this ILogger logger,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Trace, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a trace log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
+        public static void LogTraceSource(
+            this ILogger logger,
+            EventId eventId,
+            Exception exception,
+            string message,
+            object[] args = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Trace, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -426,15 +549,19 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
         public static void LogTraceSource(
             this ILogger logger,
             EventId eventId,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Trace, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -446,15 +573,19 @@ namespace Nt.Core.Logging
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
         public static void LogTraceSource(
             this ILogger logger,
             Exception exception,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Trace, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -465,14 +596,18 @@ namespace Nt.Core.Logging
         /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
         public static void LogTraceSource(
             this ILogger logger,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Trace, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -486,17 +621,141 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
-        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
         public static void LogDebugSource(
             this ILogger logger,
             EventId eventId,
             Exception exception,
             string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Debug, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a debug log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
+        public static void LogDebugSource(
+            this ILogger logger,
+            EventId eventId,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Debug, eventId, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a debug log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
+        public static void LogDebugSource(
+            this ILogger logger,
+            Exception exception,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Debug, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a debug log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
+        public static void LogDebugSource(
+            this ILogger logger,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Debug, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a debug log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
+        public static void LogDebugSource(
+            this ILogger logger,
+            EventId eventId,
+            Exception exception,
+            string message,
+            object[] args = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Debug, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -508,15 +767,19 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
         public static void LogDebugSource(
             this ILogger logger,
             EventId eventId,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Debug, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -528,15 +791,19 @@ namespace Nt.Core.Logging
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
         public static void LogDebugSource(
             this ILogger logger,
             Exception exception,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Debug, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -547,14 +814,18 @@ namespace Nt.Core.Logging
         /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
         public static void LogDebugSource(
             this ILogger logger,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Debug, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -568,17 +839,141 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
-        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
         public static void LogInformationSource(
             this ILogger logger,
             EventId eventId,
             Exception exception,
             string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Information, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a information log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
+        public static void LogInformationSource(
+            this ILogger logger,
+            EventId eventId,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Information, eventId, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a information log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
+        public static void LogInformationSource(
+            this ILogger logger,
+            Exception exception,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Information, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a information log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
+        public static void LogInformationSource(
+            this ILogger logger,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Information, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a information log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
+        public static void LogInformationSource(
+            this ILogger logger,
+            EventId eventId,
+            Exception exception,
+            string message,
+            object[] args = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Information, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -590,15 +985,19 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
         public static void LogInformationSource(
             this ILogger logger,
             EventId eventId,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Information, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -610,15 +1009,19 @@ namespace Nt.Core.Logging
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
         public static void LogInformationSource(
             this ILogger logger,
             Exception exception,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Information, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -629,14 +1032,18 @@ namespace Nt.Core.Logging
         /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
         public static void LogInformationSource(
             this ILogger logger,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Information, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -650,17 +1057,141 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
-        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
         public static void LogWarningSource(
             this ILogger logger,
             EventId eventId,
             Exception exception,
             string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Warning, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a warning log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
+        public static void LogWarningSource(
+            this ILogger logger,
+            EventId eventId,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Warning, eventId, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a warning log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
+        public static void LogWarningSource(
+            this ILogger logger,
+            Exception exception,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Warning, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a warning log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
+        public static void LogWarningSource(
+            this ILogger logger,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Warning, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a warning log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
+        public static void LogWarningSource(
+            this ILogger logger,
+            EventId eventId,
+            Exception exception,
+            string message,
+            object[] args = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Warning, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -672,15 +1203,19 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
         public static void LogWarningSource(
             this ILogger logger,
             EventId eventId,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Warning, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -692,15 +1227,19 @@ namespace Nt.Core.Logging
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
         public static void LogWarningSource(
             this ILogger logger,
             Exception exception,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Warning, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -711,14 +1250,18 @@ namespace Nt.Core.Logging
         /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
         public static void LogWarningSource(
             this ILogger logger,
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Warning, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -733,17 +1276,141 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
+        public static void LogErrorSource(
+            this ILogger logger,
+            EventId eventId,
+            Exception exception,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Error, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
+        public static void LogErrorSource(
+            this ILogger logger,
+            EventId eventId,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Error, eventId, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
+        public static void LogErrorSource(
+            this ILogger logger,
+            Exception exception,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Error, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
+        public static void LogErrorSource(
+            this ILogger logger,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Error, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
         public static void LogErrorSource(
             this ILogger logger,
             EventId eventId, 
             Exception exception, 
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Error, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -755,15 +1422,19 @@ namespace Nt.Core.Logging
         /// <param name="eventId">The event id associated with the log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
         public static void LogErrorSource(
             this ILogger logger, 
             EventId eventId, 
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Error, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -775,15 +1446,19 @@ namespace Nt.Core.Logging
         /// <param name="exception">The exception to log.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
         public static void LogErrorSource(
             this ILogger logger, 
             Exception exception, 
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Error, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
         }
@@ -794,17 +1469,240 @@ namespace Nt.Core.Logging
         /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
         /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
         /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
         /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
         public static void LogErrorSource(
             this ILogger logger, 
             string message,
+            object[] args = null,
             [CallerMemberName] string origin = "",
             [CallerFilePath] string filePath = "",
-            [CallerLineNumber] int lineNumber = 0,
-            params object[] args)
+            [CallerLineNumber] int lineNumber = 0
+            )
         {
             logger.LogSource(LogLevel.Error,new SourceLogValues(origin,filePath,lineNumber), message, args);
         }
+
+        //------------------------------------------CRITICAL SOURCE------------------------------------------//
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
+        public static void LogCriticalSource(
+            this ILogger logger,
+            EventId eventId,
+            Exception exception,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Critical, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
+        public static void LogCriticalSource(
+            this ILogger logger,
+            EventId eventId,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Critical, eventId, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
+        public static void LogCriticalSource(
+            this ILogger logger,
+            Exception exception,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Critical, exception, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="arg1">Object 1 to format.</param>
+        /// <param name="arg2">Object 1 to format.</param>
+        /// <param name="arg3">Object 1 to format.</param>
+        /// <param name="arg4">Object 1 to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
+        public static void LogCriticalSource(
+            this ILogger logger,
+            string message,
+            object arg1,
+            object arg2 = null,
+            object arg3 = null,
+            object arg4 = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Critical, new SourceLogValues(origin, filePath, lineNumber), message, new object[] { arg1, arg2, arg3, arg4 });
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, exception, "Error while processing request from {Address}", address)</example>
+        public static void LogCriticalSource(
+            this ILogger logger,
+            EventId eventId,
+            Exception exception,
+            string message,
+            object[] args = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Critical, eventId, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="eventId">The event id associated with the log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(0, "Processing request from {Address}", address)</example>
+        public static void LogCriticalSource(
+            this ILogger logger,
+            EventId eventId,
+            string message,
+            object[] args = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Critical, eventId, new SourceLogValues(origin, filePath, lineNumber), message, args);
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="exception">The exception to log.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical(exception, "Error while processing request from {Address}", address)</example>
+        public static void LogCriticalSource(
+            this ILogger logger,
+            Exception exception,
+            string message,
+            object[] args = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Critical, exception, new SourceLogValues(origin, filePath, lineNumber), message, args);
+        }
+
+        /// <summary>
+        /// Formats and writes a error log message.
+        /// </summary>
+        /// <param name="logger">The <see cref="ILogger"/> to write to.</param>
+        /// <param name="message">Format string of the log message in message template format. Example: <c>"User {User} logged in from {Address}"</c></param>
+        /// <param name="args">An object array that contains zero or more objects to format.</param>
+        /// <param name="origin">The member name caller.</param>
+        /// <param name="filePath">The file path of the caller.</param>
+        /// <param name="lineNumber">The line number if the log message.</param>
+        /// <example>logger.LogCritical("Processing request from {Address}", address)</example>
+        public static void LogCriticalSource(
+            this ILogger logger,
+            string message,
+            object[] args = null,
+            [CallerMemberName] string origin = "",
+            [CallerFilePath] string filePath = "",
+            [CallerLineNumber] int lineNumber = 0
+            )
+        {
+            logger.LogSource(LogLevel.Critical, new SourceLogValues(origin, filePath, lineNumber), message, args);
+        }
+
 
         //------------------------------------------LOG SOURCE------------------------------------------//
 
@@ -893,11 +1791,6 @@ namespace Nt.Core.Logging
         //------------------------------------------HELPERS------------------------------------------//
 
         private static string MessageFormatter(FormattedLogValues state, Exception error)
-        {
-            return state.ToString();
-        }
-
-        private static string MessageSourceFormatter(SourceLogValues state, Exception exception)
         {
             return state.ToString();
         }
