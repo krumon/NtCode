@@ -17,7 +17,6 @@ namespace ConsoleApp
     {
         private static IHost _host;
         private static ILogger _logger;
-        private static string format = "Krumon";
 
         public static void Main(string[] args)
         {

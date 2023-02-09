@@ -293,6 +293,8 @@
     <Compile Include="Internal\TypeNameHelper.cs" />
     <Compile Include="Logging\Console\Configuration\ConsoleLoggerFormatterConfigureOptions.cs" />
     <Compile Include="Logging\Console\Configuration\ConsoleLoggerFormatterOptionsChangeTokenSource.cs" />
+    <Compile Include="Logging\Delegate\DebugLogger.cs" />
+    <Compile Include="Logging\Delegate\DebugLoggerProvider.cs" />
     <Compile Include="Logging\File\BaseFileFormatter.cs" />
     <Compile Include="Logging\File\BaseFileFormatterOptions.cs" />
     <Compile Include="Logging\Interfaces\IExternalScopeProvider.cs" />

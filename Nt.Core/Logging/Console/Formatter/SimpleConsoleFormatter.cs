@@ -33,12 +33,20 @@ namespace Nt.Core.Logging.Console
 
         public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider scopeProvider, TextWriter textWriter)
         {
-            string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
-            //string source = logEntry.SourceFormatter(logEntry.MemberName, logEntry.FilePath, logEntry.LineNumber);
-            if (logEntry.Exception == null && message == null)
+            // Create the message and make sure the message is created.
+            string[] messages = logEntry.Formatter(logEntry.State, logEntry.Exception).Split('|');
+            if (logEntry.Exception == null && messages == null)
             {
                 return;
             }
+            string source = null;
+            string message = null;
+            if (messages != null)
+            {
+                source = messages.Length > 1 ? messages[0] : null;
+                message = messages.Length > 1 ? messages[1] : messages[0];
+            }
+            
             LogLevel logLevel = logEntry.LogLevel;
             ConsoleColors logLevelColors = GetLogLevelConsoleColors(logLevel);
             string logLevelString = GetLogLevelString(logLevel);
@@ -58,10 +66,10 @@ namespace Nt.Core.Logging.Console
             {
                 textWriter.WriteColoredMessage(logLevelString, logLevelColors.Background, logLevelColors.Foreground);
             }
-            CreateDefaultLogMessage(textWriter, logEntry, message, scopeProvider);
+            CreateDefaultLogMessage(textWriter, logEntry, message, source, scopeProvider);
         }
 
-        private void CreateDefaultLogMessage<TState>(TextWriter textWriter, in LogEntry<TState> logEntry, string message, IExternalScopeProvider scopeProvider)
+        private void CreateDefaultLogMessage<TState>(TextWriter textWriter, in LogEntry<TState> logEntry, string message, string source, IExternalScopeProvider scopeProvider)
         {
             bool singleLine = FormatterOptions.SingleLine;
             int eventId = logEntry.EventId.Id;
@@ -73,7 +81,11 @@ namespace Nt.Core.Logging.Console
 
             // category and event id
             textWriter.Write(LoglevelPadding);
-            textWriter.Write(logEntry.Category);
+            if(source != null)
+                textWriter.Write(source);
+            else
+                textWriter.Write(logEntry.Category);
+
             textWriter.Write('[');
 
 #if NETCOREAPP

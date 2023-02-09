@@ -39,12 +39,16 @@ namespace Nt.Core.Logging.File
         {
             // Create the message and make sure the message is created.
             string[] messages = logEntry.Formatter(logEntry.State, logEntry.Exception).Split('|');
-            string source = messages.Length > 1 ? messages[0] : string.Empty;
-            string message = messages.Length > 1 ? messages[1] : messages[0];
-
-            if (logEntry.Exception == null && message == null)
+            if (logEntry.Exception == null && messages == null)
             {
                 return;
+            }
+            string source = null;
+            string message = null;
+            if (messages != null)
+            {
+                source = messages.Length > 1 ? messages[0] : string.Empty;
+                message = messages.Length > 1 ? messages[1] : messages[0];
             }
 
             // Write the datetime
