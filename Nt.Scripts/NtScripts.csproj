@@ -67,9 +67,16 @@
     <Compile Include="DrawingTools\LabelLines\PriceLine\PriceLine.v.0.1.cs" />
     <Compile Include="DrawingTools\LabelLines\TimeLine\TimeLine.v.0.1.cs" />
     <Compile Include="Drawing\LabelLineDrawingMethods.cs" />
+    <Compile Include="Hosting\HostingHostBuilderExtensions.cs" />
     <Compile Include="Indicators\Base\MyBaseIndicator.cs" />
     <Compile Include="Indicators\Templates\IndicatorTemplate.cs" />
     <Compile Include="Indicators\TradingZone\TradingZone.cs" />
+    <Compile Include="Logging\NinjascriptFormatter.cs" />
+    <Compile Include="Logging\NinjascriptFormatterOptions.cs" />
+    <Compile Include="Logging\NinjascriptFormatterOptionsMonitor.cs" />
+    <Compile Include="Logging\NinjascriptLogger.cs" />
+    <Compile Include="Logging\NinjascriptLoggerProvider.cs" />
+    <Compile Include="Logging\NinjascriptLoggerOptions.cs" />
     <Compile Include="Ninjascripts\ChartData\IChartDataScript.cs" />
     <Compile Include="Ninjascripts\ChartData\Design\ChartDataDesignScript.cs" />
     <Compile Include="Ninjascripts\DataSeries\IDataSeriesScript.cs" />
@@ -77,12 +84,14 @@
     <Compile Include="Ninjascripts\GlobalsData\Design\GlobalsDataDesignScript.cs" />
     <Compile Include="Ninjascripts\GlobalsData\GlobalsDataScript.cs" />
     <Compile Include="Ninjascripts\GlobalsData\IGlobalsDataScript.cs" />
+    <Compile Include="Ninjascripts\INinjascript.cs" />
+    <Compile Include="Ninjascripts\Ninjascript.cs" />
     <Compile Include="Ninjascripts\Sessions\Design\SessionsIteratorDesignScript.cs" />
     <Compile Include="Ninjascripts\Sessions\SessionsFiltersScript.cs" />
     <Compile Include="Ninjascripts\Sessions\SessionsScript.cs" />
     <Compile Include="Ninjascripts\Sessions\SessionsIteratorScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="_Host\ServiceCollectionExtensions.cs" />
+    <Compile Include="Hosting\ServiceCollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nt.Core\Nt.Core.csproj">
@@ -93,7 +102,6 @@
   <ItemGroup>
     <Folder Include="DrawingTools\LabelRegions\" />
     <Folder Include="Indicators\TradingLevels\" />
-    <Folder Include="Strategies\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

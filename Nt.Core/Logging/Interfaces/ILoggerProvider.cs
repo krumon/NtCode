@@ -2,9 +2,9 @@
 
 namespace Nt.Core.Logging
 {
-    //
-    // Resumen:
-    //     Represents a type that can create instances of Microsoft.Extensions.Logging.ILogger.
+    /// <summary>
+    /// Represents a type that can create instances of <see cref="ILogger"/>.
+    /// </summary>
     public interface ILoggerProvider : IDisposable
     {
         /// <summary>

@@ -12,7 +12,7 @@ namespace Nt.Core.Attributes
     /// <see cref="System.Diagnostics.ConditionalAttribute"/>. So it is always preserved in the compiled assembly.
     /// </remarks>
     [AttributeUsage(AttributeTargets.All, Inherited = false, AllowMultiple = true)]
-    internal sealed class UnconditionalSuppressMessageAttribute : Attribute
+    public sealed class UnconditionalSuppressMessageAttribute : Attribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="UnconditionalSuppressMessageAttribute"/>

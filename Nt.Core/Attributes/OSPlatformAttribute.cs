@@ -6,7 +6,7 @@ namespace Nt.Core.Attributes
     /// Base type for all platform-specific API attributes.
     /// </summary>
 #pragma warning disable CS3015 // Type has no accessible constructors which use only CLS-compliant types
-    internal abstract class OSPlatformAttribute : Attribute
+    public abstract class OSPlatformAttribute : Attribute
 #pragma warning restore CS3015
     {
         private protected OSPlatformAttribute(string platformName)
@@ -21,7 +21,7 @@ namespace Nt.Core.Attributes
     /// </summary>
     [AttributeUsage(AttributeTargets.Assembly,
                     AllowMultiple = false, Inherited = false)]
-     internal sealed class TargetPlatformAttribute : OSPlatformAttribute
+     public sealed class TargetPlatformAttribute : OSPlatformAttribute
     {
         public TargetPlatformAttribute(string platformName) : base(platformName)
         {
@@ -50,7 +50,7 @@ namespace Nt.Core.Attributes
                     AttributeTargets.Property |
                     AttributeTargets.Struct,
                     AllowMultiple = true, Inherited = false)]
-    internal sealed class SupportedOSPlatformAttribute : OSPlatformAttribute
+    public sealed class SupportedOSPlatformAttribute : OSPlatformAttribute
     {
         public SupportedOSPlatformAttribute(string platformName) : base(platformName)
         {
@@ -76,7 +76,7 @@ namespace Nt.Core.Attributes
                     AttributeTargets.Property |
                     AttributeTargets.Struct,
                     AllowMultiple = true, Inherited = false)]
-    internal sealed class UnsupportedOSPlatformAttribute : OSPlatformAttribute
+    public sealed class UnsupportedOSPlatformAttribute : OSPlatformAttribute
     {
         public UnsupportedOSPlatformAttribute(string platformName) : base(platformName)
         {
@@ -97,7 +97,7 @@ namespace Nt.Core.Attributes
                     AttributeTargets.Method |
                     AttributeTargets.Property,
                     AllowMultiple = true, Inherited = false)]
-    internal sealed class SupportedOSPlatformGuardAttribute : OSPlatformAttribute
+    public sealed class SupportedOSPlatformGuardAttribute : OSPlatformAttribute
     {
         public SupportedOSPlatformGuardAttribute(string platformName) : base(platformName)
         {
@@ -118,7 +118,7 @@ namespace Nt.Core.Attributes
                     AttributeTargets.Method |
                     AttributeTargets.Property,
                     AllowMultiple = true, Inherited = false)]
-    internal sealed class UnsupportedOSPlatformGuardAttribute : OSPlatformAttribute
+    public sealed class UnsupportedOSPlatformGuardAttribute : OSPlatformAttribute
     {
         public UnsupportedOSPlatformGuardAttribute(string platformName) : base(platformName)
         {

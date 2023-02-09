@@ -1,8 +1,7 @@
 ﻿namespace Nt.Core.Logging
 {
     /// <summary>
-    /// Represents a Microsoft.Extensions.Logging.ILoggerProvider that is able to consume
-    /// external scope information.
+    /// Represents a <see cref="ILoggerProvider"/> that is able to consume external scope information.
     /// </summary>
     public interface ISupportExternalScope
     {
