@@ -71,12 +71,15 @@
     <Compile Include="Indicators\Base\MyBaseIndicator.cs" />
     <Compile Include="Indicators\Templates\IndicatorTemplate.cs" />
     <Compile Include="Indicators\TradingZone\TradingZone.cs" />
+    <Compile Include="Logging\NinjascriptOutputFormatter.cs" />
+    <Compile Include="Logging\NinjascriptFormatterNames.cs" />
     <Compile Include="Logging\NinjascriptFormatter.cs" />
     <Compile Include="Logging\NinjascriptFormatterOptions.cs" />
     <Compile Include="Logging\NinjascriptFormatterOptionsMonitor.cs" />
     <Compile Include="Logging\NinjascriptLogger.cs" />
     <Compile Include="Logging\NinjascriptLoggerProvider.cs" />
     <Compile Include="Logging\NinjascriptLoggerOptions.cs" />
+    <Compile Include="Logging\NinjascriptOutputFormatterOptions.cs" />
     <Compile Include="Ninjascripts\ChartData\IChartDataScript.cs" />
     <Compile Include="Ninjascripts\ChartData\Design\ChartDataDesignScript.cs" />
     <Compile Include="Ninjascripts\DataSeries\IDataSeriesScript.cs" />

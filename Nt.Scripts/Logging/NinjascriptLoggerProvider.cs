@@ -44,8 +44,8 @@ namespace Nt.Scripts.Logging
             _loggers = new ConcurrentDictionary<string, NinjascriptLogger>();
 
             SetFormatters(formatters);
-            ReloadFileLoggerOptions(options.CurrentValue);
-            _optionsReloadToken = options.OnChange(ReloadFileLoggerOptions);
+            ReloadNinjascriptLoggerOptions(options.CurrentValue);
+            _optionsReloadToken = options.OnChange(ReloadNinjascriptLoggerOptions);
         }
 
         #endregion
@@ -82,14 +82,14 @@ namespace Nt.Scripts.Logging
             {
                 foreach (NinjascriptFormatter formatter in formatters)
                 {
-                    //cd.TryAdd(formatter.Name, formatter);
+                    cd.TryAdd(formatter.Name, formatter);
                     added = true;
                 }
             }
 
             if (!added)
             {
-                //cd.TryAdd(FileFormatterNames.Normal, new NinjascriptFormatter(new NinjascriptFormatterOptionsMonitor<NinjascriptFormatterOptions>(new NinjascriptFormatterOptions())));
+                cd.TryAdd(NinjascriptFormatterNames.Output, new NinjascriptOutputFormatter(new NinjascriptFormatterOptionsMonitor<NinjascriptOutputFormatterOptions>(new NinjascriptOutputFormatterOptions())));
             }
 
             _formatters = cd;
@@ -97,7 +97,7 @@ namespace Nt.Scripts.Logging
 
 
         // warning:  ReloadLoggerOptions can be called before the ctor completed,... before registering all of the state used in this method need to be initialized
-        private void ReloadFileLoggerOptions(NinjascriptLoggerOptions currentOptions)
+        private void ReloadNinjascriptLoggerOptions(NinjascriptLoggerOptions currentOptions)
         {
             _currentOptions = currentOptions ?? new NinjascriptLoggerOptions();
 

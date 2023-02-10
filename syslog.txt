@@ -1,48 +1,24 @@
-[2023/02/08 18:38:27]trce: Program.cs > Main() > Line 41[0]
-                           Logging message test from ConsoleApp.Program.
-[2023/02/08 18:38:27]dbug: Program.cs > Main() > Line 42[0]
-                           Logging message test from ConsoleApp.Program.
-[2023/02/08 18:38:27]info: Program.cs > Main() > Line 43[0]
-                           Logging message test from ConsoleApp.Program.
-[2023/02/08 18:38:27]warn: Program.cs > Main() > Line 44[0]
-                           Logging message test from ConsoleApp.Program.
-[2023/02/08 18:38:27]fail: Program.cs > Main() > Line 45[0]
-                           Logging message test from ConsoleApp.Program.
-[2023/02/08 18:38:27]crit: Program.cs > Main() > Line 46[0]
-                           Logging message test from ConsoleApp.Program.
-trce: Program.cs > Main() > Line 41[0]
+trce: Program.cs > Main() > Line 40[0]
       Logging message test from ConsoleApp.Program.
-dbug: Program.cs > Main() > Line 42[0]
+dbug: Program.cs > Main() > Line 41[0]
       Logging message test from ConsoleApp.Program.
-info: Program.cs > Main() > Line 43[0]
+info: Program.cs > Main() > Line 42[0]
       Logging message test from ConsoleApp.Program.
-warn: Program.cs > Main() > Line 44[0]
+warn: Program.cs > Main() > Line 43[0]
       Logging message test from ConsoleApp.Program.
-fail: Program.cs > Main() > Line 45[0]
+fail: Program.cs > Main() > Line 44[0]
       Logging message test from ConsoleApp.Program.
-crit: Program.cs > Main() > Line 46[0]
+crit: Program.cs > Main() > Line 45[0]
       Logging message test from ConsoleApp.Program.
-trce: Program.cs > Main() > Line 41[0]
-      Logging message test from ConsoleApp.Program.
-dbug: Program.cs > Main() > Line 42[0]
-      Logging message test from ConsoleApp.Program.
-info: Program.cs > Main() > Line 43[0]
-      Logging message test from ConsoleApp.Program.
-warn: Program.cs > Main() > Line 44[0]
-      Logging message test from ConsoleApp.Program.
-fail: Program.cs > Main() > Line 45[0]
-      Logging message test from ConsoleApp.Program.
-crit: Program.cs > Main() > Line 46[0]
-      Logging message test from ConsoleApp.Program.
-trce: Program.cs > Main() > Line 41[0]
-      Logging message test from ConsoleApp.Program.
-dbug: Program.cs > Main() > Line 42[0]
-      Logging message test from ConsoleApp.Program.
-info: Program.cs > Main() > Line 43[0]
-      Logging message test from ConsoleApp.Program.
-warn: Program.cs > Main() > Line 44[0]
-      Logging message test from ConsoleApp.Program.
-fail: Program.cs > Main() > Line 45[0]
-      Logging message test from ConsoleApp.Program.
-crit: Program.cs > Main() > Line 46[0]
-      Logging message test from ConsoleApp.Program.
+[2023/02/10 01:01:43.155]trce: Program.cs > Main() > Line 40[0]
+                               Logging message test from ConsoleApp.Program.
+[2023/02/10 01:01:43.157]dbug: Program.cs > Main() > Line 41[0]
+                               Logging message test from ConsoleApp.Program.
+[2023/02/10 01:01:43.161]info: Program.cs > Main() > Line 42[0]
+                               Logging message test from ConsoleApp.Program.
+[2023/02/10 01:01:43.165]warn: Program.cs > Main() > Line 43[0]
+                               Logging message test from ConsoleApp.Program.
+[2023/02/10 01:01:43.171]fail: Program.cs > Main() > Line 44[0]
+                               Logging message test from ConsoleApp.Program.
+[2023/02/10 01:01:43.177]crit: Program.cs > Main() > Line 45[0]
+                               Logging message test from ConsoleApp.Program.

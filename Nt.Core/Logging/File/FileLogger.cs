@@ -138,7 +138,7 @@ namespace Nt.Core.Logging.File
             var normalizeDirectoryPath = NormalizeDirectoryPath(directory);
             if (!TryCreateDirectory(normalizeDirectoryPath))
             {
-                if (!Options.EnsureExistDirectory)
+                if (!Options.EnsureDirectoryExists)
                     return string.Empty;
 
                 //TODO: Crear un directorio standard para que en cualquier equipo se cree un directorio.

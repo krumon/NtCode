@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Nt.Core.Logging.File
+﻿namespace Nt.Core.Logging.File
 {
     /// <summary>
     /// The configuration for a <see cref="FileLogger"/>
@@ -37,13 +35,7 @@ namespace Nt.Core.Logging.File
         /// <summary>
         /// Indicates if the directory doesn't exist or cannot create, store the log file in the current directory.
         /// </summary>
-        public bool EnsureExistDirectory { get; set; }
-
-        //public Dictionary<string, FileLoggerSettings> Files { get; set; }
-        //    = new Dictionary<string, FileLoggerSettings>()
-        //    {
-        //        ["SecureLog"] = new FileLoggerSettings("SecureLog",LogLevel.Information,true)
-        //    };
+        public bool EnsureDirectoryExists { get; set; }
 
         #endregion
     }

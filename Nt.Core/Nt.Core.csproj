@@ -366,7 +366,6 @@
     <Compile Include="Logging\File\FileLogger.cs" />
     <Compile Include="Logging\File\FileLoggerFormatterConfigureOptions.cs" />
     <Compile Include="Logging\File\FileLoggerFormatterOptionsChangeTokenSource.cs" />
-    <Compile Include="Logging\File\FileLoggerSettings.cs" />
     <Compile Include="Logging\File\FileFormatterOptionsMonitor.cs" />
     <Compile Include="Logging\Extensions\FileLoggerFormatterExtensions.cs" />
     <Compile Include="Logging\File\TimestampOptions.cs" />
@@ -498,7 +497,6 @@
     <Compile Include="Data\Exchanges\MarketExchange.cs" />
     <Compile Include="Data\Instruments\InstrumentCode.cs" />
     <Compile Include="Data\Instruments\InstrumentCodeExtensions.cs" />
-    <Compile Include="Helpers\Math\ISeriesHelpers.cs" />
     <Compile Include="Events\SessionChangedEvent.cs" />
     <Compile Include="Data\Platforms\Platform.cs" />
     <Compile Include="Data\TradingSessions\Interface\ISessions.cs" />
@@ -544,7 +542,6 @@
     <Compile Include="Logging\Interfaces\ILoggingBuilder.cs" />
     <Compile Include="Logging\Internal\LoggingBuilder.cs" />
     <Compile Include="Logging\Extensions\LoggerExtensions.cs" />
-    <Compile Include="Logging\LoggerSourceFormatter.cs" />
     <Compile Include="Logging\LogLevel.cs" />
     <Compile Include="Services\SessionsFilters\ISessionsFiltersService.cs" />
     <Compile Include="Services\SessionsFilters\SessionsFiltersOptions.cs" />
@@ -571,9 +568,7 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\LoggerToFile\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Resources\ExceptionMessages.resx">
       <Generator>ResXFileCodeGenerator</Generator>
