@@ -5,7 +5,7 @@
         /// <summary>
         /// Indicates if the log level should be output as part of the log message
         /// </summary>
-        public bool LogLevel { get; set; }
+        public bool LogLogLevel { get; set; }
 
         /// <summary>
         /// Indicates if the datetime should be output as part of the log message.

@@ -60,14 +60,14 @@ namespace Nt.Scripts.Logging
             if (!string.IsNullOrEmpty(timestamp))
             {
                 textWriter.Write(timestamp);
-                if (FormatterOptions.LogLevel)
+                if (FormatterOptions.LogLogLevel)
                     textWriter.Write(' ');
             }
 
             // Write the log level
             LogLevel logLevel = logEntry.LogLevel;
             string logLevelString = GetLogLevelString(logLevel);
-            if (logLevelString != null && FormatterOptions.LogLevel)
+            if (logLevelString != null && FormatterOptions.LogLogLevel)
             {
                 textWriter.Write('[');
                 textWriter.Write(logLevelString);

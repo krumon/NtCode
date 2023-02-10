@@ -11,8 +11,6 @@ namespace Nt.Core.Logging.File
     /// </summary>
     internal class FileLogger : ILogger
     {
-        #region Private members
-
         private readonly string _name;
         private string _normalizePath = string.Empty;
         private object _lock = default;
@@ -22,10 +20,6 @@ namespace Nt.Core.Logging.File
         internal IExternalScopeProvider ScopeProvider { get; set; }
         [ThreadStatic]
         private static StringWriter t_stringWriter;
-
-        #endregion
-
-        #region Static Properties
 
         /// <summary>
         /// A list of file locks based on path
@@ -37,18 +31,11 @@ namespace Nt.Core.Logging.File
         /// </summary>
         protected static object FileLockLock = new object();
 
-        #endregion
-
-        #region Constructor
-
         /// <summary>
         /// Creates <see cref="FileLogger"/> default instance.
         /// </summary>
         /// <param name="name">The category name of the logger.</param>
-        /// <param name="getCurrentConfig">The current configuration.</param>
         public FileLogger(string name) => _name = name;
-
-        #endregion
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {

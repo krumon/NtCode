@@ -15,5 +15,10 @@
         /// </summary>
         public const string Log = "Log";
 
+        /// <summary>
+        /// Reserved name for ninjascript null formatter to clear the ninjatrader output window.
+        /// </summary>
+        public const string Clear = "ClearOutputWindow";
+
     }
 }

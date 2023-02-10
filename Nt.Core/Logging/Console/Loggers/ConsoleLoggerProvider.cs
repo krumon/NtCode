@@ -188,8 +188,7 @@ namespace Nt.Core.Logging.Console
                     UseUtcTimestamp = deprecatedFromOptions.UseUtcTimestamp,
                 };
             }
-            else
-            if (formatter is SystemdConsoleFormatter systemdFormatter)
+            else if (formatter is SystemdConsoleFormatter systemdFormatter)
             {
                 systemdFormatter.FormatterOptions = new ConsoleFormatterOptions()
                 {

@@ -71,6 +71,9 @@
     <Compile Include="Indicators\Base\MyBaseIndicator.cs" />
     <Compile Include="Indicators\Templates\IndicatorTemplate.cs" />
     <Compile Include="Indicators\TradingZone\TradingZone.cs" />
+    <Compile Include="Events\NinjascriptLoggingEventIds.cs" />
+    <Compile Include="Logging\NinjascriptLogFormatter.cs" />
+    <Compile Include="Logging\NinjascriptLogFormatterOptions.cs" />
     <Compile Include="Logging\NinjascriptOutputFormatter.cs" />
     <Compile Include="Logging\NinjascriptFormatterNames.cs" />
     <Compile Include="Logging\NinjascriptFormatter.cs" />
