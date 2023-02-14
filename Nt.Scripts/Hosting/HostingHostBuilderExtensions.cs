@@ -1,4 +1,5 @@
-﻿using Nt.Core.Attributes;
+﻿using NinjaTrader.Core;
+using Nt.Core.Attributes;
 using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
@@ -47,6 +48,8 @@ namespace Nt.Scripts.Hosting
                     config.AddCommandLine(args);
                 }
             });
+
+            //string dir = Globals.UserDataDir;
 
             builder.ConfigureAppConfiguration((hostingContext, config) =>
             {
