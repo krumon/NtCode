@@ -28,6 +28,7 @@ namespace ConsoleApp
             Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             //Microsoft.Extensions.Logging.Console.
             //Microsoft.Extensions.Hosting.Internal.Host
+            //Microsoft.Extensions.Hosting.HostBuilder
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
             //Microsoft.Extensions.Primitives.ChangeToken

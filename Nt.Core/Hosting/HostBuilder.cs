@@ -1,5 +1,4 @@
-﻿using Nt.Core.Attributes;
-using Nt.Core.Configuration;
+﻿using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.FileProviders;
 using Nt.Core.Hosting.Internal;
@@ -128,6 +127,7 @@ namespace Nt.Core.Hosting
                 throw new InvalidOperationException("The host can only be built once.");
             _hostBuilt = true;
 
+            // TODO: DiagnosticListener Implementation
             // REVIEW: If we want to raise more events outside of these calls then we will need to
             // stash this in a field.
             //using (var diagnosticListener = new DiagnosticListener("Nt.Core.Hosting"))

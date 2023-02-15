@@ -184,6 +184,7 @@ namespace Nt.Core.Hosting
         public static IHostBuilder ConfigureDefaults(this IHostBuilder builder, string[] args)
         {
             builder.UseContentRoot(Directory.GetCurrentDirectory());
+            builder.UseEnvironment(Environments.Development);
             builder.ConfigureHostConfiguration(config =>
             {
                 config.AddEnvironmentVariables(prefix: "DOTNET_");
