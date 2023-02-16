@@ -75,7 +75,7 @@
     <Compile Include="Indicators\TradingZone\TradingZone.cs" />
     <Compile Include="Events\NinjascriptLoggingEventIds.cs" />
     <Compile Include="Logging\NinjascriptLoggerFormatterConfigureOptions.cs" />
-    <Compile Include="Logging\FileLoggerFormatterOptionsChangeTokenSource.cs" />
+    <Compile Include="Logging\NinjascriptLoggerFormatterOptionsChangeTokenSource.cs" />
     <Compile Include="Logging\NinjascriptLoggerFactoryExtensions.cs" />
     <Compile Include="Logging\NinjascriptLoggerFormatterExtensions.cs" />
     <Compile Include="Logging\NinjascriptLogFormatter.cs" />

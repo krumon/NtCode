@@ -1,7 +1,6 @@
 ﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Logging;
 using Nt.Core.Logging.Configuration;
-using Nt.Core.Logging.File;
 using Nt.Core.Logging.Options;
 using System;
 
