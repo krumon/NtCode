@@ -67,11 +67,17 @@
     <Compile Include="DrawingTools\LabelLines\PriceLine\PriceLine.v.0.1.cs" />
     <Compile Include="DrawingTools\LabelLines\TimeLine\TimeLine.v.0.1.cs" />
     <Compile Include="Drawing\LabelLineDrawingMethods.cs" />
+    <Compile Include="Hosting\HostedServiceExtensions.cs" />
+    <Compile Include="Hosting\Host.cs" />
     <Compile Include="Hosting\HostingHostBuilderExtensions.cs" />
     <Compile Include="Indicators\Base\MyBaseIndicator.cs" />
     <Compile Include="Indicators\Templates\IndicatorTemplate.cs" />
     <Compile Include="Indicators\TradingZone\TradingZone.cs" />
     <Compile Include="Events\NinjascriptLoggingEventIds.cs" />
+    <Compile Include="Logging\NinjascriptLoggerFormatterConfigureOptions.cs" />
+    <Compile Include="Logging\FileLoggerFormatterOptionsChangeTokenSource.cs" />
+    <Compile Include="Logging\NinjascriptLoggerFactoryExtensions.cs" />
+    <Compile Include="Logging\NinjascriptLoggerFormatterExtensions.cs" />
     <Compile Include="Logging\NinjascriptLogFormatter.cs" />
     <Compile Include="Logging\NinjascriptLogFormatterOptions.cs" />
     <Compile Include="Logging\NinjascriptOutputFormatter.cs" />
@@ -111,6 +117,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="launchsettings.json" />
+    <None Include="ntsettingsdevelopment.json" />
+    <None Include="ntsettings.json" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

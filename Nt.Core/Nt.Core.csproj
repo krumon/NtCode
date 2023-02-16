@@ -255,7 +255,6 @@
     <Compile Include="Hosting\Internal\Host.cs" />
     <Compile Include="Hosting\HostBuilderContext.cs" />
     <Compile Include="Hosting\HostDefaults.cs" />
-    <Compile Include="Hosting\HostedServiceExtensions.cs" />
     <Compile Include="Hosting\HostOptions.cs" />
     <Compile Include="Hosting\HostBuilder.cs" />
     <Compile Include="Hosting\Host.cs" />

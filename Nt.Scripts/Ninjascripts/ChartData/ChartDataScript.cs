@@ -1,7 +1,7 @@
 ﻿using NinjaTrader.Gui.Chart;
 using Nt.Core.Data;
-using Nt.Core.Hosting;
 using Nt.Core.Services;
+using Nt.Scripts.Hosting;
 using System;
 
 namespace Nt.Scripts.Ninjascripts

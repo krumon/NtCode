@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Nt.Core.Hosting;
+using System;
 
-namespace Nt.Core.Hosting
+namespace Nt.Scripts.Hosting
 {
     /// <summary>
     /// Extension method for <see cref="IHostedService"/> objects.

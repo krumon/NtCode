@@ -1,17 +1,11 @@
-﻿using NinjaTrader.Core;
-using Nt.Core.Attributes;
+﻿using Nt.Core.Attributes;
 using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
-using Nt.Core.Hosting.Internal;
 using Nt.Core.Logging;
 using Nt.Core.Logging.EventLog;
-using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Nt.Scripts.Hosting
 {
@@ -39,41 +33,19 @@ namespace Nt.Scripts.Hosting
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         public static IHostBuilder NinjascriptConfigureDefaults(this IHostBuilder builder, string[] args)
         {
-            builder.UseContentRoot(Directory.GetCurrentDirectory());
+            builder.UseContentRoot(NinjaTrader.Core.Globals.UserDataDir);
             builder.ConfigureHostConfiguration(config =>
             {
-                config.AddEnvironmentVariables(prefix: "DOTNET_");
-                if (args != null && args.Length > 0)
-                {
-                    config.AddCommandLine(args);
-                }
+                config.AddJsonFile("launchsettings.json", optional: true, reloadOnChange: false);
             });
-
-            //string dir = Globals.UserDataDir;
 
             builder.ConfigureAppConfiguration((hostingContext, config) =>
             {
                 IHostEnvironment env = hostingContext.Environment;
                 bool reloadOnChange = GetReloadConfigOnChangeValue(hostingContext);
 
-                config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: reloadOnChange)
-                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: reloadOnChange);
-
-                if (env.IsDevelopment() && env.ApplicationName.Length > 0)
-                {
-                    var appAssembly = Assembly.Load(new AssemblyName(env.ApplicationName));
-                    if (appAssembly != null)
-                    {
-                        config.AddUserSecrets(appAssembly, optional: true, reloadOnChange: reloadOnChange);
-                    }
-                }
-
-                config.AddEnvironmentVariables();
-
-                if (args != null && args.Length > 0)
-                {
-                    config.AddCommandLine(args);
-                }
+                config.AddJsonFile("ntsettings.json", optional: true, reloadOnChange: reloadOnChange)
+                        .AddJsonFile($"ntsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: reloadOnChange);
             })
             .ConfigureLogging((hostingContext, logging) =>
             {
@@ -89,24 +61,10 @@ namespace Nt.Scripts.Hosting
                 if (isWindows)
                 {
                     // Default the EventLogLoggerProvider to warning or above
-                    logging.AddFilter<EventLogLoggerProvider>(level => level >= LogLevel.Warning);
+                    logging.AddFilter<EventLogLoggerProvider>(level => level >= LogLevel.Information);
                 }
 
-                logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-#if NET6_0_OR_GREATER
-                if (!OperatingSystem.IsBrowser())
-#endif
-                {
-                    logging.AddConsole();
-                }
-                logging.AddDebug();
-                logging.AddEventSourceLogger();
-
-                if (isWindows)
-                {
-                    // Add the EventLogLoggerProvider on windows machines
-                    logging.AddEventLog();
-                }
+                logging.AddNinjascriptOutput();
 
                 logging.Configure(options =>
                 {
@@ -131,70 +89,5 @@ namespace Nt.Scripts.Hosting
         [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:RequiresUnreferencedCode", Justification = "Calling IConfiguration.GetValue is safe when the T is bool.")]
         private static bool GetReloadConfigOnChangeValue(HostBuilderContext hostingContext) => hostingContext.Configuration.GetValue("hostBuilder:reloadConfigOnChange", defaultValue: true);
 
-        /// <summary>
-        /// Listens for Ctrl+C or SIGTERM and calls <see cref="IHostApplicationLifetime.StopApplication"/> to start the shutdown process.
-        /// This will unblock extensions like RunAsync and WaitForShutdownAsync.
-        /// </summary>
-        /// <param name="hostBuilder">The <see cref="IHostBuilder" /> to configure.</param>
-        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        [UnsupportedOSPlatform("android")]
-        [UnsupportedOSPlatform("browser")]
-        [UnsupportedOSPlatform("ios")]
-        [UnsupportedOSPlatform("tvos")]
-        public static IHostBuilder UseConsoleLifetime(this IHostBuilder hostBuilder)
-        {
-            return hostBuilder.ConfigureServices(collection => collection.AddSingleton<IHostLifetime, ConsoleLifetime>());
-        }
-
-        /// <summary>
-        /// Listens for Ctrl+C or SIGTERM and calls <see cref="IHostApplicationLifetime.StopApplication"/> to start the shutdown process.
-        /// This will unblock extensions like RunAsync and WaitForShutdownAsync.
-        /// </summary>
-        /// <param name="hostBuilder">The <see cref="IHostBuilder" /> to configure.</param>
-        /// <param name="configureOptions">The delegate for configuring the <see cref="ConsoleLifetime"/>.</param>
-        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        [UnsupportedOSPlatform("android")]
-        [UnsupportedOSPlatform("browser")]
-        [UnsupportedOSPlatform("ios")]
-        [UnsupportedOSPlatform("tvos")]
-        public static IHostBuilder UseConsoleLifetime(this IHostBuilder hostBuilder, Action<ConsoleLifetimeOptions> configureOptions)
-        {
-            return hostBuilder.ConfigureServices(collection =>
-            {
-                collection.AddSingleton<IHostLifetime, ConsoleLifetime>();
-                collection.Configure(configureOptions);
-            });
-        }
-
-        /// <summary>
-        /// Enables console support, builds and starts the host, and waits for Ctrl+C or SIGTERM to shut down.
-        /// </summary>
-        /// <param name="hostBuilder">The <see cref="IHostBuilder" /> to configure.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to cancel the console.</param>
-        /// <returns>A <see cref="Task"/> that only completes when the token is triggered or shutdown is triggered.</returns>
-        [UnsupportedOSPlatform("android")]
-        [UnsupportedOSPlatform("browser")]
-        [UnsupportedOSPlatform("ios")]
-        [UnsupportedOSPlatform("tvos")]
-        public static Task RunConsoleAsync(this IHostBuilder hostBuilder, CancellationToken cancellationToken = default)
-        {
-            return hostBuilder.UseConsoleLifetime().Build().RunAsync(cancellationToken);
-        }
-
-        /// <summary>
-        /// Enables console support, builds and starts the host, and waits for Ctrl+C or SIGTERM to shut down.
-        /// </summary>
-        /// <param name="hostBuilder">The <see cref="IHostBuilder" /> to configure.</param>
-        /// <param name="configureOptions">The delegate for configuring the <see cref="ConsoleLifetime"/>.</param>
-        /// <param name="cancellationToken">A <see cref="CancellationToken"/> that can be used to cancel the console.</param>
-        /// <returns>A <see cref="Task"/> that only completes when the token is triggered or shutdown is triggered.</returns>
-        [UnsupportedOSPlatform("android")]
-        [UnsupportedOSPlatform("browser")]
-        [UnsupportedOSPlatform("ios")]
-        [UnsupportedOSPlatform("tvos")]
-        public static Task RunConsoleAsync(this IHostBuilder hostBuilder, Action<ConsoleLifetimeOptions> configureOptions, CancellationToken cancellationToken = default)
-        {
-            return hostBuilder.UseConsoleLifetime(configureOptions).Build().RunAsync(cancellationToken);
-        }
     }
 }

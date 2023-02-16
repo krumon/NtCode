@@ -33,7 +33,6 @@ namespace Nt.Core.Hosting
         private HostingEnvironment _hostingEnvironment;
         private PhysicalFileProvider _defaultProvider;
 
-
         /// <summary>
         /// A central location for sharing state between components during the host building process.
         /// </summary>
