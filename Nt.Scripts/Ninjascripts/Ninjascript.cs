@@ -35,5 +35,10 @@ namespace Nt.Scripts.Ninjascripts
         /// </summary>
         public Action<object> Print => _ninjascript.Print;
 
+        /// <summary>
+        /// Gets methods thats clear the output window.
+        /// </summary>
+        public Action ClearOutputWindow => _ninjascript.ClearOutputWindow;
+
     }
 }

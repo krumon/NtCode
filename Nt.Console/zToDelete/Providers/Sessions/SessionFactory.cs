@@ -1,6 +1,7 @@
 ﻿using ConsoleApp.Internal;
 using Nt.Core.Data;
 using System;
+using System.Collections.Generic;
 
 namespace ConsoleApp
 {
@@ -17,7 +18,7 @@ namespace ConsoleApp
 
         #region Constructor
 
-        public SessionFactory(SessionDescriptorCollection descriptors)
+        public SessionFactory(IList<SessionDescriptor> descriptors)
         {
             _descriptors = new SessionDescriptor[descriptors.Count];
             descriptors.CopyTo(_descriptors, 0);

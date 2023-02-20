@@ -50,20 +50,8 @@ namespace Nt.Scripts.Hosting
             })
             .ConfigureLogging((hostingContext, logging) =>
             {
-                bool isWindows =
-#if NET6_0_OR_GREATER
-                    OperatingSystem.IsWindows();
-#else
-                    RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-#endif
-
-                // IMPORTANT: This needs to be added *before* configuration is loaded, this lets
-                // the defaults be overridden by the configuration.
-                if (isWindows)
-                {
-                    // Default the EventLogLoggerProvider to warning or above
-                    logging.AddFilter<EventLogLoggerProvider>(level => level >= LogLevel.Information);
-                }
+                //// Default the EventLogLoggerProvider to warning or above
+                //logging.AddFilter<EventLogLoggerProvider>(level => level >= LogLevel.Warning);
 
                 logging.AddNinjascriptOutput();
 

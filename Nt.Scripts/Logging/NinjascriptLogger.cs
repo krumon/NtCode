@@ -1,6 +1,7 @@
 ﻿using Nt.Core.Logging;
 using Nt.Core.Logging.Abstractions;
 using Nt.Scripts.Events;
+using Nt.Scripts.Ninjascripts;
 using System;
 using System.IO;
 
@@ -26,6 +27,21 @@ namespace Nt.Scripts.Logging
             _name = name ?? throw new ArgumentNullException(nameof(name));
             _ninjascriptPrintMethod = ninjascriptPrintMethod ?? throw new ArgumentNullException(nameof(ninjascriptPrintMethod));
             _ninjascriptClearMethod = ninjascriptClearMethod ?? throw new ArgumentNullException(nameof(ninjascriptClearMethod));
+        }
+
+        /// <summary>
+        /// Creates <see cref="NinjascriptLogger"/> default instance.
+        /// </summary>
+        /// <param name="name">The category name of the logger.</param>
+        /// <param name="ninjascript">The <see cref="INinjascript"/> instance.</param>
+        internal NinjascriptLogger(string name, INinjascript ninjascript)
+        {
+            _name = name ?? throw new ArgumentNullException(nameof(name));
+            if (ninjascript == null)
+                throw new ArgumentNullException(nameof(ninjascript));
+
+            _ninjascriptPrintMethod = ninjascript.Print;
+            _ninjascriptClearMethod = ninjascript.ClearOutputWindow;
         }
 
         internal NinjascriptFormatter Formatter { get; set; }

@@ -1,6 +1,6 @@
-﻿namespace ConsoleApp
-{
-    public interface INinjascriptConfigurationProvider
-    {
-    }
-}
+﻿//namespace ConsoleApp
+//{
+//    public interface INinjascriptConfigurationProvider
+//    {
+//    }
+//}

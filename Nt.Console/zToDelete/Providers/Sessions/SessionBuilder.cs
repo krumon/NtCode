@@ -10,7 +10,7 @@ namespace ConsoleApp
     {
         #region Private members
 
-        private SessionDescriptorCollection _descriptors = new SessionDescriptorCollection();
+        private IList<SessionDescriptor> _descriptors = new List<SessionDescriptor>();
         private SessionFactory _sessionFactory;
         private SessionProvider _sessionProvider;
         private List<Func<SessionProviderConfiguration, SessionBuilder>> _sessionProviderConfigureActions;
