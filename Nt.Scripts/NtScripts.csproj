@@ -113,7 +113,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="launchsettings.json" />
+    <None Include="launchsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="ntsettingsdevelopment.json" />
     <None Include="ntsettings.json" />
   </ItemGroup>

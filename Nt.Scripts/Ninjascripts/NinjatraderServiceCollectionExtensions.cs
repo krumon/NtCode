@@ -27,7 +27,11 @@ namespace Nt.Scripts.Ninjascripts
             foreach (var ninjatraderObject in ninjatraderObjects)
             {
                 if (ninjatraderObject == null)
+                {
+                    // TODO: Delete this line. Is available for tests.
+                    AddNinjascriptService(services, null);
                     continue;
+                }
 
                 if (ninjatraderObject is NinjaScriptBase ninjascript)
                     AddNinjascriptService(services, ninjascript);
@@ -36,11 +40,15 @@ namespace Nt.Scripts.Ninjascripts
             }
         }
 
-        private static void AddNinjascriptService(IServiceCollection services, NinjaScriptBase ninjascript)
+        // TODO: Delete default ninjascript parameter value (null).
+        private static void AddNinjascriptService(IServiceCollection services, object ninjascript)
         {
-            // TODO: Delete this condition in future.
-            if (ninjascript != null)
-                services.TryAddEnumerable(ServiceDescriptor.Singleton<INinjascript>(new Ninjascript(ninjascript)));
+            // TODO: Delete this condition. Is only for console testing.
+            if (ninjascript == null)
+                services.TryAddEnumerable(ServiceDescriptor.Singleton<INinjascript>(new Ninjascript()));
+            //// TODO: Delete this condition in future when develop the indicator, strategy,... services.
+            //else if (ninjascript != null)
+            //    services.TryAddEnumerable(ServiceDescriptor.Singleton<INinjascript>(new Ninjascript(ninjascript)));
             else if (ninjascript is IndicatorBase indicator)
                 return;
             else if (ninjascript is StrategyBase strategy)

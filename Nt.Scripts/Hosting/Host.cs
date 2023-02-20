@@ -23,7 +23,7 @@ namespace Nt.Scripts.Hosting
         /// </remarks>
         /// <returns>The initialized <see cref="IHostBuilder"/>.</returns>
         public static IHostBuilder CreateNinjascriptDefaultBuilder() =>
-            CreateNinjascriptDefaultBuilder(args: null);
+            CreateNinjascriptDefaultBuilder(ninjatraderObjects: null);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HostBuilder"/> class with pre-configured defaults.
@@ -41,10 +41,10 @@ namespace Nt.Scripts.Hosting
         ///   </list>
         /// </remarks>
         /// <returns>The initialized <see cref="IHostBuilder"/>.</returns>
-        public static IHostBuilder CreateNinjascriptDefaultBuilder(string[] args)
+        public static IHostBuilder CreateNinjascriptDefaultBuilder(object[] ninjatraderObjects)
         {
             HostBuilder builder = new HostBuilder();
-            return builder.NinjascriptConfigureDefaults(args);
+            return builder.NinjascriptConfigureDefaults(ninjatraderObjects);
         }
 
     }

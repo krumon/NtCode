@@ -25,8 +25,9 @@ namespace Nt.Scripts.Logging
         internal NinjascriptLogger(string name, Action<object> ninjascriptPrintMethod, Action ninjascriptClearMethod)
         {
             _name = name ?? throw new ArgumentNullException(nameof(name));
-            _ninjascriptPrintMethod = ninjascriptPrintMethod ?? throw new ArgumentNullException(nameof(ninjascriptPrintMethod));
-            _ninjascriptClearMethod = ninjascriptClearMethod ?? throw new ArgumentNullException(nameof(ninjascriptClearMethod));
+            // TODO: Make available the exception conditions.
+            _ninjascriptPrintMethod = ninjascriptPrintMethod; // ?? throw new ArgumentNullException(nameof(ninjascriptPrintMethod));
+            _ninjascriptClearMethod = ninjascriptClearMethod; // ?? throw new ArgumentNullException(nameof(ninjascriptClearMethod));
         }
 
         /// <summary>

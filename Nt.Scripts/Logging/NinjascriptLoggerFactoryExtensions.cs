@@ -21,7 +21,7 @@ namespace Nt.Scripts.Logging
         {
             builder.AddConfiguration();
 
-            builder.AddNinjascriptFormatter<NinjascriptFormatter, NinjascriptFormatterOptions>();
+            builder.AddNinjascriptFormatter<NinjascriptOutputFormatter, NinjascriptFormatterOptions>();
 
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, NinjascriptLoggerProvider>());
             LoggerProviderOptions.RegisterProviderOptions<NinjascriptLoggerOptions, NinjascriptLoggerProvider>(builder.Services);

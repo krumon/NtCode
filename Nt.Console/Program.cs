@@ -36,7 +36,7 @@ namespace ConsoleApp
 
 
             //UseNinjascriptHost();
-            UseColorConsoleLogger();
+            UseNinjascriptHostingServices();
             _logger = _host?.Services.GetService<ILogger<Program>>();
             //_logger?.LogInformation(new Exception("Exception test"), "Simple message.");
             _logger?.LogTraceSource("Logging message test from {0}.", typeof(Program));
@@ -51,6 +51,11 @@ namespace ConsoleApp
 
             IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
             IConfiguration configure = _host?.Services.GetService<IConfiguration>();
+        }
+
+        private static void UseNinjascriptHostingServices()
+        {
+            _host = Nt.Scripts.Hosting.Host.CreateNinjascriptDefaultBuilder(null).Build();
         }
 
         private static void UseNinjascriptHost()

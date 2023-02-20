@@ -33,7 +33,9 @@ namespace Nt.Scripts.Hosting
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         public static IHostBuilder NinjascriptConfigureDefaults(this IHostBuilder builder, object[] ninjatraderObjects)
         {
-            builder.UseContentRoot(NinjaTrader.Core.Globals.UserDataDir);
+            //builder.UseContentRoot(NinjaTrader.Core.Globals.UserDataDir);
+            // TODO: Delete. Is only for tests in console.
+            builder.UseContentRoot(Directory.GetCurrentDirectory());
             builder.ConfigureHostConfiguration(config =>
             {
                 config.AddJsonFile("launchsettings.json", optional: true, reloadOnChange: false);

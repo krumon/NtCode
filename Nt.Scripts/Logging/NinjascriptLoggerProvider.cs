@@ -26,7 +26,7 @@ namespace Nt.Scripts.Logging
         /// Creates an instance of <see cref="NinjascriptLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        public NinjascriptLoggerProvider(INinjascript ninjascript, IOptionsMonitor<NinjascriptLoggerOptions> options) : this(ninjascript, options, Array.Empty<NinjascriptFormatter>()) { }
+        public NinjascriptLoggerProvider(INinjascript ninjascript, IOptionsMonitor < NinjascriptLoggerOptions> options) : this(ninjascript, options, Array.Empty<NinjascriptFormatter>()) { }
 
         /// <summary>
         /// Creates an instance of <see cref="NinjascriptLoggerProvider"/>.
@@ -40,6 +40,17 @@ namespace Nt.Scripts.Logging
             _ninjascriptPrintMethod = ninjascript.Instance.Print;
             _ninjascriptClearMethod = ninjascript.Instance.ClearOutputWindow;
 
+            _currentOptions = options.CurrentValue;
+            _loggers = new ConcurrentDictionary<string, NinjascriptLogger>();
+
+            SetFormatters(formatters);
+            ReloadNinjascriptLoggerOptions(options.CurrentValue);
+            _optionsReloadToken = options.OnChange(ReloadNinjascriptLoggerOptions);
+        }
+
+        // TODO: Delete this constructor. Is only necesary for testing in console.
+        public NinjascriptLoggerProvider(IOptionsMonitor<NinjascriptLoggerOptions> options, IEnumerable<NinjascriptFormatter> formatters)
+        {
             _currentOptions = options.CurrentValue;
             _loggers = new ConcurrentDictionary<string, NinjascriptLogger>();
 

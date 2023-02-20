@@ -20,6 +20,12 @@ namespace Nt.Scripts.Ninjascripts
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
         }
 
+        // TODO: Delete this constructor. Is only necesary for testing in console.
+        public Ninjascript()
+        {
+
+        }
+
         /// <summary>
         /// Gets the ninjascript instance.
         /// </summary>
