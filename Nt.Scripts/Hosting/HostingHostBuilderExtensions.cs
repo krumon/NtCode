@@ -3,10 +3,9 @@ using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
-using Nt.Core.Logging.EventLog;
 using Nt.Scripts.Logging;
+using Nt.Scripts.Ninjascripts;
 using System.IO;
-using System.Runtime.InteropServices;
 
 namespace Nt.Scripts.Hosting
 {
@@ -32,7 +31,7 @@ namespace Nt.Scripts.Hosting
         /// <param name="builder">The existing builder to configure.</param>
         /// <param name="args">The command line args.</param>
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        public static IHostBuilder NinjascriptConfigureDefaults(this IHostBuilder builder, string[] args)
+        public static IHostBuilder NinjascriptConfigureDefaults(this IHostBuilder builder, object[] ninjatraderObjects)
         {
             builder.UseContentRoot(NinjaTrader.Core.Globals.UserDataDir);
             builder.ConfigureHostConfiguration(config =>
@@ -62,13 +61,16 @@ namespace Nt.Scripts.Hosting
                         ActivityTrackingOptions.TraceId |
                         ActivityTrackingOptions.ParentId;
                 });
-
             })
             .UseDefaultServiceProvider((context, options) =>
             {
                 bool isDevelopment = context.Environment.IsDevelopment();
                 options.ValidateScopes = isDevelopment;
                 options.ValidateOnBuild = isDevelopment;
+            });
+            builder.ConfigureServices((services) =>
+            {
+                services.AddNinjatraderObjects(ninjatraderObjects);
             });
 
             return builder;

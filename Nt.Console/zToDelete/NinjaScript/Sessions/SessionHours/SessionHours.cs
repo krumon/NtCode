@@ -131,7 +131,7 @@ namespace ConsoleApp
         /// This method is executed when "ConfigureProperties" methods is raised.
         /// </summary>
         /// <param name="ninjascript">The ninjascript parent object.</param>
-        protected override void SetDefasult(NinjaScriptBase ninjascript)
+        protected override void SetDefault(NinjaScriptBase ninjascript)
         {
         }
 

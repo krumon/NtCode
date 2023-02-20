@@ -6,6 +6,7 @@ using Nt.Core.Logging.Configuration;
 using Nt.Core.Services;
 using Nt.Scripts;
 using Nt.Scripts.Ninjascripts.Design;
+using Nt.Scripts.Ninjascripts.Sessions;
 using System;
 using System.Diagnostics;
 using System.Reflection;

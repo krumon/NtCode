@@ -43,7 +43,7 @@ namespace ConsoleApp
         /// Method to set default properties in the script in "OnStateChanged.Configure" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript parent object.</param>
-        protected virtual void SetDefasult(NinjaScriptBase ninjascript)
+        protected virtual void SetDefault(NinjaScriptBase ninjascript)
         {
         }
 
@@ -248,7 +248,7 @@ namespace ConsoleApp
         /// Method to set default properties in the script in "OnStateChanged.Configure" method.
         /// </summary>
         /// <param name="ninjascript">The ninjascript parent object.</param>
-        protected override void SetDefasult(NinjaScriptBase ninjascript)
+        protected override void SetDefault(NinjaScriptBase ninjascript)
         {
             try
             {
@@ -322,7 +322,7 @@ namespace ConsoleApp
             switch (eventType)
             {
                 case EventType.SetDefaults:
-                    SetDefasult(null);
+                    SetDefault(null);
                     break;
                 case EventType.DataLoaded:
                     Load(ninjascript, bars);

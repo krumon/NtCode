@@ -1,12 +1,11 @@
 ﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Services;
-using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Ninjascripts.Design;
 using System;
 
-namespace Nt.Scripts
+namespace Nt.Scripts.Ninjascripts.Sessions
 {
-    public static class ServiceCollectionExtensions
+    public static class SessionsServiceCollectionExtensions
     {
 
         public static IServiceCollection AddSessions<TService>(this IServiceCollection services, Action<ISessionsBuilder> action)

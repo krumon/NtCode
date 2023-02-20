@@ -24,10 +24,10 @@ namespace ConsoleApp
 
         #region Configure methods
 
-        protected override void SetDefasult(NinjaScriptBase ninjascript)
+        protected override void SetDefault(NinjaScriptBase ninjascript)
         {
             // Copy the ninjascript properties in the parent
-            base.SetDefasult(ninjascript);
+            base.SetDefault(ninjascript);
 
             // Cast the element to IndicatorBase
             IndicatorBase indicator = (IndicatorBase)ninjascript;

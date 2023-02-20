@@ -166,7 +166,7 @@ namespace ConsoleApp
 
         #region State Changed methods
 
-        protected override void SetDefasult(NinjaScriptBase ninjascript)
+        protected override void SetDefault(NinjaScriptBase ninjascript)
         {
             TradingHours.Get("").CopyTo(bars.TradingHours);
             TradingHours.String2TradingHours("").CopyTo(bars.TradingHours);
