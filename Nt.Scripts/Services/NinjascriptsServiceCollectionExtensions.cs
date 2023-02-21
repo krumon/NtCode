@@ -6,7 +6,7 @@ using System;
 
 namespace Nt.Scripts.Services
 {
-    public static class NinjatraderServiceCollectionExtensions
+    public static class NinjascriptsServiceCollectionExtensions
     {
 
         public static IServiceCollection AddNinjatraderObjects(this IServiceCollection services, object[] ninjatraderObjects)

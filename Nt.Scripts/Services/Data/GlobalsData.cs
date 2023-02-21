@@ -4,7 +4,7 @@ using System;
 
 namespace Nt.Scripts.Services
 {
-    public abstract class GlobalsData : IGlobalsData
+    public class GlobalsData : IGlobalsData
     {
 
         public DateTime MaxDate => Globals.MaxDate;

@@ -104,8 +104,7 @@ namespace ConsoleApp
                     //    builder.AddConsole();
                     //    builder.AddDebug();
                     //});
-                    services.AddSingleton<IGlobalsDataService>(new GlobalsDataDesignScript())
-                    .AddScoped<IChartDataService, ChartDataDesignScript>()
+                    services.AddScoped<IChartDataService, ChartDataDesignScript>()
                     .AddSessions<ISessionsService>((builder) =>
                     {
                         builder.ConfigureFilters((options) =>
