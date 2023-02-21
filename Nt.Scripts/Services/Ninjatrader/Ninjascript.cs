@@ -23,7 +23,6 @@ namespace Nt.Scripts.Services
         // TODO: Delete this constructor. Is only necesary for testing in console.
         public Ninjascript()
         {
-
         }
 
         /// <summary>

@@ -56,7 +56,7 @@ namespace Nt.Scripts.Hosting
 
                 logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
 
-                logging.AddNinjatraderOutputWindow();
+                logging.AddOutputWindowLogger();
 
                 logging.Configure(options =>
                 {

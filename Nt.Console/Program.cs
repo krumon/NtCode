@@ -5,7 +5,6 @@ using Nt.Core.Logging;
 using Nt.Core.Logging.Configuration;
 using Nt.Core.Services;
 using Nt.Scripts;
-using Nt.Scripts.Ninjascripts.Design;
 using Nt.Scripts.Services;
 using System;
 using System.Diagnostics;
@@ -104,7 +103,7 @@ namespace ConsoleApp
                     //    builder.AddConsole();
                     //    builder.AddDebug();
                     //});
-                    services.AddScoped<IChartDataService, ChartDataDesignScript>()
+                    services.AddSingleton<IChart, Chart>()
                     //.AddSessions<ISessionsService>((builder) =>
                     //{
                     //    builder.ConfigureFilters((options) =>

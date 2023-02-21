@@ -442,9 +442,6 @@
     <Compile Include="Services\.Interfaces\IOnSessionUpdateService.cs" />
     <Compile Include="Services\.Interfaces\IOnMarketDataService.cs" />
     <Compile Include="Services\.Interfaces\IOnBarUpdateService.cs" />
-    <Compile Include="Services\ChartStyle\IChartStyleService.cs" />
-    <Compile Include="Services\ChartData\IChartDataService.cs" />
-    <Compile Include="Services\ChartStyle\ChartStyleService.cs" />
     <Compile Include="Services\DataSeries\DataSeriesOptions.cs" />
     <Compile Include="Services\DataSeries\DataSeriesProvider.cs" />
     <Compile Include="DependencyInjection\Interfaces\IServiceDescriptor.cs" />
@@ -458,7 +455,6 @@
     <Compile Include="Data\Bars\BarsPeriod.cs" />
     <Compile Include="Services\DataSeries\DataSeriesCollection.cs" />
     <Compile Include="Services\DataSeries\Interfaces\IDataSeriesBuilder.cs" />
-    <Compile Include="Services\ChartData\ChartDataService.cs" />
     <Compile Include="Services\DataSeries\Interfaces\IDataSeriesCollection.cs" />
     <Compile Include="Services\DataSeries\Interfaces\IDataSeriesDescriptor.cs" />
     <Compile Include="Data\TradingSessions\Session.cs" />

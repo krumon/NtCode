@@ -1,12 +1,11 @@
 ﻿using Nt.Core.Data;
-using Nt.Core.Hosting;
 
-namespace Nt.Core.Services
+namespace Nt.Scripts.Services
 {
     /// <summary>
-    /// Represents the properties and methods to create a default implementation of <see cref="ChartDataService"/>.
+    /// Represents the properties and methods to create a default implementation of <see cref="Chart"/>.
     /// </summary>
-    public interface IChartDataService : IHostedService
+    public interface IChart
     {
         
         /// <summary>

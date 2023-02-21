@@ -16,7 +16,7 @@ namespace Nt.Scripts.Logging
         /// </summary>
         /// <param name="builder">The log builder to add to</param>
         /// <returns>The same instance of the <see cref="ILoggingBuilder"/> for chaining.</returns>
-        public static ILoggingBuilder AddNinjatraderOutputWindow(this ILoggingBuilder builder)
+        public static ILoggingBuilder AddOutputWindowLogger(this ILoggingBuilder builder)
         {
             builder.AddConfiguration();
 
@@ -34,9 +34,9 @@ namespace Nt.Scripts.Logging
         /// <param name="builder">The log builder to add to</param>
         /// <param name="options">The ninjatrader output window logger options.</param>
         /// <returns>The same instance of the <see cref="ILoggingBuilder"/> for chaining.</returns>
-        public static ILoggingBuilder AddNinjatraderOutputWindow(this ILoggingBuilder builder, Action<NinjatraderLoggerOptions> options)
+        public static ILoggingBuilder AddOutputWindowLogger(this ILoggingBuilder builder, Action<NinjatraderLoggerOptions> options)
         {
-            builder.AddNinjatraderOutputWindow();
+            builder.AddOutputWindowLogger();
             builder.Services.Configure(options);
 
             return builder;
@@ -54,7 +54,7 @@ namespace Nt.Scripts.Logging
             return builder;
         }
         private static ILoggingBuilder AddNinjatraderFormatterWithName(this ILoggingBuilder builder, string name) =>
-            builder.AddNinjatraderOutputWindow((NinjatraderLoggerOptions options) => options.FormatterName = name);
+            builder.AddOutputWindowLogger((NinjatraderLoggerOptions options) => options.FormatterName = name);
 
     }
 }
