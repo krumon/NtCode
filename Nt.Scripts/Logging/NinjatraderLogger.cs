@@ -1,7 +1,7 @@
 ﻿using Nt.Core.Logging;
 using Nt.Core.Logging.Abstractions;
 using Nt.Scripts.Events;
-using Nt.Scripts.Ninjascripts;
+using Nt.Scripts.Services;
 using System;
 using System.IO;
 
@@ -10,19 +10,19 @@ namespace Nt.Scripts.Logging
     /// <summary>
     /// A logger that writes the logs to ninjatrader windows (Output or Log)
     /// </summary>
-    internal class NinjascriptLogger : ILogger
+    internal class NinjatraderLogger : ILogger
     {
         private readonly string _name;
         private readonly Action<object> _ninjascriptPrintMethod;
         private readonly Action _ninjascriptClearMethod;
 
         /// <summary>
-        /// Creates <see cref="NinjascriptLogger"/> default instance.
+        /// Creates <see cref="NinjatraderLogger"/> default instance.
         /// </summary>
         /// <param name="name">The category name of the logger.</param>
         /// <param name="ninjascriptPrintMethod">The ninjascript method to log a message in the output window.</param>
         /// <param name="ninjascriptClearMethod">The ninjascript method to clear the output window.</param>
-        internal NinjascriptLogger(string name, Action<object> ninjascriptPrintMethod, Action ninjascriptClearMethod)
+        internal NinjatraderLogger(string name, Action<object> ninjascriptPrintMethod, Action ninjascriptClearMethod)
         {
             _name = name ?? throw new ArgumentNullException(nameof(name));
             // TODO: Make available the exception conditions.
@@ -31,11 +31,11 @@ namespace Nt.Scripts.Logging
         }
 
         /// <summary>
-        /// Creates <see cref="NinjascriptLogger"/> default instance.
+        /// Creates <see cref="NinjatraderLogger"/> default instance.
         /// </summary>
         /// <param name="name">The category name of the logger.</param>
         /// <param name="ninjascript">The <see cref="INinjascript"/> instance.</param>
-        internal NinjascriptLogger(string name, INinjascript ninjascript)
+        internal NinjatraderLogger(string name, INinjascript ninjascript)
         {
             _name = name ?? throw new ArgumentNullException(nameof(name));
             if (ninjascript == null)
@@ -45,8 +45,8 @@ namespace Nt.Scripts.Logging
             _ninjascriptClearMethod = ninjascript.ClearOutputWindow;
         }
 
-        internal NinjascriptFormatter Formatter { get; set; }
-        internal NinjascriptLoggerOptions Options { get; set; }
+        internal NinjatraderLoggerFormatter Formatter { get; set; }
+        internal NinjatraderLoggerOptions Options { get; set; }
 
         [ThreadStatic]
         private static StringWriter t_stringWriter;
@@ -105,7 +105,7 @@ namespace Nt.Scripts.Logging
 
         private void Write(string name, string message)
         {
-            if (name == NinjascriptFormatterNames.Output)
+            if (name == NinjatraderLoggerFormatterNames.Output)
                 _ninjascriptPrintMethod?.Invoke(message);
         }
     }

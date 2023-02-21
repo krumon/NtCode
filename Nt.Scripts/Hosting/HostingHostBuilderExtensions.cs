@@ -4,7 +4,7 @@ using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
 using Nt.Scripts.Logging;
-using Nt.Scripts.Ninjascripts;
+using Nt.Scripts.Services;
 using System.IO;
 
 namespace Nt.Scripts.Hosting
@@ -33,9 +33,9 @@ namespace Nt.Scripts.Hosting
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         public static IHostBuilder NinjascriptConfigureDefaults(this IHostBuilder builder, object[] ninjatraderObjects)
         {
-            //builder.UseContentRoot(NinjaTrader.Core.Globals.UserDataDir);
-            // TODO: Delete. Is only for tests in console.
-            builder.UseContentRoot(Directory.GetCurrentDirectory());
+            builder.UseContentRoot(NinjaTrader.Core.Globals.UserDataDir);
+            //// TODO: Delete. Is only for tests in console.
+            //builder.UseContentRoot(Directory.GetCurrentDirectory());
             builder.ConfigureHostConfiguration(config =>
             {
                 config.AddJsonFile("launchsettings.json", optional: true, reloadOnChange: false);
@@ -54,7 +54,9 @@ namespace Nt.Scripts.Hosting
                 //// Default the EventLogLoggerProvider to warning or above
                 //logging.AddFilter<EventLogLoggerProvider>(level => level >= LogLevel.Warning);
 
-                logging.AddNinjascriptOutput();
+                logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+
+                logging.AddNinjatraderOutputWindow();
 
                 logging.Configure(options =>
                 {

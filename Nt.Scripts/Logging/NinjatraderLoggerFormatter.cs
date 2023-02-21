@@ -4,9 +4,9 @@ using System.IO;
 
 namespace Nt.Scripts.Logging
 {
-    public abstract class NinjascriptFormatter
+    public abstract class NinjatraderLoggerFormatter
     {
-        protected NinjascriptFormatter(string name)
+        protected NinjatraderLoggerFormatter(string name)
         {
             Name = name ?? throw new ArgumentNullException(nameof(name));
         }

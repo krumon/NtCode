@@ -1,6 +1,6 @@
 ﻿namespace Nt.Scripts.Logging
 {
-    public class NinjascriptFormatterOptions
+    public class NinjatraderLoggerFormatterOptions
     {
         /// <summary>
         /// Indicates if the log level should be output as part of the log message

@@ -6,16 +6,16 @@ using System.IO;
 
 namespace Nt.Scripts.Logging
 {
-    public class NinjascriptOutputFormatter: NinjascriptFormatter, IDisposable
+    public class OutputWindowFormatter: NinjatraderLoggerFormatter, IDisposable
     {
         private const string LoglevelPadding = ": ";
         private readonly IDisposable _optionsReloadToken;
-        internal NinjascriptOutputFormatterOptions FormatterOptions { get; set; }
+        internal OutputWindowFormatterOptions FormatterOptions { get; set; }
 
-        public NinjascriptOutputFormatter(IOptionsMonitor<NinjascriptOutputFormatterOptions> options) : base(NinjascriptFormatterNames.Output)
+        public OutputWindowFormatter(IOptionsMonitor<OutputWindowFormatterOptions> options) : base(NinjatraderLoggerFormatterNames.Output)
         {
             if (options== null) 
-                FormatterOptions = new NinjascriptOutputFormatterOptions();
+                FormatterOptions = new OutputWindowFormatterOptions();
             else
             {
                 FormatterOptions = options.CurrentValue;
@@ -74,6 +74,10 @@ namespace Nt.Scripts.Logging
                 textWriter.Write(']');
 
             }
+
+            if (textWriter.ToString().Length > 0)
+                textWriter.Write(LoglevelPadding);
+
             CreateDefaultLogMessage(textWriter, logEntry, message, source);
         }
 
@@ -106,9 +110,9 @@ namespace Nt.Scripts.Logging
             // Example (single line):
             // 2022-09-20 15:35:15 info[Config]: Request received
 
-            // category and event id
-            textWriter.Write(LoglevelPadding);
+            //textWriter.Write(LoglevelPadding);
 
+            // category and event id
             if (string.IsNullOrEmpty(source))
                 textWriter.Write(logEntry.Category);
             else
@@ -117,7 +121,7 @@ namespace Nt.Scripts.Logging
             textWriter.Write('[');
             textWriter.Write(eventId.ToString());
             textWriter.Write(']');
-            textWriter.Write(Environment.NewLine);
+            //textWriter.Write(Environment.NewLine);
 
             WriteMessage(textWriter, message);
 
@@ -129,7 +133,6 @@ namespace Nt.Scripts.Logging
                 // exception message
                 WriteMessage(textWriter, exception.ToString());
             }
-            textWriter.Write(Environment.NewLine);
         }
         private void WriteMessage(TextWriter textWriter, string message)
         {
@@ -144,7 +147,7 @@ namespace Nt.Scripts.Logging
             string newMessage = message.Replace(oldValue, newValue);
             writer.Write(newMessage);
         }
-        private void ReloadNinjascriptFormatterOptions(NinjascriptOutputFormatterOptions options)
+        private void ReloadNinjascriptFormatterOptions(OutputWindowFormatterOptions options)
         {
             FormatterOptions = options;
         }

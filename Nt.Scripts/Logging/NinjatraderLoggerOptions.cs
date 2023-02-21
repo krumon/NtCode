@@ -2,7 +2,7 @@
 
 namespace Nt.Scripts.Logging
 {
-    public class NinjascriptLoggerOptions
+    public class NinjatraderLoggerOptions
     {
         /// <summary>
         /// Gets or sets a specific log level to the file logger.

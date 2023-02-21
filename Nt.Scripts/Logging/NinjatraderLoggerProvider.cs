@@ -2,7 +2,7 @@
 using Nt.Core.Logging.Console;
 using Nt.Core.Logging.File;
 using Nt.Core.Options;
-using Nt.Scripts.Ninjascripts;
+using Nt.Scripts.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,28 +12,28 @@ namespace Nt.Scripts.Logging
     /// <summary>
     /// Provides the ability to log to ninjatrader output windows.
     /// </summary>
-    [ProviderAlias("Ninjascript")]
-    public class NinjascriptLoggerProvider : ILoggerProvider, IDisposable
+    [ProviderAlias("OutputWindow")]
+    public class NinjatraderLoggerProvider : ILoggerProvider, IDisposable
     {
-        private readonly ConcurrentDictionary<string, NinjascriptLogger> _loggers;
+        private readonly ConcurrentDictionary<string, NinjatraderLogger> _loggers;
         private readonly IDisposable _optionsReloadToken;
-        private NinjascriptLoggerOptions _currentOptions;
-        private ConcurrentDictionary<string, NinjascriptFormatter> _formatters;
+        private NinjatraderLoggerOptions _currentOptions;
+        private ConcurrentDictionary<string, NinjatraderLoggerFormatter> _formatters;
         readonly Action<object> _ninjascriptPrintMethod;
         readonly Action _ninjascriptClearMethod;
 
         /// <summary>
-        /// Creates an instance of <see cref="NinjascriptLoggerProvider"/>.
+        /// Creates an instance of <see cref="NinjatraderLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        public NinjascriptLoggerProvider(INinjascript ninjascript, IOptionsMonitor < NinjascriptLoggerOptions> options) : this(ninjascript, options, Array.Empty<NinjascriptFormatter>()) { }
+        public NinjatraderLoggerProvider(INinjascript ninjascript, IOptionsMonitor <NinjatraderLoggerOptions> options) : this(ninjascript, options, Array.Empty<NinjatraderLoggerFormatter>()) { }
 
         /// <summary>
-        /// Creates an instance of <see cref="NinjascriptLoggerProvider"/>.
+        /// Creates an instance of <see cref="NinjatraderLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="FileLogger"/> instances with.</param>
         /// <param name="formatters">Log formatter added for <see cref="FileLogger"/> instances.</param>
-        public NinjascriptLoggerProvider(INinjascript ninjascript, IOptionsMonitor<NinjascriptLoggerOptions> options, IEnumerable<NinjascriptFormatter> formatters)
+        public NinjatraderLoggerProvider(INinjascript ninjascript, IOptionsMonitor<NinjatraderLoggerOptions> options, IEnumerable<NinjatraderLoggerFormatter> formatters)
         {
             if (ninjascript == null)
                 throw new ArgumentNullException(nameof(ninjascript));
@@ -41,7 +41,7 @@ namespace Nt.Scripts.Logging
             _ninjascriptClearMethod = ninjascript.Instance.ClearOutputWindow;
 
             _currentOptions = options.CurrentValue;
-            _loggers = new ConcurrentDictionary<string, NinjascriptLogger>();
+            _loggers = new ConcurrentDictionary<string, NinjatraderLogger>();
 
             SetFormatters(formatters);
             ReloadNinjascriptLoggerOptions(options.CurrentValue);
@@ -49,10 +49,12 @@ namespace Nt.Scripts.Logging
         }
 
         // TODO: Delete this constructor. Is only necesary for testing in console.
-        public NinjascriptLoggerProvider(IOptionsMonitor<NinjascriptLoggerOptions> options, IEnumerable<NinjascriptFormatter> formatters)
+        public NinjatraderLoggerProvider(IOptionsMonitor<NinjatraderLoggerOptions> options, IEnumerable<NinjatraderLoggerFormatter> formatters)
         {
+            _ninjascriptPrintMethod = Console.WriteLine;
+            _ninjascriptClearMethod = Console.Clear;
             _currentOptions = options.CurrentValue;
-            _loggers = new ConcurrentDictionary<string, NinjascriptLogger>();
+            _loggers = new ConcurrentDictionary<string, NinjatraderLogger>();
 
             SetFormatters(formatters);
             ReloadNinjascriptLoggerOptions(options.CurrentValue);
@@ -60,7 +62,7 @@ namespace Nt.Scripts.Logging
         }
 
         public ILogger CreateLogger(string categoryName) =>
-            _loggers.GetOrAdd(categoryName, name => new NinjascriptLogger(name,_ninjascriptPrintMethod,_ninjascriptClearMethod)
+            _loggers.GetOrAdd(categoryName, name => new NinjatraderLogger(name,_ninjascriptPrintMethod,_ninjascriptClearMethod)
             {
                 Options = GetCurrentOptions(),
                 Formatter = GetCurrentFormatter(),
@@ -72,41 +74,41 @@ namespace Nt.Scripts.Logging
             _loggers.Clear();
         }
 
-        private NinjascriptLoggerOptions GetCurrentOptions() => _currentOptions;
-        private NinjascriptFormatter GetCurrentFormatter() 
+        private NinjatraderLoggerOptions GetCurrentOptions() => _currentOptions;
+        private NinjatraderLoggerFormatter GetCurrentFormatter() 
         {
-            if (_currentOptions.FormatterName == null || !_formatters.TryGetValue(_currentOptions.FormatterName, out NinjascriptFormatter ninjascriptFormatter))
-                ninjascriptFormatter = _formatters[NinjascriptFormatterNames.Output];
+            if (_currentOptions.FormatterName == null || !_formatters.TryGetValue(_currentOptions.FormatterName, out NinjatraderLoggerFormatter ninjascriptFormatter))
+                ninjascriptFormatter = _formatters[NinjatraderLoggerFormatterNames.Output];
 
             return ninjascriptFormatter;
         }
 
-        private void SetFormatters(IEnumerable<NinjascriptFormatter> formatters)
+        private void SetFormatters(IEnumerable<NinjatraderLoggerFormatter> formatters)
         {
-            var cd = new ConcurrentDictionary<string, NinjascriptFormatter>(StringComparer.OrdinalIgnoreCase);
+            var cd = new ConcurrentDictionary<string, NinjatraderLoggerFormatter>(StringComparer.OrdinalIgnoreCase);
 
             if (formatters != null)
             {
-                foreach (NinjascriptFormatter formatter in formatters)
+                foreach (NinjatraderLoggerFormatter formatter in formatters)
                 {
                     cd.TryAdd(formatter.Name, formatter);
                 }
             }
 
-            if (cd.Count == 0 || !cd.ContainsKey(NinjascriptFormatterNames.Output))
+            if (cd.Count == 0 || !cd.ContainsKey(NinjatraderLoggerFormatterNames.Output))
             {
-                cd.TryAdd(NinjascriptFormatterNames.Output, new NinjascriptOutputFormatter(new NinjascriptFormatterOptionsMonitor<NinjascriptOutputFormatterOptions>(new NinjascriptOutputFormatterOptions())));
+                cd.TryAdd(NinjatraderLoggerFormatterNames.Output, new OutputWindowFormatter(new NinjatraderLoggerFormatterOptionsMonitor<OutputWindowFormatterOptions>(new OutputWindowFormatterOptions())));
             }
 
             _formatters = cd;
         }
 
         // warning:  ReloadLoggerOptions can be called before the ctor completed,... before registering all of the state used in this method need to be initialized
-        private void ReloadNinjascriptLoggerOptions(NinjascriptLoggerOptions currentOptions)
+        private void ReloadNinjascriptLoggerOptions(NinjatraderLoggerOptions currentOptions)
         {
-            _currentOptions = currentOptions ?? new NinjascriptLoggerOptions();
+            _currentOptions = currentOptions ?? new NinjatraderLoggerOptions();
 
-            foreach (KeyValuePair<string, NinjascriptLogger> logger in _loggers)
+            foreach (KeyValuePair<string, NinjatraderLogger> logger in _loggers)
             {
                 logger.Value.Options = GetCurrentOptions();
                 logger.Value.Formatter = GetCurrentFormatter();

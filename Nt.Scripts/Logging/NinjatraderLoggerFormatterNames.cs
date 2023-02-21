@@ -3,7 +3,7 @@
     /// <summary>
     /// Reserved formatter names for the built-in ninjascript formatters.
     /// </summary>
-    public static class NinjascriptFormatterNames
+    public static class NinjatraderLoggerFormatterNames
     {
         /// <summary>
         /// Reserved name for ninjascript log formatter that should be displayed in ninjatrader output window.

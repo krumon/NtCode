@@ -74,33 +74,35 @@
     <Compile Include="Indicators\Templates\IndicatorTemplate.cs" />
     <Compile Include="Indicators\TradingZone\TradingZone.cs" />
     <Compile Include="Events\NinjascriptLoggingEventIds.cs" />
-    <Compile Include="Logging\NinjascriptLoggerFormatterConfigureOptions.cs" />
-    <Compile Include="Logging\NinjascriptLoggerFormatterOptionsChangeTokenSource.cs" />
-    <Compile Include="Logging\NinjascriptLoggerFactoryExtensions.cs" />
-    <Compile Include="Logging\NinjascriptLoggerFormatterExtensions.cs" />
-    <Compile Include="Logging\NinjascriptOutputFormatter.cs" />
-    <Compile Include="Logging\NinjascriptFormatterNames.cs" />
-    <Compile Include="Logging\NinjascriptFormatter.cs" />
-    <Compile Include="Logging\NinjascriptFormatterOptions.cs" />
-    <Compile Include="Logging\NinjascriptFormatterOptionsMonitor.cs" />
-    <Compile Include="Logging\NinjascriptLogger.cs" />
-    <Compile Include="Logging\NinjascriptLoggerProvider.cs" />
-    <Compile Include="Logging\NinjascriptLoggerOptions.cs" />
-    <Compile Include="Logging\NinjascriptOutputFormatterOptions.cs" />
-    <Compile Include="Ninjascripts\ChartData\Design\ChartDataDesignScript.cs" />
-    <Compile Include="Ninjascripts\DataSeries\IDataSeriesScript.cs" />
-    <Compile Include="Ninjascripts\ChartData\ChartDataScript.cs" />
-    <Compile Include="Ninjascripts\GlobalsData\Design\GlobalsDataDesignScript.cs" />
-    <Compile Include="Ninjascripts\GlobalsData\GlobalsDataScript.cs" />
-    <Compile Include="Ninjascripts\INinjascript.cs" />
-    <Compile Include="Ninjascripts\Ninjascript.cs" />
-    <Compile Include="Ninjascripts\NinjatraderServiceCollectionExtensions.cs" />
-    <Compile Include="Ninjascripts\Sessions\Design\SessionsIteratorDesignScript.cs" />
-    <Compile Include="Ninjascripts\Sessions\SessionsFiltersScript.cs" />
-    <Compile Include="Ninjascripts\Sessions\SessionsScript.cs" />
-    <Compile Include="Ninjascripts\Sessions\SessionsIteratorScript.cs" />
+    <Compile Include="Logging\NinjatraderLoggerFormatterConfigureOptions.cs" />
+    <Compile Include="Logging\NinjatraderLoggerFormatterOptionsChangeTokenSource.cs" />
+    <Compile Include="Logging\NinjatraderLoggerFactoryExtensions.cs" />
+    <Compile Include="Logging\NinjatraderLoggerFormatterExtensions.cs" />
+    <Compile Include="Logging\OutputWindowFormatter.cs" />
+    <Compile Include="Logging\NinjatraderLoggerFormatterNames.cs" />
+    <Compile Include="Logging\NinjatraderLoggerFormatter.cs" />
+    <Compile Include="Logging\NinjatraderLoggerFormatterOptions.cs" />
+    <Compile Include="Logging\NinjatraderLoggerFormatterOptionsMonitor.cs" />
+    <Compile Include="Logging\NinjatraderLogger.cs" />
+    <Compile Include="Logging\NinjatraderLoggerProvider.cs" />
+    <Compile Include="Logging\NinjatraderLoggerOptions.cs" />
+    <Compile Include="Logging\OutputWindowFormatterOptions.cs" />
+    <Compile Include="Services\Data\ChartData\Design\ChartDataDesignScript.cs" />
+    <Compile Include="Services\Series\IDataSeriesScript.cs" />
+    <Compile Include="Services\Data\ChartData\ChartDataScript.cs" />
+    <Compile Include="Services\Data\GlobalsData_\Design\GlobalsDataDesignScript.cs" />
+    <Compile Include="Services\Data\GlobalsData_\GlobalsDataScript.cs" />
+    <Compile Include="Services\Ninjascripts\INinjascript.cs" />
+    <Compile Include="Services\Ninjascripts\Ninjascript.cs" />
+    <Compile Include="Services\Data\GlobalsData\GlobalsData.cs" />
+    <Compile Include="Services\Data\GlobalsData\IGlobalsData.cs" />
+    <Compile Include="Services\NinjatraderServiceCollectionExtensions.cs" />
+    <Compile Include="Services\Sessions\Design\SessionsIteratorDesignScript.cs" />
+    <Compile Include="Services\Sessions\SessionsFiltersScript.cs" />
+    <Compile Include="Services\Sessions\SessionsScript.cs" />
+    <Compile Include="Services\Sessions\SessionsIteratorScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ninjascripts\Sessions\SessionsServiceCollectionExtensions.cs" />
+    <Compile Include="Services\Sessions\SessionsServiceCollectionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nt.Core\Nt.Core.csproj">
@@ -116,8 +118,12 @@
     <None Include="launchsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="ntsettingsdevelopment.json" />
-    <None Include="ntsettings.json" />
+    <None Include="ntsettingsdevelopment.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ntsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

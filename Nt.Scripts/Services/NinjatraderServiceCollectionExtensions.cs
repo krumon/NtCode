@@ -4,7 +4,7 @@ using NinjaTrader.NinjaScript.DrawingTools;
 using Nt.Core.DependencyInjection;
 using System;
 
-namespace Nt.Scripts.Ninjascripts
+namespace Nt.Scripts.Services
 {
     public static class NinjatraderServiceCollectionExtensions
     {
@@ -24,31 +24,28 @@ namespace Nt.Scripts.Ninjascripts
 
         private static void AddNinjatraderServices(IServiceCollection services, object[] ninjatraderObjects)
         {
+            // TODO: Delete this condition. Is obny necesary for tests.
+            if (ninjatraderObjects == null || ninjatraderObjects.Length == 0)
+                //throw new ArgumentNullException(nameof(ninjatraderObjects));
+                AddNinjascriptService(services, null);
+
             foreach (var ninjatraderObject in ninjatraderObjects)
             {
-                if (ninjatraderObject == null)
-                {
-                    // TODO: Delete this line. Is available for tests.
-                    AddNinjascriptService(services, null);
-                    continue;
-                }
-
                 if (ninjatraderObject is NinjaScriptBase ninjascript)
                     AddNinjascriptService(services, ninjascript);
-                if (ninjatraderObject is ChartBars chartBars)
+                else if (ninjatraderObject is ChartBars chartBars)
                     return;
             }
         }
-
         // TODO: Delete default ninjascript parameter value (null).
         private static void AddNinjascriptService(IServiceCollection services, object ninjascript)
         {
             // TODO: Delete this condition. Is only for console testing.
             if (ninjascript == null)
                 services.TryAddEnumerable(ServiceDescriptor.Singleton<INinjascript>(new Ninjascript()));
-            //// TODO: Delete this condition in future when develop the indicator, strategy,... services.
-            //else if (ninjascript != null)
-            //    services.TryAddEnumerable(ServiceDescriptor.Singleton<INinjascript>(new Ninjascript(ninjascript)));
+            // TODO: Delete this condition in future when develop the indicator, strategy,... services.
+            else if (ninjascript is NinjaScriptBase script)
+                services.TryAddEnumerable(ServiceDescriptor.Singleton<INinjascript>(new Ninjascript(script)));
             else if (ninjascript is IndicatorBase indicator)
                 return;
             else if (ninjascript is StrategyBase strategy)
@@ -56,5 +53,6 @@ namespace Nt.Scripts.Ninjascripts
             else if (ninjascript is IDrawingTool drawingTool)
                 return;
         }
+
     }
 }

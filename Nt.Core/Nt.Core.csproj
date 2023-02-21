@@ -187,7 +187,6 @@
     <Compile Include="DependencyInjection\ServiceLookup\ServiceProviderEngine.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\StackGuard.cs" />
     <Compile Include="DependencyInjection\ServiceCollectionDescriptorExtensions.cs" />
-    <Compile Include="DependencyInjection\ServiceCollectionProviderExtensions.cs" />
     <Compile Include="DependencyInjection\ServiceLifetime.cs" />
     <Compile Include="DependencyInjection\ServiceLookup\ServiceProviderEngineScope.cs" />
     <Compile Include="DependencyInjection\ValidatorOptions.cs" />
@@ -375,7 +374,6 @@
     <Compile Include="Logging\Extensions\FilterLoggingBuilderExtensions.cs" />
     <Compile Include="Logging\Internal\DefaultLoggerLevelConfigureOptions.cs" />
     <Compile Include="Logging\Interfaces\ILoggerFactory.cs" />
-    <Compile Include="Logging\Internal\FileLogFiltersConfigureOptions.cs" />
     <Compile Include="Logging\Internal\EventLogFiltersConfigureOptions.cs" />
     <Compile Include="Logging\Internal\EventLogFiltersConfigureOptionsChangeSource.cs" />
     <Compile Include="Logging\Internal\FormattedLogValues.cs" />

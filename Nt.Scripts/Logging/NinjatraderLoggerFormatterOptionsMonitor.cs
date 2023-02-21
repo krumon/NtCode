@@ -4,12 +4,12 @@ using System;
 
 namespace Nt.Scripts.Logging
 {
-    internal sealed class NinjascriptFormatterOptionsMonitor<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] TOptions> : IOptionsMonitor<TOptions>
-        where TOptions : NinjascriptFormatterOptions
+    internal sealed class NinjatraderLoggerFormatterOptionsMonitor<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicParameterlessConstructor)] TOptions> : IOptionsMonitor<TOptions>
+        where TOptions : NinjatraderLoggerFormatterOptions
     {
         private readonly TOptions _options;
 
-        public NinjascriptFormatterOptionsMonitor(TOptions options)
+        public NinjatraderLoggerFormatterOptionsMonitor(TOptions options)
         {
             _options = options;
         }

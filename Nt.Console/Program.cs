@@ -42,9 +42,9 @@ namespace ConsoleApp
             _logger?.LogTraceSource("Logging message test from {0}.", typeof(Program));
             _logger?.LogDebugSource("Logging message test from {0}.", typeof(Program));
             _logger?.LogInformationSource("Logging message test from {0}.", typeof(Program));
-            _logger?.LogWarningSource("Logging message test from {0}.", typeof(Program));
-            _logger?.LogErrorSource("Logging message test from {0}.", typeof(Program));
-            _logger?.LogCriticalSource("Logging message test from {0}.", typeof(Program));
+            _logger?.LogWarning("Logging message test from {0}.", typeof(Program));
+            _logger?.LogError("Logging message test from {0}.", typeof(Program));
+            _logger?.LogCritical("Logging message test from {0}.", typeof(Program));
             //_logger?.LogWarning("Logging Service");
             //_logger?.LogError("Logging a message by {format}.",format);
             //_logger.LogInformation("Hello World!");

@@ -8,7 +8,7 @@ using System;
 namespace Nt.Scripts.Logging
 {
     [UnsupportedOSPlatform("browser")]
-    public static class NinjascriptLoggerFormatterExtensions
+    public static class NinjatraderLoggerFormatterExtensions
     {
         internal const string TrimmingRequiresUnreferencedCodeMessage = "TOptions's dependent types may have their members trimmed. Ensure all required members are preserved.";
 
@@ -17,15 +17,15 @@ namespace Nt.Scripts.Logging
         /// </summary>
         /// <param name="builder">The <see cref="ILoggingBuilder"/> to use.</param>
         [RequiresUnreferencedCode(TrimmingRequiresUnreferencedCodeMessage)]
-        public static ILoggingBuilder AddNinjascriptFormatter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFormatter, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TOptions>(this ILoggingBuilder builder)
-            where TFormatter : NinjascriptFormatter
-            where TOptions : NinjascriptFormatterOptions
+        public static ILoggingBuilder AddNinjatraderLoggerFormatter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFormatter, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TOptions>(this ILoggingBuilder builder)
+            where TFormatter : NinjatraderLoggerFormatter
+            where TOptions : NinjatraderLoggerFormatterOptions
         {
             builder.AddConfiguration();
 
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<NinjascriptFormatter, TFormatter>());
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<TOptions>, NinjascriptLoggerFormatterConfigureOptions<TFormatter, TOptions>>());
-            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IOptionsChangeTokenSource<TOptions>, NinjascriptLoggerFormatterOptionsChangeTokenSource<TFormatter, TOptions>>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<NinjatraderLoggerFormatter, TFormatter>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<TOptions>, NinjatraderLoggerFormatterConfigureOptions<TFormatter, TOptions>>());
+            builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IOptionsChangeTokenSource<TOptions>, NinjatraderLoggerFormatterOptionsChangeTokenSource<TFormatter, TOptions>>());
 
             return builder;
         }
@@ -37,13 +37,13 @@ namespace Nt.Scripts.Logging
         /// <param name="configure">A delegate to configure options 'TOptions' for custom formatter 'TFormatter'.</param>
         [RequiresUnreferencedCode(TrimmingRequiresUnreferencedCodeMessage)]
         public static ILoggingBuilder AddFileFormatter<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFormatter, [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)] TOptions>(this ILoggingBuilder builder, Action<TOptions> configure)
-            where TOptions : NinjascriptFormatterOptions
-            where TFormatter : NinjascriptFormatter
+            where TOptions : NinjatraderLoggerFormatterOptions
+            where TFormatter : NinjatraderLoggerFormatter
         {
             if (configure == null)
                 throw new ArgumentNullException(nameof(configure));
 
-            builder.AddNinjascriptFormatter<TFormatter, TOptions>();
+            builder.AddNinjatraderLoggerFormatter<TFormatter, TOptions>();
             builder.Services.Configure(configure);
             return builder;
         }
