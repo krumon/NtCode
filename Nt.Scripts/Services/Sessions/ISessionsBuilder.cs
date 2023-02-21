@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nt.Core.Services
+namespace Nt.Scripts.Services
 {
     /// <summary>
     /// Represents the properties and methods to built a <see cref="SessionsIteratorService"/>.

@@ -232,7 +232,7 @@ namespace Nt.Core.Hosting
                     //, _services.GetRequiredService<IHostLifetime>()
                     , _services.GetRequiredService<IOptions<HostOptions>>()
 
-                    , _services.GetService_Obsolete<ISessionsService>()
+                    //, _services.GetService_Obsolete<ISessionsService>()
                     , _services.GetServices_Obsolete<IOnBarUpdateService>()
                     , _services.GetServices_Obsolete<IOnMarketDataService>()
                     );

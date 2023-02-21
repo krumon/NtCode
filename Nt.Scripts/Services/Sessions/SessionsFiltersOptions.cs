@@ -1,5 +1,8 @@
-﻿namespace Nt.Core.Services
+﻿namespace Nt.Scripts.Services
 {
+    /// <summary>
+    /// <see cref="SessionsFilters"/> services options.
+    /// </summary>
     public class SessionsFiltersOptions
     {
 

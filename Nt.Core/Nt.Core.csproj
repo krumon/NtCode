@@ -437,9 +437,6 @@
     <Compile Include="Options\ValidateOptionsResult.cs" />
     <Compile Include="Primitives\StringSegment.cs" />
     <Compile Include="Primitives\StringTokenizer.cs" />
-    <Compile Include="Services\SessionsFilters\ConfigureSessionsFiltersOptions.cs" />
-    <Compile Include="Services\SessionsIterator\ConfigureSessionsIteratorOptions.cs" />
-    <Compile Include="Services\Sessions\ConfigureSessionsOptions.cs" />
     <Compile Include="Services\.Interfaces\IDataLoadedService.cs" />
     <Compile Include="Services\.Interfaces\IConfigureService.cs" />
     <Compile Include="Services\.Interfaces\IOnSessionUpdateService.cs" />
@@ -531,8 +528,6 @@
     <Compile Include="Drawing\Data\Margin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\TradingTimes\TradingTime.cs" />
-    <Compile Include="Services\GlobalsData\IGlobalsDataService.cs" />
-    <Compile Include="Services\GlobalsData\GlobalsDataService.cs" />
     <Compile Include="Logging\EventId.cs" />
     <Compile Include="Logging\Interfaces\ILogger.cs" />
     <Compile Include="Logging\Interfaces\ILoggerProvider.cs" />
@@ -540,17 +535,6 @@
     <Compile Include="Logging\Internal\LoggingBuilder.cs" />
     <Compile Include="Logging\Extensions\LoggerExtensions.cs" />
     <Compile Include="Logging\LogLevel.cs" />
-    <Compile Include="Services\SessionsFilters\ISessionsFiltersService.cs" />
-    <Compile Include="Services\SessionsFilters\SessionsFiltersOptions.cs" />
-    <Compile Include="Services\SessionsIterator\SessionsIteratorOptions.cs" />
-    <Compile Include="Services\Sessions\ISessionsService.cs" />
-    <Compile Include="Services\Sessions\SessionsBuilder.cs" />
-    <Compile Include="Services\Sessions\ISessionsBuilder.cs" />
-    <Compile Include="Services\SessionsIterator\ISessionsIteratorService.cs" />
-    <Compile Include="Services\SessionsFilters\SessionsFiltersService.cs" />
-    <Compile Include="Services\Sessions\SessionsService.cs" />
-    <Compile Include="Services\Sessions\SessionsOptions.cs" />
-    <Compile Include="Services\SessionsIterator\SessionsIteratorService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Kr.Core\Kr.Core.csproj">

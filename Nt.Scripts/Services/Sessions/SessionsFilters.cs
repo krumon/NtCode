@@ -1,23 +1,23 @@
 ﻿using Nt.Core.Options;
 using System;
 
-namespace Nt.Core.Services
+namespace Nt.Scripts.Services
 {
     /// <summary>
     /// Service to control the access to any session.
     /// </summary>
-    public class SessionsFiltersService : ISessionsFiltersService
+    public class SessionsFilters : ISessionsFilters
     {
-        private readonly ISessionsIteratorService _session;
+        private readonly ISessionsIterator _sessionsIterator;
         private readonly SessionsFiltersOptions _options = new SessionsFiltersOptions(); // Default options
         public bool IsEnabled { get;  private set; }
 
-        public SessionsFiltersService(ISessionsIteratorService session, IConfigureOptions<SessionsFiltersOptions> options)
+        public SessionsFilters(ISessionsIterator sessionsIterator, IConfigureOptions<SessionsFiltersOptions> options)
         {
             if (options == null)
                 throw new ArgumentNullException(nameof(options));
 
-            _session = session ?? throw new ArgumentNullException(nameof(session));
+            _sessionsIterator = sessionsIterator ?? throw new ArgumentNullException(nameof(sessionsIterator));
             options?.Configure(_options);
         }
 
@@ -28,7 +28,7 @@ namespace Nt.Core.Services
             Console.WriteLine("The filters is checking....");
             bool check = true;
 
-            if (_session.IsPartialHoliday == true && _options.IncludePartialHolidays == false)
+            if (_sessionsIterator.IsPartialHoliday == true && _options.IncludePartialHolidays == false)
                 check = false;
 
             return check;

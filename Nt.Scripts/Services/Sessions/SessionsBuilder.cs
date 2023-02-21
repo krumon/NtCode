@@ -1,8 +1,7 @@
 ﻿using Nt.Core.DependencyInjection;
-using Nt.Core.Options;
 using System;
 
-namespace Nt.Core.Services
+namespace Nt.Scripts.Services
 {
     /// <summary>
     /// Build the <see cref="SessionsService"/> objects.
@@ -38,10 +37,10 @@ namespace Nt.Core.Services
 
         public void Build()
         {
-            if (_sessionsIteratorOptionsActions == null) _sessionsIteratorOptionsActions = (options) => new SessionsIteratorOptions();
-            _services.AddSingleton<IConfigureOptions<SessionsIteratorOptions>>(new ConfigureSessionsIteratorOptions(_sessionsIteratorOptionsActions));
-            if (_sessionsFiltersOptionsActions == null) _sessionsFiltersOptionsActions = (options) => new SessionsFiltersOptions();
-            _services.AddSingleton<IConfigureOptions<SessionsFiltersOptions>>(new ConfigureSessionsFiltersOptions(_sessionsFiltersOptionsActions));
+            //if (_sessionsIteratorOptionsActions == null) _sessionsIteratorOptionsActions = (options) => new SessionsIteratorOptions();
+            //_services.AddSingleton<IConfigureOptions<SessionsIteratorOptions>>(new ConfigureSessionsIteratorOptions(_sessionsIteratorOptionsActions));
+            //if (_sessionsFiltersOptionsActions == null) _sessionsFiltersOptionsActions = (options) => new SessionsFiltersOptions();
+            //_services.AddSingleton<IConfigureOptions<SessionsFiltersOptions>>(new ConfigureSessionsFiltersOptions(_sessionsFiltersOptionsActions));
         }
 
     }

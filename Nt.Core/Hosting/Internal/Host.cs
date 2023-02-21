@@ -30,14 +30,14 @@ namespace Nt.Core.Hosting.Internal
         private volatile bool _stopCalled;
 
         private readonly ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
-        private readonly ISessionsService _sessions;
+        //private readonly ISessionsService _sessions;
 
         #endregion
 
         #region Public properties
 
         public IServiceProvider Services { get; private set; }
-        public ISessionsService Sessions { get { return _sessions; } }
+        //public ISessionsService Sessions { get { return _sessions; } }
         //public bool? IsInNewSession => _sessions?.Iterator?.IsSessionUpdated;
 
         #endregion
@@ -58,7 +58,7 @@ namespace Nt.Core.Hosting.Internal
             ILogger<Host> logger,
             //IHostLifetime hostLifetime,
             IOptions<HostOptions> options,
-            ISessionsService sessions,
+            //ISessionsService sessions,
             IEnumerable<IOnBarUpdateService> onBarUpdateServices,
             IEnumerable<IOnMarketDataService> onMarketDataServices
             )
@@ -76,11 +76,11 @@ namespace Nt.Core.Hosting.Internal
             _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
 
 
-            _sessions = services.GetService<ISessionsService>();
+            //_sessions = services.GetService<ISessionsService>();
             //_sessionsService?.Iterator?.SessionChanged += OnSessionUpdate;
-            _enumerableServices.TryAdd(typeof(IOnBarUpdateService), new List<IOnBarUpdateService> { _sessions });
-            _enumerableServices.TryAdd(typeof(IOnMarketDataService), new List<IOnMarketDataService> { _sessions });
-            _enumerableServices.TryAdd(typeof(IOnSessionUpdateService), new List<IOnSessionUpdateService> { _sessions });
+            //_enumerableServices.TryAdd(typeof(IOnBarUpdateService), new List<IOnBarUpdateService> { _sessions });
+            //_enumerableServices.TryAdd(typeof(IOnMarketDataService), new List<IOnMarketDataService> { _sessions });
+            //_enumerableServices.TryAdd(typeof(IOnSessionUpdateService), new List<IOnSessionUpdateService> { _sessions });
 
             //if (onBarUpdateServices != null)
             //    _enumerableServices.TryAdd(typeof(IOnBarUpdateService), onBarUpdateServices);
@@ -251,24 +251,24 @@ namespace Nt.Core.Hosting.Internal
         {
             //ExecuteServices<IOnBarUpdateService>();
             //_sessions.OnBarUpdate();
-            Sessions?.OnBarUpdate();
-            if (Sessions?.IsInNewSession == true)
-                OnSessionUpdate();
+            //Sessions?.OnBarUpdate();
+            //if (Sessions?.IsInNewSession == true)
+            //    OnSessionUpdate();
         }
         public void OnBarUpdate(Action<object> print = null)
         {
             //ExecuteServices<IOnBarUpdateService>();
             //_sessions.OnBarUpdate();
-            Sessions?.OnBarUpdate();
-            if (Sessions?.IsInNewSession == true)
-                OnSessionUpdate(print);
+            //Sessions?.OnBarUpdate();
+            //if (Sessions?.IsInNewSession == true)
+            //    OnSessionUpdate(print);
         }
         public void OnMarketData()
         { 
             //ExecuteServices<IOnMarketDataService>();
-            Sessions?.OnMarketData();
-            if (Sessions?.IsInNewSession == true)
-                OnSessionUpdate();
+            //Sessions?.OnMarketData();
+            //if (Sessions?.IsInNewSession == true)
+            //    OnSessionUpdate();
         }
         public void OnSessionUpdate(Action<object> print = null) 
         {
@@ -278,7 +278,7 @@ namespace Nt.Core.Hosting.Internal
             //    foreach (var service in onSessionUpdateServices)
             //        service.OnSessionUpdate();
 
-            print?.Invoke(_sessions.Iterator.ToString());
+            //print?.Invoke(_sessions.Iterator.ToString());
         }
 
         public void LogInformation (string message) => _logger.LogInformation(message);

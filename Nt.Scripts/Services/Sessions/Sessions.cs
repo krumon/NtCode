@@ -1,24 +1,23 @@
-﻿using Nt.Core.Hosting;
-using System;
+﻿using System;
 
-namespace Nt.Core.Services
+namespace Nt.Scripts.Services
 {
     /// <summary>
     /// Service to control the access to any session.
     /// </summary>
-    public class SessionsService : ISessionsService, IHostedService, IOnBarUpdateService, IOnMarketDataService, IOnSessionUpdateService
+    public class Sessions : ISessions
     {
-        private readonly ISessionsIteratorService _iterator;
-        private readonly ISessionsFiltersService _filters;
+        private readonly ISessionsIterator _iterator;
+        private readonly ISessionsFilters _filters;
         public bool IsInNewSession => _iterator.IsSessionUpdated;
-        public SessionsService(ISessionsIteratorService iterator, ISessionsFiltersService filters)
+        public Sessions(ISessionsIterator iterator, ISessionsFilters filters)
         {
             _iterator = iterator ?? throw new ArgumentNullException(nameof(iterator));
             _filters = filters ?? throw new ArgumentNullException(nameof(filters));
         }
 
-        public ISessionsIteratorService Iterator => _iterator;
-        public ISessionsFiltersService Filters => _filters;
+        public ISessionsIterator Iterator => _iterator;
+        public ISessionsFilters Filters => _filters;
         public bool IsConfigured => true;
         public bool IsDataLoaded => true;
         public virtual void Configure(object[] ninjascriptObjects) { }
@@ -26,24 +25,24 @@ namespace Nt.Core.Services
         public virtual void Dispose() { }
         public virtual void OnBarUpdate()
         {
-            Iterator.OnBarUpdate();
-            if (Filters.IsEnabled)
-            {
+            //Iterator.OnBarUpdate();
+            //if (Filters.IsEnabled)
+            //{
 
-            }
+            //}
         }
         public virtual void OnMarketData()
         {
-            Iterator?.OnMarketData();
-            if (Filters.IsEnabled)
-            {
+            //Iterator?.OnMarketData();
+            //if (Filters.IsEnabled)
+            //{
 
-            }
+            //}
         }
         public virtual void OnSessionUpdate()
         {
-            Iterator.OnSessionUpdate();
-            Filters.OnSessionUpdate();
+            //Iterator.OnSessionUpdate();
+            //Filters.OnSessionUpdate();
         }
     }
 }

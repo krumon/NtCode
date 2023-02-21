@@ -97,13 +97,18 @@
     <Compile Include="Services\Data\GlobalsData.cs" />
     <Compile Include="Services\Data\IGlobalsData.cs" />
     <Compile Include="Services\NinjascriptsServiceCollectionExtensions.cs" />
+    <Compile Include="Services\Sessions\ISessionsBuilder.cs" />
+    <Compile Include="Services\Sessions\ISessionsFilters.cs" />
     <Compile Include="Services\Sessions\ISessionsIterator.cs" />
-    <Compile Include="Services\Sessions\SessionsFiltersScript.cs" />
+    <Compile Include="Services\Sessions\ISessionsService.cs" />
+    <Compile Include="Services\Sessions\SessionsBuilder.cs" />
+    <Compile Include="Services\Sessions\SessionsFiltersOptions.cs" />
+    <Compile Include="Services\Sessions\SessionsFilters.cs" />
     <Compile Include="Services\Sessions\SessionsIteratorOptions.cs" />
     <Compile Include="Services\Sessions\SessionsIterator.cs" />
-    <Compile Include="Services\Sessions\SessionsScript.cs" />
-    <Compile Include="Services\Sessions\SessionsIteratorScript.cs" />
+    <Compile Include="Services\Sessions\SessionsOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\Sessions\Sessions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nt.Core\Nt.Core.csproj">

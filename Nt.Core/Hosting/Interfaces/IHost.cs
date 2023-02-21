@@ -43,10 +43,10 @@ namespace Nt.Core.Hosting
         ///// </summary>
         //bool? IsInNewSession { get; }
 
-        /// <summary>
-        /// Gets the sessions configured by the user.
-        /// </summary>
-        ISessionsService Sessions { get; }
+        ///// <summary>
+        ///// Gets the sessions configured by the user.
+        ///// </summary>
+        //ISessionsService Sessions { get; }
 
         /// <summary>
         /// Configure the hosted services of the Host.

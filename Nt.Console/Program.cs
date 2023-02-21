@@ -6,7 +6,7 @@ using Nt.Core.Logging.Configuration;
 using Nt.Core.Services;
 using Nt.Scripts;
 using Nt.Scripts.Ninjascripts.Design;
-using Nt.Scripts.Ninjascripts.Sessions;
+using Nt.Scripts.Services;
 using System;
 using System.Diagnostics;
 using System.Reflection;
@@ -105,15 +105,15 @@ namespace ConsoleApp
                     //    builder.AddDebug();
                     //});
                     services.AddScoped<IChartDataService, ChartDataDesignScript>()
-                    .AddSessions<ISessionsService>((builder) =>
-                    {
-                        builder.ConfigureFilters((options) =>
-                        {
-                            options.IncludePartialHolidays = false;
-                            options.IncludeHolidays = false;
-                            options.ExcludeHistoricalData = true;
-                        });
-                    })
+                    //.AddSessions<ISessionsService>((builder) =>
+                    //{
+                    //    builder.ConfigureFilters((options) =>
+                    //    {
+                    //        options.IncludePartialHolidays = false;
+                    //        options.IncludeHolidays = false;
+                    //        options.ExcludeHistoricalData = true;
+                    //    });
+                    //})
                     ;
                 })
                 .Build();
