@@ -5,7 +5,7 @@ using BarsPeriod = Nt.Core.Data.BarsPeriod;
 
 namespace Nt.Scripts.Services
 {
-    public class Chart : IChart
+    public class ChartBarsData : IChartBarsData
     {
         public BarsPeriod BarsPeriod { get; set; }
         public string InstrumentName { get; set; }
@@ -13,7 +13,7 @@ namespace Nt.Scripts.Services
         public bool IsConfigured { get; protected set; }
         public bool IsDataLoaded { get; protected set; }
 
-        public Chart(ChartBars chartBars)
+        public ChartBarsData(ChartBars chartBars)
         {
             TradingHoursName = chartBars.Properties.TradingHoursInstance.Name;
             InstrumentName = chartBars.Properties.Instrument.Split(' ')[0];
@@ -26,7 +26,7 @@ namespace Nt.Scripts.Services
         }
 
         // TODO: Delete this constructor. Is only necesary for testing in console.
-        public Chart()
+        public ChartBarsData()
         {
         }
 

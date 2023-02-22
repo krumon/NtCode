@@ -3,9 +3,9 @@
 namespace Nt.Scripts.Services
 {
     /// <summary>
-    /// Represents the properties and methods to create a default implementation of <see cref="Chart"/>.
+    /// Represents the properties and methods to create a default implementation of <see cref="ChartBarsData"/>.
     /// </summary>
-    public interface IChart
+    public interface IChartBarsData
     {
         
         /// <summary>

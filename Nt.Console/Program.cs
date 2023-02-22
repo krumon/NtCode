@@ -5,6 +5,7 @@ using Nt.Core.Logging;
 using Nt.Core.Logging.Configuration;
 using Nt.Core.Services;
 using Nt.Scripts;
+using Nt.Scripts.DI;
 using Nt.Scripts.Services;
 using System;
 using System.Diagnostics;
@@ -15,51 +16,47 @@ namespace ConsoleApp
 {
     internal class Program
     {
-        private static IHost _host;
+        //private static IHost _host;
         private static ILogger _logger;
 
-        public static void Main(string[] args)
+        private static void SearchingInMS()
         {
-            //Stopwatch timeMeasure = new Stopwatch();
-            //Console.WriteLine($"Tiempo: {timeMeasure.Elapsed.TotalMilliseconds} ms");
-
-            Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
-            Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
-            Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
+            //Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
+            //Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
+            //Microsoft.Extensions.DependencyInjection.ServiceCollection src = new Microsoft.Extensions.DependencyInjection.ServiceCollection();
             //Microsoft.Extensions.Logging.Console.
             //Microsoft.Extensions.Hosting.Internal.Host
             //Microsoft.Extensions.Hosting.HostBuilder
             //Microsoft.Extensions.Configuration.ConfigurationProvider
             //Microsoft.Extensions.Hosting.Internal.ConsoleLifetime
             //Microsoft.Extensions.Primitives.ChangeToken
+        }
 
+        public static void Main(string[] args)
+        {
 
-            //UseNinjascriptHost();
             UseNinjascriptHostingServices();
-            _logger = _host?.Services.GetService<ILogger<Program>>();
-            //_logger?.LogInformation(new Exception("Exception test"), "Simple message.");
-            _logger?.LogTraceSource("Logging message test from {0}.", typeof(Program));
-            _logger?.LogDebugSource("Logging message test from {0}.", typeof(Program));
-            _logger?.LogInformationSource("Logging message test from {0}.", typeof(Program));
-            _logger?.LogWarning("Logging message test from {0}.", typeof(Program));
-            _logger?.LogError("Logging message test from {0}.", typeof(Program));
-            _logger?.LogCritical("Logging message test from {0}.", typeof(Program));
-            //_logger?.LogWarning("Logging Service");
-            //_logger?.LogError("Logging a message by {format}.",format);
-            //_logger.LogInformation("Hello World!");
 
-            IConfigurationRoot config = (IConfigurationRoot)(_host?.Services.GetService<HostBuilderContext>().Configuration);
-            IConfiguration configure = _host?.Services.GetService<IConfiguration>();
+            if (NinjaHost.Host == null)
+                throw new ArgumentNullException(nameof(NinjaHost.Host));
+
+            _logger = NinjaHost.Logger<Program>();
+            _logger.LogInformation("Hello World!");
+
+            IConfigurationRoot config = (IConfigurationRoot)(NinjaHost.Host?.Services.GetService<HostBuilderContext>().Configuration);
+            IConfiguration configure = NinjaHost.Host?.Services.GetService<IConfiguration>();
         }
 
         private static void UseNinjascriptHostingServices()
         {
-            _host = Nt.Scripts.Hosting.Host.CreateNinjascriptDefaultBuilder(null).Build();
+            NinjaHost.Create(Nt.Scripts.Hosting.Host.CreateNinjascriptDefaultBuilder(null).Build());
         }
-
         private static void UseNinjascriptHost()
         {
-            _host = Host.CreateDefaultBuilder()
+            if (NinjaHost.Host == null)
+                return;
+
+            NinjaHost.Create(Host.CreateDefaultBuilder()
             .ConfigureAppConfiguration((context,builder) =>
             {
                 builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
@@ -73,24 +70,20 @@ namespace ConsoleApp
                     builder.AddDebug();
                     builder.AddConfiguration(context.Configuration.GetSection("Logging"));
                 });
-                //services.AddTransient<IConfigureService, GlobalsDataDesignScript>();
-                //services.AddSingleton<IConfigureService, ChartDataDesignScript>();
-                //services.AddScoped<IConfigureService, ChartDataDesignScript>();
-                //services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureService, GlobalsDataDesignScript>());
             })
-            .Build();
+            .Build());
 
-            _host.Configure(null);
-            _host.DataLoaded(null);
-            _host.OnBarUpdate();
-            _host.OnMarketData();
-            _host.OnSessionUpdate();
-            _host.Dispose();
+            NinjaHost.Host.Configure(null);
+            NinjaHost.Host.DataLoaded(null);
+            NinjaHost.Host.OnBarUpdate();
+            NinjaHost.Host.OnMarketData();
+            NinjaHost.Host.OnSessionUpdate();
+            NinjaHost.Host.Dispose();
 
         }
         private static void UseNinjascriptHost2()
         {
-            _host = Host.CreateDefaultBuilder()
+            NinjaHost.Create(Host.CreateDefaultBuilder()
                 //.ConfigureAppConfiguration((context, builder) =>
                 //{
                 //    builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
@@ -103,7 +96,7 @@ namespace ConsoleApp
                     //    builder.AddConsole();
                     //    builder.AddDebug();
                     //});
-                    services.AddSingleton<IChart, Chart>()
+                    services.AddSingleton<IChartBarsData, ChartBarsData>()
                     //.AddSessions<ISessionsService>((builder) =>
                     //{
                     //    builder.ConfigureFilters((options) =>
@@ -115,11 +108,11 @@ namespace ConsoleApp
                     //})
                     ;
                 })
-                .Build();
+                .Build());
         }
         private static void UseColorConsoleLogger()
         {
-            _host = Host.CreateDefaultBuilder()
+            NinjaHost.Create(Host.CreateDefaultBuilder()
                 .ConfigureServices((context, services) =>
                 {
                     services.AddLogging(builder =>
@@ -130,7 +123,7 @@ namespace ConsoleApp
                     })
                     ;
                 })
-                .Build();
+                .Build());
         }
     }
 }

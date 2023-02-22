@@ -26,6 +26,5 @@ namespace Nt.Scripts.Hosting
             HostBuilder builder = new HostBuilder();
             return builder.NinjascriptConfigureDefaults(ninjatraderObjects);
         }
-
     }
 }
