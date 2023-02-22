@@ -55,13 +55,24 @@ namespace Nt.Scripts.Services
         /// Creates <see cref="SessionsIteratorService"/> default instance.
         /// </summary>
         /// <param name="globalsData">The global data necesary to create the service.</param>
-        public SessionsIterator(INinjascript ninjascript, Bars bars, IGlobalsData  globalsData, ILogger<SessionsIterator> logger)
+        public SessionsIterator(INinjascript ninjascript, Bars bars, IGlobalsData globalsData, ILogger<SessionsIterator> logger)
         {
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
             _bars = bars ?? throw new ArgumentNullException(nameof(bars));
             _globalsData = globalsData ?? throw new ArgumentNullException(nameof(globalsData));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
+
+        ///// <summary>
+        ///// Creates <see cref="SessionsIteratorService"/> default instance.
+        ///// </summary>
+        ///// <param name="globalsData">The global data necesary to create the service.</param>
+        //public SessionsIterator(INinjascript ninjascript, Bars bars, IGlobalsData  globalsData)
+        //{
+        //    _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
+        //    _bars = bars ?? throw new ArgumentNullException(nameof(bars));
+        //    _globalsData = globalsData ?? throw new ArgumentNullException(nameof(globalsData));
+        //}
 
         #endregion
 

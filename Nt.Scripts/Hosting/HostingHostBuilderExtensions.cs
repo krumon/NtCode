@@ -31,7 +31,7 @@ namespace Nt.Scripts.Hosting
         /// <param name="builder">The existing builder to configure.</param>
         /// <param name="args">The command line args.</param>
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        public static IHostBuilder NinjascriptConfigureDefaults(this IHostBuilder builder, object[] ninjatraderObjects)
+        public static IHostBuilder NinjaConfigureDefaults(this IHostBuilder builder, object[] ninjatraderObjects)
         {
             builder.UseContentRoot(NinjaTrader.Core.Globals.UserDataDir);
             //// TODO: Delete. Is only for tests in console.
@@ -74,7 +74,9 @@ namespace Nt.Scripts.Hosting
             });
             builder.ConfigureServices((services) =>
             {
-                services.AddNinjatraderObjects(ninjatraderObjects);
+                services
+                    .AddNinjatraderObjects(ninjatraderObjects)
+                    .AddSessions();
             });
 
             return builder;

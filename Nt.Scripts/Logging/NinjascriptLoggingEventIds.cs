@@ -1,7 +1,7 @@
 ﻿
 using Nt.Core.Logging;
 
-namespace Nt.Scripts.Events
+namespace Nt.Scripts.Logging
 {
     internal static class NinjascriptLoggingEventIds
     {

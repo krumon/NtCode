@@ -24,8 +24,8 @@ namespace Nt.Scripts.Services
 
             services
                 .AddNinjascript(TryGetNinjatraderObject<NinjaScriptBase>(ninjatraderObjects))
-                .AddGlobalsData()
-                .AddChartBarsData(TryGetNinjatraderObject<ChartBars>(ninjatraderObjects));
+                .AddGlobalsData();
+                //.AddChartBarsData(TryGetNinjatraderObject<ChartBars>(ninjatraderObjects));
 
             return services;
         }
@@ -50,6 +50,17 @@ namespace Nt.Scripts.Services
             return services;
         }
 
+        public static IServiceCollection AddSessions(this IServiceCollection services)
+        {
+            if (services == null)
+                throw new ArgumentNullException(nameof(services));
+
+            services.AddSessionsIterator();
+            services.AddSessionsFilters();
+            services.AddSingleton<ISessions, Sessions>();
+
+            return services;
+        }
 
         private static T TryGetNinjatraderObject<T>(object[] ninjatraderObjects)
             where T : class

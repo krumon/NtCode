@@ -3,14 +3,9 @@ using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
 using Nt.Core.Logging.Configuration;
-using Nt.Core.Services;
-using Nt.Scripts;
-using Nt.Scripts.DI;
+using Nt.Scripts.Hosting;
 using Nt.Scripts.Services;
 using System;
-using System.Diagnostics;
-using System.Reflection;
-using System.Threading;
 
 namespace ConsoleApp
 {
@@ -19,7 +14,7 @@ namespace ConsoleApp
         //private static IHost _host;
         private static ILogger _logger;
 
-        private static void SearchingInMS()
+        private static void FindingObjectsInMS()
         {
             //Microsoft.Extensions.DependencyInjection.ServiceDescriptor sd;
             //Microsoft.Extensions.DependencyInjection.ServiceProvider sp;
@@ -49,7 +44,7 @@ namespace ConsoleApp
 
         private static void UseNinjascriptHostingServices()
         {
-            NinjaHost.Create(Nt.Scripts.Hosting.Host.CreateNinjascriptDefaultBuilder(null).Build());
+            NinjaHost.Create(NinjaHost.CreateNinjaDefaultBuilder(null).Build());
         }
         private static void UseNinjascriptHost()
         {

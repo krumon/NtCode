@@ -14,11 +14,15 @@ namespace Nt.Scripts.Services
         public string InstallDir => Globals.InstallDir;
         public string[] CustomSubDirs => Globals.CustomSubDirs;
 
+        //public GlobalsData()
+        //{
+        //}
+
         public GlobalsData(ILogger<GlobalsData> logger)
         {
-            logger.LogInformation("Install Directory: {0}",InstallDir);
-            logger.LogInformation("User Directory: {0}",UserDataDir);
-            if (CustomSubDirs != null && CustomSubDirs.Length>0)
+            logger.LogInformation("Install Directory: {0}", InstallDir);
+            logger.LogInformation("User Directory: {0}", UserDataDir);
+            if (CustomSubDirs != null && CustomSubDirs.Length > 0)
                 logger.LogInformation("Subdirectory[0]: {0}", CustomSubDirs[0].ToString());
         }
 
