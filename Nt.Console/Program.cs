@@ -4,6 +4,7 @@ using Nt.Core.Hosting;
 using Nt.Core.Logging;
 using Nt.Core.Logging.Configuration;
 using Nt.Scripts.Hosting;
+using Nt.Scripts.Hosting.Design;
 using Nt.Scripts.Services;
 using System;
 
@@ -30,21 +31,23 @@ namespace ConsoleApp
         public static void Main(string[] args)
         {
 
-            UseNinjascriptHostingServices();
+            UseDesignNinjascriptHostingServices();
 
-            if (NinjaHost.Host == null)
-                throw new ArgumentNullException(nameof(NinjaHost.Host));
+            if (DesignNinjaHost.Host == null)
+                throw new ArgumentNullException(nameof(DesignNinjaHost.Host));
 
-            _logger = NinjaHost.Logger<Program>();
+            _logger = DesignNinjaHost.Logger<Program>();
             _logger.LogInformation("Hello World!");
-
-            IConfigurationRoot config = (IConfigurationRoot)(NinjaHost.Host?.Services.GetService<HostBuilderContext>().Configuration);
-            IConfiguration configure = NinjaHost.Host?.Services.GetService<IConfiguration>();
+            _logger.LogInformation(DesignNinjaHost.SessionsIterator.ToString());
+            _logger.LogInformation(DesignNinjaHost.SessionsFilters.IsEnabled.ToString());
+            _logger.LogInformation(DesignNinjaHost.Sessions.IsInNewSession.ToString());
+            IConfigurationRoot config = (IConfigurationRoot)(DesignNinjaHost.Host?.Services.GetService<HostBuilderContext>().Configuration);
+            IConfiguration configure = DesignNinjaHost.Host?.Services.GetService<IConfiguration>();
         }
 
-        private static void UseNinjascriptHostingServices()
+        private static void UseDesignNinjascriptHostingServices()
         {
-            NinjaHost.Create(NinjaHost.CreateNinjaDefaultBuilder(null).Build());
+            DesignNinjaHost.Create(DesignHosting.CreateDesignNinjaDefaultBuilder().Build());
         }
         private static void UseNinjascriptHost()
         {

@@ -4,9 +4,9 @@ using Nt.Core.Logging;
 using Nt.Scripts.Services;
 using System;
 
-namespace Nt.Scripts.Hosting
+namespace Nt.Scripts.Hosting.Design
 {
-    public static class NinjaHost
+    public static class DesignNinjaHost
     {
 
         private static IHost _host;

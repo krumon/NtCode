@@ -63,8 +63,6 @@ namespace Nt.Scripts.Services
             }
             catch 
             {
-                // TODO: Delete...is only for testing.
-                services.TryAdd(ServiceDescriptor.Singleton<INinjascript>(new Ninjascript()));
             }
 
             return services;
@@ -91,8 +89,6 @@ namespace Nt.Scripts.Services
             }
             catch 
             {
-                // TODO: Delete...is only for testing.
-                services.TryAdd(ServiceDescriptor.Singleton<IChartBarsData>(new ChartBarsData()));
             }
 
             return services;

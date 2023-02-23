@@ -24,8 +24,8 @@ namespace Nt.Scripts.Services
 
             services
                 .AddNinjascript(TryGetNinjatraderObject<NinjaScriptBase>(ninjatraderObjects))
-                .AddGlobalsData();
-                //.AddChartBarsData(TryGetNinjatraderObject<ChartBars>(ninjatraderObjects));
+                .AddGlobalsData()
+                .AddChartBarsData(TryGetNinjatraderObject<ChartBars>(ninjatraderObjects));
 
             return services;
         }

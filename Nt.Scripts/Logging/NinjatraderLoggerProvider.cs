@@ -37,22 +37,9 @@ namespace Nt.Scripts.Logging
         {
             if (ninjascript == null)
                 throw new ArgumentNullException(nameof(ninjascript));
-            _ninjascriptPrintMethod = ninjascript.Instance.Print;
-            _ninjascriptClearMethod = ninjascript.Instance.ClearOutputWindow;
+            _ninjascriptPrintMethod = ninjascript.Print;
+            _ninjascriptClearMethod = ninjascript.ClearOutputWindow;
 
-            _currentOptions = options.CurrentValue;
-            _loggers = new ConcurrentDictionary<string, NinjatraderLogger>();
-
-            SetFormatters(formatters);
-            ReloadNinjascriptLoggerOptions(options.CurrentValue);
-            _optionsReloadToken = options.OnChange(ReloadNinjascriptLoggerOptions);
-        }
-
-        // TODO: Delete this constructor. Is only necesary for testing in console.
-        public NinjatraderLoggerProvider(IOptionsMonitor<NinjatraderLoggerOptions> options, IEnumerable<NinjatraderLoggerFormatter> formatters)
-        {
-            _ninjascriptPrintMethod = Console.WriteLine;
-            _ninjascriptClearMethod = Console.Clear;
             _currentOptions = options.CurrentValue;
             _loggers = new ConcurrentDictionary<string, NinjatraderLogger>();
 

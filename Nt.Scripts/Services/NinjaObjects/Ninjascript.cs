@@ -18,56 +18,41 @@ namespace Nt.Scripts.Services
         public Ninjascript(NinjaScriptBase ninjascript)
         {
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
+            Configure();
         }
 
         // TODO: Delete this constructor. Is only necesary for tests in console.
-        protected Ninjascript()
+        internal Ninjascript()
         {
+            Configure();
         }
 
         /// <summary>
         /// Gets the ninjascript instance.
         /// </summary>
-        public NinjaScriptBase Instance => _ninjascript;
+        public NinjaScriptBase Instance { get; protected set; }
 
         /// <summary>
         /// Gets the <see cref="NinjaScript.State"/> of the ninjascript object.
         /// </summary>
-        public State State
-        {
-            get
-            {
-                if (_ninjascript != null) 
-                    return _ninjascript.State;
-                else
-                    return State.Configure;
-            }
-        }
+        public State State { get; protected set; }
+
         /// <summary>
         /// Gets the delegate that print in the ninjatrader output window.
         /// </summary>
-        public Action<object> Print
-        {
-            get
-            {
-                if (_ninjascript != null) 
-                    return _ninjascript.Print;
-                else
-                    return Console.WriteLine;
-            }
-        }
+        public Action<object> Print { get; protected set; }
+
         /// <summary>
         /// Gets methods thats clear the output window.
         /// </summary>
-        public Action ClearOutputWindow
+        public Action ClearOutputWindow { get; protected set; }
+
+        protected virtual void Configure()
         {
-            get
-            {
-                if (_ninjascript != null)
-                    return _ninjascript.ClearOutputWindow;
-                else
-                    return Console.Clear;
-            }
+            Instance = _ninjascript;
+            State = _ninjascript.State;
+            Print = _ninjascript.Print;
+            ClearOutputWindow = _ninjascript.ClearOutputWindow;
         }
     }
 }

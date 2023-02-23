@@ -58,27 +58,16 @@ namespace Nt.Scripts.Services
         public SessionsIterator(INinjascript ninjascript, IGlobalsData globalsData, ILogger<SessionsIterator> logger)
         {
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
-            _bars = ninjascript.Instance.Bars ?? throw new ArgumentNullException(nameof(ninjascript.Instance.Bars));
             _globalsData = globalsData ?? throw new ArgumentNullException(nameof(globalsData));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-
-        ///// <summary>
-        ///// Creates <see cref="SessionsIteratorService"/> default instance.
-        ///// </summary>
-        ///// <param name="globalsData">The global data necesary to create the service.</param>
-        //public SessionsIterator(INinjascript ninjascript, Bars bars, IGlobalsData  globalsData)
-        //{
-        //    _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
-        //    _bars = bars ?? throw new ArgumentNullException(nameof(bars));
-        //    _globalsData = globalsData ?? throw new ArgumentNullException(nameof(globalsData));
-        //}
 
         #endregion
 
         #region Public methods
 
-        public void Configure() => IsConfigured = true;
+        public virtual void Configure() => IsConfigured = true;
+
         public void DataLoaded()
         {
             // Make sure the script is configured
@@ -93,7 +82,7 @@ namespace Nt.Scripts.Services
             try
             {
                 BarsTimeZoneInfo = _bars.TradingHours.TimeZoneInfo;
-                _sessionIterator = new SessionIterator(_bars);
+                _sessionIterator = new SessionIterator(_ninjascript.Instance.Bars);
                 IsDataLoaded = true;
                 _logger.LogInformation("Sessions Iterator has been configured.");
             }
