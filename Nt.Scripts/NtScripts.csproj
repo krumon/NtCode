@@ -88,8 +88,10 @@
     <Compile Include="Logging\NinjatraderLoggerOptions.cs" />
     <Compile Include="Logging\OutputWindowFormatterOptions.cs" />
     <Compile Include="Services\NinjaObjects\ChartBarsData.cs" />
+    <Compile Include="Services\NinjaObjects\Design\NinjascriptDesign.cs" />
     <Compile Include="Services\NinjaObjects\IChartBarsData.cs" />
     <Compile Include="Services\NinjaObjects\NinjatraderServiceCollectionExtensions.cs" />
+    <Compile Include="Services\Sessions\Design\SessionsFiltersDesign.cs" />
     <Compile Include="Services\Sessions\SessionsServiceCollectionExtensions.cs" />
     <Compile Include="Services\Series\IDataSeriesScript.cs" />
     <Compile Include="Services\NinjaObjects\INinjascript.cs" />

@@ -12,14 +12,19 @@ namespace Nt.Scripts.Services
         private readonly SessionsFiltersOptions _options = new SessionsFiltersOptions(); // Default options
         public bool IsEnabled { get;  private set; }
 
-        public SessionsFilters(ISessionsIterator sessionsIterator, IConfigureOptions<SessionsFiltersOptions> options)
+        public SessionsFilters(ISessionsIterator sessionsIterator)
         {
-            if (options == null)
-                throw new ArgumentNullException(nameof(options));
-
             _sessionsIterator = sessionsIterator ?? throw new ArgumentNullException(nameof(sessionsIterator));
-            options?.Configure(_options);
         }
+
+        //public SessionsFilters(ISessionsIterator sessionsIterator, IConfigureOptions<SessionsFiltersOptions> options)
+        //{
+        //    if (options == null)
+        //        throw new ArgumentNullException(nameof(options));
+
+        //    _sessionsIterator = sessionsIterator ?? throw new ArgumentNullException(nameof(sessionsIterator));
+        //    options?.Configure(_options);
+        //}
 
         public SessionsFiltersOptions Options => _options;
 

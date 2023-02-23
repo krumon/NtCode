@@ -20,8 +20,8 @@ namespace Nt.Scripts.Services
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
         }
 
-        // TODO: Delete this constructor. Is only necesary for testing in console.
-        public Ninjascript()
+        // TODO: Delete this constructor. Is only necesary for tests in console.
+        protected Ninjascript()
         {
         }
 
@@ -33,17 +33,41 @@ namespace Nt.Scripts.Services
         /// <summary>
         /// Gets the <see cref="NinjaScript.State"/> of the ninjascript object.
         /// </summary>
-        public State State => _ninjascript.State;
-
+        public State State
+        {
+            get
+            {
+                if (_ninjascript != null) 
+                    return _ninjascript.State;
+                else
+                    return State.Configure;
+            }
+        }
         /// <summary>
         /// Gets the delegate that print in the ninjatrader output window.
         /// </summary>
-        public Action<object> Print => _ninjascript.Print;
-
+        public Action<object> Print
+        {
+            get
+            {
+                if (_ninjascript != null) 
+                    return _ninjascript.Print;
+                else
+                    return Console.WriteLine;
+            }
+        }
         /// <summary>
         /// Gets methods thats clear the output window.
         /// </summary>
-        public Action ClearOutputWindow => _ninjascript.ClearOutputWindow;
-
+        public Action ClearOutputWindow
+        {
+            get
+            {
+                if (_ninjascript != null)
+                    return _ninjascript.ClearOutputWindow;
+                else
+                    return Console.Clear;
+            }
+        }
     }
 }

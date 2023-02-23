@@ -10,6 +10,10 @@ namespace Nt.Scripts.Services
         private readonly ISessionsIterator _iterator;
         private readonly ISessionsFilters _filters;
         public bool IsInNewSession => _iterator.IsSessionUpdated;
+        public Sessions()
+        {
+
+        }
         public Sessions(ISessionsIterator iterator, ISessionsFilters filters)
         {
             _iterator = iterator ?? throw new ArgumentNullException(nameof(iterator));
