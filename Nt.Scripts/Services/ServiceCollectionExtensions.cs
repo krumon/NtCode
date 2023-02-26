@@ -36,7 +36,7 @@ namespace Nt.Scripts.Services
         /// <param name="services">The services.</param>
         /// <param name="ninjatraderObjects">The ninjatrader objects.</param>
         /// <returns>The <see cref="IServiceCollection"/> to continue builder the host.</returns>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ArgumentNullException">The <see cref="IServiceCollection"/> cannot be null.</exception>
         public static IServiceCollection TryAddNinjatraderObjects(this IServiceCollection services, object[] ninjatraderObjects)
         {
             if (services == null)
@@ -50,14 +50,20 @@ namespace Nt.Scripts.Services
             return services;
         }
 
+        /// <summary>
+        /// Adds sessions services to the services container.
+        /// </summary>
+        /// <param name="services">The services container.</param>
+        /// <returns>The <see cref="IServiceCollection"/> to continue builder the host.</returns>
+        /// <exception cref="ArgumentNullException">The <see cref="IServiceCollection"/> cannot be null.</exception>
         public static IServiceCollection AddSessions(this IServiceCollection services)
         {
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
 
-            services.AddSessionsIterator();
-            services.AddSessionsFilters();
-            services.AddSingleton<ISessions, Sessions>();
+            //services.AddSessionsIterator();
+            //services.AddSessionsFilters();
+            services.AddSingleton<ISessionsManager, SessionsManager>();
 
             return services;
         }

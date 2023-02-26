@@ -90,6 +90,10 @@
     <Compile Include="Logging\NinjatraderLoggerProvider.cs" />
     <Compile Include="Logging\NinjatraderLoggerOptions.cs" />
     <Compile Include="Logging\OutputWindowFormatterOptions.cs" />
+    <Compile Include="Services\IDisposable.cs" />
+    <Compile Include="Services\IConfigurable.cs" />
+    <Compile Include="Services\IRecalculableOnBarUpdate.cs" />
+    <Compile Include="Services\IRecalculableOnSessionUpdate.cs" />
     <Compile Include="Services\NinjaObjects\ChartBarsData.cs" />
     <Compile Include="Services\NinjaObjects\Design\DesignChartBarsData.cs" />
     <Compile Include="Services\NinjaObjects\Design\DesignGlobalsData.cs" />
@@ -97,7 +101,7 @@
     <Compile Include="Services\NinjaObjects\Design\DesignNinjatraderServiceCollectionExtensions.cs" />
     <Compile Include="Services\NinjaObjects\IChartBarsData.cs" />
     <Compile Include="Services\NinjaObjects\NinjatraderServiceCollectionExtensions.cs" />
-    <Compile Include="Services\DesignServicesServiceCollectionExtensions.cs" />
+    <Compile Include="Services\Design\DesignServicesServiceCollectionExtensions.cs" />
     <Compile Include="Services\Sessions\SessionsServiceCollectionExtensions.cs" />
     <Compile Include="Services\Series\IDataSeriesScript.cs" />
     <Compile Include="Services\NinjaObjects\INinjascript.cs" />
@@ -108,7 +112,7 @@
     <Compile Include="Services\Sessions\ISessionsBuilder.cs" />
     <Compile Include="Services\Sessions\ISessionsFilters.cs" />
     <Compile Include="Services\Sessions\ISessionsIterator.cs" />
-    <Compile Include="Services\Sessions\ISessionsService.cs" />
+    <Compile Include="Services\Sessions\ISessionsManager.cs" />
     <Compile Include="Services\Sessions\SessionsBuilder.cs" />
     <Compile Include="Services\Sessions\SessionsFiltersOptions.cs" />
     <Compile Include="Services\Sessions\SessionsFilters.cs" />
@@ -116,7 +120,7 @@
     <Compile Include="Services\Sessions\SessionsIterator.cs" />
     <Compile Include="Services\Sessions\SessionsOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\Sessions\Sessions.cs" />
+    <Compile Include="Services\Sessions\SessionsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nt.Core\Nt.Core.csproj">

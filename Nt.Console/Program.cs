@@ -38,9 +38,9 @@ namespace ConsoleApp
 
             _logger = DesignNinjaHost.Logger<Program>();
             _logger.LogInformation("Hello World!");
-            _logger.LogInformation(DesignNinjaHost.SessionsIterator.ToString());
-            _logger.LogInformation(DesignNinjaHost.SessionsFilters.IsEnabled.ToString());
-            _logger.LogInformation(DesignNinjaHost.Sessions.IsInNewSession.ToString());
+            //_logger.LogInformation(DesignNinjaHost.SessionsIterator.ToString());
+            //_logger.LogInformation(DesignNinjaHost.SessionsFilters.IsEnabled.ToString());
+            _logger.LogInformation(DesignNinjaHost.Sessions.IsNewSession.ToString());
             IConfigurationRoot config = (IConfigurationRoot)(DesignNinjaHost.Host?.Services.GetService<HostBuilderContext>().Configuration);
             IConfiguration configure = DesignNinjaHost.Host?.Services.GetService<IConfiguration>();
         }

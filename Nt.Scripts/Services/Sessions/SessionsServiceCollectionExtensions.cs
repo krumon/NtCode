@@ -5,7 +5,12 @@ namespace Nt.Scripts.Services
 {
     public static class SessionsServiceCollectionExtensions
     {
-
+        /// <summary>
+        /// Adds <see cref="ISessionsIterator"/> service to the <see cref="IServiceCollection"/> container.
+        /// </summary>
+        /// <param name="services">The service container.</param>
+        /// <returns>The <see cref="IServiceCollection"/> to continua adding services.</returns>
+        /// <exception cref="ArgumentNullException">The <see cref="IServiceCollection"/> cannot be null.</exception>
         public static IServiceCollection AddSessionsIterator(this IServiceCollection services)
         {
             if (services == null)
@@ -15,6 +20,13 @@ namespace Nt.Scripts.Services
 
             return services;
         }
+
+        /// <summary>
+        /// Adds <see cref="ISessionsFilters"/> service to the <see cref="IServiceCollection"/> container.
+        /// </summary>
+        /// <param name="services">The service container.</param>
+        /// <returns>The <see cref="IServiceCollection"/> to continue adding services.</returns>
+        /// <exception cref="ArgumentNullException">The <see cref="IServiceCollection"/> cannot be null.</exception>
         public static IServiceCollection AddSessionsFilters(this IServiceCollection services)
         {
             if (services == null)

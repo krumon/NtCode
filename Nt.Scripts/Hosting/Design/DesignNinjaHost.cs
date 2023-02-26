@@ -17,19 +17,19 @@ namespace Nt.Scripts.Hosting.Design
         public static IHost Host => _host;
 
         /// <summary>
-        /// Gets <see cref="ISessions"/> service.
+        /// Gets <see cref="ISessionsManager"/> service.
         /// </summary>
-        public static ISessions Sessions => _host?.Services.GetService<ISessions>();
+        public static ISessionsManager Sessions => _host?.Services.GetService<ISessionsManager>();
 
-        /// <summary>
-        /// Gets <see cref="ISessionsIterator"/> service.
-        /// </summary>
-        public static ISessionsIterator SessionsIterator => _host?.Services.GetService<ISessionsIterator>();
+        ///// <summary>
+        ///// Gets <see cref="ISessionsIterator"/> service.
+        ///// </summary>
+        //public static ISessionsIterator SessionsIterator => _host?.Services.GetService<ISessionsIterator>();
 
-        /// <summary>
-        /// Gets <see cref="ISessionsFilters"/> service.
-        /// </summary>
-        public static ISessionsFilters SessionsFilters => _host?.Services.GetService<ISessionsFilters>();
+        ///// <summary>
+        ///// Gets <see cref="ISessionsFilters"/> service.
+        ///// </summary>
+        //public static ISessionsFilters SessionsFilters => _host?.Services.GetService<ISessionsFilters>();
 
         /// <summary>
         /// Gets <see cref="ILogger{TCategoryName}"/> service.

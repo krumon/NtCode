@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Nt.Core.Hosting;
+using System;
 
 namespace Nt.Scripts.Services
 {
     /// <summary>
     /// Represents the properties and methods to create a default implementation of <see cref="SessionsIterator"/>.
     /// </summary>
-    public interface ISessionsIterator 
+    public interface ISessionsIterator : IConfigurable, IRecalculableOnBarUpdate
     {
 
         /// <summary>
@@ -18,15 +19,15 @@ namespace Nt.Scripts.Services
         /// </summary>
         DateTime ActualSessionEnd { get; }
 
-        /// <summary>
-        /// Represents the user's configured <see cref="TimeZoneInfo"/>.
-        /// </summary>
-        TimeZoneInfo UserTimeZoneInfo { get; }
+        ///// <summary>
+        ///// Represents the user's configured <see cref="TimeZoneInfo"/>.
+        ///// </summary>
+        //TimeZoneInfo UserTimeZoneInfo { get; }
 
-        /// <summary>
-        /// Represents the bar's configured <see cref="TimeZoneInfo"/>.
-        /// </summary>
-        TimeZoneInfo BarsTimeZoneInfo { get; }
+        ///// <summary>
+        ///// Represents the bar's configured <see cref="TimeZoneInfo"/>.
+        ///// </summary>
+        //TimeZoneInfo BarsTimeZoneInfo { get; }
 
         /// <summary>
         /// The sessions counter.
