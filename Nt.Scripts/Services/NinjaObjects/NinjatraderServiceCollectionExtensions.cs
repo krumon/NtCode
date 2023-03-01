@@ -74,7 +74,7 @@ namespace Nt.Scripts.Services
             if (chartBars == null)
                 throw new ArgumentNullException(nameof(chartBars));
              
-            services.TryAdd(ServiceDescriptor.Singleton<IChartBarsData>(new ChartBarsProperties(chartBars)));
+            services.TryAdd(ServiceDescriptor.Singleton<IChartBarsProperties>(new ChartBarsProperties(chartBars)));
 
             return services;
         }

@@ -6,7 +6,7 @@ using BarsPeriod = Nt.Core.Data.BarsPeriod;
 
 namespace Nt.Scripts.Services
 {
-    public class ChartBarsProperties : IChartBarsData
+    public class ChartBarsProperties : IChartBarsProperties
     {
         private readonly ChartBars _chartBars;
 

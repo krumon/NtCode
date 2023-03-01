@@ -56,7 +56,7 @@ namespace Nt.Scripts.Services.Design
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
              
-            services.TryAdd(ServiceDescriptor.Singleton<IChartBarsData>(new DesignChartBarsProperties()));
+            services.TryAdd(ServiceDescriptor.Singleton<IChartBarsProperties>(new DesignChartBarsProperties()));
 
             return services;
         }
