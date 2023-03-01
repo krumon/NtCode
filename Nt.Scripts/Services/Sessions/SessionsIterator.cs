@@ -37,6 +37,7 @@ namespace Nt.Scripts.Services
         public DateTime ActualSessionBegin { get; set; }
         public DateTime ActualSessionEnd { get; protected set; }
         public int Count => newSessionBarIdx.Count;
+        // TODO: Delete. Is not necesary in this moment...
         public bool IsSessionUpdated { get; protected set; }
         public bool IsConfigured { get; protected set; }
         //public TimeZoneInfo UserTimeZoneInfo { get; protected set; }
@@ -71,34 +72,37 @@ namespace Nt.Scripts.Services
 
         public virtual void Configure() 
         { 
-            if (_ninjascript.Instance.State == State.SetDefaults)
+            //if (_ninjascript.Instance.State == State.SetDefaults)
+            //{
+            //    _configured = false;
+            //    IsConfigured = false;
+            //}
+            if (_ninjascript.Instance.State == State.Configure || _ninjascript.Instance.State == State.DataLoaded)
             {
-                _configured = false;
-                IsConfigured = false;
-            }
-            if (!_configured && _ninjascript.Instance.State == State.Configure)
-            {
-                _currentSessionEnd = _globalsData.MinDate;
-                _sessionDateTmp = _globalsData.MinDate;
-                _userTimeZoneInfo = _globalsData.UserConfigureTimeZoneInfo;
-                ActualSessionBegin = _globalsData.MinDate;
-                ActualSessionEnd = _globalsData.MinDate;
-                _configured = true;
-            }
-            if (_configured && _ninjascript.Instance.State == State.DataLoaded)
-            {
-                try
+                if (!_configured && _ninjascript.Instance.State == State.Configure)
                 {
-                    _sessionIterator = new SessionIterator(_ninjascript.Instance.Bars);
-                    _barsTimeZoneInfo = _ninjascript.Instance.Bars.TradingHours.TimeZoneInfo;
-                    IsConfigured = _configured;
+                    _currentSessionEnd = _globalsData.MinDate;
+                    _sessionDateTmp = _globalsData.MinDate;
+                    _userTimeZoneInfo = _globalsData.UserConfigureTimeZoneInfo;
+                    ActualSessionBegin = _globalsData.MinDate;
+                    ActualSessionEnd = _globalsData.MinDate;
+                    _configured = true;
                 }
-                catch
+                if (_configured && _ninjascript.Instance.State == State.DataLoaded)
                 {
-                    _logger.LogError("SessionsIterator cannot be configure when the data is loaded.");
+                    try
+                    {
+                        _sessionIterator = new SessionIterator(_ninjascript.Instance.Bars);
+                        _barsTimeZoneInfo = _ninjascript.Instance.Bars.TradingHours.TimeZoneInfo;
+                        IsConfigured = _configured;
+                    }
+                    catch
+                    {
+                        _logger.LogError("SessionsIterator cannot be configure when the data is loaded.");
+                    }
                 }
             }
-            if (_ninjascript.Instance.State == State.Historical)
+            else if (_ninjascript.Instance.State == State.Historical)
             {
                 if (IsConfigured)
                     _logger.LogInformation("SessionsIterator has been configured successfully.");
@@ -114,10 +118,9 @@ namespace Nt.Scripts.Services
 
             LastBarUpdate();
         }
-        public virtual void OnMarketData() => LastBarUpdate();
-        public virtual void OnSessionChanged() { }
-
-        public override string ToString()
+        public virtual void OnMarketData() => OnBarUpdate();
+        public virtual void OnSessionChanged(SessionChangedEventArgs args) { }
+        public string Print()
         {
             string holidayText;
             if (IsPartialHoliday == true)
@@ -132,6 +135,10 @@ namespace Nt.Scripts.Services
                 holidayText = "Regular Session";
 
             return $"Session {Count}: Begin: {ActualSessionBegin.ToShortDateString()} End: {ActualSessionEnd.ToShortDateString()} | {holidayText}";
+        }
+        public override string ToString()
+        {
+            return $"SessionsIterator[{_ninjascript.Instance.Instrument.MasterInstrument.Name}] Period: {_ninjascript.Instance.Bars.BarsPeriod.BarsPeriodType} Value: {_ninjascript.Instance.Bars.BarsPeriod.Value}";
         }
 
         #endregion
@@ -157,23 +164,21 @@ namespace Nt.Scripts.Services
                 _currentSessionEnd = lastBarTimeStamp;
                 // The new session begin
                 IsSessionUpdated = true;
+                // Changes the new session property in session manager.
                 _sessionsManager.IsNewSession = true;
                 // Check if it's a partial holiday
                 TryGetPartialHoliday();
                 // Create the session changed arguments
                 var args = new SessionChangedEventArgs(CurrentBar, Count, ActualSessionBegin, ActualSessionEnd, _userTimeZoneInfo, IsPartialHoliday, IsLateBegin, IsEarlyEnd);
                 // Call the parent
-                OnSessionChanged();
+                OnSessionChanged(args);
+                // Call to session manager
+                _sessionsManager.OnSessionChanged(args);
                 // Call to listeners
                 SessionChanged?.Invoke(args);
-            }
-            else
-            {
-                IsSessionUpdated = false;
-                _sessionsManager.IsNewSession = false;
-            }
-            
+            }            
         }
+
         private DateTime GetLastBarSessionDate(DateTime time)
         {
             // Make sure the session is terminated

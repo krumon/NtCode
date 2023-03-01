@@ -74,5 +74,11 @@ namespace Nt.Scripts.Services
         /// </summary>
         bool? IsEarlyEnd { get; }
 
+        /// <summary>
+        /// Prints the actual session values.
+        /// </summary>
+        /// <returns>The actual session values.</returns>
+        string Print();
+
     }
 }
