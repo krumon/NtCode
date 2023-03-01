@@ -1,0 +1,12 @@
+{
+  "Indicators": {
+    "DataSeries": {
+      "MES": {
+        "InstrumentName": "MES",
+        "PeriodType": "minute",
+        "PeriodValue": "1",
+        "TradingHoursName" :  "Default"
+      }
+    }
+  }
+}

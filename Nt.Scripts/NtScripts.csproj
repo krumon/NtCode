@@ -94,7 +94,7 @@
     <Compile Include="Services\IConfigurable.cs" />
     <Compile Include="Services\IRecalculableOnEachTick.cs" />
     <Compile Include="Services\IRecalculableOnBarUpdate.cs" />
-    <Compile Include="Services\IRecalculableOnSessionUpdate.cs" />
+    <Compile Include="Services\IRecalculableOnSessionChanged.cs" />
     <Compile Include="Services\NinjaObjects\ChartBarsProperties.cs" />
     <Compile Include="Services\NinjaObjects\Design\DesignChartBarsProperties.cs" />
     <Compile Include="Services\NinjaObjects\Design\DesignGlobalsData.cs" />
@@ -102,20 +102,19 @@
     <Compile Include="Services\NinjaObjects\Design\DesignNinjatraderServiceCollectionExtensions.cs" />
     <Compile Include="Services\NinjaObjects\IChartBarsProperties.cs" />
     <Compile Include="Services\NinjaObjects\NinjatraderServiceCollectionExtensions.cs" />
-    <Compile Include="Services\Design\DesignServicesServiceCollectionExtensions.cs" />
-    <Compile Include="Services\Series\ConfigureDataSeriesOptions.cs" />
-    <Compile Include="Services\Series\DataSeriesBuilder.cs" />
-    <Compile Include="Services\Series\DataSeriesCollection.cs" />
-    <Compile Include="Services\Series\DataSeriesDescriptor.cs" />
-    <Compile Include="Services\Series\DataSeriesOptions.cs" />
-    <Compile Include="Services\Series\DataSeriesProvider.cs" />
-    <Compile Include="Services\Series\DataSeries.cs" />
-    <Compile Include="Services\Series\IDataSeriesBuilder.cs" />
-    <Compile Include="Services\Series\IDataSeriesCollection.cs" />
-    <Compile Include="Services\Series\SessionsServiceCollectionExtensions.cs" />
+    <Compile Include="Services\_Design\DesignServicesServiceCollectionExtensions.cs" />
+    <Compile Include="Services\DataSeries\ConfigureDataSeriesOptions.cs" />
+    <Compile Include="Services\DataSeries\DataSeriesBuilder.cs" />
+    <Compile Include="Services\DataSeries\DataSeriesDescriptor.cs" />
+    <Compile Include="Services\DataSeries\DataSeriesOptions.cs" />
+    <Compile Include="Services\DataSeries\DataSeriesProvider.cs" />
+    <Compile Include="Services\DataSeries\DataSeries.cs" />
+    <Compile Include="Services\DataSeries\IDataSeriesBuilder.cs" />
+    <Compile Include="Services\DataSeries\IDataSeriesCollection.cs" />
+    <Compile Include="Services\DataSeries\SessionsServiceCollectionExtensions.cs" />
     <Compile Include="Services\Sessions\SessionChangedEvent.cs" />
     <Compile Include="Services\Sessions\SessionsServiceCollectionExtensions.cs" />
-    <Compile Include="Services\Series\IDataSeries.cs" />
+    <Compile Include="Services\DataSeries\IDataSeries.cs" />
     <Compile Include="Services\NinjaObjects\INinjascript.cs" />
     <Compile Include="Services\NinjaObjects\Ninjascript.cs" />
     <Compile Include="Services\NinjaObjects\GlobalsData.cs" />
@@ -149,7 +148,7 @@
     <None Include="launchsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="ntsettingsdevelopment.json">
+    <None Include="ntsettings.development.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="ntsettings.json">
@@ -161,6 +160,6 @@
     <PostBuildEvent>xcopy "$(ProjectDir)bin\Debug\$(TargetFileName)" "$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\NinjaTrader 8\bin\Custom" /E /Y
 xcopy "$(ProjectDir)bin\Debug\$(TargetName).pdb" "$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\NinjaTrader 8\bin\Custom" /E /Y
 xcopy "$(ProjectDir)bin\Debug\ntsettings.json" "$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\NinjaTrader 8\bin\Custom" /E /Y
-xcopy "$(ProjectDir)bin\Debug\ntsettingsdevelopment.json" "$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\NinjaTrader 8\bin\Custom" /E /Y</PostBuildEvent>
+xcopy "$(ProjectDir)bin\Debug\ntsettings.development.json" "$(registry:HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders@Personal)\NinjaTrader 8\bin\Custom" /E /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

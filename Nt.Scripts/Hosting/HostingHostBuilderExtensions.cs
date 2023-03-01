@@ -3,7 +3,6 @@ using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
-using Nt.Core.Options;
 using Nt.Scripts.Logging;
 using Nt.Scripts.Services;
 using System.IO;
@@ -22,8 +21,9 @@ namespace Nt.Scripts.Hosting
         {
             return hostBuilder.ConfigureServices((context, services) =>
             {
-                services.Configure<DataSeriesOptions>(context.Configuration.GetSection(DataSeriesOptions.Key))
-                .AddDataSeries();
+                services
+                    .Configure<DataSeriesOptions>(context.Configuration.GetSection(DataSeriesOptions.Key))
+                    .AddDataSeries();
             });
         }
 
