@@ -112,6 +112,7 @@
     <Compile Include="Services\Series\DataSeries.cs" />
     <Compile Include="Services\Series\IDataSeriesBuilder.cs" />
     <Compile Include="Services\Series\IDataSeriesCollection.cs" />
+    <Compile Include="Services\Series\SessionsServiceCollectionExtensions.cs" />
     <Compile Include="Services\Sessions\SessionChangedEvent.cs" />
     <Compile Include="Services\Sessions\SessionsServiceCollectionExtensions.cs" />
     <Compile Include="Services\Series\IDataSeries.cs" />

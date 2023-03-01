@@ -7,87 +7,67 @@ namespace Nt.Scripts.Services
     /// </summary>
     public class DataSeriesDescriptor
     {
-
-        #region Private members
-
-        private int _periodValue = 1;
-
-        #endregion
-
-        #region Public properties
-
-        /// <inheritdoc/>
-        public string Key => $"{InstrumentKey}-{(int)PeriodType}-{PeriodValue}";
-
-        /// <inheritdoc/>
-        public InstrumentCode InstrumentKey { get; set; }
-
         /// <summary>
-        /// Gets or sets the instrument name.
+        /// The <see cref="DataSeries"/> instrument name.
         /// </summary>
         public string InstrumentName { get; set; }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// The <see cref="DataSeries"/> <see cref="PeriodType"/>.
+        /// </summary>
         public PeriodType PeriodType { get; set; }
 
-        /// <inheritdoc/>
-        public int PeriodValue
-        {
-            get => _periodValue;
-            set
-            {
-                if (_periodValue != value)
-                {
-                    if (value < 1)
-                        return;
-
-                    _periodValue = value;
-                }
-            }
-        }
-
-        /// <inheritdoc/>
-        public TradingHoursCode TradingHoursKey { get; set; }
+        /// <summary>
+        /// The <see cref="DataSeries"/> period value.
+        /// </summary>
+        public int PeriodValue { get; set; }
 
         /// <summary>
-        /// Gets or sets the trading hours template name.
+        /// The <see cref="DataSeries"/> trading hours template name.
         /// </summary>
         public string TradingHoursName { get; set; }
 
-        #endregion
-
-        #region Constructors
-
         /// <summary>
-        /// Create <see cref="DataSeriesDescriptor"/> default instance.
+        /// The unique key of the data serie.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="periodType"></param>
-        /// <param name="periodValue"></param>
-        /// <param name="tradingHoursKey"></param>
-        public DataSeriesDescriptor(InstrumentCode key, PeriodType periodType, int periodValue, TradingHoursCode tradingHoursKey)
-        {
-            InstrumentKey = key;
-            PeriodType = periodType;
-            PeriodValue = periodValue;
-            TradingHoursKey = tradingHoursKey;
-        }
+        public string Key => $"{InstrumentName}-{PeriodType}{PeriodValue}-{TradingHoursName}";
 
-        /// <summary>
-        /// Create <see cref="DataSeriesDescriptor"/> default instance.
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="periodType"></param>
-        /// <param name="periodValue"></param>
-        /// <param name="tradingHoursKey"></param>
-        public DataSeriesDescriptor(string instrumentName, PeriodType periodType, int periodValue, string tradingHoursName)
+        public override string ToString()
         {
-            InstrumentName = instrumentName;
-            PeriodType = periodType;
-            PeriodValue = periodValue;
-            TradingHoursName = tradingHoursName;
+            return $"DataSerie[{InstrumentName}] : {PeriodValue}({PeriodType}) - {TradingHoursName}.";
         }
+        //#region Constructors
 
-        #endregion
+        ///// <summary>
+        ///// Create <see cref="DataSeriesDescriptor"/> default instance.
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="periodType"></param>
+        ///// <param name="periodValue"></param>
+        ///// <param name="tradingHoursKey"></param>
+        //public DataSeriesDescriptor(InstrumentCode key, PeriodType periodType, int periodValue, TradingHoursCode tradingHoursKey)
+        //{
+        //    InstrumentKey = key;
+        //    PeriodType = periodType;
+        //    PeriodValue = periodValue;
+        //    TradingHoursKey = tradingHoursKey;
+        //}
+
+        ///// <summary>
+        ///// Create <see cref="DataSeriesDescriptor"/> default instance.
+        ///// </summary>
+        ///// <param name="key"></param>
+        ///// <param name="periodType"></param>
+        ///// <param name="periodValue"></param>
+        ///// <param name="tradingHoursKey"></param>
+        //public DataSeriesDescriptor(string instrumentName, PeriodType periodType, int periodValue, string tradingHoursName)
+        //{
+        //    InstrumentName = instrumentName;
+        //    PeriodType = periodType;
+        //    PeriodValue = periodValue;
+        //    TradingHoursName = tradingHoursName;
+        //}
+
+        //#endregion
     }
 }

@@ -22,7 +22,7 @@ namespace Nt.Core.Hosting
         /// </summary>
         /// <param name="hostBuilder">The <see cref="IHostBuilder"/> to configure.</param>
         /// <param name="environment">The environment to host the application in.</param>
-        /// <returns>The <see cref="IHostBuilder"/>.</returns>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         public static IHostBuilder UseEnvironment(this IHostBuilder hostBuilder, string environment)
         {
             return hostBuilder.ConfigureHostConfiguration(configBuilder =>
@@ -41,7 +41,7 @@ namespace Nt.Core.Hosting
         /// </summary>
         /// <param name="hostBuilder">The <see cref="IHostBuilder"/> to configure.</param>
         /// <param name="contentRoot">Path to root directory of the application.</param>
-        /// <returns>The <see cref="IHostBuilder"/>.</returns>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         public static IHostBuilder UseContentRoot(this IHostBuilder hostBuilder, string contentRoot)
         {
             return hostBuilder.ConfigureHostConfiguration(configBuilder =>
@@ -59,7 +59,7 @@ namespace Nt.Core.Hosting
         /// </summary>
         /// <param name="hostBuilder">The <see cref="IHostBuilder"/> to configure.</param>
         /// <param name="configure"></param>
-        /// <returns>The <see cref="IHostBuilder"/>.</returns>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         public static IHostBuilder UseDefaultServiceProvider(this IHostBuilder hostBuilder, Action<ServiceProviderOptions> configure)
             => hostBuilder.UseDefaultServiceProvider((context, options) => configure(options));
 

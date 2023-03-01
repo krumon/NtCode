@@ -1,5 +1,6 @@
 ﻿using NinjaTrader.NinjaScript;
 using Nt.Core.Data;
+using Nt.Core.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,18 +10,22 @@ namespace Nt.Scripts.Services
     /// <summary>
     /// Represents any ninjascript data series.
     /// </summary>
-    public class DataSeries
+    public class DataSeries : IDataSeries
     {
         private readonly INinjascript _ninjascript;
-        private Action<NinjaTrader.Data.BarsPeriodType, int> _addDataSeries;
+        private DataSeriesOptions _currentOptions;
+        private readonly IDisposable _optionsReloadToken;
+
+        //private readonly INinjascript _ninjascript;
+        //private Action<NinjaTrader.Data.BarsPeriodType, int> _addDataSeries;
 
         private DataSeriesDescriptor _seriesDescriptor;
         private List<DataSeriesDescriptor> _seriesDescriptors;
 
-        private readonly bool _instanceError;
-        private readonly InstrumentCode _instrumentKey;
+        //private readonly bool _instanceError;
+        //private readonly InstrumentCode _instrumentKey;
 
-        public DataSeriesDescriptor Primary 
+        public DataSeriesDescriptor PrimaryDataSerie 
         { 
             get 
             {
@@ -40,8 +45,7 @@ namespace Nt.Scripts.Services
             {
                 if (_seriesDescriptor == null)
                 {
-                    Debug.Assert(_seriesDescriptors == null);
-                    return 0;
+                    return _seriesDescriptors?.Count ?? 0;
                 }
 
                 return 1 + (_seriesDescriptors?.Count ?? 0);
@@ -57,10 +61,12 @@ namespace Nt.Scripts.Services
                     throw new ArgumentOutOfRangeException(nameof(index));
                 }
 
-                if (index == 0)
+                if (index == 0 && _seriesDescriptor != null)
                 {
                     return _seriesDescriptor;
                 }
+                else if(index == 0 && _seriesDescriptor == null)
+                    return _seriesDescriptors[index];
 
                 return _seriesDescriptors[index - 1];
             }
@@ -129,10 +135,21 @@ namespace Nt.Scripts.Services
         /// <summary>
         /// Create <see cref="InstrumentProvider"/> default instance.
         /// </summary>
-        public DataSeries(IChartBarsProperties chartBarsProperties, string stringKey)
+        public DataSeries(INinjascript ninjascript, IChartBarsProperties chartBarsProperties, IOptionsMonitor<DataSeriesOptions> options, string stringKey="")
         {
+            _ninjascript = ninjascript;
+            _currentOptions = options.CurrentValue;
+            ReloadDataSeriesOptions(_currentOptions);
+            _optionsReloadToken = options.OnChange(ReloadDataSeriesOptions);
+            
             if (chartBarsProperties != null)
-                _ = Add(new DataSeriesDescriptor(chartBarsProperties.InstrumentName, chartBarsProperties.BarsPeriod.PeriodType, chartBarsProperties.BarsPeriod.PeriodValue, chartBarsProperties.TradingHoursName)); ;
+                Add(new DataSeriesDescriptor()
+                {
+                    InstrumentName = chartBarsProperties.InstrumentName, 
+                    PeriodType = chartBarsProperties.BarsPeriod.PeriodType, 
+                    PeriodValue = chartBarsProperties.BarsPeriod.PeriodValue, 
+                    TradingHoursName = chartBarsProperties.TradingHoursName
+                },isPrimaryDataSerie: true); 
 
             //if (string.IsNullOrEmpty(stringKey))
             //    throw new ArgumentException($"the parameter {nameof(stringKey)} cannot be null or empty");
@@ -165,27 +182,29 @@ namespace Nt.Scripts.Services
             throw new InvalidOperationException("Data Series Descriptor Not Exist");
         }
 
-        public DataSeries Add(DataSeriesDescriptor descriptor)
+        public void Add(DataSeriesDescriptor descriptor, bool isPrimaryDataSerie = false)
         {
-            var newCacheItem = default(DataSeries);
-            if (_seriesDescriptor == null)
+            if (isPrimaryDataSerie)
             {
-                Debug.Assert(_seriesDescriptors == null);
-                newCacheItem._seriesDescriptor = descriptor;
+                _seriesDescriptor = descriptor;
             }
             else
             {
-                newCacheItem._seriesDescriptor = _seriesDescriptor;
-                newCacheItem._seriesDescriptors = _seriesDescriptors ?? new List<DataSeriesDescriptor>();
-                newCacheItem._seriesDescriptors.Add(descriptor);
+                if (_seriesDescriptors == null)
+                    _seriesDescriptors = new List<DataSeriesDescriptor>();
+                _seriesDescriptors.Add(descriptor);
             }
-            return newCacheItem;
         }
 
-        //public void AddDataSerie()
-        //{
-        //    foreach (DataSeriesDescriptor descriptor in _seriesDescriptors)
-        //        _ninjascript.Instance.AddDataSeries((NinjaTrader.Data.BarsPeriodType)(int)descriptor.PeriodType, descriptor.PeriodValue);
-        //}
+        public void Dispose()
+        {
+            _optionsReloadToken.Dispose();
+        }
+
+        private void ReloadDataSeriesOptions(DataSeriesOptions options)
+        {
+            _ninjascript.Instance.SetState(State.Configure);
+            _currentOptions = options;
+        }
     }
 }

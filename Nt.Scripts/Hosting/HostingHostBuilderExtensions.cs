@@ -3,6 +3,7 @@ using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
+using Nt.Core.Options;
 using Nt.Scripts.Logging;
 using Nt.Scripts.Services;
 using System.IO;
@@ -11,6 +12,20 @@ namespace Nt.Scripts.Hosting
 {
     public static class HostingHostBuilderExtensions
     {
+
+        /// <summary>
+        /// Specify the data series to be used by the host.
+        /// </summary>
+        /// <param name="hostBuilder">The <see cref="IHostBuilder"/> to configure.</param>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+        public static IHostBuilder UseDataSeries(this IHostBuilder hostBuilder)
+        {
+            return hostBuilder.ConfigureServices((context, services) =>
+            {
+                services.Configure<DataSeriesOptions>(context.Configuration.GetSection(DataSeriesOptions.Key))
+                .AddDataSeries();
+            });
+        }
 
         /// <summary>
         /// Configures an existing <see cref="IHostBuilder"/> instance with pre-configured defaults. This will overwrite
