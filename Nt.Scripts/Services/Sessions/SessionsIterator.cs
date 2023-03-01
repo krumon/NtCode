@@ -1,6 +1,5 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
-using Nt.Core.Events;
 using Nt.Core.Logging;
 using System;
 using System.Collections.Generic;
@@ -116,8 +115,8 @@ namespace Nt.Scripts.Services
             LastBarUpdate();
         }
         public virtual void OnMarketData() => LastBarUpdate();
-        //public virtual void OnSessionUpdate()  { }
-        
+        public virtual void OnSessionChanged() { }
+
         public override string ToString()
         {
             string holidayText;
@@ -142,7 +141,7 @@ namespace Nt.Scripts.Services
         /// <summary>
         /// Event thats is raised when the sessoin changed.
         /// </summary>
-        public event Action<SessionUpdateArgs> SessionChanged = (e) => { };
+        public event SessionChangedEventHandler SessionChanged = (e) => { };
 
         #endregion
 
@@ -162,9 +161,9 @@ namespace Nt.Scripts.Services
                 // Check if it's a partial holiday
                 TryGetPartialHoliday();
                 // Create the session changed arguments
-                var args = new SessionUpdateArgs(CurrentBar, Count, ActualSessionBegin, ActualSessionEnd, _userTimeZoneInfo, IsPartialHoliday, IsLateBegin, IsEarlyEnd);
+                var args = new SessionChangedEventArgs(CurrentBar, Count, ActualSessionBegin, ActualSessionEnd, _userTimeZoneInfo, IsPartialHoliday, IsLateBegin, IsEarlyEnd);
                 // Call the parent
-                //OnSessionUpdate();
+                OnSessionChanged();
                 // Call to listeners
                 SessionChanged?.Invoke(args);
             }

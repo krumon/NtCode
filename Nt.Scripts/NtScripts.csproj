@@ -92,16 +92,18 @@
     <Compile Include="Logging\OutputWindowFormatterOptions.cs" />
     <Compile Include="Services\IDisposable.cs" />
     <Compile Include="Services\IConfigurable.cs" />
+    <Compile Include="Services\IRecalculableOnEachTick.cs" />
     <Compile Include="Services\IRecalculableOnBarUpdate.cs" />
     <Compile Include="Services\IRecalculableOnSessionUpdate.cs" />
-    <Compile Include="Services\NinjaObjects\ChartBarsData.cs" />
-    <Compile Include="Services\NinjaObjects\Design\DesignChartBarsData.cs" />
+    <Compile Include="Services\NinjaObjects\ChartBarsProperties.cs" />
+    <Compile Include="Services\NinjaObjects\Design\DesignChartBarsProperties.cs" />
     <Compile Include="Services\NinjaObjects\Design\DesignGlobalsData.cs" />
     <Compile Include="Services\NinjaObjects\Design\DesignNinjascript.cs" />
     <Compile Include="Services\NinjaObjects\Design\DesignNinjatraderServiceCollectionExtensions.cs" />
     <Compile Include="Services\NinjaObjects\IChartBarsData.cs" />
     <Compile Include="Services\NinjaObjects\NinjatraderServiceCollectionExtensions.cs" />
     <Compile Include="Services\Design\DesignServicesServiceCollectionExtensions.cs" />
+    <Compile Include="Services\Sessions\SessionChangedEvent.cs" />
     <Compile Include="Services\Sessions\SessionsServiceCollectionExtensions.cs" />
     <Compile Include="Services\Series\IDataSeriesScript.cs" />
     <Compile Include="Services\NinjaObjects\INinjascript.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="Services\Sessions\SessionsOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\Sessions\SessionsManager.cs" />
+    <Compile Include="Services\Sessions\SessionChangedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Nt.Core\Nt.Core.csproj">

@@ -94,7 +94,7 @@ namespace ConsoleApp
                     //    builder.AddConsole();
                     //    builder.AddDebug();
                     //});
-                    services.AddSingleton<IChartBarsData, ChartBarsData>()
+                    services.AddSingleton<IChartBarsData, ChartBarsProperties>()
                     //.AddSessions<ISessionsService>((builder) =>
                     //{
                     //    builder.ConfigureFilters((options) =>

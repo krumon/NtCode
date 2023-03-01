@@ -6,7 +6,7 @@ using BarsPeriod = Nt.Core.Data.BarsPeriod;
 
 namespace Nt.Scripts.Services
 {
-    public class ChartBarsData : IChartBarsData
+    public class ChartBarsProperties : IChartBarsData
     {
         private readonly ChartBars _chartBars;
 
@@ -16,14 +16,14 @@ namespace Nt.Scripts.Services
         public bool IsConfigured { get; protected set; }
         public bool IsDataLoaded { get; protected set; }
 
-        public ChartBarsData(ChartBars chartBars)
+        public ChartBarsProperties(ChartBars chartBars)
         {
             _chartBars = chartBars ?? throw new ArgumentNullException(nameof(chartBars));
             Configure();
         }
 
         // TODO: Delete this constructor. Is only necesary for testing in console.
-        internal ChartBarsData()
+        internal ChartBarsProperties()
         {
             Configure();
         }

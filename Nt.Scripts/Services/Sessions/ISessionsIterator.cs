@@ -10,6 +10,11 @@ namespace Nt.Scripts.Services
     {
 
         /// <summary>
+        /// Notify session changed.
+        /// </summary>
+        event SessionChangedEventHandler SessionChanged;
+
+        /// <summary>
         /// Represents the actual session start time converted to the user's configured Time Zone.
         /// </summary>
         DateTime ActualSessionBegin { get; set; }

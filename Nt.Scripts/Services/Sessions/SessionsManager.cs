@@ -48,6 +48,7 @@ namespace Nt.Scripts.Services
         public void Configure() 
         {
             _sessionsIterator.Configure();
+            
 
             if (_sessionsIterator.IsConfigured)
                 IsConfigured = true;

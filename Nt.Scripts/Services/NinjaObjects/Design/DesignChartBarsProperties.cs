@@ -2,9 +2,9 @@
 
 namespace Nt.Scripts.Services.Design
 {
-    public class DesignChartBarsData : ChartBarsData
+    public class DesignChartBarsProperties : ChartBarsProperties
     {
-        public DesignChartBarsData() : base()
+        public DesignChartBarsProperties() : base()
         {
         }
 
