@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Nt.Scripts.Services
 {
@@ -12,6 +13,6 @@ namespace Nt.Scripts.Services
         /// <summary>
         /// The <see cref="DataSeriesDescriptor"/> collection
         /// </summary>
-        public Dictionary<string, DataSeriesDescriptor> DataSeriesDescriptors { get; set; } = new Dictionary<string, DataSeriesDescriptor>();
+        public Dictionary<string, DataSeriesDescriptor> DataSeriesDescriptors { get; set; } = new Dictionary<string, DataSeriesDescriptor>(StringComparer.OrdinalIgnoreCase);
     }
 }

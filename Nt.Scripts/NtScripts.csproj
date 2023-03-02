@@ -111,7 +111,7 @@
     <Compile Include="Services\DataSeries\DataSeries.cs" />
     <Compile Include="Services\DataSeries\IDataSeriesBuilder.cs" />
     <Compile Include="Services\DataSeries\IDataSeriesCollection.cs" />
-    <Compile Include="Services\DataSeries\SessionsServiceCollectionExtensions.cs" />
+    <Compile Include="Services\DataSeries\DataSeriesServiceCollectionExtensions.cs" />
     <Compile Include="Services\Sessions\SessionChangedEvent.cs" />
     <Compile Include="Services\Sessions\SessionsServiceCollectionExtensions.cs" />
     <Compile Include="Services\DataSeries\IDataSeries.cs" />

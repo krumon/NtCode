@@ -61,8 +61,9 @@ namespace Nt.Scripts.Hosting
                 IHostEnvironment env = hostingContext.Environment;
                 bool reloadOnChange = GetReloadConfigOnChangeValue(hostingContext);
 
-                config.AddJsonFile("ntsettings.json", optional: true, reloadOnChange: reloadOnChange)
-                        .AddJsonFile($"ntsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: reloadOnChange);
+                config
+                    .AddJsonFile("ntsettings.json", optional: true, reloadOnChange: reloadOnChange)
+                    .AddJsonFile($"ntsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: reloadOnChange);
             })
             .ConfigureLogging((hostingContext, logging) =>
             {
@@ -91,8 +92,9 @@ namespace Nt.Scripts.Hosting
             {
                 services
                     .AddNinjatraderObjects(ninjatraderObjects)
-                    .AddSessions();
-            });
+                    .AddSessionsManager();
+            })
+            .UseDataSeries();
 
             return builder;
 

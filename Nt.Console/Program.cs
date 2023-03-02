@@ -43,6 +43,7 @@ namespace ConsoleApp
             _logger.LogInformation(DesignNinjaHost.Sessions.IsNewSession.ToString());
             IConfigurationRoot config = (IConfigurationRoot)(DesignNinjaHost.Host?.Services.GetService<HostBuilderContext>().Configuration);
             IConfiguration configure = DesignNinjaHost.Host?.Services.GetService<IConfiguration>();
+            IDataSeries dataSeries = DesignNinjaHost.Host?.Services.GetService<IDataSeries>();
         }
 
         private static void UseDesignNinjascriptHostingServices()

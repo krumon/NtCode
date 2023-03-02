@@ -1,5 +1,6 @@
 ﻿using NinjaTrader.NinjaScript;
 using Nt.Core.Data;
+using Nt.Core.Logging;
 using Nt.Core.Options;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,13 @@ namespace Nt.Scripts.Services
     public class DataSeries : IDataSeries
     {
         private readonly INinjascript _ninjascript;
-        private DataSeriesOptions _currentOptions;
-        private readonly IDisposable _optionsReloadToken;
+        private readonly IChartBarsProperties _chartBarsProperties;
+        private readonly IOptionsMonitor<DataSeriesOptions> _optionsMonitor;
+        private readonly ILogger _logger;
 
-        //private readonly INinjascript _ninjascript;
+        private DataSeriesOptions _currentOptions => GetCurrentOptions();
+        private IDisposable _optionsReloadToken;
+
         //private Action<NinjaTrader.Data.BarsPeriodType, int> _addDataSeries;
 
         private DataSeriesDescriptor _seriesDescriptor;
@@ -25,7 +29,7 @@ namespace Nt.Scripts.Services
         //private readonly bool _instanceError;
         //private readonly InstrumentCode _instrumentKey;
 
-        public DataSeriesDescriptor PrimaryDataSerie 
+        public DataSeriesDescriptor Primary 
         { 
             get 
             {
@@ -130,26 +134,17 @@ namespace Nt.Scripts.Services
         ///// </summary>
         //public double TickSize => _instrumentKey.ToTickSize();
 
-        #region Constructors
-
         /// <summary>
         /// Create <see cref="InstrumentProvider"/> default instance.
         /// </summary>
-        public DataSeries(INinjascript ninjascript, IChartBarsProperties chartBarsProperties, IOptionsMonitor<DataSeriesOptions> options, string stringKey="")
+        public DataSeries(INinjascript ninjascript, IChartBarsProperties chartBarsProperties, IOptionsMonitor<DataSeriesOptions> options, ILogger<DataSeries> logger, string stringKey="")
         {
-            _ninjascript = ninjascript;
-            _currentOptions = options.CurrentValue;
-            ReloadDataSeriesOptions(_currentOptions);
-            _optionsReloadToken = options.OnChange(ReloadDataSeriesOptions);
-            
-            if (chartBarsProperties != null)
-                Add(new DataSeriesDescriptor()
-                {
-                    InstrumentName = chartBarsProperties.InstrumentName, 
-                    PeriodType = chartBarsProperties.BarsPeriod.PeriodType, 
-                    PeriodValue = chartBarsProperties.BarsPeriod.PeriodValue, 
-                    TradingHoursName = chartBarsProperties.TradingHoursName
-                },isPrimaryDataSerie: true); 
+            _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _optionsMonitor = options ?? throw new ArgumentNullException(nameof(options));
+            _chartBarsProperties = chartBarsProperties;
+
+            Configure();
 
             //if (string.IsNullOrEmpty(stringKey))
             //    throw new ArgumentException($"the parameter {nameof(stringKey)} cannot be null or empty");
@@ -161,7 +156,30 @@ namespace Nt.Scripts.Services
             //}
         }
 
-        #endregion
+        public void Configure()
+        {
+            if (_ninjascript.State == State.Configure)
+            {
+                if (_chartBarsProperties != null)
+                    Add(new DataSeriesDescriptor()
+                    {
+                        InstrumentName = _chartBarsProperties.InstrumentName,
+                        PeriodType = _chartBarsProperties.BarsPeriod.PeriodType,
+                        PeriodValue = _chartBarsProperties.BarsPeriod.PeriodValue,
+                        TradingHoursName = _chartBarsProperties.TradingHoursName
+                    }, isPrimaryDataSerie: true);
+
+                ReloadDataSeriesOptions(_currentOptions);
+                _optionsReloadToken = _optionsMonitor?.OnChange(ReloadDataSeriesOptions);
+            }
+            else if (_ninjascript.State == State.Terminated)
+                Dispose();
+        }
+
+        public void Dispose()
+        {
+            _optionsReloadToken?.Dispose();
+        }
 
         public int GetSlot(DataSeriesDescriptor descriptor)
         {
@@ -195,16 +213,21 @@ namespace Nt.Scripts.Services
                 _seriesDescriptors.Add(descriptor);
             }
         }
-
-        public void Dispose()
+        protected virtual void ReloadDataSeriesOptions(DataSeriesOptions options)
         {
-            _optionsReloadToken.Dispose();
+            if (ValidateOptions(options))
+            {
+                //_ninjascript.Instance.SetState(State.Configure);
+                return;
+            }
         }
 
-        private void ReloadDataSeriesOptions(DataSeriesOptions options)
+        private bool ValidateOptions(DataSeriesOptions options)
         {
-            _ninjascript.Instance.SetState(State.Configure);
-            _currentOptions = options;
+            return true;
         }
+
+        private DataSeriesOptions GetCurrentOptions() => _optionsMonitor.CurrentValue;
+
     }
 }

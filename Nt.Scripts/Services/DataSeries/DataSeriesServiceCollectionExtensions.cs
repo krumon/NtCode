@@ -1,6 +1,4 @@
 ﻿using Nt.Core.DependencyInjection;
-using Nt.Core.Options;
-using Nt.Core.Configuration;
 using System;
 
 namespace Nt.Scripts.Services
