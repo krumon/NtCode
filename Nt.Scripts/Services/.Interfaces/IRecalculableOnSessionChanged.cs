@@ -9,7 +9,7 @@
         /// Method that recalculates the service when the session changed.        
         /// </summary>
         /// <param name="args">Argiments of the session changed event.</param>
-        void OnSessionChanged(SessionChangedEventArgs args);
+        void OnSessionChanged(SessionsChangedEventArgs args);
         
     }
 }

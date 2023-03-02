@@ -88,7 +88,7 @@ namespace ConsoleApp
             })
             .Configure((op) =>
             {
-                op.Name = "My SessionsManager Manager";
+                op.Name = "My SessionsIndicator Manager";
             })
             .Build();
 

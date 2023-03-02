@@ -1,6 +1,7 @@
 ﻿using NinjaTrader.Data;
 using NinjaTrader.NinjaScript;
 using Nt.Core.Logging;
+using Nt.Scripts.Indicators;
 using System;
 using System.Collections.Generic;
 
@@ -16,7 +17,7 @@ namespace Nt.Scripts.Services
 
         #region Private members
 
-        private readonly ISessionsManager _sessionsManager;
+        private readonly ISessionsIndicator _sessionsManager;
         private readonly INinjascript _ninjascript;
         private readonly IGlobalsData _globalsData;
         private readonly ILogger _logger;
@@ -58,7 +59,7 @@ namespace Nt.Scripts.Services
         /// Creates <see cref="SessionsIteratorService"/> default instance.
         /// </summary>
         /// <param name="globalsData">The global data necesary to create the service.</param>
-        public SessionsIterator(ISessionsManager sessionsManager, INinjascript ninjascript, IGlobalsData globalsData, ILogger logger)
+        public SessionsIterator(ISessionsIndicator sessionsManager, INinjascript ninjascript, IGlobalsData globalsData, ILogger logger)
         {
             _sessionsManager = sessionsManager ?? throw new ArgumentNullException(nameof(sessionsManager));
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
@@ -119,7 +120,7 @@ namespace Nt.Scripts.Services
             LastBarUpdate();
         }
         public virtual void OnMarketData() => OnBarUpdate();
-        public virtual void OnSessionChanged(SessionChangedEventArgs args) { }
+        public virtual void OnSessionChanged(SessionsChangedEventArgs args) { }
         public string Print()
         {
             string holidayText;
@@ -169,7 +170,7 @@ namespace Nt.Scripts.Services
                 // Check if it's a partial holiday
                 TryGetPartialHoliday();
                 // Create the session changed arguments
-                var args = new SessionChangedEventArgs(CurrentBar, Count, ActualSessionBegin, ActualSessionEnd, _userTimeZoneInfo, IsPartialHoliday, IsLateBegin, IsEarlyEnd);
+                var args = new SessionsChangedEventArgs(CurrentBar, Count, ActualSessionBegin, ActualSessionEnd, _userTimeZoneInfo, IsPartialHoliday, IsLateBegin, IsEarlyEnd);
                 // Call the parent
                 OnSessionChanged(args);
                 // Call to session manager

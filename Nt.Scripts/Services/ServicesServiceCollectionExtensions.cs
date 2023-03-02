@@ -1,11 +1,12 @@
 ﻿using NinjaTrader.Gui.Chart;
 using NinjaTrader.NinjaScript;
 using Nt.Core.DependencyInjection;
+using Nt.Scripts.Indicators;
 using System;
 
 namespace Nt.Scripts.Services
 {
-    public static class ServiceCollectionExtensions
+    public static class ServicesServiceCollectionExtensions
     {
         /// <summary>
         /// Adds ninjatrader objects passed by the builder.
@@ -61,7 +62,7 @@ namespace Nt.Scripts.Services
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
 
-            services.AddSingleton<ISessionsManager, SessionsManager>();
+            services.AddSingleton<ISessionsIndicator, SessionsIndicator>();
 
             return services;
         }

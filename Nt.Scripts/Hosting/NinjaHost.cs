@@ -1,7 +1,7 @@
 ﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
-using Nt.Scripts.Services;
+using Nt.Scripts.Indicators;
 using System;
 
 namespace Nt.Scripts.Hosting
@@ -17,9 +17,9 @@ namespace Nt.Scripts.Hosting
         public static IHost Host => _host;
 
         /// <summary>
-        /// Gets <see cref="ISessionsManager"/> service.
+        /// Gets <see cref="ISessionsIndicator"/> service.
         /// </summary>
-        public static ISessionsManager SessionsManager => _host?.Services.GetService<ISessionsManager>();
+        public static ISessionsIndicator SessionsManager => _host?.Services.GetService<ISessionsIndicator>();
 
         ///// <summary>
         ///// Gets <see cref="ISessionsIterator"/> service.

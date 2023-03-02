@@ -1,4 +1,5 @@
 ﻿using Nt.Core.DependencyInjection;
+using Nt.Scripts.Indicators;
 using System;
 
 namespace Nt.Scripts.Services.Design
@@ -52,7 +53,7 @@ namespace Nt.Scripts.Services.Design
 
             //services.AddSessionsIterator();
             //services.AddSessionsFilters();
-            services.AddSingleton<ISessionsManager, SessionsManager>();
+            services.AddSingleton<ISessionsIndicator, SessionsIndicator>();
 
             return services;
         }

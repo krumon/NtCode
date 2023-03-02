@@ -1,11 +1,12 @@
 ﻿using Nt.Core.Hosting;
+using Nt.Scripts.Services;
 
-namespace Nt.Scripts.Services
+namespace Nt.Scripts.Indicators
 {
     /// <summary>
-    /// Represents a <see cref="ISessionsManager"/> service.
+    /// Represents a <see cref="ISessionsIndicator"/> service.
     /// </summary>
-    public interface ISessionsManager : IConfigurable, IRecalculableOnBarUpdate, IRecalculableOnSessionChanged
+    public interface ISessionsIndicator : IConfigurable, IRecalculableOnBarUpdate, IRecalculableOnSessionChanged
     {
         ISessionsIterator SessionsIterator { get; }
         //ISessionsFilters Filters { get; }

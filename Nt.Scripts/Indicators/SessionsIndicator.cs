@@ -1,14 +1,15 @@
 ﻿using NinjaTrader.NinjaScript;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
+using Nt.Scripts.Services;
 using System;
 
-namespace Nt.Scripts.Services
+namespace Nt.Scripts.Indicators
 {
     /// <summary>
-    /// Represents a <see cref="ISessionsManager"/> service.
+    /// Represents a <see cref="ISessionsIndicator"/> service.
     /// </summary>
-    public class SessionsManager : ISessionsManager
+    public class SessionsIndicator : ISessionsIndicator
     {
         private readonly INinjascript _ninjascript;
         private readonly IGlobalsData _globalsData;
@@ -34,7 +35,7 @@ namespace Nt.Scripts.Services
         //    }
         //}
 
-        public SessionsManager(INinjascript ninjascript, IGlobalsData globalsData, ILogger<SessionsManager> logger)
+        public SessionsIndicator(INinjascript ninjascript, IGlobalsData globalsData, ILogger<SessionsIndicator> logger)
         {
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
             _globalsData = globalsData ?? throw new ArgumentNullException(nameof(globalsData));
@@ -42,7 +43,7 @@ namespace Nt.Scripts.Services
             _sessionsIterator = new SessionsIterator(this, _ninjascript, _globalsData, _logger);
         }
 
-        internal SessionsManager()
+        internal SessionsIndicator()
         {
         }
 
@@ -73,7 +74,7 @@ namespace Nt.Scripts.Services
                 IsNewSession = false;
         }
 
-        public virtual void OnSessionChanged(SessionChangedEventArgs args)
+        public virtual void OnSessionChanged(SessionsChangedEventArgs args)
         {
             _logger.LogInformation(_sessionsIterator.ToString());
         }
