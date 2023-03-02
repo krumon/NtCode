@@ -36,38 +36,5 @@ namespace Nt.Scripts.Services
         {
             return $"DataSerie[{InstrumentName}] : {PeriodValue}({PeriodType}) - {TradingHoursName}.";
         }
-        //#region Constructors
-
-        ///// <summary>
-        ///// Create <see cref="DataSeriesDescriptor"/> default instance.
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="periodType"></param>
-        ///// <param name="periodValue"></param>
-        ///// <param name="tradingHoursKey"></param>
-        //public DataSeriesDescriptor(InstrumentCode key, PeriodType periodType, int periodValue, TradingHoursCode tradingHoursKey)
-        //{
-        //    InstrumentKey = key;
-        //    PeriodType = periodType;
-        //    PeriodValue = periodValue;
-        //    TradingHoursKey = tradingHoursKey;
-        //}
-
-        ///// <summary>
-        ///// Create <see cref="DataSeriesDescriptor"/> default instance.
-        ///// </summary>
-        ///// <param name="key"></param>
-        ///// <param name="periodType"></param>
-        ///// <param name="periodValue"></param>
-        ///// <param name="tradingHoursKey"></param>
-        //public DataSeriesDescriptor(string instrumentName, PeriodType periodType, int periodValue, string tradingHoursName)
-        //{
-        //    InstrumentName = instrumentName;
-        //    PeriodType = periodType;
-        //    PeriodValue = periodValue;
-        //    TradingHoursName = tradingHoursName;
-        //}
-
-        //#endregion
     }
 }
