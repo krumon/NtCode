@@ -1,6 +1,7 @@
 ﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Logging;
 using Nt.Core.Options;
+using Nt.Scripts.Indicators.Internal;
 using System;
 
 namespace Nt.Scripts.Indicators
@@ -32,12 +33,12 @@ namespace Nt.Scripts.Indicators
                 throw new ArgumentNullException(nameof(services));
 
             services.TryAdd(ServiceDescriptor.Singleton<IIndicatorFactory, IndicatorFactory>());
-            //services.TryAdd(ServiceDescriptor.Singleton(typeof(IIndicator<>), typeof(Indicator<>)));
+            services.TryAdd(ServiceDescriptor.Singleton(typeof(IIndicator<>), typeof(Indicator<>)));
 
-            //services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<IndicatorFilterOptions>>(
-            //    new DefaultLoggerLevelConfigureOptions(LogLevel.Information)));
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<IndicatorFilterOptions>>(
+                new DefaultIndicatorFilterConfigureOptions(LogLevel.Information)));
 
-            //configure(new IndicatorBuilder(services));
+            configure(new IndicatorBuilder(services));
 
             return services;
         }

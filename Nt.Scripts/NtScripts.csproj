@@ -77,10 +77,13 @@
     <Compile Include="Indicators\IIndicatorBuilder.cs" />
     <Compile Include="Indicators\IIndicatorProvider.cs" />
     <Compile Include="Indicators\IndicatorFactory.cs" />
+    <Compile Include="Indicators\Internal\DefaultIndicatorFilterConfigureOptions.cs" />
     <Compile Include="Indicators\Internal\Indicator.cs" />
+    <Compile Include="Indicators\Internal\IndicatorBuilder.cs" />
     <Compile Include="Indicators\Internal\StaticIndicatorFilterOptionsMonitor.cs" />
-    <Compile Include="Indicators\LoggerFilterOptions.cs" />
-    <Compile Include="Indicators\LoggerFilterRule.cs" />
+    <Compile Include="Indicators\Indicator.cs" />
+    <Compile Include="Indicators\IndicatorFilterOptions.cs" />
+    <Compile Include="Indicators\IndicatorFilterRule.cs" />
     <Compile Include="Indicators\IndicatorServiceCollectionExtensions.cs" />
     <Compile Include="Indicators\_revisar\Base\MyBaseIndicator.cs" />
     <Compile Include="Indicators\_revisar\Templates\IndicatorTemplate.cs" />
@@ -145,6 +148,10 @@
     <Compile Include="Services\Sessions\SessionsChangedEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Kr.Core\Kr.Core.csproj">
+      <Project>{7B0DA799-B199-47D4-BAEE-83F4A1FE636A}</Project>
+      <Name>Kr.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Nt.Core\Nt.Core.csproj">
       <Project>{3a644626-5b81-4ee5-9d67-6b77d5ba4940}</Project>
       <Name>Nt.Core</Name>
