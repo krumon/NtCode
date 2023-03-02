@@ -8,8 +8,9 @@
         /// <summary>
         /// Checks if the indicator is enabled.
         /// </summary>
+        /// <param name="state">The state of the indicator. Enable when wants that apparece in the ninjatrader plattform, otherwise, disable the indicator.</param>
         /// <returns>true if enabled.</returns>
-        bool IsEnabled();
+        bool IsEnabled(IndicatorState state);
 
     }
 

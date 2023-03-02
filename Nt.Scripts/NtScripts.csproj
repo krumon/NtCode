@@ -77,9 +77,12 @@
     <Compile Include="Indicators\IIndicatorBuilder.cs" />
     <Compile Include="Indicators\IIndicatorProvider.cs" />
     <Compile Include="Indicators\IndicatorFactory.cs" />
+    <Compile Include="Indicators\IndicatorState.cs" />
     <Compile Include="Indicators\Internal\DefaultIndicatorFilterConfigureOptions.cs" />
     <Compile Include="Indicators\Internal\Indicator.cs" />
     <Compile Include="Indicators\Internal\IndicatorBuilder.cs" />
+    <Compile Include="Indicators\Internal\IndicatorInfo.cs" />
+    <Compile Include="Indicators\Internal\IndicatorConfig.cs" />
     <Compile Include="Indicators\Internal\StaticIndicatorFilterOptionsMonitor.cs" />
     <Compile Include="Indicators\Indicator.cs" />
     <Compile Include="Indicators\IndicatorFilterOptions.cs" />

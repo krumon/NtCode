@@ -8,7 +8,7 @@ namespace Nt.Scripts.Services
         /// <summary>
         /// The key to the json configure file.
         /// </summary>
-        public const string Key = "Indicators:DataSeries";
+        public const string Key = "IndicatorsInfo:DataSeries";
 
         /// <summary>
         /// The <see cref="DataSeriesDescriptor"/> collection

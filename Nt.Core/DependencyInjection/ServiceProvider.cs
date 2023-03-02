@@ -115,20 +115,6 @@ namespace Nt.Core.DependencyInjection
             return result;
         }
 
-        ///// <summary>
-        ///// Gets all service objects of the specified type.
-        ///// </summary>
-        ///// <returns>The service collection that was produced.</returns>
-        //public IEnumerable<T> GetServices<T>()
-        //{
-        //    if (_disposed)
-        //        throw new ObjectDisposedException(nameof(ServiceProvider));
-
-        //    IList<T> result = (IList<T>)CreateServices<T>(typeof(T));
-
-        //    return result;
-        //}
-
         internal void ReplaceServiceAccessor(ServiceCallSite callSite, Func<ServiceProviderEngineScope, object> accessor)
         {
             _realizedScopeServices[callSite.ServiceType] = accessor;
@@ -188,19 +174,6 @@ namespace Nt.Core.DependencyInjection
             }
             return _ => null;
         }
-        //private IEnumerable<T> CreateServices<T>(Type serviceType)
-        //{
-        //    if (!(typeof(T) == serviceType))
-        //        throw new InvalidOperationException();
-
-        //    Type[] serviceTypeGenericArguments = serviceType.GetGenericArguments();
-
-        //    IList<T> list = new List<T>();
-        //    foreach (KeyValuePair<Type,object> service in _realizedScopeServices)
-        //        if (serviceType.IsAssignableFrom(service.Value?.GetType()))
-        //            list.Add((T)service.Value);
-        //    return list.Count > 0 ? list : null;
-        //}
         private void OnCreate(ServiceCallSite callSite)
         {
             _callSiteValidator?.ValidateCallSite(callSite);

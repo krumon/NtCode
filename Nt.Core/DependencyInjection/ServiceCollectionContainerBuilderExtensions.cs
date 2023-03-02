@@ -29,7 +29,7 @@ namespace Nt.Core.DependencyInjection
         /// <returns>The <see cref="ServiceProvider"/>.</returns>
         public static ServiceProvider BuildServiceProvider(this IServiceCollection services, bool validateScopes)
         {
-            return null;  //services.BuildServiceProvider(new ServiceProviderOptions { ValidateScopes = validateScopes });
+            return services.BuildServiceProvider(new ServiceProviderOptions { ValidateScopes = validateScopes });
         }
 
         /// <summary>

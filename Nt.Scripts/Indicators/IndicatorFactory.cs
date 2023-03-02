@@ -83,9 +83,9 @@ namespace Nt.Scripts.Indicators
             lock (_sync)
             {
                 _filterOptions = filterOptions;
-                foreach (KeyValuePair<string, Indicator> registeredLogger in _indicators)
+                foreach (KeyValuePair<string, Indicator> regiteredIndicator in _indicators)
                 {
-                    Indicator indicator = registeredLogger.Value;
+                    Indicator indicator = regiteredIndicator.Value;
                     //indicator.MessageLoggers = ApplyFilters(logger.Loggers);
                 }
             }
@@ -97,9 +97,9 @@ namespace Nt.Scripts.Indicators
             lock (_sync)
             {
                 filterOptions.Configure(_filterOptions);
-                foreach (KeyValuePair<string, Indicator> registeredLogger in _indicators)
+                foreach (KeyValuePair<string, Indicator> registeredIndicator in _indicators)
                 {
-                    Indicator logger = registeredLogger.Value;
+                    Indicator indicator = registeredIndicator.Value;
                     //logger.MessageLoggers = ApplyFilters(logger.Loggers);
                 }
             }
@@ -109,8 +109,8 @@ namespace Nt.Scripts.Indicators
         /// Creates an <see cref="IIndicator"/> with the given <paramref name="indicatorName"/>.
         /// </summary>
         /// <param name="indicatorName">The indicator name.</param>
-        /// <returns>The <see cref="ILogger"/> that was created.</returns>
-        public IIndicator CreateLogger(string indicatorName)
+        /// <returns>The <see cref="IIndicator"/> that was created.</returns>
+        public IIndicator CreateIndicator(string indicatorName)
         {
             if (CheckDisposed())
             {
@@ -119,19 +119,19 @@ namespace Nt.Scripts.Indicators
 
             lock (_sync)
             {
-                if (!_indicators.TryGetValue(indicatorName, out Indicator logger))
+                if (!_indicators.TryGetValue(indicatorName, out Indicator indicator))
                 {
-                    logger = new Indicator
+                    indicator = new Indicator
                     {
-                        //Loggers = CreateLoggers(categoryName),
+                        IndicatorsInfo = CreateIndicators(indicatorName),
                     };
 
                     //logger.MessageLoggers = ApplyFilters(logger.Loggers);
 
-                    _indicators[indicatorName] = logger;
+                    _indicators[indicatorName] = indicator;
                 }
 
-                return logger;
+                return indicator;
             }
         }
 
@@ -151,16 +151,16 @@ namespace Nt.Scripts.Indicators
             {
                 AddProviderRegistration(provider, dispose: true);
 
-                foreach (KeyValuePair<string, Indicator> existingLogger in _indicators)
+                foreach (KeyValuePair<string, Indicator> existingIndicator in _indicators)
                 {
-                    Indicator logger = existingLogger.Value;
-                    //LoggerInformation[] loggerInformation = logger.Loggers;
+                    Indicator indicator = existingIndicator.Value;
+                    IndicatorInfo[] indicatorInformation = indicator.IndicatorsInfo;
 
-                    //int newLoggerIndex = loggerInformation.Length;
-                    //Array.Resize(ref loggerInformation, loggerInformation.Length + 1);
-                    //loggerInformation[newLoggerIndex] = new LoggerInformation(provider, existingLogger.Key);
+                    int newIndicatorIndex = indicatorInformation.Length;
+                    Array.Resize(ref indicatorInformation, indicatorInformation.Length + 1);
+                    indicatorInformation[newIndicatorIndex] = new IndicatorInfo(provider, existingIndicator.Key);
 
-                    //logger.Loggers = loggerInformation;
+                    indicator.IndicatorsInfo = indicatorInformation;
                     //logger.MessageLoggers = ApplyFilters(logger.Loggers);
                 }
             }
@@ -175,15 +175,15 @@ namespace Nt.Scripts.Indicators
             });
         }
 
-        //private LoggerInformation[] CreateLoggers(string categoryName)
-        //{
-        //    var loggers = new LoggerInformation[_providerRegistrations.Count];
-        //    for (int i = 0; i < _providerRegistrations.Count; i++)
-        //    {
-        //        loggers[i] = new LoggerInformation(_providerRegistrations[i].Provider, categoryName);
-        //    }
-        //    return loggers;
-        //}
+        private IndicatorInfo[] CreateIndicators(string indicatorName)
+        {
+            var indicators = new IndicatorInfo[_providerRegistrations.Count];
+            for (int i = 0; i < _providerRegistrations.Count; i++)
+            {
+                indicators[i] = new IndicatorInfo(_providerRegistrations[i].Provider, indicatorName);
+            }
+            return indicators;
+        }
 
         //private MessageLogger[] ApplyFilters(LoggerInformation[] loggers)
         //{
@@ -230,7 +230,7 @@ namespace Nt.Scripts.Indicators
                     {
                         if (registration.ShouldDispose)
                         {
-                            //registration.Provider.Dispose();
+                            registration.Provider.Dispose();
                         }
                     }
                     catch
@@ -263,9 +263,9 @@ namespace Nt.Scripts.Indicators
                 _serviceProvider.Dispose();
             }
 
-            public IIndicator CreateLogger(string categoryName)
+            public IIndicator CreateIndicator(string categoryName)
             {
-                return _indicatorFactory.CreateLogger(categoryName);
+                return _indicatorFactory.CreateIndicator(categoryName);
             }
 
             public void AddProvider(IIndicatorProvider provider)

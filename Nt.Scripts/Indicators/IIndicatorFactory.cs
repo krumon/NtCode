@@ -11,7 +11,7 @@
         /// </summary>
         /// <param name="indicatorName">The name of indicator.</param>
         /// <returns>The <see cref="IIndicator"/>.</returns>
-        IIndicator CreateLogger(string indicatorName);
+        IIndicator CreateIndicator(string indicatorName);
 
         /// <summary>
         /// Adds an <see cref="IIndicatorProvider"/> to the indicator system.

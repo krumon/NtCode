@@ -4,8 +4,8 @@ using System;
 namespace Nt.Scripts.Indicators
 {
     /// <summary>
-    /// Delegates to a new <see cref="ILogger"/> instance using the full name of the given type, created by the
-    /// provided <see cref="ILoggerFactory"/>.
+    /// Delegates to a new <see cref="IIndicator"/> instance using the full name of the given type, created by the
+    /// provided <see cref="IIndicatorFactory"/>.
     /// </summary>
     /// <typeparam name="T">The type.</typeparam>
     public class Indicator<T> : IIndicator<T>
@@ -13,7 +13,7 @@ namespace Nt.Scripts.Indicators
         private readonly IIndicator _indicator;
 
         /// <summary>
-        /// Creates a new <see cref="Logger{T}"/>.
+        /// Creates a new <see cref="Indicator{T}"/>.
         /// </summary>
         /// <param name="factory">The factory.</param>
         public Indicator(IIndicatorFactory factory)
@@ -21,13 +21,13 @@ namespace Nt.Scripts.Indicators
             if (factory == null)
                 throw new ArgumentNullException(nameof(factory));
 
-            _indicator = factory.CreateLogger(TypeNameHelper.GetTypeDisplayName(typeof(T), includeGenericParameters: false, nestedTypeDelimiter: '.'));
+            _indicator = factory.CreateIndicator(TypeNameHelper.GetTypeDisplayName(typeof(T), includeGenericParameters: false, nestedTypeDelimiter: '.'));
         }
 
         /// <inheritdoc />
-        bool IIndicator.IsEnabled()
+        bool IIndicator.IsEnabled(IndicatorState state)
         {
-            return _indicator.IsEnabled();
+            return _indicator.IsEnabled(state);
         }
     }
 }
