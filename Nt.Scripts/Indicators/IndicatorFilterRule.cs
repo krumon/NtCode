@@ -13,7 +13,7 @@ namespace Nt.Scripts.Indicators
         /// <param name="providerName">The provider name to use in this filter rule.</param>
         /// <param name="indicatorName">The indicator name to use in this filter rule.</param>
         /// <param name="filter">The filter to apply.</param>
-        public IndicatorFilterRule(string providerName, string indicatorName, Func<string, string, int, bool> filter)
+        public IndicatorFilterRule(string providerName, string indicatorName, Func<string, string, IndicatorState, bool> filter)
         {
             ProviderName = providerName;
             IndicatorName = indicatorName;
@@ -39,7 +39,7 @@ namespace Nt.Scripts.Indicators
         /// <summary>
         /// Gets the filter delegate that would be applied to indicators that passed the <see cref="int"/> value.
         /// </summary>
-        public Func<string, string, int, bool> Filter { get; }
+        public Func<string, string, IndicatorState, bool> Filter { get; }
 
         ///// <inheritdoc/>
         //public override string ToString()

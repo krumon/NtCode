@@ -49,8 +49,21 @@
       <HintPath>..\References\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,6 +85,12 @@
     <Compile Include="Hosting\Hosting.cs" />
     <Compile Include="Hosting\HostingHostBuilderExtensions.cs" />
     <Compile Include="Hosting\NinjaHost.cs" />
+    <Compile Include="Indicators\Configuration\IIndicatorProviderConfiguration.cs" />
+    <Compile Include="Indicators\Configuration\IIndicatorProviderConfigurationFactory.cs" />
+    <Compile Include="Indicators\Configuration\IndicatorProviderConfiguration.cs" />
+    <Compile Include="Indicators\Configuration\IndicatorProviderConfigurationFactory.cs" />
+    <Compile Include="Indicators\Configuration\IndicatorBuilderConfigurationExtensions.cs" />
+    <Compile Include="Indicators\Configuration\LoggingConfiguration.cs" />
     <Compile Include="Indicators\IIndicator.cs" />
     <Compile Include="Indicators\IIndicatorFactory.cs" />
     <Compile Include="Indicators\IIndicatorBuilder.cs" />
@@ -83,6 +102,8 @@
     <Compile Include="Indicators\Internal\IndicatorBuilder.cs" />
     <Compile Include="Indicators\Internal\IndicatorInfo.cs" />
     <Compile Include="Indicators\Internal\IndicatorConfig.cs" />
+    <Compile Include="Indicators\Internal\IndicatorRuleSelector.cs" />
+    <Compile Include="Indicators\Internal\IndicatorFilterConfigureOptions.cs" />
     <Compile Include="Indicators\Internal\StaticIndicatorFilterOptionsMonitor.cs" />
     <Compile Include="Indicators\Indicator.cs" />
     <Compile Include="Indicators\IndicatorFilterOptions.cs" />
@@ -174,6 +195,7 @@
     <None Include="ntsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

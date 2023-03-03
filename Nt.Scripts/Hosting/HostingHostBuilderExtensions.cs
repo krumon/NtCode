@@ -3,6 +3,7 @@ using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
+using Nt.Scripts.Indicators;
 using Nt.Scripts.Logging;
 using Nt.Scripts.Services;
 using System.IO;
@@ -91,6 +92,10 @@ namespace Nt.Scripts.Hosting
             builder.ConfigureServices((services) =>
             {
                 services
+                    .AddIndicators(_ =>
+                    {
+                        
+                    })
                     .AddNinjatraderObjects(ninjatraderObjects)
                     .AddSessionsManager();
             })

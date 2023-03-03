@@ -36,7 +36,7 @@ namespace Nt.Scripts.Indicators
             services.TryAdd(ServiceDescriptor.Singleton(typeof(IIndicator<>), typeof(Indicator<>)));
 
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<IndicatorFilterOptions>>(
-                new DefaultIndicatorFilterConfigureOptions(LogLevel.Information)));
+                new DefaultIndicatorFilterConfigureOptions(null)));
 
             configure(new IndicatorBuilder(services));
 

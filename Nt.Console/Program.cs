@@ -5,6 +5,7 @@ using Nt.Core.Logging;
 using Nt.Core.Logging.Configuration;
 using Nt.Scripts.Hosting;
 using Nt.Scripts.Hosting.Design;
+using Nt.Scripts.Indicators;
 using Nt.Scripts.Services;
 using System;
 
@@ -44,6 +45,7 @@ namespace ConsoleApp
             IConfigurationRoot config = (IConfigurationRoot)(DesignNinjaHost.Host?.Services.GetService<HostBuilderContext>().Configuration);
             IConfiguration configure = DesignNinjaHost.Host?.Services.GetService<IConfiguration>();
             IDataSeries dataSeries = DesignNinjaHost.Host?.Services.GetService<IDataSeries>();
+            IIndicator<Program> indicator = DesignNinjaHost.Host?.Services.GetService<IIndicator<Program>>();
         }
 
         private static void UseDesignNinjascriptHostingServices()
