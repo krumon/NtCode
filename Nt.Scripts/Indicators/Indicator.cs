@@ -1,4 +1,5 @@
 ﻿using Kr.Core.Helpers;
+using Nt.Scripts.Services;
 using System;
 
 namespace Nt.Scripts.Indicators
@@ -11,6 +12,7 @@ namespace Nt.Scripts.Indicators
     public class Indicator<T> : IIndicator<T>
     {
         private readonly IIndicator _indicator;
+        public bool IsConfigured => _indicator != null && _indicator.IsConfigured;
 
         /// <summary>
         /// Creates a new <see cref="Indicator{T}"/>.
@@ -29,5 +31,31 @@ namespace Nt.Scripts.Indicators
         {
             return _indicator.IsEnabled(state);
         }
+
+        public void Configure()
+        {
+            _indicator?.Configure();
+        }
+
+        public void Dispose()
+        {
+            _indicator?.Dispose();
+        }
+
+        public void OnBarUpdate()
+        {
+            _indicator?.OnBarUpdate();
+        }
+
+        public void OnMarketData()
+        {
+            _indicator?.OnMarketData();
+        }
+
+        public void OnSessionChanged(SessionsChangedEventArgs args)
+        {
+            _indicator?.OnSessionChanged(args);
+        }
+
     }
 }

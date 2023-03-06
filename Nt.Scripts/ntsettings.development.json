@@ -1,20 +1,20 @@
 {
   "Indicators": {
-    "DataSeries": {
-      "DataSeriesDescriptors": {
-        "Key1": {
-          "InstrumentName": "MES",
-          "PeriodType": "minute",
-          "PeriodValue": 1,
-          "TradingHoursName": "Default"
-        },
-        "Key2": {
-          "InstrumentName": "ES",
-          "PeriodType": "minute",
-          "PeriodValue": 5,
-          "TradingHoursName": "Default"
-        }
+    "SessionHours": {
+      "Strategies": [ "StrategyTester", "SessionsStats" ],
+      "GenericSessions": {
+
+      },
+      "DataSeries": [ "MES(m1,default)", "m5", "h1" ]
+    }
+  },
+  "Strategies": {
+    "StrategyTester": {
+      "Indicators": {
+        "SessionsHours": ""
       }
     }
   }
+
+  // SessionHours([],[],[])
 }

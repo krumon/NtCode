@@ -84,39 +84,12 @@ namespace Nt.Scripts.Indicators
             return new DisposingIndicatorFactory(loggerFactory, serviceProvider);
         }
 
-        private void RefreshFilters(IndicatorFilterOptions filterOptions)
-        {
-            lock (_sync)
-            {
-                _filterOptions = filterOptions;
-                foreach (KeyValuePair<string, Indicator> regiteredIndicator in _indicators)
-                {
-                    Indicator indicator = regiteredIndicator.Value;
-                    //indicator.MessageLoggers = ApplyFilters(logger.Loggers);
-                }
-            }
-        }
-
-        private void RefreshFilters(IConfigureOptions<IndicatorFilterOptions> filterOptions)
-        {
-            if (_filterOptions == null) _filterOptions = new IndicatorFilterOptions();
-            lock (_sync)
-            {
-                filterOptions.Configure(_filterOptions);
-                foreach (KeyValuePair<string, Indicator> registeredIndicator in _indicators)
-                {
-                    Indicator indicator = registeredIndicator.Value;
-                    //logger.MessageLoggers = ApplyFilters(logger.Loggers);
-                }
-            }
-        }
-
         /// <summary>
-        /// Creates an <see cref="IIndicator"/> with the given <paramref name="indicatorName"/>.
+        /// Creates an <see cref="IIndicator"/> with the given <paramref name="categoryName"/>.
         /// </summary>
-        /// <param name="indicatorName">The indicator name.</param>
+        /// <param name="categoryName">The category name for indicators produced by the indicator.</param>
         /// <returns>The <see cref="IIndicator"/> that was created.</returns>
-        public IIndicator CreateIndicator(string indicatorName)
+        public IIndicator CreateIndicator(string categoryName)
         {
             if (CheckDisposed())
             {
@@ -125,16 +98,16 @@ namespace Nt.Scripts.Indicators
 
             lock (_sync)
             {
-                if (!_indicators.TryGetValue(indicatorName, out Indicator indicator))
+                if (!_indicators.TryGetValue(categoryName, out Indicator indicator))
                 {
                     indicator = new Indicator
                     {
-                        IndicatorsInfo = CreateIndicators(indicatorName),
+                        IndicatorsInfo = CreateIndicators(categoryName),
                     };
 
                     //logger.MessageLoggers = ApplyFilters(logger.Loggers);
 
-                    _indicators[indicatorName] = indicator;
+                    _indicators[categoryName] = indicator;
                 }
 
                 return indicator;
@@ -167,6 +140,33 @@ namespace Nt.Scripts.Indicators
                     indicatorInformation[newIndicatorIndex] = new IndicatorInfo(provider, existingIndicator.Key);
 
                     indicator.IndicatorsInfo = indicatorInformation;
+                    //logger.MessageLoggers = ApplyFilters(logger.Loggers);
+                }
+            }
+        }
+
+        private void RefreshFilters(IndicatorFilterOptions filterOptions)
+        {
+            lock (_sync)
+            {
+                _filterOptions = filterOptions;
+                foreach (KeyValuePair<string, Indicator> regiteredIndicator in _indicators)
+                {
+                    Indicator indicator = regiteredIndicator.Value;
+                    //indicator.MessageLoggers = ApplyFilters(logger.Loggers);
+                }
+            }
+        }
+
+        private void RefreshFilters(IConfigureOptions<IndicatorFilterOptions> filterOptions)
+        {
+            if (_filterOptions == null) _filterOptions = new IndicatorFilterOptions();
+            lock (_sync)
+            {
+                filterOptions.Configure(_filterOptions);
+                foreach (KeyValuePair<string, Indicator> registeredIndicator in _indicators)
+                {
+                    Indicator indicator = registeredIndicator.Value;
                     //logger.MessageLoggers = ApplyFilters(logger.Loggers);
                 }
             }

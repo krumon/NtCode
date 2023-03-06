@@ -1,9 +1,17 @@
-﻿namespace Nt.Scripts.Indicators
+﻿using Nt.Core.Hosting;
+using Nt.Scripts.Services;
+
+namespace Nt.Scripts.Indicators
 {
     /// <summary>
     /// Represents an indicator to be used in ninjatrader plattform. 
     /// </summary>
-    public interface IIndicator
+    public interface IIndicator : 
+        IConfigurable, 
+        IDisposable, 
+        IRecalculableOnBarUpdate, 
+        IRecalculableOnEachTick, 
+        IRecalculableOnSessionChanged
     {
         /// <summary>
         /// Checks if the indicator is enabled.
@@ -18,8 +26,8 @@
     /// A generic interface for indicators where the indicator name is derived from the specified
     /// TIndicatorName type name.
     /// </summary>
-    /// <typeparam name="TIndicatorName">The type whose name is used for the indicator name.</typeparam>
-    public interface IIndicator<out TIndicatorName> : IIndicator
+    /// <typeparam name="TCategoryName">The type whose name is used for the indicator.</typeparam>
+    public interface IIndicator<out TCategoryName> : IIndicator
     {
     }
 

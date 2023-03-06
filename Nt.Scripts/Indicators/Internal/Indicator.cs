@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nt.Scripts.Services;
+using System;
 using System.Collections.Generic;
 
 namespace Nt.Scripts.Indicators.Internal
@@ -7,6 +8,8 @@ namespace Nt.Scripts.Indicators.Internal
     {
         public IndicatorInfo[] IndicatorsInfo { get; set; }
         public IndicatorConfig[] IndicatorsConfig { get; set; }
+
+        public bool IsConfigured => throw new NotImplementedException();
 
         public bool IsEnabled(IndicatorState state)
         {
@@ -67,5 +70,29 @@ namespace Nt.Scripts.Indicators.Internal
             return false;
         }
 
+        public void Configure()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnBarUpdate()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnMarketData()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void OnSessionChanged(SessionsChangedEventArgs args)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
