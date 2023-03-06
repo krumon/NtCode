@@ -1,4 +1,5 @@
 ﻿using Nt.Core.DependencyInjection;
+using Nt.Core.Logging;
 using Nt.Core.Options;
 using Nt.Scripts.Indicators.Internal;
 using System;
@@ -50,10 +51,15 @@ namespace Nt.Scripts.Indicators
         /// <param name="filterOption">The filter option to use.</param>
         public IndicatorFactory(IEnumerable<IIndicatorProvider> providers, IOptionsMonitor<IndicatorFilterOptions> filterOption)
         {
-
+            // Register the indicators providers
             foreach (IIndicatorProvider provider in providers)
-                AddProviderRegistration(provider, dispose: false);
+            {
+                // Check filters and adds the provider if the indicator is enabled.
+                if(CheckFilters(provider, filterOption.CurrentValue))
+                    AddProviderRegistration(provider, dispose: false);
+            }
 
+            // Register OnChange method and refresh the filters in the registered indicators
             _changeTokenRegistration = filterOption.OnChange(RefreshFilters);
             RefreshFilters(filterOption.CurrentValue);
         }
@@ -208,6 +214,22 @@ namespace Nt.Scripts.Indicators
 
         //    return messageLoggers.ToArray();
         //}
+
+        private bool CheckFilters(IIndicatorProvider provider, IndicatorFilterOptions filterOptions)
+        {
+            Type t = provider.GetType();
+            string fullName = t.FullName;
+            string alias = ProviderAliasAttribute.GetAlias(t);
+            if (alias == null)
+                return false;
+            if (filterOptions == null)
+                return false;
+            foreach (IndicatorFilterRule rule in filterOptions.Rules)
+                if (rule.ProviderName == alias || rule.ProviderName == fullName)
+                    return true;
+
+            return false;
+        }
 
         /// <summary>
         /// Check if the factory has been disposed.
