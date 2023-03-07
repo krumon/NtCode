@@ -1,14 +1,14 @@
-﻿namespace Nt.Core.Ninjascripts
+﻿namespace Nt.Core.Ninjascript
 {
     /// <summary>
-    /// Represents the services that are recalculable when the session changed.
+    /// Represents the services thats are recalculable when the session changed.
     /// </summary>
     public interface IRecalculableOnSessionChanged
     {
         /// <summary>
         /// Method that recalculates the service when the session changed.        
         /// </summary>
-        /// <param name="args">Argiments of the session changed event.</param>
+        /// <param name="args">Argiments of the sessions changed event.</param>
         void OnSessionChanged(SessionsChangedEventArgs args);
         
     }

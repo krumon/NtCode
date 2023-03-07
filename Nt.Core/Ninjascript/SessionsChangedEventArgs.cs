@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nt.Core.Ninjascripts
+namespace Nt.Core.Ninjascript
 {
 
     /// <summary>

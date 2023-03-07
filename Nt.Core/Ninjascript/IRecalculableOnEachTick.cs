@@ -1,4 +1,4 @@
-﻿namespace Nt.Core.Ninjascripts
+﻿namespace Nt.Core.Ninjascript
 {
     /// <summary>
     /// Represents the services that are recalculable on each tick.
@@ -6,7 +6,7 @@
     public interface IRecalculableOnEachTick
     {
         /// <summary>
-        /// Method that recalculates the service on each tick.        
+        /// Method thats recalculate the service on each tick.        
         /// </summary>
         void OnMarketData();
         

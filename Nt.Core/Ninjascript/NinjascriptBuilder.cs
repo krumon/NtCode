@@ -1,6 +1,6 @@
 ﻿using Nt.Core.DependencyInjection;
 
-namespace Nt.Core.Ninjascripts
+namespace Nt.Core.Ninjascript
 {
     internal class NinjascriptBuilder
     {

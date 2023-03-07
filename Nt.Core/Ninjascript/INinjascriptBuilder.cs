@@ -1,6 +1,6 @@
 ﻿using Nt.Core.DependencyInjection;
 
-namespace Nt.Core.Logging
+namespace Nt.Core.Ninjascript
 {
     public interface INinjascriptBuilder
     {

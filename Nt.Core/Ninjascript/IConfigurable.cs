@@ -1,8 +1,8 @@
-﻿namespace Nt.Core.Ninjascripts
+﻿namespace Nt.Core.Ninjascript
 {
 
     /// <summary>
-    /// Represents ninjatrader configure services.
+    /// Represents a configurable ninjascript.
     /// </summary>
     public interface IConfigurable
     {
