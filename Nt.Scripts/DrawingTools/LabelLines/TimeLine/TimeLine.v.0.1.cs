@@ -1,5 +1,5 @@
 ﻿using Nt.Core;
-using Nt.Core.Drawing;
+using Nt.Core.Data;
 
 namespace NinjaTrader.NinjaScript.DrawingTools
 {

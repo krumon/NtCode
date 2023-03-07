@@ -1,4 +1,4 @@
-﻿namespace Nt.Core.Drawing
+﻿namespace Nt.Core.Data
 {
     /// <summary>
     /// Represents the four margin of an object

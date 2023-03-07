@@ -100,7 +100,7 @@ namespace Nt.Scripts.Logging
         /// <typeparam name="TState"></typeparam>
         /// <param name="state"></param>
         /// <returns></returns>
-        public IDisposable BeginScope<TState>(TState state) => null;
+        public System.IDisposable BeginScope<TState>(TState state) => null;
 
         private void Write(string name, string message)
         {

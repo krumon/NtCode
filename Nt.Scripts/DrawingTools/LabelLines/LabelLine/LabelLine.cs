@@ -14,8 +14,8 @@ using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows;
 using System.ComponentModel.DataAnnotations;
-using Nt.Core.Drawing;
 using Nt.Scripts.DrawingTools;
+using Nt.Core.Data;
 
 #endregion
 

@@ -1,19 +1,19 @@
-﻿namespace Nt.Core.Drawing
+﻿namespace Nt.Core.Data
 {
     /// <summary>
     /// Label placement
     /// </summary>
-    public enum HorizontalAlignment
+    public enum VerticalAlignment
     {
         /// <summary>
-        /// A label aligned to the right of the layout slot for the parent element.
+        /// A label aligned to the top of the layout slot for the parent element.
         /// </summary>
-        Right,
+        Top,
 
         /// <summary>
-        /// A label aligned to the left of the layout slot for the parent element.
+        /// A label aligned to the bottom of the layout slot for the parent element.
         /// </summary>
-        Left,
+        Bottom,
 
         /// <summary>
         /// A label aligned to the center of the layout slot for the parent element.

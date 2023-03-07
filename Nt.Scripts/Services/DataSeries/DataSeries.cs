@@ -1,5 +1,4 @@
 ﻿using NinjaTrader.NinjaScript;
-using Nt.Core.Data;
 using Nt.Core.Logging;
 using Nt.Core.Options;
 using System;
@@ -19,7 +18,7 @@ namespace Nt.Scripts.Services
         private readonly ILogger _logger;
 
         private DataSeriesOptions _currentOptions => GetCurrentOptions();
-        private IDisposable _optionsReloadToken;
+        private System.IDisposable _optionsReloadToken;
 
         //private Action<NinjaTrader.Data.BarsPeriodType, int> _addDataSeries;
 

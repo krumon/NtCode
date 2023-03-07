@@ -1,4 +1,4 @@
-﻿namespace Nt.Core.Drawing
+﻿namespace Nt.Core.Data
 {
     /// <summary>
     /// Type of arrows.

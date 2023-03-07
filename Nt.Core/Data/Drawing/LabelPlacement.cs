@@ -1,27 +1,27 @@
-﻿namespace Nt.Core.Drawing
+﻿namespace Nt.Core.Data
 {
     /// <summary>
     /// Label placement
     /// </summary>
-    public enum LabelArrowPlacement
+    public enum LabelPlacement
     {
         /// <summary>
-        /// The label arrow placement on right.
+        /// The label placement on right.
         /// </summary>
         OnRight,
 
         /// <summary>
-        /// The label arrow placement on left.
+        /// The label placement on left.
         /// </summary>
         OnLeft,
 
         /// <summary>
-        /// The label arrow placement on top.
+        /// The label placement on top.
         /// </summary>
         OnTop,
 
         /// <summary>
-        /// The label arrow placement on bottom.
+        /// The label placement on bottom.
         /// </summary>
         OnBottom,
     }

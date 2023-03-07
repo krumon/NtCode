@@ -1,6 +1,6 @@
 ﻿using Nt.Core;
 using NinjaTrader.Gui;
-using Nt.Core.Drawing;
+using Nt.Core.Data;
 
 namespace NinjaTrader.NinjaScript.DrawingTools
 {

@@ -1,4 +1,4 @@
-﻿using Nt.Core.Hosting;
+﻿using Nt.Scripts.Services;
 
 namespace Nt.Scripts.Indicators
 {

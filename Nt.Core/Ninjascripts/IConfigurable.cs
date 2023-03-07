@@ -1,4 +1,4 @@
-﻿namespace Nt.Scripts.Services
+﻿namespace Nt.Core.Ninjascripts
 {
 
     /// <summary>
