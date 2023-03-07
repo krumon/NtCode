@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Nt.Core.Ninjascript
+namespace Nt.Core.Ninjascripts.Indicators
 {
-    internal class Ninjascript : INinjascript
+    internal class Indicators : IIndicators
     {
         public Action<object> Print => throw new NotImplementedException();
 

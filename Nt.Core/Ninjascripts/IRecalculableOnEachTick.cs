@@ -1,4 +1,4 @@
-﻿namespace Nt.Core.Ninjascript
+﻿namespace Nt.Core.Ninjascripts
 {
     /// <summary>
     /// Represents the services that are recalculable on each tick.

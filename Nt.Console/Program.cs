@@ -3,6 +3,7 @@ using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
 using Nt.Core.Logging.Configuration;
+using Nt.Core.Ninjascripts;
 using Nt.Scripts.Hosting;
 using Nt.Scripts.Hosting.Design;
 using Nt.Scripts.Indicators;
@@ -46,6 +47,7 @@ namespace ConsoleApp
             IConfiguration configure = DesignNinjaHost.Host?.Services.GetService<IConfiguration>();
             IDataSeries dataSeries = DesignNinjaHost.Host?.Services.GetService<IDataSeries>();
             IIndicator<Program> indicator = DesignNinjaHost.Host?.Services.GetService<IIndicator<Program>>();
+            INinjascripts<Program> ninjascripts = DesignNinjaHost.Host?.Services.GetService<INinjascripts<Program>>();
         }
 
         private static void UseDesignNinjascriptHostingServices()

@@ -3,13 +3,13 @@ using Nt.Core.Logging.Internal;
 using System;
 using System.Collections.Generic;
 
-namespace Nt.Core.Ninjascript.Configuration
+namespace Nt.Core.Ninjascripts.Configuration
 {
-    internal sealed class NinjascriptProviderConfigurationFactory : INinjascriptProviderConfigurationFactory
+    internal sealed class NinjascriptsProviderConfigurationFactory : INinjascriptsProviderConfigurationFactory
     {
-        private readonly IEnumerable<NinjascriptConfiguration> _configurations;
+        private readonly IEnumerable<NinjascriptsConfiguration> _configurations;
 
-        public NinjascriptProviderConfigurationFactory(IEnumerable<NinjascriptConfiguration> configurations)
+        public NinjascriptsProviderConfigurationFactory(IEnumerable<NinjascriptsConfiguration> configurations)
         {
             _configurations = configurations;
         }
@@ -22,7 +22,7 @@ namespace Nt.Core.Ninjascript.Configuration
             string fullName = providerType.FullName;
             string alias = ProviderAliasUtilities.GetAlias(providerType);
             var configurationBuilder = new ConfigurationBuilder();
-            foreach (NinjascriptConfiguration configuration in _configurations)
+            foreach (NinjascriptsConfiguration configuration in _configurations)
             {
                 IConfigurationSection sectionFromFullName = configuration.Configuration.GetSection(fullName);
                 configurationBuilder.AddConfiguration(sectionFromFullName);

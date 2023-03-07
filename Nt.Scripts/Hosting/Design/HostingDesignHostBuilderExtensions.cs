@@ -3,6 +3,7 @@ using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
+using Nt.Core.Ninjascripts;
 using Nt.Scripts.Indicators;
 using Nt.Scripts.Logging;
 using Nt.Scripts.Services;
@@ -87,8 +88,8 @@ namespace Nt.Scripts.Hosting.Design
                 bool isDevelopment = context.Environment.IsDevelopment();
                 options.ValidateScopes = isDevelopment;
                 options.ValidateOnBuild = isDevelopment;
-            });
-            builder.ConfigureServices((services) =>
+            })
+            .ConfigureServices((services) =>
             {
                 services
                     .AddIndicators(_ =>
@@ -98,7 +99,11 @@ namespace Nt.Scripts.Hosting.Design
                     .AddDesignNinjatraderObjects()
                     .AddSessions();
             })
-            .UseDataSeries();
+            .UseDataSeries()
+            .ConfigureNinjascripts((context, ninjascriptBuilder) =>
+            {
+                ninjascriptBuilder.AddConfiguration(context.Configuration.GetSection("Ninjascripts"));
+            });
 
             return builder;
 

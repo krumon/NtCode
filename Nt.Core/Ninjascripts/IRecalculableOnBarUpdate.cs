@@ -1,4 +1,4 @@
-﻿namespace Nt.Core.Ninjascript
+﻿namespace Nt.Core.Ninjascripts
 {
     /// <summary>
     /// Represents the ninjascript services that are recalculable when the price is updated.

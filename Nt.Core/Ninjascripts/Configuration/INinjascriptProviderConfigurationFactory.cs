@@ -1,12 +1,12 @@
 ﻿using Nt.Core.Configuration;
 using System;
 
-namespace Nt.Core.Ninjascript.Configuration
+namespace Nt.Core.Ninjascripts.Configuration
 {
     /// <summary>
     /// Allows access to configuration section associated with ninjascript provider
     /// </summary>
-    public interface INinjascriptProviderConfigurationFactory
+    public interface INinjascriptsProviderConfigurationFactory
     {
         /// <summary>
         /// Return configuration section associated with ninjascript provider

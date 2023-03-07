@@ -14,7 +14,9 @@
         "SessionsHours": ""
       }
     }
-  }
+  },
+
+  "Ninjascripts":  "empty"
 
   // SessionHours([],[],[])
 }

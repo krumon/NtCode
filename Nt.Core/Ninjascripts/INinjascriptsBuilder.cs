@@ -1,8 +1,8 @@
 ﻿using Nt.Core.DependencyInjection;
 
-namespace Nt.Core.Ninjascript
+namespace Nt.Core.Ninjascripts
 {
-    public interface INinjascriptBuilder
+    public interface INinjascriptsBuilder
     {
         /// <summary>
         /// Gets the <see cref="IServiceCollection"/> where ninjascript services are configured.

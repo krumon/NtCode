@@ -1,11 +1,11 @@
 ﻿using Nt.Core.DependencyInjection;
 
-namespace Nt.Core.Ninjascript
+namespace Nt.Core.Ninjascripts
 {
-    internal class NinjascriptBuilder
+    internal class NinjascriptsBuilder : INinjascriptsBuilder
     {
 
-        public NinjascriptBuilder(IServiceCollection services)
+        public NinjascriptsBuilder(IServiceCollection services)
         {
             Services = services;
         }

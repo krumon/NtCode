@@ -2,15 +2,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace Nt.Core.Ninjascript
+namespace Nt.Core.Ninjascripts
 {
     /// <summary>
     /// Object used to configure the indicators system and create instances of
-    /// <see cref="IIndicator"/> from the registered <see cref="IIndicatorProvider"/>.
+    /// <see cref="IIndicators"/> from the registered <see cref="IIndicatorsProvider"/>.
     /// </summary>
-    public class NinjascriptFactory : INinjascriptFactory
+    public class NinjascriptsFactory : INinjascriptsFactory
     {
-        private readonly Dictionary<string, Ninjascript> _ninjascripts = new Dictionary<string, Ninjascript>(StringComparer.Ordinal);
+        private readonly Dictionary<string, Ninjascripts> _ninjascripts = new Dictionary<string, Ninjascripts>(StringComparer.Ordinal);
         private readonly List<ProviderRegistration> _providerRegistrations = new List<ProviderRegistration>();
         private readonly object _sync = new object();
         private volatile bool _disposed;
@@ -62,10 +62,10 @@ namespace Nt.Core.Ninjascript
         //}
 
         // Provisional
-        public NinjascriptFactory(IEnumerable<INinjascriptProvider> providers)
+        public NinjascriptsFactory(IEnumerable<INinjascriptsProvider> providers)
         {
             // Register the indicators providers
-            foreach (INinjascriptProvider provider in providers)
+            foreach (INinjascriptsProvider provider in providers)
             {
                 //// Check filters and adds the provider if the indicator is enabled.
                 //if(CheckFilters(provider, filterOption.CurrentValue))
@@ -78,11 +78,11 @@ namespace Nt.Core.Ninjascript
         }
 
         /// <summary>
-        /// Creates new instance of <see cref="IIndicatorFactory"/> configured using provided <paramref name="configure"/> delegate.
+        /// Creates new instance of <see cref="IIndicatorsFactory"/> configured using provided <paramref name="configure"/> delegate.
         /// </summary>
-        /// <param name="configure">A delegate to configure the <see cref="IIndicatorBuilder"/>.</param>
+        /// <param name="configure">A delegate to configure the <see cref="IIndicatorsBuilder"/>.</param>
         /// <returns>The <see cref="IIndicatorFactory"/> that was created.</returns>
-        public static INinjascriptFactory Create(Action<INinjascriptBuilder> configure)
+        public static INinjascriptsFactory Create(Action<INinjascriptsBuilder> configure)
         {
             // Create the service collection
             var serviceCollection = new ServiceCollection();
@@ -92,28 +92,28 @@ namespace Nt.Core.Ninjascript
             // Create a service provider with the required and configure services.
             ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
             // Gets the IIndicatorFactory.
-            INinjascriptFactory ninjascriptFactory = serviceProvider.GetService<INinjascriptFactory>();
+            INinjascriptsFactory ninjascriptsFactory = serviceProvider.GetService<INinjascriptsFactory>();
             // Returns the disposing logger factory.
-            return new DisposingNinjascriptFactory(ninjascriptFactory, serviceProvider);
+            return new DisposingNinjascriptFactory(ninjascriptsFactory, serviceProvider);
         }
 
         /// <summary>
-        /// Creates an <see cref="IIndicator"/> with the given <paramref name="categoryName"/>.
+        /// Creates an <see cref="IIndicators"/> with the given <paramref name="categoryName"/>.
         /// </summary>
         /// <param name="categoryName">The category name for indicators produced by the indicator.</param>
-        /// <returns>The <see cref="IIndicator"/> that was created.</returns>
-        public INinjascript CreateNinjascript(string categoryName)
+        /// <returns>The <see cref="IIndicators"/> that was created.</returns>
+        public INinjascripts CreateNinjascript(string categoryName)
         {
             if (CheckDisposed())
             {
-                throw new ObjectDisposedException(nameof(NinjascriptFactory));
+                throw new ObjectDisposedException(nameof(NinjascriptsFactory));
             }
 
             lock (_sync)
             {
-                if (!_ninjascripts.TryGetValue(categoryName, out Ninjascript ninjascript))
+                if (!_ninjascripts.TryGetValue(categoryName, out Ninjascripts ninjascript))
                 {
-                    ninjascript = new Ninjascript
+                    ninjascript = new Ninjascripts
                     {
                         //IndicatorsInfo = CreateIndicators(categoryName),
                     };
@@ -131,10 +131,10 @@ namespace Nt.Core.Ninjascript
         /// Adds the given provider to those used in creating <see cref="IIndicator"/> instances.
         /// </summary>
         /// <param name="provider">The <see cref="IIndicatorProvider"/> to add.</param>
-        public void AddProvider(INinjascriptProvider provider)
+        public void AddProvider(INinjascriptsProvider provider)
         {
             if (CheckDisposed())
-                throw new ObjectDisposedException(nameof(NinjascriptFactory));
+                throw new ObjectDisposedException(nameof(NinjascriptsFactory));
 
             if (provider == null)
                 throw new ArgumentNullException(nameof(provider));
@@ -185,7 +185,7 @@ namespace Nt.Core.Ninjascript
         //    }
         //}
 
-        private void AddProviderRegistration(INinjascriptProvider provider, bool dispose)
+        private void AddProviderRegistration(INinjascriptsProvider provider, bool dispose)
         {
             _providerRegistrations.Add(new ProviderRegistration
             {
@@ -278,18 +278,18 @@ namespace Nt.Core.Ninjascript
 
         private struct ProviderRegistration
         {
-            public INinjascriptProvider Provider;
+            public INinjascriptsProvider Provider;
             public bool ShouldDispose;
         }
-        private sealed class DisposingNinjascriptFactory : INinjascriptFactory
+        private sealed class DisposingNinjascriptFactory : INinjascriptsFactory
         {
-            private readonly INinjascriptFactory _indicatorFactory;
+            private readonly INinjascriptsFactory _indicatorFactory;
 
             private readonly ServiceProvider _serviceProvider;
 
-            public DisposingNinjascriptFactory(INinjascriptFactory ninjascriptFactory, ServiceProvider serviceProvider)
+            public DisposingNinjascriptFactory(INinjascriptsFactory ninjascriptsFactory, ServiceProvider serviceProvider)
             {
-                _indicatorFactory = ninjascriptFactory;
+                _indicatorFactory = ninjascriptsFactory;
                 _serviceProvider = serviceProvider;
             }
 
@@ -298,12 +298,12 @@ namespace Nt.Core.Ninjascript
                 _serviceProvider.Dispose();
             }
 
-            public INinjascript CreateNinjascript(string categoryName)
+            public INinjascripts CreateNinjascript(string categoryName)
             {
                 return _indicatorFactory.CreateNinjascript(categoryName);
             }
 
-            public void AddProvider(INinjascriptProvider provider)
+            public void AddProvider(INinjascriptsProvider provider)
             {
                 _indicatorFactory.AddProvider(provider);
             }

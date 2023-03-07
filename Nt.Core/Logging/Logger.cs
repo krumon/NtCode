@@ -1,4 +1,4 @@
-﻿using Nt.Core.Logging.Internal;
+﻿using Nt.Core.Internal;
 using System;
 
 namespace Nt.Core.Logging

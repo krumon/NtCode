@@ -1,4 +1,4 @@
-﻿namespace Nt.Core.Ninjascript
+﻿namespace Nt.Core.Ninjascripts
 {
 
     /// <summary>
