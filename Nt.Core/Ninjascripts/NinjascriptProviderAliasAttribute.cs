@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Nt.Core.Attributes
+namespace Nt.Core.Ninjascripts
 {
     /// <summary>
     /// Defines alias to be used in configure options.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public class AliasAttribute : Attribute
+    public class NinjascriptProviderAliasAttribute : Attribute
     {
         /// <summary>
-        /// Creates a new <see cref="AliasAttribute"/> instance.
+        /// Creates a new <see cref="NinjascriptProviderAliasAttribute"/> instance.
         /// </summary>
         /// <param name="alias">The alias to set.</param>
-        public AliasAttribute(string alias)
+        public NinjascriptProviderAliasAttribute(string alias)
         {
             Alias = alias;
         }
@@ -31,7 +31,7 @@ namespace Nt.Core.Attributes
         /// <returns>The alias string.</returns>
         public static string GetAlias(Type providerType)
         {
-            string fullName = typeof(AliasAttribute).FullName;
+            string fullName = typeof(NinjascriptProviderAliasAttribute).FullName;
 
             IList<CustomAttributeData> attributes = CustomAttributeData.GetCustomAttributes(providerType);
 

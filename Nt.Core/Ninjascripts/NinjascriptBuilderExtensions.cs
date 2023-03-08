@@ -6,9 +6,9 @@ using System;
 namespace Nt.Core.Ninjascripts
 {
     /// <summary>
-    /// Extension methods for setting up ninjascript services in an <see cref="INinjascriptsBuilder" />.
+    /// Extension methods for setting up ninjascript services in an <see cref="INinjascriptBuilder" />.
     /// </summary>
-    public static class NinjascriptsBuilderExtensions
+    public static class NinjascriptBuilderExtensions
     {
 
         ///// <summary>
@@ -25,35 +25,35 @@ namespace Nt.Core.Ninjascripts
         //}
 
         /// <summary>
-        /// Adds the given <see cref="INinjascriptsProvider"/> to the <see cref="INinjascriptsBuilder"/>
+        /// Adds the given <see cref="INinjascriptProvider"/> to the <see cref="INinjascriptBuilder"/>
         /// </summary>
-        /// <param name="builder">The <see cref="INinjascriptsBuilder"/> to add the <paramref name="provider"/> to.</param>
-        /// <param name="provider">The <see cref="INinjascriptsProvider"/> to add to the <paramref name="builder"/>.</param>
-        /// <returns>The <see cref="INinjascriptsBuilder"/> so that additional calls can be chained.</returns>
-        public static INinjascriptsBuilder AddProvider(this INinjascriptsBuilder builder, INinjascriptsProvider provider)
+        /// <param name="builder">The <see cref="INinjascriptBuilder"/> to add the <paramref name="provider"/> to.</param>
+        /// <param name="provider">The <see cref="INinjascriptProvider"/> to add to the <paramref name="builder"/>.</param>
+        /// <returns>The <see cref="INinjascriptBuilder"/> so that additional calls can be chained.</returns>
+        public static INinjascriptBuilder AddProvider(this INinjascriptBuilder builder, INinjascriptProvider provider)
         {
             builder.Services.AddSingleton(provider);
             return builder;
         }
 
         /// <summary>
-        /// Removes all <see cref="INinjascriptsProvider"/>s from <paramref name="builder"/>.
+        /// Removes all <see cref="INinjascriptProvider"/>s from <paramref name="builder"/>.
         /// </summary>
-        /// <param name="builder">The <see cref="INinjascriptsBuilder"/> to remove <see cref="INinjascriptsProvider"/>s from.</param>
-        /// <returns>The <see cref="INinjascriptsBuilder"/> so that additional calls can be chained.</returns>
-        public static INinjascriptsBuilder ClearProviders(this INinjascriptsBuilder builder)
+        /// <param name="builder">The <see cref="INinjascriptBuilder"/> to remove <see cref="INinjascriptProvider"/>s from.</param>
+        /// <returns>The <see cref="INinjascriptBuilder"/> so that additional calls can be chained.</returns>
+        public static INinjascriptBuilder ClearProviders(this INinjascriptBuilder builder)
         {
-            builder.Services.RemoveAll<INinjascriptsProvider>();
+            builder.Services.RemoveAll<INinjascriptProvider>();
             return builder;
         }
 
         /// <summary>
-        /// Configure the <paramref name="builder"/> with the <see cref="NinjascriptsFactoryOptions"/>.
+        /// Configure the <paramref name="builder"/> with the <see cref="NinjascriptFactoryOptions"/>.
         /// </summary>
-        /// <param name="builder">The <see cref="INinjascriptsBuilder"/> to be configured with <see cref="NinjascriptsFactoryOptions"/></param>
+        /// <param name="builder">The <see cref="INinjascriptBuilder"/> to be configured with <see cref="NinjascriptFactoryOptions"/></param>
         /// <param name="action">The action used to configure the ninjascript factory</param>
-        /// <returns>The <see cref="INinjascriptsBuilder"/> so that additional calls can be chained.</returns>
-        public static INinjascriptsBuilder Configure(this INinjascriptsBuilder builder, Action<NinjascriptsFactoryOptions> action)
+        /// <returns>The <see cref="INinjascriptBuilder"/> so that additional calls can be chained.</returns>
+        public static INinjascriptBuilder Configure(this INinjascriptBuilder builder, Action<NinjascriptFactoryOptions> action)
         {
             builder.Services.Configure(action);
             return builder;
@@ -62,17 +62,17 @@ namespace Nt.Core.Ninjascripts
         /// <summary>
         /// Configures <see cref="NinjascriptFilterOptions" /> from an instance of <see cref="IConfiguration" />.
         /// </summary>
-        /// <param name="builder">The <see cref="INinjascriptsBuilder"/> to use.</param>
+        /// <param name="builder">The <see cref="INinjascriptBuilder"/> to use.</param>
         /// <param name="configuration">The <see cref="IConfiguration" /> to add.</param>
         /// <returns>The builder.</returns>
-        public static INinjascriptsBuilder AddConfiguration(this INinjascriptsBuilder builder, IConfiguration configuration)
+        public static INinjascriptBuilder AddConfiguration(this INinjascriptBuilder builder, IConfiguration configuration)
         {
             builder.AddConfiguration();
 
             //builder.Services.AddSingleton<IConfigureOptions<LoggerFilterOptions>>(new LoggerFilterConfigureOptions(configuration));
             //builder.Services.AddSingleton<IOptionsChangeTokenSource<LoggerFilterOptions>>(new ConfigurationChangeTokenSource<LoggerFilterOptions>(configuration));
 
-            builder.Services.AddSingleton(new NinjascriptsConfiguration(configuration));
+            builder.Services.AddSingleton(new NinjascriptConfiguration(configuration));
 
             return builder;
         }

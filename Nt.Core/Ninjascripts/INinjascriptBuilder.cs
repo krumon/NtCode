@@ -2,7 +2,7 @@
 
 namespace Nt.Core.Ninjascripts
 {
-    public interface INinjascriptsBuilder
+    public interface INinjascriptBuilder
     {
         /// <summary>
         /// Gets the <see cref="IServiceCollection"/> where ninjascript services are configured.

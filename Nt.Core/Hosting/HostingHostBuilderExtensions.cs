@@ -4,6 +4,7 @@ using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting.Internal;
 using Nt.Core.Logging;
 using Nt.Core.Logging.EventLog;
+using Nt.Core.Ninjascripts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -183,17 +184,16 @@ namespace Nt.Core.Hosting
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         public static IHostBuilder ConfigureDefaults(this IHostBuilder builder, string[] args)
         {
-            builder.UseContentRoot(Directory.GetCurrentDirectory());
-            builder.ConfigureHostConfiguration(config =>
+            builder.UseContentRoot(Directory.GetCurrentDirectory())
+            .ConfigureHostConfiguration(config =>
             {
                 config.AddEnvironmentVariables(prefix: "DOTNET_");
                 if (args != null && args.Length > 0)
                 {
                     config.AddCommandLine(args);
                 }
-            });
-
-            builder.ConfigureAppConfiguration((hostingContext, config) =>
+            })
+            .ConfigureAppConfiguration((hostingContext, config) =>
             {
                 IHostEnvironment env = hostingContext.Environment;
                 bool reloadOnChange = GetReloadConfigOnChangeValue(hostingContext);

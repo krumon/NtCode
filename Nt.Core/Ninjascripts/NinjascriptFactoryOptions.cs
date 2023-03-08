@@ -1,6 +1,6 @@
 ﻿namespace Nt.Core.Ninjascripts
 {
-    public class NinjascriptsFactoryOptions
+    public class NinjascriptFactoryOptions
     {
     }
 }

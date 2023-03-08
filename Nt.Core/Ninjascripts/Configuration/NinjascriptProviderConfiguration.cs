@@ -2,9 +2,9 @@
 
 namespace Nt.Core.Ninjascripts.Configuration
 {
-    internal sealed class NinjascriptsProviderConfiguration<T> : INinjascriptsProviderConfiguration<T>
+    internal sealed class NinjascriptProviderConfiguration<T> : INinjascriptProviderConfiguration<T>
     {
-        public NinjascriptsProviderConfiguration(INinjascriptsProviderConfigurationFactory providerConfigurationFactory)
+        public NinjascriptProviderConfiguration(INinjascriptProviderConfigurationFactory providerConfigurationFactory)
         {
             Configuration = providerConfigurationFactory.GetConfiguration(typeof(T));
         }

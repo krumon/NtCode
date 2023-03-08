@@ -6,7 +6,7 @@ namespace Nt.Core.Ninjascripts.Configuration
     /// <summary>
     /// Allows access to configuration section associated with ninjascript provider
     /// </summary>
-    public interface INinjascriptsProviderConfigurationFactory
+    public interface INinjascriptProviderConfigurationFactory
     {
         /// <summary>
         /// Return configuration section associated with ninjascript provider

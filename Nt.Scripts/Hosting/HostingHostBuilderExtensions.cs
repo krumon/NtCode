@@ -45,7 +45,7 @@ namespace Nt.Scripts.Hosting
         ///     * enables scope validation on the dependency injection container when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development'
         /// </remarks>
         /// <param name="builder">The existing builder to configure.</param>
-        /// <param name="args">The command line args.</param>
+        /// <param name="ninjatraderObjects">The command line args.</param>
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         public static IHostBuilder NinjaConfigureDefaults(this IHostBuilder builder, object[] ninjatraderObjects)
         {

@@ -2,11 +2,11 @@
 
 namespace Nt.Core.Ninjascripts.Configuration
 {
-    internal sealed class NinjascriptsConfiguration
+    internal sealed class NinjascriptConfiguration
     {
         public IConfiguration Configuration { get; }
 
-        public NinjascriptsConfiguration(IConfiguration configuration)
+        public NinjascriptConfiguration(IConfiguration configuration)
         {
             Configuration = configuration;
         }

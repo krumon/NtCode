@@ -16,7 +16,9 @@
     }
   },
 
-  "Ninjascripts":  "empty"
+  "Ninjascripts": {
+
+  }
 
   // SessionHours([],[],[])
 }

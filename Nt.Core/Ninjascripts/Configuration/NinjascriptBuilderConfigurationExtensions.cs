@@ -3,18 +3,18 @@
 namespace Nt.Core.Ninjascripts.Configuration
 {
     /// <summary>
-    /// Extension methods for setting up ninjascript services in an <see cref="INinjascriptsBuilder" />.
+    /// Extension methods for setting up ninjascript services in an <see cref="INinjascriptBuilder" />.
     /// </summary>
-    public static class NinjascriptsBuilderConfigurationExtensions
+    public static class NinjascriptBuilderConfigurationExtensions
     {
         /// <summary>
-        /// Adds services required to consume <see cref="INinjascriptsProviderConfigurationFactory"/> or <see cref="INinjascriptsProviderConfiguration{T}"/>
+        /// Adds services required to consume <see cref="INinjascriptProviderConfigurationFactory"/> or <see cref="INinjascriptProviderConfiguration{T}"/>
         /// </summary>
-        /// <param name="builder">The <see cref="INinjascriptsBuilder"/> to register services on.</param>
-        public static void AddConfiguration(this INinjascriptsBuilder builder)
+        /// <param name="builder">The <see cref="INinjascriptBuilder"/> to register services on.</param>
+        public static void AddConfiguration(this INinjascriptBuilder builder)
         {
-            builder.Services.TryAddSingleton<INinjascriptsProviderConfigurationFactory, NinjascriptsProviderConfigurationFactory>();
-            builder.Services.TryAddSingleton(typeof(INinjascriptsProviderConfiguration<>), typeof(NinjascriptsProviderConfiguration<>));
+            builder.Services.TryAddSingleton<INinjascriptProviderConfigurationFactory, NinjascriptProviderConfigurationFactory>();
+            builder.Services.TryAddSingleton(typeof(INinjascriptProviderConfiguration<>), typeof(NinjascriptProviderConfiguration<>));
         }
     }
 }

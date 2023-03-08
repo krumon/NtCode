@@ -45,6 +45,5 @@
             HostBuilder builder = new HostBuilder();
             return builder.ConfigureDefaults(args);
         }
-
     }
 }

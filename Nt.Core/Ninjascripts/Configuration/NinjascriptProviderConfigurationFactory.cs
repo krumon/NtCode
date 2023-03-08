@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace Nt.Core.Ninjascripts.Configuration
 {
-    internal sealed class NinjascriptsProviderConfigurationFactory : INinjascriptsProviderConfigurationFactory
+    internal sealed class NinjascriptProviderConfigurationFactory : INinjascriptProviderConfigurationFactory
     {
-        private readonly IEnumerable<NinjascriptsConfiguration> _configurations;
+        private readonly IEnumerable<NinjascriptConfiguration> _configurations;
 
-        public NinjascriptsProviderConfigurationFactory(IEnumerable<NinjascriptsConfiguration> configurations)
+        public NinjascriptProviderConfigurationFactory(IEnumerable<NinjascriptConfiguration> configurations)
         {
             _configurations = configurations;
         }
@@ -22,7 +22,7 @@ namespace Nt.Core.Ninjascripts.Configuration
             string fullName = providerType.FullName;
             string alias = ProviderAliasUtilities.GetAlias(providerType);
             var configurationBuilder = new ConfigurationBuilder();
-            foreach (NinjascriptsConfiguration configuration in _configurations)
+            foreach (NinjascriptConfiguration configuration in _configurations)
             {
                 IConfigurationSection sectionFromFullName = configuration.Configuration.GetSection(fullName);
                 configurationBuilder.AddConfiguration(sectionFromFullName);

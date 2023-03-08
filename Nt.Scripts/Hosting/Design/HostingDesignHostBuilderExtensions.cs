@@ -100,9 +100,9 @@ namespace Nt.Scripts.Hosting.Design
                     .AddSessions();
             })
             .UseDataSeries()
-            .ConfigureNinjascripts((context, ninjascriptBuilder) =>
+            .ConfigureNinjascript((context, ninjascriptBuilder) =>
             {
-                ninjascriptBuilder.AddConfiguration(context.Configuration.GetSection("Ninjascripts"));
+                ninjascriptBuilder.AddConfiguration(context.Configuration.GetSection("Ninjascript"));
             });
 
             return builder;
