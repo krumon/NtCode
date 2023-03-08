@@ -426,6 +426,7 @@
     <Compile Include="Ninjascripts\NinjascriptBuilderExtensions.cs" />
     <Compile Include="Ninjascripts\NinjascriptFactoryOptions.cs" />
     <Compile Include="Ninjascripts\NinjascriptHostBuilderExtensions.cs" />
+    <Compile Include="Ninjascripts\NinjascriptMinState.cs" />
     <Compile Include="Ninjascripts\NinjascriptServiceCollectionExtensions.cs" />
     <Compile Include="Ninjascripts\NinjascriptProviderAliasAttribute.cs" />
     <Compile Include="Ninjascripts\Options\NinjascriptProviderConfigureOptions.cs" />

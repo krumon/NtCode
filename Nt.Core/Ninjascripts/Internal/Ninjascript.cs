@@ -6,8 +6,35 @@ namespace Nt.Core.Ninjascripts.Internal
     internal class Ninjascript : INinjascript
     {
 
-        //public LoggerInformation[] Loggers { get; set; }
+        public NinjascriptInfo[] Ninjascripts { get; set; }
         //public MessageLogger[] MessageLoggers { get; set; }
+
+        public Ninjascript()
+        {
+
+        }
+
+        //public void Calculate()
+        //{
+        //    MessageLogger[] loggers = MessageLoggers;
+        //    if (loggers == null)
+        //        return;
+
+        //    List<Exception> exceptions = null;
+        //    for (int i = 0; i < loggers.Length; i++)
+        //    {
+        //        ref readonly MessageLogger loggerInfo = ref loggers[i];
+        //        if (!loggerInfo.IsEnabled(logLevel))
+        //            continue;
+
+        //        LoggerLog(logLevel, eventId, loggerInfo.Logger, exception, formatter, ref exceptions, state);
+        //    }
+
+        //    if (exceptions != null && exceptions.Count > 0)
+        //    {
+        //        ThrowLoggingError(exceptions);
+        //    }
+        //}
 
         //public bool IsEnabled(LogLevel logLevel)
         //{
