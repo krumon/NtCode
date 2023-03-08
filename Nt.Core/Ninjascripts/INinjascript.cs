@@ -5,6 +5,19 @@
     /// </summary>
     public interface INinjascript 
     {
+
+        /// <summary>
+        /// Checks if the given ninjascriptLevel is enabled.
+        /// </summary>
+        /// <param name="ninjascriptLevel">Level to be checked.</param>
+        /// <returns>true if enabled.</returns>
+        bool IsEnabled(NinjascriptLevel ninjascriptLevel);
+
+        /// <summary>
+        /// Calculate the ninjascript.
+        /// </summary>
+        /// <param name="state">The ninjatrader method where the ninjascript has been calculate.</param>
+        void Calculate(NinjascriptState state);
     }
 
     /// <summary>

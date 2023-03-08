@@ -411,6 +411,7 @@
     <Compile Include="Ninjascripts\Configuration\NinjascriptBuilderConfigurationExtensions.cs" />
     <Compile Include="Ninjascripts\Configuration\NinjascriptConfiguration.cs" />
     <Compile Include="Ninjascripts\IConfigurable.cs" />
+    <Compile Include="Ninjascripts\Internal\NinjascriptConfig.cs" />
     <Compile Include="Ninjascripts\Internal\NinjascriptInfo.cs" />
     <Compile Include="Ninjascripts\Internal\Ninjascript.cs" />
     <Compile Include="Ninjascripts\NinjascriptFactory.cs" />
@@ -426,9 +427,11 @@
     <Compile Include="Ninjascripts\NinjascriptBuilderExtensions.cs" />
     <Compile Include="Ninjascripts\NinjascriptFactoryOptions.cs" />
     <Compile Include="Ninjascripts\NinjascriptHostBuilderExtensions.cs" />
-    <Compile Include="Ninjascripts\NinjascriptMinState.cs" />
+    <Compile Include="Ninjascripts\NinjascriptLevel.cs" />
     <Compile Include="Ninjascripts\NinjascriptServiceCollectionExtensions.cs" />
     <Compile Include="Ninjascripts\NinjascriptProviderAliasAttribute.cs" />
+    <Compile Include="Ninjascripts\NinjascriptState.cs" />
+    <Compile Include="Ninjascripts\NinjascriptStateExtensions.cs" />
     <Compile Include="Ninjascripts\Options\NinjascriptProviderConfigureOptions.cs" />
     <Compile Include="Ninjascripts\Options\NinjascriptProviderOptions.cs" />
     <Compile Include="Ninjascripts\Options\NinjascriptProviderOptionsChangeTokenSource.cs" />

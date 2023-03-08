@@ -1,24 +1,24 @@
 ﻿namespace Nt.Core.Ninjascripts
 {
     /// <summary>
-    /// The ninjascript object enable states.
+    /// The ninjascript object level states.
     /// </summary>
-    public enum NinjascriptMinState
+    public enum NinjascriptLevel
     {
         /// <summary>
         /// The ninjascript is always active.
         /// </summary>
         /// <remarks>
-        /// The ninjascript enter in 'SetDefault', 'Configure', 'Active', 'DataLoaded', 'Historical', 'Transition', 'Realtime' and 'Terminated' states.
+        /// The ninjascript enter in 'DataLoaded', 'Historical', 'Transition' and 'Realtime' states.
         /// </remarks>
-        Configure,
+        Active,
 
         /// <summary>
         /// The ninjascript is active only in the historical state
         /// </summary>
         /// <remarks>
         /// This value is used for ninjascripts that gets historical data for calculate values and inyect to other ninjascript.
-        /// The ninjascript enter in 'SetDefault', 'Configure', 'Active', 'DataLoaded', 'Historical', 'Transition' and 'Terminated' states.
+        /// The ninjascript enter in 'Historical' and 'Transition' states.
         /// </remarks>
         Historical,
 
@@ -26,13 +26,13 @@
         /// The ninjascript is enable only in the real state. This ninjascript doesn´t nedd historical values. 
         /// </summary>
         /// <remarks>
-        /// The ninjascript enter in 'SetDefault', 'Configure', 'Active', 'DataLoaded', 'Realtime' and 'Terminated' states.
+        /// The ninjascript enter in 'Realtime' state.
         /// </remarks>
         Real,
 
         /// <summary>
         /// The ninjascript is disable.
         /// </summary>
-        None
+        Disable
     }
 }

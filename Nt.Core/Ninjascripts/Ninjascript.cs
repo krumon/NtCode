@@ -1,5 +1,4 @@
-﻿
-using Nt.Core.Internal;
+﻿using Nt.Core.Internal;
 using System;
 
 namespace Nt.Core.Ninjascripts
@@ -11,7 +10,7 @@ namespace Nt.Core.Ninjascripts
     /// <typeparam name="T">The type.</typeparam>
     public class Ninjascript<T> : INinjascript<T>
     {
-        private readonly INinjascript _ninjascripts;
+        private readonly INinjascript _ninjascript;
 
         /// <summary>
         /// Creates a new <see cref="Ninjascript{T}"/>.
@@ -22,7 +21,20 @@ namespace Nt.Core.Ninjascripts
             if (factory == null)
                 throw new ArgumentNullException(nameof(factory));
 
-            _ninjascripts = factory.CreateNinjascript(TypeNameHelper.GetTypeDisplayName(typeof(T), includeGenericParameters: false, nestedTypeDelimiter: '.'));
+            _ninjascript = factory.CreateNinjascript(TypeNameHelper.GetTypeDisplayName(typeof(T), includeGenericParameters: false, nestedTypeDelimiter: '.'));
         }
+
+        /// <inheritdoc />
+        bool INinjascript.IsEnabled(NinjascriptLevel ninjascriptLevel)
+        {
+            return _ninjascript.IsEnabled(ninjascriptLevel);
+        }
+
+        /// <inheritdoc/>
+        void INinjascript.Calculate(NinjascriptState state)
+        {
+            _ninjascript.Calculate(state);
+        }
+
     }
 }
