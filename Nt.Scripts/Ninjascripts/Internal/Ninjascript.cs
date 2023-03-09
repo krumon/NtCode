@@ -1,19 +1,22 @@
 ﻿using System.Collections.Generic;
 using System;
+using NinjaTrader.NinjaScript;
+using Nt.Scripts.Services;
 
 namespace Nt.Scripts.Ninjascripts.Internal
 {
     internal class Ninjascript : INinjascript
     {
-        public NinjascriptState State { get; private set; }
-        public NinjascriptInfo[] Ninjascripts { get; set; }
+        private readonly INinjascriptBase _script;
+
+        public NinjascriptInfo[] NinjascriptProviders { get; set; }
         public NinjascriptConfig[] ConfigureNinjascripts { get; set; }
 
         private Dictionary<Type, List<NinjascriptConfig>> _config = new Dictionary<Type, List<NinjascriptConfig>>();
 
-        public void Calculate(NinjascriptState state)
+        public void Calculate()
         {
-            State = state;
+            var state = _script.State;
             NinjascriptLevel level = state.ToNinjascriptLevel();
 
             NinjascriptConfig[] ninjascripts = ConfigureNinjascripts;
@@ -74,16 +77,16 @@ namespace Nt.Scripts.Ninjascripts.Internal
                 message: "An error occurred while calculate the ninjascript(s).", innerExceptions: exceptions);
         }
 
-        private static void NinjascriptCalculate(NinjascriptState state, INinjascript ninjascript, ref List<Exception> exceptions)
+        private static void NinjascriptCalculate(State state, INinjascript ninjascript, ref List<Exception> exceptions)
         {
-            if (state == NinjascriptState.Configure)
+            if (state == State.Configure)
             {
                 // Configure the ninjascript and make sure the ninjascript is configure.
             }
 
             try
             {
-                ninjascript.Calculate(state);
+                ninjascript.Calculate();
             }
             catch (Exception ex)
             {

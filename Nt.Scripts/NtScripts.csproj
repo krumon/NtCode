@@ -157,7 +157,6 @@
     <Compile Include="Ninjascripts\NinjascriptLevel.cs" />
     <Compile Include="Ninjascripts\NinjascriptProviderAliasAttribute.cs" />
     <Compile Include="Ninjascripts\NinjascriptServiceCollectionExtensions.cs" />
-    <Compile Include="Ninjascripts\NinjascriptState.cs" />
     <Compile Include="Ninjascripts\NinjascriptStateExtensions.cs" />
     <Compile Include="Ninjascripts\Options\NinjascriptProviderConfigureOptions.cs" />
     <Compile Include="Ninjascripts\Options\NinjascriptProviderOptions.cs" />

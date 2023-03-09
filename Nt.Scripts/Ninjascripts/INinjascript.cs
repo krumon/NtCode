@@ -1,4 +1,6 @@
-﻿namespace Nt.Scripts.Ninjascripts
+﻿using NinjaTrader.NinjaScript;
+
+namespace Nt.Scripts.Ninjascripts
 {
     /// <summary>
     /// Represents properties and methods of ninjascript instance in ninjatrader plattform.
@@ -16,8 +18,7 @@
         /// <summary>
         /// Calculate the ninjascript.
         /// </summary>
-        /// <param name="state">The ninjatrader method where the ninjascript has been calculate.</param>
-        void Calculate(NinjascriptState state);
+        void Calculate();
     }
 
     /// <summary>

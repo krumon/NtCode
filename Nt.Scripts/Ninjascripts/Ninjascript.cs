@@ -1,4 +1,5 @@
 ﻿using System;
+using NinjaTrader.NinjaScript;
 using Nt.Core.Helpers;
 
 namespace Nt.Scripts.Ninjascripts
@@ -31,9 +32,9 @@ namespace Nt.Scripts.Ninjascripts
         }
 
         /// <inheritdoc/>
-        void INinjascript.Calculate(NinjascriptState state)
+        void INinjascript.Calculate()
         {
-            _ninjascript.Calculate(state);
+            _ninjascript.Calculate();
         }
 
     }

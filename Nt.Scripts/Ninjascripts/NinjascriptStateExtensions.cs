@@ -1,23 +1,31 @@
-﻿namespace Nt.Scripts.Ninjascripts
+﻿using NinjaTrader.NinjaScript;
+
+namespace Nt.Scripts.Ninjascripts
 {
     /// <summary>
     /// Extension methods for convert values 'from' or 'to' <see cref="NinjascriptState"/> enum.
     /// </summary>
-    public static class NinjascriptStateExtensions
+    public static class StateExtensions
     {
-
-        public static NinjascriptLevel ToNinjascriptLevel(this NinjascriptState state)
+        /// <summary>
+        /// Converts <see cref="State"/> value to <see cref="NinjascriptLevel"/>.
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
+        public static NinjascriptLevel ToNinjascriptLevel(this State state)
         {
             switch (state)
             {
-                case NinjascriptState.SetDefaults:
-                case NinjascriptState.Configure:
-                case NinjascriptState.Active:
-                case NinjascriptState.DataLoaded:
+                case State.SetDefaults:
+                case State.Configure:
+                case State.Active:
+                case State.DataLoaded:
                     return NinjascriptLevel.Active;
-                case NinjascriptState.Historical:
-                case NinjascriptState.Transition:
+                case State.Historical:
+                case State.Transition:
                     return NinjascriptLevel.Historical;
+                case State.Realtime:
+                    return NinjascriptLevel.Real;
                 default:
                     return NinjascriptLevel.Disable;
             }
