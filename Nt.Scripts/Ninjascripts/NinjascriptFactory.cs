@@ -16,7 +16,7 @@ namespace Nt.Scripts.Ninjascripts
         private readonly object _sync = new object();
         private volatile bool _disposed;
         private readonly IDisposable _changeTokenRegistration;
-        //private IndicatorFilterOptions _filterOptions;
+        private NinjascriptFilterOptions _filterOptions;
 
         /// <summary>
         /// Creates a new <see cref="NinjascriptFactory"/> instance.
@@ -51,15 +51,11 @@ namespace Nt.Scripts.Ninjascripts
         {
             // Register the indicators providers
             foreach (INinjascriptProvider provider in providers)
-            {
-                //// Check filters and adds the provider if the indicator is enabled.
-                //if(CheckFilters(provider, filterOption.CurrentValue))
-                //    AddProviderRegistration(provider, dispose: false);
-            }
+                AddProviderRegistration(provider, dispose: false);
 
-            //// Register OnChange method and refresh the filters in the registered indicators
-            //_changeTokenRegistration = filterOption.OnChange(RefreshFilters);
-            //RefreshFilters(filterOption.CurrentValue);
+            // Register OnChange method and refresh the filters in the registered indicators
+            _changeTokenRegistration = filterOption.OnChange(RefreshFilters);
+            RefreshFilters(filterOption.CurrentValue);
         }
 
         /// <summary>
@@ -71,9 +67,9 @@ namespace Nt.Scripts.Ninjascripts
         {
             // Create the service collection
             var serviceCollection = new ServiceCollection();
-            // Add required services (IIndicatorFactory, IIndicator<> and IConfigureOptions<ConfigureFiltersOptions>)
-            // and create the IIndicatorBuilder with the configured services to add the services to the collection.
-            //serviceCollection.AddIndicators(configure);
+            // Add required services (INinjascriptFactory, INinjascript<> and IConfigureOptions<NinjascriptFiltersOptions>)
+            // and create the INinjascriptBuilder with the configured services to add the services to the collection.
+            serviceCollection.AddNinjascript(configure);
             // Create a service provider with the required and configure services.
             ServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
             // Gets the IIndicatorFactory.
@@ -100,10 +96,10 @@ namespace Nt.Scripts.Ninjascripts
                 {
                     ninjascript = new Ninjascript
                     {
-                        //IndicatorsInfo = CreateIndicators(categoryName),
+                        Ninjascripts = CreateNinjascripts(categoryName),
                     };
 
-                    //logger.MessageLoggers = ApplyFilters(logger.Loggers);
+                    ninjascript.ConfigureNinjascripts = ApplyFilters(ninjascript.Ninjascripts);
 
                     _ninjascripts[categoryName] = ninjascript;
                 }
@@ -128,47 +124,47 @@ namespace Nt.Scripts.Ninjascripts
             {
                 AddProviderRegistration(provider, dispose: true);
 
-                //foreach (KeyValuePair<string, Ninjascript> existingIndicator in _ninjascripts)
-                //{
-                //    Indicator indicator = existingIndicator.Value;
-                //    IndicatorInfo[] indicatorInformation = indicator.IndicatorsInfo;
+                foreach (KeyValuePair<string, Ninjascript> existingNinjascript in _ninjascripts)
+                {
+                    Ninjascript ninjascript = existingNinjascript.Value;
+                    NinjascriptInfo[] ninjascriptInformation = ninjascript.Ninjascripts;
 
-                //    int newIndicatorIndex = indicatorInformation.Length;
-                //    Array.Resize(ref indicatorInformation, indicatorInformation.Length + 1);
-                //    indicatorInformation[newIndicatorIndex] = new IndicatorInfo(provider, existingIndicator.Key);
+                    int newIndicatorIndex = ninjascriptInformation.Length;
+                    Array.Resize(ref ninjascriptInformation, ninjascriptInformation.Length + 1);
+                    ninjascriptInformation[newIndicatorIndex] = new NinjascriptInfo(provider, existingNinjascript.Key);
 
-                //    indicator.IndicatorsInfo = indicatorInformation;
-                //    //logger.MessageLoggers = ApplyFilters(logger.Loggers);
-                //}
+                    ninjascript.Ninjascripts = ninjascriptInformation;
+                    ninjascript.ConfigureNinjascripts = ApplyFilters(ninjascript.Ninjascripts);
+                }
             }
         }
 
-        //private void RefreshFilters(IndicatorFilterOptions filterOptions)
-        //{
-        //    lock (_sync)
-        //    {
-        //        _filterOptions = filterOptions;
-        //        foreach (KeyValuePair<string, Indicator> regiteredIndicator in _ninjascripts)
-        //        {
-        //            Indicator indicator = regiteredIndicator.Value;
-        //            //indicator.MessageLoggers = ApplyFilters(logger.Loggers);
-        //        }
-        //    }
-        //}
+        private void RefreshFilters(NinjascriptFilterOptions filterOptions)
+        {
+            lock (_sync)
+            {
+                _filterOptions = filterOptions;
+                foreach (KeyValuePair<string, Ninjascript> regiteredIndicator in _ninjascripts)
+                {
+                    Ninjascript ninjascript = regiteredIndicator.Value;
+                    ninjascript.ConfigureNinjascripts = ApplyFilters(ninjascript.Ninjascripts);
+                }
+            }
+        }
 
-        //private void RefreshFilters(IConfigureOptions<IndicatorFilterOptions> filterOptions)
-        //{
-        //    if (_filterOptions == null) _filterOptions = new IndicatorFilterOptions();
-        //    lock (_sync)
-        //    {
-        //        filterOptions.Configure(_filterOptions);
-        //        foreach (KeyValuePair<string, Indicator> registeredIndicator in _ninjascripts)
-        //        {
-        //            Indicator indicator = registeredIndicator.Value;
-        //            //logger.MessageLoggers = ApplyFilters(logger.Loggers);
-        //        }
-        //    }
-        //}
+        private void RefreshFilters(IConfigureOptions<NinjascriptFilterOptions> filterOptions)
+        {
+            if (_filterOptions == null) _filterOptions = new NinjascriptFilterOptions();
+            lock (_sync)
+            {
+                filterOptions.Configure(_filterOptions);
+                foreach (KeyValuePair<string, Ninjascript> registeredNinjascript in _ninjascripts)
+                {
+                    Ninjascript ninjascript = registeredNinjascript.Value;
+                    //logger.MessageLoggers = ApplyFilters(logger.Loggers);
+                }
+            }
+        }
 
         private void AddProviderRegistration(INinjascriptProvider provider, bool dispose)
         {
@@ -179,55 +175,39 @@ namespace Nt.Scripts.Ninjascripts
             });
         }
 
-        //private IndicatorInfo[] CreateIndicators(string indicatorName)
-        //{
-        //    var indicators = new IndicatorInfo[_providerRegistrations.Count];
-        //    for (int i = 0; i < _providerRegistrations.Count; i++)
-        //    {
-        //        indicators[i] = new IndicatorInfo(_providerRegistrations[i].Provider, indicatorName);
-        //    }
-        //    return indicators;
-        //}
+        private NinjascriptInfo[] CreateNinjascripts(string indicatorName)
+        {
+            var ninjascripts = new NinjascriptInfo[_providerRegistrations.Count];
+            for (int i = 0; i < _providerRegistrations.Count; i++)
+            {
+                ninjascripts[i] = new NinjascriptInfo(_providerRegistrations[i].Provider, indicatorName);
+            }
+            return ninjascripts;
+        }
 
-        //private MessageLogger[] ApplyFilters(LoggerInformation[] loggers)
-        //{
-        //    var messageLoggers = new List<MessageLogger>();
+        private NinjascriptConfig[] ApplyFilters(NinjascriptInfo[] ninjascripts)
+        {
+            var ninjascriptsConfig = new List<NinjascriptConfig>();
 
-        //    foreach (LoggerInformation loggerInformation in loggers)
-        //    {
-        //        LoggerRuleSelector.Select(_filterOptions,
-        //            loggerInformation.ProviderType,
-        //            loggerInformation.Category,
-        //            out LogLevel? minLevel,
-        //            out Func<string, string, LogLevel, bool> filter);
+            foreach (NinjascriptInfo ninjascriptInformation in ninjascripts)
+            {
+                NinjascriptRuleSelector.Select(_filterOptions,
+                    ninjascriptInformation.ProviderType,
+                    ninjascriptInformation.Category,
+                    out NinjascriptLevel? minLevel,
+                    out Func<string, string, NinjascriptLevel, bool> filter);
 
-        //        if (minLevel != null && minLevel > LogLevel.Critical)
-        //        {
-        //            continue;
-        //        }
+                if (minLevel != null && minLevel > NinjascriptLevel.Real)
+                {
+                    continue;
+                }
 
-        //        messageLoggers.Add(new MessageLogger(loggerInformation.Logger, loggerInformation.Category, loggerInformation.ProviderType.FullName, minLevel, filter));
+                ninjascriptsConfig.Add(new NinjascriptConfig(ninjascriptInformation.Ninjascript, ninjascriptInformation.Category, ninjascriptInformation.ProviderType.FullName, minLevel, filter));
 
-        //    }
+            }
 
-        //    return messageLoggers.ToArray();
-        //}
-
-        //private bool CheckFilters(IIndicatorProvider provider, IndicatorFilterOptions filterOptions)
-        //{
-        //    Type t = provider.GetType();
-        //    string fullName = t.FullName;
-        //    string alias = ProviderAliasAttribute.GetAlias(t);
-        //    if (alias == null)
-        //        return false;
-        //    if (filterOptions == null)
-        //        return false;
-        //    foreach (IndicatorFilterRule rule in filterOptions.Rules)
-        //        if (rule.ProviderName == alias || rule.ProviderName == fullName)
-        //            return true;
-
-        //    return false;
-        //}
+            return ninjascriptsConfig.ToArray();
+        }
 
         /// <summary>
         /// Check if the factory has been disposed.

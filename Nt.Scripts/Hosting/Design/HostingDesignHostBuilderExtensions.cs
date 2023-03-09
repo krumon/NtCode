@@ -102,7 +102,7 @@ namespace Nt.Scripts.Hosting.Design
             .UseDataSeries()
             .ConfigureNinjascript((context, ninjascriptBuilder) =>
             {
-                ninjascriptBuilder.AddConfiguration(context.Configuration.GetSection("NinjascriptBase"));
+                ninjascriptBuilder.AddConfiguration(context.Configuration.GetSection("Ninjascripts"));
             });
 
             return builder;

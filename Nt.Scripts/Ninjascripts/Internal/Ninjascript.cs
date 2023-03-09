@@ -9,7 +9,7 @@ namespace Nt.Scripts.Ninjascripts.Internal
     {
         private readonly INinjascriptBase _script;
 
-        public NinjascriptInfo[] NinjascriptProviders { get; set; }
+        public NinjascriptInfo[] Ninjascripts { get; set; }
         public NinjascriptConfig[] ConfigureNinjascripts { get; set; }
 
         private Dictionary<Type, List<NinjascriptConfig>> _config = new Dictionary<Type, List<NinjascriptConfig>>();

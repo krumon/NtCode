@@ -139,6 +139,9 @@
     <Compile Include="Ninjascripts\INinjascriptBuilder.cs" />
     <Compile Include="Ninjascripts\INinjascriptFactory.cs" />
     <Compile Include="Ninjascripts\INinjascriptProvider.cs" />
+    <Compile Include="Ninjascripts\Internal\DefaultLoggerLevelConfigureOptions.cs" />
+    <Compile Include="Ninjascripts\Internal\NinjascriptFilterConfigureOptions.cs" />
+    <Compile Include="Ninjascripts\Internal\NinjascriptRuleSelector.cs" />
     <Compile Include="Ninjascripts\Internal\Ninjascript.cs" />
     <Compile Include="Ninjascripts\Internal\NinjascriptBuilder.cs" />
     <Compile Include="Ninjascripts\Internal\NinjascriptConfig.cs" />
