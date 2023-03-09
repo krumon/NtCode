@@ -12,7 +12,7 @@ namespace Nt.Scripts.Services
     /// </summary>
     public class DataSeries : IDataSeries
     {
-        private readonly INinjascript _ninjascript;
+        private readonly INinjascriptBase _ninjascript;
         private readonly IChartBarsProperties _chartBarsProperties;
         private readonly IOptionsMonitor<DataSeriesOptions> _optionsMonitor;
         private readonly ILogger _logger;
@@ -136,7 +136,7 @@ namespace Nt.Scripts.Services
         /// <summary>
         /// Create <see cref="InstrumentProvider"/> default instance.
         /// </summary>
-        public DataSeries(INinjascript ninjascript, IChartBarsProperties chartBarsProperties, IOptionsMonitor<DataSeriesOptions> options, ILogger<DataSeries> logger, string stringKey="")
+        public DataSeries(INinjascriptBase ninjascript, IChartBarsProperties chartBarsProperties, IOptionsMonitor<DataSeriesOptions> options, ILogger<DataSeries> logger, string stringKey="")
         {
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));

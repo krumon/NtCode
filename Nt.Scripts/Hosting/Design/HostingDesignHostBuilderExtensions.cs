@@ -3,9 +3,9 @@ using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
-using Nt.Core.Ninjascripts;
 using Nt.Scripts.Indicators;
 using Nt.Scripts.Logging;
+using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Services;
 using Nt.Scripts.Services.Design;
 using System.IO;
@@ -102,7 +102,7 @@ namespace Nt.Scripts.Hosting.Design
             .UseDataSeries()
             .ConfigureNinjascript((context, ninjascriptBuilder) =>
             {
-                ninjascriptBuilder.AddConfiguration(context.Configuration.GetSection("Ninjascript"));
+                ninjascriptBuilder.AddConfiguration(context.Configuration.GetSection("NinjascriptBase"));
             });
 
             return builder;

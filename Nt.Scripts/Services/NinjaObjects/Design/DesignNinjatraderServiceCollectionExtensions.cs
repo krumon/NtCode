@@ -33,7 +33,7 @@ namespace Nt.Scripts.Services.Design
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
 
-            services.TryAdd(ServiceDescriptor.Singleton<INinjascript>(new DesignNinjascript()));
+            services.TryAdd(ServiceDescriptor.Singleton<INinjascriptBase>(new DesignNinjascript()));
 
             return services;
         }

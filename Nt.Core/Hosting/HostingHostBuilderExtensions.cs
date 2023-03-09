@@ -4,7 +4,6 @@ using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting.Internal;
 using Nt.Core.Logging;
 using Nt.Core.Logging.EventLog;
-using Nt.Core.Ninjascripts;
 using System;
 using System.Collections.Generic;
 using System.IO;

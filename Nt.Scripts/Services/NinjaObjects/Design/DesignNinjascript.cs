@@ -3,7 +3,7 @@ using System;
 
 namespace Nt.Scripts.Services.Design
 {
-    public class DesignNinjascript : Ninjascript
+    public class DesignNinjascript : NinjascriptBase
     {
         public DesignNinjascript() : base()
         {

@@ -5,7 +5,7 @@ namespace Nt.Scripts.Indicators
 {
     public class SessionsIndicatorProvider
     {
-        public SessionsIndicatorProvider(INinjascript ninjascript, IGlobalsData globalsData, ILogger<SessionsIndicator> logger)
+        public SessionsIndicatorProvider(INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger<SessionsIndicator> logger)
         {
 
         }

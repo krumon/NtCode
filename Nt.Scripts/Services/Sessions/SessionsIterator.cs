@@ -18,7 +18,7 @@ namespace Nt.Scripts.Services
         #region Private members
 
         private readonly ISessionsIndicator _sessionsManager;
-        private readonly INinjascript _ninjascript;
+        private readonly INinjascriptBase _ninjascript;
         private readonly IGlobalsData _globalsData;
         private readonly ILogger _logger;
 
@@ -59,7 +59,7 @@ namespace Nt.Scripts.Services
         /// Creates <see cref="SessionsIteratorService"/> default instance.
         /// </summary>
         /// <param name="globalsData">The global data necesary to create the service.</param>
-        public SessionsIterator(ISessionsIndicator sessionsManager, INinjascript ninjascript, IGlobalsData globalsData, ILogger logger)
+        public SessionsIterator(ISessionsIndicator sessionsManager, INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger logger)
         {
             _sessionsManager = sessionsManager ?? throw new ArgumentNullException(nameof(sessionsManager));
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));

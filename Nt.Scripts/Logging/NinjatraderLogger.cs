@@ -33,8 +33,8 @@ namespace Nt.Scripts.Logging
         /// Creates <see cref="NinjatraderLogger"/> default instance.
         /// </summary>
         /// <param name="name">The category name of the logger.</param>
-        /// <param name="ninjascript">The <see cref="INinjascript"/> instance.</param>
-        internal NinjatraderLogger(string name, INinjascript ninjascript)
+        /// <param name="ninjascript">The <see cref="INinjascriptBase"/> instance.</param>
+        internal NinjatraderLogger(string name, INinjascriptBase ninjascript)
         {
             _name = name ?? throw new ArgumentNullException(nameof(name));
             if (ninjascript == null)

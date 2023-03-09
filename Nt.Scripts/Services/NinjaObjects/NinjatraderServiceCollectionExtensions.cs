@@ -42,7 +42,7 @@ namespace Nt.Scripts.Services
 
             // TODO: Delete this condition in future when develop the indicator, strategy,... services.
             if (ninjascript is NinjaScriptBase)
-                services.TryAdd(ServiceDescriptor.Singleton<INinjascript>(new Ninjascript(ninjascript)));
+                services.TryAdd(ServiceDescriptor.Singleton<INinjascriptBase>(new NinjascriptBase(ninjascript)));
             else if (ninjascript is IndicatorBase indicator)
                 return services;
             else if (ninjascript is StrategyBase strategy)

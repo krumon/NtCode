@@ -11,7 +11,7 @@ namespace Nt.Scripts.Indicators
     /// </summary>
     public class SessionsIndicator : ISessionsIndicator
     {
-        private readonly INinjascript _ninjascript;
+        private readonly INinjascriptBase _ninjascript;
         private readonly IGlobalsData _globalsData;
         private readonly ILogger _logger;
 
@@ -35,7 +35,7 @@ namespace Nt.Scripts.Indicators
         //    }
         //}
 
-        public SessionsIndicator(INinjascript ninjascript, IGlobalsData globalsData, ILogger<SessionsIndicator> logger)
+        public SessionsIndicator(INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger<SessionsIndicator> logger)
         {
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
             _globalsData = globalsData ?? throw new ArgumentNullException(nameof(globalsData));
