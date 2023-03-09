@@ -1,4 +1,5 @@
 ﻿using Nt.Core.DependencyInjection;
+using Nt.Core.Options;
 using Nt.Scripts.Ninjascripts.Internal;
 using System;
 using System.Collections.Generic;
@@ -17,52 +18,36 @@ namespace Nt.Scripts.Ninjascripts
         private readonly IDisposable _changeTokenRegistration;
         //private IndicatorFilterOptions _filterOptions;
 
-        ///// <summary>
-        ///// Creates a new <see cref="NinjascriptFactory"/> instance.
-        ///// </summary>
-        //public NinjascriptFactory() : this(Array.Empty<INinjascriptProvider>())
-        //{
-        //}
+        /// <summary>
+        /// Creates a new <see cref="NinjascriptFactory"/> instance.
+        /// </summary>
+        public NinjascriptFactory() : this(Array.Empty<INinjascriptProvider>())
+        {
+        }
 
-        ///// <summary>
-        ///// Creates a new <see cref="IndicatorFactory"/> instance.
-        ///// </summary>
-        ///// <param name="providers">The providers to use in producing <see cref="IIndicator"/> instances.</param>
-        //public NinjascriptFactory(IEnumerable<INinjascriptProvider> providers) : this(providers, new StaticIndicatorFilterOptionsMonitor(new IndicatorFilterOptions()))
-        //{
-        //}
+        /// <summary>
+        /// Creates a new <see cref="NinjascriptFactory"/> instance.
+        /// </summary>
+        /// <param name="providers">The providers to use in producing <see cref="INinjascript"/> instances.</param>
+        public NinjascriptFactory(IEnumerable<INinjascriptProvider> providers) : this(providers, new StaticFilterOptionsMonitor(new NinjascriptFilterOptions()))
+        {
+        }
 
-        ///// <summary>
-        ///// Creates a new <see cref="IndicatorFactory"/> instance.
-        ///// </summary>
-        ///// <param name="providers">The providers to use in producing <see cref="IIndicator"/> instances.</param>
-        ///// <param name="filterOptions">The filter options to use.</param>
-        //public NinjascriptFactory(IEnumerable<INinjascriptProvider> providers, IndicatorFilterOptions filterOptions) : this(providers, new StaticIndicatorFilterOptionsMonitor(filterOptions))
-        //{
-        //}
+        /// <summary>
+        /// Creates a new <see cref="NinjascriptFactory"/> instance.
+        /// </summary>
+        /// <param name="providers">The providers to use in producing <see cref="IIndicator"/> instances.</param>
+        /// <param name="filterOptions">The filter options to use.</param>
+        public NinjascriptFactory(IEnumerable<INinjascriptProvider> providers, NinjascriptFilterOptions filterOptions) : this(providers, new StaticFilterOptionsMonitor(filterOptions))
+        {
+        }
 
-        ///// <summary>
-        ///// Creates a new <see cref="IndicatorFactory"/> instance.
-        ///// </summary>
-        ///// <param name="providers">The providers to use in producing <see cref="IIndicator"/> instances.</param>
-        ///// <param name="filterOption">The filter option to use.</param>
-        //public NinjascriptFactory(IEnumerable<INinjascriptProvider> providers, IOptionsMonitor<IndicatorFilterOptions> filterOption)
-        //{
-        //    // Register the indicators providers
-        //    foreach (INinjascriptProvider provider in providers)
-        //    {
-        //        //// Check filters and adds the provider if the indicator is enabled.
-        //        //if(CheckFilters(provider, filterOption.CurrentValue))
-        //        //    AddProviderRegistration(provider, dispose: false);
-        //    }
-
-        //    //// Register OnChange method and refresh the filters in the registered indicators
-        //    //_changeTokenRegistration = filterOption.OnChange(RefreshFilters);
-        //    //RefreshFilters(filterOption.CurrentValue);
-        //}
-
-        // Provisional
-        public NinjascriptFactory(IEnumerable<INinjascriptProvider> providers)
+        /// <summary>
+        /// Creates a new <see cref="NinjascriptFactory"/> instance.
+        /// </summary>
+        /// <param name="providers">The providers to use in producing <see cref="INinjascript"/> instances.</param>
+        /// <param name="filterOption">The filter option to use.</param>
+        public NinjascriptFactory(IEnumerable<INinjascriptProvider> providers, IOptionsMonitor<NinjascriptFilterOptions> filterOption)
         {
             // Register the indicators providers
             foreach (INinjascriptProvider provider in providers)
@@ -78,10 +63,10 @@ namespace Nt.Scripts.Ninjascripts
         }
 
         /// <summary>
-        /// Creates new instance of <see cref="IIndicatorsFactory"/> configured using provided <paramref name="configure"/> delegate.
+        /// Creates new instance of <see cref="INinjascriptFactory"/> configured using provided <paramref name="configure"/> delegate.
         /// </summary>
-        /// <param name="configure">A delegate to configure the <see cref="IIndicatorsBuilder"/>.</param>
-        /// <returns>The <see cref="IIndicatorFactory"/> that was created.</returns>
+        /// <param name="configure">A delegate to configure the <see cref="INinjascriptBuilder"/>.</param>
+        /// <returns>The <see cref="INinjascriptFactory"/> that was created.</returns>
         public static INinjascriptFactory Create(Action<INinjascriptBuilder> configure)
         {
             // Create the service collection
@@ -98,10 +83,10 @@ namespace Nt.Scripts.Ninjascripts
         }
 
         /// <summary>
-        /// Creates an <see cref="IIndicators"/> with the given <paramref name="categoryName"/>.
+        /// Creates an <see cref="INinjascript"/> with the given <paramref name="categoryName"/>.
         /// </summary>
-        /// <param name="categoryName">The category name for indicators produced by the indicator.</param>
-        /// <returns>The <see cref="IIndicators"/> that was created.</returns>
+        /// <param name="categoryName">The category name for indicators produced by the ninjascript.</param>
+        /// <returns>The <see cref="INinjascript"/> that was created.</returns>
         public INinjascript CreateNinjascript(string categoryName)
         {
             if (CheckDisposed())
@@ -128,9 +113,9 @@ namespace Nt.Scripts.Ninjascripts
         }
 
         /// <summary>
-        /// Adds the given provider to those used in creating <see cref="IIndicator"/> instances.
+        /// Adds the given provider to those used in creating <see cref="INinjascript"/> instances.
         /// </summary>
-        /// <param name="provider">The <see cref="IIndicatorProvider"/> to add.</param>
+        /// <param name="provider">The <see cref="INinjascriptProvider"/> to add.</param>
         public void AddProvider(INinjascriptProvider provider)
         {
             if (CheckDisposed())

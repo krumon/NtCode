@@ -143,9 +143,12 @@
     <Compile Include="Ninjascripts\Internal\NinjascriptBuilder.cs" />
     <Compile Include="Ninjascripts\Internal\NinjascriptConfig.cs" />
     <Compile Include="Ninjascripts\Internal\NinjascriptInfo.cs" />
+    <Compile Include="Ninjascripts\Internal\StaticFilterOptionsMonitor.cs" />
     <Compile Include="Ninjascripts\IRecalculableOnBarUpdate.cs" />
     <Compile Include="Ninjascripts\IRecalculableOnEachTick.cs" />
     <Compile Include="Ninjascripts\IRecalculableOnSessionChanged.cs" />
+    <Compile Include="Ninjascripts\NinjascriptFilterOptions.cs" />
+    <Compile Include="Ninjascripts\LoggerFilterRule.cs" />
     <Compile Include="Ninjascripts\Ninjascript.cs" />
     <Compile Include="Ninjascripts\NinjascriptBuilderExtensions.cs" />
     <Compile Include="Ninjascripts\NinjascriptFactory.cs" />

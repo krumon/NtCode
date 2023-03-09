@@ -9,7 +9,7 @@ namespace Nt.Scripts.Indicators.Internal
 {
     internal sealed class IndicatorFilterConfigureOptions : IConfigureOptions<IndicatorFilterOptions>
     {
-        private const string LogLevelKey = "LogLevel";
+        private const string LogLevelKey = "NinjascriptLevel";
         private const string DefaultCategory = "Default";
         private readonly IConfiguration _configuration;
 
