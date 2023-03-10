@@ -8,11 +8,36 @@ namespace Nt.Scripts.Ninjascripts.Internal
     internal class Ninjascript : INinjascript
     {
         private readonly INinjascriptBase _script;
+        private bool _isDisposed;
+        private bool _isConfigured;
 
         public NinjascriptInfo[] Ninjascripts { get; set; }
         public NinjascriptConfig[] ConfigureNinjascripts { get; set; }
 
-        private Dictionary<Type, List<NinjascriptConfig>> _config = new Dictionary<Type, List<NinjascriptConfig>>();
+        public bool IsConfigured => _isConfigured;
+
+        //private Dictionary<Type, List<NinjascriptConfig>> _config = new Dictionary<Type, List<NinjascriptConfig>>();
+
+        public void Configure()
+        {
+            if (!_isDisposed)
+            {
+                //TODO: Configure all services
+
+                _isConfigured = true;
+            }
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            if (!_isDisposed)
+            {
+                // TODO: Dispose the ninjascripts
+
+                _isDisposed = true;
+            }
+        }
 
         public void Calculate()
         {

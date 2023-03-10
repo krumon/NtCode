@@ -1,4 +1,5 @@
 ﻿using Nt.Core.Data;
+using Nt.Scripts.Ninjascripts;
 
 namespace Nt.Scripts.Services
 {

@@ -1,5 +1,6 @@
 ﻿using NinjaTrader.Core;
 using Nt.Core.Logging;
+using Nt.Scripts.Ninjascripts;
 using System;
 
 namespace Nt.Scripts.Services
@@ -15,6 +16,8 @@ namespace Nt.Scripts.Services
         public string InstallDir { get; protected set; }
         public string[] CustomSubDirs { get; protected set; }
 
+        public bool IsConfigured => throw new NotImplementedException();
+
         public GlobalsData(ILogger<GlobalsData> logger)
         {
             _logger = logger;
@@ -22,7 +25,7 @@ namespace Nt.Scripts.Services
             PrintDirectories();
         }
 
-        protected virtual void Configure()
+        public virtual void Configure()
         {
             MaxDate = Globals.MaxDate;
             MinDate = Globals.MinDate;

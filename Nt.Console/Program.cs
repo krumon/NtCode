@@ -46,7 +46,6 @@ namespace ConsoleApp
             IConfigurationRoot config = (IConfigurationRoot)(DesignNinjaHost.Host?.Services.GetService<HostBuilderContext>().Configuration);
             IConfiguration configure = DesignNinjaHost.Host?.Services.GetService<IConfiguration>();
             IDataSeries dataSeries = DesignNinjaHost.Host?.Services.GetService<IDataSeries>();
-            IIndicator<Program> indicator = DesignNinjaHost.Host?.Services.GetService<IIndicator<Program>>();
             INinjascript<Program> ninjascripts = DesignNinjaHost.Host?.Services.GetService<INinjascript<Program>>();
         }
 

@@ -5,6 +5,7 @@ using Nt.Core.Hosting;
 using Nt.Core.Logging;
 using Nt.Scripts.Indicators;
 using Nt.Scripts.Logging;
+using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Services;
 using System.IO;
 
@@ -25,6 +26,19 @@ namespace Nt.Scripts.Hosting
                 services
                     .Configure<DataSeriesOptions>(context.Configuration.GetSection(DataSeriesOptions.Key))
                     .AddDataSeries();
+            });
+        }
+
+        /// <summary>
+        /// Specify the <see cref="SessionsIndicator"/> to be used by the host.
+        /// </summary>
+        /// <param name="hostBuilder">The <see cref="IHostBuilder"/> to configure.</param>
+        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+        public static IHostBuilder UseSessionsIndicator(this IHostBuilder hostBuilder)
+        {
+            return hostBuilder.ConfigureServices((context, services) =>
+            {
+                services.AddSessionsIndicator();
             });
         }
 
@@ -88,18 +102,17 @@ namespace Nt.Scripts.Hosting
                 bool isDevelopment = context.Environment.IsDevelopment();
                 options.ValidateScopes = isDevelopment;
                 options.ValidateOnBuild = isDevelopment;
-            });
-            builder.ConfigureServices((services) =>
+            })
+            .ConfigureNinjascript((context, ninjascriptBuilder) =>
             {
-                services
-                    .AddIndicators(_ =>
-                    {
-                        
-                    })
+                ninjascriptBuilder
+                    .AddConfiguration(context.Configuration.GetSection("Ninjascripts"));
+                ninjascriptBuilder.Services
                     .AddNinjatraderObjects(ninjatraderObjects)
                     .AddSessionsManager();
             })
-            .UseDataSeries();
+            .UseDataSeries()
+            .UseSessionsIndicator();
 
             return builder;
 

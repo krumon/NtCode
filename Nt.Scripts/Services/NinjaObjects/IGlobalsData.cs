@@ -1,4 +1,5 @@
 ﻿using Nt.Core.Hosting;
+using Nt.Scripts.Ninjascripts;
 using System;
 
 namespace Nt.Scripts.Services

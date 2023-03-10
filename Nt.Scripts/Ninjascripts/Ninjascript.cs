@@ -1,5 +1,4 @@
 ﻿using System;
-using NinjaTrader.NinjaScript;
 using Nt.Core.Helpers;
 
 namespace Nt.Scripts.Ninjascripts
@@ -12,6 +11,8 @@ namespace Nt.Scripts.Ninjascripts
     public class Ninjascript<T> : INinjascript<T>
     {
         private readonly INinjascript _ninjascript;
+
+        public bool IsConfigured => _ninjascript.IsConfigured;
 
         /// <summary>
         /// Creates a new <see cref="Ninjascript{T}"/>.
@@ -37,5 +38,16 @@ namespace Nt.Scripts.Ninjascripts
             _ninjascript.Calculate();
         }
 
+        /// <inheritdoc/>
+        public void Configure()
+        {
+            _ninjascript.Configure();
+        }
+
+        /// <inheritdoc/>
+        public void Dispose()
+        {
+            _ninjascript.Dispose();
+        }
     }
 }

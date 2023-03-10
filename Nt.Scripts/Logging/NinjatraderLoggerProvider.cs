@@ -13,7 +13,7 @@ namespace Nt.Scripts.Logging
     /// Provides the ability to log to ninjatrader output windows.
     /// </summary>
     [ProviderAlias("OutputWindow")]
-    public class NinjatraderLoggerProvider : ILoggerProvider, Services.IDisposable
+    public class NinjatraderLoggerProvider : ILoggerProvider, IDisposable
     {
         private readonly ConcurrentDictionary<string, NinjatraderLogger> _loggers;
         private readonly System.IDisposable _optionsReloadToken;

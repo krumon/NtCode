@@ -1,11 +1,12 @@
 ﻿using NinjaTrader.NinjaScript;
+using System;
 
 namespace Nt.Scripts.Ninjascripts
 {
     /// <summary>
     /// Represents properties and methods of ninjascript instance in ninjatrader plattform.
     /// </summary>
-    public interface INinjascript 
+    public interface INinjascript : IConfigurable, IDisposable
     {
 
         /// <summary>
