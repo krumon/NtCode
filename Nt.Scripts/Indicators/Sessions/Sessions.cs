@@ -6,9 +6,9 @@ using System;
 namespace Nt.Scripts.Indicators
 {
     /// <summary>
-    /// Represents a <see cref="ISessionsIndicator"/> service.
+    /// Represents a <see cref="ISessions"/> service.
     /// </summary>
-    public class SessionsIndicator : ISessionsIndicator
+    public class Sessions : ISessions
     {
         private readonly INinjascriptBase _ninjascript;
         private readonly IGlobalsData _globalsData;
@@ -21,21 +21,8 @@ namespace Nt.Scripts.Indicators
         public ISessionsIterator SessionsIterator => _sessionsIterator;
         public bool IsConfigured { get; internal set; }
         public bool IsNewSession { get; set; }
-        //{
-        //    get => _isNewSession;
-        //    set
-        //    {
-        //        if (value == _isNewSession)
-        //            return;
 
-        //        _isNewSession = value;
-
-        //        if (_isNewSession)
-        //            OnSessionUpdate();
-        //    }
-        //}
-
-        public SessionsIndicator(INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger<SessionsIndicator> logger)
+        public Sessions(INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger<Sessions> logger)
         {
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
             _globalsData = globalsData ?? throw new ArgumentNullException(nameof(globalsData));
@@ -44,7 +31,7 @@ namespace Nt.Scripts.Indicators
             _sessionsFilters = new SessionsFilters(_sessionsIterator);
         }
 
-        internal SessionsIndicator()
+        internal Sessions()
         {
         }
 

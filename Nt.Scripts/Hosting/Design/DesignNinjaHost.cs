@@ -2,6 +2,7 @@
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
 using Nt.Scripts.Indicators;
+using Nt.Scripts.Ninjascripts;
 using System;
 
 namespace Nt.Scripts.Hosting.Design
@@ -17,19 +18,9 @@ namespace Nt.Scripts.Hosting.Design
         public static IHost Host => _host;
 
         /// <summary>
-        /// Gets <see cref="ISessionsIndicator"/> service.
+        /// Gets <see cref="ISessions"/> service.
         /// </summary>
-        public static ISessionsIndicator Sessions => _host?.Services.GetService<ISessionsIndicator>();
-
-        ///// <summary>
-        ///// Gets <see cref="ISessionsIterator"/> service.
-        ///// </summary>
-        //public static ISessionsIterator SessionsIterator => _host?.Services.GetService<ISessionsIterator>();
-
-        ///// <summary>
-        ///// Gets <see cref="ISessionsFilters"/> service.
-        ///// </summary>
-        //public static ISessionsFilters SessionsFilters => _host?.Services.GetService<ISessionsFilters>();
+        public static INinjascript Ninjascript => _host?.Services.GetService<INinjascript<Sessions>>();
 
         /// <summary>
         /// Gets <see cref="ILogger{TCategoryName}"/> service.

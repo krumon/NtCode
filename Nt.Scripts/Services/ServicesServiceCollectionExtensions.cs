@@ -1,7 +1,6 @@
 ﻿using NinjaTrader.Gui.Chart;
 using NinjaTrader.NinjaScript;
 using Nt.Core.DependencyInjection;
-using Nt.Scripts.Indicators;
 using System;
 
 namespace Nt.Scripts.Services
@@ -47,22 +46,6 @@ namespace Nt.Scripts.Services
                 .TryAddNinjascript(TryGetNinjatraderObject<NinjaScriptBase>(ninjatraderObjects))
                 .TryAddGlobalsData()
                 .TryAddChartBarsData(TryGetNinjatraderObject<ChartBars>(ninjatraderObjects));
-
-            return services;
-        }
-
-        /// <summary>
-        /// Adds sessions services to the services container.
-        /// </summary>
-        /// <param name="services">The services container.</param>
-        /// <returns>The <see cref="IServiceCollection"/> to continue builder the host.</returns>
-        /// <exception cref="ArgumentNullException">The <see cref="IServiceCollection"/> cannot be null.</exception>
-        public static IServiceCollection AddSessionsManager(this IServiceCollection services)
-        {
-            if (services == null)
-                throw new ArgumentNullException(nameof(services));
-
-            services.AddSingleton<ISessionsIndicator, SessionsIndicator>();
 
             return services;
         }

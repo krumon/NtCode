@@ -51,9 +51,9 @@ namespace Nt.Scripts.Services.Design
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
 
-            services.AddSessionsIterator();
-            services.AddSessionsFilters();
-            services.AddSingleton<ISessionsIndicator, SessionsIndicator>();
+            //services.AddSessionsIterator();
+            //services.AddSessionsFilters();
+            services.AddSingleton<ISessions, Sessions>();
 
             return services;
         }

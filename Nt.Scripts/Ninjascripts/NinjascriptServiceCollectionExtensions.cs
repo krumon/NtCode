@@ -1,4 +1,5 @@
 ﻿using Nt.Core.DependencyInjection;
+using Nt.Core.Options;
 using Nt.Scripts.Ninjascripts.Internal;
 using System;
 
@@ -34,8 +35,8 @@ namespace Nt.Scripts.Ninjascripts
             services.TryAdd(ServiceDescriptor.Singleton<INinjascriptFactory, NinjascriptFactory>());
             services.TryAdd(ServiceDescriptor.Singleton(typeof(INinjascript<>), typeof(Ninjascript<>)));
 
-            //services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<LoggerFilterOptions>>(
-            //    new DefaultLoggerLevelConfigureOptions(LogLevel.Information)));
+            services.TryAddEnumerable(ServiceDescriptor.Singleton<IConfigureOptions<NinjascriptFilterOptions>>(
+                new DefaultNinjascriptLevelConfigureOptions(NinjascriptLevel.Active)));
 
             configure(new NinjascriptBuilder(services));
 

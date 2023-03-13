@@ -42,11 +42,12 @@ namespace ConsoleApp
             _logger.LogInformation("Hello World!");
             //_logger.LogInformation(DesignNinjaHost.SessionsIterator.ToString());
             //_logger.LogInformation(DesignNinjaHost.SessionsFilters.IsEnabled.ToString());
-            _logger.LogInformation(DesignNinjaHost.Sessions.IsNewSession.ToString());
+            //_logger.LogInformation(DesignNinjaHost.Ninjascript.ToString());
             IConfigurationRoot config = (IConfigurationRoot)(DesignNinjaHost.Host?.Services.GetService<HostBuilderContext>().Configuration);
             IConfiguration configure = DesignNinjaHost.Host?.Services.GetService<IConfiguration>();
             IDataSeries dataSeries = DesignNinjaHost.Host?.Services.GetService<IDataSeries>();
             INinjascript<Program> ninjascripts = DesignNinjaHost.Host?.Services.GetService<INinjascript<Program>>();
+            INinjascript<Sessions> ninjascripts2 = DesignNinjaHost.Host?.Services.GetService<INinjascript<Sessions>>();
         }
 
         private static void UseDesignNinjascriptHostingServices()

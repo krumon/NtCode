@@ -17,9 +17,9 @@ namespace Nt.Scripts.Hosting
         public static IHost Host => _host;
 
         /// <summary>
-        /// Gets <see cref="ISessionsIndicator"/> service.
+        /// Gets <see cref="ISessions"/> service.
         /// </summary>
-        public static ISessionsIndicator SessionsManager => _host?.Services.GetService<ISessionsIndicator>();
+        public static ISessions SessionsManager => _host?.Services.GetService<ISessions>();
 
         ///// <summary>
         ///// Gets <see cref="ISessionsIterator"/> service.

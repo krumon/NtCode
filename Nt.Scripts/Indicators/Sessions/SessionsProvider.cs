@@ -5,16 +5,16 @@ using Nt.Scripts.Services;
 namespace Nt.Scripts.Indicators
 {
     [NinjascriptProviderAlias("Sessions")]
-    public class SessionsIndicatorProvider : INinjascriptProvider
+    public class SessionsProvider : INinjascriptProvider
     {
-        public SessionsIndicatorProvider(INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger<SessionsIndicator> logger)
+        public SessionsProvider(INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger<Sessions> logger)
         {
 
         }
 
         public INinjascript CreateNinjascript(string categoryName)
         {
-            return new SessionsIndicator();
+            return new Sessions();
         }
 
         public void Dispose()

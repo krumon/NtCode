@@ -3,9 +3,9 @@
 namespace Nt.Scripts.Indicators
 {
     /// <summary>
-    /// Represents a <see cref="ISessionsIndicator"/> service.
+    /// Represents a <see cref="ISessions"/> service.
     /// </summary>
-    public interface ISessionsIndicator : INinjascript, IRecalculableOnBarUpdate, IRecalculableOnSessionChanged
+    public interface ISessions : INinjascript, IRecalculableOnBarUpdate, IRecalculableOnSessionChanged
     {
         ISessionsIterator SessionsIterator { get; }
         //ISessionsFilters Filters { get; }

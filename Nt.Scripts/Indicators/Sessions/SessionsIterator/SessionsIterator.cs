@@ -17,7 +17,7 @@ namespace Nt.Scripts.Indicators
 
         #region Private members
 
-        private readonly ISessionsIndicator _sessionsIndicator;
+        private readonly ISessions _sessionsIndicator;
         private readonly INinjascriptBase _ninjascript;
         private readonly IGlobalsData _globalsData;
         private readonly ILogger _logger;
@@ -62,7 +62,7 @@ namespace Nt.Scripts.Indicators
         /// <param name="ninjascript"></param>
         /// <param name="globalsData">The global data necesary to create the service.</param>
         /// <param name="logger">Log service to register the trace.</param>
-        public SessionsIterator(ISessionsIndicator sessionsIndicator, INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger logger)
+        public SessionsIterator(ISessions sessionsIndicator, INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger logger)
         {
             _sessionsIndicator = sessionsIndicator ?? throw new ArgumentNullException(nameof(sessionsIndicator));
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));

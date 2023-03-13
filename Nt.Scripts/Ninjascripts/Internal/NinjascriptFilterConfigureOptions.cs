@@ -8,7 +8,7 @@ namespace Nt.Scripts.Ninjascripts.Internal
 {
     internal sealed class NinjascriptFilterConfigureOptions : IConfigureOptions<NinjascriptFilterOptions>
     {
-        private const string LogLevelKey = "Level";
+        private const string NinjascriptLevelKey = "Level";
         private const string DefaultCategory = "Default";
         private readonly IConfiguration _configuration;
 
@@ -30,19 +30,19 @@ namespace Nt.Scripts.Ninjascripts.Internal
             //options.CaptureScopes = GetCaptureScopesValue(options);
             foreach (IConfigurationSection configurationSection in _configuration.GetChildren())
             {
-                if (configurationSection.Key.Equals(LogLevelKey, StringComparison.OrdinalIgnoreCase))
+                if (configurationSection.Key.Equals(NinjascriptLevelKey, StringComparison.OrdinalIgnoreCase))
                 {
                     // Load global category defaults
                     LoadRules(options, configurationSection, null);
                 }
                 else
                 {
-                    IConfigurationSection logLevelSection = configurationSection.GetSection(LogLevelKey);
-                    if (logLevelSection != null)
+                    IConfigurationSection ninjascriptLevelSection = configurationSection.GetSection(NinjascriptLevelKey);
+                    if (ninjascriptLevelSection != null)
                     {
                         // Load logger specific rules
                         string logger = configurationSection.Key;
-                        LoadRules(options, logLevelSection, logger);
+                        LoadRules(options, ninjascriptLevelSection, logger);
                     }
                 }
             }
@@ -52,7 +52,7 @@ namespace Nt.Scripts.Ninjascripts.Internal
         //    Justification = "IConfiguration.GetValue is safe when T is a bool.")]
         //private bool GetCaptureScopesValue(NinjascriptFilterOptions options) => _configuration.GetValue(nameof(options.CaptureScopes), options.CaptureScopes);
 
-        private void LoadRules(NinjascriptFilterOptions options, IConfigurationSection configurationSection, string logger)
+        private void LoadRules(NinjascriptFilterOptions options, IConfigurationSection configurationSection, string ninjascript)
         {
             foreach (KeyValuePair<string, string> section in configurationSection.AsEnumerable(true))
             {
@@ -63,7 +63,7 @@ namespace Nt.Scripts.Ninjascripts.Internal
                     {
                         category = null;
                     }
-                    var newRule = new NinjascriptFilterRule(logger, category, level, null);
+                    var newRule = new NinjascriptFilterRule(ninjascript, category, level, null);
                     options.Rules.Add(newRule);
                 }
             }

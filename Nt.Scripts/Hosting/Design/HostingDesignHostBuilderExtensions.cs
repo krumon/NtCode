@@ -3,6 +3,7 @@ using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
+using Nt.Scripts.Indicators;
 using Nt.Scripts.Logging;
 using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Services;
@@ -91,12 +92,11 @@ namespace Nt.Scripts.Hosting.Design
             .ConfigureNinjascript((context, ninjascriptBuilder) =>
             {
                 ninjascriptBuilder
-                    .AddConfiguration(context.Configuration.GetSection("Ninjascripts"));
-                ninjascriptBuilder.Services
-                    .AddDesignNinjatraderObjects();
-            })
-            .UseDataSeries()
-            .UseSessions();
+                    .AddConfiguration(context.Configuration.GetSection("Ninjascripts"))
+                    .AddDesignSessions();
+            });
+            //.UseDataSeries()
+            //.UseSessions();
 
             return builder;
 

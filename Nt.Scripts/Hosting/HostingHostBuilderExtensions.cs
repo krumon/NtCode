@@ -30,22 +30,22 @@ namespace Nt.Scripts.Hosting
             });
         }
 
-        /// <summary>
-        /// Specify the <see cref="SessionsIndicator"/> to be used by the host.
-        /// </summary>
-        /// <param name="hostBuilder">The <see cref="IHostBuilder"/> to configure.</param>
-        /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        public static IHostBuilder UseSessions(this IHostBuilder hostBuilder)
-        {
-            return hostBuilder.ConfigureNinjascript(builder => 
-            {
-                builder.AddSessions();
-            });
-            //return hostBuilder.ConfigureServices((context, services) =>
-            //{
-            //    services.AddSessionsIndicator();
-            //});
-        }
+        ///// <summary>
+        ///// Specify the <see cref="Sessions"/> to be used by the host.
+        ///// </summary>
+        ///// <param name="hostBuilder">The <see cref="IHostBuilder"/> to configure.</param>
+        ///// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+        //public static IHostBuilder UseSessions(this IHostBuilder hostBuilder)
+        //{
+        //    return hostBuilder.ConfigureNinjascript(builder => 
+        //    {
+        //        builder.AddSessions();
+        //    });
+        //    //return hostBuilder.ConfigureServices((context, services) =>
+        //    //{
+        //    //    services.AddSessionsIndicator();
+        //    //});
+        //}
 
         ///// <summary>
         ///// Adds a delegate for configuring the provided <see cref="ILoggingBuilder"/>. This may be called multiple times.
@@ -84,8 +84,6 @@ namespace Nt.Scripts.Hosting
         public static IHostBuilder NinjaConfigureDefaults(this IHostBuilder builder, object[] ninjatraderObjects)
         {
             builder.UseContentRoot(NinjaTrader.Core.Globals.UserDataDir);
-            //// TODO: Delete. Is only for tests in console.
-            //builder.UseContentRoot(Directory.GetCurrentDirectory());
             builder.ConfigureHostConfiguration(config =>
             {
                 config.AddJsonFile("launchsettings.json", optional: true, reloadOnChange: false);
@@ -105,17 +103,16 @@ namespace Nt.Scripts.Hosting
                 //// Default the EventLogLoggerProvider to warning or above
                 //logging.AddFilter<EventLogLoggerProvider>(level => level >= LogLevel.Warning);
 
-                logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-
-                logging.AddOutputWindowLogger();
-
-                logging.Configure(options =>
-                {
-                    options.ActivityTrackingOptions =
-                        ActivityTrackingOptions.SpanId |
-                        ActivityTrackingOptions.TraceId |
-                        ActivityTrackingOptions.ParentId;
-                });
+                logging
+                    .AddConfiguration(hostingContext.Configuration.GetSection("Logging"))
+                    .AddOutputWindowLogger()
+                    .Configure(options =>
+                    {
+                        options.ActivityTrackingOptions =
+                            ActivityTrackingOptions.SpanId |
+                            ActivityTrackingOptions.TraceId |
+                            ActivityTrackingOptions.ParentId;
+                    });
             })
             .UseDefaultServiceProvider((context, options) =>
             {
@@ -126,12 +123,11 @@ namespace Nt.Scripts.Hosting
             .ConfigureNinjascript((context, ninjascriptBuilder) =>
             {
                 ninjascriptBuilder
-                    .AddConfiguration(context.Configuration.GetSection("Ninjascripts"));
-                ninjascriptBuilder.Services
-                    .AddNinjatraderObjects(ninjatraderObjects);
-            })
-            .UseDataSeries()
-            .UseSessions();
+                    .AddConfiguration(context.Configuration.GetSection("Ninjascripts"))
+                    .AddSessions(ninjatraderObjects);
+            });
+            //.UseDataSeries()
+            //.UseSessions();
 
             return builder;
 

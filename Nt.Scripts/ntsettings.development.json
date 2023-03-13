@@ -17,7 +17,15 @@
   },
 
   "Ninjascripts": {
-    "Krumon": "ok"
+    "Level": {
+      "Default": "Real"
+    },
+    "Krumon": "ok",
+    "Sessions": {
+      "test1": true,
+      "test2": "36.0",
+      "test3": "Krumon"
+    }
   }
 
   // SessionHours([],[],[])
