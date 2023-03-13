@@ -7,6 +7,7 @@ using Nt.Scripts.Indicators;
 using Nt.Scripts.Logging;
 using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Services;
+using System;
 using System.IO;
 
 namespace Nt.Scripts.Hosting
@@ -34,13 +35,32 @@ namespace Nt.Scripts.Hosting
         /// </summary>
         /// <param name="hostBuilder">The <see cref="IHostBuilder"/> to configure.</param>
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        public static IHostBuilder UseSessionsIndicator(this IHostBuilder hostBuilder)
+        public static IHostBuilder UseSessions(this IHostBuilder hostBuilder)
         {
-            return hostBuilder.ConfigureServices((context, services) =>
+            return hostBuilder.ConfigureNinjascript(builder => 
             {
-                services.AddSessionsIndicator();
+                builder.AddSessions();
             });
+            //return hostBuilder.ConfigureServices((context, services) =>
+            //{
+            //    services.AddSessionsIndicator();
+            //});
         }
+
+        ///// <summary>
+        ///// Adds a delegate for configuring the provided <see cref="ILoggingBuilder"/>. This may be called multiple times.
+        ///// </summary>
+        ///// <param name="hostBuilder">The <see cref="IHostBuilder" /> to configure.</param>
+        ///// <param name="configureSessions">The delegate that configures the <see cref="ILoggingBuilder"/>.</param>
+        ///// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
+        //public static IHostBuilder ConfigureSessions(this IHostBuilder hostBuilder, Action<HostBuilderContext, ISessionsBuilder> configureSessions)
+        //{
+        //    return hostBuilder.ConfigureServices((context, builder) => builder.AddNinjascript(b => 
+        //    {
+        //    b.AddSessions(builder(configureSessions));
+        //    ));
+        //}
+
 
         /// <summary>
         /// Configures an existing <see cref="IHostBuilder"/> instance with pre-configured defaults. This will overwrite
@@ -108,11 +128,10 @@ namespace Nt.Scripts.Hosting
                 ninjascriptBuilder
                     .AddConfiguration(context.Configuration.GetSection("Ninjascripts"));
                 ninjascriptBuilder.Services
-                    .AddNinjatraderObjects(ninjatraderObjects)
-                    .AddSessionsManager();
+                    .AddNinjatraderObjects(ninjatraderObjects);
             })
             .UseDataSeries()
-            .UseSessionsIndicator();
+            .UseSessions();
 
             return builder;
 

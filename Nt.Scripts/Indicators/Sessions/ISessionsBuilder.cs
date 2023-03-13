@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Nt.Core.DependencyInjection;
+using System;
 
 namespace Nt.Scripts.Indicators
 {
@@ -7,9 +8,15 @@ namespace Nt.Scripts.Indicators
     /// </summary>
     public interface ISessionsBuilder
     {
-        SessionsBuilder ConfigureSessionsIterator(Action<SessionsIteratorOptions> configureOptions);
-        SessionsBuilder ConfigureFilters(Action<SessionsFiltersOptions> configureOptions);
-        void Build();
+
+        /// <summary>
+        /// Gets the <see cref="IServiceCollection"/> where ninjascript services are configured.
+        /// </summary>
+        IServiceCollection Services { get; }
+
+        //SessionsBuilder ConfigureSessionsIterator(Action<SessionsIteratorOptions> configureOptions);
+        //SessionsBuilder ConfigureFilters(Action<SessionsFiltersOptions> configureOptions);
+        //void Build();
 
     }
 }

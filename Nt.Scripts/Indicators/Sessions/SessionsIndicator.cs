@@ -15,6 +15,7 @@ namespace Nt.Scripts.Indicators
         private readonly ILogger _logger;
 
         private ISessionsIterator _sessionsIterator;
+        private ISessionsFilters _sessionsFilters;
         //private bool _isNewSession;
         
         public ISessionsIterator SessionsIterator => _sessionsIterator;
@@ -40,6 +41,7 @@ namespace Nt.Scripts.Indicators
             _globalsData = globalsData ?? throw new ArgumentNullException(nameof(globalsData));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _sessionsIterator = new SessionsIterator(this, _ninjascript, _globalsData, _logger);
+            _sessionsFilters = new SessionsFilters(_sessionsIterator);
         }
 
         internal SessionsIndicator()

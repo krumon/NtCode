@@ -93,11 +93,10 @@ namespace Nt.Scripts.Hosting.Design
                 ninjascriptBuilder
                     .AddConfiguration(context.Configuration.GetSection("Ninjascripts"));
                 ninjascriptBuilder.Services
-                    .AddDesignNinjatraderObjects()
-                    .AddSessions();
+                    .AddDesignNinjatraderObjects();
             })
             .UseDataSeries()
-            .UseSessionsIndicator();
+            .UseSessions();
 
             return builder;
 

@@ -14,18 +14,18 @@ namespace Nt.Scripts.Ninjascripts
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         public static IHostBuilder ConfigureNinjascript(this IHostBuilder hostBuilder, Action<HostBuilderContext, INinjascriptBuilder> configureNinjascripts)
         {
-            return hostBuilder.ConfigureServices((context, collection) => collection.AddNinjascript(builder => configureNinjascripts(context, builder)));
+            return hostBuilder.ConfigureServices((context, services) => services.AddNinjascript(builder => configureNinjascripts(context, builder)));
         }
 
         /// <summary>
         /// Adds a delegate for configuring the provided <see cref="INinjascriptBuilder"/>. This may be called multiple times.
         /// </summary>
         /// <param name="hostBuilder">The <see cref="IHostBuilder" /> to configure.</param>
-        /// <param name="configureLogging">The delegate that configures the <see cref="INinjascriptBuilder"/>.</param>
+        /// <param name="configureNinjascript">The delegate that configures the <see cref="INinjascriptBuilder"/>.</param>
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
-        public static IHostBuilder ConfigureNinjascript(this IHostBuilder hostBuilder, Action<INinjascriptBuilder> configureLogging)
+        public static IHostBuilder ConfigureNinjascript(this IHostBuilder hostBuilder, Action<INinjascriptBuilder> configureNinjascript)
         {
-            return hostBuilder.ConfigureServices((context, collection) => collection.AddNinjascript(builder => configureLogging(builder)));
+            return hostBuilder.ConfigureServices((context, services) => services.AddNinjascript(builder => configureNinjascript(builder)));
         }
 
     }

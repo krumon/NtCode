@@ -17,7 +17,7 @@ namespace Nt.Scripts.Indicators
 
         #region Private members
 
-        private readonly ISessionsIndicator _sessionsManager;
+        private readonly ISessionsIndicator _sessionsIndicator;
         private readonly INinjascriptBase _ninjascript;
         private readonly IGlobalsData _globalsData;
         private readonly ILogger _logger;
@@ -56,12 +56,15 @@ namespace Nt.Scripts.Indicators
         #region Constructors
 
         /// <summary>
-        /// Creates <see cref="SessionsIteratorService"/> default instance.
+        /// Creates <see cref="SessionsIterator"/> default instance.
         /// </summary>
+        /// <param name="sessionsIndicator">The sessions engine.</param>
+        /// <param name="ninjascript"></param>
         /// <param name="globalsData">The global data necesary to create the service.</param>
-        public SessionsIterator(ISessionsIndicator sessionsManager, INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger logger)
+        /// <param name="logger">Log service to register the trace.</param>
+        public SessionsIterator(ISessionsIndicator sessionsIndicator, INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger logger)
         {
-            _sessionsManager = sessionsManager ?? throw new ArgumentNullException(nameof(sessionsManager));
+            _sessionsIndicator = sessionsIndicator ?? throw new ArgumentNullException(nameof(sessionsIndicator));
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
             _globalsData = globalsData ?? throw new ArgumentNullException(nameof(globalsData));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -72,12 +75,13 @@ namespace Nt.Scripts.Indicators
         #region Public methods
 
         public virtual void Configure() 
-        { 
-            //if (_ninjascript.Instance.State == State.SetDefaults)
-            //{
-            //    _configured = false;
-            //    IsConfigured = false;
-            //}
+        {
+            if (_ninjascript.Instance.State == State.SetDefaults)
+            {
+                //_configured = false;
+                //IsConfigured = false;
+                return;
+            }
             if (_ninjascript.Instance.State == State.Configure || _ninjascript.Instance.State == State.DataLoaded)
             {
                 if (!_configured && _ninjascript.Instance.State == State.Configure)
@@ -166,7 +170,7 @@ namespace Nt.Scripts.Indicators
                 // The new session begin
                 IsSessionUpdated = true;
                 // Changes the new session property in session manager.
-                _sessionsManager.IsNewSession = true;
+                _sessionsIndicator.IsNewSession = true;
                 // Check if it's a partial holiday
                 TryGetPartialHoliday();
                 // Create the session changed arguments
@@ -174,7 +178,7 @@ namespace Nt.Scripts.Indicators
                 // Call the parent
                 OnSessionChanged(args);
                 // Call to session manager
-                _sessionsManager.OnSessionChanged(args);
+                _sessionsIndicator.OnSessionChanged(args);
                 // Call to listeners
                 SessionChanged?.Invoke(args);
             }            
