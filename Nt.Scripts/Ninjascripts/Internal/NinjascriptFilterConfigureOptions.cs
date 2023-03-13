@@ -41,8 +41,8 @@ namespace Nt.Scripts.Ninjascripts.Internal
                     if (ninjascriptLevelSection != null)
                     {
                         // Load logger specific rules
-                        string logger = configurationSection.Key;
-                        LoadRules(options, ninjascriptLevelSection, logger);
+                        string ninjascript = configurationSection.Key;
+                        LoadRules(options, ninjascriptLevelSection, ninjascript);
                     }
                 }
             }

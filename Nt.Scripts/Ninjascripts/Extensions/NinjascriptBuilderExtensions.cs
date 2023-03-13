@@ -1,6 +1,8 @@
 ﻿using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
+using Nt.Core.Options;
 using Nt.Scripts.Ninjascripts.Configuration;
+using Nt.Scripts.Ninjascripts.Internal;
 using System;
 
 namespace Nt.Scripts.Ninjascripts
@@ -11,18 +13,18 @@ namespace Nt.Scripts.Ninjascripts
     public static class NinjascriptBuilderExtensions
     {
 
-        ///// <summary>
-        ///// Sets a minimum <see cref="LogLevel"/> requirement for log messages to be logged.
-        ///// </summary>
-        ///// <param name="builder">The <see cref="ILoggingBuilder"/> to set the minimum level on.</param>
-        ///// <param name="level">The <see cref="LogLevel"/> to set as the minimum.</param>
-        ///// <returns>The <see cref="ILoggingBuilder"/> so that additional calls can be chained.</returns>
-        //public static ILoggingBuilder SetMinimumLevel(this ILoggingBuilder builder, LogLevel level)
-        //{
-        //    builder.Services.Add(ServiceDescriptor.Singleton<IConfigureOptions<LoggerFilterOptions>>(
-        //        new DefaultLoggerLevelConfigureOptions(level)));
-        //    return builder;
-        //}
+        /// <summary>
+        /// Sets a minimum <see cref="NinjascriptLevel"/> requirement for ninjascripts.
+        /// </summary>
+        /// <param name="builder">The <see cref="INinjascriptBuilder"/> to set the minimum level on.</param>
+        /// <param name="level">The <see cref="NinjascriptLevel"/> to set as the minimum.</param>
+        /// <returns>The <see cref="INinjascriptBuilder"/> so that additional calls can be chained.</returns>
+        public static INinjascriptBuilder SetMinimumLevel(this INinjascriptBuilder builder, NinjascriptLevel level)
+        {
+            builder.Services.Add(ServiceDescriptor.Singleton<IConfigureOptions<NinjascriptFilterOptions>>(
+                new DefaultNinjascriptLevelConfigureOptions(level)));
+            return builder;
+        }
 
         /// <summary>
         /// Adds the given <see cref="INinjascriptProvider"/> to the <see cref="INinjascriptBuilder"/>
@@ -69,8 +71,8 @@ namespace Nt.Scripts.Ninjascripts
         {
             builder.AddConfiguration();
 
-            //builder.Services.AddSingleton<IConfigureOptions<LoggerFilterOptions>>(new LoggerFilterConfigureOptions(configuration));
-            //builder.Services.AddSingleton<IOptionsChangeTokenSource<LoggerFilterOptions>>(new ConfigurationChangeTokenSource<LoggerFilterOptions>(configuration));
+            builder.Services.AddSingleton<IConfigureOptions<NinjascriptFilterOptions>>(new NinjascriptFilterConfigureOptions(configuration));
+            builder.Services.AddSingleton<IOptionsChangeTokenSource<NinjascriptFilterOptions>>(new ConfigurationChangeTokenSource<NinjascriptFilterOptions>(configuration));
 
             builder.Services.AddSingleton(new NinjascriptConfiguration(configuration));
 
