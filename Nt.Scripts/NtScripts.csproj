@@ -132,6 +132,7 @@
     <Compile Include="Ninjascripts\NinjascriptFactoryOptions.cs" />
     <Compile Include="Ninjascripts\Extensions\NinjascriptHostBuilderExtensions.cs" />
     <Compile Include="Ninjascripts\NinjascriptLevel.cs" />
+    <Compile Include="Ninjascripts\NinjascriptOptions.cs" />
     <Compile Include="Ninjascripts\NinjascriptProviderAliasAttribute.cs" />
     <Compile Include="Ninjascripts\Extensions\NinjascriptServiceCollectionExtensions.cs" />
     <Compile Include="Ninjascripts\Extensions\NinjascriptStateExtensions.cs" />

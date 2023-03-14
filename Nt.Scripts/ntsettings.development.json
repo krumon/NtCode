@@ -1,17 +1,35 @@
 {
-  "Indicators": {
-    "SessionHours": {
-      "Strategies": [ "StrategyTester", "SessionsStats" ],
-      "GenericSessions": {
-
-      },
-      "DataSeries": [ "MES(m1,default)", "m5", "h1" ]
-    }
+  "Ninjatrader.Ninjascript": {
+    "KrumonTest": ["MasterStats"]
   },
-  "Strategies": {
-    "StrategyTester": {
-      "Indicators": {
-        "SessionsHours": ""
+
+  "NinjascriptOptions": {
+    // Configure the ninjascript levels in the master scripts.
+    // If new MasterScript is created...include it in this section and configure it.
+    "Filters": {
+      // Category Name.
+      "MasterStats": {
+        // NinjascriptProviderName : NinjascriptLevel
+        "SessionsIndicator": "Active",
+        "StatsIndicator": "Disable",
+        "BuyAndSellStrategy": "Historical",
+        "TrailingStopStrategy": "Real"
+      },
+      // CategoryName
+      "MasterSwing": {
+        // NinjascriptProviderName : NinjascriptLevel
+        "SessionsIndicator": "Disable",
+        "SessionsStats": "Disable",
+        "BuyAndSellStrategy": "Historical",
+        "TrailingStopStrategy": "Real"
+      }
+    },
+    "MasterStatsOptions": {
+      "SessionsIndicator": {
+      },
+      "StatsIndicator": {
+      },
+      "BuyAndSellStrategy": {
       }
     }
   },
@@ -23,13 +41,35 @@
     "Krumon": "ok",
     "Sessions": {
       "Level": {
-        "Default":"Historical"
+        "Default": "Historical"
       },
       "test1": true,
       "test2": "36.0",
       "test3": "Krumon"
     }
-  }
+  },
 
-  // SessionHours([],[],[])
+  // ---------------------------------------------------------------------
+  // Don't remove this sections. It's necesary to create the ninjascripts. 
+  // If new ninjascript is created...include it in this sections
+  // ---------------------------------------------------------------------
+
+  // The existing ninjascripts in the assemblies
+  "Scripts": {
+    "TesterScripts": [
+      "NinjascriptTester"
+    ],
+    "MasterScripts": [
+      "MasterStats",
+      "MasterSwing"
+    ],
+    "Indicators": [
+      "SessionsIndicator",
+      "StatsIndicator"
+    ],
+    "Strategies": [
+      "BuyAndSellStrategy",
+      "TrailingStopStrategy"
+    ]
+  }
 }
