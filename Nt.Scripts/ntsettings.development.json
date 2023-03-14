@@ -22,6 +22,9 @@
     },
     "Krumon": "ok",
     "Sessions": {
+      "Level": {
+        "Default":"Historical"
+      },
       "test1": true,
       "test2": "36.0",
       "test3": "Krumon"

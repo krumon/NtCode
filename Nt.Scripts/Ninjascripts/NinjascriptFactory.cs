@@ -161,7 +161,7 @@ namespace Nt.Scripts.Ninjascripts
                 foreach (KeyValuePair<string, Ninjascript> registeredNinjascript in _ninjascripts)
                 {
                     Ninjascript ninjascript = registeredNinjascript.Value;
-                    //logger.MessageLoggers = ApplyFilters(logger.Loggers);
+                    ninjascript.ConfigureNinjascripts = ApplyFilters(ninjascript.Ninjascripts);
                 }
             }
         }

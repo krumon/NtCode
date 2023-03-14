@@ -10,7 +10,7 @@ namespace Nt.Scripts.Indicators
     {
         public SessionsProvider(INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger<Sessions> logger, IOptionsMonitor<SessionsOptions> options)
         {
-
+            var op = options.CurrentValue;
         }
 
         public INinjascript CreateNinjascript(string categoryName)

@@ -1,5 +1,4 @@
-﻿using Nt.Scripts.Attributes;
-using System;
+﻿using System;
 
 namespace Nt.Scripts.Ninjascripts.Internal
 {
@@ -18,7 +17,7 @@ namespace Nt.Scripts.Ninjascripts.Internal
             // 4. If there are multiple rules use last
             // 5. If there are no applicable rules use global minimal level
 
-            string providerAlias = NinjascriptAliasAttribute.GetAlias(providerType);
+            string providerAlias = NinjascriptProviderAliasAttribute.GetAlias(providerType);
             NinjascriptFilterRule current = null;
             foreach (NinjascriptFilterRule rule in options.RulesInternal)
             {

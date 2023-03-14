@@ -102,7 +102,6 @@
     <Compile Include="Logging\NinjatraderLoggerProvider.cs" />
     <Compile Include="Logging\NinjatraderLoggerOptions.cs" />
     <Compile Include="Logging\OutputWindowFormatterOptions.cs" />
-    <Compile Include="Attributes\NinjascriptAliasAttribute.cs" />
     <Compile Include="Ninjascripts\Configuration\INinjascriptProviderConfiguration.cs" />
     <Compile Include="Ninjascripts\Configuration\INinjascriptProviderConfigurationFactory.cs" />
     <Compile Include="Ninjascripts\Configuration\NinjascriptBuilderConfigurationExtensions.cs" />

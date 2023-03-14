@@ -1,5 +1,4 @@
 ﻿using Nt.Core.Configuration;
-using Nt.Scripts.Attributes;
 using System;
 using System.Collections.Generic;
 
@@ -20,7 +19,7 @@ namespace Nt.Scripts.Ninjascripts.Configuration
                 throw new ArgumentNullException(nameof(providerType));
 
             string fullName = providerType.FullName;
-            string alias = NinjascriptAliasAttribute.GetAlias(providerType);
+            string alias = NinjascriptProviderAliasAttribute.GetAlias(providerType);
             var configurationBuilder = new ConfigurationBuilder();
             foreach (NinjascriptConfiguration configuration in _configurations)
             {
