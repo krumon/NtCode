@@ -61,6 +61,24 @@ namespace Nt.Scripts.Ninjascripts
             return builder;
         }
 
+        ///// <summary>
+        ///// Configures <see cref="NinjascriptFilterOptions" /> from an instance of <see cref="IConfiguration" />.
+        ///// </summary>
+        ///// <param name="builder">The <see cref="INinjascriptBuilder"/> to use.</param>
+        ///// <param name="configuration">The <see cref="IConfiguration" /> to add.</param>
+        ///// <returns>The builder.</returns>
+        //public static INinjascriptBuilder AddConfiguration(this INinjascriptBuilder builder, IConfiguration configuration)
+        //{
+        //    builder.AddConfiguration();
+
+        //    builder.Services.AddSingleton<IConfigureOptions<NinjascriptFilterOptions>>(new NinjascriptFilterConfigureOptions(configuration));
+        //    builder.Services.AddSingleton<IOptionsChangeTokenSource<NinjascriptFilterOptions>>(new ConfigurationChangeTokenSource<NinjascriptFilterOptions>(configuration));
+
+        //    builder.Services.AddSingleton(new NinjascriptConfiguration(configuration));
+
+        //    return builder;
+        //}
+
         /// <summary>
         /// Configures <see cref="NinjascriptFilterOptions" /> from an instance of <see cref="IConfiguration" />.
         /// </summary>

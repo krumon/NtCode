@@ -1,7 +1,6 @@
-﻿using Nt.Core.Options;
-using System;
+﻿using System;
 
-namespace Nt.Scripts.Indicators
+namespace Nt.Scripts.Ninjascripts.Indicators
 {
     /// <summary>
     /// Service to control the access to any session.

@@ -1,4 +1,4 @@
-﻿namespace Nt.Scripts.Indicators
+﻿namespace Nt.Scripts.Ninjascripts.Indicators
 {
     public class SessionsOptions
     {

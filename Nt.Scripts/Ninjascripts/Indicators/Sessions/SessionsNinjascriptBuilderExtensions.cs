@@ -6,7 +6,7 @@ using Nt.Scripts.Services;
 using Nt.Scripts.Services.Design;
 using System;
 
-namespace Nt.Scripts.Indicators
+namespace Nt.Scripts.Ninjascripts.Indicators
 {
     public static class SessionsNinjascriptBuilderExtensions
     {

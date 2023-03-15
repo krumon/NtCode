@@ -5,8 +5,8 @@ using Nt.Core.Logging;
 using Nt.Core.Logging.Configuration;
 using Nt.Scripts.Hosting;
 using Nt.Scripts.Hosting.Design;
-using Nt.Scripts.Indicators;
 using Nt.Scripts.Ninjascripts;
+using Nt.Scripts.Ninjascripts.Indicators;
 using Nt.Scripts.Services;
 using System;
 

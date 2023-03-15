@@ -1,39 +1,79 @@
 {
-  "Ninjatrader.Ninjascript": {
-    "KrumonTest": ["MasterStats"]
+  // -------------------------------------------------------------------------
+  // Section to configure the ninjascript launched in the ninatrader platform.
+  // -------------------------------------------------------------------------
+  "Ninjatrader": {
+    "KrumonTest": [ "MasterStats" ]
   },
 
-  "NinjascriptOptions": {
-    // Configure the ninjascript levels in the master scripts.
-    // If new MasterScript is created...include it in this section and configure it.
-    "Filters": {
-      // Category Name.
-      "MasterStats": {
-        // NinjascriptProviderName : NinjascriptLevel
+  // ----------------------------------------------------------------------------------------------------
+  // Section to configure the MAsterScripts used by the ninjascript launched in the ninjatrader platform.
+  // ----------------------------------------------------------------------------------------------------
+  "MasterScripts": {
+
+    "MasterStats": {
+      "Ninjascripts": {
         "SessionsIndicator": "Active",
+        "StatsIndicator": "Active",
+        "BuyAndSellStrategy": "Real",
+        "TrailingStopStrategy": "Real"
+      }
+    },
+    "MasterSwings": {
+      "SessionsIndicator": "Disable",
+      "SessionsStats": "Disable",
+      "BuyAndSellStrategy": "Historical",
+      "TrailingStopStrategy": "Real"
+    }
+  },
+
+  // ----------------------------------------------------------------------
+  // Section to configure the ninjascripts developed in our own assemblies.
+  // ----------------------------------------------------------------------
+  "Ninjascripts_": {
+
+    // ---------------------------------------------------
+    // Section to configure the default ninjascript level.
+    // ---------------------------------------------------
+    "Level": {
+      "Default": "Active"
+    },
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    // Section to configure the ninjascript providers that we are going to include in the masterscripts and the levels of each one of them.
+    // ------------------------------------------------------------------------------------------------------------------------------------
+    "Configure": {
+      "MasterStats": // MasterScriptProviderName
+      {
+        "SessionsIndicator": "Active", // NinjascriptProviderName : NinjascriptLevel
         "StatsIndicator": "Disable",
         "BuyAndSellStrategy": "Historical",
         "TrailingStopStrategy": "Real"
       },
-      // CategoryName
-      "MasterSwing": {
-        // NinjascriptProviderName : NinjascriptLevel
+
+      "MasterSwings": {
         "SessionsIndicator": "Disable",
         "SessionsStats": "Disable",
         "BuyAndSellStrategy": "Historical",
         "TrailingStopStrategy": "Real"
       }
     },
-    "MasterStatsOptions": {
+
+    // ----------------------------------------------------------------------------
+    // Sections to configure the options of the ninjascripts for each MasterScript.
+    // ----------------------------------------------------------------------------
+    "Options": {
       "SessionsIndicator": {
-      },
-      "StatsIndicator": {
-      },
-      "BuyAndSellStrategy": {
+        "MasterStats": {
+          // Include SessionsIndicatorOptions for MasterStats
+        },
+        "MasterSwings": {
+          // Include SessionsIndicatorOptions for MasterSwings
+        }
       }
     }
   },
 
+  // TODO: Delete when the previous section is implemented.
   "Ninjascripts": {
     "Level": {
       "Default": "Real"

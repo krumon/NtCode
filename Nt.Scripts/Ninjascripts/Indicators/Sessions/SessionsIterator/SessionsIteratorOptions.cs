@@ -1,4 +1,4 @@
-﻿namespace Nt.Scripts.Indicators
+﻿namespace Nt.Scripts.Ninjascripts.Indicators
 {
     /// <summary>
     /// <see cref="SessionsIterator"/> services options.

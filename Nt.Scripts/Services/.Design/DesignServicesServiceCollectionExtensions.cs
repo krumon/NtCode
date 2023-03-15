@@ -1,5 +1,5 @@
 ﻿using Nt.Core.DependencyInjection;
-using Nt.Scripts.Indicators;
+using Nt.Scripts.Ninjascripts.Indicators;
 using System;
 
 namespace Nt.Scripts.Services.Design

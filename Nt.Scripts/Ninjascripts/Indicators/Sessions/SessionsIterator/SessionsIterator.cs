@@ -5,7 +5,7 @@ using Nt.Scripts.Services;
 using System;
 using System.Collections.Generic;
 
-namespace Nt.Scripts.Indicators
+namespace Nt.Scripts.Ninjascripts.Indicators
 {
 
     /// <summary>

@@ -1,9 +1,8 @@
 ﻿using Nt.Core.Logging;
 using Nt.Core.Options;
-using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Services;
 
-namespace Nt.Scripts.Indicators
+namespace Nt.Scripts.Ninjascripts.Indicators
 {
     [NinjascriptProviderAlias("Sessions")]
     public class SessionsProvider : INinjascriptProvider

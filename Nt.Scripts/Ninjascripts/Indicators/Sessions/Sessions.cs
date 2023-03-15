@@ -3,7 +3,7 @@ using Nt.Core.Logging;
 using Nt.Scripts.Services;
 using System;
 
-namespace Nt.Scripts.Indicators
+namespace Nt.Scripts.Ninjascripts.Indicators
 {
     /// <summary>
     /// Represents a <see cref="ISessions"/> service.

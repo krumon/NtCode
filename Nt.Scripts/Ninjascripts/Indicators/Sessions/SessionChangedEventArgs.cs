@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nt.Scripts.Indicators
+namespace Nt.Scripts.Ninjascripts.Indicators
 {
 
     /// <summary>

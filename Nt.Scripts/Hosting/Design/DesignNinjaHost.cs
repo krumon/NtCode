@@ -1,8 +1,8 @@
 ﻿using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
-using Nt.Scripts.Indicators;
 using Nt.Scripts.Ninjascripts;
+using Nt.Scripts.Ninjascripts.Indicators;
 using System;
 
 namespace Nt.Scripts.Hosting.Design
