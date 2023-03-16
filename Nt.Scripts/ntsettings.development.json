@@ -2,12 +2,13 @@
   // -------------------------------------------------------------------------
   // Section to configure the ninjascript launched in the ninatrader platform.
   // -------------------------------------------------------------------------
-  "Ninjatrader": {
-    "KrumonTest": [ "MasterStats" ]
+  "NinjaScript": {
+    "Name": "Krumon",
+    "KrumonTest": [ "MasterStats", "MasterSwings" ]
   },
 
   // ----------------------------------------------------------------------------------------------------
-  // Section to configure the MAsterScripts used by the ninjascript launched in the ninjatrader platform.
+  // Section to configure the MasterScripts used by the ninjascript launched in the ninjatrader platform.
   // ----------------------------------------------------------------------------------------------------
   "MasterScripts": {
 
@@ -20,10 +21,12 @@
       }
     },
     "MasterSwings": {
-      "SessionsIndicator": "Disable",
-      "SessionsStats": "Disable",
-      "BuyAndSellStrategy": "Historical",
-      "TrailingStopStrategy": "Real"
+      "Ninjascripts": {
+        "SessionsIndicator": "Disable",
+        "SessionsStats": "Disable",
+        "BuyAndSellStrategy": "Historical",
+        "TrailingStopStrategy": "Real"
+      }
     }
   },
 
@@ -93,8 +96,6 @@
   // Don't remove this sections. It's necesary to create the ninjascripts. 
   // If new ninjascript is created...include it in this sections
   // ---------------------------------------------------------------------
-
-  // The existing ninjascripts in the assemblies
   "Scripts": {
     "TesterScripts": [
       "NinjascriptTester"

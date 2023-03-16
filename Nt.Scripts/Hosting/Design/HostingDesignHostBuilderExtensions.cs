@@ -4,6 +4,7 @@ using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
 using Nt.Scripts.Logging;
+using Nt.Scripts.MasterScripts;
 using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Ninjascripts.Indicators;
 using Nt.Scripts.Services;
@@ -89,14 +90,13 @@ namespace Nt.Scripts.Hosting.Design
                 options.ValidateScopes = isDevelopment;
                 options.ValidateOnBuild = isDevelopment;
             })
+            .ConfigureMasterScripts(context => { })
             .ConfigureNinjascript((context, ninjascriptBuilder) =>
             {
                 ninjascriptBuilder
                     .AddConfiguration(context.Configuration.GetSection("Ninjascripts"))
                     .AddDesignSessions();
             });
-            //.UseDataSeries()
-            //.UseSessions();
 
             return builder;
 

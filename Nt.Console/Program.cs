@@ -5,6 +5,7 @@ using Nt.Core.Logging;
 using Nt.Core.Logging.Configuration;
 using Nt.Scripts.Hosting;
 using Nt.Scripts.Hosting.Design;
+using Nt.Scripts.MasterScripts;
 using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Ninjascripts.Indicators;
 using Nt.Scripts.Services;
@@ -48,6 +49,7 @@ namespace ConsoleApp
             IDataSeries dataSeries = DesignNinjaHost.Host?.Services.GetService<IDataSeries>();
             INinjascript<Program> ninjascripts = DesignNinjaHost.Host?.Services.GetService<INinjascript<Program>>();
             INinjascript<Sessions> ninjascripts2 = DesignNinjaHost.Host?.Services.GetService<INinjascript<Sessions>>();
+            MasterScriptFactory master = DesignNinjaHost.Host?.Services.GetService<MasterScriptFactory>();
         }
 
         private static void UseDesignNinjascriptHostingServices()

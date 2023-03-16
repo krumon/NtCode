@@ -85,8 +85,15 @@
     <Compile Include="Hosting\Hosting.cs" />
     <Compile Include="Hosting\HostingHostBuilderExtensions.cs" />
     <Compile Include="Hosting\NinjaHost.cs" />
-    <Compile Include="MasterScripts\MasterStats.cs" />
+    <Compile Include="MasterScripts\MasterScriptFactory.cs" />
+    <Compile Include="MasterScripts\MasterScriptFilters.cs" />
+    <Compile Include="MasterScripts\MasterScriptOptions.cs" />
+    <Compile Include="MasterScripts\MasterScriptSections.cs" />
+    <Compile Include="MasterScripts\MasterStats\MasterStats.cs" />
     <Compile Include="MasterScripts\MasterScriptProviderAliasAttribute.cs" />
+    <Compile Include="MasterScripts\MasterScriptHostBuilderExtensions.cs" />
+    <Compile Include="MasterScripts\MasterScriptServiceCollectionExtensions.cs" />
+    <Compile Include="MasterScripts\NinjaScriptNames.cs" />
     <Compile Include="Ninjascripts\Indicators\_revisar\Base\MyBaseIndicator.cs" />
     <Compile Include="Ninjascripts\Indicators\_revisar\Templates\IndicatorTemplate.cs" />
     <Compile Include="Ninjascripts\Indicators\_revisar\TradingZone\TradingZone.cs" />
