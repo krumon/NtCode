@@ -1,5 +1,7 @@
-﻿using Nt.Core.DependencyInjection;
+﻿using Nt.Core.Configuration;
+using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
+using Nt.Scripts.Configuration;
 using System;
 
 namespace Nt.Scripts.MasterScripts
@@ -35,8 +37,15 @@ namespace Nt.Scripts.MasterScripts
             return hostBuilder.ConfigureServices((context, services) =>
             {
                 services.Configure<MasterScriptFilters>(context.Configuration.GetSection("NinjaScript"));
-                services.Configure<MasterScriptOptions>(MasterScriptOptions.MasterStats, context.Configuration.GetSection(MasterScriptSections.MasterStats));
-                services.Configure<MasterScriptOptions>(MasterScriptOptions.MasterSwings, context.Configuration.GetSection(MasterScriptSections.MasterSwings));
+                foreach (IConfigurationSection configurationSection in context.Configuration.GetSection("MasterScripts").GetChildren())
+                {
+                    string name = configurationSection.Key;
+                    string key = SectionNames.MasteScripts + ":" + configurationSection.Key;
+
+                    services.Configure<MasterScriptOptions>(name, context.Configuration.GetSection(key));
+                }
+                //services.Configure<MasterScriptOptions>(MasterScriptOptions.MasterStats, context.Configuration.GetSection(MasterScriptSections.MasterStats));
+                //services.Configure<MasterScriptOptions>(MasterScriptOptions.MasterSwings, context.Configuration.GetSection(MasterScriptSections.MasterSwings));
 
                 services.AddMasterScripts();
             });

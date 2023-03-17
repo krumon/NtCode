@@ -150,6 +150,7 @@
     <Compile Include="Ninjascripts\Options\NinjascriptProviderOptionsChangeTokenSource.cs" />
     <Compile Include="Ninjascripts\Indicators\Sessions\SessionChangedEventHandler.cs" />
     <Compile Include="Ninjascripts\Indicators\Sessions\SessionChangedEventArgs.cs" />
+    <Compile Include="Configuration\SectionNames.cs" />
     <Compile Include="Services\NinjaObjects\ChartBarsProperties.cs" />
     <Compile Include="Services\.Design\DesignChartBarsProperties.cs" />
     <Compile Include="Services\.Design\DesignGlobalsData.cs" />

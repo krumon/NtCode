@@ -3,8 +3,13 @@
   // Section to configure the ninjascript launched in the ninatrader platform.
   // -------------------------------------------------------------------------
   "NinjaScript": {
-    "Name": "Krumon",
-    "KrumonTest": [ "MasterStats", "MasterSwings" ]
+    "MasterScripts": {
+      "KrTradeMaster": [ "KrumonMaster" ],
+      "KrTradeStats": [ "MasterStats", "MasterSwings" ],
+      "KrTradeSignals": [ "MasterSwings", "MasterReversal" ],
+      "KrTradeZone": [ "MasterWichkoff" ],
+      "KrTradeOrders": ["MasterOrders"]
+    }
   },
 
   // ----------------------------------------------------------------------------------------------------

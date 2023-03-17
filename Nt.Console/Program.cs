@@ -54,7 +54,7 @@ namespace ConsoleApp
 
         private static void UseDesignNinjascriptHostingServices()
         {
-            DesignNinjaHost.Create(DesignHosting.CreateDesignNinjaDefaultBuilder().Build());
+            DesignNinjaHost.Create(DesignHosting.CreateDesignNinjaDefaultBuilder("Krumon").Build());
         }
         private static void UseNinjascriptHost()
         {
