@@ -1,5 +1,5 @@
 ﻿using Kr.Core.Helpers;
-using Nt.Core.Hosting;
+//using Nt.Core.Hosting;
 
 namespace Nt.Scripts.Hosting
 {
@@ -21,14 +21,14 @@ namespace Nt.Scripts.Hosting
         ///   </list>
         /// </remarks>
         /// <returns>The initialized <see cref="IHostBuilder"/>.</returns>
-        public static IHostBuilder CreateNinjascript<T>(params object[] ninjatraderObjects)
+        public static Nt.Core.Hosting.IHostBuilder CreateNinjascript<T>(params object[] ninjatraderObjects)
         {
-            HostBuilder builder = new HostBuilder();
+            Nt.Core.Hosting.HostBuilder builder = new Nt.Core.Hosting.HostBuilder();
             string ninjascriptName = TypeNameHelper.GetTypeDisplayName(typeof(T), includeGenericParameters: false, nestedTypeDelimiter: '.');
             return CreateNinjaDefaultBuilder(builder, ninjascriptName, ninjatraderObjects);
         }
 
-        private static IHostBuilder CreateNinjaDefaultBuilder(IHostBuilder builder, string ninjascriptName, params object[] ninjatraderObjects)
+        private static Nt.Core.Hosting.IHostBuilder CreateNinjaDefaultBuilder(Nt.Core.Hosting.IHostBuilder builder, string ninjascriptName, params object[] ninjatraderObjects)
         {
             //HostBuilder builder = new HostBuilder();
             return builder.NinjaConfigureDefaults(ninjascriptName, ninjatraderObjects);

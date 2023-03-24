@@ -3,7 +3,7 @@
     /// <summary>
     /// Nijascripts event types.
     /// </summary>
-    public enum NinjascriptEvent
+    public enum NinjaScriptEvent
     {
         /// <summary>
         /// Indicates every change in ninjascript state.

@@ -161,7 +161,7 @@
     <Compile Include="Configuration\UserSecretsConfigurationExtensions.cs" />
     <Compile Include="Configuration\UserSecrets\PathHelper.cs" />
     <Compile Include="Configuration\UserSecrets\UserSecretsIdAttribute.cs" />
-    <Compile Include="Data\Ninjascripts\NinjascriptEvent.cs" />
+    <Compile Include="Data\Ninjascripts\NinjaScriptEvent.cs" />
     <Compile Include="Data\Ninjascripts\NinjascriptState.cs" />
     <Compile Include="DependencyInjection\DefaultServiceProviderFactory.cs" />
     <Compile Include="DependencyInjection\DynamicallyAccessedMemberAttribute.cs" />

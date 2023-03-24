@@ -134,7 +134,7 @@
     <Compile Include="Ninjascripts\IRecalculableOnEachTick.cs" />
     <Compile Include="Ninjascripts\Indicators\Sessions\IRecalculableOnSessionChanged.cs" />
     <Compile Include="Ninjascripts\NinjascriptFilterOptions.cs" />
-    <Compile Include="Ninjascripts\LoggerFilterRule.cs" />
+    <Compile Include="Ninjascripts\NinjascriptFilterRule.cs" />
     <Compile Include="Ninjascripts\Ninjascript.cs" />
     <Compile Include="Ninjascripts\Extensions\NinjascriptBuilderExtensions.cs" />
     <Compile Include="Ninjascripts\NinjascriptFactory.cs" />
@@ -151,6 +151,8 @@
     <Compile Include="Ninjascripts\Indicators\Sessions\SessionChangedEventHandler.cs" />
     <Compile Include="Ninjascripts\Indicators\Sessions\SessionChangedEventArgs.cs" />
     <Compile Include="Configuration\SectionNames.cs" />
+    <Compile Include="Ninjatrader\BaseNinjaScript.cs" />
+    <Compile Include="Ninjatrader\INinjaScript.cs" />
     <Compile Include="Services\NinjaObjects\ChartBarsProperties.cs" />
     <Compile Include="Services\.Design\DesignChartBarsProperties.cs" />
     <Compile Include="Services\.Design\DesignGlobalsData.cs" />

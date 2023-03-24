@@ -1,14 +1,14 @@
 {
   // -------------------------------------------------------------------------
-  // Section to configure the ninjascript launched in the ninatrader platform.
+  // Section to configure the NinjaScripts launched in the ninatrader platform.
   // -------------------------------------------------------------------------
   "NinjaScript": {
     "MasterScripts": {
-      "KrTradeMaster": [ "KrumonMaster" ],
-      "KrTradeStats": [ "MasterStats", "MasterSwings" ],
-      "KrTradeSignals": [ "MasterSwings", "MasterReversal" ],
-      "KrTradeZone": [ "MasterWichkoff" ],
-      "KrTradeOrders": ["MasterOrders"]
+      "KrTrade.Master": [ "KrumonMaster" ],
+      "KrTrade.Stats": [ "MasterStats", "MasterSwings" ],
+      "KrTrade.Signals": [ "MasterSwings", "MasterReversal" ],
+      "KrTrade.Zone": [ "MasterWichkoff" ],
+      "KrTrade.Orders": ["MasterOrders"]
     }
   },
 
