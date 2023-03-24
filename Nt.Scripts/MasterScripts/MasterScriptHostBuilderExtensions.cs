@@ -1,7 +1,6 @@
 ﻿using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
-using Nt.Scripts.Configuration;
 using System;
 
 namespace Nt.Scripts.MasterScripts
@@ -19,9 +18,18 @@ namespace Nt.Scripts.MasterScripts
         {
             return hostBuilder.ConfigureServices((context, services) =>
             {
-                services.Configure<MasterScriptOptions>(MasterScriptOptions.MasterStats, context.Configuration.GetSection(MasterScriptSections.MasterStats));
-                services.Configure<MasterScriptOptions>(MasterScriptOptions.MasterSwings, context.Configuration.GetSection(MasterScriptSections.MasterSwings));
+                //services.Configure<MasterScriptOptions>(MasterScriptOptions.MasterStats, context.Configuration.GetSection(MasterScriptSections.MasterStats));
+                //services.Configure<MasterScriptOptions>(MasterScriptOptions.MasterSwings, context.Configuration.GetSection(MasterScriptSections.MasterSwings));
 
+                services.Configure<MasterScriptFilters>(context.Configuration.GetSection("NinjaScript"));
+                foreach (IConfigurationSection configurationSection in context.Configuration.GetSection("MasterScripts").GetChildren())
+                {
+                    //string key = configurationSection.Key;
+                    //string name = key.GetLastSection();
+
+                    services.Configure<MasterScriptOptions>(configurationSection.Key, context.Configuration.GetSection(configurationSection.Path));
+                }
+                //configureMasterScripts?.Invoke(context);
                 services.AddMasterScripts();
             });
         }
@@ -39,10 +47,9 @@ namespace Nt.Scripts.MasterScripts
                 services.Configure<MasterScriptFilters>(context.Configuration.GetSection("NinjaScript"));
                 foreach (IConfigurationSection configurationSection in context.Configuration.GetSection("MasterScripts").GetChildren())
                 {
-                    string name = configurationSection.Key;
-                    string key = SectionNames.MasteScripts + ":" + configurationSection.Key;
+                    // TODO: Comprobar si la sección existe en 'MasterScripSections'.
 
-                    services.Configure<MasterScriptOptions>(name, context.Configuration.GetSection(key));
+                    services.Configure<MasterScriptOptions>(configurationSection.Key, context.Configuration.GetSection(configurationSection.Path));
                 }
                 //services.Configure<MasterScriptOptions>(MasterScriptOptions.MasterStats, context.Configuration.GetSection(MasterScriptSections.MasterStats));
                 //services.Configure<MasterScriptOptions>(MasterScriptOptions.MasterSwings, context.Configuration.GetSection(MasterScriptSections.MasterSwings));

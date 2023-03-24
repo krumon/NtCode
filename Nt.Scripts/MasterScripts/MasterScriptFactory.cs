@@ -1,4 +1,5 @@
 ﻿using Nt.Core.Options;
+using Nt.Scripts.Configuration;
 using Nt.Scripts.Ninjascripts;
 using System;
 
@@ -19,8 +20,8 @@ namespace Nt.Scripts.MasterScripts
             _masterScriptFilters = filters ?? throw new ArgumentNullException(nameof(masterScriptOptions));
 
             var filtersOptions = filters.CurrentValue;
-            _masterStatsOptions = _masterScriptOptions.Get(MasterScriptOptions.MasterStats);
-            _masterSwingsOptions = _masterScriptOptions.Get(MasterScriptOptions.MasterSwings);
+            _masterStatsOptions = _masterScriptOptions.Get(MasterScriptSections.MasterStats);
+            _masterSwingsOptions = _masterScriptOptions.Get(MasterScriptSections.MasterSwings);
         }
 
         public INinjascript CreateNinjascript(string categoryName)
