@@ -2,7 +2,7 @@
 
 namespace Nt.Core.Hosting.Internal
 {
-    internal sealed class ConfigureContainerAdapter<TContainerBuilder> : IConfigureContainerAdapter
+    public sealed class ConfigureContainerAdapter<TContainerBuilder> : IConfigureContainerAdapter
     {
         private Action<HostBuilderContext, TContainerBuilder> _action;
 

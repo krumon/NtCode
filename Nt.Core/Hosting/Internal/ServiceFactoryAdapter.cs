@@ -1,10 +1,9 @@
 ﻿using Nt.Core.DependencyInjection;
 using System;
-using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
 namespace Nt.Core.Hosting.Internal
 {
-    internal sealed class ServiceFactoryAdapter<TContainerBuilder> : IServiceFactoryAdapter
+    public sealed class ServiceFactoryAdapter<TContainerBuilder> : IServiceFactoryAdapter
     {
         private IServiceProviderFactory<TContainerBuilder> _serviceProviderFactory;
         private readonly Func<HostBuilderContext> _contextResolver;

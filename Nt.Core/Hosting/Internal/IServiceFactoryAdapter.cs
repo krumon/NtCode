@@ -1,8 +1,9 @@
 ﻿using Nt.Core.DependencyInjection;
+using System;
 
 namespace Nt.Core.Hosting.Internal
 {
-    internal interface IServiceFactoryAdapter
+    public interface IServiceFactoryAdapter
     {
         object CreateBuilder(IServiceCollection services);
 

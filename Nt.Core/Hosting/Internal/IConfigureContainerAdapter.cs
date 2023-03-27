@@ -1,6 +1,6 @@
 ﻿namespace Nt.Core.Hosting.Internal
 {
-    internal interface IConfigureContainerAdapter
+    public interface IConfigureContainerAdapter
     {
         void ConfigureContainer(HostBuilderContext hostContext, object containerBuilder);
     }

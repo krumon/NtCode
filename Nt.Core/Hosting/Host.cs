@@ -39,7 +39,7 @@
         ///     <item><description>enables scope validation on the dependency injection container when <see cref="IHostEnvironment.EnvironmentName"/> is 'Development'</description></item>
         ///   </list>
         /// </remarks>
-        /// <returns>The initialized <see cref="INinjascriptHostBuilder"/>.</returns>
+        /// <returns>The initialized <see cref="IHostBuilder"/>.</returns>
         public static IHostBuilder CreateDefaultBuilder(string[] args)
         {
             HostBuilder builder = new HostBuilder();

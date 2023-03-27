@@ -1,25 +1,61 @@
 ﻿using Nt.Core.DependencyInjection;
 using Nt.Core.FileProviders;
+using Nt.Core.Hosting;
+using Nt.Core.Hosting.Internal;
 using Nt.Core.Logging;
 using Nt.Core.Options;
-using Nt.Core.Services;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Nt.Core.Hosting.Internal
+namespace Nt.Scripts.Hosting.Internal
 {
-    /// <summary>
-    /// Represents the host.
-    /// </summary>
-    internal class Host : IHost
+    internal class NinjaHost : INinjaHost
     {
+        //private static IHost _host;
+
+        ///// <summary>
+        ///// Gets <see cref="IHost"/> container.
+        ///// </summary>
+        //public static IHost Host => _host;
+
+        ///// <summary>
+        ///// Gets <see cref="ISessions"/> service.
+        ///// </summary>
+        //public static ISessions SessionsManager => _host?.Services.GetService<ISessions>();
+
+        /////// <summary>
+        /////// Gets <see cref="ISessionsIterator"/> service.
+        /////// </summary>
+        ////public static ISessionsIterator SessionsIterator => _host?.Services.GetService<ISessionsIterator>();
+
+        /////// <summary>
+        /////// Gets <see cref="ISessionsFilters"/> service.
+        /////// </summary>
+        ////public static ISessionsFilters SessionsFilters => _host?.Services.GetService<ISessionsFilters>();
+
+        ///// <summary>
+        ///// Gets <see cref="ILogger{TCategoryName}"/> service.
+        ///// </summary>
+        ///// <typeparam name="T">The category type.</typeparam>
+        ///// <returns>The <see cref="ILogger{TCategoryName}"/> service.</returns>
+        //public static ILogger Logger<T>() => _host?.Services.GetService<ILogger<T>>();
+
+        ///// <summary>
+        ///// Create a <see cref="NinjaHost"/> with the configure host.
+        ///// </summary>
+        ///// <param name="host"></param>
+        ///// <exception cref="ArgumentNullException"></exception>
+        //public static void Create(IHost host)
+        //{
+        //    _host = host ?? throw new ArgumentNullException(nameof(host));                
+        //}
 
         #region Private members
 
-        private readonly ILogger<Host> _logger;
+        private readonly ILogger<NinjaHost> _logger;
         private readonly IHostLifetime _hostLifetime;
         private readonly ApplicationLifetime _applicationLifetime;
         private readonly HostOptions _options;
@@ -28,7 +64,7 @@ namespace Nt.Core.Hosting.Internal
         private IEnumerable<IHostedService> _hostedServices;
         private volatile bool _stopCalled;
 
-        private readonly ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type,IEnumerable<object>>();
+        private readonly ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type, IEnumerable<object>>();
         //private readonly ISessionsService _sessions;
 
         #endregion
@@ -49,17 +85,17 @@ namespace Nt.Core.Hosting.Internal
         /// <param name="services">The host service provider.</param>
         /// <param name="options">The host options.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        internal Host(
+        internal NinjaHost(
             IServiceProvider services,
             IHostEnvironment hostEnvironment,
             PhysicalFileProvider defaultProvider,
             IHostApplicationLifetime applicationLifetime,
-            ILogger<Host> logger,
+            ILogger<NinjaHost> logger,
             //IHostLifetime hostLifetime,
-            IOptions<HostOptions> options,
+            IOptions<HostOptions> options
             //ISessionsService sessions,
-            IEnumerable<IOnBarUpdateService> onBarUpdateServices,
-            IEnumerable<IOnMarketDataService> onMarketDataServices
+            //IEnumerable<IOnBarUpdateService> onBarUpdateServices,
+            //IEnumerable<IOnMarketDataService> onMarketDataServices
             )
         {
             Services = services ?? throw new ArgumentNullException(nameof(services));
@@ -209,26 +245,25 @@ namespace Nt.Core.Hosting.Internal
             }
         }
 
-        public void Configure(params object[] ninjascriptObjects)
+        public void Configure()
         {
             //_logger.Configuring();
 
             IList<IConfigureService> configureServices = (IList<IConfigureService>)Services.GetServices<IConfigureService>();
-                        
+
             if (configureServices != null && configureServices.Count > 0)
             {
                 foreach (IConfigureService configureService in configureServices)
                 {
-                    // Fire IHostedService.Start
-                    configureService.Configure(ninjascriptObjects);
+                    //// Fire IHostedService.Start
+                    //configureService.Configure(ninjascriptObjects);
                 }
             }
 
             //_logger.Configured();
 
         }
-
-        public void DataLoaded(params object[] ninjascriptObjects)
+        public void DataLoaded()
         {
             //_logger.ConfiguringWhenDataLoaded();
 
@@ -238,14 +273,13 @@ namespace Nt.Core.Hosting.Internal
             {
                 foreach (IDataLoadedService dataLoadedService in dataLoadedServices)
                 {
-                    // Fire IHostedService.Start
-                    dataLoadedService.DataLoaded(ninjascriptObjects);
+                    //// Fire IHostedService.Start
+                    //dataLoadedService.DataLoaded(ninjascriptObjects);
                 }
             }
 
             //_logger.ConfiguredWhenDataLoaded();
         }
-
         public void OnBarUpdate()
         {
             //ExecuteServices<IOnBarUpdateService>();
@@ -254,24 +288,16 @@ namespace Nt.Core.Hosting.Internal
             //if (Sessions?.IsInNewSession == true)
             //    OnSessionUpdate();
         }
-        public void OnBarUpdate(Action<object> print = null)
-        {
-            //ExecuteServices<IOnBarUpdateService>();
-            //_sessions.OnBarUpdate();
-            //Sessions?.OnBarUpdate();
-            //if (Sessions?.IsInNewSession == true)
-            //    OnSessionUpdate(print);
-        }
         public void OnMarketData()
-        { 
+        {
             //ExecuteServices<IOnMarketDataService>();
             //Sessions?.OnMarketData();
             //if (Sessions?.IsInNewSession == true)
             //    OnSessionUpdate();
         }
-        public void OnSessionUpdate(Action<object> print = null) 
+        public void OnSessionUpdate()
         {
-            ExecuteServices<IOnSessionUpdateService>(s => s.OnSessionUpdate());
+            //ExecuteServices<IOnSessionUpdateService>(s => s.OnSessionUpdate());
             //var onSessionUpdateServices = Services.GetServices<IOnSessionUpdateService>();
             //if (onSessionUpdateServices != null)
             //    foreach (var service in onSessionUpdateServices)
@@ -279,8 +305,6 @@ namespace Nt.Core.Hosting.Internal
 
             //print?.Invoke(_sessions.Iterator.ToString());
         }
-
-        public void LogInformation (string message) => _logger.LogInformation(message);
 
         #endregion
 
@@ -305,7 +329,6 @@ namespace Nt.Core.Hosting.Internal
 
             //}
         }
-
         private void ForEach<T>(IEnumerable<T> services, Action<T> action)
         {
             if (services == null)
@@ -364,5 +387,6 @@ namespace Nt.Core.Hosting.Internal
         //}
 
         #endregion
+
     }
 }

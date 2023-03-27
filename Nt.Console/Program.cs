@@ -58,77 +58,77 @@ namespace ConsoleApp
         }
         private static void UseNinjascriptHost()
         {
-            if (NinjaHost.Host == null)
-                return;
+            //if (NinjaHost.Host == null)
+            //    return;
 
-            NinjaHost.Create(Host.CreateDefaultBuilder()
-            .ConfigureAppConfiguration((context,builder) =>
-            {
-                builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-            })
-            .ConfigureServices((context, services) =>
-            {
-                services.AddLogging((builder) =>
-                {
-                    builder.SetMinimumLevel(LogLevel.Debug);
-                    builder.AddConsole();
-                    builder.AddDebug();
-                    builder.AddConfiguration(context.Configuration.GetSection("Logging"));
-                });
-            })
-            .Build());
+            //NinjaHost.Create(Host.CreateDefaultBuilder()
+            //.ConfigureAppConfiguration((context,builder) =>
+            //{
+            //    builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            //})
+            //.ConfigureServices((context, services) =>
+            //{
+            //    services.AddLogging((builder) =>
+            //    {
+            //        builder.SetMinimumLevel(LogLevel.Debug);
+            //        builder.AddConsole();
+            //        builder.AddDebug();
+            //        builder.AddConfiguration(context.Configuration.GetSection("Logging"));
+            //    });
+            //})
+            //.Build());
 
-            NinjaHost.Host.Configure(null);
-            NinjaHost.Host.DataLoaded(null);
-            NinjaHost.Host.OnBarUpdate();
-            NinjaHost.Host.OnMarketData();
-            NinjaHost.Host.OnSessionUpdate();
-            NinjaHost.Host.Dispose();
+            //NinjaHost.Host.Configure(null);
+            //NinjaHost.Host.DataLoaded(null);
+            //NinjaHost.Host.OnBarUpdate();
+            //NinjaHost.Host.OnMarketData();
+            //NinjaHost.Host.OnSessionUpdate();
+            //NinjaHost.Host.Dispose();
 
         }
         private static void UseNinjascriptHost2()
         {
-            NinjaHost.Create(Host.CreateDefaultBuilder()
-                //.ConfigureAppConfiguration((context, builder) =>
-                //{
-                //    builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                //})
-                .ConfigureServices((context, services) =>
-                {
-                    //services.AddLogging(builder =>
-                    //{
-                    //    builder.SetMinimumLevel(LogLevel.Information);
-                    //    builder.AddConsole();
-                    //    builder.AddDebug();
-                    //});
-                    services.AddSingleton<IChartBarsProperties, ChartBarsProperties>()
-                    //.AddSessions<ISessionsService>((builder) =>
-                    //{
-                    //    builder.ConfigureFilters((options) =>
-                    //    {
-                    //        options.IncludePartialHolidays = false;
-                    //        options.IncludeHolidays = false;
-                    //        options.ExcludeHistoricalData = true;
-                    //    });
-                    //})
-                    ;
-                })
-                .Build());
+            //NinjaHost.Create(Host.CreateDefaultBuilder()
+            //    //.ConfigureAppConfiguration((context, builder) =>
+            //    //{
+            //    //    builder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            //    //})
+            //    .ConfigureServices((context, services) =>
+            //    {
+            //        //services.AddLogging(builder =>
+            //        //{
+            //        //    builder.SetMinimumLevel(LogLevel.Information);
+            //        //    builder.AddConsole();
+            //        //    builder.AddDebug();
+            //        //});
+            //        services.AddSingleton<IChartBarsProperties, ChartBarsProperties>()
+            //        //.AddSessions<ISessionsService>((builder) =>
+            //        //{
+            //        //    builder.ConfigureFilters((options) =>
+            //        //    {
+            //        //        options.IncludePartialHolidays = false;
+            //        //        options.IncludeHolidays = false;
+            //        //        options.ExcludeHistoricalData = true;
+            //        //    });
+            //        //})
+            //        ;
+            //    })
+            //    .Build());
         }
         private static void UseColorConsoleLogger()
         {
-            NinjaHost.Create(Host.CreateDefaultBuilder()
-                .ConfigureServices((context, services) =>
-                {
-                    services.AddLogging(builder =>
-                    {
-                        builder.ClearProviders();
-                        builder.AddConsole();
-                        builder.AddFile();
-                    })
-                    ;
-                })
-                .Build());
+            //NinjaHost.Create(Host.CreateDefaultBuilder()
+            //    .ConfigureServices((context, services) =>
+            //    {
+            //        services.AddLogging(builder =>
+            //        {
+            //            builder.ClearProviders();
+            //            builder.AddConsole();
+            //            builder.AddFile();
+            //        })
+            //        ;
+            //    })
+            //    .Build());
         }
     }
 }

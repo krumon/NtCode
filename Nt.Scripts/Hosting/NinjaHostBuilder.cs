@@ -1,6 +1,8 @@
-﻿using Nt.Core.Configuration;
+﻿using NinjaTrader.NinjaScript;
+using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.FileProviders;
+using Nt.Core.Hosting;
 using Nt.Core.Hosting.Internal;
 using Nt.Core.Logging;
 using Nt.Core.Options;
@@ -11,12 +13,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace Nt.Core.Hosting
+namespace Nt.Scripts.Hosting
 {
     /// <summary>
     /// Default services host builder.
     /// </summary>
-    public class HostBuilder : IHostBuilder
+    public class NinjaHostBuilder : INinjaHostBuilder
     {
 
         private bool _hostBuilt;
@@ -142,7 +144,42 @@ namespace Nt.Core.Hosting
                 BuildAppConfiguration();
                 CreateServiceProvider();
 
-                var host = _services.GetRequiredService<IHost>();
+                var host = _services.GetRequiredService<INinjaHost>();
+                //if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
+                //    Write(diagnosticListener, hostBuiltEventName, host);
+
+                return host;
+            //}
+        }
+
+        /// <summary>
+        /// Run the given actions to initialize the host. This can only be called once.
+        /// </summary>
+        /// <returns>An initialized <see cref="IHost"/></returns>
+        public INinjaHost Build(NinjaScriptBase ninjaScript)
+        {
+            if (_hostBuilt)
+                throw new InvalidOperationException("The host can only be built once.");
+            _hostBuilt = true;
+
+            // TODO: DiagnosticListener Implementation
+            // REVIEW: If we want to raise more events outside of these calls then we will need to
+            // stash this in a field.
+            //using (var diagnosticListener = new DiagnosticListener("Nt.Core.Hosting"))
+            //{
+            //    const string hostBuildingEventName = "HostBuilding";
+            //    const string hostBuiltEventName = "HostBuilt";
+
+            //    if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
+            //        Write(diagnosticListener, hostBuildingEventName, this);
+
+                BuildHostConfiguration();
+                CreateHostingEnvironment();
+                CreateHostBuilderContext();
+                BuildAppConfiguration();
+                CreateServiceProvider();
+
+                var host = _services.GetRequiredService<INinjaHost>();
                 //if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
                 //    Write(diagnosticListener, hostBuiltEventName, host);
 
@@ -222,18 +259,18 @@ namespace Nt.Core.Hosting
 
             services.AddSingleton((Func<IServiceProvider, IHost>)(_ =>
             {
-                return new Internal.Host(
+                return new Internal.NinjaHost(
                     _services
                     , _hostingEnvironment
                     , _defaultProvider
                     , _services.GetRequiredService<IHostApplicationLifetime>()
-                    , _services.GetRequiredService<ILogger<Internal.Host>>()
+                    , _services.GetRequiredService<ILogger<Internal.NinjaHost>>()
                     //, _services.GetRequiredService<IHostLifetime>()
                     , _services.GetRequiredService<IOptions<HostOptions>>()
 
                     //, _services.GetService_Obsolete<ISessionsService>()
-                    , _services.GetServices_Obsolete<IOnBarUpdateService>()
-                    , _services.GetServices_Obsolete<IOnMarketDataService>()
+                    //, _services.GetServices_Obsolete<IOnBarUpdateService>()
+                    //, _services.GetServices_Obsolete<IOnMarketDataService>()
                     );
             }));
 

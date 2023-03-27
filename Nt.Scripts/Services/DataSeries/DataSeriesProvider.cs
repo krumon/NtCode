@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
 namespace Nt.Scripts.Services
 {

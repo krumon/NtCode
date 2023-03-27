@@ -1,4 +1,6 @@
-﻿namespace Nt.Core.DependencyInjection
+﻿using System;
+
+namespace Nt.Core.DependencyInjection
 {
     /// <summary>
     /// The System.IDisposable.Dispose method ends the scope lifetime. Once Dispose is called, any scoped services 

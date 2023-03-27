@@ -1,8 +1,6 @@
-﻿using Nt.Core.Services;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using IServiceProvider = Nt.Core.DependencyInjection.IServiceProvider;
 
 namespace Nt.Core.Hosting
 {
@@ -11,7 +9,6 @@ namespace Nt.Core.Hosting
     /// </summary>
     public interface IHost : IDisposable
     {
-        #region Original interface
 
         /// <summary>
         /// The programs configured services.
@@ -32,11 +29,7 @@ namespace Nt.Core.Hosting
         /// <returns>A System.Threading.Tasks.Task that will be completed when the <see cref="IHost"/> stops.</returns>
         Task StopAsync(CancellationToken cancellationToken = default);
 
-        #endregion
-
-        #region Added properties and methods
-
-        void LogInformation(string message);
+        //void LogInformation(string message);
 
         ///// <summary>
         ///// Indicates if the session is updated.
@@ -48,35 +41,34 @@ namespace Nt.Core.Hosting
         ///// </summary>
         //ISessionsService Sessions { get; }
 
-        /// <summary>
-        /// Configure the hosted services of the Host.
-        /// </summary>
-        /// <param name="ninjascriptObjects">The ninjascript objects necesary to configure the service.</param>
-        void Configure(params object[] ninjascriptObjects);
+        ///// <summary>
+        ///// Configure the hosted services of the Host.
+        ///// </summary>
+        ///// <param name="ninjascriptObjects">The ninjascript objects necesary to configure the service.</param>
+        //void Configure(params object[] ninjascriptObjects);
 
-        /// <summary>
-        /// Configure the hosted services of the Host when the ninjascript data is loaded.
-        /// </summary>
-        /// <param name="ninjascriptObjects">The ninjascript objects necesary to configure the service.</param>
-        void DataLoaded(params object[] ninjascriptObjects);
+        ///// <summary>
+        ///// Configure the hosted services of the Host when the ninjascript data is loaded.
+        ///// </summary>
+        ///// <param name="ninjascriptObjects">The ninjascript objects necesary to configure the service.</param>
+        //void DataLoaded(params object[] ninjascriptObjects);
 
-        /// <summary>
-        /// Execute the <see cref="IOnBarUpdateService"/> services.
-        /// </summary>
-        void OnBarUpdate();
+        ///// <summary>
+        ///// Execute the <see cref="IOnBarUpdateService"/> services.
+        ///// </summary>
+        //void OnBarUpdate();
 
-        /// <summary>
-        /// Execute the <see cref="IOnMarketDataService"/> services.
-        /// </summary>
-        void OnMarketData();
+        ///// <summary>
+        ///// Execute the <see cref="IOnMarketDataService"/> services.
+        ///// </summary>
+        //void OnMarketData();
 
-        void OnBarUpdate(Action<object> print = null);
+        //void OnBarUpdate(Action<object> print = null);
 
-        /// <summary>
-        /// Execute the <see cref="IOnSessionUpdateService"/> services.
-        /// </summary>
-        void OnSessionUpdate(Action<object> print = null);
+        ///// <summary>
+        ///// Execute the <see cref="IOnSessionUpdateService"/> services.
+        ///// </summary>
+        //void OnSessionUpdate(Action<object> print = null);
 
-        #endregion
     }
 }

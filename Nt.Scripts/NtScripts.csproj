@@ -64,6 +64,9 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -83,9 +86,12 @@
     <Compile Include="DrawingTools\LabelLines\PriceLine\PriceLine.v.0.1.cs" />
     <Compile Include="DrawingTools\LabelLines\TimeLine\TimeLine.v.0.1.cs" />
     <Compile Include="DrawingTools\LabelLineDrawingMethods.cs" />
+    <Compile Include="Hosting\NinjaHostBuilder.cs" />
     <Compile Include="Hosting\Hosting.cs" />
-    <Compile Include="Hosting\HostingHostBuilderExtensions.cs" />
-    <Compile Include="Hosting\NinjaHost.cs" />
+    <Compile Include="Hosting\HostingNinjaHostBuilderExtensions.cs" />
+    <Compile Include="Hosting\INinjaHostBuilder.cs" />
+    <Compile Include="Hosting\INinjaHost.cs" />
+    <Compile Include="Hosting\Internal\NinjaHost.cs" />
     <Compile Include="MasterScripts\MasterScriptFactory.cs" />
     <Compile Include="MasterScripts\MasterScriptFilters.cs" />
     <Compile Include="MasterScripts\MasterScriptOptions.cs" />

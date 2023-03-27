@@ -25,7 +25,7 @@ namespace Nt.Core.Hosting
         public BackgroundServiceExceptionBehavior BackgroundServiceExceptionBehavior { get; set; } =
             BackgroundServiceExceptionBehavior.StopHost;
 
-        internal void Initialize(IConfiguration configuration)
+        public void Initialize(IConfiguration configuration)
         {
             var timeoutSeconds = configuration["shutdownTimeoutSeconds"];
             if (!string.IsNullOrEmpty(timeoutSeconds)
