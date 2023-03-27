@@ -73,5 +73,14 @@ namespace Nt.Core.Hosting
         /// <returns>An initialized <see cref="IHost"/></returns>
         IHost Build();
 
+        /// <summary>
+        /// Run the given actions to initialize the host. This can only be called once.
+        /// </summary>
+        /// <typeparam name="T">The type of the ninjascript launched in ninjatrader platform.</typeparam>
+        /// <param name="ninjaScript">Instance of the ninjascript launched in ninjatrader platform.</param>
+        /// <param name="ninjatraderObjects">The ninjatrader objects to added to the host.</param>
+        /// <returns>An initialized <see cref="INinjaHost"/></returns>
+        INinjaHost Build<T>(T ninjaScript, params object[] ninjatraderObjects);
+
     }
 }

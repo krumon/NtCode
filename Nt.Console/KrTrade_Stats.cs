@@ -17,7 +17,7 @@ namespace ConsoleApp
         protected override void Configure()
         {
             //_ninjascript = Hosting.CreateNinjascript<KrTrade_Stats>(null).Build();
-            _host = Hosting.CreateNinjascript<KrTrade_Stats>(null).Build();
+            _host = NinjaHost.CreateNinjaHostDefaultBuilder<KrTrade_Stats>(null).Build();
         }
     }
 }

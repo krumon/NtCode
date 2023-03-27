@@ -150,6 +150,31 @@ namespace Nt.Core.Hosting
             //}
         }
 
+        /// <summary>
+        /// Run the given actions to initialize the host. This can only be called once.
+        /// </summary>
+        /// <typeparam name="T">The type of the ninjascript launched in ninjatrader platform.</typeparam>
+        /// <param name="ninjaScript">Instance of the ninjascript launched in ninjatrader platform.</param>
+        /// <param name="ninjatraderObjects">The ninjatrader objects to added to the host.</param>
+        /// <returns>An initialized <see cref="IHost"/></returns>
+        /// <exception cref="InvalidOperationException">The host can only be built once.</exception>
+        public INinjaHost Build<T>(T ninjaScript, params object[] ninjatraderObjects) 
+        {
+            if (_hostBuilt)
+                throw new InvalidOperationException("The host can only be built once.");
+            _hostBuilt = true;
+
+            BuildHostConfiguration();
+            CreateHostingEnvironment();
+            CreateHostBuilderContext();
+            BuildAppConfiguration();
+            CreateServiceProvider(ninjaScript, ninjatraderObjects);
+
+            var host = _services.GetRequiredService<INinjaHost>();
+
+            return host;
+        }
+
         //[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:UnrecognizedReflectionPattern",
         //Justification = "The values being passed into Write are being consumed by the application already.")]
         //private static void Write<T>(
@@ -230,10 +255,6 @@ namespace Nt.Core.Hosting
                     , _services.GetRequiredService<ILogger<Internal.Host>>()
                     //, _services.GetRequiredService<IHostLifetime>()
                     , _services.GetRequiredService<IOptions<HostOptions>>()
-
-                    //, _services.GetService_Obsolete<ISessionsService>()
-                    , _services.GetServices_Obsolete<IOnBarUpdateService>()
-                    , _services.GetServices_Obsolete<IOnMarketDataService>()
                     );
             }));
 
@@ -261,6 +282,61 @@ namespace Nt.Core.Hosting
             // service provider, ensuring it will be properly disposed with the provider
             _ = _services.GetService<IConfiguration>();
 
+        }
+
+        private void CreateServiceProvider<T>(T ninjaScript, params object[] ninjatraderObjects)
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<IHostEnvironment>(_hostingEnvironment);
+            services.AddSingleton(_hostBuilderContext);
+            // register configuration as factory to make it dispose with the service provider
+            services.AddSingleton(_ => _appConfiguration);
+            services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
+            services.AddSingleton<IHostLifetime, ConsoleLifetime>();
+
+            AddNinjascriptServices(_services, _defaultProvider, services, ninjaScript, ninjatraderObjects);
+
+            services.AddSingleton((Func<IServiceProvider, IHost>)(_ =>
+            {
+                return new Internal.Host(
+                    _services
+                    , _hostingEnvironment
+                    , _defaultProvider
+                    , _services.GetRequiredService<IHostApplicationLifetime>()
+                    , _services.GetRequiredService<ILogger<Internal.Host>>()
+                    //, _services.GetRequiredService<IHostLifetime>()
+                    , _services.GetRequiredService<IOptions<HostOptions>>()
+                    );
+            }));
+
+            services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
+
+            // Add the configure services by the delegates.
+            foreach (Action<HostBuilderContext, IServiceCollection> configureServicesAction in _configureServicesActions)
+            {
+                configureServicesAction(_hostBuilderContext, services);
+            }
+
+            object containerBuilder = _serviceProviderFactory.CreateBuilder(services);
+
+            foreach (IConfigureContainerAdapter containerAction in _configureContainerActions)
+            {
+                containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
+            }
+
+            _services = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
+
+            if (_services == null)
+                throw new InvalidOperationException("Null IServiceProvider");
+
+            // resolve configuration explicitly once to mark it as resolved within the
+            // service provider, ensuring it will be properly disposed with the provider
+            _ = _services.GetService<IConfiguration>();
+
+        }
+
+        protected virtual void AddNinjascriptServices<T>(IServiceProvider provider, PhysicalFileProvider fileProvider, IServiceCollection services, T ninjaScript, object[] ninjatraderObjects)
+        {
         }
 
         private string ResolveContentRootPath(string contentRootPath, string basePath)

@@ -252,6 +252,7 @@
     <Compile Include="Hosting\HostEnvironmentEnvExtensions.cs" />
     <Compile Include="Hosting\HostingAbstractionsHostExtensions.cs" />
     <Compile Include="Hosting\HostingHostBuilderExtensions.cs" />
+    <Compile Include="Hosting\Interfaces\INinjaHost.cs" />
     <Compile Include="Hosting\Internal\ConfigureContainerAdapter.cs" />
     <Compile Include="Hosting\Internal\ConsoleLifetimeOptions.cs" />
     <Compile Include="Hosting\Internal\Host.cs" />

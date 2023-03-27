@@ -56,10 +56,10 @@ namespace Nt.Core.Hosting.Internal
             IHostApplicationLifetime applicationLifetime,
             ILogger<Host> logger,
             //IHostLifetime hostLifetime,
-            IOptions<HostOptions> options,
+            IOptions<HostOptions> options
             //ISessionsService sessions,
-            IEnumerable<IOnBarUpdateService> onBarUpdateServices,
-            IEnumerable<IOnMarketDataService> onMarketDataServices
+            //IEnumerable<IOnBarUpdateService> onBarUpdateServices,
+            //IEnumerable<IOnMarketDataService> onMarketDataServices
             )
         {
             Services = services ?? throw new ArgumentNullException(nameof(services));

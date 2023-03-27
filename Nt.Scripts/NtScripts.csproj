@@ -87,10 +87,8 @@
     <Compile Include="DrawingTools\LabelLines\TimeLine\TimeLine.v.0.1.cs" />
     <Compile Include="DrawingTools\LabelLineDrawingMethods.cs" />
     <Compile Include="Hosting\NinjaHostBuilder.cs" />
-    <Compile Include="Hosting\Hosting.cs" />
-    <Compile Include="Hosting\HostingNinjaHostBuilderExtensions.cs" />
-    <Compile Include="Hosting\INinjaHostBuilder.cs" />
-    <Compile Include="Hosting\INinjaHost.cs" />
+    <Compile Include="Hosting\NinjaHost.cs" />
+    <Compile Include="Hosting\HostingHostBuilderExtensions.cs" />
     <Compile Include="Hosting\Internal\NinjaHost.cs" />
     <Compile Include="MasterScripts\MasterScriptFactory.cs" />
     <Compile Include="MasterScripts\MasterScriptFilters.cs" />

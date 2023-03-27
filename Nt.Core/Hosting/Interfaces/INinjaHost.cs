@@ -1,6 +1,4 @@
-﻿using Nt.Core.Hosting;
-
-namespace Nt.Scripts.Hosting
+﻿namespace Nt.Core.Hosting
 {
     public interface INinjaHost : IHost
     {

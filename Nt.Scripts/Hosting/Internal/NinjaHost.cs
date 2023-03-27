@@ -14,44 +14,6 @@ namespace Nt.Scripts.Hosting.Internal
 {
     internal class NinjaHost : INinjaHost
     {
-        //private static IHost _host;
-
-        ///// <summary>
-        ///// Gets <see cref="IHost"/> container.
-        ///// </summary>
-        //public static IHost Host => _host;
-
-        ///// <summary>
-        ///// Gets <see cref="ISessions"/> service.
-        ///// </summary>
-        //public static ISessions SessionsManager => _host?.Services.GetService<ISessions>();
-
-        /////// <summary>
-        /////// Gets <see cref="ISessionsIterator"/> service.
-        /////// </summary>
-        ////public static ISessionsIterator SessionsIterator => _host?.Services.GetService<ISessionsIterator>();
-
-        /////// <summary>
-        /////// Gets <see cref="ISessionsFilters"/> service.
-        /////// </summary>
-        ////public static ISessionsFilters SessionsFilters => _host?.Services.GetService<ISessionsFilters>();
-
-        ///// <summary>
-        ///// Gets <see cref="ILogger{TCategoryName}"/> service.
-        ///// </summary>
-        ///// <typeparam name="T">The category type.</typeparam>
-        ///// <returns>The <see cref="ILogger{TCategoryName}"/> service.</returns>
-        //public static ILogger Logger<T>() => _host?.Services.GetService<ILogger<T>>();
-
-        ///// <summary>
-        ///// Create a <see cref="NinjaHost"/> with the configure host.
-        ///// </summary>
-        ///// <param name="host"></param>
-        ///// <exception cref="ArgumentNullException"></exception>
-        //public static void Create(IHost host)
-        //{
-        //    _host = host ?? throw new ArgumentNullException(nameof(host));                
-        //}
 
         #region Private members
 
@@ -65,15 +27,12 @@ namespace Nt.Scripts.Hosting.Internal
         private volatile bool _stopCalled;
 
         private readonly ConcurrentDictionary<Type, IEnumerable<object>> _enumerableServices = new ConcurrentDictionary<Type, IEnumerable<object>>();
-        //private readonly ISessionsService _sessions;
 
         #endregion
 
         #region Public properties
 
         public IServiceProvider Services { get; private set; }
-        //public ISessionsService Sessions { get { return _sessions; } }
-        //public bool? IsInNewSession => _sessions?.Iterator?.IsSessionUpdated;
 
         #endregion
 
@@ -338,53 +297,6 @@ namespace Nt.Scripts.Hosting.Internal
                 if (service != null)
                     action(service);
         }
-
-        #endregion
-
-        #region MS_Doc
-
-        //internal sealed class Host : IHost, IAsyncDisposable
-        //{
-        //    private IEnumerable<IHostedService> _hostedServices;
-        //    private volatile bool _stopCalled;
-
-        //    private async Task TryExecuteBackgroundServiceAsync(BackgroundService backgroundService)
-        //    {
-        //        // backgroundService.ExecuteTask may not be set (e.g. if the derived class doesn't call base.StartAsync)
-        //        Task backgroundTask = backgroundService.ExecuteTask;
-        //        if (backgroundTask == null)
-        //        {
-        //            return;
-        //        }
-
-        //        try
-        //        {
-        //            await backgroundTask.ConfigureAwait(false);
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            // When the host is being stopped, it cancels the background services.
-        //            // This isn't an error condition, so don't log it as an error.
-        //            if (_stopCalled && backgroundTask.IsCanceled && ex is OperationCanceledException)
-        //            {
-        //                return;
-        //            }
-
-        //            _logger.BackgroundServiceFaulted(ex);
-        //            if (_options.BackgroundServiceExceptionBehavior == BackgroundServiceExceptionBehavior.StopHost)
-        //            {
-        //                _logger.BackgroundServiceStoppingHost(ex);
-        //                _applicationLifetime.StopApplication();
-        //            }
-        //        }
-        //    }
-
-
-
-        //    public async ValueTask DisposeAsync()
-        //    {
-        //    }
-        //}
 
         #endregion
 
