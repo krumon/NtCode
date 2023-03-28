@@ -26,14 +26,14 @@ namespace Nt.Scripts.Logging
         /// Creates an instance of <see cref="NinjatraderLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="ConsoleLogger"/> instances with.</param>
-        public NinjatraderLoggerProvider(INinjascriptBase ninjascript, IOptionsMonitor <NinjatraderLoggerOptions> options) : this(ninjascript, options, Array.Empty<NinjatraderLoggerFormatter>()) { }
+        public NinjatraderLoggerProvider(INinjaScriptBase ninjascript, IOptionsMonitor <NinjatraderLoggerOptions> options) : this(ninjascript, options, Array.Empty<NinjatraderLoggerFormatter>()) { }
 
         /// <summary>
         /// Creates an instance of <see cref="NinjatraderLoggerProvider"/>.
         /// </summary>
         /// <param name="options">The options to create <see cref="FileLogger"/> instances with.</param>
         /// <param name="formatters">Log formatter added for <see cref="FileLogger"/> instances.</param>
-        public NinjatraderLoggerProvider(INinjascriptBase ninjascript, IOptionsMonitor<NinjatraderLoggerOptions> options, IEnumerable<NinjatraderLoggerFormatter> formatters)
+        public NinjatraderLoggerProvider(INinjaScriptBase ninjascript, IOptionsMonitor<NinjatraderLoggerOptions> options, IEnumerable<NinjatraderLoggerFormatter> formatters)
         {
             if (ninjascript == null)
                 throw new ArgumentNullException(nameof(ninjascript));

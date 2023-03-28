@@ -7,7 +7,7 @@ namespace Nt.Scripts.Ninjascripts.Internal
 {
     internal class Ninjascript : INinjascript
     {
-        private readonly INinjascriptBase _script;
+        private readonly INinjaScriptBase _script;
         private bool _isDisposed;
         private bool _isConfigured;
 

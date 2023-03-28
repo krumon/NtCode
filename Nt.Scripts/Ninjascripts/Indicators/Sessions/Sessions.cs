@@ -10,7 +10,7 @@ namespace Nt.Scripts.Ninjascripts.Indicators
     /// </summary>
     public class Sessions : ISessions
     {
-        private readonly INinjascriptBase _ninjascript;
+        private readonly INinjaScriptBase _ninjascript;
         private readonly IGlobalsData _globalsData;
         private readonly ILogger _logger;
 
@@ -22,7 +22,7 @@ namespace Nt.Scripts.Ninjascripts.Indicators
         public bool IsConfigured { get; internal set; }
         public bool IsNewSession { get; set; }
 
-        public Sessions(INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger<Sessions> logger)
+        public Sessions(INinjaScriptBase ninjascript, IGlobalsData globalsData, ILogger<Sessions> logger)
         {
             _ninjascript = ninjascript ?? throw new ArgumentNullException(nameof(ninjascript));
             _globalsData = globalsData ?? throw new ArgumentNullException(nameof(globalsData));

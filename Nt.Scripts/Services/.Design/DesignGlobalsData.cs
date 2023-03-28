@@ -11,7 +11,7 @@ namespace Nt.Scripts.Services.Design
         {
         }
 
-        public override void Configure()
+        public override void Initialize()
         {
             MaxDate = DateTime.MaxValue;
             MinDate = DateTime.MinValue;

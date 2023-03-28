@@ -22,33 +22,36 @@ namespace Nt.Scripts.Services
             if (ninjatraderObjects == null || ninjatraderObjects.Length == 0)
                 return services;
 
-            services
-                .AddNinjascript(TryGetNinjatraderObject<NinjaScriptBase>(ninjatraderObjects))
-                .AddGlobalsData()
-                .AddChartBarsData(TryGetNinjatraderObject<ChartBars>(ninjatraderObjects));
+            var ninjascript = TryGetNinjatraderObject<NinjaTrader.NinjaScript.NinjaScriptBase>(ninjatraderObjects);
+            var chartBars = TryGetNinjatraderObject<ChartBars>(ninjatraderObjects);
+            services.AddGlobalsData();
+            if (ninjascript != null)
+                services.AddNinjascript(ninjascript);
+            if (ninjascript != null)
+                services.AddChartBarsData(chartBars);
 
             return services;
         }
 
-        /// <summary>
-        /// Adds ninjatrader objects passed by the builder.
-        /// </summary>
-        /// <param name="services">The services.</param>
-        /// <param name="ninjatraderObjects">The ninjatrader objects.</param>
-        /// <returns>The <see cref="IServiceCollection"/> to continue builder the host.</returns>
-        /// <exception cref="ArgumentNullException">The <see cref="IServiceCollection"/> cannot be null.</exception>
-        public static IServiceCollection TryAddNinjatraderObjects(this IServiceCollection services, object[] ninjatraderObjects)
-        {
-            if (services == null)
-                throw new ArgumentNullException(nameof(services));
+        ///// <summary>
+        ///// Adds ninjatrader objects passed by the builder.
+        ///// </summary>
+        ///// <param name="services">The services.</param>
+        ///// <param name="ninjatraderObjects">The ninjatrader objects.</param>
+        ///// <returns>The <see cref="IServiceCollection"/> to continue builder the host.</returns>
+        ///// <exception cref="ArgumentNullException">The <see cref="IServiceCollection"/> cannot be null.</exception>
+        //public static IServiceCollection TryAddNinjatraderObjects(this IServiceCollection services, object[] ninjatraderObjects)
+        //{
+        //    if (services == null)
+        //        throw new ArgumentNullException(nameof(services));
 
-            services
-                .TryAddNinjascript(TryGetNinjatraderObject<NinjaScriptBase>(ninjatraderObjects))
-                .TryAddGlobalsData()
-                .TryAddChartBarsData(TryGetNinjatraderObject<ChartBars>(ninjatraderObjects));
+        //    services
+        //        .TryAddNinjascript(TryGetNinjatraderObject<NinjaScriptBase>(ninjatraderObjects))
+        //        .TryAddGlobalsData()
+        //        .TryAddChartBarsData(TryGetNinjatraderObject<ChartBars>(ninjatraderObjects));
 
-            return services;
-        }
+        //    return services;
+        //}
 
         private static T TryGetNinjatraderObject<T>(object[] ninjatraderObjects)
             where T : class

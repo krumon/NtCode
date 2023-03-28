@@ -7,7 +7,7 @@ namespace Nt.Scripts.Ninjascripts.Indicators
     [NinjascriptProviderAlias("Sessions")]
     public class SessionsProvider : INinjascriptProvider
     {
-        public SessionsProvider(INinjascriptBase ninjascript, IGlobalsData globalsData, ILogger<Sessions> logger, IOptionsMonitor<SessionsOptions> options)
+        public SessionsProvider(INinjaScriptBase ninjascript, IGlobalsData globalsData, ILogger<Sessions> logger, IOptionsMonitor<SessionsOptions> options)
         {
             var op = options.CurrentValue;
         }

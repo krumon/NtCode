@@ -177,8 +177,8 @@
     <Compile Include="Services\DataSeries\DataSeriesServiceCollectionExtensions.cs" />
     <Compile Include="Ninjascripts\Indicators\Sessions\SessionsNinjascriptBuilderExtensions.cs" />
     <Compile Include="Services\DataSeries\IDataSeries.cs" />
-    <Compile Include="Services\NinjaObjects\INinjascriptBase.cs" />
-    <Compile Include="Services\NinjaObjects\NinjascriptBase.cs" />
+    <Compile Include="Services\NinjaObjects\INinjaScriptBase.cs" />
+    <Compile Include="Services\NinjaObjects\NinjaScriptBase.cs" />
     <Compile Include="Services\NinjaObjects\GlobalsData.cs" />
     <Compile Include="Services\NinjaObjects\IGlobalsData.cs" />
     <Compile Include="Services\ServicesServiceCollectionExtensions.cs" />

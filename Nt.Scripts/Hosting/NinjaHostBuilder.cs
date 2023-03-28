@@ -14,7 +14,7 @@ namespace Nt.Scripts.Hosting
     {
         protected override void AddNinjascriptServices<T>(IServiceProvider provider,PhysicalFileProvider fileProvider, IServiceCollection services, T ninjaScript, object[] ninjatraderObjects)
         {
-            services.AddSingleton((Func<IServiceProvider, IHost>)(_ =>
+            services.AddSingleton((Func<IServiceProvider, INinjaHost>)(_ =>
             {
                 return new Internal.NinjaHost(
                     provider

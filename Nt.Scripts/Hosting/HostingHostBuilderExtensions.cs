@@ -54,14 +54,14 @@ namespace Nt.Scripts.Hosting
             {
                 logging
                     .AddConfiguration(hostingContext.Configuration.GetSection("Logging"))
-                    .AddOutputWindowLogger()
-                    .Configure(options =>
-                    {
-                        options.ActivityTrackingOptions =
-                            ActivityTrackingOptions.SpanId |
-                            ActivityTrackingOptions.TraceId |
-                            ActivityTrackingOptions.ParentId;
-                    });
+                    .AddOutputWindowLogger();
+                    //.Configure(options =>
+                    //{
+                    //    options.ActivityTrackingOptions =
+                    //        ActivityTrackingOptions.SpanId |
+                    //        ActivityTrackingOptions.TraceId |
+                    //        ActivityTrackingOptions.ParentId;
+                    //});
             })
             .UseDefaultServiceProvider((context, options) =>
             {

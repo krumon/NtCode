@@ -4,14 +4,19 @@ using System;
 namespace Nt.Scripts.Services
 {
     /// <summary>
-    /// Represents properties and methods of <see cref="NinjaScriptBase"/>.
+    /// Represents properties and methods of <see cref="NinjaTrader.NinjaScript.NinjaScriptBase"/>.
     /// </summary>
-    public interface INinjascriptBase
+    public interface INinjaScriptBase
     {
         /// <summary>
         /// Gets the ninjascript instance.
         /// </summary>
-        NinjaScriptBase Instance { get; }
+        NinjaTrader.NinjaScript.NinjaScriptBase Instance { get; }
+
+        /// <summary>
+        /// Gets the NinjaScript type name.
+        /// </summary>
+        string TypeName { get; }
 
         /// <summary>
         /// Gets the <see cref="NinjaScript.State"/> of the ninjascript object.

@@ -32,7 +32,7 @@ namespace Nt.Scripts.Services
             return services;
         }
 
-        public static IServiceCollection AddNinjascript(this IServiceCollection services, NinjaScriptBase ninjascript)
+        public static IServiceCollection AddNinjascript(this IServiceCollection services, NinjaTrader.NinjaScript.NinjaScriptBase ninjascript)
         {
             if (services == null)
                 throw new ArgumentNullException(nameof(services));
@@ -41,8 +41,8 @@ namespace Nt.Scripts.Services
                 throw new ArgumentNullException(nameof(ninjascript));
 
             // TODO: Delete this condition in future when develop the indicator, strategy,... services.
-            if (ninjascript is NinjaScriptBase)
-                services.TryAdd(ServiceDescriptor.Singleton<INinjascriptBase>(new NinjascriptBase(ninjascript)));
+            if (ninjascript is NinjaTrader.NinjaScript.NinjaScriptBase)
+                services.TryAdd(ServiceDescriptor.Singleton<INinjaScriptBase>(new NinjaScriptBase(ninjascript)));
             else if (ninjascript is IndicatorBase indicator)
                 return services;
             else if (ninjascript is StrategyBase strategy)
@@ -53,7 +53,7 @@ namespace Nt.Scripts.Services
             return services;
         }
 
-        public static IServiceCollection TryAddNinjascript(this IServiceCollection services, NinjaScriptBase ninjascript)
+        public static IServiceCollection TryAddNinjascript(this IServiceCollection services, NinjaTrader.NinjaScript.NinjaScriptBase ninjascript)
         {
             if (services == null)
                 throw new ArgumentNullException(nameof(services));

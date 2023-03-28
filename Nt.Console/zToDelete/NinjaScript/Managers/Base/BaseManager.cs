@@ -250,7 +250,7 @@ namespace ConsoleApp
         /// <param name="methodName"></param>
         public void SetScripts(List<INinjascript> scripts, [CallerMemberName] string methodName = null)
         {
-            if (methodName == "BaseManagerBuilder" || methodName == "Configure" || methodName == "Build" || methodName == "Add")
+            if (methodName == "BaseManagerBuilder" || methodName == "Initialize" || methodName == "Build" || methodName == "Add")
                 this.scripts = scripts;
         }
 

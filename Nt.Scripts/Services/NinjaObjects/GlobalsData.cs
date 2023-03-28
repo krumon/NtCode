@@ -1,13 +1,14 @@
 ﻿using NinjaTrader.Core;
 using Nt.Core.Logging;
-using Nt.Scripts.Ninjascripts;
 using System;
+using System.IO;
 
 namespace Nt.Scripts.Services
 {
     public class GlobalsData : IGlobalsData
     {
         private readonly ILogger _logger;
+        private readonly bool _isInDesingnMode = false;
 
         public DateTime MaxDate {get;protected set;}
         public DateTime MinDate { get; protected set; }
@@ -21,11 +22,12 @@ namespace Nt.Scripts.Services
         public GlobalsData(ILogger<GlobalsData> logger)
         {
             _logger = logger;
-            Configure();
+            Initialize();
+            // TODO: Delete. Is a testing method.
             PrintDirectories();
         }
 
-        public virtual void Configure()
+        public virtual void Initialize()
         {
             MaxDate = Globals.MaxDate;
             MinDate = Globals.MinDate;
