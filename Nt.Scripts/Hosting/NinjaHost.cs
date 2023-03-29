@@ -21,15 +21,21 @@ namespace Nt.Scripts.Hosting
         ///   </list>
         /// </remarks>
         /// <returns>The initialized <see cref="IHostBuilder"/>.</returns>
-        public static IHostBuilder CreateNinjaHostDefaultBuilder<T>(T ninjaScript, params object[] ninjatraderObjects)
+        public static IHostBuilder CreateNinjaHostDefaultBuilder<T>(params object[] ninjatraderObjects)
         {
             IHostBuilder builder = new NinjaHostBuilder();
-            return CreateNinjaHostDefaultBuilder(builder, ninjaScript, ninjatraderObjects);
+            return CreateNinjaHostDefaultBuilder<T>(builder, ninjatraderObjects);
         }
 
-        private static IHostBuilder CreateNinjaHostDefaultBuilder<T>(IHostBuilder builder, T ninjaScript, params object[] ninjatraderObjects)
+        public static IHostBuilder CreateDesignNinjaHostDefaultBuilder<T>(params object[] ninjatraderObjects)
         {
-            return builder.NinjaHostConfigureDefaults(ninjaScript, ninjatraderObjects);
+            IHostBuilder builder = new NinjaHostBuilder();
+            return CreateNinjaHostDefaultBuilder<T>(builder, ninjatraderObjects);
+        }
+
+        private static IHostBuilder CreateNinjaHostDefaultBuilder<T>(IHostBuilder builder, object[] ninjatraderObjects)
+        {
+            return builder.NinjaHostConfigureDefaults<T>(ninjatraderObjects);
         }
 
     }

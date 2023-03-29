@@ -8,7 +8,6 @@ namespace Nt.Scripts.Services
     public class GlobalsData : IGlobalsData
     {
         private readonly ILogger _logger;
-        private readonly bool _isInDesingnMode = false;
 
         public DateTime MaxDate {get;protected set;}
         public DateTime MinDate { get; protected set; }
@@ -22,12 +21,22 @@ namespace Nt.Scripts.Services
         public GlobalsData(ILogger<GlobalsData> logger)
         {
             _logger = logger;
+
             Initialize();
-            // TODO: Delete. Is a testing method.
+
+            // TODO: Delete. Testing method.
             PrintDirectories();
         }
 
-        public virtual void Initialize()
+        public GlobalsData()
+        {
+            DesignInitialize();
+
+            // TODO: Delete. Testing method.
+            PrintDirectories();
+        }
+
+        protected virtual void Initialize()
         {
             MaxDate = Globals.MaxDate;
             MinDate = Globals.MinDate;
@@ -35,6 +44,16 @@ namespace Nt.Scripts.Services
             UserDataDir = Globals.UserDataDir;
             InstallDir = Globals.InstallDir;
             CustomSubDirs = Globals.CustomSubDirs;
+        }
+
+        private void DesignInitialize()
+        {
+            MaxDate = DateTime.MaxValue;
+            MinDate = DateTime.MinValue;
+            UserConfigureTimeZoneInfo = TimeZoneInfo.Local;
+            UserDataDir = Path.Combine(Directory.GetCurrentDirectory(), "User");
+            InstallDir = Path.Combine(Directory.GetCurrentDirectory(), "Install");
+            CustomSubDirs = null;
         }
 
         protected void PrintDirectories()

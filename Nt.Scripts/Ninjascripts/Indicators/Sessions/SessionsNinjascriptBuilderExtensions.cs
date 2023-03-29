@@ -3,7 +3,6 @@ using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Ninjascripts.Configuration;
 using Nt.Scripts.Ninjascripts.Options;
 using Nt.Scripts.Services;
-using Nt.Scripts.Services.Design;
 using System;
 
 namespace Nt.Scripts.Ninjascripts.Indicators

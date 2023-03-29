@@ -158,7 +158,7 @@ namespace Nt.Core.Hosting
         /// <param name="ninjatraderObjects">The ninjatrader objects to added to the host.</param>
         /// <returns>An initialized <see cref="IHost"/></returns>
         /// <exception cref="InvalidOperationException">The host can only be built once.</exception>
-        public INinjaHost Build<T>(T ninjaScript, params object[] ninjatraderObjects) 
+        public INinjaHost Build<T>() 
         {
             if (_hostBuilt)
                 throw new InvalidOperationException("The host can only be built once.");
@@ -168,7 +168,7 @@ namespace Nt.Core.Hosting
             CreateHostingEnvironment();
             CreateHostBuilderContext();
             BuildAppConfiguration();
-            CreateServiceProvider(ninjaScript, ninjatraderObjects);
+            CreateServiceProvider<T>();
 
             var host = _services.GetRequiredService<INinjaHost>();
 
@@ -284,7 +284,7 @@ namespace Nt.Core.Hosting
 
         }
 
-        private void CreateServiceProvider<T>(T ninjaScript, params object[] ninjatraderObjects)
+        private void CreateServiceProvider<T>()
         {
             var services = new ServiceCollection();
             services.AddSingleton<IHostEnvironment>(_hostingEnvironment);
@@ -294,7 +294,7 @@ namespace Nt.Core.Hosting
             services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
             services.AddSingleton<IHostLifetime, ConsoleLifetime>();
 
-            AddNinjascriptServices(_services, _defaultProvider, services, ninjaScript, ninjatraderObjects);
+            AddNinjascriptServices<T>(_services, _defaultProvider, services);
 
             services.AddSingleton((Func<IServiceProvider, IHost>)(_ =>
             {
@@ -335,7 +335,7 @@ namespace Nt.Core.Hosting
 
         }
 
-        protected virtual void AddNinjascriptServices<T>(IServiceProvider provider, PhysicalFileProvider fileProvider, IServiceCollection services, T ninjaScript, object[] ninjatraderObjects)
+        protected virtual void AddNinjascriptServices<T>(IServiceProvider provider, PhysicalFileProvider fileProvider, IServiceCollection services)
         {
         }
 

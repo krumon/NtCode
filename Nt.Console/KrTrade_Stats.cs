@@ -7,8 +7,7 @@ namespace ConsoleApp
 {
     internal class KrTrade_Stats : BaseNinjaScript
     {
-        private INinjascript _ninjascript;
-        private IHost _host;
+        private INinjaHost _host;
 
         public KrTrade_Stats(NinjaScriptBase ninjascript) : base(ninjascript)
         {
@@ -17,7 +16,7 @@ namespace ConsoleApp
         protected override void Configure()
         {
             //_ninjascript = Hosting.CreateNinjascript<KrTrade_Stats>(null).Build();
-            _host = NinjaHost.CreateNinjaHostDefaultBuilder<KrTrade_Stats>(null).Build();
+            _host = NinjaHost.CreateDesignNinjaHostDefaultBuilder<KrTrade_Stats>(null).Build<KrTrade_Stats>();
         }
     }
 }

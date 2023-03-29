@@ -25,7 +25,7 @@ namespace Nt.Scripts.Services
         // TODO: Delete this constructor. Is only necesary for testing in console.
         internal ChartBarsProperties()
         {
-            Configure();
+            DesignConfigure();
         }
 
         protected virtual void Configure()
@@ -37,6 +37,19 @@ namespace Nt.Scripts.Services
                 PeriodType = (PeriodType)(int)_chartBars.Properties.BarsPeriod.BarsPeriodType,
                 PeriodValue = _chartBars.Properties.BarsPeriod.Value,
                 MarketDataType = (MarketDataType)_chartBars.Properties.BarsPeriod.MarketDataType
+            };
+            IsConfigured = true;
+        }
+
+        private void DesignConfigure()
+        {
+            TradingHoursName = "DesignTradingHoursName";
+            InstrumentName = "DesignInstrumentName";
+            BarsPeriod = new BarsPeriod
+            {
+                PeriodType = PeriodType.Minute,
+                PeriodValue = 1,
+                MarketDataType = MarketDataType.Last
             };
             IsConfigured = true;
         }

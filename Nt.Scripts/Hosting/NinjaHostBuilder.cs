@@ -12,7 +12,7 @@ namespace Nt.Scripts.Hosting
     /// </summary>
     public class NinjaHostBuilder : HostBuilder
     {
-        protected override void AddNinjascriptServices<T>(IServiceProvider provider,PhysicalFileProvider fileProvider, IServiceCollection services, T ninjaScript, object[] ninjatraderObjects)
+        protected override void AddNinjascriptServices<T>(IServiceProvider provider,PhysicalFileProvider fileProvider, IServiceCollection services)
         {
             services.AddSingleton((Func<IServiceProvider, INinjaHost>)(_ =>
             {

@@ -1,5 +1,4 @@
-﻿using NinjaTrader.Core;
-using Nt.Core.Logging;
+﻿using Nt.Core.Logging;
 using System;
 using System.IO;
 
@@ -11,7 +10,7 @@ namespace Nt.Scripts.Services.Design
         {
         }
 
-        public override void Initialize()
+        protected override void Initialize()
         {
             MaxDate = DateTime.MaxValue;
             MinDate = DateTime.MinValue;
