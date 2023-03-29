@@ -31,49 +31,46 @@ namespace Nt.Scripts.Services
         /// <summary>
         /// Gets the NinjaScript type name.
         /// </summary>
-        public string TypeName => TypeNameHelper.GetTypeDisplayName(_ninjascript.GetType(),fullName: false, includeGenericParameters: false, nestedTypeDelimiter: '.');
+        public string TypeName { get; protected set; }
 
         /// <summary>
         /// Gets the ninjascript instance.
         /// </summary>
-        public NinjaTrader.NinjaScript.NinjaScriptBase Instance => _ninjascript;
+        public NinjaTrader.NinjaScript.NinjaScriptBase Instance { get; protected set; }
 
         /// <summary>
         /// Gets the <see cref="NinjaScript.State"/> of the ninjascript object.
         /// </summary>
-        public State State => _ninjascript?.State ?? State.Configure;
+        public State State { get; protected set; }
 
         /// <summary>
         /// Gets the delegate that print in the ninjatrader output window.
         /// </summary>
-        public Action<object> Print 
-        {
-            get
-            {
-                if (_ninjascript != null)
-                    return _ninjascript.Print;
-
-                return Console.WriteLine;
-            }
-        }
+        public Action<object> Print { get; protected set; }
 
         /// <summary>
         /// Gets methods thats clear the output window.
         /// </summary>
-        public Action ClearOutputWindow
+        public Action ClearOutputWindow { get; protected set; }
+
+        public virtual void Configure()
         {
-            get
+            Instance = _ninjascript;
+
+            if(_ninjascript != null)
             {
-                if (_ninjascript != null)
-                    return _ninjascript.ClearOutputWindow;
+                State = _ninjascript.State;
+                Print = _ninjascript.Print;
+                ClearOutputWindow = _ninjascript.ClearOutputWindow;
+                TypeName = TypeNameHelper.GetTypeDisplayName(_ninjascript.GetType(), fullName: false, includeGenericParameters: false, nestedTypeDelimiter: '.');
 
-                return Console.Clear;
+                return;
             }
-        }
 
-        //protected virtual void Configure()
-        //{
-        //    Instance = _ninjascript;
-        //}
+            State = State.Configure;
+            Print = Console.WriteLine;
+            ClearOutputWindow = Console.Clear;
+            TypeName = String.Empty;
+        }
     }
 }

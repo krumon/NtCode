@@ -11,12 +11,20 @@ namespace ConsoleApp
 
         public KrTrade_Stats(NinjaScriptBase ninjascript) : base(ninjascript)
         {
+            _host = NinjaHost.CreateDesignNinjaHostDefaultBuilder<KrTrade_Stats>(null).Build<KrTrade_Stats>();
         }
 
         protected override void Configure()
         {
-            //_ninjascript = Hosting.CreateNinjascript<KrTrade_Stats>(null).Build();
-            _host = NinjaHost.CreateDesignNinjaHostDefaultBuilder<KrTrade_Stats>(null).Build<KrTrade_Stats>();
+            _host.Configure();
+        }
+        protected override void DataLoaded()
+        {
+            _host.DataLoaded();
+        }
+        protected override void OnBarUpdate()
+        {
+            _host.OnBarUpdate();
         }
     }
 }

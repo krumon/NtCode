@@ -32,8 +32,8 @@ namespace Nt.Scripts.Services
         {
             DesignInitialize();
 
-            // TODO: Delete. Testing method.
-            PrintDirectories();
+            //// TODO: Delete. Testing method.
+            //PrintDirectories();
         }
 
         protected virtual void Initialize()

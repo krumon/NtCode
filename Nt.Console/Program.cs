@@ -33,6 +33,7 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
+            var ninjascript = new KrTrade_Stats();
 
             UseDesignNinjascriptHostingServices();
 
