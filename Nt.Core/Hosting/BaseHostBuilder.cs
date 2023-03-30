@@ -3,8 +3,6 @@ using Nt.Core.DependencyInjection;
 using Nt.Core.FileProviders;
 using Nt.Core.Hosting.Internal;
 using Nt.Core.Logging;
-using Nt.Core.Options;
-using Nt.Core.Services;
 using System;
 using System.Collections.Generic;
 //using System.Diagnostics;
@@ -16,7 +14,8 @@ namespace Nt.Core.Hosting
     /// <summary>
     /// Default services host builder.
     /// </summary>
-    public abstract class BaseHostBuilder : IHostBuilder
+    public abstract class BaseHostBuilder<T> : IHostBuilder<T>
+        where T : IHost
     {
         private bool _hostBuilt;
         private List<Action<IConfigurationBuilder>> _configureHostConfigActions = new List<Action<IConfigurationBuilder>>();
@@ -30,6 +29,8 @@ namespace Nt.Core.Hosting
         private HostBuilderContext _hostBuilderContext;
         private HostingEnvironment _hostingEnvironment;
         private PhysicalFileProvider _defaultProvider;
+
+        private Func<IServiceProvider,IServiceCollection,PhysicalFileProvider, T> _hostImplementation;
 
         /// <summary>
         /// A central location for sharing state between components during the host building process.
@@ -114,41 +115,6 @@ namespace Nt.Core.Hosting
             return this;
         }
 
-        ///// <summary>
-        ///// Run the given actions to initialize the host. This can only be called once.
-        ///// </summary>
-        ///// <returns>An initialized <see cref="IHost"/></returns>
-        //public IHost Build()
-        //{
-        //    if (_hostBuilt)
-        //        throw new InvalidOperationException("The host can only be built once.");
-        //    _hostBuilt = true;
-
-        //    // TODO: DiagnosticListener Implementation
-        //    // REVIEW: If we want to raise more events outside of these calls then we will need to
-        //    // stash this in a field.
-        //    //using (var diagnosticListener = new DiagnosticListener("Nt.Core.Hosting"))
-        //    //{
-        //    //    const string hostBuildingEventName = "HostBuilding";
-        //    //    const string hostBuiltEventName = "HostBuilt";
-
-        //    //    if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
-        //    //        Write(diagnosticListener, hostBuildingEventName, this);
-
-        //        BuildHostConfiguration();
-        //        CreateHostingEnvironment();
-        //        CreateHostBuilderContext();
-        //        BuildAppConfiguration();
-        //        CreateServiceProvider();
-
-        //        var host = _services.GetRequiredService<IHost>();
-        //        //if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuiltEventName))
-        //        //    Write(diagnosticListener, hostBuiltEventName, host);
-
-        //        return host;
-        //    //}
-        //}
-
         /// <summary>
         /// Run the given actions to initialize the host. This can only be called once.
         /// </summary>
@@ -157,33 +123,34 @@ namespace Nt.Core.Hosting
         /// <param name="ninjatraderObjects">The ninjatrader objects to added to the host.</param>
         /// <returns>An initialized <see cref="IHost"/></returns>
         /// <exception cref="InvalidOperationException">The host can only be built once.</exception>
-        public T Build<T>()
-            where T : IHost
+        public T Build()
         {
             if (_hostBuilt)
                 throw new InvalidOperationException("The host can only be built once.");
             _hostBuilt = true;
 
+            // TODO: DiagnosticListener Implementation
+            //     REVIEW: If we want to raise more events outside of these calls then we will need to
+            //     stash this in a field.
+            //using (var diagnosticListener = new DiagnosticListener("Nt.Core.Hosting"))
+            //{
+            //    const string hostBuildingEventName = "HostBuilding";
+            //    const string hostBuiltEventName = "HostBuilt";
+
+            //    if (diagnosticListener.IsEnabled() && diagnosticListener.IsEnabled(hostBuildingEventName))
+            //        Write(diagnosticListener, hostBuildingEventName, this);
+
+
             BuildHostConfiguration();
             CreateHostingEnvironment();
             CreateHostBuilderContext();
             BuildAppConfiguration();
-            CreateServiceProvider<T>();
+            CreateServiceProvider();
 
             var host = _services.GetRequiredService<T>();
 
             return host;
         }
-
-        //[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:UnrecognizedReflectionPattern",
-        //Justification = "The values being passed into Write are being consumed by the application already.")]
-        //private static void Write<T>(
-        //    DiagnosticSource diagnosticSource,
-        //    string name,
-        //    T value)
-        //{
-        //    diagnosticSource.Write(name, value);
-        //}
 
         private void BuildHostConfiguration()
         {
@@ -195,7 +162,6 @@ namespace Nt.Core.Hosting
             }
             _hostConfiguration = configBuilder.Build();
         }
-
         private void CreateHostingEnvironment()
         {
             _hostingEnvironment = new HostingEnvironment()
@@ -234,6 +200,82 @@ namespace Nt.Core.Hosting
             _appConfiguration = configBuilder.Build();
             _hostBuilderContext.Configuration = _appConfiguration;
         }
+        private void CreateServiceProvider()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<IHostEnvironment>(_hostingEnvironment);
+            services.AddSingleton(_hostBuilderContext);
+            // register configuration as factory to make it dispose with the service provider
+            services.AddSingleton(_ => _appConfiguration);
+            services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
+            services.AddSingleton<IHostLifetime, ConsoleLifetime>();
+
+            //services.AddSingleton(_hostImplementation(_services,services,_defaultProvider));
+
+            services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
+
+            // Add the configure services by the delegates.
+            foreach (Action<HostBuilderContext, IServiceCollection> configureServicesAction in _configureServicesActions)
+            {
+                configureServicesAction(_hostBuilderContext, services);
+            }
+
+            object containerBuilder = _serviceProviderFactory.CreateBuilder(services);
+
+            foreach (IConfigureContainerAdapter containerAction in _configureContainerActions)
+            {
+                containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
+            }
+
+            _services = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
+
+            if (_services == null)
+                throw new InvalidOperationException("Null IServiceProvider");
+
+            // resolve configuration explicitly once to mark it as resolved within the
+            // service provider, ensuring it will be properly disposed with the provider
+            _ = _services.GetService<IConfiguration>();
+
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IHost"/> implementation.
+        /// </summary>
+        /// <param name="serviceProvider">The service provider to build the host.</param>
+        /// <param name="serviceCollection">The service collection to build the host.</param>
+        /// <param name="defaultFileProvider">The default file provider to build the host.</param>
+        /// <returns>The host instance.</returns>
+        public abstract Func<IServiceProvider, T> GetHostImplementation(IServiceProvider serviceProvider, ServiceCollection serviceCollection, PhysicalFileProvider defaultFileProvider);
+
+        public abstract T HostImplementation(IServiceProvider serviceProvider, IServiceCollection serviceCollection, PhysicalFileProvider defaultFileProvider);
+
+        private string ResolveContentRootPath(string contentRootPath, string basePath)
+        {
+            if (string.IsNullOrEmpty(contentRootPath))
+            {
+                return basePath;
+            }
+            if (Path.IsPathRooted(contentRootPath))
+            {
+                return contentRootPath;
+            }
+            return Path.Combine(Path.GetFullPath(basePath), contentRootPath);
+        }
+
+        IHost IHostBuilder.Build()
+        {
+            return Build();
+        }
+
+        //[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2026:UnrecognizedReflectionPattern",
+        //Justification = "The values being passed into Write are being consumed by the application already.")]
+        //private static void Write<T>(
+        //    DiagnosticSource diagnosticSource,
+        //    string name,
+        //    T value)
+        //{
+        //    diagnosticSource.Write(name, value);
+        //}
 
         //private void CreateServiceProvider()
         //{
@@ -284,63 +326,6 @@ namespace Nt.Core.Hosting
 
         //}
 
-        private void CreateServiceProvider<T>()
-        {
-            var services = new ServiceCollection();
-            services.AddSingleton<IHostEnvironment>(_hostingEnvironment);
-            services.AddSingleton(_hostBuilderContext);
-            // register configuration as factory to make it dispose with the service provider
-            services.AddSingleton(_ => _appConfiguration);
-            services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
-            services.AddSingleton<IHostLifetime, ConsoleLifetime>();
 
-            //AddNinjascriptServices<T>(_services, _defaultProvider, services);
-            //Func<IServiceProvider, IHost> implementation = GetHostImplementation(_services, _defaultProvider, services);
-            services.AddSingleton(GetHostImplementation<T>(_services, _defaultProvider, services));
-
-            services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
-
-            // Add the configure services by the delegates.
-            foreach (Action<HostBuilderContext, IServiceCollection> configureServicesAction in _configureServicesActions)
-            {
-                configureServicesAction(_hostBuilderContext, services);
-            }
-
-            object containerBuilder = _serviceProviderFactory.CreateBuilder(services);
-
-            foreach (IConfigureContainerAdapter containerAction in _configureContainerActions)
-            {
-                containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
-            }
-
-            _services = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
-
-            if (_services == null)
-                throw new InvalidOperationException("Null IServiceProvider");
-
-            // resolve configuration explicitly once to mark it as resolved within the
-            // service provider, ensuring it will be properly disposed with the provider
-            _ = _services.GetService<IConfiguration>();
-
-        }
-
-        public abstract Func<IServiceProvider, T> GetHostImplementation<T>(IServiceProvider serviceProvider, PhysicalFileProvider defaultProvider, ServiceCollection serviceCollection);
-
-        protected virtual void AddNinjascriptServices<T>(IServiceProvider provider, PhysicalFileProvider fileProvider, IServiceCollection services)
-        {
-        }
-
-        private string ResolveContentRootPath(string contentRootPath, string basePath)
-        {
-            if (string.IsNullOrEmpty(contentRootPath))
-            {
-                return basePath;
-            }
-            if (Path.IsPathRooted(contentRootPath))
-            {
-                return contentRootPath;
-            }
-            return Path.Combine(Path.GetFullPath(basePath), contentRootPath);
-        }
     }
 }

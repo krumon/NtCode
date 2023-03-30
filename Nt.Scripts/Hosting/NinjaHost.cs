@@ -35,8 +35,7 @@ namespace Nt.Scripts.Hosting
 
         private static IHostBuilder CreateNinjaHostDefaultBuilder<T>(IHostBuilder builder, object[] ninjatraderObjects)
         {
-            return builder.NinjaHostConfigureDefaults<T>(ninjatraderObjects);
+            return builder.NinjaHostConfigureDefaults<T>(ninjatraderObjects, true);
         }
-
     }
 }

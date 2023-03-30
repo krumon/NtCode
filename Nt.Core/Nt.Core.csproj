@@ -256,6 +256,7 @@
     <Compile Include="Hosting\Interfaces\INinjaHost.cs" />
     <Compile Include="Hosting\Internal\ConfigureContainerAdapter.cs" />
     <Compile Include="Hosting\Internal\ConsoleLifetimeOptions.cs" />
+    <Compile Include="Hosting\BaseHost.cs" />
     <Compile Include="Hosting\Internal\Host.cs" />
     <Compile Include="Hosting\HostBuilderContext.cs" />
     <Compile Include="Hosting\HostDefaults.cs" />

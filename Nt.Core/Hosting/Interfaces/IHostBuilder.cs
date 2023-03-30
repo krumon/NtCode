@@ -1,11 +1,21 @@
 ﻿using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
-using Nt.Core.Logging;
 using System;
 using System.Collections.Generic;
 
 namespace Nt.Core.Hosting
 {
+    public interface IHostBuilder<T> : IHostBuilder
+        where T : IHost
+    {
+        /// <summary>
+        /// Run the given actions to initialize the host. This can only be called once.
+        /// </summary>
+        /// <returns>An initialized host.</returns>
+        new T Build();
+
+    }
+
     public interface IHostBuilder
     {
 
@@ -67,29 +77,11 @@ namespace Nt.Core.Hosting
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         IHostBuilder ConfigureContainer<TContainerBuilder>(Action<HostBuilderContext, TContainerBuilder> configureDelegate);
 
-        ///// <summary>
-        ///// Run the given actions to initialize the host. This can only be called once.
-        ///// </summary>
-        ///// <returns>An initialized <see cref="IHost"/></returns>
-        //IHost Build();
-
-        ///// <summary>
-        ///// Run the given actions to initialize the host. This can only be called once.
-        ///// </summary>
-        ///// <typeparam name="T">The type of the ninjascript launched in ninjatrader platform.</typeparam>
-        ///// <param name="ninjaScript">Instance of the ninjascript launched in ninjatrader platform.</param>
-        ///// <param name="ninjatraderObjects">The ninjatrader objects to added to the host.</param>
-        ///// <returns>An initialized <see cref="INinjaHost"/></returns>
-        //INinjaHost Build<T>(T ninjaScript, params object[] ninjatraderObjects);
-
         /// <summary>
         /// Run the given actions to initialize the host. This can only be called once.
         /// </summary>
-        /// <typeparam name="T">The type of the ninjascript launched in ninjatrader platform.</typeparam>
-        /// <param name="ninjaScript">Instance of the ninjascript launched in ninjatrader platform.</param>
-        /// <param name="ninjatraderObjects">The ninjatrader objects to added to the host.</param>
-        /// <returns>An initialized <see cref="INinjaHost"/></returns>
-        T Build<T>() where T:IHost;
+        /// <returns>An initialized <see cref="IHost"/></returns>
+        IHost Build();
 
     }
 }

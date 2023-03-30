@@ -1,5 +1,4 @@
 ﻿using NinjaTrader.NinjaScript;
-using Nt.Core.Hosting;
 using Nt.Scripts.Hosting;
 using Nt.Scripts.Ninjatrader;
 
@@ -9,9 +8,9 @@ namespace ConsoleApp
     {
         private INinjaHost _host;
 
-        public KrTrade_Stats(NinjaScriptBase ninjascript) : base(ninjascript)
+        public KrTrade_Stats()
         {
-            _host = NinjaHost.CreateDesignNinjaHostDefaultBuilder<KrTrade_Stats>(null).Build<KrTrade_Stats>();
+            _host = (INinjaHost)NinjaHost.CreateDesignNinjaHostDefaultBuilder<KrTrade_Stats>().Build();
         }
 
         protected override void Configure()

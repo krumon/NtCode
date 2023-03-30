@@ -10,23 +10,33 @@ namespace Nt.Scripts.Hosting
     /// <summary>
     /// Default services host builder.
     /// </summary>
-    public class NinjaHostBuilder : HostBuilder
+    public class NinjaHostBuilder : BaseHostBuilder<INinjaHost>
     {
-        protected override void AddNinjascriptServices<T>(IServiceProvider provider,PhysicalFileProvider fileProvider, IServiceCollection services)
+        public override Func<IServiceProvider, INinjaHost> GetHostImplementation(IServiceProvider serviceProvider, ServiceCollection serviceCollection, PhysicalFileProvider defaultFileProvider)
         {
-            services.AddSingleton((Func<IServiceProvider, INinjaHost>)(_ =>
+            return (_ =>
             {
                 return new Internal.NinjaHost(
-                    provider
-                    , provider.GetRequiredService<IHostEnvironment>()
-                    , fileProvider
-                    , provider.GetRequiredService<IHostApplicationLifetime>()
-                    , provider.GetRequiredService<ILogger<Internal.NinjaHost>>()
-                    //, _services.GetRequiredService<IHostLifetime>()
-                    , provider.GetRequiredService<IOptions<HostOptions>>()
+                    serviceProvider
+                    , serviceProvider.GetRequiredService<IHostEnvironment>()
+                    , defaultFileProvider
+                    , serviceProvider.GetRequiredService<IHostApplicationLifetime>()
+                    , serviceProvider.GetRequiredService<ILogger<Internal.NinjaHost>>()
+                    , serviceProvider.GetRequiredService<IOptions<HostOptions>>()
                     );
-            }));
+            });
+        }
 
+        public override INinjaHost HostImplementation(IServiceProvider serviceProvider, IServiceCollection serviceCollection, PhysicalFileProvider defaultFileProvider)
+        {
+            return new Internal.NinjaHost(
+                    serviceProvider
+                    , serviceProvider.GetRequiredService<IHostEnvironment>()
+                    , defaultFileProvider
+                    , serviceProvider.GetRequiredService<IHostApplicationLifetime>()
+                    , serviceProvider.GetRequiredService<ILogger<Internal.NinjaHost>>()
+                    , serviceProvider.GetRequiredService<IOptions<HostOptions>>()
+                    );
         }
     }
 }

@@ -5,14 +5,14 @@ namespace Nt.Scripts.Ninjatrader
 {
     public abstract class BaseNinjaScript : INinjaScript
     {
-        private readonly NinjaScriptBase _ninjascript;
+        //private readonly NinjaScriptBase _ninjascript;
 
-        public State State => _ninjascript.State;
+        //public State State => _ninjascript.State;
+        public State State => State.Configure;
         public NinjaScriptEvent NinjaScriptEvent { get; private set; }
 
-        public BaseNinjaScript(NinjaScriptBase ninjascript)
+        public BaseNinjaScript()
         {
-            _ninjascript = ninjascript;
         }
 
         public void OnNinjaScriptChange(NinjaScriptEvent ninjascriptEvent)
@@ -25,22 +25,22 @@ namespace Nt.Scripts.Ninjatrader
 
         public void OnStateChange()
         {
-            if (_ninjascript.State == State.SetDefaults)
-                SetDafaults();
-            else if (_ninjascript.State == State.Configure)
-                Configure();
-            else if (_ninjascript.State == State.Active)
-                Active();
-            else if (_ninjascript.State == State.DataLoaded)
-                DataLoaded();
-            else if (_ninjascript.State == State.Historical)
-                Historical();
-            else if (_ninjascript.State == State.Transition)
-                Transition();
-            else if (_ninjascript.State == State.Realtime)
-                Realtime();
-            else if (_ninjascript.State == State.Terminated)
-                Terminated();
+            //if (_ninjascript.State == State.SetDefaults)
+            //    SetDafaults();
+            //else if (_ninjascript.State == State.Configure)
+            //    Configure();
+            //else if (_ninjascript.State == State.Active)
+            //    Active();
+            //else if (_ninjascript.State == State.DataLoaded)
+            //    DataLoaded();
+            //else if (_ninjascript.State == State.Historical)
+            //    Historical();
+            //else if (_ninjascript.State == State.Transition)
+            //    Transition();
+            //else if (_ninjascript.State == State.Realtime)
+            //    Realtime();
+            //else if (_ninjascript.State == State.Terminated)
+            //    Terminated();
         }
 
         protected virtual void SetDafaults() { }
