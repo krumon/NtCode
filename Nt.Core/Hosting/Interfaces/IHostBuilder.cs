@@ -67,11 +67,11 @@ namespace Nt.Core.Hosting
         /// <returns>The same instance of the <see cref="IHostBuilder"/> for chaining.</returns>
         IHostBuilder ConfigureContainer<TContainerBuilder>(Action<HostBuilderContext, TContainerBuilder> configureDelegate);
 
-        /// <summary>
-        /// Run the given actions to initialize the host. This can only be called once.
-        /// </summary>
-        /// <returns>An initialized <see cref="IHost"/></returns>
-        IHost Build();
+        ///// <summary>
+        ///// Run the given actions to initialize the host. This can only be called once.
+        ///// </summary>
+        ///// <returns>An initialized <see cref="IHost"/></returns>
+        //IHost Build();
 
         ///// <summary>
         ///// Run the given actions to initialize the host. This can only be called once.
@@ -89,7 +89,7 @@ namespace Nt.Core.Hosting
         /// <param name="ninjaScript">Instance of the ninjascript launched in ninjatrader platform.</param>
         /// <param name="ninjatraderObjects">The ninjatrader objects to added to the host.</param>
         /// <returns>An initialized <see cref="INinjaHost"/></returns>
-        INinjaHost Build<T>();
+        T Build<T>() where T:IHost;
 
     }
 }

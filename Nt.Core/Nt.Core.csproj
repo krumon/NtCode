@@ -249,6 +249,7 @@
     <Compile Include="Helpers\StringComparisonHelper.cs" />
     <Compile Include="Hosting\BackgroundServiceExceptionBehavior.cs" />
     <Compile Include="Hosting\Environments.cs" />
+    <Compile Include="Hosting\BaseHostBuilder.cs" />
     <Compile Include="Hosting\HostEnvironmentEnvExtensions.cs" />
     <Compile Include="Hosting\HostingAbstractionsHostExtensions.cs" />
     <Compile Include="Hosting\HostingHostBuilderExtensions.cs" />
