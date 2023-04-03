@@ -24,27 +24,22 @@ namespace Nt.Scripts.Hosting.Internal
 
         public void Configure()
         {
-            throw new NotImplementedException();
         }
 
         public void DataLoaded()
         {
-            throw new NotImplementedException();
         }
 
         public void OnBarUpdate()
         {
-            throw new NotImplementedException();
         }
 
         public void OnMarketData()
         {
-            throw new NotImplementedException();
         }
 
         public void OnSessionUpdate()
         {
-            throw new NotImplementedException();
         }
     }
 

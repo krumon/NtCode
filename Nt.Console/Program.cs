@@ -15,8 +15,8 @@ namespace ConsoleApp
 {
     internal class Program
     {
-        //private static IHost _host;
-        private static ILogger _logger;
+        ////private static IHost _host;
+        //private static ILogger _logger;
 
         private static void FindingObjectsInMS()
         {
@@ -33,24 +33,34 @@ namespace ConsoleApp
 
         public static void Main(string[] args)
         {
-            var ninjascript = new KrTrade_Stats();
+            var ninjascript = new KrTradeStats();
 
-            UseDesignNinjascriptHostingServices();
+            ninjascript.Configure();
 
-            if (DesignNinjaHost.Host == null)
-                throw new ArgumentNullException(nameof(DesignNinjaHost.Host));
+            for (int i = 0; i < 100; i++)
+            {
+                ninjascript.OnBarUpdate();
+                if (i > 0 && i%10 == 0)
+                    ninjascript.OnSessionUpdate();
+                    
+            }
 
-            _logger = DesignNinjaHost.Logger<Program>();
-            _logger.LogInformation("Hello World!");
-            //_logger.LogInformation(DesignNinjaHost.SessionsIterator.ToString());
-            //_logger.LogInformation(DesignNinjaHost.SessionsFilters.IsEnabled.ToString());
-            //_logger.LogInformation(DesignNinjaHost.Ninjascript.ToString());
-            IConfigurationRoot config = (IConfigurationRoot)(DesignNinjaHost.Host?.Services.GetService<HostBuilderContext>().Configuration);
-            IConfiguration configure = DesignNinjaHost.Host?.Services.GetService<IConfiguration>();
-            IDataSeries dataSeries = DesignNinjaHost.Host?.Services.GetService<IDataSeries>();
-            INinjascript<Program> ninjascripts = DesignNinjaHost.Host?.Services.GetService<INinjascript<Program>>();
-            INinjascript<Sessions> ninjascripts2 = DesignNinjaHost.Host?.Services.GetService<INinjascript<Sessions>>();
-            MasterScriptFactory master = DesignNinjaHost.Host?.Services.GetService<MasterScriptFactory>();
+            //UseDesignNinjascriptHostingServices();
+
+            //if (DesignNinjaHost.Host == null)
+            //    throw new ArgumentNullException(nameof(DesignNinjaHost.Host));
+
+            //_logger = DesignNinjaHost.Logger<Program>();
+            //_logger.LogInformation("Hello World!");
+            ////_logger.LogInformation(DesignNinjaHost.SessionsIterator.ToString());
+            ////_logger.LogInformation(DesignNinjaHost.SessionsFilters.IsEnabled.ToString());
+            ////_logger.LogInformation(DesignNinjaHost.Ninjascript.ToString());
+            //IConfigurationRoot config = (IConfigurationRoot)(DesignNinjaHost.Host?.Services.GetService<HostBuilderContext>().Configuration);
+            //IConfiguration configure = DesignNinjaHost.Host?.Services.GetService<IConfiguration>();
+            //IDataSeries dataSeries = DesignNinjaHost.Host?.Services.GetService<IDataSeries>();
+            //INinjascript<Program> ninjascripts = DesignNinjaHost.Host?.Services.GetService<INinjascript<Program>>();
+            //INinjascript<Sessions> ninjascripts2 = DesignNinjaHost.Host?.Services.GetService<INinjascript<Sessions>>();
+            //MasterScriptFactory master = DesignNinjaHost.Host?.Services.GetService<MasterScriptFactory>();
         }
 
         private static void UseDesignNinjascriptHostingServices()

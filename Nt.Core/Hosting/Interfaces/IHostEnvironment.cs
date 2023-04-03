@@ -29,5 +29,10 @@ namespace Nt.Core.Hosting
         /// Gets or sets an <see cref="IFileProvider"/> pointing at <see cref="IHostEnvironment.ContentRootPath"/>
         /// </summary>
         IFileProvider ContentRootFileProvider { get; set; }
+
+        /// <summary>
+        /// Indicates if the host is in design mode.
+        /// </summary>
+        string IsInDesignMode { get; set; }
     }
 }

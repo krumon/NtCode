@@ -17,5 +17,7 @@ namespace Nt.Core.Hosting.Internal
         public string ContentRootPath { get; set; }
 
         public IFileProvider ContentRootFileProvider { get; set; }
+
+        public string IsInDesignMode { get; set; }
     }
 }

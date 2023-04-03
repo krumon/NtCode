@@ -20,5 +20,10 @@
         /// and <see cref="IHostEnvironment.ContentRootFileProvider"/>.
         /// </summary>
         public static readonly string ContentRootKey = "contentRoot";
+
+        /// <summary>
+        /// The configuration key used to set <see cref="IHostEnvironment.IsInDesignMode"/>.
+        /// </summary>
+        public static readonly string DesignModeKey = "isInDesignMode";
     }
 }

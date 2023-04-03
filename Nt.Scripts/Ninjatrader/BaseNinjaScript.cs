@@ -43,15 +43,16 @@ namespace Nt.Scripts.Ninjatrader
             //    Terminated();
         }
 
-        protected virtual void SetDafaults() { }
-        protected virtual void Configure() { }
-        protected virtual void Active() { }
-        protected virtual void DataLoaded() { }
-        protected virtual void Historical() { }
-        protected virtual void Transition() { }
-        protected virtual void Realtime() { }
-        protected virtual void Terminated() { }
+        public virtual void SetDafaults() { }
+        public virtual void Configure() { }
+        public virtual void Active() { }
+        public virtual void DataLoaded() { }
+        public virtual void Historical() { }
+        public virtual void Transition() { }
+        public virtual void Realtime() { }
+        public virtual void Terminated() { }
         
-        protected virtual void OnBarUpdate() { }
+        public virtual void OnBarUpdate() { }
+        public virtual void OnSessionUpdate() { }
     }
 }

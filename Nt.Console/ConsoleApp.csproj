@@ -198,7 +198,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KrTrade_Stats.cs" />
+    <Compile Include="KrTradeStats.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="zTests\NinjascriptHostingTests.cs" />

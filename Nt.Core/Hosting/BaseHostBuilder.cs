@@ -169,6 +169,7 @@ namespace Nt.Core.Hosting
                 ApplicationName = _hostConfiguration[HostDefaults.ApplicationKey],
                 EnvironmentName = _hostConfiguration[HostDefaults.EnvironmentKey] ?? Environments.Production,
                 ContentRootPath = ResolveContentRootPath(_hostConfiguration[HostDefaults.ContentRootKey], AppContext.BaseDirectory),
+                IsInDesignMode = _hostConfiguration[HostDefaults.DesignModeKey] ?? "false"
             };
 
             if (string.IsNullOrEmpty(_hostingEnvironment.ApplicationName))
@@ -210,7 +211,7 @@ namespace Nt.Core.Hosting
             services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
             services.AddSingleton<IHostLifetime, ConsoleLifetime>();
 
-            //services.AddSingleton(_hostImplementation(_services,services,_defaultProvider));
+            services.AddSingleton(typeof(T), _ => GetHostImplementation(_services, services, _defaultProvider));
 
             services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
 
@@ -245,9 +246,7 @@ namespace Nt.Core.Hosting
         /// <param name="serviceCollection">The service collection to build the host.</param>
         /// <param name="defaultFileProvider">The default file provider to build the host.</param>
         /// <returns>The host instance.</returns>
-        public abstract Func<IServiceProvider, T> GetHostImplementation(IServiceProvider serviceProvider, ServiceCollection serviceCollection, PhysicalFileProvider defaultFileProvider);
-
-        public abstract T HostImplementation(IServiceProvider serviceProvider, IServiceCollection serviceCollection, PhysicalFileProvider defaultFileProvider);
+        public abstract T GetHostImplementation(IServiceProvider serviceProvider, ServiceCollection serviceCollection, PhysicalFileProvider defaultFileProvider);
 
         private string ResolveContentRootPath(string contentRootPath, string basePath)
         {
@@ -276,56 +275,6 @@ namespace Nt.Core.Hosting
         //{
         //    diagnosticSource.Write(name, value);
         //}
-
-        //private void CreateServiceProvider()
-        //{
-        //    var services = new ServiceCollection();
-        //    services.AddSingleton<IHostEnvironment>(_hostingEnvironment);
-        //    services.AddSingleton(_hostBuilderContext);
-        //    // register configuration as factory to make it dispose with the service provider
-        //    services.AddSingleton(_ => _appConfiguration);
-        //    services.AddSingleton<IHostApplicationLifetime, ApplicationLifetime>();
-        //    services.AddSingleton<IHostLifetime, ConsoleLifetime>();
-
-        //    services.AddSingleton((Func<IServiceProvider, IHost>)(_ =>
-        //    {
-        //        return new Internal.Host(
-        //            _services
-        //            , _hostingEnvironment
-        //            , _defaultProvider
-        //            , _services.GetRequiredService<IHostApplicationLifetime>()
-        //            , _services.GetRequiredService<ILogger<Internal.Host>>()
-        //            //, _services.GetRequiredService<IHostLifetime>()
-        //            , _services.GetRequiredService<IOptions<HostOptions>>()
-        //            );
-        //    }));
-
-        //    services.AddOptions().Configure<HostOptions>(options => { options.Initialize(_hostConfiguration); });
-
-        //    // Add the configure services by the delegates.
-        //    foreach (Action<HostBuilderContext, IServiceCollection> configureServicesAction in _configureServicesActions)
-        //    {
-        //        configureServicesAction(_hostBuilderContext, services);
-        //    }
-
-        //    object containerBuilder = _serviceProviderFactory.CreateBuilder(services);
-
-        //    foreach (IConfigureContainerAdapter containerAction in _configureContainerActions)
-        //    {
-        //        containerAction.ConfigureContainer(_hostBuilderContext, containerBuilder);
-        //    }
-
-        //    _services = _serviceProviderFactory.CreateServiceProvider(containerBuilder);
-
-        //    if (_services == null)
-        //        throw new InvalidOperationException("Null IServiceProvider");
-
-        //    // resolve configuration explicitly once to mark it as resolved within the
-        //    // service provider, ensuring it will be properly disposed with the provider
-        //    _ = _services.GetService<IConfiguration>();
-
-        //}
-
 
     }
 }
