@@ -1,5 +1,4 @@
-﻿using NinjaTrader.NinjaScript;
-using Nt.Core.Hosting;
+﻿using Nt.Core.Hosting;
 
 namespace Nt.Scripts.Hosting
 {
@@ -21,7 +20,7 @@ namespace Nt.Scripts.Hosting
         ///   </list>
         /// </remarks>
         /// <returns>The initialized <see cref="IHostBuilder"/>.</returns>
-        private static IHostBuilder CreateNinjaHostDefaultBuilder<T>(params object[] ninjatraderObjects)
+        public static IHostBuilder CreateNinjaHostDefaultBuilder<T>(params object[] ninjatraderObjects)
         {
             IHostBuilder builder = new NinjaHostBuilder();
             return builder.NinjaHostConfigureDefaults<T>(ninjatraderObjects, true);

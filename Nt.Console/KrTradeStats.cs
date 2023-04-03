@@ -9,7 +9,7 @@ namespace ConsoleApp
 
         public KrTradeStats()
         {
-            _host = (INinjaHost)NinjaHost.CreateDesignNinjaHostDefaultBuilder<KrTradeStats>().Build();
+            _host = (INinjaHost)NinjaHost.CreateNinjaHostDefaultBuilder<KrTradeStats>().Build();
         }
 
         public override void Configure()

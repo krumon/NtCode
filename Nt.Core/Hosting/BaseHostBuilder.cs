@@ -164,12 +164,13 @@ namespace Nt.Core.Hosting
         }
         private void CreateHostingEnvironment()
         {
+            var boolConvert = bool.TryParse(_hostConfiguration[HostDefaults.DesignModeKey], out bool isInDesignMode);
             _hostingEnvironment = new HostingEnvironment()
             {
                 ApplicationName = _hostConfiguration[HostDefaults.ApplicationKey],
                 EnvironmentName = _hostConfiguration[HostDefaults.EnvironmentKey] ?? Environments.Production,
                 ContentRootPath = ResolveContentRootPath(_hostConfiguration[HostDefaults.ContentRootKey], AppContext.BaseDirectory),
-                IsInDesignMode = _hostConfiguration[HostDefaults.DesignModeKey] ?? "false"
+                IsInDesignMode = boolConvert == true && isInDesignMode 
             };
 
             if (string.IsNullOrEmpty(_hostingEnvironment.ApplicationName))

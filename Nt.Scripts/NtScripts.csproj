@@ -77,9 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\NinjascriptConfigHelpers.cs" />
-    <Compile Include="Hosting\Design\DesignHosting.cs" />
-    <Compile Include="Hosting\Design\HostingDesignHostBuilderExtensions.cs" />
-    <Compile Include="Hosting\Design\DesignNinjaHost.cs" />
     <Compile Include="DrawingTools\LabelLines\LabelLine\LabelLine.cs" />
     <Compile Include="DrawingTools\LabelLines\LabelLine\LabelLine.v.0.1.cs" />
     <Compile Include="DrawingTools\LabelLines\LabelLine\LabelLineHelpers.cs" />

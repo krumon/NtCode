@@ -5,7 +5,7 @@ using System;
 
 namespace Nt.Scripts.MasterScripts
 {
-    public class MasterScriptFactory: INinjascriptProvider
+    public class MasterScriptFactory: INinjascriptFactory
     {
         
         private IOptionsMonitor<MasterScriptOptions> _masterScriptOptions;
@@ -22,6 +22,11 @@ namespace Nt.Scripts.MasterScripts
             var filtersOptions = filters.CurrentValue;
             _masterStatsOptions = _masterScriptOptions.Get(MasterScriptSections.MasterStats);
             _masterSwingsOptions = _masterScriptOptions.Get(MasterScriptSections.MasterSwings);
+        }
+
+        public void AddProvider(INinjascriptProvider provider)
+        {
+            throw new NotImplementedException();
         }
 
         public INinjascript CreateNinjascript(string categoryName)

@@ -4,7 +4,7 @@ namespace Nt.Scripts.Ninjascripts
 {
     /// <summary>
     /// Represents a type used to configure the ninjascript system and create instances of
-    /// <see cref="INinjascript"/> from the registered <see cref="INinjascriptProvider"/>.
+    /// <see cref="INinjascript"/> from the registered <see cref="INinjascriptFactory"/>.
     /// </summary>
     public interface INinjascriptFactory : IDisposable
     {
@@ -16,9 +16,9 @@ namespace Nt.Scripts.Ninjascripts
         INinjascript CreateNinjascript(string categoryName);
 
         /// <summary>
-        /// Adds an <see cref="INinjascriptProvider"/> to the ninjascripts system.
+        /// Adds an <see cref="INinjascriptFactory"/> to the ninjascripts system.
         /// </summary>
-        /// <param name="provider">The <see cref="INinjascriptProvider"/>.</param>
+        /// <param name="provider">The <see cref="INinjascriptFactory"/>.</param>
         void AddProvider(INinjascriptProvider provider);
     }
 }

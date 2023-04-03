@@ -33,6 +33,6 @@ namespace Nt.Core.Hosting
         /// <summary>
         /// Indicates if the host is in design mode.
         /// </summary>
-        string IsInDesignMode { get; set; }
+        bool IsInDesignMode { get; set; }
     }
 }

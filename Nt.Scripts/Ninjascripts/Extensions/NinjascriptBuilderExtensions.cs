@@ -27,25 +27,25 @@ namespace Nt.Scripts.Ninjascripts
         }
 
         /// <summary>
-        /// Adds the given <see cref="INinjascriptProvider"/> to the <see cref="INinjascriptBuilder"/>
+        /// Adds the given <see cref="INinjascriptFactory"/> to the <see cref="INinjascriptBuilder"/>
         /// </summary>
         /// <param name="builder">The <see cref="INinjascriptBuilder"/> to add the <paramref name="provider"/> to.</param>
-        /// <param name="provider">The <see cref="INinjascriptProvider"/> to add to the <paramref name="builder"/>.</param>
+        /// <param name="provider">The <see cref="INinjascriptFactory"/> to add to the <paramref name="builder"/>.</param>
         /// <returns>The <see cref="INinjascriptBuilder"/> so that additional calls can be chained.</returns>
-        public static INinjascriptBuilder AddProvider(this INinjascriptBuilder builder, INinjascriptProvider provider)
+        public static INinjascriptBuilder AddProvider(this INinjascriptBuilder builder, INinjascriptFactory provider)
         {
             builder.Services.AddSingleton(provider);
             return builder;
         }
 
         /// <summary>
-        /// Removes all <see cref="INinjascriptProvider"/>s from <paramref name="builder"/>.
+        /// Removes all <see cref="INinjascriptFactory"/>s from <paramref name="builder"/>.
         /// </summary>
-        /// <param name="builder">The <see cref="INinjascriptBuilder"/> to remove <see cref="INinjascriptProvider"/>s from.</param>
+        /// <param name="builder">The <see cref="INinjascriptBuilder"/> to remove <see cref="INinjascriptFactory"/>s from.</param>
         /// <returns>The <see cref="INinjascriptBuilder"/> so that additional calls can be chained.</returns>
         public static INinjascriptBuilder ClearProviders(this INinjascriptBuilder builder)
         {
-            builder.Services.RemoveAll<INinjascriptProvider>();
+            builder.Services.RemoveAll<INinjascriptFactory>();
             return builder;
         }
 

@@ -1,10 +1,10 @@
-﻿using Nt.Core.Configuration;
+﻿using Kr.Core.Helpers;
+using Nt.Core.Configuration;
 using Nt.Core.DependencyInjection;
 using Nt.Core.Hosting;
 using Nt.Core.Logging;
 using Nt.Core.Logging.Configuration;
 using Nt.Scripts.Hosting;
-using Nt.Scripts.Hosting.Design;
 using Nt.Scripts.MasterScripts;
 using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Ninjascripts.Indicators;
@@ -45,6 +45,9 @@ namespace ConsoleApp
                     
             }
 
+            string name = TypeNameHelper.GetTypeDisplayName(typeof(KrTradeStats),fullName:false, includeGenericParameterNames: false,nestedTypeDelimiter:'.');
+
+
             //UseDesignNinjascriptHostingServices();
 
             //if (DesignNinjaHost.Host == null)
@@ -65,7 +68,7 @@ namespace ConsoleApp
 
         private static void UseDesignNinjascriptHostingServices()
         {
-            DesignNinjaHost.Create(DesignHosting.CreateDesignNinjaDefaultBuilder("Krumon").Build());
+            //DesignNinjaHost.Create(DesignHosting.CreateDesignNinjaDefaultBuilder("Krumon").Build());
         }
         private static void UseNinjascriptHost()
         {

@@ -18,6 +18,6 @@ namespace Nt.Core.Hosting.Internal
 
         public IFileProvider ContentRootFileProvider { get; set; }
 
-        public string IsInDesignMode { get; set; }
+        public bool IsInDesignMode { get;set; }
     }
 }

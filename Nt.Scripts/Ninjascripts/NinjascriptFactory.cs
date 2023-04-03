@@ -111,7 +111,7 @@ namespace Nt.Scripts.Ninjascripts
         /// <summary>
         /// Adds the given provider to those used in creating <see cref="INinjascript"/> instances.
         /// </summary>
-        /// <param name="provider">The <see cref="INinjascriptProvider"/> to add.</param>
+        /// <param name="provider">The <see cref="INinjascriptFactory"/> to add.</param>
         public void AddProvider(INinjascriptProvider provider)
         {
             if (CheckDisposed())
