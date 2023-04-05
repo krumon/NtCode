@@ -5,7 +5,7 @@ using NinjaTrader.NinjaScript.DrawingTools;
 using Nt.Core.DependencyInjection;
 using System;
 
-namespace Nt.Scripts.Services
+namespace Nt.Scripts.NinjatraderObjects
 {
     public static class NinjatraderObjectsServiceCollectionExtensions
     {

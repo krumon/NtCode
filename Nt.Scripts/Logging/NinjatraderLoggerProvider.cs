@@ -2,6 +2,7 @@
 using Nt.Core.Logging.Console;
 using Nt.Core.Logging.File;
 using Nt.Core.Options;
+using Nt.Scripts.NinjatraderObjects;
 using Nt.Scripts.Services;
 using System;
 using System.Collections.Concurrent;

@@ -1,6 +1,7 @@
 ﻿using NinjaTrader.NinjaScript;
 using Nt.Core.Logging;
 using Nt.Core.Options;
+using Nt.Scripts.NinjatraderObjects;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

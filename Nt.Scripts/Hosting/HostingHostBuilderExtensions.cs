@@ -6,6 +6,7 @@ using Nt.Scripts.Logging;
 using Nt.Scripts.MasterScripts;
 using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Ninjascripts.Indicators;
+using Nt.Scripts.NinjatraderObjects;
 using Nt.Scripts.Services;
 using System.IO;
 

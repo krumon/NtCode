@@ -21,7 +21,7 @@ namespace Nt.Scripts.Hosting
                 , serviceProvider.GetRequiredService<IHostApplicationLifetime>()
                 , serviceProvider.GetRequiredService<ILogger<Internal.NinjaHost>>()
                 , serviceProvider.GetRequiredService<IOptions<HostOptions>>()
-                    );
+                );
         }
     }
 }

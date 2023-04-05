@@ -1,5 +1,6 @@
 ﻿using Nt.Core.Logging;
 using Nt.Core.Logging.Abstractions;
+using Nt.Scripts.NinjatraderObjects;
 using Nt.Scripts.Services;
 using System;
 using System.IO;

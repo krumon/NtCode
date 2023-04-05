@@ -1,7 +1,7 @@
 ﻿using NinjaTrader.NinjaScript;
 using Nt.Core.Data;
 
-namespace Nt.Scripts.Ninjatrader
+namespace Nt.Scripts.NinjatraderObjects
 {
     public interface INinjaScript
     {

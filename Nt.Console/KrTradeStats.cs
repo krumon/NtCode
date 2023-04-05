@@ -1,5 +1,5 @@
 ﻿using Nt.Scripts.Hosting;
-using Nt.Scripts.Ninjatrader;
+using Nt.Scripts.NinjatraderObjects;
 
 namespace ConsoleApp
 {

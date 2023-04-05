@@ -2,7 +2,7 @@
 using Nt.Scripts.Ninjascripts.Indicators;
 using System;
 
-namespace Nt.Scripts.Services.Design
+namespace Nt.Scripts.NinjatraderObjects.Design
 {
     public static class DesignServicesServiceCollectionExtensions
     {

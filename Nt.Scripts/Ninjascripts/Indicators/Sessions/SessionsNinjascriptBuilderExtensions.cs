@@ -2,6 +2,7 @@
 using Nt.Scripts.Ninjascripts;
 using Nt.Scripts.Ninjascripts.Configuration;
 using Nt.Scripts.Ninjascripts.Options;
+using Nt.Scripts.NinjatraderObjects;
 using Nt.Scripts.Services;
 using System;
 

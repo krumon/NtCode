@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-namespace Nt.Scripts.Services.Design
+namespace Nt.Scripts.NinjatraderObjects.Design
 {
     public class DesignGlobalsData : GlobalsData
     {

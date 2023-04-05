@@ -1,5 +1,6 @@
 ﻿using Nt.Core.Logging;
 using Nt.Core.Options;
+using Nt.Scripts.NinjatraderObjects;
 using Nt.Scripts.Services;
 
 namespace Nt.Scripts.Ninjascripts.Indicators

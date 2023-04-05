@@ -2,7 +2,7 @@
 using Nt.Scripts.Ninjascripts;
 using System;
 
-namespace Nt.Scripts.Services
+namespace Nt.Scripts.NinjatraderObjects
 {
     /// <summary>
     /// Represents the properties and methods to create a default implementation of <see cref="GlobalsDataService"/>.

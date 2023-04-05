@@ -2,6 +2,7 @@
 using System;
 using NinjaTrader.NinjaScript;
 using Nt.Scripts.Services;
+using Nt.Scripts.NinjatraderObjects;
 
 namespace Nt.Scripts.Ninjascripts.Internal
 {

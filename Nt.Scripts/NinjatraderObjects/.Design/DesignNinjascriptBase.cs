@@ -1,7 +1,7 @@
 ﻿using NinjaTrader.NinjaScript;
 using System;
 
-namespace Nt.Scripts.Services.Design
+namespace Nt.Scripts.NinjatraderObjects.Design
 {
     public class DesignNinjascriptBase : NinjaScriptBase
     {

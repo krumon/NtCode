@@ -2,7 +2,7 @@
 using NinjaTrader.NinjaScript;
 using System;
 
-namespace Nt.Scripts.Services
+namespace Nt.Scripts.NinjatraderObjects
 {
     /// <summary>
     /// Represents properties and methods of <see cref="NinjaTrader.NinjaScript.NinjaScriptBase"/>.
